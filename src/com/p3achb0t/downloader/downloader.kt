@@ -30,6 +30,16 @@ class Downloader{
         return ""
     }
 
+    fun getLocalGamepack():String{
+        val path = System.getProperty("user.dir")
+        File(path + gamepackDir).walk().forEach {
+            if (it.name.toString().contains(".jar")) {
+                return path + gamepackDir + it.name
+            }
+        }
+        return path + gamepackDir
+    }
+
     private fun isGamepackDonloadedLocally(gamepackName: String): Boolean {
         //Check to see if we already have this game pack
         val path = System.getProperty("user.dir")
@@ -49,6 +59,7 @@ class Downloader{
         connection.connect()
         val res = connection.inputStream.bufferedReader().readText()
         for (line in res.split("\n")) {
+//            println(line)
             if (line.contains("archive=")) {
                 val strReplace = "g.*.jar"
                 val gamePack = getRegSelection(strReplace, line)

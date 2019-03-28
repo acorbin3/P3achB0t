@@ -1,22 +1,20 @@
 package com.p3achb0t.downloader
 
+//TODO - Only download new gamepacks if the client has updated
+
 //TODO - List of TODO's that we are trying to accomplish
 //      DONE 3/21/2019 - Install ASM lib
-//      TODO - See if we can identify the Node class
+//      DONE - See if we can identify the Node class
 //      DONE 3/21/2019 - Identified the Canvas class
-//      TODO - Identify Client
+//      DONE 3/27/2019 - Identify Client
 //      TODO - Identify Animable
-//      TODO - Identify Cache Node
 //      TODO - Identify Entity
 //      TODO - Identify Mouse Event
-//      TODO - Identify NPC
-//      TODO - Identify NPC Definition
-//      TODO - Identify Node
-//      TODO - Identify Player
-//      TODO - Identify Scene Graph
-//      TODO - Identify SceneSpawnRequest
-//      TODO - Identify SceneTile
-//      TODO - Identify SubNode
+//      DONE 3/27/2019 - Identify NPC
+//      DONE 3/27/2019 - AnimatedObject
+
+//DONE 3/26/2019 Look for player(is an Actor)
+//DONE 3/26/2019 Look for Actor (is an Renderable)
 
 
 //TODO - Analyser
@@ -24,7 +22,7 @@ package com.p3achb0t.downloader
 //      TODO - Remove fields that are not used
 //      TODO - Identify Classes
 //      TODO - Handle modifiers
-//      TODO -
+//      TODO - Check if new version out: https://gist.github.com/kylestev/6c666a312358e9fd0aa0
 
 //TODO - Client
 //  TODO - Hooks into jar to get info

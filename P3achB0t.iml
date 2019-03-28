@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
     <orderEntry type="library" name="org.ow2.asm:asm:7.0" level="project" />
+    <orderEntry type="library" name="io.github.microutils:kotlin-logging:1.6.25" level="project" />
   </component>
 </module>
