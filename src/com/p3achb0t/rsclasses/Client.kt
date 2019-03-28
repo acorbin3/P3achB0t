@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Client:RSClasses() {
-    var name: String = ""
 
 //    client.accountStatus cu ae -2093036075
 //    Client.baseX bu fc -554363219

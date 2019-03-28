@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class NPC:RSClasses() {
-    var name: String = ""
     var composite: String = ""
 
     companion object {

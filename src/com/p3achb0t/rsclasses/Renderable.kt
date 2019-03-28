@@ -5,7 +5,6 @@ import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 //data class Renderable(val name: String, val modelHeight: String)
 class Renderable:RSClasses() {
-    var name: String = ""
     var modelHeight: String = ""
     companion object {
         const val deobName = "RENDERABLE"

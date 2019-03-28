@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class AnimatedObject:RSClasses() {
-    var name: String = ""
 
 //    AnimatedObject.animationDelay ci j 59357379
 //    AnimatedObject.animationFrame ci z 1554944269

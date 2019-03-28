@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Actor:RSClasses() {
-    var name: String = ""
 
 //    Actor.animation bw bo 398323101
 //    Actor.animationDelay bw bs 1989447085

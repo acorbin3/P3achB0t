@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Node:RSClasses() {
-    var name: String = ""
 
     var idName: String = ""
     var nextName: String = ""

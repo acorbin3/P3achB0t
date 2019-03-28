@@ -7,6 +7,8 @@ import mu.KotlinLogging
 
 abstract class RSClasses{
     var found: Boolean = false
+    var name: String = ""
+    var fields: Map<String,String> = mutableMapOf()// Key = field name, value is the obfuscated name
     lateinit var node: ClassNode
     protected val log: KLogger = KotlinLogging.logger { this.javaClass }
     abstract fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>)

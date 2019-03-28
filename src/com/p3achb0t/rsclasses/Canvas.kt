@@ -4,7 +4,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Canvas:RSClasses() {
-    var name: String = ""
     companion object {
         const val deobName = "Canvas"
     }
