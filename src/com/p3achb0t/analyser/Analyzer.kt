@@ -2,12 +2,8 @@ package com.p3achb0t.analyser
 
 import com.p3achb0t.rsclasses.*
 import jdk.internal.org.objectweb.asm.ClassReader
-import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import java.util.jar.JarFile
-import java.util.ArrayList
-import com.sun.beans.finder.ClassFinder
-
 
 
 class Analyser{
@@ -38,7 +34,7 @@ class Analyser{
         analyzers[Renderable.deobName] = Renderable()
         analyzers[Actor.deobName] = Actor()
         analyzers[Player.deobName] = Player()
-        analyzers[NPC.deobName] = NPC()
+        analyzers[Npc.deobName] = Npc()
         analyzers[AnimatedObject.deobName] = AnimatedObject()
 
 

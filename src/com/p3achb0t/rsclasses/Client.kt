@@ -1,6 +1,5 @@
 package com.p3achb0t.rsclasses
 
-import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Client:RSClasses() {
@@ -119,9 +118,9 @@ class Client:RSClasses() {
     }
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         if(node.name == "client"){
-            this.name = node.name
+            this.obsName = node.name
             this.found = true
-            println("Client: " + this.name)
+            println("Client: " + this.obsName)
         }
     }
 }

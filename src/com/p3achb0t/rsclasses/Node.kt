@@ -23,7 +23,7 @@ class Node:RSClasses() {
                 println("   Field ID: " + idField?.name)
                 println("   Field Next: " + nextField?.name)
                 println("   Field Previous: " + prevField?.name)
-                this.name = node.name
+                this.obsName = node.name
                 this.idName = idField?.name!!
                 this.nextName = nextField?.name!!
                 this.prevName = prevField?.name!!

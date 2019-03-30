@@ -6,9 +6,22 @@ import mu.KLogger
 import mu.KotlinLogging
 
 abstract class RSClasses{
+    class Field{
+        var fieldName: String = ""
+        var obsName: String = ""
+        var fieldTypeObsName: String = ""
+        var fieldTypeName: String = ""
+        var modifier: Long = 0
+        var classNode: ClassNode? = null
+
+        override fun toString(): String {
+            return "$fieldName -> ($fieldTypeObsName)$obsName Mod: $modifier"
+        }
+    }
     var found: Boolean = false
-    var name: String = ""
-    var fields: Map<String,String> = mutableMapOf()// Key = field name, value is the obfuscated name
+    var obsName: String = ""
+
+    var fields = mutableMapOf<String,Field>()// Key = obfuscated, value is the normalized obsName
     lateinit var node: ClassNode
     protected val log: KLogger = KotlinLogging.logger { this.javaClass }
     abstract fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>)

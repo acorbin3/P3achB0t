@@ -23,9 +23,9 @@ class AnimatedObject:RSClasses() {
         val isSuper = (node.access and Opcodes.ACC_SUPER) != 0
         val isFinal = (node.access and Opcodes.ACC_FINAL) != 0
         val intCount = node.fields.count { it.desc.contains("I") }
-        if(renderable.name == node.superName && intCount == 8 && isPublic && isSuper && !isFinal ){
+        if(renderable.obsName == node.superName && intCount == 8 && isPublic && isSuper && !isFinal ){
             println("AnimatiedObject: " + node.name)
-            this.name = node.name
+            this.obsName = node.name
             this.found = true
 
         }

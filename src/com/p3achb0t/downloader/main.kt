@@ -1,17 +1,10 @@
 package com.p3achb0t.downloader
 
-import com.p3achb0t.analyser.Analyser
-import java.applet.Applet
+import com.p3achb0t.analyser.DreamBotAnalyzer
 import java.applet.AppletContext
 import java.applet.AppletStub
-import java.awt.Dimension
-import java.io.File
 import java.net.URL
-import java.net.URLClassLoader
 import java.util.jar.JarFile
-import javax.swing.JFrame
-import javax.swing.JPanel
-import javax.swing.WindowConstants
 
 
 class RSLoader:AppletStub {
@@ -43,11 +36,16 @@ class RSLoader:AppletStub {
 fun main(args: Array<String>){
 
     val downloader = Downloader()
-//    val gamePackWithPath = downloader.getGamepack()
+////    val gamePackWithPath = downloader.getGamepack()
     val gamePackWithPath = downloader.getLocalGamepack()
-    val analyser = Analyser()
+//    val analyser = Analyser()
     val gamePackJar = JarFile(gamePackWithPath)
-    analyser.parseJar(gamePackJar)
+//    analyser.parseJar(gamePackJar)
+    val dream = DreamBotAnalyzer()
+    val filenamePath = dream.getDreamBotHooks()
+    dream.parseHooks()
+    dream.parseJar(gamePackJar)
+    dream.generateSuperGraph()
     // Getting parameters
     var params = Parameters(1)
     println("Starting Client")

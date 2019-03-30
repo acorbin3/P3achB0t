@@ -10,14 +10,14 @@ package com.p3achb0t.downloader
 //      TODO - Identify Animable
 //      TODO - Identify Entity
 //      TODO - Identify Mouse Event
-//      DONE 3/27/2019 - Identify NPC
+//      DONE 3/27/2019 - Identify Npc
 //      DONE 3/27/2019 - AnimatedObject
 
 //DONE 3/26/2019 Look for player(is an Actor)
 //DONE 3/26/2019 Look for Actor (is an Renderable)
 
 
-//TODO - Analyser
+//TODO - Analyser - Pospone
 //      TODO - Trim classes that are not used
 //      TODO - Remove fields that are not used
 //      TODO - Identify Classes
@@ -26,3 +26,6 @@ package com.p3achb0t.downloader
 
 //TODO - Client
 //  TODO - Hooks into jar to get info
+//  TODO - Add reflection into the client
+
+// DONE 3/30/2019 - Adding graph of class structure

@@ -1,6 +1,5 @@
 package com.p3achb0t.rsclasses
 
-import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class CacheNode:RSClasses() {
@@ -22,13 +21,13 @@ class CacheNode:RSClasses() {
                 println("   Did not identify next or previous")
 //                        val prevField = node.fields.find { it.access != Opcodes.ACC_PUBLIC }
 //                        val nextField = node.fields.find { it.access == Opcodes.ACC_PUBLIC }
-//                        println("   Field ID: " + idField?.name)
-//                        println("   Field Next: " + nextField?.name)
-//                        println("   Field Previous: " + prevField?.name)
-                this.name = node.name
+//                        println("   Field ID: " + idField?.obsName)
+//                        println("   Field Next: " + nextField?.obsName)
+//                        println("   Field Previous: " + prevField?.obsName)
+                this.obsName = node.name
                 this.idName = idField?.name!!
-//                this.nextName = nextField?.name!!
-//                this.prevName = prevField?.name!!
+//                this.nextName = nextField?.obsName!!
+//                this.prevName = prevField?.obsName!!
                 this.found = true
             }
         }

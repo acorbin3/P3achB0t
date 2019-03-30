@@ -31,9 +31,9 @@ class Actor:RSClasses() {
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         val renderable = rsClassesMap[Renderable.deobName] as Renderable
         val isAbstract = (node.access and Opcodes.ACC_ABSTRACT) != 0
-        if(renderable.name == node.superName && isAbstract){
+        if(renderable.obsName == node.superName && isAbstract){
             println("Actor: " + node.name)
-            this.name = node.name
+            this.obsName = node.name
             this.found = true
 
         }

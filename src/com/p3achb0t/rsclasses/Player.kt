@@ -1,6 +1,5 @@
 package com.p3achb0t.rsclasses
 
-import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 class Player:RSClasses() {
@@ -31,9 +30,9 @@ class Player:RSClasses() {
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         val actor = rsClassesMap[Actor.deobName] as Actor
 //        val isAbstract = (node.access and Opcodes.ACC_ABSTRACT) != 0
-        if(actor.name == node.superName && node.fields.size > 5){
+        if(actor.obsName == node.superName && node.fields.size > 5){
             println("Player: " + node.name)
-            this.name = node.name
+            this.obsName = node.name
             this.found = true
 //            println("   Number of Fields: " + node.fields.size)
 //
