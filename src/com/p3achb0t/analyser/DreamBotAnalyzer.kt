@@ -8,6 +8,8 @@ import java.io.FileOutputStream
 import java.net.URL
 import java.nio.channels.Channels
 import java.util.jar.JarFile
+import kotlin.collections.Iterable
+import kotlin.collections.set
 
 // TODO - Download file from http://cdn.dreambot.org/hooks.txt
 // TODO - Parse file to identify the classes
@@ -136,7 +138,7 @@ class DreamBotAnalyzer{
 
                 (analyzers[className] as RSClasses).obsName = obsName
                 classRefObs[obsName] = analyzers[className]!!
-                println("$className")
+                println(className)
             }
             //Field line: "Client.accountStatus cu ae -2093036075"
             else if(it.contains(currentClass)){
@@ -151,6 +153,7 @@ class DreamBotAnalyzer{
                     field.modifier = splitField[3].replace("L","").toLong()
                 analyzers[currentClass]?.fields?.set(field.fieldName, field)
                 classRefObs[analyzers[currentClass]?.obsName]?.fields?.set(field.obsName, field)
+                classRefObs[analyzers[currentClass]?.obsName]?.normalizedFields?.set(field.fieldName, field)
 //                println("   $field")
 
 
@@ -161,7 +164,6 @@ class DreamBotAnalyzer{
     fun parseJar(jar: JarFile){
         // We are going to look at the Jar and find the Class Nodes so can get more data
         val enumeration = jar.entries()
-        val classes = mutableMapOf<String, ClassNode>()
         while(enumeration.hasMoreElements()){
             val entry = enumeration.nextElement()
             if(entry.name.endsWith(".class")){

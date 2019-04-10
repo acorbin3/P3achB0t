@@ -25,7 +25,23 @@ package com.p3achb0t.downloader
 //      TODO - Check if new version out: https://gist.github.com/kylestev/6c666a312358e9fd0aa0
 
 //TODO - Client
-//  TODO - Hooks into jar to get info
-//  TODO - Add reflection into the client
+//  TODO - Create an explorer to view this data, maybe update every 1-10s, and refresh button
+//  TODO - Widget - Explorer
+
+//  TODO - Add in injection hooks
+
+
+//  DONE 3/31/2019 - Add reflection into the client
+//  DONE 4/9/2019 - Displaying some debug values of the varables in the client
+//  TODO - Display more variables than just the client
+
+//  DONE 4/4/2019 - Paint - write text
+//  TODO - Paint - Draw lines
+//  TODO - Paint - Draw images
+//  TODO - Paint - Highlight things within the client
+
+//  TODO - Interactions - menu
+//  TODO - Interactions - walking
+//  TODO - Interactions - widgets
 
 // DONE 3/30/2019 - Adding graph of class structure
