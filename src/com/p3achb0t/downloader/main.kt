@@ -4,7 +4,9 @@ import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.downloader.Main.Data.client
 import com.p3achb0t.downloader.Main.Data.dream
 import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.rsclasses.RSClasses
+import com.p3achb0t.rsclasses.HashTable
+import com.p3achb0t.rsclasses.LinkedList
+import com.p3achb0t.rsclasses.Node
 import java.applet.Applet
 import java.applet.AppletContext
 import java.applet.AppletStub
@@ -54,76 +56,137 @@ fun loopOverCanvasFields(g: Graphics) {
     val x = 50
     var y = 10
     val step = 12
-    val client = Main.client!!::class.java
-    val fieldList = dream?.analyzers?.get(Client::class.java.simpleName)?.fields
-    println("$$$$$$$$$ DeclaredFields$$$$$$$$$$")
-    for (reflectField in client.declaredFields) {
-        if (fieldList?.contains(reflectField.name)!!) {
-            reflectField.isAccessible = true
-            reflectField.type
 
-            val result: Any? = getFieldResult(reflectField, fieldList)
+    val clazz = Main.client!!::class.java
 
-            println(reflectField.type.name + " " + fieldList[reflectField.name]?.fieldName + " " + result)
-            parseArrayField(reflectField)
+    //TODO - PRint out
+//    Client.widgetBoundsX client oz
+//    Client.widgetBoundsY client ov
+//    Client.widgetHeights client oe
+//    Client.widgetModelCache iq i
+//    Client.widgetNodes client mo
+//    Client.widgetWidths client ob
+//    Client.widgets gx a
+    val widgetBoundXField = clazz.getDeclaredField(
+        dream?.analyzers?.get(
+            Client::class.java.simpleName
+        )?.normalizedFields?.get(
+            "widgetBoundsX"
+        )?.obsName
+    )
+    println("widgetBoundsX")
+    parseArrayField(clazz, widgetBoundXField, 0)
+    val widgetBoundYField = clazz.getDeclaredField(
+        dream?.analyzers?.get(
+            Client::class.java.simpleName
+        )?.normalizedFields?.get(
+            "widgetBoundsY"
+        )?.obsName
+    )
+    println("widgetBoundsY")
+    parseArrayField(clazz, widgetBoundYField, 0)
 
-        }
-    }
-    println("--------Fields--------")
-    for (reflectField in client.fields) {
-        if (fieldList?.contains(reflectField.name)!!) {
-            reflectField.isAccessible = true
-            reflectField.type
+    val widgetHeigthsField = clazz.getDeclaredField(
+        dream?.analyzers?.get(
+            Client::class.java.simpleName
+        )?.normalizedFields?.get(
+            "widgetHeights"
+        )?.obsName
+    )
+    println("widgetHeights")
+    parseArrayField(clazz, widgetHeigthsField, 0)
 
-            val result: Any? = getFieldResult(reflectField, fieldList)
+    val widgetWidthsField = clazz.getDeclaredField(
+        dream?.analyzers?.get(
+            Client::class.java.simpleName
+        )?.normalizedFields?.get(
+            "widgetWidths"
+        )?.obsName
+    )
+    println("widgetWidths")
+    parseArrayField(clazz, widgetWidthsField, 0)
 
-            println(reflectField.type.name + " " + fieldList[reflectField.name]?.fieldName + " " + result)
-            parseArrayField(reflectField)
+    val widgetNodesField = clazz.getDeclaredField(
+        dream?.analyzers?.get(
+            Client::class.java.simpleName
+        )?.normalizedFields?.get(
+            "widgetNodes"
+        )?.obsName
+    )
+    val sizeOfWidgetNodesField = widgetNodesField.type
+    printClazzFields(widgetNodesField.type, 0)
+//    parseArrayField(widgetNodesField.type.javaClass, widgetNodesField,0)
 
-        }
-    }
-    println("@@@@@@@@@@@@@@")
+//    val widgetModelCacheField = clazz.getDeclaredField(dream?.analyzers?.get(
+//        Client::class.java.simpleName)?.normalizedFields?.get(
+//        "widgetModelCache")?.obsName)
+//    parseArrayField(clazz, widgetModelCacheField,0)
+//    getFieldResult(clazz,widgetBoundXField)
 
-    dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.iterator()?.withIndex()
-        ?.forEach { (_, field) ->
-            try {
-                if (field.value.fieldTypeObsName.isNotEmpty()) {
-//                println(field.value.fieldTypeObsName + " -> " + field.value.fieldName + " " + field.value.modifier)
-                    val declaredField = client.getDeclaredField(field.value.obsName)
-                    declaredField.isAccessible = true
-                    var res: Any? = null
-                    if (field.value.modifier != 0L) {
-                        res = declaredField.getInt(Main.client) * field.value.modifier.toInt()
-                    } else {
-//                    res = declaredField.get(Main.client)
-                    }
-                    g.color = Color.GREEN
-                    g.drawString(field.value.fieldName + " " + res, x, y)
-                    y += step
-                }
-            } catch (e: Exception) {
+//    printClazzFields(clazz, 1)
 
-            }
-        }
-//    val currentWorldObs = Main.dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.obsName
-//    val modifer = Main.dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.modifier?.toInt()
-//    println(modifer)
+//    dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.iterator()?.withIndex()
+//        ?.forEach { (_, field) ->
+//            try {
+//                if (field.value.fieldTypeObsName.isNotEmpty()) {
+////                println(field.value.fieldTypeObsName + " -> " + field.value.fieldName + " " + field.value.modifier)
+//                    val declaredField = client.getDeclaredField(field.value.obsName)
+//                    declaredField.isAccessible = true
+//                    var res: Any? = null
+//                    if (field.value.modifier != 0L) {
+//                        res = declaredField.getInt(Main.client) * field.value.modifier.toInt()
+//                    } else {
+////                    res = declaredField.get(Main.client)
+//                    }
+//                    g.color = Color.GREEN
+//                    g.drawString(field.value.fieldName + " " + res, x, y)
+//                    y += step
+//                }
+//            } catch (e: Exception) {
 //
-//    Main.dream?.classRefObs?.get("client")?.fields?.get("currentWorld")?.obsName
-//    val worldField = Main.client!!::class.java.getDeclaredField(currentWorldObs)
-//    worldField.isAccessible = true
-//
-//    val worldNum = worldField.getInt(Main.client) * modifer!!
-//    println("currentWorld :$worldNum")
+//            }
+//        }
 }
 
-private fun parseArrayField(reflectField: Field) {
-    if (reflectField.type.isArray) {
-        println("Component type: " + reflectField.type.componentType.simpleName)
+private fun printClazzFields(clazz: Class<out Any>, level: Int) {
+    val fieldList = dream?.classRefObs?.get(clazz.simpleName)?.fields
+    val indent = "\t".repeat(level)
+    println("$indent$$$$$$$$$ DeclaredFields$$$$$$$$$$")
+    for (reflectField in clazz.declaredFields) {
+        if (fieldList?.contains(reflectField.name)!!) {
+            reflectField.isAccessible = true
+            print(indent + reflectField.type.simpleName + " " + fieldList[reflectField.name]?.fieldName)
+            var result: Any? = null
+            if (!reflectField.type.isArray) {
+                result = getFieldResult(client!!::class.java, reflectField, level)
+            }
+            println("\t" + result)
+            parseArrayField(clazz, reflectField, level)
 
-        val arrayLength = java.lang.reflect.Array.getLength(reflectField.get(client))
-        val arrayFields = reflectField.get(client)
-        var resultList = ""
+        }
+    }
+    println("$indent--------Fields--------")
+    for (reflectField in clazz.fields) {
+        if (fieldList?.contains(reflectField.name)!!) {
+            reflectField.isAccessible = true
+            val result: Any? = getFieldResult(clazz, reflectField, level)
+
+            println(indent + reflectField.type.name + " " + fieldList[reflectField.name]?.fieldName + " " + result)
+            parseArrayField(clazz, reflectField, level)
+
+        }
+    }
+    println("$indent@@@@@@@@@@@@@@")
+}
+
+private fun parseArrayField(clazz: Class<out Any>, reflectField: Field, level: Int) {
+    if (reflectField.type.isArray) {
+        val indent = "\t".repeat(level)
+        println("$indent\tComponent type: " + reflectField.type.componentType.simpleName)
+        reflectField.isAccessible = true
+        val arrayLength = java.lang.reflect.Array.getLength(reflectField.get(clazz))
+        val arrayFields = reflectField.get(clazz)
+        var resultList = "["
         if (arrayLength > 0) {
             for (i in 0..(arrayLength - 1)) {
                 if (reflectField.type.componentType.simpleName == "int") {
@@ -137,28 +200,68 @@ private fun parseArrayField(reflectField: Field) {
                 } else if (reflectField.type.componentType.simpleName == "boolean") {
                     resultList += (java.lang.reflect.Array.get(arrayFields, i) as Boolean).toString() + ", "
                 } else if (!reflectField.type.componentType.isArray) {
-                    var clazz = Main.classLoader?.loadClass(reflectField.type.componentType.simpleName)
                 }
 
             }
-            if (resultList.isNotEmpty())
-                println(resultList)
+            if (resultList.isNotEmpty()) {
+                println("$indent\t$resultList]")
+            }
         }
     }
 }
 
 private fun getFieldResult(
-    reflectField: Field,
-    fieldList: MutableMap<String, RSClasses.Field>
+    clazz: Class<out Any>,
+    reflectField: Field
 ): Any? {
+    val fieldList = dream?.classRefObs?.get(clazz.simpleName)?.fields
     var result: Any? = null
-    if (reflectField.type.name == "int") {
-        result = reflectField.getInt(client)
-        if (fieldList[reflectField.name]?.modifier != 0L) {
-            result *= fieldList[reflectField.name]?.modifier?.toInt()!!
+    if (reflectField.type.simpleName == "int") {
+        result = reflectField.getInt(clazz)
+        if (fieldList?.get(reflectField.name)?.modifier != 0L) {
+            result *= fieldList?.get(reflectField.name)?.modifier?.toInt()!!
         }
-    } else if (reflectField.type.name == " boolean") {
-        result = reflectField.getBoolean(client)
+    } else if (reflectField.type.simpleName == " boolean") {
+        result = reflectField.getBoolean(clazz)
+    } else if (reflectField.type.simpleName == " string") {
+        result = reflectField.get(clazz).toString()
+    }
+    return result
+}
+
+private fun getFieldResult(
+    clazz: Class<out Any>,
+    reflectField: Field,
+    level: Int
+): Any? {
+    val fieldList = dream?.classRefObs?.get(clazz.simpleName)?.fields
+    var result: Any? = null
+    val indent = "\t".repeat(level)
+    reflectField.isAccessible = true
+    if (reflectField.type.simpleName == "int") {
+        result = reflectField.getInt(clazz)
+        if (fieldList?.get(reflectField.name)?.modifier != 0L) {
+            result *= fieldList?.get(reflectField.name)?.modifier?.toInt()!!
+        }
+    } else if (reflectField.type.simpleName == " boolean") {
+        result = reflectField.getBoolean(clazz)
+    } else if (reflectField.type.simpleName == " string") {
+        result = reflectField.get(clazz).toString()
+    } else {
+        if (reflectField.type.simpleName != null) {
+            reflectField.isAccessible = true
+            println("$indent Different Class type " + reflectField.type.simpleName)
+            val superClazz = reflectField.type
+            // Dont dive into Node Classes
+            val list = listOf(
+                dream?.analyzers?.get(Node::class.java.simpleName)?.obsName,
+                dream?.analyzers?.get(LinkedList::class.java.simpleName)?.obsName,
+                dream?.analyzers?.get(HashTable::class.java.simpleName)?.obsName
+            )
+            if (!list.contains(superClazz.simpleName))
+                printClazzFields(clazz, level + 1)
+        }
+
     }
     return result
 }
@@ -173,7 +276,9 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
         val g = image.graphics
         g.color = Color.GREEN
 //        g.drawString("RS-HAcking $counter", 50,50)
-        loopOverCanvasFields(g)
+        if (counter % (30 * 50) == 0) {
+            loopOverCanvasFields(g)
+        }
         super.getGraphics().drawImage(image, 0, 0, null)
         counter += 1
 
