@@ -27,6 +27,10 @@ package com.p3achb0t.downloader
 //TODO - Client
 //  TODO - Create an explorer to view this data, maybe update every 1-10s, and refresh button
 //  TODO - Widget - Explorer
+//  DONE 4/13/2019 - Found and can access the widgets
+//  DONE 4/14/2019 - Create a java tree with widgets to print value
+//  TODO - get details on Widgets
+//  TODO - make boarders around widgets
 
 //  TODO - Add in injection hooks
 
