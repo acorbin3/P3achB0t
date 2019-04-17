@@ -223,7 +223,8 @@ private fun parseArrayField(
         val indent = "\t".repeat(level)
 
         reflectField.isAccessible = true
-        var arrayLength = java.lang.reflect.Array.getLength(reflectField.get(classObject))
+        val value = reflectField.get(classObject) ?: return
+        var arrayLength = java.lang.reflect.Array.getLength(value)
         val arrayFields = reflectField.get(classObject)
         var resultList = "["
         println("$indent\tComponent type: " + reflectField.type.componentType.simpleName + " Array size $arrayLength")
@@ -266,7 +267,7 @@ private fun parseArrayField(
     }
 }
 
-private fun getFieldResult(
+fun getFieldResult(
     clazz: Class<out Any>,
     reflectField: Field
 ): Any? {
@@ -285,7 +286,7 @@ private fun getFieldResult(
     return result
 }
 
-private fun getFieldResult(
+fun getFieldResult(
     clazz: Class<out Any>,
     classObject: Any,
     reflectField: Field,
@@ -296,11 +297,12 @@ private fun getFieldResult(
     val indent = "\t".repeat(level)
     reflectField.isAccessible = true
     if (reflectField.type.isPrimitive) {
-        result = reflectField.toString()
-        println("$indent res: $result")
+        println("$indent res: ${reflectField.get(classObject)}")
+        result = ""
     }
     if (reflectField.type.simpleName == "int") {
         var compute = reflectField.getInt(classObject)
+        println("$indent BeforeMOd: $compute")
         if (fieldList?.get(reflectField.name)?.modifier != null) {
             compute *= fieldList.get(reflectField.name)?.modifier?.toInt()!!
             result = compute.toString()
@@ -313,8 +315,11 @@ private fun getFieldResult(
             result = obj.toString()
     } else {
         //If its a type we dont have, skip it
-        if (!dream?.classRefObs?.contains(reflectField.type.simpleName)!!) {
+        if (reflectField.type.isArray) {
+            parseArrayField(clazz, classObject, reflectField, level)
+        } else if (!dream?.classRefObs?.contains(reflectField.type.simpleName)!!) {
             println("$indent didnt find ${reflectField.type.simpleName}")
+
             return result
         }
         val nextClassObject = reflectField.get(classObject)

@@ -29,7 +29,8 @@ package com.p3achb0t.downloader
 //  TODO - Widget - Explorer
 //  DONE 4/13/2019 - Found and can access the widgets
 //  DONE 4/14/2019 - Create a java tree with widgets to print value
-//  TODO - get details on Widgets
+//  DONE 4/17/2019 - get details on Widgets
+//  TODO - Why is the x and y duplicated , and one set seems values are incorrect
 //  TODO - make boarders around widgets
 
 //  TODO - Add in injection hooks

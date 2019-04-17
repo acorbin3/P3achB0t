@@ -1,7 +1,10 @@
 package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.downloader.Main
+import com.p3achb0t.downloader.getFieldResult
 import com.p3achb0t.rsclasses.Client
+import com.p3achb0t.rsclasses.Widget
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
@@ -21,7 +24,7 @@ class WidgetExplorer : View() {
                 }
             }
         }
-        left = vbox {
+        center = vbox {
             label("Parent Widgets")
             treeview<WidgetData> {
                 root = TreeItem(WidgetData("Widgets", "Widgets"))
@@ -35,13 +38,21 @@ class WidgetExplorer : View() {
                 onUserSelect {
                     val parentId = it.parentID.replace("Parent ", "")
                     println("(" + parentId + "," + it.childID + ")")
+                    val widgetDetailIndex = "$parentId,${it.childID}"
+                    println(controller.widgetDetails[widgetDetailIndex])
+                    controller.currentDetail.set(controller.widgetDetails[widgetDetailIndex])
+
                 }
 
             }
         }
         right = vbox {
             label("Details")
-            text("Details of widget")
+            text("Text").textProperty().bindBidirectional(controller.currentDetail)
+//            controller.currentDetail.addListener(ChangeListener { observable, oldValue, newValue ->
+//                text(newValue)
+//                println(newValue)
+//            })
         }
 
 
@@ -55,8 +66,10 @@ class WidgetController : Controller() {
     val parentWidgetList: ObservableList<WidgetData> = FXCollections.observableArrayList()
     var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,child)
     var parentList = emptyList<WidgetData>()
+    var currentDetail = SimpleStringProperty()
 
     fun getUpdatedWidgets() {
+
         allWidgets.clear()
         val widgetClassName = Main.dream?.analyzers?.get(
             Client::class.java.simpleName
@@ -69,16 +82,30 @@ class WidgetController : Controller() {
         val widgetField = widgetClazz?.getDeclaredField(widgetFieldName)
         widgetField?.isAccessible = true
         val widgetObj = widgetField?.get(null)
+        val widgetFieldHookData = Main.dream?.analyzers?.get(
+            Widget::class.java.simpleName
+        )?.fields
         if (widgetObj is Array<*>) {
             widgetObj.forEachIndexed { parentIndex, childArray ->
                 if (childArray is Array<*>) {
-                    childArray.forEachIndexed { index, childItem ->
-                        allWidgets.add(WidgetData("Parent $parentIndex", index.toString()))
+                    childArray.forEachIndexed { childIndex, childItem ->
+                        allWidgets.add(WidgetData("Parent $parentIndex", childIndex.toString()))
                         //TODO Get widget items
                         val v = childItem!!::class.java
+                        var result = ""
                         for (field in v.declaredFields) {
-                            println(field.name)
+                            if (widgetFieldHookData?.contains(field.name)!!) {
+                                println(field.name + " ->" + widgetFieldHookData[field.name])
+                                // Get data
+                                result += widgetFieldHookData[field.name]?.fieldName + " -> "
+                                result += getFieldResult(v, childItem, field, 0).toString() + " \n"
+
+
+                            }
                         }
+                        println("\t $result")
+                        val widgetDetailIndex = "$parentIndex,$childIndex"
+                        widgetDetails[widgetDetailIndex] = result
 
                     }
                 }
