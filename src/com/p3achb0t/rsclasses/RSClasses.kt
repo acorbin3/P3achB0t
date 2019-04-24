@@ -13,6 +13,8 @@ abstract class RSClasses{
         var fieldTypeName: String = ""
         var modifier: Long = 0
         var classNode: ClassNode? = null
+        var value = ""
+
 
         override fun toString(): String {
             return "$fieldName -> ($fieldTypeObsName)$obsName Mod: $modifier"
@@ -22,7 +24,7 @@ abstract class RSClasses{
     var obsName: String = ""
 
     var fields = mutableMapOf<String,Field>()// Key = obfuscated, value is the normalized obsName
-    var normalizedFields = mutableMapOf<String, Field>()// Key = normalized parentID, value is the obfuscated obsName
+    var normalizedFields = mutableMapOf<String, Field>()// Key = normalized parentId, value is the obfuscated obsName
     lateinit var node: ClassNode
     protected val log: KLogger = KotlinLogging.logger { this.javaClass }
     abstract fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>)

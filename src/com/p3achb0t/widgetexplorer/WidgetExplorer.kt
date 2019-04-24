@@ -1,9 +1,10 @@
 package com.p3achb0t.widgetexplorer
 
-import com.p3achb0t.downloader.Main
-import com.p3achb0t.downloader.getFieldResult
+import com.p3achb0t.Main
+import com.p3achb0t.reflectionutils.getWidgetData
 import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.rsclasses.Widget
+import com.p3achb0t.rsclasses.RSClasses
+import com.p3achb0t.rsclasses.WidgetIndex
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -26,8 +27,8 @@ class WidgetExplorer : View() {
         }
         center = vbox {
             label("Parent Widgets")
-            treeview<WidgetData> {
-                root = TreeItem(WidgetData("Widgets", "Widgets"))
+            treeview<WidgetIndex> {
+                root = TreeItem(WidgetIndex("Widgets", "Widgets"))
                 cellFormat { text = it.childID }
                 populate { parent ->
                     if (parent == root)
@@ -37,10 +38,19 @@ class WidgetExplorer : View() {
                 }
                 onUserSelect {
                     val parentId = it.parentID.replace("Parent ", "")
-                    println("(" + parentId + "," + it.childID + ")")
-                    val widgetDetailIndex = "$parentId,${it.childID}"
+                    val childID = it.childID.replace("Parent ", "")
+                    println("($parentId,$childID)")
+                    val widgetDetailIndex = "$parentId,$childID"
                     println(controller.widgetDetails[widgetDetailIndex])
-                    controller.currentDetail.set(controller.widgetDetails[widgetDetailIndex])
+                    val currentWidget = getWidgetData(it)
+                    //For the parent trees, there is no parent ID
+                    if (parentId != "") {
+                        Main.selectedWidget = currentWidget
+                    } else {
+                        Main.selectedWidget = null
+                    }
+
+                    controller.currentDetail.set(currentWidget.toString())
 
                 }
 
@@ -59,14 +69,15 @@ class WidgetExplorer : View() {
     }
 }
 
-data class WidgetData(var parentID: String, var childID: String)
-
 class WidgetController : Controller() {
-    var allWidgets: ObservableList<WidgetData> = FXCollections.observableArrayList()
-    val parentWidgetList: ObservableList<WidgetData> = FXCollections.observableArrayList()
+    var allWidgets: ObservableList<WidgetIndex> = FXCollections.observableArrayList()
+    val parentWidgetList: ObservableList<WidgetIndex> = FXCollections.observableArrayList()
     var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,child)
-    var parentList = emptyList<WidgetData>()
+    var parentList = emptyList<WidgetIndex>()
     var currentDetail = SimpleStringProperty()
+
+    var allWidgetFileHookData = mutableMapOf<String, MutableMap<String, RSClasses.Field>>()
+
 
     fun getUpdatedWidgets() {
 
@@ -82,30 +93,37 @@ class WidgetController : Controller() {
         val widgetField = widgetClazz?.getDeclaredField(widgetFieldName)
         widgetField?.isAccessible = true
         val widgetObj = widgetField?.get(null)
-        val widgetFieldHookData = Main.dream?.analyzers?.get(
-            Widget::class.java.simpleName
-        )?.fields
+
+        // Get all the widget indexes
         if (widgetObj is Array<*>) {
             widgetObj.forEachIndexed { parentIndex, childArray ->
                 if (childArray is Array<*>) {
                     childArray.forEachIndexed { childIndex, childItem ->
-                        allWidgets.add(WidgetData("Parent $parentIndex", childIndex.toString()))
+                        allWidgets.add(WidgetIndex("Parent $parentIndex", childIndex.toString()))
                         //TODO Get widget items
-                        val v = childItem!!::class.java
-                        var result = ""
-                        for (field in v.declaredFields) {
-                            if (widgetFieldHookData?.contains(field.name)!!) {
-                                println(field.name + " ->" + widgetFieldHookData[field.name])
-                                // Get data
-                                result += widgetFieldHookData[field.name]?.fieldName + " -> "
-                                result += getFieldResult(v, childItem, field, 0).toString() + " \n"
+//                        val v = childItem!!::class.java
+//                        var result = ""
+//                        val widgetDetailIndex = "$parentIndex,$childIndex"
+//                        val currentWidgetFieldHookData = Main.dream?.analyzers?.get(
+//                            Widget::class.java.simpleName)?.fields!!
+//                        val localWidgetData = mutableMapOf<String,RSClasses.Field>()
+//                        for (field in v.declaredFields) {
+//                            if (currentWidgetFieldHookData.contains(field.name)) {
+////                                println(field.name + " ->" + currentWidgetFieldHookData[field.name])
+//                                // Get data
+//                                result += currentWidgetFieldHookData[field.name]?.fieldName + " -> "
+//                                currentWidgetFieldHookData[field.name]?.value = getFieldResult(v, childItem, field, 0).toString()
+//                                result +=  currentWidgetFieldHookData[field.name]?.value + " \n"
+//                                localWidgetData[currentWidgetFieldHookData[field.name]!!.fieldName] = RSClasses.Field()
+//                                localWidgetData[currentWidgetFieldHookData[field.name]?.fieldName]?.value = currentWidgetFieldHookData[field.name]?.value.toString()
+//
+//
+//                            }
+//                        }
+//                        allWidgetFileHookData[widgetDetailIndex] = localWidgetData
+//                        println("\t $result")
 
-
-                            }
-                        }
-                        println("\t $result")
-                        val widgetDetailIndex = "$parentIndex,$childIndex"
-                        widgetDetails[widgetDetailIndex] = result
+//                        widgetDetails[widgetDetailIndex] = result
 
                     }
                 }
@@ -114,7 +132,7 @@ class WidgetController : Controller() {
         parentWidgetList.clear()
         parentList = allWidgets
             .map { it.parentID }
-            .distinct().map { WidgetData("", it) }
+            .distinct().map { WidgetIndex("", it) }
         for (item in parentList) {
             parentWidgetList.add(item)
         }

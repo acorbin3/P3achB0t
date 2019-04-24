@@ -154,9 +154,29 @@ class DreamBotAnalyzer{
                 analyzers[currentClass]?.fields?.set(field.fieldName, field)
                 classRefObs[analyzers[currentClass]?.obsName]?.fields?.set(field.obsName, field)
                 classRefObs[analyzers[currentClass]?.obsName]?.normalizedFields?.set(field.fieldName, field)
-//                println("   $field")
+                println("\t$field")
 
 
+
+            }
+        }
+    }
+
+    fun createAccessorFieldsForClass() {
+        for (field in analyzers[Widget::class.java.simpleName]?.normalizedFields!!) {
+            if (field.value.modifier > 0) {
+                println("var " + field.key + " = 0")
+            } else {
+                println("var " + field.key + " = \"\"")
+            }
+        }
+        println("-----------------")
+        for (field in analyzers[Widget::class.java.simpleName]?.normalizedFields!!) {
+            //x = fields["x"]?.value?.toInt() ?: -1
+            if (field.value.modifier > 0) {
+                println(field.key + " = fields[\"" + field.key + "\"]?.value?.toInt() ?: -1")
+            } else {
+                println(field.key + " = fields[\"" + field.key + "\"]?.value.toString()")
             }
         }
     }

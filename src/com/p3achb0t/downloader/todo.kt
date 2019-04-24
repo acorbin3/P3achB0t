@@ -24,14 +24,15 @@ package com.p3achb0t.downloader
 //      TODO - Handle modifiers
 //      TODO - Check if new version out: https://gist.github.com/kylestev/6c666a312358e9fd0aa0
 
-//TODO - Client
-//  TODO - Create an explorer to view this data, maybe update every 1-10s, and refresh button
-//  TODO - Widget - Explorer
+//  TODO - Client
+//  Done 4/24/2019 - Create an explorer to view this data, maybe update every 1-10s, and refresh button
+//  Done 4/24/2019 - Widget - Explorer
+//  Enhancement - Add search function
 //  DONE 4/13/2019 - Found and can access the widgets
 //  DONE 4/14/2019 - Create a java tree with widgets to print value
 //  DONE 4/17/2019 - get details on Widgets
-//  TODO - Why is the x and y duplicated , and one set seems values are incorrect
-//  TODO - make boarders around widgets
+//  OBE - Why is the x and y duplicated , and one set seems values are incorrect
+//  DONE 4/24/2019 - make boarders around widgets
 
 //  TODO - Add in injection hooks
 
