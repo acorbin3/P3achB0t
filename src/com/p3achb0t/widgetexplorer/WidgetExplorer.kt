@@ -15,6 +15,7 @@ class WidgetExplorer : View() {
     private val controller: WidgetController by inject()
 
     override val root = borderpane {
+
         top = vbox {
             label("Widget Explorer")
             button("Refresh") {

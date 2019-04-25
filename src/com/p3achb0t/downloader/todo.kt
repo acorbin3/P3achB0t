@@ -2,7 +2,7 @@ package com.p3achb0t.downloader
 
 //TODO - Only download new gamepacks if the client has updated
 
-//TODO - List of TODO's that we are trying to accomplish
+// - List of TODO's that we are trying to accomplish
 //      DONE 3/21/2019 - Install ASM lib
 //      DONE - See if we can identify the Node class
 //      DONE 3/21/2019 - Identified the Canvas class
@@ -12,7 +12,8 @@ package com.p3achb0t.downloader
 //      TODO - Identify Mouse Event
 //      DONE 3/27/2019 - Identify Npc
 //      DONE 3/27/2019 - AnimatedObject
-
+//      DONE 4/25/2019 - Figured out how to do mouse movements
+//      DONE 4/25/2019 - Figured out how to add paintlistners in any set of code
 //DONE 3/26/2019 Look for player(is an Actor)
 //DONE 3/26/2019 Look for Actor (is an Renderable)
 
@@ -45,6 +46,16 @@ package com.p3achb0t.downloader
 //  TODO - Paint - Draw lines
 //  TODO - Paint - Draw images
 //  TODO - Paint - Highlight things within the client
+
+//How to add custom paints in any class:
+
+//Main.customCanvas?.addPaintListener(object: PaintListener {
+//    override fun onPaint(g: Graphics) {
+//        g.color = Color.white
+//        g.drawString("HELLO WORLD", 50, 50)
+//    }
+//
+//})
 
 //  TODO - Interactions - menu
 //  TODO - Interactions - walking

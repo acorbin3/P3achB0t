@@ -1,20 +1,26 @@
 package com.p3achb0t
 
+import com.p3achb0t.Main.Data.customCanvas
+import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
+import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
 import com.p3achb0t.widgetexplorer.WidgetExplorer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import tornadofx.App
 import tornadofx.launch
 import java.applet.Applet
 import java.applet.AppletContext
 import java.applet.AppletStub
-import java.awt.Canvas
-import java.awt.Color
-import java.awt.Dimension
-import java.awt.Graphics
+import java.awt.*
+import java.awt.event.ActionListener
+import java.awt.event.MouseEvent
+import java.awt.event.MouseMotionListener
 import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
@@ -57,12 +63,20 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
     var counter = 0
 
     val image = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
+    @Transient
+    var paintListener: PaintListener? = null
 
+    fun addPaintListener(listener: ActionListener) {
+        this.paintListener = AWTEventMulticaster.add(this.paintListener, listener) as PaintListener
+    }
     override fun getGraphics(): Graphics {
         val g = image.graphics
         g.color = Color.GREEN
+
 //        g.drawString("RS-HAcking $counter", 50,50)
 //        g.drawRect(100,100,100,100)
+        paintListener?.onPaint(g)
+
 
         if (Main.selectedWidget != null) {
             if (Main.selectedWidget!!.type == "2") {
@@ -111,6 +125,8 @@ class Main(game: Applet) {
         var dream: DreamBotAnalyzer? = null
         var classLoader: ClassLoader? = null
         var selectedWidget: Widget? = null
+        var customCanvas: CustomCanvas? = null
+        var mouseEvent: MouseEvent? = null
     }
 }
 
@@ -203,22 +219,63 @@ fun main(args: Array<String>){
                 canvasField?.isAccessible = true
                 val oldCanvas = canvasField?.get(game) as Canvas // Needed to have Applet instead of null
                 game.remove(oldCanvas)
-                val customCanvas = CustomCanvas(oldCanvas.hashCode())
+                customCanvas = CustomCanvas(oldCanvas.hashCode())
                 for (ml in oldCanvas.mouseListeners) {
-                    customCanvas.addMouseListener(ml)
+                    customCanvas?.addMouseListener(ml)
                 }
                 for (ml in oldCanvas.mouseMotionListeners) {
-                    customCanvas.addMouseMotionListener(ml)
+
+                    customCanvas?.addMouseMotionListener(ml)
                 }
+                val mouseListener = object : MouseMotionListener {
+                    override fun mouseMoved(e: MouseEvent?) {
+                        mouseEvent = e
+
+                    }
+
+                    override fun mouseDragged(e: MouseEvent?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                }
+                customCanvas?.addPaintListener(object : PaintListener {
+                    override fun onPaint(g: Graphics) {
+                        g.color = Color.white
+                        g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
+                        mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                    }
+
+                })
+                customCanvas?.addMouseMotionListener(mouseListener)
                 for (kl in oldCanvas.keyListeners) {
-                    customCanvas.addKeyListener(kl)
+                    customCanvas?.addKeyListener(kl)
                 }
                 for (fl in oldCanvas.focusListeners) {
-                    customCanvas.addFocusListener(fl)
+                    customCanvas?.addFocusListener(fl)
                 }
                 canvasField.set(game, customCanvas) // Needed to have Applet instead of null
                 game.add(customCanvas)
                 loaded = true
+
+
+                var x = 0
+                var y = 0
+                GlobalScope.launch {
+                    repeat(1000) {
+                        x += 10
+                        if (x == 400) x = 0
+                        y += 5
+                        if (y == 400) y = 0
+
+                        val me = MouseEvent(
+                            customCanvas,
+                            MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
+                        )
+                        customCanvas?.dispatchEvent(me)
+                        delay(400)
+                    }
+                }
+
                 break
 
             } catch (e: Exception) {

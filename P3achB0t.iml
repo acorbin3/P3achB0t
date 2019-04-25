@@ -11,5 +11,6 @@
     <orderEntry type="library" name="org.ow2.asm:asm:7.0" level="project" />
     <orderEntry type="library" name="io.github.microutils:kotlin-logging:1.6.25" level="project" />
     <orderEntry type="library" name="no.tornado:tornadofx:1.7.17" level="project" />
+    <orderEntry type="library" name="org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.0" level="project" />
   </component>
 </module>
