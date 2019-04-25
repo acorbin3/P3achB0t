@@ -65,8 +65,15 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
 //        g.drawRect(100,100,100,100)
 
         if (Main.selectedWidget != null) {
-            val rect = Main.selectedWidget?.getDrawableRect()!!
-            g.drawRect(rect.x, rect.y, rect.width, rect.height)
+            if (Main.selectedWidget!!.type == "2") {
+                val retcs = Main.selectedWidget?.getItemsRects()
+                retcs?.iterator()?.forEach { rect ->
+                    g.drawRect(rect.x, rect.y, rect.width, rect.height)
+                }
+            } else {
+                val rect = Main.selectedWidget?.getDrawableRect()!!
+                g.drawRect(rect.x, rect.y, rect.width, rect.height)
+            }
         }
 
         super.getGraphics().drawImage(image, 0, 0, null)

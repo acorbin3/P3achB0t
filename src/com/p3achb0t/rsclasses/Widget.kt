@@ -75,11 +75,28 @@ class Widget : RSClasses {
         }
     }
 
+    fun getItemsRects(): MutableList<Rectangle> {
+        val items = mutableListOf<Rectangle>()
+        val columns = this.width
+        val rows = this.height
+        val baseX = getwidgetX() + x
+        val baseY = getwidgetY() + y
+
+        for (i in 0 until (columns * rows)) {
+            val row = i / columns
+            val col = i % columns
+            val _x = baseX + ((32 + 10) * col)
+            val _y = baseY + ((32 + 4) * row)
+            items.add(Rectangle(_x, _y, 32, 32))
+        }
+        return items
+    }
+
     fun getDrawableRect(): Rectangle {
         return Rectangle(getwidgetX(), getwidgetY(), width, height)
     }
 
-    fun getBoundInfo(): Rectangle {
+    private fun getBoundInfo(): Rectangle {
         if (boundsIndex >= 0) {
             val clazz = Main.client!!::class.java
             val widgetBoundXField = clazz.getDeclaredField(
