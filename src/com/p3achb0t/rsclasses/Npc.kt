@@ -2,8 +2,13 @@ package com.p3achb0t.rsclasses
 
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
-class Npc:RSClasses() {
-    var composite: String = ""
+class Npc : Actor {
+    var composite: NpcComposite? = null
+
+    constructor()
+    constructor(fields: MutableMap<String, Field?>) : super(fields) {
+        composite = NpcComposite(fields)
+    }
 
     companion object {
         const val deobName = "Npc"

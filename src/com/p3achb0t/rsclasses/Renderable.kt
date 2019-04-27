@@ -4,8 +4,13 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
 //data class Renderable(val obsName: String, val modelHeight: String)
-class Renderable:RSClasses() {
+open class Renderable : RSClasses {
     var modelHeight: String = ""
+
+    constructor()
+    constructor(fields: MutableMap<String, Field?>) : super() {
+        modelHeight = fields["modelHeight"]?.resultValue.toString()
+    }
     companion object {
         const val deobName = "RENDERABLE"
     }

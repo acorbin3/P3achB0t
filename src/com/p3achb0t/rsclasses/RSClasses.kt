@@ -4,27 +4,42 @@ import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import mu.KLogger
 import mu.KotlinLogging
+import java.io.Serializable
 
 abstract class RSClasses{
-    class Field{
+    data class Field(var resultValue: String = "") : Serializable {
         var fieldName: String = ""
         var obsName: String = ""
         var fieldTypeObsName: String = ""
         var fieldTypeName: String = ""
         var modifier: Long = 0
         var classNode: ClassNode? = null
-        var value = ""
-
+        var fields = mutableMapOf<String, Field?>()
+        var isArray = false
+        var arrayData: ArrayList<Field>? = ArrayList()
 
         override fun toString(): String {
-            return "$fieldName -> ($fieldTypeObsName)$obsName Mod: $modifier"
+            var res = ""
+            for (field in fields.toSortedMap()) {
+                if (!field.value?.isArray!!) {
+                    res += "\n\t" + field.key + "->>" + field.value?.resultValue
+                } else {
+                    res += "\n\t" + field.key + "->> ["
+                    for (item in field.value!!.arrayData!!) {
+                        res += item.resultValue + ","
+                    }
+                    res += "]"
+                }
+            }
+            return "$fieldName -> ($fieldTypeObsName)$obsName Mod: $modifier $res"
         }
     }
     var found: Boolean = false
     var obsName: String = ""
 
-    var fields = mutableMapOf<String,Field>()// Key = obfuscated, value is the normalized obsName
-    var normalizedFields = mutableMapOf<String, Field>()// Key = normalized parentId, value is the obfuscated obsName
+    var fields = mutableMapOf<String, Field>()// Key = obfuscated, resultValue is the normalized obsName
+    var normalizedFields =
+        mutableMapOf<String, Field>()// Key = normalized parentId, resultValue is the obfuscated obsName
     lateinit var node: ClassNode
     protected val log: KLogger = KotlinLogging.logger { this.javaClass }
     abstract fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>)

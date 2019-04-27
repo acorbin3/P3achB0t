@@ -1,5 +1,9 @@
-package com.p3achb0t.downloader
+package com.p3achb0t
 
+//Log
+// 4/26/2019 - Got mouse movement with mouse press, Got client state data, trying to loginto client, counlt get keypress to work yet
+// 4/27/2019 - Created a mouse movement utiltity that actually draws a line between points. Got Keypresses to work!
+// 5/05/2019  - Figure out I needed to get the super class declared fields to collect all the info on the NPC!
 //TODO - Only download new gamepacks if the client has updated
 
 // - List of TODO's that we are trying to accomplish
@@ -9,7 +13,7 @@ package com.p3achb0t.downloader
 //      DONE 3/27/2019 - Identify Client
 //      TODO - Identify Animable
 //      TODO - Identify Entity
-//      TODO - Identify Mouse Event
+//      DONE 4/27/2019 - Identify Mouse Event
 //      DONE 3/27/2019 - Identify Npc
 //      DONE 3/27/2019 - AnimatedObject
 //      DONE 4/25/2019 - Figured out how to do mouse movements
@@ -30,7 +34,7 @@ package com.p3achb0t.downloader
 //  Done 4/24/2019 - Widget - Explorer
 //  Enhancement - Add search function
 //  DONE 4/13/2019 - Found and can access the widgets
-//  DONE 4/14/2019 - Create a java tree with widgets to print value
+//  DONE 4/14/2019 - Create a java tree with widgets to print resultValue
 //  DONE 4/17/2019 - get details on Widgets
 //  OBE - Why is the x and y duplicated , and one set seems values are incorrect
 //  DONE 4/24/2019 - make boarders around widgets
@@ -40,11 +44,10 @@ package com.p3achb0t.downloader
 
 //  DONE 3/31/2019 - Add reflection into the client
 //  DONE 4/9/2019 - Displaying some debug values of the varables in the client
-//  TODO - Display more variables than just the client
 
 //  DONE 4/4/2019 - Paint - write text
-//  TODO - Paint - Draw lines
-//  TODO - Paint - Draw images
+//  Enhancement - Paint - Draw lines
+//  Enhancement - Paint - Draw images
 //  TODO - Paint - Highlight things within the client
 
 //How to add custom paints in any class:
@@ -56,6 +59,16 @@ package com.p3achb0t.downloader
 //    }
 //
 //})
+
+//  TODO - Identify - ground Items
+//  DONE 4/29/2019 - Identify - NPCs
+//  DONE 5/7/2019 - Identify - local players
+//  TODO - Be smarter when getting all the field names. Its possible there could be multiple id's between the different classes and they could get over written
+
+//  TODO - Identify - Tiles
+//  TODO - Paint - Ground Items
+//  TODO - Paint - Tiles
+//  TODO - Paint - NPCs
 
 //  TODO - Interactions - menu
 //  TODO - Interactions - walking

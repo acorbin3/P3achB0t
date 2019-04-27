@@ -162,8 +162,9 @@ class DreamBotAnalyzer{
         }
     }
 
-    fun createAccessorFieldsForClass() {
-        for (field in analyzers[Widget::class.java.simpleName]?.normalizedFields!!) {
+    fun createAccessorFieldsForClass(clazz: Class<*>) {
+        println("---${clazz.name}----")
+        for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
             if (field.value.modifier > 0) {
                 println("var " + field.key + " = 0")
             } else {
@@ -171,14 +172,20 @@ class DreamBotAnalyzer{
             }
         }
         println("-----------------")
-        for (field in analyzers[Widget::class.java.simpleName]?.normalizedFields!!) {
-            //x = fields["x"]?.value?.toInt() ?: -1
+        println(
+            "constructor()\n" +
+                    "constructor(fields: MutableMap<String, Field?>) : super() {"
+        )
+        for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
+            //x = fields["x"]?.resultValue?.toInt() ?: -1
             if (field.value.modifier > 0) {
-                println(field.key + " = fields[\"" + field.key + "\"]?.value?.toInt() ?: -1")
+                println("\t" + field.key + " = fields[\"" + field.key + "\"]?.resultValue?.toInt() ?: -1")
             } else {
-                println(field.key + " = fields[\"" + field.key + "\"]?.value.toString()")
+                println("\t" + field.key + " = fields[\"" + field.key + "\"]?.resultValue.toString()")
             }
         }
+        println("}")
+        println("\n")
     }
 
     fun parseJar(jar: JarFile){

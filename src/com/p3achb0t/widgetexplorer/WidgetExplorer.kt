@@ -113,10 +113,10 @@ class WidgetController : Controller() {
 ////                                println(field.name + " ->" + currentWidgetFieldHookData[field.name])
 //                                // Get data
 //                                result += currentWidgetFieldHookData[field.name]?.fieldName + " -> "
-//                                currentWidgetFieldHookData[field.name]?.value = getFieldResult(v, childItem, field, 0).toString()
-//                                result +=  currentWidgetFieldHookData[field.name]?.value + " \n"
+//                                currentWidgetFieldHookData[field.name]?.resultValue = getFieldResult(v, childItem, field, 0).toString()
+//                                result +=  currentWidgetFieldHookData[field.name]?.resultValue + " \n"
 //                                localWidgetData[currentWidgetFieldHookData[field.name]!!.fieldName] = RSClasses.Field()
-//                                localWidgetData[currentWidgetFieldHookData[field.name]?.fieldName]?.value = currentWidgetFieldHookData[field.name]?.value.toString()
+//                                localWidgetData[currentWidgetFieldHookData[field.name]?.fieldName]?.resultValue = currentWidgetFieldHookData[field.name]?.resultValue.toString()
 //
 //
 //                            }

@@ -1,0 +1,630 @@
+@AbstractProducer identified as: eo
+#Refactored 0 of 0 fields!
+
+@Actor identified as: bq
+Actor.animation bq bn -319378323
+Actor.animationDelay bq bw 397052649
+Actor.combatTime bq bi -1157261129
+Actor.frameOne bq bl 1278509105
+Actor.frameTwo bq bk 1407567875
+Actor.healthBars bq bz
+Actor.hitCycles bq bo
+Actor.hitDamages bq bf
+Actor.hitTypes bq am
+Actor.interacting bq bi -1157261129
+Actor.localX bq aa -1234429701
+Actor.localY bq ab 1597666721
+Actor.message bq al
+Actor.orientation bq cy 626883897
+Actor.queueSize bq ct -1560785533
+Actor.queueTraversed bq cd
+Actor.queueX bq cb
+Actor.queueY bq cp
+Actor.runtimeAnimation bq bg -153239745
+Actor.standAnimation bq ae -121701009
+#Refactored 20 of 20 fields!
+
+@AnimatedObject identified as: co
+AnimatedObject.animationDelay co q 1071500809
+AnimatedObject.animationFrame co m -267134163
+AnimatedObject.clickType co s 1671892841
+AnimatedObject.id co a -1934319317
+AnimatedObject.orientation co g 1318398919
+AnimatedObject.plane co x -1836194755
+AnimatedObject.sequence co p
+AnimatedObject.x co h -1957562685
+AnimatedObject.y co f 99477863
+#Refactored 9 of 9 fields!
+
+@Associate identified as: kl
+Associate.world kl h 2063532353
+#Refactored 1 of 1 fields!
+
+@BoundaryObject identified as: ep
+BoundaryObject.backUpOrientation ep h -346291033
+BoundaryObject.backUpRenderable ep p
+BoundaryObject.flags ep q 1561916487
+BoundaryObject.id ep m 6449850688779105297L
+BoundaryObject.orientation ep x 1799011399
+BoundaryObject.plane ep a -940943055
+BoundaryObject.renderable ep f
+BoundaryObject.x ep s 794221253
+BoundaryObject.y ep g -1427779503
+#Refactored 9 of 9 fields!
+
+@Cache identified as: gp
+Cache.cacheNode gp a
+Cache.hashTable gp x
+Cache.queue gp h
+Cache.remaining gp s
+Cache.size gp g
+#Refactored 5 of 5 fields!
+
+@CacheNode identified as: ho
+CacheNode.next ho cv
+CacheNode.previous ho cw
+#Refactored 2 of 2 fields!
+
+@Canvas identified as: ad
+Canvas.component ad a
+#Refactored 1 of 1 fields!
+
+@ClanMember identified as: km
+ClanMember.rank kl p 1644405117
+#Refactored 1 of 1 fields!
+
+@ClanMemberHandler identified as: ky
+ClanMemberHandler.clanName ky b
+ClanMemberHandler.clanOwner ky n
+#Refactored 2 of 2 fields!
+
+@ClassData identified as: ly
+ClassData.byteArray ly m
+ClassData.fields ly h
+ClassData.methods ly p
+#Refactored 3 of 3 fields!
+
+@Client identified as: client
+Client.accountStatus cc aq -1014786149
+Client.baseX e fc 115658669
+Client.baseY h fs 10887811
+Client.cameraPitch gn hg -355288643
+Client.cameraX ar hh 1471454883
+Client.cameraY kw he 1857263827
+Client.cameraYaw bp hq 806214979
+Client.cameraZ ak hr 1843719487
+Client.canvas bf aw
+Client.clanMembersHandler ai pt
+Client.clickModifier bo t -1
+Client.collisionMaps client w
+Client.crosshairColor client jl -578763473
+Client.currentWorld client bf -1631337851
+Client.destinationX client pb 457912863
+Client.destinationY client pv -215982147
+Client.experience client kf
+Client.fps broken
+Client.gameCycle client ct -523356653
+Client.gameSettings hs g
+Client.gameSocket broken
+Client.gameState client bw -239871291
+Client.grandExchangeItems client sj
+Client.groundItemList client ky
+Client.groundItemModelCache jc n
+Client.hintArrowNPCIndex broken
+Client.hintArrowPlayerIndex broken
+Client.hintArrowType broken
+Client.hintArrowX broken
+Client.hintArrowY broken
+Client.hintArrowZ broken
+Client.host o es
+Client.idleTime bo f -1
+Client.isSpellSelected client lc
+Client.isWorldSelectorOpen cc by
+Client.itemTable bv a
+Client.keyboard az a
+Client.lastAction bo u -7279086590004943531L
+Client.lastActionDifference gj s -9006316027097542279L
+Client.lastActionDifferenceMod gj s -5889370299328034615L
+Client.lastActionTime gj a 1670260844569960435L
+Client.lastActionTimeMod gj a 7654244307267391803L
+Client.lastButtonClick bo p 292293027
+Client.lastButtonClickModA bo p -1600629007
+Client.lastButtonClickModM bo p -1
+Client.lastClickModifier bo t 594139665
+Client.lastClickModifierModA bo t -1
+Client.lastClickModifierModM bo t -1
+Client.lastClickX bo l 2072858359
+Client.lastClickY bo o 938067611
+Client.level client ki
+Client.localNPCs client ec
+Client.localPlayer w jk
+Client.loginState cc ax 78635069
+Client.lowestAvailableCameraPitch client iu 1539043517
+Client.mapAngle client hw -1843309621
+Client.menuActions client lg
+Client.menuCount client ln 1576326627
+Client.menuHeight eg kh 1803129185
+Client.menuOpcodes client lo
+Client.menuOptions client lh
+Client.menuShiftClick client la
+Client.menuVariable client lk
+Client.menuVisible client kk
+Client.menuWidth ip kv -1212826191
+Client.menuX ah kp 685372481
+Client.menuXInteractions client lt
+Client.menuY q kb 1598381831
+Client.menuYInteractions client lf
+Client.message0 cc ak
+Client.message1 cc am
+Client.message2 cc bf
+Client.messageContainer cf a
+Client.mouse bo h
+Client.npcCompositeCache jg g
+Client.npcModelCache jg x
+Client.objectCompositeCache jy x
+Client.objectModelCache jy p
+Client.password cc be
+Client.plane fc js -1552569051
+Client.playerIndex client jj -1
+Client.playerModelCache il e
+Client.players client jm
+Client.projectiles client kw
+Client.realLevel client kt
+Client.region h go
+Client.selectedItemID dn iz 412126871
+Client.selectedItemIndex bb ll 1274406465
+Client.selectedItemName client it
+Client.selectedSpellName client md
+Client.selectionState client lq 217766879
+Client.settings hs g
+Client.settingsObject h sq
+Client.socialHandler ar rt
+Client.socketWrapper client fo
+Client.tileHeights bd a
+Client.tileSettings bd s
+Client.username cc bo
+Client.varps broken
+Client.widgetBoundsX client oh
+Client.widgetBoundsY client ot
+Client.widgetHeights client oa
+Client.widgetModelCache ia r
+Client.widgetNodes client mh
+Client.widgetWidths client or
+Client.widgets ia f
+Client.worlds lj h
+Client.zoom broken
+Client.zoomExact client rn -1083000669
+#Refactored 98 of 109 fields!
+
+@CollisionMap identified as: fk
+CollisionMap.flags fk au
+CollisionMap.height fk av -106970989
+CollisionMap.offsetX fk an -1710257743
+CollisionMap.offsetY fk at -882717619
+CollisionMap.width fk ae 336385347
+#Refactored 5 of 5 fields!
+
+@CullingCluster identified as: es
+#Refactored 0 of 0 fields!
+
+@Facade identified as: cj
+#Refactored 0 of 0 fields!
+
+@FileAccessor identified as: da
+FileAccessor.accessor da a
+FileAccessor.position da g -5295173370809275737L
+#Refactored 2 of 2 fields!
+
+@FileBuffer identified as: dx
+FileBuffer.accessor dx a
+#Refactored 1 of 1 fields!
+
+@FloorObject identified as: dw
+FloorObject.id dw h -7746942760389518379L
+FloorObject.plane dw a 64699151
+FloorObject.renderable dw x
+FloorObject.x dw s 1267567225
+FloorObject.y dw g 1290086305
+#Refactored 5 of 5 fields!
+
+@Friend identified as: ks
+#Refactored 0 of 0 fields!
+
+@FriendHandler identified as: kr
+#Refactored 0 of 0 fields!
+
+@GameObject identified as: er
+GameObject.flags er t 1401209023
+GameObject.height er s -1690232561
+GameObject.id er r 4048635491163491633L
+GameObject.offsetX er m 84457517
+GameObject.offsetY er b 1327459531
+GameObject.orientation er f 647360359
+GameObject.plane er a 930687481
+GameObject.relativeX er q 677592277
+GameObject.relativeY er p -798171635
+GameObject.renderable er h
+GameObject.x er g 369246091
+GameObject.y er x -903852657
+#Refactored 12 of 12 fields!
+
+@GameShell identified as: bf
+GameShell.crashed bf p
+#Refactored 1 of 1 fields!
+
+@GEOThing identified as: m
+#Refactored 0 of 0 fields!
+
+@GM identified as: kt
+#Refactored 0 of 0 fields!
+
+@GrandExchangeItem identified as: b
+GrandExchangeItem.amount b x 767275651
+GrandExchangeItem.byte b a
+GrandExchangeItem.id b s -639745279
+GrandExchangeItem.price b g 880192857
+GrandExchangeItem.transferredAmount b h 2001614177
+GrandExchangeItem.transferredValue b f -868595835
+#Refactored 6 of 6 fields!
+
+@GraphicsProducer identified as: am
+GraphicsProducer.component am a
+#Refactored 1 of 1 fields!
+
+@GS identified as: kf
+#Refactored 0 of 0 fields!
+
+@HashTable identified as: ht
+HashTable.buckets ht s
+HashTable.current ht x
+HashTable.head ht g
+HashTable.index ht h
+HashTable.size ht a
+#Refactored 5 of 5 fields!
+
+@HealthBar identified as: bm
+HealthBar.composite bm g
+HealthBar.data bm x
+#Refactored 2 of 2 fields!
+
+@HealthBarComposite identified as: jp
+HealthBarComposite.maxHealth jp l -837920445
+#Refactored 1 of 1 fields!
+
+@HealthBarData identified as: by
+HealthBarData.currentHealth by s -1554469757
+#Refactored 1 of 1 fields!
+
+@HuffmanEncoding identified as: fy
+#Refactored 0 of 0 fields!
+
+@ImageRGB identified as: ld
+#Refactored 0 of 0 fields!
+
+@IsaacCipher identified as: gb
+#Refactored 0 of 0 fields!
+
+@Item identified as: cb
+Item.id cb a 1683486297
+Item.stackSize cb s 729993939
+#Refactored 2 of 2 fields!
+
+@ItemComposite identified as: jc
+ItemComposite.groundActions jc aa
+ItemComposite.id jc t 1567373911
+ItemComposite.member jc ay
+ItemComposite.name jc o
+ItemComposite.widgetActions jc ab
+#Refactored 5 of 5 fields!
+
+@ItemLayer identified as: dy
+ItemLayer.bottom dy x
+ItemLayer.flag dy s 1126674869
+ItemLayer.height dy m -683834749
+ItemLayer.middle dy h
+ItemLayer.plane dy a -1922326197
+ItemLayer.top dy f
+ItemLayer.x dy s 1126674869
+ItemLayer.y dy g -571565015
+#Refactored 8 of 8 fields!
+
+@ItemNode identified as: bv
+ItemNode.ids bv s
+ItemNode.stackSizes bv g
+#Refactored 2 of 2 fields!
+
+@Iterable identified as: hj
+Iterable.node hj a
+#Refactored 1 of 1 fields!
+
+@Keyboard identified as: az
+#Refactored 0 of 0 fields!
+
+@LinkedList identified as: hv
+LinkedList.current hv s
+LinkedList.tail hv a
+#Refactored 2 of 2 fields!
+
+@LoginNode identified as: hn
+#Refactored 0 of 0 fields!
+
+@MessageChannel identified as: cr
+MessageChannel.messageIndex cr g 1313704483
+MessageChannel.messages cr s
+#Refactored 2 of 2 fields!
+
+@MessageNode identified as: bl
+MessageNode.clan bl m
+MessageNode.nameComposite bl h
+MessageNode.sender bl x
+MessageNode.text bl q
+MessageNode.time bl s -304319161
+MessageNode.type bl g 1927995217
+#Refactored 1 of 6 fields!
+
+@Model identified as: dv
+Model.indicesLength dv h
+Model.indicesX dv b
+Model.indicesY dv n
+Model.indicesZ dv e
+Model.onCursorUIDs di l
+Model.uidCount di t 2116439793
+Model.vectorSkin dv j
+Model.verticesLength dv q
+Model.verticesX dv f
+Model.verticesY dv p
+Model.verticesZ dv m
+#Refactored 5 of 11 fields!
+
+@Mouse identified as: bo
+#Refactored 0 of 0 fields!
+
+@MouseTracker identified as: bn
+MouseTracker.length bn g -1127531481
+MouseTracker.lock bn s
+MouseTracker.tracking bn a
+MouseTracker.xCoordinates broken
+MouseTracker.yCoordinates broken
+#Refactored 3 of 5 fields!
+
+@NameComposite identified as: kx
+NameComposite.formatted kx s
+NameComposite.name kx a
+#Refactored 2 of 2 fields!
+
+@NameProvider identified as: kn
+NameProvider.name kn g
+NameProvider.previousName kn x
+#Refactored 2 of 2 fields!
+
+@NameProviderHandler identified as: kd
+NameProviderHandler.nameProviders kd f
+NameProviderHandler.size kd h -525617491
+#Refactored 2 of 2 fields!
+
+@Node identified as: hy
+Node.id hy co
+Node.next hy cr
+Node.previous hy ck
+#Refactored 3 of 3 fields!
+
+@Npc identified as: cm
+Npc.composite cm a
+#Refactored 1 of 1 fields!
+
+@NpcComposite identified as: jg
+NpcComposite.actions jg d
+NpcComposite.id jg h 784635241
+NpcComposite.name jg f
+#Refactored 3 of 3 fields!
+
+@ObjectComposite identified as: jy
+ObjectComposite.actions jy ay
+ObjectComposite.name jy e
+#Refactored 2 of 2 fields!
+
+@Packet identified as: ge
+Packet.cipher ge q
+#Refactored 1 of 1 fields!
+
+@Player identified as: bw
+Player.composite bw s
+Player.hidden bw w
+Player.level bw p 130093369
+Player.model bw l
+Player.name bw a
+Player.overheadIcon bw x 841091679
+Player.skullIcon bw g -225579375
+Player.standingStill bw v
+Player.team bw d 1580341907
+#Refactored 9 of 9 fields!
+
+@PlayerComposite identified as: il
+PlayerComposite.animatedModelID il h -2050415532807345505L
+PlayerComposite.appearance il a
+PlayerComposite.bodyColors il s
+PlayerComposite.female il g
+PlayerComposite.npcID il x 1192982463
+PlayerComposite.staticModelID il f -5550629652888001711L
+#Refactored 6 of 6 fields!
+
+@Projectile identified as: ct
+Projectile.endCycle ct m 506418453
+Projectile.floorLevel ct s 1964390021
+Projectile.height ct h -2091027413
+Projectile.heightOffset ct v
+Projectile.id ct a 595928693
+Projectile.moving ct e
+Projectile.originX ct g 1259021119
+Projectile.originY ct x -142241487
+Projectile.rotationX ct d -412451625
+Projectile.rotationY ct w -77331817
+Projectile.sequence ct i
+Projectile.slope ct q 2028992299
+Projectile.speedX ct o
+Projectile.speedY ct u
+Projectile.speedZ ct k
+Projectile.startCycle ct p -1432275439
+Projectile.targetDistance ct b 1443812039
+Projectile.targetIndex ct n -1655053057
+Projectile.unknown1 ct c
+Projectile.unknown2 ct j
+Projectile.unknown3 ct f -204280907
+Projectile.x ct r
+Projectile.y ct t
+#Refactored 23 of 23 fields!
+
+@Queue identified as: gd
+Queue.cacheNode gd a
+#Refactored 1 of 1 fields!
+
+@Rasterizer2D identified as: lb
+#Refactored 0 of 0 fields!
+
+@Rasterizer3D identified as: df
+#Refactored 0 of 0 fields!
+
+@ReferenceTable identified as: iz
+#Refactored 0 of 0 fields!
+
+@Region identified as: en
+Region.focusedX en ae
+Region.focusedY en av
+Region.gameObjects en q
+Region.rightClickWalk en au
+Region.tiles en f
+Region.visibilityTilesMap en bv
+Region.visibleTiles en bg
+#Refactored 7 of 7 fields!
+
+@Renderable identified as: em
+Renderable.modelHeight em cs -460629523
+#Refactored 1 of 1 fields!
+
+@RuneScript identified as: cs
+#Refactored 0 of 0 fields!
+
+@RuneScriptReference identified as: bz
+RuneScriptReference.eventStepValue bz s -1508273535
+RuneScriptReference.localIntegers bz g
+RuneScriptReference.localStrings bz x
+RuneScriptReference.scriptDef bz a
+#Refactored 4 of 4 fields!
+
+@ScriptEvent identified as: br
+#Refactored 0 of 0 fields!
+
+@Sequence identified as: ju
+#Refactored 0 of 0 fields!
+
+@SettingsClass identified as: bt
+SettingsClass.hideUsername bt p
+SettingsClass.loginMusicEnabled broken
+SettingsClass.resizableMode bt h -668421335
+SettingsClass.roofsEnabled bt g
+SettingsClass.savedUsername bt f
+#Refactored 4 of 5 fields!
+
+@SocialHandler identified as: bc
+SocialHandler.friendHandler bc h
+#Refactored 1 of 1 fields!
+
+@Socket identified as: fd
+Socket.buffer broken
+Socket.inputStream broken
+Socket.outputStream broken
+Socket.socket fd a
+#Refactored 1 of 4 fields!
+
+@SocketWrapper identified as: ck
+SocketWrapper.socket ck a
+#Refactored 1 of 1 fields!
+
+@SomeNode identified as: do
+#Refactored 0 of 0 fields!
+
+@Stream identified as: gx
+Stream.offset gx s -1555038209
+Stream.payload gx a
+#Refactored 2 of 2 fields!
+
+@StringConstants identified as: it
+#Refactored 0 of 0 fields!
+
+@Tile identified as: de
+Tile.boundary de p
+Tile.floor de q
+Tile.itemLayer de b
+Tile.objects de e
+Tile.plane de a 1819906267
+Tile.wall de m
+Tile.x de s 1458265213
+Tile.y de g -270087367
+#Refactored 8 of 8 fields!
+
+@VarpBit identified as: jt
+VarpBit.index jt g -2032962997
+VarpBit.leastSig jt x 111370627
+VarpBit.mostSig jt h -1702644217
+#Refactored 3 of 3 fields!
+
+@WallObject identified as: ef
+WallObject.backUpRenderable ef q
+WallObject.flags ef n -1941711703
+WallObject.id ef b -7300530763844858277L
+WallObject.orientation ef h 1554727321
+WallObject.plane ef a -103719315
+WallObject.relativeX ef f -1246331161
+WallObject.relativeY ef p 399558767
+WallObject.renderable ef m
+WallObject.x ef s 1049239705
+WallObject.y ef g 465213843
+#Refactored 10 of 10 fields!
+
+@Widget identified as: ia
+Widget.actionType ia d -986355207
+Widget.actions ia dz
+Widget.borderThickness ia bz 583207351
+Widget.boundsIndex ia fo 1945546151
+Widget.childTextureId ia bo -159703791
+Widget.children ia ec
+Widget.componentIndex ia k 519422761
+Widget.disabledMediaId ia bg 1805175817
+Widget.disabledMediaType ia bk -286899879
+Widget.dynamicValue ia ex
+Widget.enabledMediaId ia bn -1240377769
+Widget.enabledMediaType ia br 648741915
+Widget.height ia an -1657907411
+Widget.hidden ia au
+Widget.id ia y 521895283
+Widget.itemId ia el 517430305
+Widget.itemStackSize ia eq 384592949
+Widget.loopCycle ia fm 413573757
+Widget.name ia cl
+Widget.parent ia ds
+Widget.parentId ia av -282758011
+Widget.scrollMax ia ai 1584805923
+Widget.scrollX ia aj 1841640021
+Widget.scrollY ia as 1345120769
+Widget.selectedAction ia dn
+Widget.shadowColor ia bi -1826249299
+Widget.slotIds ia ey
+Widget.slotStackSizes ia ee
+Widget.spell ia ea
+Widget.spriteId ia bo -159703791
+Widget.text ia cm
+Widget.textColor ia aq -1339085337
+Widget.textureId ia bf -803778329
+Widget.tooltip ia ed
+Widget.type ia v 2135617197
+Widget.width ia aw -670001097
+Widget.x ia ab -1653418885
+Widget.y ia ah -659621809
+#Refactored 37 of 38 fields!
+
+@WidgetNode identified as: bk
+WidgetNode.id bk a -912519809
+#Refactored 1 of 1 fields!
+
+@World identified as: bu
+#Refactored 0 of 0 fields!

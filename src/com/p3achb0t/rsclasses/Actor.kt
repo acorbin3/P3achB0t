@@ -3,7 +3,7 @@ package com.p3achb0t.rsclasses
 import jdk.internal.org.objectweb.asm.Opcodes
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
-class Actor:RSClasses() {
+open class Actor : Renderable {
 
 //    Actor.animation bw bo 398323101
 //    Actor.animationDelay bw bs 1989447085
@@ -25,8 +25,52 @@ class Actor:RSClasses() {
 //    Actor.queueY bw ce
 //    Actor.runtimeAnimation bw bv 508548421
 //    Actor.standAnimation bw ah -1436317107
+var animation = ""
+    var animationDelay = 0
+    var combatTime = ""
+    var frameOne = 0
+    var frameTwo = 0
+    var healthBars = ""
+    var hitCycles = ""
+    var hitDamages = ""
+    var hitTypes = ""
+    var interacting = ""
+    var localX = 0
+    var localY = 0
+    var message = ""
+    var orientation = 0
+    var queueSize = ""
+    var queueTraversed = ""
+    var queueX = ""
+    var queueY = ""
+    var runtimeAnimation = ""
+    var standAnimation = ""
     companion object {
         const val deobName = "ACTOR"
+    }
+
+    constructor()
+    constructor(fields: MutableMap<String, Field?>) : super(fields) {
+        animation = fields["animation"]?.resultValue.toString()
+        animationDelay = fields["animationDelay"]?.resultValue?.toInt() ?: -1
+        combatTime = fields["combatTime"]?.resultValue.toString()
+        frameOne = fields["frameOne"]?.resultValue?.toInt() ?: -1
+        frameTwo = fields["frameTwo"]?.resultValue?.toInt() ?: -1
+        healthBars = fields["healthBars"]?.resultValue.toString()
+        hitCycles = fields["hitCycles"]?.resultValue.toString()
+        hitDamages = fields["hitDamages"]?.resultValue.toString()
+        hitTypes = fields["hitTypes"]?.resultValue.toString()
+        interacting = fields["interacting"]?.resultValue.toString()
+        localX = fields["localX"]?.resultValue?.toInt() ?: -1
+        localY = fields["localY"]?.resultValue?.toInt() ?: -1
+        message = fields["message"]?.resultValue.toString()
+        orientation = fields["orientation"]?.resultValue?.toInt() ?: -1
+        queueSize = fields["queueSize"]?.resultValue.toString()
+        queueTraversed = fields["queueTraversed"]?.resultValue.toString()
+        queueX = fields["queueX"]?.resultValue.toString()
+        queueY = fields["queueY"]?.resultValue.toString()
+        runtimeAnimation = fields["runtimeAnimation"]?.resultValue.toString()
+        standAnimation = fields["standAnimation"]?.resultValue.toString()
     }
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         val renderable = rsClassesMap[Renderable.deobName] as Renderable

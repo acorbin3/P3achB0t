@@ -1,13 +1,19 @@
 package com.p3achb0t
 
+import UserDetails
+import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.Main.Data.customCanvas
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
+import com.p3achb0t.reflectionutils.getClientData
+import com.p3achb0t.reflectionutils.getRegion
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
+import com.p3achb0t.user_inputs.Mouse
+import com.p3achb0t.user_inputs.sendKeys
 import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -15,13 +21,11 @@ import kotlinx.coroutines.launch
 import tornadofx.App
 import tornadofx.launch
 import java.applet.Applet
-import java.applet.AppletContext
-import java.applet.AppletStub
 import java.awt.*
-import java.awt.event.ActionListener
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
-import java.awt.image.BufferedImage
 import java.io.File
 import java.net.URL
 import java.net.URLClassLoader
@@ -31,89 +35,7 @@ import javax.swing.WindowConstants
 
 class MyApp : App(WidgetExplorer::class)
 
-class RSLoader:AppletStub {
-    var params = Parameters.data.PARAMETER_MAP
-    override fun getCodeBase(): URL {
-        return URL(params["codebase"])
-    }
-
-    override fun getParameter(name: String?): String {
-        println("Getting $name : ${params[name]}")
-        return params[name]!!
-    }
-
-    override fun getAppletContext(): AppletContext = null!!
-
-    override fun appletResize(width: Int, height: Int) {
-    }
-
-    override fun getDocumentBase(): URL {
-        return URL(params["codebase"])
-    }
-
-    override fun isActive(): Boolean {
-        return true
-    }
-}
-
 class CustomApplet : Applet()
-
-class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
-
-    var counter = 0
-
-    val image = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
-    @Transient
-    var paintListener: PaintListener? = null
-
-    fun addPaintListener(listener: ActionListener) {
-        this.paintListener = AWTEventMulticaster.add(this.paintListener, listener) as PaintListener
-    }
-    override fun getGraphics(): Graphics {
-        val g = image.graphics
-        g.color = Color.GREEN
-
-//        g.drawString("RS-HAcking $counter", 50,50)
-//        g.drawRect(100,100,100,100)
-        paintListener?.onPaint(g)
-
-
-        if (Main.selectedWidget != null) {
-            if (Main.selectedWidget!!.type == "2") {
-                val retcs = Main.selectedWidget?.getItemsRects()
-                retcs?.iterator()?.forEach { rect ->
-                    g.drawRect(rect.x, rect.y, rect.width, rect.height)
-                }
-            } else {
-                val rect = Main.selectedWidget?.getDrawableRect()!!
-                g.drawRect(rect.x, rect.y, rect.width, rect.height)
-            }
-        }
-
-        super.getGraphics().drawImage(image, 0, 0, null)
-        counter += 1
-
-        return g
-    }
-
-    override fun hashCode(): Int {
-        return oldCanvasHash
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as CustomCanvas
-
-        if (oldCanvasHash != other.oldCanvasHash) return false
-        if (counter != other.counter) return false
-        if (image != other.image) return false
-
-        return true
-    }
-
-}
 
 class Main(game: Applet) {
     init {
@@ -127,6 +49,8 @@ class Main(game: Applet) {
         var selectedWidget: Widget? = null
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
+        var clientData: Client = Client()
+
     }
 }
 
@@ -142,7 +66,11 @@ fun main(args: Array<String>){
 
     dream.getDreamBotHooks()
     dream.parseHooks()
-//    dream.createAccessorFieldsForClass()
+//    dream.createAccessorFieldsForClass(PlayerComposite ::class.java)
+//    dream.createAccessorFieldsForClass(Renderable::class.java)
+//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
+//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
+//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
 
     dream.parseJar(gamePackJar)
 
@@ -234,47 +162,59 @@ fun main(args: Array<String>){
                     }
 
                     override fun mouseDragged(e: MouseEvent?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        mouseEvent = e
                     }
 
                 }
+
                 customCanvas?.addPaintListener(object : PaintListener {
                     override fun onPaint(g: Graphics) {
                         g.color = Color.white
                         g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
+                        g.drawString("clientData.gameCycle :${clientData.gameCycle}", 50, 60)
+                        g.drawString("clientData.gameState :${clientData.gameState}", 50, 70)
+                        g.drawString("clientData.loginState :${clientData.loginState}", 50, 80)
+                        g.drawString("clientData.password :${clientData.password}", 50, 90)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                     }
 
                 })
+//                customCanvas?.addPaintListener(object : PaintListener {
+//                    override fun onPaint(g: Graphics) {
+//                        g.color = Color.white
+//                        g.drawString("clientData.gameCycle :${clientData.gameCycle}", 50, 60)
+//                        g.drawString("clientData.gameState :${clientData.gameState}", 50, 70)
+//                        g.drawString("clientData.loginState :${clientData.loginState}", 50, 80)
+//                        g.drawString("clientData.password :${clientData.password}", 50, 90)
+//
+//                    }
+//
+//                })
                 customCanvas?.addMouseMotionListener(mouseListener)
                 for (kl in oldCanvas.keyListeners) {
                     customCanvas?.addKeyListener(kl)
                 }
+                val keyboadListner = object : KeyListener {
+                    override fun keyTyped(e: KeyEvent?) {
+//                        println("KeyTyped: ${e?.keyChar} Code:${e?.keyCode}")
+                    }
+
+                    override fun keyPressed(e: KeyEvent?) {
+//                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
+                    }
+
+                    override fun keyReleased(e: KeyEvent?) {
+//                        println("KeyReleased: ${e?.keyChar} Code:${e?.keyCode}")
+                    }
+
+                }
+                customCanvas?.addKeyListener(keyboadListner)
                 for (fl in oldCanvas.focusListeners) {
                     customCanvas?.addFocusListener(fl)
                 }
                 canvasField.set(game, customCanvas) // Needed to have Applet instead of null
                 game.add(customCanvas)
                 loaded = true
-
-
-                var x = 0
-                var y = 0
-                GlobalScope.launch {
-                    repeat(1000) {
-                        x += 10
-                        if (x == 400) x = 0
-                        y += 5
-                        if (y == 400) y = 0
-
-                        val me = MouseEvent(
-                            customCanvas,
-                            MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
-                        )
-                        customCanvas?.dispatchEvent(me)
-                        delay(400)
-                    }
-                }
 
                 break
 
@@ -287,8 +227,43 @@ fun main(args: Array<String>){
         }
     }
 
+    GlobalScope.launch {
+        var loggedIn = false
+        val mouse = Mouse()
+        repeat(1000) {
+            try {
+                clientData = getClientData()
+
+                // When loaded login
+                if (!loggedIn && clientData.gameState == "10") {
+                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+
+                    delay(200)
+                    sendKeys(UserDetails.data.password)
+                    delay(200)
+
+                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
+                }
+                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
+//                    getLocalNPCData()
+//                    getLocalPlayersData()
+//                    getGroundItemData()
+//                    getItemTableData()
+                    getRegion()
+                }
+            } catch (e: Exception) {
+                println("Exception" + e.toString())
+                for (statck in e.stackTrace) {
+                    println(statck.toString())
+                }
+            }
+            delay(200)
+        }
+    }
+
     launch<MyApp>(args)
 
 
 
 }
+

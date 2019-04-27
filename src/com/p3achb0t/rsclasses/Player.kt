@@ -2,28 +2,31 @@ package com.p3achb0t.rsclasses
 
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 
-class Player:RSClasses() {
+class Player : Actor {
 
-//    Actor.animation bw bo 398323101
-//    Actor.animationDelay bw bs 1989447085
-//    Actor.combatTime bw be -2104684633
-//    Actor.frameOne bw bk 1227200279
-//    Actor.frameTwo bw bc -2070938991
-//    Actor.healthBars bw bq
-//    Actor.hitCycles bw bi
-//    Actor.hitDamages bw bf
-//    Actor.hitTypes bw af
-//    Actor.interacting bw be -2104684633
-//    Actor.localX bw at -1164280689
-//    Actor.localY bw ad 471959047
-//    Actor.message bw au
-//    Actor.orientation bw cx 727736179
-//    Actor.queueSize bw cr -2147108073
-//    Actor.queueTraversed bw co
-//    Actor.queueX bw ca
-//    Actor.queueY bw ce
-//    Actor.runtimeAnimation bw bv 508548421
-//    Actor.standAnimation bw ah -1436317107
+    var composite: PlayerComposite = PlayerComposite()
+    var hidden = ""
+    var level = 0
+    var model = ""
+    var name = ""
+    var overheadIcon = 0
+    var skullIcon = ""
+    var standingStill = ""
+    var team = 0
+
+    constructor()
+    constructor(fields: MutableMap<String, Field?>) : super(fields) {
+        composite = PlayerComposite(fields)
+        hidden = fields["hidden"]?.resultValue.toString()
+        level = fields["level"]?.resultValue?.toInt() ?: -1
+        model = fields["model"]?.resultValue.toString()
+        name = fields["name"]?.resultValue.toString()
+        overheadIcon = fields["overheadIcon"]?.resultValue?.toInt() ?: -1
+        skullIcon = fields["skullIcon"]?.resultValue.toString()
+        standingStill = fields["standingStill"]?.resultValue.toString()
+        team = fields["team"]?.resultValue?.toInt() ?: -1
+    }
+
     companion object {
         const val deobName = "PLAYER"
     }
