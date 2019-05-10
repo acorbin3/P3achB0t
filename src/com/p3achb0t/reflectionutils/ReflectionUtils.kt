@@ -105,8 +105,10 @@ fun getLocalNPCData() {
 //        print("We have an array")
         val res = parseArrayField(Main.client!!, npcDeclaredField, displayData = false, recursive = true)
         for (field in res!!) {
-            println(field.fields["name"])
-            npcs.add(Npc(field.fields))
+            if (field is RSClasses.Field) {
+                println(field.fields["name"])
+                npcs.add(Npc(field.fields))
+            }
         }
     }
 }
@@ -124,9 +126,11 @@ fun getLocalPlayersData() {
         val res = parseArrayField(Main.client!!, declaredField, displayData = false, recursive = true)
 
         for (field in res!!) {
-            println(field)
+            if (field is RSClasses.Field) {
+                println(field)
 //            println(field.fields["name"]?.resultValue)
-            players.add(Player(field.fields))
+                players.add(Player(field.fields))
+            }
         }
     }
 
@@ -140,19 +144,24 @@ fun getRegion() {
     val clientClazz = Main.client!!::class.java
     val baseClazz = Client::class.java
     val fieldName = "region"
-    getDeclaredFieldData(baseClazz, fieldName, clientClazz)
+    val result = getDeclaredFieldData(baseClazz, fieldName, clientClazz)
+    val reg = result?.get(0)
+    if (reg is RSClasses.Field) {
+        val region = Region(reg.fields)
+    }
 }
 
 private fun getDeclaredFieldData(
     baseClazz: Class<Client>,
     fieldName: String,
     clientClazz: Class<out Applet>
-) {
+): ArrayList<Any>? {
+    var arrayRes: ArrayList<Any>? = ArrayList()
     val declaredField = getDeclaredField(baseClazz, fieldName)
     declaredField?.isAccessible = true
     if (declaredField?.type?.isArray!!) {
-        val res = parseArrayField(Main.client!!, declaredField, displayData = true, recursive = true)
-        for (field in res!!) {
+        arrayRes = parseArrayField(Main.client!!, declaredField, displayData = true, recursive = true)
+        for (field in arrayRes!!) {
             println(field)
         }
     } else {
@@ -164,8 +173,9 @@ private fun getDeclaredFieldData(
             displayData = true
         )
         println(res)
+        res?.let { arrayRes?.add(it) }
     }
-
+    return arrayRes
 }
 
 fun getWidgetData(widgetIndex: WidgetIndex): Widget {
@@ -270,7 +280,7 @@ fun printClazzFields(
             } else {
                 mainField.fields[fieldList[reflectField.name]?.fieldName!!]?.isArray = true
                 mainField.fields[fieldList[reflectField.name]?.fieldName!!]?.arrayData =
-                    parseArrayField(classObject, reflectField, level, displayData = displayData)
+                    parseArrayField(classObject, reflectField, level, displayData = displayData, recursive = recursive)
             }
             if (displayData)
                 println("\t" + mainField.fields[fieldList[reflectField.name]?.fieldName!!])
@@ -319,14 +329,16 @@ fun <T : Any> getFields(t: T): List<Field> {
     println("")
     return fields
 }
+
+
 fun parseArrayField(
     classObject: Any,
     reflectField: Field,
     level: Int = 0,
     displayData: Boolean = false,
     recursive: Boolean = false
-): ArrayList<RSClasses.Field>? {
-    val arrayRes = ArrayList<RSClasses.Field>()
+): ArrayList<Any>? {
+    val arrayRes = ArrayList<Any>()
     if (reflectField.type.isArray) {
         val indent = "\t".repeat(level)
 
@@ -338,6 +350,8 @@ fun parseArrayField(
         if (displayData) {
             println("$indent\tComponent type: " + reflectField.type.componentType.simpleName + " Array size $arrayLength")
         }
+        val superNestedArray = RSClasses.Field("")
+        val _4dBoolArray = ArrayList<ArrayList<ArrayList<ArrayList<Boolean>>>>()
 
         if (arrayLength > 0) {
             for (i in 0 until arrayLength) {
@@ -398,8 +412,86 @@ fun parseArrayField(
                         //resultList += "null,"
                     }
                 } else {// This an array with in an array
-//                    val field = java.lang.reflect.Array.get(arrayFields, i)
-//                    parseArrayField(Main.client!!, declaredField!!, displayData = true, recursive = true)
+                    val parentArrayItem = java.lang.reflect.Array.get(arrayFields, i)
+                    val parentArray = ArrayList<Any>()
+                    superNestedArray.arrayData?.add(parentArray)
+
+                    //array within array
+                    if (parentArrayItem is Array<*>) {
+                        parentArrayItem.forEachIndexed { parentIndex, childItem ->
+                            if (childItem is Array<*>) {//3D+ array
+                                val nestedChildArray = ArrayList<Any>()
+                                parentArray.add(nestedChildArray)
+
+                                childItem.forEachIndexed { child_1_index, child_2_item ->
+                                    if (child_2_item != null && child_2_item.javaClass.isArray && child_2_item is BooleanArray) { //4D+ Array
+                                        val nestedChildArray_2 = ArrayList<Any>()
+//                                        print(child_2_item.)
+                                        nestedChildArray.add(nestedChildArray_2)
+
+                                        (child_2_item).forEachIndexed { child_2_index, child_3_item ->
+                                            //                                            if(child_3_item is Array<*>){ //5D+ Array
+//                                                val nestedChildArray_3 = ArrayList<Any>()
+//                                                child_3_item.forEachIndexed{child_3_index, child_4_item ->
+//                                                    if(child_4_item is Array<*>) {
+//
+//                                                    }else{//5D Array
+//
+//                                                        print("[$parentIndex,$child_1_index,$child_2_index] $child_4_item ")
+//                                                        parentArray.add(parentIndex,
+//                                                            nestedChildArray.add(child_1_index,
+//                                                                nestedChildArray_2.add(child_2_index,
+//                                                                    nestedChildArray_3.add(child_3_index,true))))
+//                                                    }
+//                                                }
+//                                                println()
+//                                            }else{ //4D array
+
+//                                            print("[$i,$parentIndex,$child_1_index,$child_2_index] $child_3_item ")
+
+                                            nestedChildArray_2.add(child_2_index, child_3_item)
+//                                            }
+                                        }
+//                                        println()
+                                    } else {//3D Array
+
+                                        val v = child_2_item!!::class.java
+                                        val hookData = dream?.analyzers?.get(
+                                            Tile::class.java.simpleName
+                                        )?.fields
+                                        for (field in v.declaredFields) {
+                                            if (hookData != null && hookData.contains(field.name)) {
+//                                println(field.name + " ->" + currentWidgetFieldHookData[field.name])
+                                                // Get data
+                                                val res = getFieldResult(
+                                                    v,
+                                                    child_2_item,
+                                                    field,
+                                                    0,
+                                                    displayData = displayData,
+                                                    recursive = recursive
+                                                )
+                                                if (res != null) {
+                                                    hookData[field.name] = res
+                                                }
+                                            }
+                                        }
+                                        print("[$i,$parentIndex,$child_1_index] $child_2_item ")
+//                                        parentArray.add(parentIndex, nestedChildArray.add(child_1_index, true))
+                                    }
+                                }
+                                println()
+                            } else {//2D array
+                                print("[$i,$parentIndex]$childItem ")
+                                parentArray.add(parentIndex, true)
+                            }
+
+                        }
+                        println()
+                    }
+
+
+//                    parseArrayField(classObject, field.f, displayData = displayData, recursive = recursive)
                 }
 
             }
@@ -454,10 +546,18 @@ fun getFieldResult(
     if (reflectField.type.isPrimitive) {
         reflectField.type
         if (displayData)
-            println("$indent ${reflectField.name} res: ${reflectField.get(classObject)}")
+            println(
+                "$indent ${reflectField.name}[${fieldList?.get(reflectField.name)?.fieldName}] res: ${reflectField.get(
+                    classObject
+                )}"
+            )
     } else {
         if (displayData)
-            println("$indent Non prim - (${reflectField.type})${reflectField.name}  res: ${reflectField.get(classObject)}")
+            println(
+                "$indent Non prim - (${reflectField.type})${reflectField.name}[${fieldList?.get(reflectField.name)?.fieldName}]  res: ${reflectField.get(
+                    classObject
+                )}"
+            )
     }
 
     if (reflectField.type.simpleName == "int") {

@@ -66,7 +66,7 @@ fun main(args: Array<String>){
 
     dream.getDreamBotHooks()
     dream.parseHooks()
-//    dream.createAccessorFieldsForClass(PlayerComposite ::class.java)
+//    dream.createAccessorFieldsForClass(Tile::class.java)
 //    dream.createAccessorFieldsForClass(Renderable::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)

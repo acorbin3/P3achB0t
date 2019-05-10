@@ -16,7 +16,8 @@ class NpcComposite : RSClasses {
     constructor(fields: MutableMap<String, Field?>) : super() {
         if (fields["actions"]?.arrayData != null) {
             for (action in fields["actions"]?.arrayData!!)
-                actions.add(action.resultValue)
+                if (action is Field)
+                    actions.add(action.resultValue)
         }
 
         id = fields["id"]?.resultValue?.toInt() ?: -1

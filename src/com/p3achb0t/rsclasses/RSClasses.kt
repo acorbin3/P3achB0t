@@ -16,7 +16,7 @@ abstract class RSClasses{
         var classNode: ClassNode? = null
         var fields = mutableMapOf<String, Field?>()
         var isArray = false
-        var arrayData: ArrayList<Field>? = ArrayList()
+        var arrayData: ArrayList<Any>? = ArrayList()
 
         override fun toString(): String {
             var res = ""
@@ -25,8 +25,11 @@ abstract class RSClasses{
                     res += "\n\t" + field.key + "->>" + field.value?.resultValue
                 } else {
                     res += "\n\t" + field.key + "->> ["
-                    for (item in field.value!!.arrayData!!) {
-                        res += item.resultValue + ","
+                    if (field.value != null && field.value?.arrayData != null) {
+                        for (item in field.value!!.arrayData!!) {
+                            if (item is Field)
+                                res += item.resultValue + ","
+                        }
                     }
                     res += "]"
                 }
