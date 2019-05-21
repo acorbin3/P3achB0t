@@ -28,7 +28,7 @@ abstract class RSClasses{
                     if (field.value != null && field.value?.arrayData != null) {
                         for (item in field.value!!.arrayData!!) {
                             if (item is Field)
-                                res += item.resultValue + ","
+                                res += "$item,"
                         }
                     }
                     res += "]"
@@ -39,6 +39,7 @@ abstract class RSClasses{
     }
     var found: Boolean = false
     var obsName: String = ""
+    var className: String = ""
 
     var fields = mutableMapOf<String, Field>()// Key = obfuscated, resultValue is the normalized obsName
     var normalizedFields =

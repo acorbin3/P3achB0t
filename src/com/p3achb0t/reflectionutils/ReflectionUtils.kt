@@ -103,7 +103,7 @@ fun getLocalNPCData() {
     npcDeclaredField.isAccessible = true
     if (npcDeclaredField.type.isArray) {
 //        print("We have an array")
-        val res = parseArrayField(Main.client!!, npcDeclaredField, displayData = false, recursive = true)
+        val res = parseArrayField(Main.client!!, npcDeclaredField, level = 0, displayData = false, recursive = true)
         for (field in res!!) {
             if (field is RSClasses.Field) {
                 println(field.fields["name"])
@@ -123,7 +123,7 @@ fun getLocalPlayersData() {
     declaredField.isAccessible = true
     if (declaredField.type.isArray) {
 //        print("We have an array")
-        val res = parseArrayField(Main.client!!, declaredField, displayData = false, recursive = true)
+        val res = parseArrayField(Main.client!!, declaredField, level = 0, displayData = false, recursive = true)
 
         for (field in res!!) {
             if (field is RSClasses.Field) {
@@ -144,7 +144,39 @@ fun getRegion() {
     val clientClazz = Main.client!!::class.java
     val baseClazz = Client::class.java
     val fieldName = "region"
-    val result = getDeclaredFieldData(baseClazz, fieldName, clientClazz)
+    val result = getDeclaredFieldData(baseClazz, fieldName, clientClazz, displayData = true)
+
+//    val declaredField = getDeclaredField(baseClazz, fieldName)
+//    declaredField?.isAccessible = true
+//    val superClazz = declaredField?.type
+//    val fieldList = dream?.classRefObs?.get(superClazz?.simpleName)?.fields
+//    val localFieldtData = mutableMapOf<String, RSClasses.Field>()
+//    if(superClazz != null) {
+//        println("Declared Fields:")
+//        for (dField in superClazz.declaredFields) {
+//            if(fieldList?.contains(dField.name)!!) {
+//                val superClass = dField.type.superclass
+//                if(superClass != null)
+//                    println(superClass.toString() + " " + dField.type.simpleName + " " + dField.name + "->" + fieldList[dField.name]?.fieldName)
+//                else
+//                    println(dField.type.simpleName + " " + dField.name + "->" + fieldList[dField.name]?.fieldName)
+//
+//                val res = getFieldResult(
+//                    superClazz,
+//                    Main.client!!,
+//                    dField,
+//                    level = 0,
+//                    recursive = true,
+//                    displayData = false
+//                )
+//                val localFieldName = fieldList[dField.name]?.fieldName
+//                if(localFieldName != null && res != null) {
+//                    localFieldtData[localFieldName] = res
+//                }
+//            }
+//        }
+//    }
+
     val reg = result?.get(0)
     if (reg is RSClasses.Field) {
         val region = Region(reg.fields)
@@ -154,13 +186,16 @@ fun getRegion() {
 private fun getDeclaredFieldData(
     baseClazz: Class<Client>,
     fieldName: String,
-    clientClazz: Class<out Applet>
+    clientClazz: Class<out Applet>,
+    displayData: Boolean = false,
+    recursive: Boolean = true
 ): ArrayList<Any>? {
     var arrayRes: ArrayList<Any>? = ArrayList()
     val declaredField = getDeclaredField(baseClazz, fieldName)
     declaredField?.isAccessible = true
     if (declaredField?.type?.isArray!!) {
-        arrayRes = parseArrayField(Main.client!!, declaredField, displayData = true, recursive = true)
+        arrayRes =
+            parseArrayField(Main.client!!, declaredField, level = 0, displayData = displayData, recursive = recursive)
         for (field in arrayRes!!) {
             println(field)
         }
@@ -169,10 +204,11 @@ private fun getDeclaredFieldData(
             clientClazz,
             Main.client!!,
             declaredField,
-            recursive = true,
-            displayData = true
+            level = 0,
+            recursive = recursive,
+            displayData = displayData
         )
-        println(res)
+//        println(res)
         res?.let { arrayRes?.add(it) }
     }
     return arrayRes
@@ -238,10 +274,10 @@ private fun getFieldData(
 }
 
 private fun getDeclaredField(baseClazz: Class<*>, fieldName: String): Field? {
-    val fieldTypeName = Main.dream?.analyzers?.get(
+    val fieldTypeName = dream?.analyzers?.get(
         baseClazz.simpleName
     )?.normalizedFields?.get(fieldName)?.fieldTypeObsName
-    val obsFieldName = Main.dream?.analyzers?.get(
+    val obsFieldName = dream?.analyzers?.get(
         baseClazz.simpleName
     )?.normalizedFields?.get(fieldName)?.obsName
 
@@ -262,10 +298,16 @@ fun printClazzFields(
     displayData: Boolean = false
 ): RSClasses.Field {
     val mainField = RSClasses.Field()
-    val fieldList = Main.dream?.classRefObs?.get(clazz.simpleName)?.fields
+    val fieldList = dream?.classRefObs?.get(clazz.simpleName)?.fields
     val indent = "\t".repeat(level)
-    if (displayData)
+    if (displayData) {
+        val strippedType = clazz.simpleName.removeSuffix("[]")
+        val className = dream?.classRefObs?.get(
+            strippedType
+        )?.className
+        println("$indent Class - ${clazz.simpleName} $className")
         println("$indent$$$$$$$$$ DeclaredFields$$$$$$$$$$")
+    }
     for (reflectField in clazz.declaredFields) {
 
         if (fieldList != null && fieldList.contains(reflectField.name)) {
@@ -273,17 +315,25 @@ fun printClazzFields(
             reflectField.isAccessible = true
             if (displayData)
                 print(indent + reflectField.type.superclass + " " + reflectField.type.simpleName + " " + fieldList[reflectField.name]?.fieldName)
+            val nextLevel = level + 1
             if (!reflectField.type.isArray) {
-                val fieldRes = getFieldResult(clazz, classObject, reflectField, level, recursive = recursive)
+
+                val fieldRes = getFieldResult(clazz, classObject, reflectField, nextLevel, recursive = recursive)
                 if (fieldRes != null)
                     mainField.fields[fieldList[reflectField.name]?.fieldName!!] = fieldRes
             } else {
                 mainField.fields[fieldList[reflectField.name]?.fieldName!!]?.isArray = true
                 mainField.fields[fieldList[reflectField.name]?.fieldName!!]?.arrayData =
-                    parseArrayField(classObject, reflectField, level, displayData = displayData, recursive = recursive)
+                    parseArrayField(
+                        classObject,
+                        reflectField,
+                        nextLevel,
+                        displayData = displayData,
+                        recursive = recursive
+                    )
             }
             if (displayData)
-                println("\t" + mainField.fields[fieldList[reflectField.name]?.fieldName!!])
+                println(indent + mainField.fields[fieldList[reflectField.name]?.fieldName!!])
 
 
         }
@@ -334,7 +384,7 @@ fun <T : Any> getFields(t: T): List<Field> {
 fun parseArrayField(
     classObject: Any,
     reflectField: Field,
-    level: Int = 0,
+    level: Int,
     displayData: Boolean = false,
     recursive: Boolean = false
 ): ArrayList<Any>? {
@@ -430,67 +480,46 @@ fun parseArrayField(
                                         nestedChildArray.add(nestedChildArray_2)
 
                                         (child_2_item).forEachIndexed { child_2_index, child_3_item ->
-                                            //                                            if(child_3_item is Array<*>){ //5D+ Array
-//                                                val nestedChildArray_3 = ArrayList<Any>()
-//                                                child_3_item.forEachIndexed{child_3_index, child_4_item ->
-//                                                    if(child_4_item is Array<*>) {
-//
-//                                                    }else{//5D Array
-//
-//                                                        print("[$parentIndex,$child_1_index,$child_2_index] $child_4_item ")
-//                                                        parentArray.add(parentIndex,
-//                                                            nestedChildArray.add(child_1_index,
-//                                                                nestedChildArray_2.add(child_2_index,
-//                                                                    nestedChildArray_3.add(child_3_index,true))))
-//                                                    }
-//                                                }
-//                                                println()
-//                                            }else{ //4D array
-
-//                                            print("[$i,$parentIndex,$child_1_index,$child_2_index] $child_3_item ")
-
+                                            //4D array
                                             nestedChildArray_2.add(child_2_index, child_3_item)
-//                                            }
+//                                            print("[$i,$parentIndex,$child_1_index,$child_2_index] $child_3_item ")
                                         }
-//                                        println()
                                     } else {//3D Array
-
-                                        val v = child_2_item!!::class.java
-                                        val hookData = dream?.analyzers?.get(
-                                            Tile::class.java.simpleName
-                                        )?.fields
-                                        for (field in v.declaredFields) {
-                                            if (hookData != null && hookData.contains(field.name)) {
-//                                println(field.name + " ->" + currentWidgetFieldHookData[field.name])
-                                                // Get data
-                                                val res = getFieldResult(
-                                                    v,
-                                                    child_2_item,
-                                                    field,
-                                                    0,
-                                                    displayData = displayData,
-                                                    recursive = recursive
-                                                )
-                                                if (res != null) {
-                                                    hookData[field.name] = res
+                                        if (child_2_item != null) {
+                                            val v = child_2_item::class.java
+                                            val hookData = dream?.analyzers?.get(
+                                                Tile::class.java.simpleName
+                                            )?.fields
+                                            for (field in v.declaredFields) {
+                                                if (hookData != null && hookData.contains(field.name)) {
+                                                    // Get data
+                                                    val res = getFieldResult(
+                                                        v,
+                                                        child_2_item,
+                                                        field,
+                                                        0,
+                                                        displayData = displayData,
+                                                        recursive = recursive
+                                                    )
+                                                    if (res != null) {
+                                                        hookData[field.name] = res
+                                                    }
                                                 }
                                             }
+                                            //TODO - Check to see if its a tile
+                                            // TODO - If tile, creat Tile object and add to 3d array
+//                                        print("[$i,$parentIndex,$child_1_index] $child_2_item ")
+
+                                            parentArray.add(parentIndex, nestedChildArray.add(child_1_index, true))
                                         }
-                                        print("[$i,$parentIndex,$child_1_index] $child_2_item ")
-//                                        parentArray.add(parentIndex, nestedChildArray.add(child_1_index, true))
                                     }
                                 }
-                                println()
                             } else {//2D array
                                 print("[$i,$parentIndex]$childItem ")
                                 parentArray.add(parentIndex, true)
                             }
-
                         }
-                        println()
                     }
-
-
 //                    parseArrayField(classObject, field.f, displayData = displayData, recursive = recursive)
                 }
 
@@ -534,7 +563,7 @@ fun getFieldResult(
     clazz: Class<out Any>,
     classObject: Any,
     reflectField: Field,
-    level: Int = 0,
+    level: Int,
     recursive: Boolean = false,
     displayData: Boolean = false
 ): RSClasses.Field? {
@@ -552,12 +581,19 @@ fun getFieldResult(
                 )}"
             )
     } else {
-        if (displayData)
+        if (displayData) {
+            val strippedType = reflectField.type.simpleName.removeSuffix("[]")
+            val className = dream?.classRefObs?.get(
+                strippedType
+            )?.className
             println(
-                "$indent Non prim - (${reflectField.type})${reflectField.name}[${fieldList?.get(reflectField.name)?.fieldName}]  res: ${reflectField.get(
+                "$indent ($level) Non prim - (${reflectField.type}-$className)${reflectField.name}[${fieldList?.get(
+                    reflectField.name
+                )?.fieldName}]  res: ${reflectField.get(
                     classObject
                 )}"
             )
+        }
     }
 
     if (reflectField.type.simpleName == "int") {
@@ -575,13 +611,13 @@ fun getFieldResult(
     } else if (reflectField.type.simpleName == "boolean") {
         rsField?.resultValue = reflectField.getBoolean(classObject).toString()
         if (displayData)
-            println(reflectField.getBoolean(classObject).toString())
+            println(indent + reflectField.getBoolean(classObject).toString())
     } else if (reflectField.type.simpleName == "string" || reflectField.type.simpleName == "String") {
         val obj = reflectField.get(classObject)
         if (obj != null) {
             rsField?.resultValue = obj.toString()
             if (displayData)
-                println(obj.toString())
+                println(indent + obj.toString())
         }
 
     } else if (reflectField.type.simpleName == "long") {
@@ -615,8 +651,14 @@ fun getFieldResult(
             val nextClassObject = reflectField.get(classObject)
             if (reflectField.type.simpleName != null && nextClassObject != null) {
                 reflectField.isAccessible = true
-                if (displayData)
-                    println("$indent Different Class type " + reflectField.type.simpleName)
+                if (displayData) {
+                    val strippedType = reflectField.type.simpleName.removeSuffix("[]")
+                    println(
+                        "$indent ($level) Different Class type " + reflectField.type.simpleName + " " + dream?.classRefObs?.get(
+                            strippedType
+                        )?.className
+                    )
+                }
                 val superClazz = reflectField.type
                 // Dont dive into Node Classes
                 val list = listOf(
@@ -625,14 +667,16 @@ fun getFieldResult(
                     dream?.analyzers?.get(HashTable::class.java.simpleName)?.obsName
                 )
 
-                if (!list.contains(superClazz.simpleName))
+                if (!list.contains(superClazz.simpleName)) {
+                    val nextLevel = level + 1
                     return printClazzFields(
                         superClazz,
                         nextClassObject,
-                        level + 1,
+                        nextLevel,
                         displayData = displayData,
                         recursive = recursive
                     )
+                }
             }
         }
 

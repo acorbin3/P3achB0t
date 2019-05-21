@@ -137,6 +137,7 @@ class DreamBotAnalyzer{
                 currentClass = className
 
                 (analyzers[className] as RSClasses).obsName = obsName
+                (analyzers[className] as RSClasses).className = className
                 classRefObs[obsName] = analyzers[className]!!
                 println(className)
             }
