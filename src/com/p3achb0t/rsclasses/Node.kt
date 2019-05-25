@@ -14,7 +14,7 @@ class Node:RSClasses() {
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         if (node.fields?.size == 3) {
             val longCount = node.fields.count { it.desc.contains("J") }
-            val ownType = node.fields.count { it.desc.contains("L" + node?.name) }
+            val ownType = node.fields.count { it.desc.contains("L" + node.name) }
             if (longCount == 1 && ownType == 2 && node.superName == "java/lang/Object") {
                 println("Node Class: " + node.name)
                 val idField = node.fields.find { it.desc == "J" }
@@ -25,8 +25,8 @@ class Node:RSClasses() {
                 println("   Field Previous: " + prevField?.name)
                 this.obsName = node.name
                 this.idName = idField?.name!!
-                this.nextName = nextField?.name!!
-                this.prevName = prevField?.name!!
+                this.nextName = nextField?.name.toString()
+                this.prevName = prevField?.name.toString()
                 this.found = true
             }
         }

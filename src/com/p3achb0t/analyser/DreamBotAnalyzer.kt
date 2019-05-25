@@ -166,7 +166,7 @@ class DreamBotAnalyzer{
     fun createAccessorFieldsForClass(clazz: Class<*>) {
         println("---${clazz.name}----")
         for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
-            if (field.value.modifier > 0) {
+            if (field.value.modifier != 0L) {
                 println("var " + field.key + " = 0")
             } else {
                 println("var " + field.key + " = \"\"")
@@ -179,7 +179,7 @@ class DreamBotAnalyzer{
         )
         for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
             //x = fields["x"]?.resultValue?.toInt() ?: -1
-            if (field.value.modifier > 0) {
+            if (field.value.modifier != 0L) {
                 println("\t" + field.key + " = fields[\"" + field.key + "\"]?.resultValue?.toInt() ?: -1")
             } else {
                 println("\t" + field.key + " = fields[\"" + field.key + "\"]?.resultValue.toString()")
@@ -187,6 +187,35 @@ class DreamBotAnalyzer{
         }
         println("}")
         println("\n")
+        createInterfaceForInjection(clazz, "")
+    }
+
+    fun createInterfaceForInjection(clazz: Class<*>, implements: String) {
+
+        println("-----------------")
+        println("\n")
+        val fn =
+            "C:\\Users\\C0rbin\\IdeaProjects\\P3achB0t\\src\\com\\p3achb0t\\hook_interfaces/" + clazz.simpleName + ".kt"
+        val file = File(fn)
+        file.printWriter().use { out ->
+            out.println("package com.p3achb0t.hook_interfaces")
+            out.println("")
+            if (!implements.contains("java/lang/Object")) {
+                out.println("interface ${clazz.simpleName}: $implements{")
+            } else {
+                out.println("interface ${clazz.simpleName} {")
+            }
+            for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
+                //x = fields["x"]?.resultValue?.toInt() ?: -1
+                if (field.value.modifier != 0L) {
+                    out.println("\t fun get_" + field.key + "(): Int")
+                } else {
+                    out.println("\t fun get_" + field.key + "(): Any")
+                }
+            }
+            out.println("}")
+        }
+
     }
 
     fun parseJar(jar: JarFile){
@@ -229,6 +258,9 @@ class DreamBotAnalyzer{
 
             val superName = getSuperName(classNode)
             println("$classNodeName $superName")
+            val list = superName.split("->")
+            println("\t$classNodeName implements ${list[1]}")
+            createInterfaceForInjection(classNodeEntry.value::class.java, list[1])
         }
     }
 }

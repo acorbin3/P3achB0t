@@ -3,7 +3,9 @@ package com.p3achb0t
 import UserDetails
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.Main.Data.customCanvas
+import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
+import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
@@ -59,31 +61,44 @@ fun main(args: Array<String>){
     val downloader = Downloader()
 //    val gamePackWithPath = downloader.getGamepack()
     val gamePackWithPath = downloader.getLocalGamepack()
-//    val analyser = Analyser()
-    val gamePackJar = JarFile(gamePackWithPath)
-//    analyser.parseJar(gamePackJar)
-    val dream = DreamBotAnalyzer()
+    println("Using $gamePackWithPath")
 
-    dream.getDreamBotHooks()
-    dream.parseHooks()
+    dream = DreamBotAnalyzer()
+
+    dream?.getDreamBotHooks()
+    dream?.parseHooks()
+    val gamePackJar = JarFile(gamePackWithPath)
+    dream?.parseJar(gamePackJar)
+    dream?.generateSuperGraph()
+
+
+    val analyser = Analyser()
+
+    analyser.parseJar(gamePackJar)
+
+
+    dream?.createAccessorFieldsForClass(Client::class.java)
 //    dream.createAccessorFieldsForClass(Tile::class.java)
 //    dream.createAccessorFieldsForClass(Renderable::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
 
-    dream.parseJar(gamePackJar)
+
 
 
     // Getting parameters
     Parameters(1)
     println("Starting Client")
-    val file = File(gamePackWithPath)
+    val file = File("./injected_jar.jar")
     val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
     Main.classLoader = URLClassLoader(urlArray)
-    val game: Applet = Main.classLoader?.loadClass("client")?.newInstance() as Applet
+    val clientClazz = Main.classLoader?.loadClass("client")?.newInstance()
+    val game: Applet = clientClazz as Applet
     Main(game)
-    Main.dream = dream
+    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
+
+
 
     val client = game::class.java
 
@@ -118,11 +133,12 @@ fun main(args: Array<String>){
         start()
 
         println(client.name)
-        val currentWorldObs = dream.analyzers[Client::class.java.simpleName]?.fields?.get("currentWorld")?.obsName
-        val modifer = dream.analyzers[Client::class.java.simpleName]?.fields?.get("currentWorld")?.modifier?.toInt()
+        val currentWorldObs = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.obsName
+        val modifer =
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.modifier?.toInt()
         println(modifer)
 
-        dream.classRefObs["client"]?.fields?.get("currentWorld")?.obsName
+        dream?.classRefObs?.get("client")?.fields?.get("currentWorld")?.obsName
         val worldField = Main.client!!::class.java.getDeclaredField(currentWorldObs)
         worldField.isAccessible = true
 
@@ -133,8 +149,8 @@ fun main(args: Array<String>){
 
     game.apply {
 
-        val canvasType = dream.analyzers[Client::class.java.simpleName]?.fields?.get("canvas")?.fieldTypeObsName
-        val canvasFieldName = dream.analyzers[Client::class.java.simpleName]?.fields?.get("canvas")?.obsName
+        val canvasType = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("canvas")?.fieldTypeObsName
+        val canvasFieldName = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("canvas")?.obsName
 
         println("canvas " + canvasType + " Field parentId : $canvasFieldName")
         var loaded = false
@@ -172,7 +188,11 @@ fun main(args: Array<String>){
                         g.color = Color.white
                         g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
                         g.drawString("clientData.gameCycle :${clientData.gameCycle}", 50, 60)
-                        g.drawString("clientData.gameState :${clientData.gameState}", 50, 70)
+                        g.drawString(
+                            "clientData.gameState :${clientData.gameState} injected State: ${theClient.get_gameState() * 244995961}",
+                            50,
+                            70
+                        )
                         g.drawString("clientData.loginState :${clientData.loginState}", 50, 80)
                         g.drawString("clientData.password :${clientData.password}", 50, 90)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
