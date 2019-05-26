@@ -163,6 +163,16 @@ class DreamBotAnalyzer{
         }
     }
 
+    fun getListOfInts(clazz: Class<*>) {
+        println("-----------------")
+        for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
+            //x = fields["x"]?.resultValue?.toInt() ?: -1
+            if (field.value.modifier != 0L) {
+                print("\"" + field.key + "\", ")
+            }
+        }
+    }
+
     fun createAccessorFieldsForClass(clazz: Class<*>) {
         println("---${clazz.name}----")
         for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
@@ -187,7 +197,7 @@ class DreamBotAnalyzer{
         }
         println("}")
         println("\n")
-        createInterfaceForInjection(clazz, "")
+        getListOfInts(clazz)
     }
 
     fun createInterfaceForInjection(clazz: Class<*>, implements: String) {
@@ -258,9 +268,9 @@ class DreamBotAnalyzer{
 
             val superName = getSuperName(classNode)
             println("$classNodeName $superName")
-            val list = superName.split("->")
-            println("\t$classNodeName implements ${list[1]}")
-            createInterfaceForInjection(classNodeEntry.value::class.java, list[1])
+//            val list = superName.split("->")
+//            println("\t$classNodeName implements ${list[1]}")
+//            createInterfaceForInjection(classNodeEntry.value::class.java, list[1])
         }
     }
 }

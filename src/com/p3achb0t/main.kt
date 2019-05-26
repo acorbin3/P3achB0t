@@ -11,7 +11,6 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.reflectionutils.getClientData
-import com.p3achb0t.reflectionutils.getRegion
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
 import com.p3achb0t.user_inputs.Mouse
@@ -69,7 +68,7 @@ fun main(args: Array<String>){
     dream?.parseHooks()
     val gamePackJar = JarFile(gamePackWithPath)
     dream?.parseJar(gamePackJar)
-    dream?.generateSuperGraph()
+//    dream?.generateSuperGraph()
 
 
     val analyser = Analyser()
@@ -187,14 +186,12 @@ fun main(args: Array<String>){
                     override fun onPaint(g: Graphics) {
                         g.color = Color.white
                         g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
-                        g.drawString("clientData.gameCycle :${clientData.gameCycle}", 50, 60)
-                        g.drawString(
-                            "clientData.gameState :${clientData.gameState} injected State: ${theClient.get_gameState() * 244995961}",
-                            50,
-                            70
-                        )
-                        g.drawString("clientData.loginState :${clientData.loginState}", 50, 80)
-                        g.drawString("clientData.password :${clientData.password}", 50, 90)
+                        g.drawString("clientData.gameCycle :${theClient.get_gameCycle()}", 50, 60)
+                        g.drawString("Game State:: ${theClient.get_gameState()}", 50, 70)
+                        g.drawString("clientData.loginState :${theClient.get_loginState()}", 50, 80)
+                        g.drawString("Account status :${theClient.get_accountStatus()}", 50, 90)
+                        g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
+                        g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                     }
 
@@ -269,7 +266,7 @@ fun main(args: Array<String>){
 //                    getLocalPlayersData()
 //                    getGroundItemData()
 //                    getItemTableData()
-                    getRegion()
+//                    getRegion()
                 }
             } catch (e: Exception) {
                 println("Exception" + e.toString())
