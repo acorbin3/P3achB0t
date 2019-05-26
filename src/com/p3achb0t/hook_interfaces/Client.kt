@@ -56,7 +56,7 @@ interface Client : GameShell {
     fun get_lastClickX(): Int
     fun get_lastClickY(): Int
     //    fun get_level(): Any
-//    fun get_localNPCs(): Any
+//    fun get_localNPCs(): Array<Npc>
 //    fun get_localPlayer(): Any
     fun get_loginState(): Int
     fun get_lowestAvailableCameraPitch(): Int
@@ -88,7 +88,7 @@ interface Client : GameShell {
     fun get_plane(): Int
     fun get_playerIndex(): Int
     //    fun get_playerModelCache(): Any
-//    fun get_players(): Any
+    fun get_players(): Array<Player>
 //    fun get_projectiles(): Any
 //    fun get_realLevel(): Any
 //    fun get_region(): Any

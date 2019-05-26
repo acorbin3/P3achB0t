@@ -6,19 +6,21 @@ interface Actor : Renderable {
     fun get_combatTime(): Int
     fun get_frameOne(): Int
     fun get_frameTwo(): Int
-    fun get_healthBars(): Any
-    fun get_hitCycles(): Any
-    fun get_hitDamages(): Any
-    fun get_hitTypes(): Any
+    //    fun get_healthBars(): Iterable
+    fun get_hitCycles(): Array<Int>
+
+    fun get_hitDamages(): Array<Int>
+    fun get_hitTypes(): Array<Int>
     fun get_interacting(): Int
     fun get_localX(): Int
     fun get_localY(): Int
-    fun get_message(): Any
+    fun get_message(): Array<Int>
     fun get_orientation(): Int
     fun get_queueSize(): Int
-    fun get_queueTraversed(): Any
-    fun get_queueX(): Any
-    fun get_queueY(): Any
+    //    fun get_queueTraversed(): Array<Byte>
+    fun get_queueX(): Array<Int>
+
+    fun get_queueY(): Array<Int>
     fun get_runtimeAnimation(): Int
     fun get_standAnimation(): Int
 }

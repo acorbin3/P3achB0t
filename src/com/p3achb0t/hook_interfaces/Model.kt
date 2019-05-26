@@ -1,15 +1,15 @@
 package com.p3achb0t.hook_interfaces
 
 interface Model : Renderable {
-    fun get_indicesLength(): Any
-    fun get_indicesX(): Any
-    fun get_indicesY(): Any
-    fun get_indicesZ(): Any
-    fun get_onCursorUIDs(): Any
+    fun get_indicesLength(): Int
+    fun get_indicesX(): Array<Int>
+    fun get_indicesY(): Array<Int>
+    fun get_indicesZ(): Array<Int>
+    fun get_onCursorUIDs(): Array<Int>
     fun get_uidCount(): Int
-    fun get_vectorSkin(): Any
-    fun get_verticesLength(): Any
-    fun get_verticesX(): Any
-    fun get_verticesY(): Any
-    fun get_verticesZ(): Any
+    fun get_vectorSkin(): Array<Array<Int>>
+    fun get_verticesLength(): Int
+    fun get_verticesX(): Array<Int>
+    fun get_verticesY(): Array<Int>
+    fun get_verticesZ(): Array<Int>
 }
