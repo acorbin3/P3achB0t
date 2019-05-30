@@ -26,7 +26,7 @@ class Analyser{
             if(entry.name.endsWith(".class")){
                 val classReader = ClassReader(jar.getInputStream(entry))
                 val classNode = ClassNode()
-                classReader.accept(classNode, ClassReader.SKIP_FRAMES)
+                classReader.accept(classNode, 0)
                 if (classNode.interfaces.size > 0) {
 
 //                    println("${classNode.name} Interfaces")
