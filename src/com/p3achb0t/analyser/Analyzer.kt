@@ -26,7 +26,7 @@ class Analyser{
             if(entry.name.endsWith(".class")){
                 val classReader = ClassReader(jar.getInputStream(entry))
                 val classNode = ClassNode()
-                classReader.accept(classNode, 0)
+                classReader.accept(classNode, ClassReader.SKIP_FRAMES)
                 if (classNode.interfaces.size > 0) {
 
 //                    println("${classNode.name} Interfaces")
@@ -71,6 +71,8 @@ class Analyser{
         }
     }
 
+    data class GetterData(val fieldDescription: String, val methodName: String, val clazz: String = "")
+
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>) {
         //TODO add interface to client
         classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
@@ -79,21 +81,73 @@ class Analyser{
         //            for(inst in method.instructions)
         //                println("\t" + inst.opcode + " " + inst.type)
 //        }
+        val classPath = "com/p3achb0t/hook_interfaces"
+        val getterList = ArrayList<GetterData>()
+        getterList.add(GetterData("I", "accountStatus"))
+        getterList.add(GetterData("I", "baseX"))
+        getterList.add(GetterData("I", "baseY"))
+        getterList.add(GetterData("I", "cameraPitch"))
+        getterList.add(GetterData("I", "cameraX"))
+        getterList.add(GetterData("I", "cameraY"))
+        getterList.add(GetterData("I", "cameraYaw"))
+        getterList.add(GetterData("I", "cameraZ"))
+        getterList.add(GetterData("I", "clickModifier"))
+        getterList.add(GetterData("I", "crosshairColor"))
+        getterList.add(GetterData("I", "currentWorld"))
+        getterList.add(GetterData("I", "destinationX"))
+        getterList.add(GetterData("I", "destinationY"))
+        getterList.add(GetterData("I", "gameCycle"))
+        getterList.add(GetterData("I", "gameState"))
+        getterList.add(GetterData("I", "idleTime"))
+        getterList.add(GetterData("I", "lastAction"))
+        getterList.add(GetterData("I", "lastActionDifference"))
+        getterList.add(GetterData("I", "lastActionDifferenceMod"))
+        getterList.add(GetterData("I", "lastActionTime"))
+        getterList.add(GetterData("I", "lastActionTimeMod"))
+        getterList.add(GetterData("I", "lastButtonClick"))
+        getterList.add(GetterData("I", "lastButtonClickModA"))
+        getterList.add(GetterData("I", "lastButtonClickModM"))
+        getterList.add(GetterData("I", "lastClickModifier"))
+        getterList.add(GetterData("I", "lastClickModifierModA"))
+        getterList.add(GetterData("I", "lastClickModifierModM"))
+        getterList.add(GetterData("I", "lastClickX"))
+        getterList.add(GetterData("I", "lastClickY"))
+        getterList.add(GetterData("I", "loginState"))
+        getterList.add(GetterData("I", "lowestAvailableCameraPitch"))
+        getterList.add(GetterData("I", "mapAngle"))
+        getterList.add(GetterData("I", "menuCount"))
+        getterList.add(GetterData("I", "menuHeight"))
+        getterList.add(GetterData("I", "menuWidth"))
+        getterList.add(GetterData("I", "menuX"))
+        getterList.add(GetterData("I", "menuY"))
+        getterList.add(GetterData("I", "plane"))
+        getterList.add(GetterData("I", "playerIndex"))
+        getterList.add(GetterData("I", "selectedItemID"))
+        getterList.add(GetterData("I", "selectedItemIndex"))
+        getterList.add(GetterData("I", "selectionState"))
+        getterList.add(GetterData("I", "zoomExact"))
+        getterList.add(GetterData("[I", "widgetBoundsX"))
+        getterList.add(GetterData("[I", "widgetBoundsY"))
+        getterList.add(GetterData("[I", "widgetHeights"))
+        getterList.add(GetterData("Ljava/lang/String;", "username"))
+        getterList.add(GetterData("Z", "isSpellSelected"))
+        getterList.add(GetterData("Z", "isWorldSelectorOpen"))
+//        getterList.add(GetterData("L$classPath/Player;", "players"))
 
-        val methodsToImplement = listOf(
-            "accountStatus", "baseX", "baseY", "cameraPitch", "cameraX",
-            "cameraY", "cameraYaw", "cameraZ", "clickModifier", "crosshairColor", "currentWorld", "destinationX",
-            "destinationY", "gameCycle", "gameState", "idleTime", "lastAction", "lastActionDifference",
-            "lastActionDifferenceMod", "lastActionTime", "lastActionTimeMod", "lastButtonClick", "lastButtonClickModA",
-            "lastButtonClickModM", "lastClickModifier", "lastClickModifierModA", "lastClickModifierModM", "lastClickX",
-            "lastClickY", "loginState", "lowestAvailableCameraPitch", "mapAngle", "menuCount", "menuHeight",
-            "menuWidth", "menuX", "menuY", "plane", "playerIndex", "selectedItemID", "selectedItemIndex",
-            "selectionState", "zoomExact"
-        )
-
-        for (method in methodsToImplement) {
-            injectMethod(method, classes)
+        for (method in getterList) {
+            injectMethod(method.fieldDescription, method.methodName, classes, Client::class.java.simpleName)
         }
+        val playerClazz = dream?.analyzers?.get(Player::class.java.simpleName)?.obsName
+        classes[playerClazz]?.interfaces?.add("$classPath/Player")
+        val playerFieldList = ArrayList<GetterData>()
+        playerFieldList.add(GetterData("Z", "hidden"))
+        playerFieldList.add(GetterData("I", "level"))
+//
+//
+        for (method in playerFieldList) {
+            injectMethod(method.fieldDescription, method.methodName, classes, Player::class.java.simpleName)
+        }
+
 
 
         //        getGameStateMethod.
@@ -109,28 +163,53 @@ class Analyser{
         out.close()
     }
 
+    enum class OpcodeType { LOAD, RETURN }
+
+    private fun getReturnOpcode(fieldDescription: String): Int {
+
+        return getOpcode(fieldDescription, OpcodeType.RETURN)
+    }
+
+    private fun getLoadOpcode(fieldDescription: String): Int {
+
+        return getOpcode(fieldDescription, OpcodeType.LOAD)
+    }
+
+    private fun getOpcode(fieldDescription: String, opcodeType: OpcodeType): Int {
+        return when (fieldDescription[0]) {
+            'F' -> if (opcodeType == OpcodeType.LOAD) FLOAT else FRETURN
+            'D' -> if (opcodeType == OpcodeType.LOAD) DLOAD else DRETURN
+            'J' -> if (opcodeType == OpcodeType.LOAD) LLOAD else LRETURN
+            'I', 'B', 'Z', 'S' -> if (opcodeType == OpcodeType.LOAD) ILOAD else IRETURN
+            else -> if (opcodeType == OpcodeType.LOAD) ALOAD else ARETURN
+        }
+    }
     private fun injectMethod(
+        fieldDescriptor: String,
         normalizedFieldName: String,
-        classes: MutableMap<String, ClassNode>
+        classes: MutableMap<String, ClassNode>,
+        analyserClass: String
     ) {
-        val fieldName = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get(normalizedFieldName)?.obsName
-        val signature = classes["client"]?.fields?.find { it.name == fieldName }?.signature
-        val methodNode = MethodNode(ACC_PUBLIC, "get_$normalizedFieldName", "()I", signature, null)
+        println("yyyy::class.java.simpleName: $analyserClass")
+        val fieldName = dream?.analyzers?.get(analyserClass)?.fields?.get(normalizedFieldName)?.obsName
+        val clazz = dream?.analyzers?.get(analyserClass)?.obsName
+        println("CLass $clazz")
+        val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
+        val methodNode = MethodNode(ACC_PUBLIC, "get_$normalizedFieldName", "()$fieldDescriptor", signature, null)
 
 
         val classNodeName =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get(normalizedFieldName)?.fieldTypeObsName
+            dream?.analyzers?.get(analyserClass)?.fields?.get(normalizedFieldName)?.fieldTypeObsName
 
-        val fieldDescriptor = "I"
-        val isStatic = classes["client"]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
+        val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
         if (!isStatic) {
-            methodNode.visitVarInsn(ALOAD, 0)
+            methodNode.visitVarInsn(getLoadOpcode(fieldDescriptor), 0)
         }
         methodNode.visitFieldInsn(fieldType, classNodeName, fieldName, fieldDescriptor)
 
         val multiplier =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get(normalizedFieldName)?.modifier
+            dream?.analyzers?.get(analyserClass)?.fields?.get(normalizedFieldName)?.modifier
         if (multiplier != null && multiplier != 0L) {
             println("Multiplier $multiplier")
             methodNode.visitLdcInsn(multiplier.toInt())
@@ -138,15 +217,14 @@ class Analyser{
         }
 
         println("$classNodeName $fieldName $fieldDescriptor $fieldType $signature")
-//        getGameStateMethod.instructions.insert(InsnNode(IRETURN))
-        methodNode.visitInsn(IRETURN)
+        methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
 
 
         methodNode.visitMaxs(0, 0)
         methodNode.visitEnd()
-        methodNode.accept(classes["client"])
+//        classes[clazz]?.methods?.add(methodNode)
+        methodNode.accept(classes[clazz])
 
 
-//        classes["client"]?.methods?.add(getGameStateMethod)
     }
 }

@@ -193,6 +193,12 @@ fun main(args: Array<String>){
                         g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
                         g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                        print("[")
+                        for (x in theClient.get_widgetHeights()) {
+                            print("$x,")
+                        }
+                        println("]")
+                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
                     }
 
                 })

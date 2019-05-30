@@ -38,8 +38,8 @@ interface Client : GameShell {
 //    fun get_host(): Any
     fun get_idleTime(): Int
 
-    //    fun get_isSpellSelected(): Any
-//    fun get_isWorldSelectorOpen(): Any
+    fun get_isSpellSelected(): Boolean
+    fun get_isWorldSelectorOpen(): Boolean
 //    fun get_itemTable(): Any
 //    fun get_keyboard(): Any
     fun get_lastAction(): Int
@@ -88,14 +88,14 @@ interface Client : GameShell {
     fun get_plane(): Int
     fun get_playerIndex(): Int
     //    fun get_playerModelCache(): Any
-    fun get_players(): Array<Player>
+//    fun get_players(): Array<Player>
 //    fun get_projectiles(): Any
 //    fun get_realLevel(): Any
 //    fun get_region(): Any
     fun get_selectedItemID(): Int
     fun get_selectedItemIndex(): Int
     //    fun get_selectedItemName(): Any
-//    fun get_selectedSpellName(): Any
+//    fun get_selectedSpellName(): String
     fun get_selectionState(): Int
 
     //    fun get_settings(): Any
@@ -104,11 +104,12 @@ interface Client : GameShell {
 //    fun get_socketWrapper(): Any
 //    fun get_tileHeights(): Any
 //    fun get_tileSettings(): Any
-//    fun get_username(): Any
+    fun get_username(): String
 //    fun get_varps(): Any
-//    fun get_widgetBoundsX(): Any
-//    fun get_widgetBoundsY(): Any
-//    fun get_widgetHeights(): Any
+fun get_widgetBoundsX(): IntArray
+
+    fun get_widgetBoundsY(): IntArray
+    fun get_widgetHeights(): IntArray
 //    fun get_widgetModelCache(): Any
 //    fun get_widgetNodes(): Any
 //    fun get_widgetWidths(): Any

@@ -168,7 +168,8 @@ class DreamBotAnalyzer{
         for (field in analyzers[clazz.simpleName]?.normalizedFields!!) {
             //x = fields["x"]?.resultValue?.toInt() ?: -1
             if (field.value.modifier != 0L) {
-                print("\"" + field.key + "\", ")
+//                print("\"" + field.key + "\", ")
+                println("getterList.add(GetterData(\"I\", \"" + field.key + "\"))")
             }
         }
     }
