@@ -1,6 +1,7 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.Main.Data.dream
+import com.p3achb0t.hook_interfaces.NameComposite
 import com.p3achb0t.rsclasses.*
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.ClassWriter
@@ -71,7 +72,12 @@ class Analyser{
         }
     }
 
-    data class GetterData(val fieldDescription: String, val methodName: String, val clazz: String = "")
+    data class GetterData(
+        val fieldDescription: String,
+        val methodName: String,
+        val clazz: String = "",
+        val returnFieldDescription: String = ""
+    )
 
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>) {
         //TODO add interface to client
@@ -81,6 +87,7 @@ class Analyser{
         //            for(inst in method.instructions)
         //                println("\t" + inst.opcode + " " + inst.type)
 //        }
+        val playerClazz = dream?.analyzers?.get(Player::class.java.simpleName)?.obsName
         val classPath = "com/p3achb0t/hook_interfaces"
         val getterList = ArrayList<GetterData>()
         getterList.add(GetterData("I", "accountStatus"))
@@ -132,21 +139,86 @@ class Analyser{
         getterList.add(GetterData("Ljava/lang/String;", "username"))
         getterList.add(GetterData("Z", "isSpellSelected"))
         getterList.add(GetterData("Z", "isWorldSelectorOpen"))
-//        getterList.add(GetterData("L$classPath/Player;", "players"))
+        getterList.add(GetterData("[L$playerClazz;", "players", returnFieldDescription = "[L$classPath/Player;"))
+        getterList.add(
+            GetterData(
+                "[[[L$playerClazz;",
+                "groundItemList",
+                returnFieldDescription = "[L$classPath/Player;"
+            )
+        )
 
         for (method in getterList) {
-            injectMethod(method.fieldDescription, method.methodName, classes, Client::class.java.simpleName)
+            injectMethod(method, classes, Client::class.java.simpleName)
         }
-        val playerClazz = dream?.analyzers?.get(Player::class.java.simpleName)?.obsName
+
+
+        val nameCompositeClazz = dream?.analyzers?.get(NameComposite::class.java.simpleName)?.obsName
         classes[playerClazz]?.interfaces?.add("$classPath/Player")
         val playerFieldList = ArrayList<GetterData>()
         playerFieldList.add(GetterData("Z", "hidden"))
+        playerFieldList.add(GetterData("Z", "standingStill"))
         playerFieldList.add(GetterData("I", "level"))
-//
+        playerFieldList.add(GetterData("I", "overheadIcon"))
+        playerFieldList.add(GetterData("I", "skullIcon"))
+        playerFieldList.add(GetterData("I", "team"))
+        playerFieldList.add(
+            GetterData(
+                "L$nameCompositeClazz;",
+                "name",
+                returnFieldDescription = "L$classPath/NameComposite;"
+            )
+        )
 //
         for (method in playerFieldList) {
-            injectMethod(method.fieldDescription, method.methodName, classes, Player::class.java.simpleName)
+            injectMethod(method, classes, Player::class.java.simpleName)
         }
+
+        classes[nameCompositeClazz]?.interfaces?.add("$classPath/NameComposite")
+        val nameFieldList = ArrayList<GetterData>()
+        nameFieldList.add(GetterData("Ljava/lang/String;", "formatted"))
+        nameFieldList.add(GetterData("Ljava/lang/String;", "name"))
+
+        for (method in nameFieldList) {
+            injectMethod(method, classes, NameComposite::class.java.simpleName)
+        }
+
+        val actorClazz = dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)?.obsName
+        classes[actorClazz]?.interfaces?.add("$classPath/Actor")
+        val fieldList = ArrayList<GetterData>()
+        fieldList.add(GetterData("I", "animation"))
+        fieldList.add(GetterData("I", "animationDelay"))
+        fieldList.add(GetterData("I", "combatTime"))
+        fieldList.add(GetterData("I", "frameOne"))
+        fieldList.add(GetterData("I", "frameTwo"))
+        fieldList.add(GetterData("I", "interacting"))
+        fieldList.add(GetterData("I", "localX"))
+        fieldList.add(GetterData("I", "localY"))
+        fieldList.add(GetterData("I", "orientation"))
+        fieldList.add(GetterData("I", "queueSize"))
+        fieldList.add(GetterData("I", "runtimeAnimation"))
+        fieldList.add(GetterData("I", "standAnimation"))
+
+        fieldList.add(GetterData("[I", "hitCycles"))
+        fieldList.add(GetterData("[I", "hitDamages"))
+        fieldList.add(GetterData("[I", "hitTypes"))
+        fieldList.add(GetterData("[I", "message"))
+        fieldList.add(GetterData("[I", "queueX"))
+        fieldList.add(GetterData("[I", "queueY"))
+
+        for (method in fieldList) {
+            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)
+        }
+
+        val renderableClazz =
+            dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)?.obsName
+        classes[renderableClazz]?.interfaces?.add("$classPath/Renderable")
+        fieldList.clear()
+        fieldList.add(GetterData("I", "modelHeight"))
+        for (method in fieldList) {
+            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)
+        }
+
 
 
 
@@ -185,17 +257,21 @@ class Analyser{
         }
     }
     private fun injectMethod(
-        fieldDescriptor: String,
-        normalizedFieldName: String,
+        getterData: GetterData,
         classes: MutableMap<String, ClassNode>,
         analyserClass: String
     ) {
+        val normalizedFieldName = getterData.methodName
+        val fieldDescriptor = getterData.fieldDescription
+        val returnFieldDescription =
+            if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
         println("yyyy::class.java.simpleName: $analyserClass")
         val fieldName = dream?.analyzers?.get(analyserClass)?.fields?.get(normalizedFieldName)?.obsName
         val clazz = dream?.analyzers?.get(analyserClass)?.obsName
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
-        val methodNode = MethodNode(ACC_PUBLIC, "get_$normalizedFieldName", "()$fieldDescriptor", signature, null)
+        val methodNode =
+            MethodNode(ACC_PUBLIC, "get_$normalizedFieldName", "()$returnFieldDescription", signature, null)
 
 
         val classNodeName =
@@ -204,7 +280,7 @@ class Analyser{
         val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
         if (!isStatic) {
-            methodNode.visitVarInsn(getLoadOpcode(fieldDescriptor), 0)
+            methodNode.visitVarInsn(ALOAD, 0)
         }
         methodNode.visitFieldInsn(fieldType, classNodeName, fieldName, fieldDescriptor)
 

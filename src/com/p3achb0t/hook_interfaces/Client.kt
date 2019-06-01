@@ -27,7 +27,7 @@ interface Client : GameShell {
     fun get_gameState(): Int
 
     //    fun get_grandExchangeItems(): Any
-//    fun get_groundItemList(): Any
+    fun get_groundItemList(): Array<Array<Array<*>>>
 //    fun get_groundItemModelCache(): Any
 //    fun get_hintArrowNPCIndex(): Any
 //    fun get_hintArrowPlayerIndex(): Any
@@ -88,7 +88,7 @@ interface Client : GameShell {
     fun get_plane(): Int
     fun get_playerIndex(): Int
     //    fun get_playerModelCache(): Any
-//    fun get_players(): Array<Player>
+    fun get_players(): Array<Player>
 //    fun get_projectiles(): Any
 //    fun get_realLevel(): Any
 //    fun get_region(): Any

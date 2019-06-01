@@ -7,6 +7,7 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
+import com.p3achb0t.analyser.RuneLiteAnalyzer
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
@@ -61,6 +62,8 @@ fun main(args: Array<String>){
 //    val gamePackWithPath = downloader.getGamepack()
     val gamePackWithPath = downloader.getLocalGamepack()
     println("Using $gamePackWithPath")
+
+    RuneLiteAnalyzer().getHooks()
 
     dream = DreamBotAnalyzer()
 
@@ -193,12 +196,20 @@ fun main(args: Array<String>){
                         g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
                         g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
-                        print("[")
-                        for (x in theClient.get_widgetHeights()) {
-                            print("$x,")
+//                        print("[")
+//                        for (x in theClient.get_widgetHeights()) {
+//                            print("$x,")
+//                        }
+//                        println("]")
+//                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
+                        val players = theClient.get_players()
+                        players.iterator().forEach { _player ->
+                            if (_player != null && _player.get_level() > 0) {
+                                print("${_player.get_name()} ${_player.get_level()}, ")
+                            }
                         }
-                        println("]")
-                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
+                        println()
+//                        println(players.size)
                     }
 
                 })
