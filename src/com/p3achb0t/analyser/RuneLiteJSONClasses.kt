@@ -1,21 +1,21 @@
 package com.p3achb0t.analyser
 
 class RuneLiteJSONClasses {
-    data class RuneLiteClass(
+    data class ClassDefinition(
         val _class: String,
         val name: String,
         val _super: String,
         val access: Int,
         val interfaces: Array<String>,
-        val fields: Array<RuneLiteField>,
-        val methods: Array<RuneLiteMethod>,
-        val constructors: Array<RuneLiteConstructor>
+        val fields: Array<FieldDefinition>,
+        val methods: Array<MethodDefinition>,
+        val constructors: Array<ConstructorDefinition>
     )
 }
 
-data class RuneLiteConstructor(val access: Int, val descriptor: String)
+data class ConstructorDefinition(val access: Int, val descriptor: String)
 
-data class RuneLiteMethod(
+data class MethodDefinition(
     val method: String,
     val owner: String,
     val name: String,
@@ -24,10 +24,11 @@ data class RuneLiteMethod(
     val descriptor: String
 )
 
-data class RuneLiteField(
+data class FieldDefinition(
     val field: String,
     val owner: String,
     val name: String,
     val access: Int,
-    val descriptor: String
+    val descriptor: String,
+    val decoder: Long = 0L
 )
