@@ -11,7 +11,6 @@ import com.p3achb0t.analyser.RuneLiteAnalyzer
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
-import com.p3achb0t.reflectionutils.getClientData
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
 import com.p3achb0t.user_inputs.Mouse
@@ -135,12 +134,14 @@ fun main(args: Array<String>){
         start()
 
         println(client.name)
-        val currentWorldObs = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.obsName
+        val currentWorldObs =
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "currentWorld" }?.name
         val modifer =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("currentWorld")?.modifier?.toInt()
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "currentWorld" }
+                ?.decoder?.toInt()
         println(modifer)
 
-        dream?.classRefObs?.get("client")?.fields?.get("currentWorld")?.obsName
+        dream?.classRefObs?.get("client")?.fields?.find { it.field == "currentWorld" }?.name
         val worldField = Main.client!!::class.java.getDeclaredField(currentWorldObs)
         worldField.isAccessible = true
 
@@ -151,8 +152,10 @@ fun main(args: Array<String>){
 
     game.apply {
 
-        val canvasType = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("canvas")?.fieldTypeObsName
-        val canvasFieldName = dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.get("canvas")?.obsName
+        val canvasType =
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "canvas" }?.owner
+        val canvasFieldName =
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "canvas" }?.name
 
         println("canvas " + canvasType + " Field parentId : $canvasFieldName")
         var loaded = false
@@ -266,7 +269,7 @@ fun main(args: Array<String>){
         val mouse = Mouse()
         repeat(1000) {
             try {
-                clientData = getClientData()
+//                clientData = getClientData()
 
                 // When loaded login
                 if (!loggedIn && clientData.gameState == "10") {

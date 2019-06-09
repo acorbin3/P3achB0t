@@ -2,33 +2,35 @@ package com.p3achb0t.analyser
 
 class RuneLiteJSONClasses {
     data class ClassDefinition(
-        val _class: String,
-        val name: String,
-        val _super: String,
-        val access: Int,
-        val interfaces: Array<String>,
-        val fields: Array<FieldDefinition>,
-        val methods: Array<MethodDefinition>,
-        val constructors: Array<ConstructorDefinition>
+        var _class: String = "",
+        var name: String = "",
+        var _super: String = "",
+        var access: Int = 0,
+        var interfaces: ArrayList<String> = arrayListOf(),
+        var fields: ArrayList<FieldDefinition> = arrayListOf(),
+        var methods: ArrayList<MethodDefinition> = arrayListOf(),
+        var constructors: ArrayList<ConstructorDefinition> = arrayListOf()
+    )
+
+    data class ConstructorDefinition(var access: Int = 0, var descriptor: String = "")
+
+    data class MethodDefinition(
+        var method: String = "",
+        var owner: String = "",
+        var name: String = "",
+        var access: Int = 0,
+        var parameters: ArrayList<String> = arrayListOf(),
+        var descriptor: String = ""
+    )
+
+    data class FieldDefinition(
+        var field: String = "",
+        var owner: String = "",
+        var name: String = "",
+        var access: Int = 0,
+        var descriptor: String = "",
+        var decoder: Long = 0L
     )
 }
 
-data class ConstructorDefinition(val access: Int, val descriptor: String)
 
-data class MethodDefinition(
-    val method: String,
-    val owner: String,
-    val name: String,
-    val access: Int,
-    val parameters: Array<String>,
-    val descriptor: String
-)
-
-data class FieldDefinition(
-    val field: String,
-    val owner: String,
-    val name: String,
-    val access: Int,
-    val descriptor: String,
-    val decoder: Long = 0L
-)

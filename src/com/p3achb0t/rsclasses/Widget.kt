@@ -2,7 +2,6 @@ package com.p3achb0t.rsclasses
 
 import com.p3achb0t.Main
 import com.p3achb0t.reflectionutils.getIndexFromReflectedArray
-import com.p3achb0t.reflectionutils.getWidgetData
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import java.awt.Rectangle
 
@@ -57,9 +56,11 @@ class Widget : RSClasses {
 
     private fun getwidgetX(): Int {
         return if (parentId > 0) {
-            val parentIndex = getParentIndex()
-            val parentWidget = getWidgetData(parentIndex)
-            parentWidget.getwidgetX() + x - scrollX
+            0
+//            val parentIndex = getParentIndex()
+            //TODO - Update with injection
+//            val parentWidget = getWidgetData(parentIndex)
+//            parentWidget.getwidgetX() + x - scrollX
         } else {
             getBoundInfo().x
         }
@@ -67,9 +68,11 @@ class Widget : RSClasses {
 
     private fun getwidgetY(): Int {
         return if (parentId > 0) {
-            val parentIndex = getParentIndex()
-            val parentWidget = getWidgetData(parentIndex)
-            parentWidget.getwidgetY() + y - scrollY
+            0
+            //TODO - Update with injection
+//            val parentIndex = getParentIndex()
+//            val parentWidget = getWidgetData(parentIndex)
+//            parentWidget.getwidgetY() + y - scrollY
         } else {
             getBoundInfo().y
         }
@@ -102,28 +105,28 @@ class Widget : RSClasses {
             val widgetBoundXField = clazz.getDeclaredField(
                 Main.dream?.analyzers?.get(
                     Client::class.java.simpleName
-                )?.normalizedFields?.get("widgetBoundsX")?.obsName
+                )?.fields?.find { it.field == "widgetBoundsX" }?.name
             )
             val widgetX = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetBoundXField)
 
             val widgetBoundYField = clazz.getDeclaredField(
                 Main.dream?.analyzers?.get(
                     Client::class.java.simpleName
-                )?.normalizedFields?.get("widgetBoundsY")?.obsName
+                )?.fields?.find { it.field == "widgetBoundsY" }?.name
             )
             val widgetY = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetBoundYField)
 
             val widgetHeightsField = clazz.getDeclaredField(
                 Main.dream?.analyzers?.get(
                     Client::class.java.simpleName
-                )?.normalizedFields?.get("widgetHeights")?.obsName
+                )?.fields?.find { it.field == "widgetHeights" }?.name
             )
             val widgetHeight = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetHeightsField)
 
             val widgetWidthsField = clazz.getDeclaredField(
                 Main.dream?.analyzers?.get(
                     Client::class.java.simpleName
-                )?.normalizedFields?.get("widgetWidths")?.obsName
+                )?.fields?.find { it.field == "widgetWidths" }?.name
             )
             val widgetWidth = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetWidthsField)
 

@@ -1,7 +1,6 @@
 package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.Main
-import com.p3achb0t.reflectionutils.getWidgetData
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.RSClasses
 import com.p3achb0t.rsclasses.WidgetIndex
@@ -43,15 +42,17 @@ class WidgetExplorer : View() {
                     println("($parentId,$childID)")
                     val widgetDetailIndex = "$parentId,$childID"
                     println(controller.widgetDetails[widgetDetailIndex])
-                    val currentWidget = getWidgetData(it)
+                    //TODO - Update with injection
+//                    val currentWidget = getWidgetData(it)
                     //For the parent trees, there is no parent ID
                     if (parentId != "") {
-                        Main.selectedWidget = currentWidget
+                        //TODO - Update with injection
+//                        Main.selectedWidget = currentWidget
                     } else {
                         Main.selectedWidget = null
                     }
-
-                    controller.currentDetail.set(currentWidget.toString())
+//TODO - Update with injection
+//                    controller.currentDetail.set(currentWidget.toString())
 
                 }
 
@@ -85,10 +86,10 @@ class WidgetController : Controller() {
         allWidgets.clear()
         val widgetClassName = Main.dream?.analyzers?.get(
             Client::class.java.simpleName
-        )?.normalizedFields?.get("widgets")?.fieldTypeObsName
+        )?.fields?.find { it.field == "widgets" }?.owner
         val widgetFieldName = Main.dream?.analyzers?.get(
             Client::class.java.simpleName
-        )?.normalizedFields?.get("widgets")?.obsName
+        )?.fields?.find { it.field == "widgets" }?.name
 
         val widgetClazz = Main.classLoader?.loadClass(widgetClassName)
         val widgetField = widgetClazz?.getDeclaredField(widgetFieldName)
