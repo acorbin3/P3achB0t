@@ -41,7 +41,7 @@ class RuneLiteAnalyzer {
             analyzers[clazz._class] = clazz
             classRefObs[clazz.name] = clazz
         }
-        val folder = "C:\\Users\\C0rbin\\IdeaProjects\\P3achB0t\\src\\com\\p3achb0t\\_runelite_interfaces/"
+        val folder = "./\\_runelite_interfaces/"
         val _package = "com.p3achb0t._runelite_interfaces"
         createInterfaces(folder, _package, analyzers, classRefObs)
 

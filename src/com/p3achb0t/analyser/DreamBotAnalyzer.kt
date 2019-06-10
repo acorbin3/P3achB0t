@@ -1,6 +1,7 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.class_generation.createInterfaces
+import com.p3achb0t.class_generation.createJavaInterfaces
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -70,14 +71,14 @@ class DreamBotAnalyzer{
                 val splitField = fieldLine.split(" ")
                 val field = RuneLiteJSONClasses.FieldDefinition()
                 field.field = splitField[0]
-                field.name = splitField[1]
+                field.owner = splitField[1]
                 if(splitField.size>2)
                     field.name = splitField[2]
                 if(splitField.size>3)
                     field.decoder = splitField[3].replace("L", "").toLong()
                 analyzers[currentClass]?.fields?.add(field)
-//                classRefObs[analyzers[currentClass]?.name]?.fields?.set(field.obsName, field)
-//                classRefObs[analyzers[currentClass]?.name]?.normalizedFields?.set(field.field, field)
+//                classRefObs[analyzers[currentClass]?.name]?.fields?.add(field)
+
                 println("\t$field")
 
 
@@ -129,7 +130,7 @@ class DreamBotAnalyzer{
         println("-----------------")
         println("\n")
         val fn =
-            "C:\\Users\\C0rbin\\IdeaProjects\\P3achB0t\\src\\com\\p3achb0t\\hook_interfaces/" + clazz.simpleName + ".kt"
+            "./\\hook_interfaces/" + clazz.simpleName + ".kt"
         val file = File(fn)
         file.printWriter().use { out ->
             out.println("package com.p3achb0t.hook_interfaces")
@@ -154,6 +155,8 @@ class DreamBotAnalyzer{
 
     fun parseJar(jar: JarFile){
         // We are going to look at the Jar and find the Class Nodes so can get more data
+
+        val classNodeRefs = mutableMapOf<String, ClassNode>()
         val enumeration = jar.entries()
         while(enumeration.hasMoreElements()){
             val entry = enumeration.nextElement()
@@ -161,7 +164,7 @@ class DreamBotAnalyzer{
                 val classReader = ClassReader(jar.getInputStream(entry))
                 val classNode = ClassNode()
                 classReader.accept(classNode, ClassReader.SKIP_DEBUG)// Missing | ClassReader.SKIP_FRAMES
-
+                classNodeRefs[classNode.name] = classNode
                 //TODO - Update the description of the fields
                 if(classNode.name in classRefObs) {
                     classRefObs[classNode.name]?._super = classNode.superName
@@ -181,10 +184,31 @@ class DreamBotAnalyzer{
                 }
             }
         }
+
+        //Update desc and access of all fileds in classRefObs and analyzers
+        //Loop over each class, then field found in classRef
+        classRefObs.forEach { className, classObj ->
+            classObj.fields.forEach { field ->
+                if(field.owner in classNodeRefs){
+                    println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?._class}) obs name: ${field.name} ")
+                    classNodeRefs[field.owner]?.fields?.forEach {
+                        if(field.name == it.name){
+                            field.descriptor = it.desc
+                            field.access = it.access
+
+                        }
+                    }
+
+                }
+            }
+        }
+
         val newPackage = "dreambot_interfaces"
-        val folder = "C:\\Users\\C0rbin\\IdeaProjects\\P3achB0t\\src\\com\\p3achb0t\\$newPackage/"
+        val folder = "./\\$newPackage/"
         val _package = "com.p3achb0t.$newPackage"
+
         createInterfaces(folder, _package, analyzers, classRefObs)
+        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
     }
     //TODO - Update when we need to generate super graph
 //    fun getSuperName(classNode: ClassNode):String{

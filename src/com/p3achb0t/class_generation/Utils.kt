@@ -32,6 +32,21 @@ fun getType(discriptor: String): String {
     }
 }
 
+fun getJavaType(discriptor: String): String {
+    return when (discriptor) {
+        "C" -> "char"
+        "B" -> "byte"
+        "S" -> "Short"
+        "Z" -> "Boolean"
+        "D" -> "double"
+        "J" -> "long"
+        "I" -> "int"
+        "F" -> "Float"
+        "java/lang/String" -> "String"
+        else -> discriptor
+    }
+}
+
 fun stripDiscriptorType(descriptor: String): String {
     return if (descriptor.contains(";")) {
         descriptor.substring(1, descriptor.length - 1)
@@ -56,6 +71,17 @@ fun getArrayString(count: Int, type: String): String {
     }
 }
 
+fun getJavaArrayString(count: Int, type: String): String {
+    return when (count) {
+        1 -> "$type[]"
+        2 -> "$type[][]"
+        3 -> "$type[][][]"
+        4 -> "$type[][][][]"
+        5 -> "$type[][][][][]"
+        else -> type
+    }
+}
+
 fun isFieldNameUnique(
     clazz: RuneLiteJSONClasses.ClassDefinition?,
     fieldName: String,
@@ -66,18 +92,18 @@ fun isFieldNameUnique(
     }
     var count = 0
     clazz?.fields?.iterator()?.forEach { field ->
-        println("\t ${field.field}")
+//        println("\t ${field.field}")
         if (field.field == fieldName) {
             count += 1
         }
     }
 
     val superClass = clazz?._super
-    println("$count $superClass")
+//    println("$count $superClass")
     if (superClass == "")
         return count
     if (superClass in classRefObs) {
-        println(classRefObs[superClass]?._class)
+//        println(classRefObs[superClass]?._class)
         return isFieldNameUnique(classRefObs[superClass], fieldName, classRefObs).let { count.plus(it) }
     }
     return count
