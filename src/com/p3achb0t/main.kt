@@ -78,7 +78,7 @@ fun main(args: Array<String>){
     analyser.parseJar(gamePackJar)
 
 
-    dream?.createAccessorFieldsForClass(Client::class.java)
+//    dream?.createAccessorFieldsForClass(Client::class.java)
 //    dream.createAccessorFieldsForClass(Tile::class.java)
 //    dream.createAccessorFieldsForClass(Renderable::class.java)
 //    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
@@ -97,7 +97,7 @@ fun main(args: Array<String>){
     val clientClazz = Main.classLoader?.loadClass("client")?.newInstance()
     val game: Applet = clientClazz as Applet
     Main(game)
-    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
+//    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
 
 
 
@@ -192,12 +192,12 @@ fun main(args: Array<String>){
                     override fun onPaint(g: Graphics) {
                         g.color = Color.white
                         g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
-                        g.drawString("clientData.gameCycle :${theClient.get_gameCycle()}", 50, 60)
-                        g.drawString("Game State:: ${theClient.get_gameState()}", 50, 70)
-                        g.drawString("clientData.loginState :${theClient.get_loginState()}", 50, 80)
-                        g.drawString("Account status :${theClient.get_accountStatus()}", 50, 90)
-                        g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
-                        g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
+//                        g.drawString("clientData.gameCycle :${theClient.get_gameCycle()}", 50, 60)
+//                        g.drawString("Game State:: ${theClient.get_gameState()}", 50, 70)
+//                        g.drawString("clientData.loginState :${theClient.get_loginState()}", 50, 80)
+//                        g.drawString("Account status :${theClient.get_accountStatus()}", 50, 90)
+//                        g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
+//                        g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
 //                        print("[")
 //                        for (x in theClient.get_widgetHeights()) {
@@ -205,12 +205,13 @@ fun main(args: Array<String>){
 //                        }
 //                        println("]")
 //                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
-                        val players = theClient.get_players()
-                        players.iterator().forEach { _player ->
-                            if (_player != null && _player.get_level() > 0) {
-                                print("${_player.get_name()} ${_player.get_level()}, ")
-                            }
-                        }
+
+//                        val players = theClient.get_players()
+//                        players.iterator().forEach { _player ->
+//                            if (_player != null && _player.get_level() > 0) {
+//                                print("${_player.get_name()} ${_player.get_level()}, ")
+//                            }
+//                        }
                         println()
 //                        println(players.size)
                     }
@@ -281,13 +282,13 @@ fun main(args: Array<String>){
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
                 }
-                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
+//                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
 //                    getLocalNPCData()
 //                    getLocalPlayersData()
 //                    getGroundItemData()
 //                    getItemTableData()
 //                    getRegion()
-                }
+//                }
             } catch (e: Exception) {
                 println("Exception" + e.toString())
                 for (statck in e.stackTrace) {

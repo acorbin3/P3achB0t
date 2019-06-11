@@ -1,7 +1,6 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.Main.Data.dream
-import com.p3achb0t.hook_interfaces.NameComposite
 import com.p3achb0t.rsclasses.*
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.ClassWriter
@@ -81,7 +80,7 @@ class Analyser{
 
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>) {
         //TODO add interface to client
-        classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
+//        classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
 //        classes["client"]?.methods?.listIterator()?.forEach { method ->
 //            println(method.name + " " + method.desc)
         //            for(inst in method.instructions)
@@ -148,76 +147,76 @@ class Analyser{
 //            )
 //        )
 
-        for (method in getterList) {
-            injectMethod(method, classes, Client::class.java.simpleName)
-        }
+//        for (method in getterList) {
+//            injectMethod(method, classes, Client::class.java.simpleName)
+//        }
 
 
-        val nameCompositeClazz = dream?.analyzers?.get(NameComposite::class.java.simpleName)?.name
-        classes[playerClazz]?.interfaces?.add("$classPath/Player")
-        val playerFieldList = ArrayList<GetterData>()
-        playerFieldList.add(GetterData("Z", "hidden"))
-        playerFieldList.add(GetterData("Z", "standingStill"))
-        playerFieldList.add(GetterData("I", "level"))
-        playerFieldList.add(GetterData("I", "overheadIcon"))
-        playerFieldList.add(GetterData("I", "skullIcon"))
-        playerFieldList.add(GetterData("I", "team"))
-        playerFieldList.add(
-            GetterData(
-                "L$nameCompositeClazz;",
-                "name",
-                returnFieldDescription = "L$classPath/NameComposite;"
-            )
-        )
+//        val nameCompositeClazz = dream?.analyzers?.get(NameComposite::class.java.simpleName)?.name
+//        classes[playerClazz]?.interfaces?.add("$classPath/Player")
+//        val playerFieldList = ArrayList<GetterData>()
+//        playerFieldList.add(GetterData("Z", "hidden"))
+//        playerFieldList.add(GetterData("Z", "standingStill"))
+//        playerFieldList.add(GetterData("I", "level"))
+//        playerFieldList.add(GetterData("I", "overheadIcon"))
+//        playerFieldList.add(GetterData("I", "skullIcon"))
+//        playerFieldList.add(GetterData("I", "team"))
+//        playerFieldList.add(
+//            GetterData(
+//                "L$nameCompositeClazz;",
+//                "name",
+//                returnFieldDescription = "L$classPath/NameComposite;"
+//            )
+//        )
 //
-        for (method in playerFieldList) {
-            injectMethod(method, classes, Player::class.java.simpleName)
-        }
+//        for (method in playerFieldList) {
+//            injectMethod(method, classes, Player::class.java.simpleName)
+//        }
+//
+//        classes[nameCompositeClazz]?.interfaces?.add("$classPath/NameComposite")
+//        val nameFieldList = ArrayList<GetterData>()
+//        nameFieldList.add(GetterData("Ljava/lang/String;", "formatted"))
+//        nameFieldList.add(GetterData("Ljava/lang/String;", "name"))
+//
+//        for (method in nameFieldList) {
+//            injectMethod(method, classes, NameComposite::class.java.simpleName)
+//        }
 
-        classes[nameCompositeClazz]?.interfaces?.add("$classPath/NameComposite")
-        val nameFieldList = ArrayList<GetterData>()
-        nameFieldList.add(GetterData("Ljava/lang/String;", "formatted"))
-        nameFieldList.add(GetterData("Ljava/lang/String;", "name"))
+//        val actorClazz = dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)?.name
+//        classes[actorClazz]?.interfaces?.add("$classPath/Actor")
+//        val fieldList = ArrayList<GetterData>()
+//        fieldList.add(GetterData("I", "animation"))
+//        fieldList.add(GetterData("I", "animationDelay"))
+//        fieldList.add(GetterData("I", "combatTime"))
+//        fieldList.add(GetterData("I", "frameOne"))
+//        fieldList.add(GetterData("I", "frameTwo"))
+//        fieldList.add(GetterData("I", "interacting"))
+//        fieldList.add(GetterData("I", "localX"))
+//        fieldList.add(GetterData("I", "localY"))
+//        fieldList.add(GetterData("I", "orientation"))
+//        fieldList.add(GetterData("I", "queueSize"))
+//        fieldList.add(GetterData("I", "runtimeAnimation"))
+//        fieldList.add(GetterData("I", "standAnimation"))
+//
+//        fieldList.add(GetterData("[I", "hitCycles"))
+//        fieldList.add(GetterData("[I", "hitDamages"))
+//        fieldList.add(GetterData("[I", "hitTypes"))
+//        fieldList.add(GetterData("[I", "message"))
+//        fieldList.add(GetterData("[I", "queueX"))
+//        fieldList.add(GetterData("[I", "queueY"))
+//
+//        for (method in fieldList) {
+//            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)
+//        }
 
-        for (method in nameFieldList) {
-            injectMethod(method, classes, NameComposite::class.java.simpleName)
-        }
-
-        val actorClazz = dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)?.name
-        classes[actorClazz]?.interfaces?.add("$classPath/Actor")
-        val fieldList = ArrayList<GetterData>()
-        fieldList.add(GetterData("I", "animation"))
-        fieldList.add(GetterData("I", "animationDelay"))
-        fieldList.add(GetterData("I", "combatTime"))
-        fieldList.add(GetterData("I", "frameOne"))
-        fieldList.add(GetterData("I", "frameTwo"))
-        fieldList.add(GetterData("I", "interacting"))
-        fieldList.add(GetterData("I", "localX"))
-        fieldList.add(GetterData("I", "localY"))
-        fieldList.add(GetterData("I", "orientation"))
-        fieldList.add(GetterData("I", "queueSize"))
-        fieldList.add(GetterData("I", "runtimeAnimation"))
-        fieldList.add(GetterData("I", "standAnimation"))
-
-        fieldList.add(GetterData("[I", "hitCycles"))
-        fieldList.add(GetterData("[I", "hitDamages"))
-        fieldList.add(GetterData("[I", "hitTypes"))
-        fieldList.add(GetterData("[I", "message"))
-        fieldList.add(GetterData("[I", "queueX"))
-        fieldList.add(GetterData("[I", "queueY"))
-
-        for (method in fieldList) {
-            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)
-        }
-
-        val renderableClazz =
-            dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)?.name
-        classes[renderableClazz]?.interfaces?.add("$classPath/Renderable")
-        fieldList.clear()
-        fieldList.add(GetterData("I", "modelHeight"))
-        for (method in fieldList) {
-            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)
-        }
+//        val renderableClazz =
+//            dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)?.name
+//        classes[renderableClazz]?.interfaces?.add("$classPath/Renderable")
+//        fieldList.clear()
+//        fieldList.add(GetterData("I", "modelHeight"))
+//        for (method in fieldList) {
+//            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)
+//        }
 
 
 
