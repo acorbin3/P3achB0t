@@ -2,8 +2,13 @@ package com.p3achb0t.class_generation
 
 import com.p3achb0t.analyser.RuneLiteJSONClasses
 
-fun isBaseType(discriptor: String): Boolean {
-    return when (discriptor) {
+
+fun cleanType(descriptor: String): String {
+    return stripDiscriptorType(stripArray(descriptor))
+}
+
+fun isBaseType(descriptor: String): Boolean {
+    return when (cleanType(descriptor)) {
         "C" -> true
         "B" -> true
         "S" -> true

@@ -107,15 +107,9 @@ fun main(args: Array<String>){
     }
     val jFrame = JFrame()
     jFrame.title = "Runescape"
-//    val jMenuBar = JMenuBar()
-//    val jmenu = JMenu()
-//    val jItem = JMenuItem("size")
-//    jmenu.add(jItem)
-//    jMenuBar.add(jmenu)
     jFrame.apply {
 
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-//        add(jMenuBar)
         add(game)
 
         pack()
@@ -143,9 +137,9 @@ fun main(args: Array<String>){
 
         val worldNum = worldField.getInt(game) * modifer!!
         println("currentWorld :$worldNum")
-        sleep(100)
-    }
 
+    }
+    sleep(500)
     game.apply {
 
         val canvasType =

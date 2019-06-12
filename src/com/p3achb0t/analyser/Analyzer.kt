@@ -1,6 +1,8 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.Main.Data.dream
+import com.p3achb0t.class_generation.cleanType
+import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.rsclasses.*
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.ClassWriter
@@ -80,18 +82,35 @@ class Analyser{
 
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
         //TODO add interface to client
-
+        val classPath = "com/p3achb0t/hook_interfaces"
         dream?.classRefObs?.forEach { obsClass, clazzData ->
             if (obsClass in classes) {
-                val classInterface = "com/p3achb0t/hook_interfaces/${clazzData._class}"
+                val classInterface = "$classPath/${clazzData._class}"
                 println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
                 val getterList = ArrayList<GetterData>()
                 clazzData.fields.forEach {
-                    println("\t Adding method ${it.field} descriptor ${it.descriptor}")
-                    getterList.add(GetterData(it.descriptor, it.field))
-                }
+                    if (it.owner != "broken") {
+                        println("\t Adding method ${it.field} descriptor ${it.descriptor}")
+                        val getter: GetterData
+                        if (isBaseType(it.descriptor)) {
+                            getter = GetterData(it.descriptor, it.field)
 
+                        } else {
+                            val clazzName = dream.classRefObs[cleanType(it.descriptor)]?._class
+                            var returnType = "L$classPath/$clazzName;"
+                            val arrayCount = it.descriptor.count { char -> char == '[' }
+                            returnType = "[".repeat(arrayCount) + returnType
+                            //If the descriptor is a base java type, just use that
+                            if (it.descriptor.contains("java")) {
+                                returnType = it.descriptor
+                            }
+                            getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
+                        }
+                        getterList.add(getter)
+                        println("\t\t$getter")
+                    }
+                }
             }
         }
 //        classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
@@ -101,7 +120,7 @@ class Analyser{
         //                println("\t" + inst.opcode + " " + inst.type)
 //        }
         val playerClazz = dream?.analyzers?.get(Player::class.java.simpleName)?.name
-        val classPath = "com/p3achb0t/hook_interfaces"
+
         val getterList = ArrayList<GetterData>()
         getterList.add(GetterData("I", "accountStatus"))
         getterList.add(GetterData("I", "baseX"))
