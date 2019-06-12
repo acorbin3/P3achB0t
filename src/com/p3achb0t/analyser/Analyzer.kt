@@ -18,7 +18,7 @@ class Analyser{
 
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
 
-    fun parseJar(jar: JarFile){
+    fun parseJar(jar: JarFile, dream: DreamBotAnalyzer?) {
         val enumeration = jar.entries()
         val analyzers = mutableMapOf<String,RSClasses>()
         while(enumeration.hasMoreElements()){
@@ -43,7 +43,7 @@ class Analyser{
 
         //        analyzeClasses(analyzers)
 
-        injectJARWithInterfaces(classes)
+        injectJARWithInterfaces(classes, dream)
 
 
     }
@@ -78,8 +78,22 @@ class Analyser{
         val returnFieldDescription: String = ""
     )
 
-    private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>) {
+    private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
         //TODO add interface to client
+
+        dream?.classRefObs?.forEach { obsClass, clazzData ->
+            if (obsClass in classes) {
+                val classInterface = "com/p3achb0t/hook_interfaces/${clazzData._class}"
+                println("Adding class iterface to $obsClass $classInterface")
+                classes[obsClass]?.interfaces?.add(classInterface)
+                val getterList = ArrayList<GetterData>()
+                clazzData.fields.forEach {
+                    println("\t Adding method ${it.field} descriptor ${it.descriptor}")
+                    getterList.add(GetterData(it.descriptor, it.field))
+                }
+
+            }
+        }
 //        classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
 //        classes["client"]?.methods?.listIterator()?.forEach { method ->
 //            println(method.name + " " + method.desc)
@@ -255,6 +269,11 @@ class Analyser{
             else -> if (opcodeType == OpcodeType.LOAD) ALOAD else ARETURN
         }
     }
+
+    private fun injectMethod(field: RuneLiteJSONClasses.FieldDefinition) {
+
+    }
+
     private fun injectMethod(
         getterData: GetterData,
         classes: MutableMap<String, ClassNode>,
@@ -270,7 +289,7 @@ class Analyser{
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
         val methodNode =
-            MethodNode(ACC_PUBLIC, "get_$normalizedFieldName", "()$returnFieldDescription", signature, null)
+            MethodNode(ACC_PUBLIC, "$normalizedFieldName", "()$returnFieldDescription", signature, null)
 
 
         //TODO - This might not be correct

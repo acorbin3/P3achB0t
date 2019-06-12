@@ -56,14 +56,15 @@ fun createInterfaces(
                             genFunction(field, clazz, classRefObs, out, arrayCount, returnType)
                         } else {
                             out.println(
-                                "\t fun get_${field.field}(): ${getArrayString(
+                                "\tfun get${field.field.capitalize()}(): ${getArrayString(
                                     arrayCount,
                                     returnType
                                 )}"
                             )
                         }
                     } else {
-                        out.println("\t fun get_" + field.field + "(): Any")
+
+                        out.println("\tfun get" + field.field.capitalize() + "(): Any")
                     }
                 }
             }
@@ -79,33 +80,31 @@ private fun genFunction(
     out: PrintWriter,
     arrayCount: Int,
     returnType: String
-) {
+): String {
+    var functionName = ""
 //    println("Checking ${field.field} in class ${clazz.value._class} file is in ${classRefObs[clazz.value._super]?._class}")
     val fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
     if (fieldCount == 0) {
         out.println(
-            "\t fun get_${field.field}(): ${getArrayString(
+            "\tfun get${field.field.capitalize()}(): ${getArrayString(
                 arrayCount,
                 returnType
             )}"
         )
+        functionName = "get${field.field.capitalize()}"
     } else {
         //TODO - update internal fields to include the class
 
         val lField = classRefObs[clazz.value.name]?.fields?.find { it.field == field.field }
         field.field = "${clazz.value._class}_${field.field}"
         lField?.field = field.field
-//        println(
-//            "^^^^^Not Unique \"\\t fun get_${field.field}(): ${getArrayString(
-//                arrayCount,
-//                returnType
-//            )}"
-//        )
         out.println(
-            "\t fun get_${field.field}(): ${getArrayString(
+            "\tfun get${field.field.capitalize()}(): ${getArrayString(
                 arrayCount,
                 returnType
             )}"
         )
+        functionName = "get${field.field.capitalize()}"
     }
+    return functionName
 }

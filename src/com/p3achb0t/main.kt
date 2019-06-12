@@ -1,7 +1,5 @@
 package com.p3achb0t
 
-import UserDetails
-import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.Main.Data.customCanvas
 import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
@@ -13,21 +11,19 @@ import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
-import com.p3achb0t.user_inputs.Mouse
-import com.p3achb0t.user_inputs.sendKeys
 import com.p3achb0t.widgetexplorer.WidgetExplorer
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import tornadofx.App
-import tornadofx.launch
 import java.applet.Applet
-import java.awt.*
+import java.awt.Canvas
+import java.awt.Color
+import java.awt.Dimension
+import java.awt.Graphics
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 import java.io.File
+import java.lang.Thread.sleep
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarFile
@@ -75,7 +71,7 @@ fun main(args: Array<String>){
 
     val analyser = Analyser()
 
-    analyser.parseJar(gamePackJar)
+    analyser.parseJar(gamePackJar, dream)
 
 
 //    dream?.createAccessorFieldsForClass(Client::class.java)
@@ -147,7 +143,7 @@ fun main(args: Array<String>){
 
         val worldNum = worldField.getInt(game) * modifer!!
         println("currentWorld :$worldNum")
-
+        sleep(100)
     }
 
     game.apply {
@@ -212,7 +208,7 @@ fun main(args: Array<String>){
 //                                print("${_player.get_name()} ${_player.get_level()}, ")
 //                            }
 //                        }
-                        println()
+//                        println()
 //                        println(players.size)
                     }
 
@@ -253,6 +249,7 @@ fun main(args: Array<String>){
                 canvasField.set(game, customCanvas) // Needed to have Applet instead of null
                 game.add(customCanvas)
                 loaded = true
+                println("Reflected custom canvas")
 
                 break
 
@@ -265,41 +262,41 @@ fun main(args: Array<String>){
         }
     }
 
-    GlobalScope.launch {
-        var loggedIn = false
-        val mouse = Mouse()
-        repeat(1000) {
-            try {
-//                clientData = getClientData()
-
-                // When loaded login
-                if (!loggedIn && clientData.gameState == "10") {
-                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
-
-                    delay(200)
-                    sendKeys(UserDetails.data.password)
-                    delay(200)
-
-                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
-                }
-//                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
-//                    getLocalNPCData()
-//                    getLocalPlayersData()
-//                    getGroundItemData()
-//                    getItemTableData()
-//                    getRegion()
+//    GlobalScope.launch {
+//        var loggedIn = false
+//        val mouse = Mouse()
+//        repeat(1000) {
+//            try {
+////                clientData = getClientData()
+//
+//                // When loaded login
+//                if (!loggedIn && clientData.gameState == "10") {
+//                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+//
+//                    delay(200)
+//                    sendKeys(UserDetails.data.password)
+//                    delay(200)
+//
+//                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
 //                }
-            } catch (e: Exception) {
-                println("Exception" + e.toString())
-                for (statck in e.stackTrace) {
-                    println(statck.toString())
-                }
-            }
-            delay(200)
-        }
-    }
+////                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
+////                    getLocalNPCData()
+////                    getLocalPlayersData()
+////                    getGroundItemData()
+////                    getItemTableData()
+////                    getRegion()
+////                }
+//            } catch (e: Exception) {
+//                println("Exception" + e.toString())
+//                for (statck in e.stackTrace) {
+//                    println(statck.toString())
+//                }
+//            }
+//            delay(200)
+//        }
+//    }
 
-    launch<MyApp>(args)
+//    launch<MyApp>(args)
 
 
 

@@ -1,7 +1,5 @@
 package com.p3achb0t.analyser
 
-import com.p3achb0t.class_generation.createInterfaces
-import com.p3achb0t.class_generation.createJavaInterfaces
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -203,12 +201,12 @@ class DreamBotAnalyzer{
             }
         }
 
-        val newPackage = "dreambot_interfaces"
-        val folder = "./\\$newPackage/"
+        val newPackage = "hook_interfaces"
+        val folder = "./\\src/com/p3achb0t/$newPackage/"
         val _package = "com.p3achb0t.$newPackage"
 
-        createInterfaces(folder, _package, analyzers, classRefObs)
-        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
+//        createInterfaces(folder, _package, analyzers, classRefObs)
+//        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
     }
     //TODO - Update when we need to generate super graph
 //    fun getSuperName(classNode: ClassNode):String{
