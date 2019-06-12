@@ -107,9 +107,14 @@ class Analyser{
                             }
                             getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
                         }
-                        getterList.add(getter)
-                        println("\t\t$getter")
+                        if(!it.descriptor.contains("java")) {
+                            getterList.add(getter)
+                            println("\t\t$getter")
+                        }
                     }
+                }
+                for (method in getterList) {
+                    injectMethod(method, classes, clazzData._class)
                 }
             }
         }
@@ -313,7 +318,7 @@ class Analyser{
 
         //TODO - This might not be correct
         val classNodeName =
-            dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }?.descriptor
+            dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }?.owner
 
         val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
@@ -330,7 +335,7 @@ class Analyser{
             methodNode.visitInsn(IMUL)
         }
 
-        println("$classNodeName $fieldName $fieldDescriptor $fieldType $signature")
+        println("$classNodeName $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature")
         methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
 
 
