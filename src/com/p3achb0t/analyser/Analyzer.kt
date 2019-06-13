@@ -81,7 +81,6 @@ class Analyser{
     )
 
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
-        //TODO add interface to client
         val classPath = "com/p3achb0t/hook_interfaces"
         dream?.classRefObs?.forEach { obsClass, clazzData ->
             if (obsClass in classes && obsClass.contains("client")) {
@@ -118,152 +117,9 @@ class Analyser{
                 }
             }
         }
-//        classes["client"]?.interfaces?.add("com/p3achb0t/hook_interfaces/Client")
-//        classes["client"]?.methods?.listIterator()?.forEach { method ->
-//            println(method.name + " " + method.desc)
-        //            for(inst in method.instructions)
-        //                println("\t" + inst.opcode + " " + inst.type)
-//        }
-        val playerClazz = dream?.analyzers?.get(Player::class.java.simpleName)?.name
-
-        val getterList = ArrayList<GetterData>()
-        getterList.add(GetterData("I", "accountStatus"))
-        getterList.add(GetterData("I", "baseX"))
-        getterList.add(GetterData("I", "baseY"))
-        getterList.add(GetterData("I", "cameraPitch"))
-        getterList.add(GetterData("I", "cameraX"))
-        getterList.add(GetterData("I", "cameraY"))
-        getterList.add(GetterData("I", "cameraYaw"))
-        getterList.add(GetterData("I", "cameraZ"))
-        getterList.add(GetterData("I", "clickModifier"))
-        getterList.add(GetterData("I", "crosshairColor"))
-        getterList.add(GetterData("I", "currentWorld"))
-        getterList.add(GetterData("I", "destinationX"))
-        getterList.add(GetterData("I", "destinationY"))
-        getterList.add(GetterData("I", "gameCycle"))
-        getterList.add(GetterData("I", "gameState"))
-        getterList.add(GetterData("I", "idleTime"))
-        getterList.add(GetterData("I", "lastAction"))
-        getterList.add(GetterData("I", "lastActionDifference"))
-        getterList.add(GetterData("I", "lastActionDifferenceMod"))
-        getterList.add(GetterData("I", "lastActionTime"))
-        getterList.add(GetterData("I", "lastActionTimeMod"))
-        getterList.add(GetterData("I", "lastButtonClick"))
-        getterList.add(GetterData("I", "lastButtonClickModA"))
-        getterList.add(GetterData("I", "lastButtonClickModM"))
-        getterList.add(GetterData("I", "lastClickModifier"))
-        getterList.add(GetterData("I", "lastClickModifierModA"))
-        getterList.add(GetterData("I", "lastClickModifierModM"))
-        getterList.add(GetterData("I", "lastClickX"))
-        getterList.add(GetterData("I", "lastClickY"))
-        getterList.add(GetterData("I", "loginState"))
-        getterList.add(GetterData("I", "lowestAvailableCameraPitch"))
-        getterList.add(GetterData("I", "mapAngle"))
-        getterList.add(GetterData("I", "menuCount"))
-        getterList.add(GetterData("I", "menuHeight"))
-        getterList.add(GetterData("I", "menuWidth"))
-        getterList.add(GetterData("I", "menuX"))
-        getterList.add(GetterData("I", "menuY"))
-        getterList.add(GetterData("I", "plane"))
-        getterList.add(GetterData("I", "playerIndex"))
-        getterList.add(GetterData("I", "selectedItemID"))
-        getterList.add(GetterData("I", "selectedItemIndex"))
-        getterList.add(GetterData("I", "selectionState"))
-        getterList.add(GetterData("I", "zoomExact"))
-        getterList.add(GetterData("[I", "widgetBoundsX"))
-        getterList.add(GetterData("[I", "widgetBoundsY"))
-        getterList.add(GetterData("[I", "widgetHeights"))
-        getterList.add(GetterData("Ljava/lang/String;", "username"))
-        getterList.add(GetterData("Z", "isSpellSelected"))
-        getterList.add(GetterData("Z", "isWorldSelectorOpen"))
-        getterList.add(GetterData("[L$playerClazz;", "players", returnFieldDescription = "[L$classPath/Player;"))
-//        getterList.add(
-//            GetterData(
-//                "[[[L$playerClazz;",
-//                "groundItemList",
-//                returnFieldDescription = "[L$classPath/Player;"
-//            )
-//        )
-
-//        for (method in getterList) {
-//            injectMethod(method, classes, Client::class.java.simpleName)
-//        }
-
-
-//        val nameCompositeClazz = dream?.analyzers?.get(NameComposite::class.java.simpleName)?.name
-//        classes[playerClazz]?.interfaces?.add("$classPath/Player")
-//        val playerFieldList = ArrayList<GetterData>()
-//        playerFieldList.add(GetterData("Z", "hidden"))
-//        playerFieldList.add(GetterData("Z", "standingStill"))
-//        playerFieldList.add(GetterData("I", "level"))
-//        playerFieldList.add(GetterData("I", "overheadIcon"))
-//        playerFieldList.add(GetterData("I", "skullIcon"))
-//        playerFieldList.add(GetterData("I", "team"))
-//        playerFieldList.add(
-//            GetterData(
-//                "L$nameCompositeClazz;",
-//                "name",
-//                returnFieldDescription = "L$classPath/NameComposite;"
-//            )
-//        )
-//
-//        for (method in playerFieldList) {
-//            injectMethod(method, classes, Player::class.java.simpleName)
-//        }
-//
-//        classes[nameCompositeClazz]?.interfaces?.add("$classPath/NameComposite")
-//        val nameFieldList = ArrayList<GetterData>()
-//        nameFieldList.add(GetterData("Ljava/lang/String;", "formatted"))
-//        nameFieldList.add(GetterData("Ljava/lang/String;", "name"))
-//
-//        for (method in nameFieldList) {
-//            injectMethod(method, classes, NameComposite::class.java.simpleName)
-//        }
-
-//        val actorClazz = dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)?.name
-//        classes[actorClazz]?.interfaces?.add("$classPath/Actor")
-//        val fieldList = ArrayList<GetterData>()
-//        fieldList.add(GetterData("I", "animation"))
-//        fieldList.add(GetterData("I", "animationDelay"))
-//        fieldList.add(GetterData("I", "combatTime"))
-//        fieldList.add(GetterData("I", "frameOne"))
-//        fieldList.add(GetterData("I", "frameTwo"))
-//        fieldList.add(GetterData("I", "interacting"))
-//        fieldList.add(GetterData("I", "localX"))
-//        fieldList.add(GetterData("I", "localY"))
-//        fieldList.add(GetterData("I", "orientation"))
-//        fieldList.add(GetterData("I", "queueSize"))
-//        fieldList.add(GetterData("I", "runtimeAnimation"))
-//        fieldList.add(GetterData("I", "standAnimation"))
-//
-//        fieldList.add(GetterData("[I", "hitCycles"))
-//        fieldList.add(GetterData("[I", "hitDamages"))
-//        fieldList.add(GetterData("[I", "hitTypes"))
-//        fieldList.add(GetterData("[I", "message"))
-//        fieldList.add(GetterData("[I", "queueX"))
-//        fieldList.add(GetterData("[I", "queueY"))
-//
-//        for (method in fieldList) {
-//            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Actor::class.java.simpleName)
-//        }
-
-//        val renderableClazz =
-//            dream?.analyzers?.get(com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)?.name
-//        classes[renderableClazz]?.interfaces?.add("$classPath/Renderable")
-//        fieldList.clear()
-//        fieldList.add(GetterData("I", "modelHeight"))
-//        for (method in fieldList) {
-//            injectMethod(method, classes, com.p3achb0t.hook_interfaces.Renderable::class.java.simpleName)
-//        }
-
-
-
-
-        //        getGameStateMethod.
         val out = JarOutputStream(FileOutputStream(File("./injected_jar.jar")))
         for (classNode in classes.values) {
             val cw = ClassWriter(ClassWriter.COMPUTE_MAXS)
-//            println(classNode.name)
             classNode.accept(cw)
             out.putNextEntry(JarEntry(classNode.name + ".class"))
             out.write(cw.toByteArray())
@@ -279,11 +135,6 @@ class Analyser{
         return getOpcode(fieldDescription, OpcodeType.RETURN)
     }
 
-    private fun getLoadOpcode(fieldDescription: String): Int {
-
-        return getOpcode(fieldDescription, OpcodeType.LOAD)
-    }
-
     private fun getOpcode(fieldDescription: String, opcodeType: OpcodeType): Int {
         return when (fieldDescription[0]) {
             'F' -> if (opcodeType == OpcodeType.LOAD) FLOAT else FRETURN
@@ -292,10 +143,6 @@ class Analyser{
             'I', 'B', 'Z', 'S' -> if (opcodeType == OpcodeType.LOAD) ILOAD else IRETURN
             else -> if (opcodeType == OpcodeType.LOAD) ALOAD else ARETURN
         }
-    }
-
-    private fun injectMethod(field: RuneLiteJSONClasses.FieldDefinition) {
-
     }
 
     private fun injectMethod(
@@ -318,7 +165,7 @@ class Analyser{
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
         val methodNode =
-            MethodNode(ACC_PUBLIC, "$normalizedFieldName", "()$returnFieldDescription", signature, null)
+            MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
 
 
