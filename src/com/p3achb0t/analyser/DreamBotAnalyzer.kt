@@ -72,8 +72,12 @@ class DreamBotAnalyzer{
                 field.owner = splitField[1]
                 if(splitField.size>2)
                     field.name = splitField[2]
-                if(splitField.size>3)
+                if (splitField.size > 3) {
+                    if (splitField[3].contains("L")) {
+                        field.decoderType = RuneLiteJSONClasses.DecoderType.LONG
+                    }
                     field.decoder = splitField[3].replace("L", "").toLong()
+                }
                 analyzers[currentClass]?.fields?.add(field)
 //                classRefObs[analyzers[currentClass]?.name]?.fields?.add(field)
 

@@ -84,7 +84,7 @@ class Analyser{
         //TODO add interface to client
         val classPath = "com/p3achb0t/hook_interfaces"
         dream?.classRefObs?.forEach { obsClass, clazzData ->
-            if (obsClass in classes) {
+            if (obsClass in classes && obsClass.contains("client")) {
                 val classInterface = "$classPath/${clazzData._class}"
                 println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
@@ -308,7 +308,8 @@ class Analyser{
         val returnFieldDescription =
             if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
         println("yyyy::class.java.simpleName: $analyserClass")
-        val fieldName = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }?.name
+        val field = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
+        val fieldName = field?.name
         val clazz = dream?.analyzers?.get(analyserClass)?.name
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
@@ -317,8 +318,7 @@ class Analyser{
 
 
         //TODO - This might not be correct
-        val classNodeName =
-            dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }?.owner
+        val classNodeName = field?.owner
 
         val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
@@ -327,11 +327,14 @@ class Analyser{
         }
         methodNode.visitFieldInsn(fieldType, classNodeName, fieldName, fieldDescriptor)
 
-        val multiplier =
-            dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }?.decoder
+        val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
             println("Multiplier $multiplier")
-            methodNode.visitLdcInsn(multiplier.toInt())
+            if (field.decoderType == RuneLiteJSONClasses.DecoderType.LONG) {
+                methodNode.visitLdcInsn(multiplier.toLong())
+            } else {
+                methodNode.visitLdcInsn(multiplier.toInt())
+            }
             methodNode.visitInsn(IMUL)
         }
 

@@ -23,13 +23,15 @@ class RuneLiteJSONClasses {
         var descriptor: String = ""
     )
 
+    enum class DecoderType { LONG, INTEGER }
     data class FieldDefinition(
         var field: String = "",
         var owner: String = "",
         var name: String = "",
         var access: Int = 0,
         var descriptor: String = "",
-        var decoder: Long = 0L
+        var decoder: Long = 0L,
+        var decoderType: DecoderType = DecoderType.INTEGER
     )
 }
 
