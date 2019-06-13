@@ -304,12 +304,16 @@ class Analyser{
         analyserClass: String
     ) {
         val normalizedFieldName = getterData.methodName
+        val field = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
+        val classNodeName = field?.owner
+        val fieldName = field?.name
+
         val fieldDescriptor = getterData.fieldDescription
         val returnFieldDescription =
             if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
         println("yyyy::class.java.simpleName: $analyserClass")
-        val field = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
-        val fieldName = field?.name
+
+
         val clazz = dream?.analyzers?.get(analyserClass)?.name
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
@@ -317,8 +321,6 @@ class Analyser{
             MethodNode(ACC_PUBLIC, "$normalizedFieldName", "()$returnFieldDescription", signature, null)
 
 
-        //TODO - This might not be correct
-        val classNodeName = field?.owner
 
         val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
@@ -329,24 +331,27 @@ class Analyser{
 
         val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
-            println("Multiplier $multiplier")
+            println("Multiplier $multiplier ${field.decoderType} ")
             if (field.decoderType == RuneLiteJSONClasses.DecoderType.LONG) {
-                methodNode.visitLdcInsn(multiplier.toLong())
+                methodNode.visitLdcInsn(multiplier)
+                methodNode.visitInsn(LMUL)
             } else {
                 methodNode.visitLdcInsn(multiplier.toInt())
+                methodNode.visitInsn(IMUL)
             }
-            methodNode.visitInsn(IMUL)
         }
 
-        println("$classNodeName $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature")
+        println(
+            "$classNodeName $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+                fieldDescriptor
+            )}"
+        )
         methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
 
 
         methodNode.visitMaxs(0, 0)
         methodNode.visitEnd()
-//        classes[clazz]?.methods?.add(methodNode)
         methodNode.accept(classes[clazz])
-
 
     }
 }
