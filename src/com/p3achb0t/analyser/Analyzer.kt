@@ -83,7 +83,7 @@ class Analyser{
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
         val classPath = "com/p3achb0t/hook_interfaces"
         dream?.classRefObs?.forEach { obsClass, clazzData ->
-            if (obsClass in classes && obsClass.contains("client")) {
+            if (obsClass in classes) {
                 val classInterface = "$classPath/${clazzData._class}"
                 println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
@@ -165,7 +165,7 @@ class Analyser{
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
         val methodNode =
-            MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
+            MethodNode(ACC_PUBLIC, "get${normalizedFieldName.capitalize()}", "()$returnFieldDescription", signature, null)
 
 
 
@@ -198,7 +198,8 @@ class Analyser{
 
         methodNode.visitMaxs(0, 0)
         methodNode.visitEnd()
-        methodNode.accept(classes[clazz])
+        if(!returnFieldDescription.contains("null"))
+            methodNode.accept(classes[clazz])
 
     }
 }
