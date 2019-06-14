@@ -58,5 +58,5 @@ class RuneLiteAnalyzer {
     //DONE - create interface files
     //Done - make sure interface files are correctly superred
     //DONE 06/09/2019 - Interface files have methods
-    //TODO - Create code to inject
+    //DONE 6/14/2019 - Create code to inject
 }

@@ -1,5 +1,6 @@
 package com.p3achb0t
 
+import UserDetails
 import com.p3achb0t.Main.Data.customCanvas
 import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
@@ -11,13 +12,15 @@ import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
+import com.p3achb0t.user_inputs.Mouse
+import com.p3achb0t.user_inputs.sendKeys
 import com.p3achb0t.widgetexplorer.WidgetExplorer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import tornadofx.App
 import java.applet.Applet
-import java.awt.Canvas
-import java.awt.Color
-import java.awt.Dimension
-import java.awt.Graphics
+import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
@@ -93,7 +96,7 @@ fun main(args: Array<String>){
     val clientClazz = Main.classLoader?.loadClass("client")?.newInstance()
     val game: Applet = clientClazz as Applet
     Main(game)
-//    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
+    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
 
 
 
@@ -125,13 +128,13 @@ fun main(args: Array<String>){
 
         println(client.name)
         val currentWorldObs =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "currentWorld" }?.name
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCurrentWorld" }?.name
         val modifer =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "currentWorld" }
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCurrentWorld" }
                 ?.decoder?.toInt()
         println(modifer)
 
-        dream?.classRefObs?.get("client")?.fields?.find { it.field == "currentWorld" }?.name
+        dream?.classRefObs?.get("client")?.fields?.find { it.field == "getCurrentWorld" }?.name
         val worldField = Main.client!!::class.java.getDeclaredField(currentWorldObs)
         worldField.isAccessible = true
 
@@ -139,13 +142,13 @@ fun main(args: Array<String>){
         println("currentWorld :$worldNum")
 
     }
-    sleep(500)
+//    sleep(500)
     game.apply {
 
         val canvasType =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "canvas" }?.owner
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.owner
         val canvasFieldName =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "canvas" }?.name
+            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.name
 
         println("canvas " + canvasType + " Field parentId : $canvasFieldName")
         var loaded = false
@@ -196,14 +199,18 @@ fun main(args: Array<String>){
 //                        println("]")
 //                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
 
-//                        val players = theClient.get_players()
-//                        players.iterator().forEach { _player ->
-//                            if (_player != null && _player.get_level() > 0) {
-//                                print("${_player.get_name()} ${_player.get_level()}, ")
-//                            }
-//                        }
-//                        println()
-//                        println(players.size)
+                        val players = theClient.getPlayers()
+                        var count = 0
+                        players.iterator().forEach { _player ->
+                            if (_player != null && _player.getLevel() > 0) {
+                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
+                                count += 1
+                            }
+                        }
+                        if (count > 0) {
+                            println()
+                            println(players.size)
+                        }
                     }
 
                 })
@@ -255,40 +262,40 @@ fun main(args: Array<String>){
             }
         }
     }
+    sleep(100)
+    GlobalScope.launch {
+        var loggedIn = false
+        val mouse = Mouse()
+        repeat(1000) {
+            try {
+//                clientData = getClientData()
 
-//    GlobalScope.launch {
-//        var loggedIn = false
-//        val mouse = Mouse()
-//        repeat(1000) {
-//            try {
-////                clientData = getClientData()
-//
-//                // When loaded login
-//                if (!loggedIn && clientData.gameState == "10") {
-//                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
-//
-//                    delay(200)
-//                    sendKeys(UserDetails.data.password)
-//                    delay(200)
-//
-//                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
+                // When loaded login
+                if (!loggedIn && theClient.getGameState() == 10) {
+                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+
+                    delay(200)
+                    sendKeys(UserDetails.data.password)
+                    delay(200)
+
+                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
+                }
+//                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
+//                    getLocalNPCData()
+//                    getLocalPlayersData()
+//                    getGroundItemData()
+//                    getItemTableData()
+//                    getRegion()
 //                }
-////                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
-////                    getLocalNPCData()
-////                    getLocalPlayersData()
-////                    getGroundItemData()
-////                    getItemTableData()
-////                    getRegion()
-////                }
-//            } catch (e: Exception) {
-//                println("Exception" + e.toString())
-//                for (statck in e.stackTrace) {
-//                    println(statck.toString())
-//                }
-//            }
-//            delay(200)
-//        }
-//    }
+            } catch (e: Exception) {
+                println("Exception" + e.toString())
+                for (statck in e.stackTrace) {
+                    println(statck.toString())
+                }
+            }
+            delay(200)
+        }
+    }
 
 //    launch<MyApp>(args)
 

@@ -1,5 +1,7 @@
 package com.p3achb0t.analyser
 
+import com.p3achb0t.class_generation.isBaseType
+import com.p3achb0t.class_generation.isFieldNameUnique
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -87,73 +89,55 @@ class DreamBotAnalyzer{
 
             }
         }
-    }
 
-    fun getListOfInts(clazz: Class<*>) {
-        println("-----------------")
-        for (field in analyzers[clazz.simpleName]?.fields!!) {
-            //x = fields["x"]?.resultValue?.toInt() ?: -1
-            if (field.decoder != 0L) {
-//                print("\"" + field.key + "\", ")
-                println("getterList.add(GetterData(\"I\", \"" + field.field + "\"))")
-            }
-        }
-    }
+        for (clazz in analyzers) {
+            for (field in clazz.value.fields) {
+                val arrayCount = field.descriptor.count { it == '[' }
+                var updatedDescriptor = field.descriptor
+                //Trim array brackets
+                if (arrayCount > 0) {
+                    updatedDescriptor = field.descriptor.substring(arrayCount, field.descriptor.length)
+                }
+                //Trim L; for long types
+                if (field.descriptor.contains(";")) {
+                    updatedDescriptor = updatedDescriptor.substring(1, updatedDescriptor.length - 1)
 
-    fun createAccessorFieldsForClass(clazz: Class<*>) {
-        println("---${clazz.name}----")
-        for (field in analyzers[clazz.simpleName]?.fields!!) {
-            if (field.decoder != 0L) {
-                println("var " + field.field + " = 0")
-            } else {
-                println("var " + field.field + " = \"\"")
-            }
-        }
-        println("-----------------")
-        println(
-            "constructor()\n" +
-                    "constructor(fields: MutableMap<String, Field?>) : super() {"
-        )
-        for (field in analyzers[clazz.simpleName]?.fields!!) {
-            //x = fields["x"]?.resultValue?.toInt() ?: -1
-            if (field.decoder != 0L) {
-                println("\t" + field.field + " = fields[\"" + field.field + "\"]?.resultValue?.toInt() ?: -1")
-            } else {
-                println("\t" + field.field + " = fields[\"" + field.field + "\"]?.resultValue.toString()")
-            }
-        }
-        println("}")
-        println("\n")
-        getListOfInts(clazz)
-    }
+                }
 
-    fun createInterfaceForInjection(clazz: Class<*>, implements: String) {
-
-        println("-----------------")
-        println("\n")
-        val fn =
-            "./\\hook_interfaces/" + clazz.simpleName + ".kt"
-        val file = File(fn)
-        file.printWriter().use { out ->
-            out.println("package com.p3achb0t.hook_interfaces")
-            out.println("")
-            if (!implements.contains("java/lang/Object")) {
-                out.println("interface ${clazz.simpleName}: $implements{")
-            } else {
-                out.println("interface ${clazz.simpleName} {")
-            }
-            for (field in analyzers[clazz.simpleName]?.fields!!) {
-                //x = fields["x"]?.resultValue?.toInt() ?: -1
-                if (field.decoder != 0L) {
-                    out.println("\t fun get_" + field.field + "(): Int")
+                if (updatedDescriptor in classRefObs) {
+                    field.field = genFunction(field, clazz, classRefObs)
                 } else {
-                    out.println("\t fun get_" + field.field + "(): Any")
+                    if (isBaseType(updatedDescriptor)) {
+                        if (clazz.value._super in classRefObs) {
+                            field.field = genFunction(field, clazz, classRefObs)
+                        } else {
+                            field.field = "get${field.field.capitalize()}"
+                        }
+                    } else {
+                        field.field = "get${field.field.capitalize()}"
+                    }
                 }
             }
-            out.println("}")
         }
 
+
     }
+
+    private fun genFunction(
+        field: RuneLiteJSONClasses.FieldDefinition,
+        clazz: MutableMap.MutableEntry<String, RuneLiteJSONClasses.ClassDefinition>,
+        classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>
+    ): String {
+        val fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
+        return if (fieldCount == 0) {
+            "get${field.field.capitalize()}"
+        } else {
+            val functionName = "${clazz.value._class}_${field.field}"
+            println("Not unique Name $functionName")
+            "get${functionName.capitalize()}"
+        }
+    }
+
 
     fun parseJar(jar: JarFile){
         // We are going to look at the Jar and find the Class Nodes so can get more data
@@ -167,11 +151,11 @@ class DreamBotAnalyzer{
                 val classNode = ClassNode()
                 classReader.accept(classNode, ClassReader.SKIP_DEBUG)// Missing | ClassReader.SKIP_FRAMES
                 classNodeRefs[classNode.name] = classNode
-                //TODO - Update the description of the fields
                 if(classNode.name in classRefObs) {
                     classRefObs[classNode.name]?._super = classNode.superName
                     classRefObs[classNode.name]?.access = classNode.access
                     for (field in classNode.fields) {
+
                         val foundField = classRefObs[classNode.name]?.fields?.find { it.name == field.name }
                         if (foundField != null) {
                             foundField.descriptor = field.desc
@@ -192,15 +176,15 @@ class DreamBotAnalyzer{
         classRefObs.forEach { className, classObj ->
             classObj.fields.forEach { field ->
                 if(field.owner in classNodeRefs){
-                    println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?._class}) obs name: ${field.name} ")
+                    println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?._class}) obs name: ${field.name} desc: ${field.descriptor} ")
                     classNodeRefs[field.owner]?.fields?.forEach {
-                        if(field.name == it.name){
+                        if (field.name == it.name) {
                             field.descriptor = it.desc
                             field.access = it.access
+                            println("\t Update desc:${it.desc}")
 
                         }
                     }
-
                 }
             }
         }
@@ -212,7 +196,7 @@ class DreamBotAnalyzer{
 //        createInterfaces(folder, _package, analyzers, classRefObs)
 //        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
     }
-    //TODO - Update when we need to generate super graph
+//TODO - Update when we need to generate super graph
 //    fun getSuperName(classNode: ClassNode):String{
 //        return if(classNode.superName == "java/lang/Object"){
 //            " -> "+ classNode.superName

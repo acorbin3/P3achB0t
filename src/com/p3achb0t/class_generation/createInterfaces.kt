@@ -43,7 +43,7 @@ fun createInterfaces(
                 }
 //                    println("Array Count: $arrayCount $updatedDescriptor    ${field.descriptor}")
 
-                var returnType = ""
+                var returnType: String
                 if (updatedDescriptor in classRefObs) {
                     returnType = getType(classRefObs[updatedDescriptor]?._class!!)
                     genFunction(field, clazz, classRefObs, out, arrayCount, returnType)

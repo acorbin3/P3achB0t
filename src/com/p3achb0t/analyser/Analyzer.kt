@@ -83,39 +83,39 @@ class Analyser{
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
         val classPath = "com/p3achb0t/hook_interfaces"
         dream?.classRefObs?.forEach { obsClass, clazzData ->
-            if (obsClass in classes) {
-                val classInterface = "$classPath/${clazzData._class}"
-                println("Adding class iterface to $obsClass $classInterface")
-                classes[obsClass]?.interfaces?.add(classInterface)
-                val getterList = ArrayList<GetterData>()
-                clazzData.fields.forEach {
-                    if (it.owner != "broken") {
-                        println("\t Adding method ${it.field} descriptor ${it.descriptor}")
-                        val getter: GetterData
-                        if (isBaseType(it.descriptor)) {
-                            getter = GetterData(it.descriptor, it.field)
+            //            if (obsClass in classes) {
+            val classInterface = "$classPath/${clazzData._class}"
+            println("Adding class iterface to $obsClass $classInterface")
+            classes[obsClass]?.interfaces?.add(classInterface)
+            val getterList = ArrayList<GetterData>()
+            clazzData.fields.forEach {
+                if (it.owner != "broken") {
+                    println("\t Adding method ${it.field} descriptor ${it.descriptor}")
+                    val getter: GetterData
+                    if (isBaseType(it.descriptor)) {
+                        getter = GetterData(it.descriptor, it.field)
 
-                        } else {
-                            val clazzName = dream.classRefObs[cleanType(it.descriptor)]?._class
-                            var returnType = "L$classPath/$clazzName;"
-                            val arrayCount = it.descriptor.count { char -> char == '[' }
-                            returnType = "[".repeat(arrayCount) + returnType
-                            //If the descriptor is a base java type, just use that
-                            if (it.descriptor.contains("java")) {
-                                returnType = it.descriptor
-                            }
-                            getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
+                    } else {
+                        val clazzName = dream.classRefObs[cleanType(it.descriptor)]?._class
+                        var returnType = "L$classPath/$clazzName;"
+                        val arrayCount = it.descriptor.count { char -> char == '[' }
+                        returnType = "[".repeat(arrayCount) + returnType
+                        //If the descriptor is a base java type, just use that
+                        if (it.descriptor.contains("java")) {
+                            returnType = it.descriptor
                         }
-                        if(!it.descriptor.contains("java")) {
-                            getterList.add(getter)
-                            println("\t\t$getter")
-                        }
+                        getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
+                    }
+                    if (!it.descriptor.contains("java")) {
+                        getterList.add(getter)
+                        println("\t\t$getter")
                     }
                 }
-                for (method in getterList) {
-                    injectMethod(method, classes, clazzData._class)
-                }
             }
+            for (method in getterList) {
+                injectMethod(method, classes, clazzData._class)
+            }
+//            }
         }
         val out = JarOutputStream(FileOutputStream(File("./injected_jar.jar")))
         for (classNode in classes.values) {
@@ -161,11 +161,11 @@ class Analyser{
         println("yyyy::class.java.simpleName: $analyserClass")
 
 
-        val clazz = dream?.analyzers?.get(analyserClass)?.name
+        val clazz = field?.owner
         println("CLass $clazz")
         val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
         val methodNode =
-            MethodNode(ACC_PUBLIC, "get${normalizedFieldName.capitalize()}", "()$returnFieldDescription", signature, null)
+            MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
 
 
@@ -191,7 +191,7 @@ class Analyser{
         println(
             "$classNodeName $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
                 fieldDescriptor
-            )}"
+            )} Static:$isStatic"
         )
         methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
 
