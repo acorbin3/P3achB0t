@@ -7,6 +7,7 @@ import com.p3achb0t.rsclasses.*
 import jdk.internal.org.objectweb.asm.ClassReader
 import jdk.internal.org.objectweb.asm.ClassWriter
 import jdk.internal.org.objectweb.asm.Opcodes.*
+import jdk.internal.org.objectweb.asm.Type
 import jdk.internal.org.objectweb.asm.tree.ClassNode
 import jdk.internal.org.objectweb.asm.tree.MethodNode
 import java.io.File
@@ -106,9 +107,17 @@ class Analyser{
                         }
                         getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
                     }
-                    if (!it.descriptor.contains("java")) {
+                    if (!it.descriptor.contains("java")  ) {
                         getterList.add(getter)
                         println("\t\t$getter")
+                    }
+                    else{
+                        if(it.descriptor.contains("String")){
+                            getterList.add(getter)
+                            println("\t\t$getter")
+                        }else {
+                            println("\t\t!@#$# ${it.descriptor}")
+                        }
                     }
                 }
             }
@@ -152,7 +161,7 @@ class Analyser{
     ) {
         val normalizedFieldName = getterData.methodName
         val field = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
-        val classNodeName = field?.owner
+        val classOwner = field?.owner
         val fieldName = field?.name
 
         val fieldDescriptor = getterData.fieldDescription
@@ -161,21 +170,19 @@ class Analyser{
         println("yyyy::class.java.simpleName: $analyserClass")
 
 
-        val clazz = field?.owner
-        println("CLass $clazz")
-        val signature = classes[clazz]?.fields?.find { it.name == fieldName }?.signature
+        println("CLass $classOwner")
+        val signature = classes[classOwner]?.fields?.find { it.name == fieldName }?.signature
         val methodNode =
             MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
 
 
-        val isStatic = classes[clazz]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
+        val isStatic = classes[classOwner]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
         if (!isStatic) {
             methodNode.visitVarInsn(ALOAD, 0)
         }
-        methodNode.visitFieldInsn(fieldType, classNodeName, fieldName, fieldDescriptor)
-
+        methodNode.visitFieldInsn(fieldType, classOwner, fieldName, fieldDescriptor)
         val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
             println("Multiplier $multiplier ${field.decoderType} ")
@@ -189,17 +196,23 @@ class Analyser{
         }
 
         println(
-            "$classNodeName $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+            "$classOwner $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
                 fieldDescriptor
             )} Static:$isStatic"
         )
         methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
 
-
-        methodNode.visitMaxs(0, 0)
+        if (multiplier != null) {
+            methodNode.visitMaxs(5, 1)
+        }else{
+            methodNode.visitMaxs(3, 1)
+        }
         methodNode.visitEnd()
-        if(!returnFieldDescription.contains("null"))
-            methodNode.accept(classes[clazz])
+        if(!returnFieldDescription.contains("null")) {
+            methodNode.accept(classes[dream?.analyzers?.get(analyserClass)?.name])
+        }else{
+            println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
+        }
 
     }
 }

@@ -84,57 +84,21 @@ class DreamBotAnalyzer{
 //                classRefObs[analyzers[currentClass]?.name]?.fields?.add(field)
 
                 println("\t$field")
-
-
-
             }
         }
-
-        for (clazz in analyzers) {
-            for (field in clazz.value.fields) {
-                val arrayCount = field.descriptor.count { it == '[' }
-                var updatedDescriptor = field.descriptor
-                //Trim array brackets
-                if (arrayCount > 0) {
-                    updatedDescriptor = field.descriptor.substring(arrayCount, field.descriptor.length)
-                }
-                //Trim L; for long types
-                if (field.descriptor.contains(";")) {
-                    updatedDescriptor = updatedDescriptor.substring(1, updatedDescriptor.length - 1)
-
-                }
-
-                if (updatedDescriptor in classRefObs) {
-                    field.field = genFunction(field, clazz, classRefObs)
-                } else {
-                    if (isBaseType(updatedDescriptor)) {
-                        if (clazz.value._super in classRefObs) {
-                            field.field = genFunction(field, clazz, classRefObs)
-                        } else {
-                            field.field = "get${field.field.capitalize()}"
-                        }
-                    } else {
-                        field.field = "get${field.field.capitalize()}"
-                    }
-                }
-            }
-        }
-
-
     }
 
     private fun genFunction(
         field: RuneLiteJSONClasses.FieldDefinition,
         clazz: MutableMap.MutableEntry<String, RuneLiteJSONClasses.ClassDefinition>,
         classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>
-    ): String {
+    ) {
         val fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
-        return if (fieldCount == 0) {
-            "get${field.field.capitalize()}"
-        } else {
-            val functionName = "${clazz.value._class}_${field.field}"
-            println("Not unique Name $functionName")
-            "get${functionName.capitalize()}"
+//        println("\tChecking Unique for ${field.field}. Super: ${clazz.value._super} Count: $fieldCount")
+        if (fieldCount > 0) {
+            val functionName = "${clazz.value._class}_${field.field.replace("get","").decapitalize()}"
+//            println("Not unique Name $functionName")
+            field.field = "get${functionName.capitalize()}"
         }
     }
 
@@ -183,6 +147,37 @@ class DreamBotAnalyzer{
                             field.access = it.access
                             println("\t Update desc:${it.desc}")
 
+                        }
+                    }
+                }
+            }
+        }
+
+        //Update the fields to make sure they are unique in the class heirarchy
+        for (clazz in analyzers) {
+            println("Class: ${clazz.value._class}")
+            for (field in clazz.value.fields) {
+                val arrayCount = field.descriptor.count { it == '[' }
+                var updatedDescriptor = field.descriptor
+                //Trim array brackets
+                if (arrayCount > 0) {
+                    updatedDescriptor = field.descriptor.substring(arrayCount, field.descriptor.length)
+                }
+                //Trim L; for long types
+                if (field.descriptor.contains(";")) {
+                    updatedDescriptor = updatedDescriptor.substring(1, updatedDescriptor.length - 1)
+
+                }
+                //Simplification, just set the base with the getFunction and then check if it needs to be updated
+                if(!field.field.contains("get")){
+                    field.field = "get${field.field.capitalize()}"
+                }
+                if (updatedDescriptor in classRefObs) {
+                    genFunction(field, clazz, classRefObs)
+                } else {
+                    if (isBaseType(updatedDescriptor)) {
+                        if (clazz.value._super in classRefObs) {
+                            genFunction(field, clazz, classRefObs)
                         }
                     }
                 }

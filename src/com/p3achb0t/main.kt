@@ -1,12 +1,14 @@
 package com.p3achb0t
 
 import UserDetails
+import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.Main.Data.customCanvas
 import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.analyser.RuneLiteAnalyzer
+import com.p3achb0t.api.Calculations
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.interfaces.PaintListener
@@ -49,12 +51,12 @@ class Main(game: Applet) {
         var selectedWidget: Widget? = null
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
-        var clientData: Client = Client()
+        lateinit var clientData: com.p3achb0t.hook_interfaces.Client
 
     }
 }
 
-fun main(args: Array<String>){
+fun main() {
 
     val downloader = Downloader()
 //    val gamePackWithPath = downloader.getGamepack()
@@ -96,7 +98,7 @@ fun main(args: Array<String>){
     val clientClazz = Main.classLoader?.loadClass("client")?.newInstance()
     val game: Applet = clientClazz as Applet
     Main(game)
-    val theClient: com.p3achb0t.hook_interfaces.Client = clientClazz as com.p3achb0t.hook_interfaces.Client
+    clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
 
 
 
@@ -185,31 +187,53 @@ fun main(args: Array<String>){
                     override fun onPaint(g: Graphics) {
                         g.color = Color.white
                         g.drawString("Mouse x:${mouseEvent?.x} y:${mouseEvent?.y}", 50, 50)
-//                        g.drawString("clientData.gameCycle :${theClient.get_gameCycle()}", 50, 60)
-//                        g.drawString("Game State:: ${theClient.get_gameState()}", 50, 70)
-//                        g.drawString("clientData.loginState :${theClient.get_loginState()}", 50, 80)
-//                        g.drawString("Account status :${theClient.get_accountStatus()}", 50, 90)
-//                        g.drawString("cameraX :${theClient.get_cameraX()}", 50, 100)
-//                        g.drawString("cameraY :${theClient.get_cameraY()}", 50, 110)
+                        g.drawString("clientData.gameCycle :${clientData.getGameCycle()}", 50, 60)
+                        g.drawString("Game State:: ${clientData.getGameState()}", 50, 70)
+                        g.drawString("clientData.loginState :${clientData.getLoginState()}", 50, 80)
+                        g.drawString("Account status :${clientData.getAccountStatus()}", 50, 90)
+//                        g.drawString("cameraX :${clientData.getCameraX()}", 50, 100)
+//                        g.drawString("cameraY :${clientData.getCameraY()}", 50, 110)
                         mouseEvent?.x?.let { mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
 //                        print("[")
-//                        for (x in theClient.get_widgetHeights()) {
+//                        for (x in clientData.get_widgetHeights()) {
 //                            print("$x,")
 //                        }
 //                        println("]")
-//                        println(theClient.get_username() + " " + theClient.get_isWorldSelectorOpen())
+//                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
 
-                        val players = theClient.getPlayers()
+                        val players = clientData.getPlayers()
                         var count = 0
+                        var point = Point(200,50)
                         players.iterator().forEach { _player ->
                             if (_player != null && _player.getLevel() > 0) {
                                 print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
+                                print("Queue size: ${_player.getQueueSize()}")
+                                _player.getQueueX()
+                                count += 1
+                                var point = Calculations.worldToScreen(_player.getLocalX(),_player.getLocalY(),_player.getModelHeight())
+                                if(point.x != -1 && point.y != -1) {
+                                    g.drawString(_player.getName().getName(), point.x, point.y)
+                                }
+                                point.y += 20
+                            }
+                        }
+                        if (count > 0) {
+                            println()
+                            println(count)
+                        }
+
+                        count = 0
+                        val localNpcs = clientData.getLocalNPCs()
+                        localNpcs.iterator().forEach {
+                            if(it != null){
+                                it.getComposite().getId()
+                                print("Name: ${it.getComposite().getName()}, ID:${it.getComposite().getNpcComposite_id()} x:${it.getLocalX()} y:${it.getLocalY()},")
                                 count += 1
                             }
                         }
                         if (count > 0) {
                             println()
-                            println(players.size)
+                            println(count)
                         }
                     }
 
@@ -271,7 +295,7 @@ fun main(args: Array<String>){
 //                clientData = getClientData()
 
                 // When loaded login
-                if (!loggedIn && theClient.getGameState() == 10) {
+                if (!loggedIn && clientData.getGameState() == 10) {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
@@ -293,7 +317,7 @@ fun main(args: Array<String>){
                     println(statck.toString())
                 }
             }
-            delay(200)
+            delay(50)
         }
     }
 
