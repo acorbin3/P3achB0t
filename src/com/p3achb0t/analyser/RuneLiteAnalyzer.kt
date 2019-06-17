@@ -2,7 +2,6 @@ package com.p3achb0t.analyser
 
 import com.google.gson.Gson
 import com.p3achb0t.class_generation.createInterfaces
-import jdk.internal.org.objectweb.asm.Type
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

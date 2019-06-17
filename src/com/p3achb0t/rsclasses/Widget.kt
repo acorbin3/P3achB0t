@@ -2,7 +2,7 @@ package com.p3achb0t.rsclasses
 
 import com.p3achb0t.Main
 import com.p3achb0t.reflectionutils.getIndexFromReflectedArray
-import jdk.internal.org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.ClassNode
 import java.awt.Rectangle
 
 class Widget : RSClasses {

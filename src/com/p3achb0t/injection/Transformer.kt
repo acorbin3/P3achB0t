@@ -1,8 +1,8 @@
 package com.p3achb0t.injection
 
-import jdk.internal.org.objectweb.asm.tree.ClassNode
-import jdk.internal.org.objectweb.asm.tree.FieldNode
 import org.objectweb.asm.Opcodes
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.FieldNode
 
 
 abstract class Transformer : Opcodes {

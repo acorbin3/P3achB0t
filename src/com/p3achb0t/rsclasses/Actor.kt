@@ -1,7 +1,7 @@
 package com.p3achb0t.rsclasses
 
-import jdk.internal.org.objectweb.asm.Opcodes
-import jdk.internal.org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.Opcodes
+import org.objectweb.asm.tree.ClassNode
 
 open class Actor : Renderable {
 

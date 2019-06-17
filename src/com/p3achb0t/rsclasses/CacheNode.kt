@@ -1,6 +1,6 @@
 package com.p3achb0t.rsclasses
 
-import jdk.internal.org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.ClassNode
 
 class CacheNode:RSClasses() {
     var idName: String = ""
@@ -12,7 +12,7 @@ class CacheNode:RSClasses() {
     override fun analyze(node: ClassNode, rsClassesMap: Map<String,RSClasses>) {
         if (node.fields?.size == 3) {
             val longCount = node.fields.count { it.desc.contains("J") }
-            val ownType = node.fields.count { it.desc.contains("L" + node?.name) }
+            val ownType = node.fields.count { it.desc.contains("L" + node.name) }
 
             if (longCount == 1  && ownType == 2 && node.superName != "java/lang/Object") {
                 println("CacheNode Class: " + node.name + " " + node.superName)

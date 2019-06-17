@@ -2,8 +2,8 @@ package com.p3achb0t.analyser
 
 import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.class_generation.isFieldNameUnique
-import jdk.internal.org.objectweb.asm.ClassReader
-import jdk.internal.org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.tree.ClassNode
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

@@ -4,12 +4,11 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.rsclasses.*
-import jdk.internal.org.objectweb.asm.ClassReader
-import jdk.internal.org.objectweb.asm.ClassWriter
-import jdk.internal.org.objectweb.asm.Opcodes.*
-import jdk.internal.org.objectweb.asm.Type
-import jdk.internal.org.objectweb.asm.tree.ClassNode
-import jdk.internal.org.objectweb.asm.tree.MethodNode
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Opcodes.*
+import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.MethodNode
 import java.io.File
 import java.io.FileOutputStream
 import java.util.jar.JarEntry
