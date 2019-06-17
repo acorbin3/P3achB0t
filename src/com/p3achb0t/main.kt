@@ -195,7 +195,7 @@ fun main() {
                         var count = 0
                         var point = Point(200,50)
                         players.iterator().forEach { _player ->
-                            if (_player != null && _player.getLevel() > 0) {
+                            if (_player != null && _player.getLevel() > 0 && _player.getComposite().getStaticModelID() > 0) {
 //                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
 //                                print("Queue size: ${_player.getQueueSize()}")
                                 count += 1
@@ -253,7 +253,7 @@ fun main() {
                             if (bucketItem != null) {
                                 val next = bucketItem.getNext()
                                 if (next.getId().toInt() == npc?.getComposite()?.getNpcComposite_id()) {
-                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
+//                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
 
                                     val model = next as Model
 
@@ -308,7 +308,7 @@ fun main() {
                             if (bucketItem != null) {
                                 val next = bucketItem.getNext()
                                 if (next.getId() == player?.getComposite()?.getStaticModelID()) {
-                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
+//                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
 
                                     val model = next as Model
 
@@ -322,6 +322,18 @@ fun main() {
                                         val indiciesX = model.getIndicesX()
                                         val indiciesY = model.getIndicesY()
                                         val indiciesZ = model.getIndicesZ()
+
+                                        //TODO - set rotation
+                                        //TODO orentation
+                                        val orientation = player.getOrientation().and(0x3fff)
+                                        println("Rotation: $orientation")
+                                        val sin = Calculations.SINE[orientation]
+                                        val cos = Calculations.COSINE[orientation]
+                                        for (i in 0 until xPoints.size) {
+                                            xPoints[i] = xPoints[i] * cos + xPoints[i] * sin.shr(16)
+                                            zPoints[i] = zPoints[i] * cos - zPoints[i] * sin.shr(16)
+                                        }
+
 
                                         for (i in 0 until model.getIndicesLength()) {
                                             val one = Calculations.worldToScreen(
