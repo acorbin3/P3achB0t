@@ -330,8 +330,8 @@ fun main() {
                                         val sin = Calculations.SINE[orientation]
                                         val cos = Calculations.COSINE[orientation]
                                         for (i in 0 until xPoints.size) {
-                                            xPoints[i] = xPoints[i] * cos + xPoints[i] * sin.shr(16)
-                                            zPoints[i] = zPoints[i] * cos - zPoints[i] * sin.shr(16)
+                                            xPoints[i] = xPoints[i] * cos + zPoints[i] * sin.shr(16)
+                                            zPoints[i] = zPoints[i] * cos - xPoints[i] * sin.shr(16)
                                         }
 
 
