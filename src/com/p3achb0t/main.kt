@@ -316,22 +316,25 @@ fun main() {
 
                                         val locX = player.getLocalX()
                                         val locY = player.getLocalY()
-                                        val xPoints = model.getVerticesX()
-                                        val yPoints = model.getVerticesY()
-                                        val zPoints = model.getVerticesZ()
-                                        val indiciesX = model.getIndicesX()
-                                        val indiciesY = model.getIndicesY()
-                                        val indiciesZ = model.getIndicesZ()
+                                        val xPoints = model.getVerticesX().copyOf()
+                                        val yPoints = model.getVerticesY().copyOf()
+                                        val zPoints = model.getVerticesZ().copyOf()
+                                        val indiciesX = model.getIndicesX().copyOf()
+                                        val indiciesY = model.getIndicesY().copyOf()
+                                        val indiciesZ = model.getIndicesZ().copyOf()
 
                                         //TODO - set rotation
                                         //TODO orentation
-                                        val orientation = player.getOrientation().and(0x3fff)
-                                        println("Rotation: $orientation")
-                                        val sin = Calculations.SINE[orientation]
-                                        val cos = Calculations.COSINE[orientation]
-                                        for (i in 0 until xPoints.size) {
-                                            xPoints[i] = xPoints[i] * cos + zPoints[i] * sin.shr(16)
-                                            zPoints[i] = zPoints[i] * cos - xPoints[i] * sin.shr(16)
+                                        val orientation = (player.getOrientation()).rem(2048)
+                                        if (orientation != 0) {
+                                            val sin = Calculations.SINE[orientation]
+                                            val cos = Calculations.COSINE[orientation]
+                                            for (i in 0 until xPoints.size) {
+                                                val oldX = xPoints[i]
+                                                val oldZ = zPoints[i]
+                                                xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
+                                                zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
+                                            }
                                         }
 
 
