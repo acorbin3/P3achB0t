@@ -1,14 +1,15 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.Main.Data.clientData
-import javafx.scene.Camera
 import java.awt.Point
+import java.awt.Rectangle
 
 class Calculations {
 
     companion object {
         var SINE = IntArray(2048)
         var COSINE = IntArray(2048)
+        val GAMESCREEN = Rectangle(4, 4, 512, 334)
         init {
             for (i in 0 until SINE.size) {
                 SINE[i] = (65536.0 * Math.sin(i.toDouble() * 0.0030679615)).toInt()
@@ -22,9 +23,6 @@ class Calculations {
             if (xx < 0 || yy < 0 || xx > 103 || yy > 103) {
                 return 0
             }
-            val itemSelected = clientData.getExperience()
-            val settings = clientData.getSettings()
-            val tileSettings = clientData.getTileSettings()
             val tileHeights = clientData.getTileHeights()
             val aa = tileHeights[plane][xx][yy] * (128 - (x and 0x7F)) + tileHeights[plane][xx + 1][yy] * (x and 0x7F) shr 7
 
@@ -45,7 +43,6 @@ class Calculations {
             if (regionX < 128 || regionY < 128 || regionX > 13056 || regionY > 13056) {
                 return Point(-1, -1)
             }
-            clientData.getPlane()
             var z = getTileHeight(clientData.getPlane(), regionX, regionY) - height
             regionX -= clientData.getCameraX()
             z -= clientData.getCameraZ()
@@ -72,8 +69,16 @@ class Calculations {
             } else Point(-1, -1)
         }
 
+        fun isOnscreen(point: Point): Boolean {
+            return GAMESCREEN.contains(point)
+        }
+
+        fun isOnscreen(x: Int, y: Int): Boolean {
+            return GAMESCREEN.contains(Point(x, y))
+        }
+
 //        fun worldToMap(regionX: Int, regionY: Int): Point {
-//
+//            clientData.getMap
 //            val mapScale = Reflection.value("Client#getMapScale()", null) as Int
 //            val mapOffset = Reflection.value("Client#getMapOffset()", null) as Int
 //            val angle = clientData.getMapAngle() + mapScale and 0x7FF

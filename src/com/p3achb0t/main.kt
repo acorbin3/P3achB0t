@@ -7,10 +7,12 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
-import com.p3achb0t.analyser.RuneLiteAnalyzer
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
+import com.p3achb0t.hook_interfaces.Model
+import com.p3achb0t.hook_interfaces.Npc
+import com.p3achb0t.hook_interfaces.Player
 import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
@@ -63,7 +65,7 @@ fun main() {
     val gamePackWithPath = downloader.getLocalGamepack()
     println("Using $gamePackWithPath")
 
-    RuneLiteAnalyzer().getHooks()
+//    RuneLiteAnalyzer().getHooks()
 
     dream = DreamBotAnalyzer()
 
@@ -71,22 +73,10 @@ fun main() {
     dream?.parseHooks()
     val gamePackJar = JarFile(gamePackWithPath)
     dream?.parseJar(gamePackJar)
-//    dream?.generateSuperGraph()
 
 
     val analyser = Analyser()
-
     analyser.parseJar(gamePackJar, dream)
-
-
-//    dream?.createAccessorFieldsForClass(Client::class.java)
-//    dream.createAccessorFieldsForClass(Tile::class.java)
-//    dream.createAccessorFieldsForClass(Renderable::class.java)
-//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
-//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
-//    dream.createAccessorFieldsForClass(ObjectComposite::class.java)
-
-
 
 
     // Getting parameters
@@ -200,41 +190,170 @@ fun main() {
 //                        }
 //                        println("]")
 //                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
-
+                        g.color = Color.GREEN
                         val players = clientData.getPlayers()
                         var count = 0
                         var point = Point(200,50)
                         players.iterator().forEach { _player ->
                             if (_player != null && _player.getLevel() > 0) {
-                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
-                                print("Queue size: ${_player.getQueueSize()}")
-                                _player.getQueueX()
+//                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
+//                                print("Queue size: ${_player.getQueueSize()}")
                                 count += 1
-                                var point = Calculations.worldToScreen(_player.getLocalX(),_player.getLocalY(),_player.getModelHeight())
+                                val point = Calculations.worldToScreen(
+                                    _player.getLocalX(),
+                                    _player.getLocalY(),
+                                    _player.getModelHeight()
+                                )
                                 if(point.x != -1 && point.y != -1) {
+                                    g.color = Color.GREEN
                                     g.drawString(_player.getName().getName(), point.x, point.y)
+                                    val polygon = getPlayerTriangles(_player)
+                                    g.color = Color.YELLOW
+                                    polygon.forEach {
+                                        g.drawPolygon(it)
+                                    }
                                 }
                                 point.y += 20
                             }
                         }
-                        if (count > 0) {
-                            println()
-                            println(count)
-                        }
 
                         count = 0
                         val localNpcs = clientData.getLocalNPCs()
+                        var npc: Npc? = null
                         localNpcs.iterator().forEach {
                             if(it != null){
-                                it.getComposite().getId()
-                                print("Name: ${it.getComposite().getName()}, ID:${it.getComposite().getNpcComposite_id()} x:${it.getLocalX()} y:${it.getLocalY()},")
+                                npc = it
+
+//                                print("Name: ${it.getComposite().getName()}, ID:${it.getComposite().getNpcComposite_id()} x:${it.getLocalX()} y:${it.getLocalY()},")
                                 count += 1
+                                val point =
+                                    Calculations.worldToScreen(it.getLocalX(), it.getLocalY(), it.getModelHeight())
+                                if (point.x != -1 && point.y != -1) {
+                                    g.color = Color.GREEN
+                                    g.drawString(it.getComposite().getName(), point.x, point.y)
+                                    val polygon = getTriangles(npc)
+                                    g.color = Color.BLUE
+                                    polygon.forEach {
+                                        g.drawPolygon(it)
+                                    }
+                                }
                             }
                         }
-                        if (count > 0) {
-                            println()
-                            println(count)
+
+
+//                        println("")
+//                        println("Model list size:" + modelList.size)
+
+                    }
+
+                    private fun getTriangles(npc: Npc?): ArrayList<Polygon> {
+                        val polygonList = ArrayList<Polygon>()
+                        val npcModels = clientData.getNpcModelCache()
+                        npcModels.getHashTable().getBuckets().iterator().forEach { bucketItem ->
+                            if (bucketItem != null) {
+                                val next = bucketItem.getNext()
+                                if (next.getId().toInt() == npc?.getComposite()?.getNpcComposite_id()) {
+                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
+
+                                    val model = next as Model
+
+                                    if (npc != null) {
+
+                                        val locX = npc.getLocalX()
+                                        val locY = npc.getLocalY()
+                                        val xPoints = model.getVerticesX()
+                                        val yPoints = model.getVerticesY()
+                                        val zPoints = model.getVerticesZ()
+                                        val indiciesX = model.getIndicesX()
+                                        val indiciesY = model.getIndicesY()
+                                        val indiciesZ = model.getIndicesZ()
+
+                                        for (i in 0 until model.getIndicesLength()) {
+                                            val one = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesX[i]],
+                                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+                                            )
+                                            val two = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesY[i]],
+                                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+                                            )
+                                            val three = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesZ[i]],
+                                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+                                            )
+                                            if (one.x >= 0 && two.x >= 0 && three.x >= 0) {
+                                                polygonList.add(
+                                                    Polygon(
+                                                        intArrayOf(one.x, two.x, three.x),
+                                                        intArrayOf(one.y, two.y, three.y),
+                                                        3
+                                                    )
+                                                )
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+                            }
                         }
+                        return polygonList
+                    }
+
+                    private fun getPlayerTriangles(player: Player?): ArrayList<Polygon> {
+                        val polygonList = ArrayList<Polygon>()
+                        val playerModels = clientData.getPlayerModelCache()
+                        playerModels.getHashTable().getBuckets().iterator().forEach { bucketItem ->
+                            if (bucketItem != null) {
+                                val next = bucketItem.getNext()
+                                if (next.getId() == player?.getComposite()?.getStaticModelID()) {
+                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
+
+                                    val model = next as Model
+
+                                    if (player != null) {
+
+                                        val locX = player.getLocalX()
+                                        val locY = player.getLocalY()
+                                        val xPoints = model.getVerticesX()
+                                        val yPoints = model.getVerticesY()
+                                        val zPoints = model.getVerticesZ()
+                                        val indiciesX = model.getIndicesX()
+                                        val indiciesY = model.getIndicesY()
+                                        val indiciesZ = model.getIndicesZ()
+
+                                        for (i in 0 until model.getIndicesLength()) {
+                                            val one = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesX[i]],
+                                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+                                            )
+                                            val two = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesY[i]],
+                                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+                                            )
+                                            val three = Calculations.worldToScreen(
+                                                locX + xPoints[indiciesZ[i]],
+                                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+                                            )
+                                            if (one.x >= 0 && two.x >= 0 && three.x >= 0) {
+                                                polygonList.add(
+                                                    Polygon(
+                                                        intArrayOf(one.x, two.x, three.x),
+                                                        intArrayOf(one.y, two.y, three.y),
+                                                        3
+                                                    )
+                                                )
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+                        return polygonList
                     }
 
                 })
