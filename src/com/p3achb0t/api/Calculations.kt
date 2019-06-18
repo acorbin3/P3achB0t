@@ -159,7 +159,6 @@ class Calculations {
             val nwHeight = getHeight(neX, swY, tilePlane)
             val neHeight = getHeight(neX, neY, tilePlane)
             val seHeight = getHeight(swX, neY, tilePlane)
-            println("Tile Heights: $swHeight $nwHeight $neHeight $seHeight")
 
             val p1 = worldToScreen(swX, swY, swHeight)
             val p2 = worldToScreen(neX, swY, nwHeight)
