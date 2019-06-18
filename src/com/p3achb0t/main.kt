@@ -8,11 +8,11 @@ import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.getActorTriangles
+import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
-import com.p3achb0t.hook_interfaces.Model
 import com.p3achb0t.hook_interfaces.Npc
-import com.p3achb0t.hook_interfaces.Player
 import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.rsclasses.Client
 import com.p3achb0t.rsclasses.Widget
@@ -207,11 +207,22 @@ fun main() {
                                 if(point.x != -1 && point.y != -1) {
                                     g.color = Color.GREEN
                                     g.drawString(_player.getName().getName(), point.x, point.y)
-                                    val polygon = getPlayerTriangles(_player)
+                                    val polygon = getActorTriangles(
+                                        _player,
+                                        clientData.getPlayerModelCache(),
+                                        _player.getComposite().getAnimatedModelID()
+                                    )
                                     g.color = Color.YELLOW
                                     polygon.forEach {
                                         g.drawPolygon(it)
                                     }
+                                    val ch = getConvexHull(
+                                        _player,
+                                        clientData.getPlayerModelCache(),
+                                        _player.getComposite().getAnimatedModelID()
+                                    )
+                                    g.color = Color.RED
+                                    g.drawPolygon(ch)
                                 }
                                 point.y += 20
                             }
@@ -231,11 +242,23 @@ fun main() {
                                 if (point.x != -1 && point.y != -1) {
                                     g.color = Color.GREEN
                                     g.drawString(it.getComposite().getName(), point.x, point.y)
-                                    val polygon = getTriangles(npc)
+                                    val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
+                                        getActorTriangles(
+                                            npc, clientData.getNpcModelCache(),
+                                            it1
+                                        )
+                                    }
                                     g.color = Color.BLUE
-                                    polygon.forEach {
+                                    polygon?.forEach {
                                         g.drawPolygon(it)
                                     }
+                                    val ch = getConvexHull(
+                                        npc,
+                                        clientData.getNpcModelCache(),
+                                        npc!!.getComposite().getNpcComposite_id().toLong()
+                                    )
+                                    g.color = Color.PINK
+                                    g.drawPolygon(ch)
                                 }
                             }
                         }
@@ -246,130 +269,7 @@ fun main() {
 
                     }
 
-                    private fun getTriangles(npc: Npc?): ArrayList<Polygon> {
-                        val polygonList = ArrayList<Polygon>()
-                        val npcModels = clientData.getNpcModelCache()
-                        npcModels.getHashTable().getBuckets().iterator().forEach { bucketItem ->
-                            if (bucketItem != null) {
-                                val next = bucketItem.getNext()
-                                if (next.getId().toInt() == npc?.getComposite()?.getNpcComposite_id()) {
-//                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
 
-                                    val model = next as Model
-
-                                    if (npc != null) {
-
-                                        val locX = npc.getLocalX()
-                                        val locY = npc.getLocalY()
-                                        val xPoints = model.getVerticesX()
-                                        val yPoints = model.getVerticesY()
-                                        val zPoints = model.getVerticesZ()
-                                        val indiciesX = model.getIndicesX()
-                                        val indiciesY = model.getIndicesY()
-                                        val indiciesZ = model.getIndicesZ()
-
-                                        for (i in 0 until model.getIndicesLength()) {
-                                            val one = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesX[i]],
-                                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-                                            )
-                                            val two = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesY[i]],
-                                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-                                            )
-                                            val three = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesZ[i]],
-                                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-                                            )
-                                            if (one.x >= 0 && two.x >= 0 && three.x >= 0) {
-                                                polygonList.add(
-                                                    Polygon(
-                                                        intArrayOf(one.x, two.x, three.x),
-                                                        intArrayOf(one.y, two.y, three.y),
-                                                        3
-                                                    )
-                                                )
-                                            }
-
-                                        }
-
-                                    }
-
-                                }
-                            }
-                        }
-                        return polygonList
-                    }
-
-                    private fun getPlayerTriangles(player: Player?): ArrayList<Polygon> {
-                        val polygonList = ArrayList<Polygon>()
-                        val playerModels = clientData.getPlayerModelCache()
-                        playerModels.getHashTable().getBuckets().iterator().forEach { bucketItem ->
-                            if (bucketItem != null) {
-                                val next = bucketItem.getNext()
-                                if (next.getId() == player?.getComposite()?.getStaticModelID()) {
-//                                    println("(" + bucketItem.getId().toString() + "," + next.getId().toString() + "),")
-
-                                    val model = next as Model
-
-                                    if (player != null) {
-
-                                        val locX = player.getLocalX()
-                                        val locY = player.getLocalY()
-                                        val xPoints = model.getVerticesX().copyOf()
-                                        val yPoints = model.getVerticesY().copyOf()
-                                        val zPoints = model.getVerticesZ().copyOf()
-                                        val indiciesX = model.getIndicesX().copyOf()
-                                        val indiciesY = model.getIndicesY().copyOf()
-                                        val indiciesZ = model.getIndicesZ().copyOf()
-
-                                        //TODO - set rotation
-                                        //TODO orentation
-                                        val orientation = (player.getOrientation()).rem(2048)
-                                        if (orientation != 0) {
-                                            val sin = Calculations.SINE[orientation]
-                                            val cos = Calculations.COSINE[orientation]
-                                            for (i in 0 until xPoints.size) {
-                                                val oldX = xPoints[i]
-                                                val oldZ = zPoints[i]
-                                                xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
-                                                zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
-                                            }
-                                        }
-
-
-                                        for (i in 0 until model.getIndicesLength()) {
-                                            val one = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesX[i]],
-                                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-                                            )
-                                            val two = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesY[i]],
-                                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-                                            )
-                                            val three = Calculations.worldToScreen(
-                                                locX + xPoints[indiciesZ[i]],
-                                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-                                            )
-                                            if (one.x >= 0 && two.x >= 0 && three.x >= 0) {
-                                                polygonList.add(
-                                                    Polygon(
-                                                        intArrayOf(one.x, two.x, three.x),
-                                                        intArrayOf(one.y, two.y, three.y),
-                                                        3
-                                                    )
-                                                )
-                                            }
-
-                                        }
-
-                                    }
-
-                                }
-                            }
-                        }
-                        return polygonList
-                    }
 
                 })
 //                customCanvas?.addPaintListener(object : PaintListener {
