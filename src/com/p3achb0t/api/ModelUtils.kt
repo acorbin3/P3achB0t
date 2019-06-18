@@ -54,7 +54,11 @@ fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Po
                             locX + xPoints[indiciesZ[i]],
                             locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
                         )
-                        if (one.x >= 0 && two.x >= 0 && three.x >= 0) {
+                        if (one.x >= 0 && two.x >= 0 && three.x >= 0
+                            && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
+                                three
+                            )
+                        ) {
                             polygonList.add(
                                 Polygon(
                                     intArrayOf(one.x, two.x, three.x),
@@ -112,19 +116,19 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
                             locX + xPoints[indiciesX[i]],
                             locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
                         )
-                        if (one.x >= 0) pointList.add(one)
+                        if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
 
                         val two = Calculations.worldToScreen(
                             locX + xPoints[indiciesY[i]],
                             locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
                         )
-                        if (two.x >= 0) pointList.add(two)
+                        if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
 
                         val three = Calculations.worldToScreen(
                             locX + xPoints[indiciesZ[i]],
                             locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
                         )
-                        if (three.x >= 0) pointList.add(three)
+                        if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
                     }
                 }
             }

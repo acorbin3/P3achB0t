@@ -204,28 +204,33 @@ fun main() {
                                     _player.getLocalY(),
                                     _player.getModelHeight()
                                 )
-                                if(point.x != -1 && point.y != -1) {
+                                if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
                                     g.color = Color.GREEN
                                     g.drawString(_player.getName().getName(), point.x, point.y)
-                                    val polygon = getActorTriangles(
-                                        _player,
-                                        clientData.getPlayerModelCache(),
-                                        _player.getComposite().getAnimatedModelID()
-                                    )
-                                    g.color = Color.YELLOW
-                                    polygon.forEach {
-                                        g.drawPolygon(it)
-                                    }
-                                    val ch = getConvexHull(
-                                        _player,
-                                        clientData.getPlayerModelCache(),
-                                        _player.getComposite().getAnimatedModelID()
-                                    )
-                                    g.color = Color.RED
-                                    g.drawPolygon(ch)
                                 }
-                                point.y += 20
+                                val polygon = getActorTriangles(
+                                    _player,
+                                    clientData.getPlayerModelCache(),
+                                    _player.getComposite().getAnimatedModelID()
+                                )
+                                g.color = Color.YELLOW
+                                polygon.forEach {
+                                    g.drawPolygon(it)
+                                }
+                                val ch = getConvexHull(
+                                    _player,
+                                    clientData.getPlayerModelCache(),
+                                    _player.getComposite().getAnimatedModelID()
+                                )
+                                g.color = Color.RED
+                                g.drawPolygon(ch)
+                                val tile = Calculations.getCanvasTileAreaPoly(_player.getLocalX(), _player.getLocalY())
+                                g.color = Color.CYAN
+                                g.drawPolygon(tile)
+                                g.color = Color(0, 0, 0, 50)
+                                g.fillPolygon(tile)
                             }
+                            point.y += 20
                         }
 
                         count = 0
@@ -239,27 +244,35 @@ fun main() {
                                 count += 1
                                 val point =
                                     Calculations.worldToScreen(it.getLocalX(), it.getLocalY(), it.getModelHeight())
-                                if (point.x != -1 && point.y != -1) {
+                                if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
                                     g.color = Color.GREEN
                                     g.drawString(it.getComposite().getName(), point.x, point.y)
-                                    val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
-                                        getActorTriangles(
-                                            npc, clientData.getNpcModelCache(),
-                                            it1
-                                        )
-                                    }
-                                    g.color = Color.BLUE
-                                    polygon?.forEach {
-                                        g.drawPolygon(it)
-                                    }
-                                    val ch = getConvexHull(
-                                        npc,
-                                        clientData.getNpcModelCache(),
-                                        npc!!.getComposite().getNpcComposite_id().toLong()
-                                    )
-                                    g.color = Color.PINK
-                                    g.drawPolygon(ch)
                                 }
+
+                                val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
+                                    getActorTriangles(
+                                        npc, clientData.getNpcModelCache(),
+                                        it1
+                                    )
+                                }
+                                g.color = Color.BLUE
+                                polygon?.forEach {
+                                    g.drawPolygon(it)
+                                }
+                                val ch = getConvexHull(
+                                    npc,
+                                    clientData.getNpcModelCache(),
+                                    npc!!.getComposite().getNpcComposite_id().toLong()
+                                )
+                                g.color = Color.PINK
+                                g.drawPolygon(ch)
+
+                                val tile = Calculations.getCanvasTileAreaPoly(it.getLocalX(), it.getLocalY())
+                                g.color = Color.CYAN
+                                g.drawPolygon(tile)
+                                g.color = Color(0, 0, 0, 50)
+                                g.fillPolygon(tile)
+
                             }
                         }
 

@@ -1,12 +1,20 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.Main.Data.clientData
+import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import java.awt.Point
+import java.awt.Polygon
 import java.awt.Rectangle
+import kotlin.experimental.and
 
 class Calculations {
 
     companion object {
+        val LOCAL_COORD_BITS = 7
+        val LOCAL_TILE_SIZE = 1 shl LOCAL_COORD_BITS // 128 - size of a tile in local coordinates
+        val LOCAL_HALF_TILE_SIZE = LOCAL_TILE_SIZE / 2
+
+        val SCENE_SIZE = Constants.SCENE_SIZE // in tiles
         var SINE = IntArray(2048)
         var COSINE = IntArray(2048)
         val GAMESCREEN = Rectangle(4, 4, 512, 334)
@@ -94,5 +102,81 @@ class Calculations {
 //
 //            return Point(644 + xMap, 80 - yMap)
 //        }
+
+        private fun getHeight(localX: Int, localY: Int, plane: Int): Int {
+            val sceneX = localX shr LOCAL_COORD_BITS
+            val sceneY = localY shr LOCAL_COORD_BITS
+            if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE) {
+                val tileHeights = clientData.getTileHeights()
+
+                val x = localX.and(LOCAL_TILE_SIZE - 1)
+                val y = localY.and(LOCAL_TILE_SIZE - 1)
+                val var8 =
+                    (x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY]) shr LOCAL_COORD_BITS
+                val var9 =
+                    (tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1]) shr LOCAL_COORD_BITS
+                return ((LOCAL_TILE_SIZE - y) * var8 + y * var9) shr LOCAL_COORD_BITS + 168
+            }
+
+            return 0
+        }
+
+
+        /**
+         * Returns a polygon representing an area.
+         *
+         * @param client the game client
+         * @param localLocation the center location of the AoE
+         * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
+         * @return a polygon representing the tiles in the area
+         */
+        fun getCanvasTileAreaPoly(localX: Int, localY: Int, size: Int = 1): Polygon? {
+            val plane = clientData.getPlane()
+
+            val swX = localX - size * LOCAL_TILE_SIZE / 2
+            val swY = localY - size * LOCAL_TILE_SIZE / 2
+
+            val neX = localX + size * LOCAL_TILE_SIZE / 2
+            val neY = localY + size * LOCAL_TILE_SIZE / 2
+
+            val tileSettings = clientData.getTileSettings()
+
+            val sceneX = localX.ushr(LOCAL_COORD_BITS)
+            val sceneY = localY.ushr(LOCAL_COORD_BITS)
+
+            if (sceneX < 0 || sceneY < 0 || sceneX >= SCENE_SIZE || sceneY >= SCENE_SIZE) {
+                return null
+            }
+
+            var tilePlane = plane
+            if (plane < Constants.MAX_Z - 1 && tileSettings[1][sceneX][sceneY].and(TILE_FLAG_BRIDGE.toByte()).toInt() == TILE_FLAG_BRIDGE) {
+                tilePlane = plane + 1
+            }
+            if (tilePlane > 0)
+                tilePlane -= 1
+
+            val swHeight = getHeight(swX, swY, tilePlane)
+            val nwHeight = getHeight(neX, swY, tilePlane)
+            val neHeight = getHeight(neX, neY, tilePlane)
+            val seHeight = getHeight(swX, neY, tilePlane)
+            println("Tile Heights: $swHeight $nwHeight $neHeight $seHeight")
+
+            val p1 = worldToScreen(swX, swY, swHeight)
+            val p2 = worldToScreen(neX, swY, nwHeight)
+            val p3 = worldToScreen(neX, neY, neHeight)
+            val p4 = worldToScreen(swX, neY, seHeight)
+
+            if (p1 == null || p2 == null || p3 == null || p4 == null) {
+                return null
+            }
+
+            val poly = Polygon()
+            poly.addPoint(p1.getX().toInt(), p1.getY().toInt())
+            poly.addPoint(p2.getX().toInt(), p2.getY().toInt())
+            poly.addPoint(p3.getX().toInt(), p3.getY().toInt())
+            poly.addPoint(p4.getX().toInt(), p4.getY().toInt())
+
+            return poly
+        }
     }
 }
