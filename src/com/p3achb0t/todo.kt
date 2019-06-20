@@ -39,7 +39,7 @@ package com.p3achb0t
 //  OBE - Why is the x and y duplicated , and one set seems values are incorrect
 //  DONE 4/24/2019 - make boarders around widgets
 
-//  TODO - Add in injection hooks
+//  DONE 6/??/2019 - Add in injection hooks
 
 
 //  DONE 3/31/2019 - Add reflection into the client
@@ -48,7 +48,7 @@ package com.p3achb0t
 //  DONE 4/4/2019 - Paint - write text
 //  Enhancement - Paint - Draw lines
 //  Enhancement - Paint - Draw images
-//  TODO - Paint - Highlight things within the client
+//  DONE! - Paint - Highlight things within the client
 
 //How to add custom paints in any class:
 
@@ -63,12 +63,12 @@ package com.p3achb0t
 //  TODO - Identify - ground Items
 //  DONE 4/29/2019 - Identify - NPCs
 //  DONE 5/7/2019 - Identify - local players
-//  TODO - Be smarter when getting all the field names. Its possible there could be multiple id's between the different classes and they could get over written
+//  DONE 6/??/2019 - Be smarter when getting all the field names. Its possible there could be multiple id's between the different classes and they could get over written
 
-//  TODO - Identify - Tiles
+//  DONE 6/18/2019 - Identify - Tiles
 //  TODO - Paint - Ground Items
-//  TODO - Paint - Tiles
-//  TODO - Paint - NPCs
+//  DONE 6/18/2019 - Paint - Tiles
+//  DONE 6/18/2019 - Paint - NPCs
 
 //  TODO - Interactions - menu
 //  TODO - Interactions - walking

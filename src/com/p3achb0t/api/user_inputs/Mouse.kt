@@ -1,4 +1,4 @@
-package com.p3achb0t.user_inputs
+package com.p3achb0t.api.user_inputs
 
 import com.p3achb0t.Main
 import kotlinx.coroutines.delay
