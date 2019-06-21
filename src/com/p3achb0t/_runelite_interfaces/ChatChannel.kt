@@ -1,0 +1,6 @@
+package com.p3achb0t._runelite_interfaces
+
+interface ChatChannel {
+    fun getCount(): Int
+    fun getMessages(): Array<Message>
+}

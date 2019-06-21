@@ -1,0 +1,14 @@
+package com.p3achb0t._runelite_interfaces
+
+interface OverlayDefinition : DualNode {
+    fun getHue(): Int
+    fun getHue2(): Int
+    fun getLightness(): Int
+    fun getLightness2(): Int
+    fun getRgb(): Int
+    fun getRgb2(): Int
+    fun getSaturation(): Int
+    fun getSaturation2(): Int
+    fun getTexture(): Int
+    fun get__o(): Boolean
+}

@@ -1,0 +1,42 @@
+package com.p3achb0t._runelite_interfaces
+
+interface Bzip2State {
+    fun get__ag(): Array<Boolean>
+    fun get__aq(): Array<Boolean>
+    fun get__i(): Byte
+    fun get__ac(): Array<Byte>
+    fun get__aj(): Array<Byte>
+    fun get__av(): Array<Byte>
+    fun get__ay(): Array<Byte>
+    fun get__g(): Array<Byte>
+    fun get__x(): Array<Byte>
+    fun get__ah(): Array<Array<Byte>>
+    fun get__a(): Int
+    fun get__ae(): Int
+    fun get__c(): Int
+    fun get__d(): Int
+    fun get__e(): Int
+    fun get__h(): Int
+    fun get__j(): Int
+    fun get__k(): Int
+    fun get__l(): Int
+    fun get__n(): Int
+    fun get__s(): Int
+    fun get__t(): Int
+    fun get__v(): Int
+    fun get__y(): Int
+    fun get__z(): Int
+    fun get__ab(): Array<Int>
+    fun get__ar(): Array<Int>
+    fun get__b(): Array<Int>
+    fun get__r(): Array<Int>
+    fun get__ak(): Array<Array<Int>>
+    fun get__al(): Array<Array<Int>>
+    fun get__aw(): Array<Array<Int>>
+    fun get__f(): Int
+    fun get__m(): Int
+    fun get__o(): Int
+    fun get__q(): Int
+    fun get__u(): Int
+    fun get__w(): Int
+}
