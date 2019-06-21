@@ -18,11 +18,26 @@ class Calculations {
         var SINE = IntArray(2048)
         var COSINE = IntArray(2048)
         val GAMESCREEN = Rectangle(4, 4, 512, 334)
+        val GAMESCREEN_TOP_LEFT = Point(GAMESCREEN.x, GAMESCREEN.y)
+        val GAMESCREEN_TOP_RIGHT = Point(GAMESCREEN.width, GAMESCREEN.y)
+        val GAMESCREEN_BOTTOM_LEFT = Point(GAMESCREEN.x, GAMESCREEN.height)
+        val GAMESCREEN_BOTTOM_RIGHT = Point(GAMESCREEN.width, GAMESCREEN.height)
+        val gameScreenPoints = ArrayList<Point>()
+        val gameScreenLines = ArrayList<LineF>()
+
         init {
             for (i in 0 until SINE.size) {
                 SINE[i] = (65536.0 * Math.sin(i.toDouble() * 0.0030679615)).toInt()
                 COSINE[i] = (65536.0 * Math.cos(i.toDouble() * 0.0030679615)).toInt()
             }
+            gameScreenPoints.add(GAMESCREEN_TOP_LEFT)
+            gameScreenPoints.add(GAMESCREEN_TOP_RIGHT)
+            gameScreenPoints.add(GAMESCREEN_BOTTOM_RIGHT)
+            gameScreenPoints.add(GAMESCREEN_BOTTOM_LEFT)
+            gameScreenLines.add(LineF(GAMESCREEN_TOP_LEFT, GAMESCREEN_TOP_RIGHT))
+            gameScreenLines.add(LineF(GAMESCREEN_TOP_RIGHT, GAMESCREEN_BOTTOM_RIGHT))
+            gameScreenLines.add(LineF(GAMESCREEN_BOTTOM_RIGHT, GAMESCREEN_BOTTOM_LEFT))
+            gameScreenLines.add(LineF(GAMESCREEN_BOTTOM_LEFT, GAMESCREEN_TOP_LEFT))
         }
 
         fun getTileHeight(plane: Int, x: Int, y: Int): Int {
@@ -121,16 +136,34 @@ class Calculations {
             return 0
         }
 
+        class LineF(var s: Point, var e: Point)
+
+        fun findIntersection(l1: LineF, l2: LineF): Point {
+            val a1 = l1.e.y - l1.s.y
+            val b1 = l1.s.x - l1.e.x
+            val c1 = a1 * l1.s.x + b1 * l1.s.y
+
+            val a2 = l2.e.y - l2.s.y
+            val b2 = l2.s.x - l2.e.x
+            val c2 = a2 * l2.s.x + b2 * l2.s.y
+
+            val delta = a1 * b2 - a2 * b1
+            if (delta == 0) {
+                return Point(-1, -1)
+            }
+            // If lines are parallel, intersection point will contain infinite values
+            return Point((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta)
+        }
 
         /**
-         * Returns a polygon representing an area.
+         * Returns a polygon representing an area. TODO- Make it so the points are all on the screen
          *
          * @param client the game client
          * @param localLocation the center location of the AoE
          * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
          * @return a polygon representing the tiles in the area
          */
-        fun getCanvasTileAreaPoly(localX: Int, localY: Int, size: Int = 1): Polygon? {
+        fun getCanvasTileAreaPoly(localX: Int, localY: Int, size: Int = 1): Polygon {
             val plane = clientData.getPlane()
 
             val swX = localX - size * LOCAL_TILE_SIZE / 2
@@ -145,7 +178,7 @@ class Calculations {
             val sceneY = localY.ushr(LOCAL_COORD_BITS)
 
             if (sceneX < 0 || sceneY < 0 || sceneX >= SCENE_SIZE || sceneY >= SCENE_SIZE) {
-                return null
+                return Polygon()
             }
 
             var tilePlane = plane
@@ -165,8 +198,9 @@ class Calculations {
             val p3 = worldToScreen(neX, neY, neHeight)
             val p4 = worldToScreen(swX, neY, seHeight)
 
-            if (p1 == null || p2 == null || p3 == null || p4 == null) {
-                return null
+            //All off screen
+            if (!isOnscreen(p1) && !isOnscreen(p2) && !isOnscreen(p3) && !isOnscreen(p4)) {
+                return Polygon()
             }
 
             val poly = Polygon()

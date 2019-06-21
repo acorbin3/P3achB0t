@@ -25,6 +25,9 @@ fun debugPaint(): PaintListener {
 //                        }
 //                        println("]")
 //                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
+
+
+            ///////Player paint//////////
             g.color = Color.GREEN
             val players = Main.clientData.getPlayers()
             var count = 0
@@ -71,6 +74,7 @@ fun debugPaint(): PaintListener {
                 point.y += 20
             }
 
+            ///////NPC paint//////////
             count = 0
             val localNpcs = Main.clientData.getLocalNPCs()
             var npc: Npc? = null
@@ -119,47 +123,48 @@ fun debugPaint(): PaintListener {
                 }
             }
 
+            ///////Object paint//////////
             //TODO - Look at the game objects in the region
-            val region = Main.clientData.getRegion()
-            region.getTiles().iterator().forEach { plane ->
-                plane.iterator().forEach { row ->
-                    row.iterator().forEach { tile ->
-                        if (tile != null) {
-                            if (tile.getObjects().isNotEmpty()) {
-                                val tilePolygon =
-                                    Calculations.getCanvasTileAreaPoly(
-                                        tile.getX(),
-                                        tile.getY()
-                                    )
-                                g.color = Color.ORANGE
-                                g.drawPolygon(tilePolygon)
-                                val point =
-                                    Calculations.worldToScreen(tile.getX(), tile.getY(), 0)
-                                if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                        point
-                                    )
-                                ) {
-                                    g.color = Color.GREEN
-                                    g.drawString(tile.getObjects()[0].getId().toString(), point.x, point.y)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            region.getGameObjects().iterator().forEach {
-                if (it != null) {
-                    val tile = Calculations.getCanvasTileAreaPoly(it.getX(), it.getY())
-                    g.color = Color.ORANGE
-                    g.drawPolygon(tile)
-                    val point =
-                        Calculations.worldToScreen(it.getX(), it.getY(), it.getHeight())
-                    if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
-                        g.color = Color.GREEN
-                        g.drawString(it.getId().toString(), point.x, point.y)
-                    }
-                }
-            }
+//            val region = Main.clientData.getRegion()
+//            region.getTiles().iterator().forEach { plane ->
+//                plane.iterator().forEach { row ->
+//                    row.iterator().forEach { tile ->
+//                        if (tile != null) {
+//                            if (tile.getObjects().isNotEmpty()) {
+//                                val tilePolygon =
+//                                    Calculations.getCanvasTileAreaPoly(
+//                                        tile.getX(),
+//                                        tile.getY()
+//                                    )
+//                                g.color = Color.ORANGE
+//                                g.drawPolygon(tilePolygon)
+//                                val point =
+//                                    Calculations.worldToScreen(tile.getX(), tile.getY(), 0)
+//                                if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+//                                        point
+//                                    )
+//                                ) {
+//                                    g.color = Color.GREEN
+//                                    g.drawString(tile.getObjects()[0].getId().toString(), point.x, point.y)
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            region.getGameObjects().iterator().forEach {
+//                if (it != null) {
+//                    val tile = Calculations.getCanvasTileAreaPoly(it.getX(), it.getY())
+//                    g.color = Color.ORANGE
+//                    g.drawPolygon(tile)
+//                    val point =
+//                        Calculations.worldToScreen(it.getX(), it.getY(), it.getHeight())
+//                    if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
+//                        g.color = Color.GREEN
+//                        g.drawString(it.getId().toString(), point.x, point.y)
+//                    }
+//                }
+//            }
 
 
 //                        println("")

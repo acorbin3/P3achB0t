@@ -1,5 +1,6 @@
 package com.p3achb0t
 
+import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.AWTEventMulticaster
 import java.awt.Canvas
@@ -29,16 +30,16 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
 
         paintListener?.onPaint(g)
 
-
+        g.color = Color.GREEN
         if (Main.selectedWidget != null) {
-            if (Main.selectedWidget!!.type == "2") {
-                val retcs = Main.selectedWidget?.getItemsRects()
-                retcs?.iterator()?.forEach { rect ->
+            if (Main.selectedWidget!!.getType() == 2) {
+                val retcs = Widget.getItemsRects(Main.selectedWidget!!)
+                retcs.iterator().forEach { rect ->
                     g.drawRect(rect.x, rect.y, rect.width, rect.height)
                 }
             } else {
-                val rect = Main.selectedWidget?.getDrawableRect()!!
-                g.drawRect(rect.x, rect.y, rect.width, rect.height)
+                val rect = Widget.getDrawableRect(Main.selectedWidget!!)
+                rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
             }
         }
 

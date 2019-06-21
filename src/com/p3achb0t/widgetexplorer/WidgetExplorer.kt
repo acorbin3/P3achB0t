@@ -1,9 +1,7 @@
 package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.Main
-import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.rsclasses.RSClasses
-import com.p3achb0t.rsclasses.WidgetIndex
+import com.p3achb0t.hook_interfaces.Widget
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -32,8 +30,8 @@ class WidgetExplorer : View() {
         }
         center = vbox {
             label("Parent Widgets")
-            treeview<WidgetIndex> {
-                root = TreeItem(WidgetIndex("Widgets", "Widgets"))
+            treeview<Widget.WidgetIndex> {
+                root = TreeItem(Widget.WidgetIndex("Widgets", "Widgets"))
                 cellFormat { text = it.childID }
                 populate { parent ->
                     if (parent == root)
@@ -47,17 +45,14 @@ class WidgetExplorer : View() {
                     println("($parentId,$childID)")
                     val widgetDetailIndex = "$parentId,$childID"
                     println(controller.widgetDetails[widgetDetailIndex])
-                    //TODO - Update with injection
-//                    val currentWidget = getWidgetData(it)
+                    val currentWidget = controller.allWidgetFileHookData[widgetDetailIndex]
                     //For the parent trees, there is no parent ID
                     if (parentId != "") {
-                        //TODO - Update with injection
-//                        Main.selectedWidget = currentWidget
+                        Main.selectedWidget = currentWidget
                     } else {
                         Main.selectedWidget = null
                     }
-//TODO - Update with injection
-//                    controller.currentDetail.set(currentWidget.toString())
+                    controller.currentDetail.set(currentWidget?.let { it1 -> controller.getWidgetDetails(it1) })
 
                 }
 
@@ -77,61 +72,31 @@ class WidgetExplorer : View() {
 }
 
 class WidgetController : Controller() {
-    var allWidgets: ObservableList<WidgetIndex> = FXCollections.observableArrayList()
-    val parentWidgetList: ObservableList<WidgetIndex> = FXCollections.observableArrayList()
+    var allWidgets: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
+    val parentWidgetList: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
     var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,child)
-    var parentList = emptyList<WidgetIndex>()
+    var parentList = emptyList<Widget.WidgetIndex>()
     var currentDetail = SimpleStringProperty()
 
-    var allWidgetFileHookData = mutableMapOf<String, MutableMap<String, RSClasses.Field>>()
+    var allWidgetFileHookData = mutableMapOf<String, Widget>()
 
 
     fun getUpdatedWidgets() {
 
         allWidgets.clear()
-        val widgetClassName = Main.dream?.analyzers?.get(
-            Client::class.java.simpleName
-        )?.fields?.find { it.field == "widgets" }?.owner
-        val widgetFieldName = Main.dream?.analyzers?.get(
-            Client::class.java.simpleName
-        )?.fields?.find { it.field == "widgets" }?.name
-
-        val widgetClazz = Main.classLoader?.loadClass(widgetClassName)
-        val widgetField = widgetClazz?.getDeclaredField(widgetFieldName)
-        widgetField?.isAccessible = true
-        val widgetObj = widgetField?.get(null)
 
         // Get all the widget indexes
-        if (widgetObj is Array<*>) {
-            widgetObj.forEachIndexed { parentIndex, childArray ->
-                if (childArray is Array<*>) {
-                    childArray.forEachIndexed { childIndex, childItem ->
-                        allWidgets.add(WidgetIndex("Parent $parentIndex", childIndex.toString()))
-                        //TODO Get widget items
-//                        val v = childItem!!::class.java
-//                        var result = ""
-//                        val widgetDetailIndex = "$parentIndex,$childIndex"
-//                        val currentWidgetFieldHookData = Main.dream?.analyzers?.get(
-//                            Widget::class.java.simpleName)?.fields!!
-//                        val localWidgetData = mutableMapOf<String,RSClasses.Field>()
-//                        for (field in v.declaredFields) {
-//                            if (currentWidgetFieldHookData.contains(field.name)) {
-////                                println(field.name + " ->" + currentWidgetFieldHookData[field.name])
-//                                // Get data
-//                                result += currentWidgetFieldHookData[field.name]?.fieldName + " -> "
-//                                currentWidgetFieldHookData[field.name]?.resultValue = getFieldResult(v, childItem, field, 0).toString()
-//                                result +=  currentWidgetFieldHookData[field.name]?.resultValue + " \n"
-//                                localWidgetData[currentWidgetFieldHookData[field.name]!!.fieldName] = RSClasses.Field()
-//                                localWidgetData[currentWidgetFieldHookData[field.name]?.fieldName]?.resultValue = currentWidgetFieldHookData[field.name]?.resultValue.toString()
-//
-//
-//                            }
-//                        }
-//                        allWidgetFileHookData[widgetDetailIndex] = localWidgetData
-//                        println("\t $result")
-
-//                        widgetDetails[widgetDetailIndex] = result
-
+        val widgets = Main.clientData.getWidgets()
+        widgets.forEachIndexed { parentIndex, childArray ->
+            if (childArray != null) {
+                childArray.forEachIndexed { childIndex, childItem ->
+                    if (childItem != null) {
+                        allWidgets.add(Widget.WidgetIndex("Parent $parentIndex", childIndex.toString()))
+                        val widgetDetailIndex = "$parentIndex,$childIndex"
+                        allWidgetFileHookData[widgetDetailIndex] = childItem
+                        val result = getWidgetDetails(childItem)
+                        println("\t $result")
+                        widgetDetails[widgetDetailIndex] = result
                     }
                 }
             }
@@ -139,10 +104,27 @@ class WidgetController : Controller() {
         parentWidgetList.clear()
         parentList = allWidgets
             .map { it.parentID }
-            .distinct().map { WidgetIndex("", it) }
+            .distinct().map { Widget.WidgetIndex("", it) }
         for (item in parentList) {
             parentWidgetList.add(item)
         }
+    }
+
+    fun getWidgetDetails(widget: Widget): String {
+        var result = ""
+        result += "Widget ID:" + widget.getWidget_id() + "\n"
+        result += "Text:" + widget.getText() + "\n"
+        var actions = "["
+        if (widget.getActions() != null) {
+            widget.getActions().iterator().forEach { actions += "$it," }
+        }
+        result += "Actions:$actions\n]"
+        result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
+        result += "Item ID:" + widget.getItemId() + "\n"
+        result += "Component Index:" + widget.getComponentIndex() + "\n"
+        result += "Heigth:" + widget.getHeight() + "\n"
+        result += "Width:" + widget.getWidth() + "\n"
+        return result
     }
 
 }

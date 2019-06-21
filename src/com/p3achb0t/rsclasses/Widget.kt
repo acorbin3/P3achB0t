@@ -48,11 +48,11 @@ class Widget : RSClasses {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun getParentIndex(): WidgetIndex {
-        val parentIndex = parentId.shr(16)
-        val childIndex = parentId.and(0xFF)
-        return WidgetIndex(parentIndex.toString(), childIndex.toString())
-    }
+//    fun getParentIndex(): WidgetIndex {
+//        val parentIndex = parentId.shr(16)
+//        val childIndex = parentId.and(0xFF)
+//        return WidgetIndex(parentIndex.toString(), childIndex.toString())
+//    }
 
     private fun getwidgetX(): Int {
         return if (parentId > 0) {
@@ -220,4 +220,3 @@ class Widget : RSClasses {
 
 }
 
-data class WidgetIndex(var parentID: String, var childID: String)

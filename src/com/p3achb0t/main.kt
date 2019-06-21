@@ -6,12 +6,13 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
+import com.p3achb0t.analyser.RuneLiteAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.debugPaint
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
+import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.rsclasses.Widget
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -51,7 +52,7 @@ fun main() {
     val gamePackWithPath = downloader.getLocalGamepack()
     println("Using $gamePackWithPath")
 
-//    RuneLiteAnalyzer().getHooks()
+    RuneLiteAnalyzer().getHooks()
 
     dream = DreamBotAnalyzer()
 
@@ -188,6 +189,8 @@ fun main() {
     }
 
     LoggingIntoAccount()
+//    class MyApp : App(WidgetExplorer::class)
+//    launch<MyApp>()
 
 }
 

@@ -171,6 +171,8 @@ class DreamBotAnalyzer{
                 //Simplification, just set the base with the getFunction and then check if it needs to be updated
                 if(!field.field.contains("get")){
                     field.field = "get${field.field.capitalize()}"
+                } else if (field.field.length >= 3 && !field.field.substring(0, 2).contains("get")) {
+                    field.field = "get${field.field.capitalize()}"
                 }
                 if (updatedDescriptor in classRefObs) {
                     genFunction(field, clazz, classRefObs)
