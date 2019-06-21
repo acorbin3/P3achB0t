@@ -1,9 +1,6 @@
 package com.p3achb0t.rsclasses
 
-import com.p3achb0t.Main
-import com.p3achb0t.reflectionutils.getIndexFromReflectedArray
 import org.objectweb.asm.tree.ClassNode
-import java.awt.Rectangle
 
 class Widget : RSClasses {
     var x = 0
@@ -48,94 +45,6 @@ class Widget : RSClasses {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-//    fun getParentIndex(): WidgetIndex {
-//        val parentIndex = parentId.shr(16)
-//        val childIndex = parentId.and(0xFF)
-//        return WidgetIndex(parentIndex.toString(), childIndex.toString())
-//    }
-
-    private fun getwidgetX(): Int {
-        return if (parentId > 0) {
-            0
-//            val parentIndex = getParentIndex()
-            //TODO - Update with injection
-//            val parentWidget = getWidgetData(parentIndex)
-//            parentWidget.getwidgetX() + x - scrollX
-        } else {
-            getBoundInfo().x
-        }
-    }
-
-    private fun getwidgetY(): Int {
-        return if (parentId > 0) {
-            0
-            //TODO - Update with injection
-//            val parentIndex = getParentIndex()
-//            val parentWidget = getWidgetData(parentIndex)
-//            parentWidget.getwidgetY() + y - scrollY
-        } else {
-            getBoundInfo().y
-        }
-    }
-
-    fun getItemsRects(): MutableList<Rectangle> {
-        val items = mutableListOf<Rectangle>()
-        val columns = this.width
-        val rows = this.height
-        val baseX = getwidgetX() + x
-        val baseY = getwidgetY() + y
-
-        for (i in 0 until (columns * rows)) {
-            val row = i / columns
-            val col = i % columns
-            val _x = baseX + ((32 + 10) * col)
-            val _y = baseY + ((32 + 4) * row)
-            items.add(Rectangle(_x, _y, 32, 32))
-        }
-        return items
-    }
-
-    fun getDrawableRect(): Rectangle {
-        return Rectangle(getwidgetX(), getwidgetY(), width, height)
-    }
-
-    private fun getBoundInfo(): Rectangle {
-        if (boundsIndex >= 0) {
-            val clazz = Main.client!!::class.java
-            val widgetBoundXField = clazz.getDeclaredField(
-                Main.dream?.analyzers?.get(
-                    Client::class.java.simpleName
-                )?.fields?.find { it.field == "widgetBoundsX" }?.name
-            )
-            val widgetX = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetBoundXField)
-
-            val widgetBoundYField = clazz.getDeclaredField(
-                Main.dream?.analyzers?.get(
-                    Client::class.java.simpleName
-                )?.fields?.find { it.field == "widgetBoundsY" }?.name
-            )
-            val widgetY = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetBoundYField)
-
-            val widgetHeightsField = clazz.getDeclaredField(
-                Main.dream?.analyzers?.get(
-                    Client::class.java.simpleName
-                )?.fields?.find { it.field == "widgetHeights" }?.name
-            )
-            val widgetHeight = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetHeightsField)
-
-            val widgetWidthsField = clazz.getDeclaredField(
-                Main.dream?.analyzers?.get(
-                    Client::class.java.simpleName
-                )?.fields?.find { it.field == "widgetWidths" }?.name
-            )
-            val widgetWidth = getIndexFromReflectedArray(boundsIndex, Main.client!!, widgetWidthsField)
-
-
-            return Rectangle(widgetX.toInt(), widgetY.toInt(), widgetWidth.toInt(), widgetHeight.toInt())
-        } else {
-            return Rectangle(-1, -1, -1, -1)
-        }
-    }
 
     override fun toString(): String {
         var result = "ID: $id\n"
@@ -160,7 +69,6 @@ class Widget : RSClasses {
         result += "children: $children\n"
         result += "hidden: $hidden\n"
         result += "boundsIndex: $boundsIndex\n"
-        result += "boundRect: ${getBoundInfo()}"
 
         return result
     }
