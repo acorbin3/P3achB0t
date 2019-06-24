@@ -43,7 +43,11 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
             }
         }
 
-        super.getGraphics().drawImage(image, 0, 0, null)
+        try {
+            super.getGraphics().drawImage(image, 0, 0, null)
+        } catch (e: Exception) {
+        }
+
         counter += 1
 
         return g
