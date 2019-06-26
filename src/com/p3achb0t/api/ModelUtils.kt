@@ -7,6 +7,7 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
+data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int)
 
 fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
@@ -20,7 +21,9 @@ fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Po
                     val model = next as Model
 
                     if (actor != null) {
-                        polygonList = getTrianglesFromModel(actor, model)
+                        val positionInfo =
+                            ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation())
+                        polygonList = getTrianglesFromModel(positionInfo, model)
                     }
                     break
                 }
@@ -31,13 +34,20 @@ fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Po
     return polygonList
 }
 
+fun getTrianglesFromModel(actor: Actor, model: Model): ArrayList<Polygon> {
+    return getTrianglesFromModel(
+        ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation()),
+        model
+    )
+}
+
 fun getTrianglesFromModel(
-    actor: Actor,
+    positionInfo: ObjectPositionInfo,
     model: Model
 ): ArrayList<Polygon> {
     val polygonList = ArrayList<Polygon>()
-    val locX = actor.getLocalX()
-    val locY = actor.getLocalY()
+    val locX = positionInfo.x
+    val locY = positionInfo.y
     val xPoints = model.getVerticesX().copyOf()
     val yPoints = model.getVerticesY().copyOf()
     val zPoints = model.getVerticesZ().copyOf()
@@ -45,7 +55,7 @@ fun getTrianglesFromModel(
     val indiciesY = model.getIndicesY().copyOf()
     val indiciesZ = model.getIndicesZ().copyOf()
 
-    val orientation = (actor.getOrientation()).rem(2048)
+    val orientation = (positionInfo.orientation).rem(2048)
     if (orientation != 0) {
         val sin = Calculations.SINE[orientation]
         val cos = Calculations.COSINE[orientation]
@@ -90,7 +100,7 @@ fun getTrianglesFromModel(
 }
 
 fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
-    val pointList = ArrayList<Point>()
+    var polygon = Polygon()
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
@@ -100,48 +110,9 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
                     val model = next as Model
 
                     if (actor != null) {
-
-                        val locX = actor.getLocalX()
-                        val locY = actor.getLocalY()
-                        val xPoints = model.getVerticesX().copyOf()
-                        val yPoints = model.getVerticesY().copyOf()
-                        val zPoints = model.getVerticesZ().copyOf()
-                        val indiciesX = model.getIndicesX().copyOf()
-                        val indiciesY = model.getIndicesY().copyOf()
-                        val indiciesZ = model.getIndicesZ().copyOf()
-
-                        val orientation = (actor.getOrientation()).rem(2048)
-                        if (orientation != 0) {
-                            val sin = Calculations.SINE[orientation]
-                            val cos = Calculations.COSINE[orientation]
-                            for (i in 0 until xPoints.size) {
-                                val oldX = xPoints[i]
-                                val oldZ = zPoints[i]
-                                xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
-                                zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
-                            }
-                        }
-
-
-                        for (i in 0 until model.getIndicesLength()) {
-                            val one = Calculations.worldToScreen(
-                                locX + xPoints[indiciesX[i]],
-                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-                            )
-                            if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
-
-                            val two = Calculations.worldToScreen(
-                                locX + xPoints[indiciesY[i]],
-                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-                            )
-                            if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
-
-                            val three = Calculations.worldToScreen(
-                                locX + xPoints[indiciesZ[i]],
-                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-                            )
-                            if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
-                        }
+                        val positionInfo =
+                            ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation())
+                        polygon = getConvexHullFromModel(positionInfo, model)
                     }
                     break
                 }
@@ -149,6 +120,64 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
             }
         }
     }
+
+    return polygon
+}
+
+fun getConvexHullFromModel(actor: Actor, model: Model): Polygon {
+    return getConvexHullFromModel(
+        ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation()),
+        model
+    )
+}
+
+fun getConvexHullFromModel(
+    positionInfo: ObjectPositionInfo,
+    model: Model
+): Polygon {
+    val pointList = ArrayList<Point>()
+    val locX = positionInfo.x
+    val locY = positionInfo.y
+    val xPoints = model.getVerticesX().copyOf()
+    val yPoints = model.getVerticesY().copyOf()
+    val zPoints = model.getVerticesZ().copyOf()
+    val indiciesX = model.getIndicesX().copyOf()
+    val indiciesY = model.getIndicesY().copyOf()
+    val indiciesZ = model.getIndicesZ().copyOf()
+
+    val orientation = (positionInfo.orientation).rem(2048)
+    if (orientation != 0) {
+        val sin = Calculations.SINE[orientation]
+        val cos = Calculations.COSINE[orientation]
+        for (i in 0 until xPoints.size) {
+            val oldX = xPoints[i]
+            val oldZ = zPoints[i]
+            xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
+            zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
+        }
+    }
+
+
+    for (i in 0 until model.getIndicesLength()) {
+        val one = Calculations.worldToScreen(
+            locX + xPoints[indiciesX[i]],
+            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+        )
+        if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
+
+        val two = Calculations.worldToScreen(
+            locX + xPoints[indiciesY[i]],
+            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+        )
+        if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
+
+        val three = Calculations.worldToScreen(
+            locX + xPoints[indiciesZ[i]],
+            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+        )
+        if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+    }
+
     val points = calculateConvexHull(pointList)
     val polygon = Polygon()
     points?.forEach {

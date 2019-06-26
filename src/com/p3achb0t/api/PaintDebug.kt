@@ -1,10 +1,7 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.Main
-import com.p3achb0t.hook_interfaces.Cache
-import com.p3achb0t.hook_interfaces.Model
-import com.p3achb0t.hook_interfaces.Npc
-import com.p3achb0t.hook_interfaces.ObjectComposite
+import com.p3achb0t.hook_interfaces.*
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
@@ -39,6 +36,7 @@ fun debugPaint(): PaintListener {
                 if (_player != null && _player.getLevel() > 0 && _player.getComposite().getStaticModelID() > 0) {
 //                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
 //                                print("Queue size: ${_player.getQueueSize()}")
+
                     count += 1
                     val point = Calculations.worldToScreen(
                         _player.getLocalX(),
@@ -125,48 +123,60 @@ fun debugPaint(): PaintListener {
 
                 }
             }
-            val sceneDaata = Main.clientData.getObjectCompositeCache()
+            val sceneData = Main.clientData.getObjectCompositeCache()
 
-            val objectModels = Main.clientData.getObjectModelCache()
 
             ///////Object paint//////////
-            //TODO - Look at the game objects in the region
-            val region = Main.clientData.getRegion()
-            region.getTiles().iterator().forEach { plane ->
-                plane.iterator().forEach { row ->
-                    row.iterator().forEach { tile ->
-                        if (tile != null) {
-                            if (tile.getObjects().isNotEmpty()) {
-                                var count = 0
-                                tile.getObjects().iterator().forEach {
-                                    if (it != null && it.getId() > 0) {
-                                        count += 1
-                                        val tilePolygon =
-                                            Calculations.getCanvasTileAreaPoly(
-                                                it.getX(),
-                                                it.getY()
-                                            )
-                                        g.color = Color.ORANGE
-                                        g.drawPolygon(tilePolygon)
-                                        val point =
-                                            Calculations.worldToScreen(it.getX(), it.getY(), tile.getPlane())
-                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                point
-                                            )
-                                        ) {
-                                            g.color = Color.GREEN
-                                            val id = it.getId().shr(17).and(0x7fff).toInt()
-                                            val objectComposite = getObjectComposite(sceneDaata, id)
-                                            g.drawString(objectComposite?.getName() + "($id)", point.x, point.y)
-                                        }
-                                        //TODO - try to figure out how to get the model
-//                                        val renderedModelID = it.getRenderable().getId().shr(17).and(0x7fff).toInt()
-//                                        println(renderedModelID.toString()  + " " + it.getRenderable().getId())
-//                                        val desiredModel: Model? = getObjectsModel(objectModels, it.getRenderable().getId().toInt())
-//                                        if(desiredModel != null){
-//                                            println("Found Model! ${desiredModel.getId()}")
-//                                        }
+            if (false) {
+                val region = Main.clientData.getRegion()
 
+                region.getTiles().iterator().forEach { plane ->
+                    plane.iterator().forEach { row ->
+                        row.iterator().forEach { tile ->
+                            if (tile != null) {
+                                if (tile.getObjects().isNotEmpty()) {
+                                    var count = 0
+                                    tile.getObjects().iterator().forEach {
+                                        if (it != null && it.getId() > 0) {
+                                            count += 1
+                                            val tilePolygon =
+                                                Calculations.getCanvasTileAreaPoly(
+                                                    it.getX(),
+                                                    it.getY()
+                                                )
+                                            g.color = Color.ORANGE
+                                            g.drawPolygon(tilePolygon)
+                                            val point =
+                                                Calculations.worldToScreen(it.getX(), it.getY(), tile.getPlane())
+                                            if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+                                                    point
+                                                )
+                                            ) {
+                                                g.color = Color.GREEN
+                                                val id = it.getId().shr(17).and(0x7fff).toInt()
+                                                val rawID = it.getId().shr(14).and(0x7fff)
+//                                            println("${it.getId()},$rawID,$id,${it.getRenderable().getId()}")
+                                                val objectComposite = getObjectComposite(sceneData, id)
+                                                g.drawString(objectComposite?.getName() + "($id)", point.x, point.y)
+                                            }
+
+                                            //Printing out the model and the hull
+                                            val model = it.getRenderable()
+                                            if (model is Model) {
+                                                val positionInfo =
+                                                    ObjectPositionInfo(it.getX(), it.getY(), it.getOrientation())
+
+                                                val modelTriangles = getTrianglesFromModel(positionInfo, model)
+                                                g.color = Color.RED
+                                                modelTriangles.forEach {
+                                                    g.drawPolygon(it)
+                                                }
+                                                val hull = getConvexHullFromModel(positionInfo, model)
+                                                g.color = Color.CYAN
+                                                g.drawPolygon(hull)
+
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -174,41 +184,79 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
-//            region.getGameObjects().iterator().forEach {
-//                if (it != null) {
-//                    val tile = Calculations.getCanvasTileAreaPoly(it.getX(), it.getY())
-//                    g.color = Color.ORANGE
-//                    g.drawPolygon(tile)
-//                    val point =
-//                        Calculations.worldToScreen(it.getX(), it.getY(), it.getHeight())
-//                    if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
-//                        g.color = Color.GREEN
-//                        g.drawString(it.getId().toString(), point.x, point.y)
-//                    }
-//                }
-//            }
+            val groundItems = Main.clientData.getGroundItemList()
+            groundItems.forEach { x ->
+                x.iterator().forEach { y ->
+                    y.iterator().forEach { item ->
+                        if (item != null) {
+                            var gi = item.getCurrent()
+                            if (gi != null) {
+                                if (gi is Item) {
+                                    println("Found Item: ${gi.getId()}")
+                                }
+                                if (gi is ItemComposite) {
+                                    println("Found Item Composite: ${gi.getId()}")
+                                }
+                                if (gi is ItemNode) {
+                                    println("Found Item Node: ${gi.getId()}")
+                                }
+                                if (gi is ItemLayer) {
+                                    println("Found Item Layer: ${gi.getId()}")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        fun getAllObjectModels(objectModels: Cache): ArrayList<Model> {
+            val modelList = ArrayList<Model>()
+            objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
+                if (bucket != null) {
+//                    println(bucket.getId())
+                    var model = bucket.getNext()
+                    while (model != null && model is Model && model.getId() > 0) {
+                        modelList.add(model)
+                        model = model.getNext()
+                    }
 
 
-//                        println("")
-//                        println("Model list size:" + modelList.size)
-
+                }
+            }
+            if (modelList.isNotEmpty()) {
+                println("Models")
+                modelList.forEach { println(it.getId()) }
+                println("--")
+            }
+            return modelList
         }
 
         fun getObjectsModel(objectModels: Cache, renderModelID: Int): Model? {
             var desiredModel: Model? = null
             objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
                 if (bucket != null) {
-                    val model = bucket.getNext()
-                    if (model != null && model is Model) {
+                    var model = bucket.getNext()
+                    while (model != null && model is Model) {
+
                         if (model.getId() > 0) {
-//                            println(model.getId().toString() + " " + model.getId().shr(17).and(0x7fff))
+                            println(
+                                model.getId().toString() + " " + model.getId().shr(17).and(0x7fff) + " ${model.getId().shr(
+                                    16
+                                )} ${model.getId().shr(15)} ${model.getId().shr(14)}" + " UUID Count: ${(model as Model).getUidCount()}"
+                            )
                         }
                         if (model.getId().toInt() == renderModelID) {
-                            desiredModel = model
+                            desiredModel = model as Model
                         }
+                        model = model.getNext()
                     }
+
                 }
             }
+
+            println("--")
             return desiredModel
         }
 
@@ -220,13 +268,17 @@ fun debugPaint(): PaintListener {
             objectCache.getHashTable().getBuckets().iterator().forEach { bucketItem ->
                 if (bucketItem != null) {
 
-                    val objectComposite = bucketItem.getNext()
-                    if (objectComposite.getId() > 0) {
-                        if (objectComposite is ObjectComposite) {
-                            if (objectComposite.getId().toInt() == gameObjectId) {
-                                desiredGameObject1 = objectComposite
-                            }
+                    var objectComposite = bucketItem.getNext()
+                    while (objectComposite != null
+                        && objectComposite is ObjectComposite
+                    ) {
+                        if (objectComposite.getId() > 0
+                            && objectComposite.getId().toInt() == gameObjectId
+                        ) {
+                            desiredGameObject1 = objectComposite
+                            break
                         }
+                        objectComposite = objectComposite.getNext()
                     }
                 }
             }
