@@ -10,10 +10,11 @@ import java.util.*
 
 fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
+
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
-            while (next != null) {
+            while (next != null && next.getId() > 0L) {
                 if (next.getId() == modelID) {
 
                     val model = next as Model
@@ -92,55 +93,59 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
     val pointList = ArrayList<Point>()
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
-            val next = bucketItem.getNext()
-            if (next.getId() == modelID) {
+            var next = bucketItem.getNext()
+            while (next != null && next.getId() > 0L) {
+                if (next.getId() == modelID) {
 
-                val model = next as Model
+                    val model = next as Model
 
-                if (actor != null) {
+                    if (actor != null) {
 
-                    val locX = actor.getLocalX()
-                    val locY = actor.getLocalY()
-                    val xPoints = model.getVerticesX().copyOf()
-                    val yPoints = model.getVerticesY().copyOf()
-                    val zPoints = model.getVerticesZ().copyOf()
-                    val indiciesX = model.getIndicesX().copyOf()
-                    val indiciesY = model.getIndicesY().copyOf()
-                    val indiciesZ = model.getIndicesZ().copyOf()
+                        val locX = actor.getLocalX()
+                        val locY = actor.getLocalY()
+                        val xPoints = model.getVerticesX().copyOf()
+                        val yPoints = model.getVerticesY().copyOf()
+                        val zPoints = model.getVerticesZ().copyOf()
+                        val indiciesX = model.getIndicesX().copyOf()
+                        val indiciesY = model.getIndicesY().copyOf()
+                        val indiciesZ = model.getIndicesZ().copyOf()
 
-                    val orientation = (actor.getOrientation()).rem(2048)
-                    if (orientation != 0) {
-                        val sin = Calculations.SINE[orientation]
-                        val cos = Calculations.COSINE[orientation]
-                        for (i in 0 until xPoints.size) {
-                            val oldX = xPoints[i]
-                            val oldZ = zPoints[i]
-                            xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
-                            zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
+                        val orientation = (actor.getOrientation()).rem(2048)
+                        if (orientation != 0) {
+                            val sin = Calculations.SINE[orientation]
+                            val cos = Calculations.COSINE[orientation]
+                            for (i in 0 until xPoints.size) {
+                                val oldX = xPoints[i]
+                                val oldZ = zPoints[i]
+                                xPoints[i] = (oldX * cos + oldZ * sin).shr(16)
+                                zPoints[i] = (oldZ * cos - oldX * sin).shr(16)
+                            }
+                        }
+
+
+                        for (i in 0 until model.getIndicesLength()) {
+                            val one = Calculations.worldToScreen(
+                                locX + xPoints[indiciesX[i]],
+                                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+                            )
+                            if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
+
+                            val two = Calculations.worldToScreen(
+                                locX + xPoints[indiciesY[i]],
+                                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+                            )
+                            if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
+
+                            val three = Calculations.worldToScreen(
+                                locX + xPoints[indiciesZ[i]],
+                                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+                            )
+                            if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
                         }
                     }
-
-
-                    for (i in 0 until model.getIndicesLength()) {
-                        val one = Calculations.worldToScreen(
-                            locX + xPoints[indiciesX[i]],
-                            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-                        )
-                        if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
-
-                        val two = Calculations.worldToScreen(
-                            locX + xPoints[indiciesY[i]],
-                            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-                        )
-                        if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
-
-                        val three = Calculations.worldToScreen(
-                            locX + xPoints[indiciesZ[i]],
-                            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-                        )
-                        if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
-                    }
+                    break
                 }
+                next = next.getNext()
             }
         }
     }
