@@ -93,10 +93,13 @@ class DreamBotAnalyzer{
         clazz: MutableMap.MutableEntry<String, RuneLiteJSONClasses.ClassDefinition>,
         classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>
     ) {
-        val fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
-//        println("\tChecking Unique for ${field.field}. Super: ${clazz.value._super} Count: $fieldCount")
+        val fieldWithoutGet = field.field.replace("get", "").decapitalize()
+        //Have to check both with and without Get just to insure that the field hasnt chaned for the parent classes
+        var fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], fieldWithoutGet, classRefObs)
+        fieldCount += isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
+//        println("\tChecking Unique for ${field.field},$fieldWithoutGet. Super: ${clazz.value._super} Count: $fieldCount")
         if (fieldCount > 0) {
-            val functionName = "${clazz.value._class}_${field.field.replace("get","").decapitalize()}"
+            val functionName = "${clazz.value._class}_$fieldWithoutGet"
 //            println("Not unique Name $functionName")
             field.field = "get${functionName.capitalize()}"
         }
