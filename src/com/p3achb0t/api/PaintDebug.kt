@@ -7,6 +7,7 @@ import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
 
+
 fun debugPaint(): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
@@ -185,23 +186,66 @@ fun debugPaint(): PaintListener {
                 }
             }
             val groundItems = Main.clientData.getGroundItemList()
-            groundItems.forEach { x ->
-                x.iterator().forEach { y ->
-                    y.iterator().forEach { item ->
-                        if (item != null) {
-                            var gi = item.getCurrent()
+            val groundItemModels = Main.clientData.getGroundItemModelCache()
+            val tiles = Main.clientData.getRegion().getTiles()
+            for ((iP, plane) in groundItems.withIndex()) {
+                for ((iX, x) in plane.iterator().withIndex()) {
+                    for ((iY, itemPile) in x.iterator().withIndex()) {
+                        if (itemPile != null) {
+
+                            var gi = itemPile.getTail()
+
+                            if (gi != null) {
+                                gi = gi.getPrevious()
+                            }
                             if (gi != null) {
                                 if (gi is Item) {
-                                    println("Found Item: ${gi.getId()}")
-                                }
-                                if (gi is ItemComposite) {
-                                    println("Found Item Composite: ${gi.getId()}")
-                                }
-                                if (gi is ItemNode) {
-                                    println("Found Item Node: ${gi.getId()}")
-                                }
-                                if (gi is ItemLayer) {
-                                    println("Found Item Layer: ${gi.getId()}")
+//                                    println(" ID: ${gi.getId()} ($iP,$iX,$iY) Found Item: ${gi.getItem_id()} stackSize: ${gi.getStackSize()}")
+                                    groundItemModels.getHashTable().getBuckets().iterator().forEach {
+                                        if (it != null) {
+                                            var next = it.getNext()
+                                            while (next.getId() > 0) {
+//                                                println("M - ${next.getId()}")
+                                                if (next.getId() > 0 && next.getId().toInt() == gi.getItem_id()) {
+//                                                    println("M - ${next.getId()}")
+                                                    if (next is Model) {
+
+
+                                                        val x = tiles[iP][iX][iY].getX() * 128 + 64
+                                                        val y = tiles[iP][iX][iY].getY() * 128 + 64
+
+                                                        val point =
+                                                            Calculations.worldToScreen(x, y, iP)
+                                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+                                                                point
+                                                            )
+                                                        ) {
+                                                            g.color = Color.GREEN
+                                                            g.drawString(
+                                                                "(${gi.getItem_id()})",
+                                                                point.x,
+                                                                point.y - 20
+                                                            ) // moving id up 20 pixels
+                                                        }
+
+                                                        val positionInfo =
+                                                            ObjectPositionInfo(x, y, 0)
+
+                                                        val modelTriangles = getTrianglesFromModel(positionInfo, next)
+                                                        g.color = Color.RED
+                                                        modelTriangles.forEach {
+                                                            g.drawPolygon(it)
+                                                        }
+                                                        val hull = getConvexHullFromModel(positionInfo, next)
+                                                        g.color = Color.CYAN
+                                                        g.drawPolygon(hull)
+                                                    }
+
+                                                }
+                                                next = next.getNext()
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
