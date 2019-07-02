@@ -17,6 +17,10 @@ fun debugPaint(): PaintListener {
             g.drawString("Game State:: ${Main.clientData.getGameState()}", 50, 70)
             g.drawString("clientData.loginState :${Main.clientData.getLoginState()}", 50, 80)
             g.drawString("Account status :${Main.clientData.getAccountStatus()}", 50, 90)
+            try {
+                g.drawString("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}", 50, 100)
+            } catch (e: Exception) {
+            }
 //                        g.drawString("cameraX :${clientData.getCameraX()}", 50, 100)
 //                        g.drawString("cameraY :${clientData.getCameraY()}", 50, 110)
             Main.mouseEvent?.x?.let { Main.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
@@ -128,7 +132,8 @@ fun debugPaint(): PaintListener {
 
 
             ///////Object paint//////////
-            if (false) {
+            if (true) {
+
                 val region = Main.clientData.getRegion()
 
                 region.getTiles().iterator().forEach { plane ->
@@ -185,6 +190,33 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
+//TODO - itterating over inventory
+//            val itemTable = Main.clientData.getItemTable()
+//            itemTable.getBuckets().iterator().forEach {
+//                if(it != null){
+//                    var item = it.getNext()
+//                    while(item != null && item.getId()>0){
+//                        if(item is ItemNode){
+//                            println("Found ItemNode ${item.getId()}.")
+//                            item.getIds().iterator().forEach {
+//                                print("$it,")
+//                            }
+//                            println()
+//                            item.getStackSizes().iterator().forEach {
+//                                print("$it,")
+//                            }
+//                            println()
+//                        }
+//                        if(item is Item){
+//                            println("Found Item ${item.getItem_id()}")
+//                        }
+//                        if(item is ItemComposite){
+//                            println("Found ItemComposite ${item.getName()} ${item.getItemComposite_id()}")
+//                        }
+//                        item = item.getNext()
+//                    }
+//                }
+//            }
             val groundItems = Main.clientData.getGroundItemList()
             val groundItemModels = Main.clientData.getGroundItemModelCache()
             val tiles = Main.clientData.getRegion().getTiles()
@@ -252,6 +284,80 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
+
+            // Look into menue
+            var menuCount = 0
+            //This is based on possible interactions with mouse
+
+//            Main.clientData.getMenuActions().iterator().forEach {
+//                if(it != null){
+//                    menuCount += 1
+//                    if(menuCount == 1)
+//                        print("Actions: ")
+//                    print("$it,")
+//                }
+//            }
+//            if(menuCount > 0)
+//                println("")
+//            menuCount = 0
+//
+//            Main.clientData.getMenuOptions().iterator().forEach {
+//                if(it != null){
+//                    menuCount += 1
+//                    if(menuCount == 1)
+//                        print("Options: ")
+//                    print("$it,")
+//                }
+//            }
+            if (menuCount > 0)
+                println("")
+            val mCount = Main.clientData.getMenuCount()
+            val heigth = Main.clientData.getMenuHeight()
+            val width = Main.clientData.getMenuWidth()
+            val mX = Main.clientData.getMenuX()
+            val mY = Main.clientData.getMenuY()
+            val mVisible = Main.clientData.getMenuVisible()
+            if (mVisible) {
+                g.color = Color.YELLOW
+                g.drawRect(mX, mY, width, heigth)
+                val baseHeight = 18
+                val lineHeight = 15
+                var yDiff = baseHeight
+                for (i in 1..mCount) {
+
+                    g.color = Color.BLUE
+                    g.drawRect(mX - 1, mY + yDiff, width, lineHeight)
+                    val action =
+                        Main.clientData.getMenuActions()[mCount - i] + " " + Main.clientData.getMenuOptions()[mCount - i]
+                    g.color = Color.GREEN
+
+                    g.drawString(action, mX + width, mY + yDiff + (lineHeight / 2) + 7)
+                    yDiff += lineHeight
+                }
+            }
+
+//            println("Menu Count:$mCount heigth:$heigth Visible:$mVisible ($mX,$mY) mouse(${Main.mouseEvent?.x},${Main.mouseEvent?.y})")
+
+//            menuCount = 0
+//            Main.clientData.getMenuXInteractions().iterator().forEach {
+//                menuCount += 1
+//                if(menuCount == 1)
+//                    print("xInteractions: ")
+//                print("$it,")
+//            }
+//            if(menuCount > 0)
+//                println("")
+//            menuCount = 0
+//            Main.clientData.getMenuYInteractions().iterator().forEach {
+//                menuCount += 1
+//                if(menuCount == 1)
+//                    print("yInteractions: ")
+//                print("$it,")
+//            }
+//            if(menuCount > 0)
+//                println("")
+//            menuCount = 0
+
 
         }
 

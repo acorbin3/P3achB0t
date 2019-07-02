@@ -23,7 +23,7 @@ class Mouse {
 
     //////
 
-    suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Right) {
+    suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left) {
 
         val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
             Main.mouseEvent?.point?.y?.let { _y ->
@@ -78,8 +78,8 @@ class Mouse {
             }
             Main.customCanvas?.dispatchEvent(mousePress)
 
-            // Create a random number 20-60 to delay between clicks
-            val delayTime = Math.floor(Math.random() * 40 + 20)
+            // Create a random number 30-70 to delay between clicks
+            val delayTime = Math.floor(Math.random() * 40 + 30)
             delay(delayTime.toLong())
 
             val mouseRelease = currentPoint?.let {
