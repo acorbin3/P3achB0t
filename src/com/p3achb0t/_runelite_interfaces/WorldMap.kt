@@ -52,6 +52,6 @@ interface WorldMap {
     fun get__bk(): Any
     fun get__bq(): Any
     fun get__ap(): Long
-    fun get__bs(): Array<Int>
+    fun get__bs(): IntArray
     fun get__bc(): Boolean
 }

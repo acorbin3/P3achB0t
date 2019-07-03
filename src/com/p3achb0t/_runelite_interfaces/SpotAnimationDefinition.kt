@@ -5,10 +5,10 @@ interface SpotAnimationDefinition : DualNode {
     fun getHeightScale(): Int
     fun getId(): Int
     fun getOrientation(): Int
-    fun getRecolorFrom(): Array<Short>
-    fun getRecolorTo(): Array<Short>
-    fun getRetextureFrom(): Array<Short>
-    fun getRetextureTo(): Array<Short>
+    fun getRecolorFrom(): ShortArray
+    fun getRecolorTo(): ShortArray
+    fun getRetextureFrom(): ShortArray
+    fun getRetextureTo(): ShortArray
     fun getSequence(): Int
     fun getWidthScale(): Int
     fun get__a(): Int

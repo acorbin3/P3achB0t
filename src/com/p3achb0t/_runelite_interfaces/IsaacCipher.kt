@@ -5,6 +5,6 @@ interface IsaacCipher {
     fun get__g(): Int
     fun get__l(): Int
     fun get__w(): Int
-    fun get__o(): Array<Int>
-    fun get__u(): Array<Int>
+    fun get__o(): IntArray
+    fun get__u(): IntArray
 }

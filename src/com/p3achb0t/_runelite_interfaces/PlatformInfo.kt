@@ -18,7 +18,7 @@ interface PlatformInfo : Node {
     fun get__ay(): Int
     fun get__ba(): Int
     fun get__bn(): Int
-    fun get__bq(): Array<Int>
+    fun get__bq(): IntArray
     fun get__aa(): String
     fun get__ao(): String
     fun get__au(): String

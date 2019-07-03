@@ -2,7 +2,7 @@ package com.p3achb0t._runelite_interfaces
 
 interface NpcDefinition : DualNode {
     fun getActions(): Array<String>
-    fun getArchives(): Array<Int>
+    fun getArchives(): IntArray
     fun getCombatLevel(): Int
     fun getDrawMapDot(): Boolean
     fun getHeadIconPrayer(): Int
@@ -13,14 +13,14 @@ interface NpcDefinition : DualNode {
     fun getIsInteractable(): Boolean
     fun getName(): String
     fun getParams(): IterableNodeHashTable
-    fun getRecolorFrom(): Array<Short>
-    fun getRecolorTo(): Array<Short>
-    fun getRetextureFrom(): Array<Short>
-    fun getRetextureTo(): Array<Short>
+    fun getRecolorFrom(): ShortArray
+    fun getRecolorTo(): ShortArray
+    fun getRetextureFrom(): ShortArray
+    fun getRetextureTo(): ShortArray
     fun getSize(): Int
     fun getTransformVarbit(): Int
     fun getTransformVarp(): Int
-    fun getTransforms(): Array<Int>
+    fun getTransforms(): IntArray
     fun getTurnLeftSequence(): Int
     fun getTurnRightSequence(): Int
     fun getWalkSequence(): Int
@@ -30,7 +30,7 @@ interface NpcDefinition : DualNode {
     fun getWidthScale(): Int
     fun get__ag(): Int
     fun get__aq(): Int
-    fun get__e(): Array<Int>
+    fun get__e(): IntArray
     fun get__ak(): Boolean
     fun get__v(): Boolean
     fun get__av(): Int

@@ -6,7 +6,7 @@ interface IndexCache : AbstractIndexCache {
     fun getIndexReferenceVersion(): Int
     fun getIndexStore(): IndexStore
     fun getReferenceStore(): IndexStore
-    fun getValidArchives(): Array<Boolean>
+    fun getValidArchives(): BooleanArray
     fun get__ag(): Boolean
     fun get__ac(): Int
     fun get__v(): Boolean

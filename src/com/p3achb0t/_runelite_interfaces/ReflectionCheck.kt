@@ -1,12 +1,12 @@
 package com.p3achb0t._runelite_interfaces
 
 interface ReflectionCheck : Node {
-    fun getArguments(): Array<Array<Array<Byte>>>
-    fun getCreationErrors(): Array<Int>
+    fun getArguments(): Array<Array<ByteArray>>
+    fun getCreationErrors(): IntArray
     fun getFields(): Any
     fun getId(): Int
-    fun getIntReplaceValues(): Array<Int>
+    fun getIntReplaceValues(): IntArray
     fun getMethods(): Any
-    fun getOperations(): Array<Int>
+    fun getOperations(): IntArray
     fun getSize(): Int
 }

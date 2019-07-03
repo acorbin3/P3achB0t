@@ -6,11 +6,11 @@ interface Actor : Entity {
     fun getHealthBars(): IterableNodeDeque
     fun getHeightOffset(): Int
     fun getHitSplatCount(): Byte
-    fun getHitSplatCycles(): Array<Int>
-    fun getHitSplatTypes(): Array<Int>
-    fun getHitSplatTypes2(): Array<Int>
-    fun getHitSplatValues(): Array<Int>
-    fun getHitSplatValues2(): Array<Int>
+    fun getHitSplatCycles(): IntArray
+    fun getHitSplatTypes(): IntArray
+    fun getHitSplatTypes2(): IntArray
+    fun getHitSplatValues(): IntArray
+    fun getHitSplatValues2(): IntArray
     fun getIdleSequence(): Int
     fun getIsAutoChatting(): Boolean
     fun getMovementFrame(): Int
@@ -23,9 +23,9 @@ interface Actor : Entity {
     fun getOverheadTextCyclesRemaining(): Int
     fun getOverheadTextEffect(): Int
     fun getPathLength(): Int
-    fun getPathTraversed(): Array<Byte>
-    fun getPathX(): Array<Int>
-    fun getPathY(): Array<Int>
+    fun getPathTraversed(): ByteArray
+    fun getPathX(): IntArray
+    fun getPathY(): IntArray
     fun getPlayerCycle(): Int
     fun getRunSequence(): Int
     fun getSequence(): Int

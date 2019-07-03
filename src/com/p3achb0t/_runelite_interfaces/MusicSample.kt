@@ -4,11 +4,11 @@ interface MusicSample : Node {
     fun getEnd(): Int
     fun getSampleCount(): Int
     fun getSampleRate(): Int
-    fun getSamples(): Array<Byte>
+    fun getSamples(): ByteArray
     fun getStart(): Int
     fun get__b(): Boolean
     fun get__u(): Boolean
-    fun get__m(): Array<Array<Byte>>
+    fun get__m(): Array<ByteArray>
     fun get__t(): Array<Float>
     fun get__ah(): Int
     fun get__ay(): Int

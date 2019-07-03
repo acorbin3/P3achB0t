@@ -32,16 +32,16 @@ interface ObjectDefinition : DualNode {
     fun getOffsetX(): Int
     fun getOffsetY(): Int
     fun getParams(): IterableNodeHashTable
-    fun getRecolorFrom(): Array<Short>
-    fun getRecolorTo(): Array<Short>
-    fun getRetextureFrom(): Array<Short>
-    fun getRetextureTo(): Array<Short>
+    fun getRecolorFrom(): ShortArray
+    fun getRecolorTo(): ShortArray
+    fun getRetextureFrom(): ShortArray
+    fun getRetextureTo(): ShortArray
     fun getSizeX(): Int
     fun getSizeY(): Int
     fun getTransformConfigId(): Int
     fun getTransformVarbit(): Int
-    fun getTransforms(): Array<Int>
-    fun get__d(): Array<Int>
-    fun get__x(): Array<Int>
-    fun get__ax(): Array<Int>
+    fun getTransforms(): IntArray
+    fun get__d(): IntArray
+    fun get__x(): IntArray
+    fun get__ax(): IntArray
 }

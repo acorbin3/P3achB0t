@@ -5,6 +5,6 @@ interface MouseRecorder {
     fun getIsRunning(): Boolean
     fun getLock(): Any
     fun getMillis(): Array<Long>
-    fun getXs(): Array<Int>
-    fun getYs(): Array<Int>
+    fun getXs(): IntArray
+    fun getYs(): IntArray
 }

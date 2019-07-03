@@ -4,7 +4,7 @@ interface HitSplatDefinition : DualNode {
     fun getFontId(): Int
     fun getTransformVarbit(): Int
     fun getTransformVarp(): Int
-    fun getTransforms(): Array<Int>
+    fun getTransforms(): IntArray
     fun get__a(): Int
     fun get__j(): Int
     fun get__s(): Int

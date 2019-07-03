@@ -3,8 +3,8 @@ package com.p3achb0t._runelite_interfaces
 interface BufferedFile {
     fun getAccessFile(): AccessFile
     fun getCapacity(): Long
-    fun getReadBuffer(): Array<Byte>
-    fun getWriteBuffer(): Array<Byte>
+    fun getReadBuffer(): ByteArray
+    fun getWriteBuffer(): ByteArray
     fun get__g(): Int
     fun get__w(): Int
     fun get__d(): Long

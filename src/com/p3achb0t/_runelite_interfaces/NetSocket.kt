@@ -1,7 +1,7 @@
 package com.p3achb0t._runelite_interfaces
 
 interface NetSocket : AbstractSocket {
-    fun getArray(): Array<Byte>
+    fun getArray(): ByteArray
     fun getExceptionWriting(): Boolean
     fun getInputStream(): Any
     fun getIsClosed(): Boolean

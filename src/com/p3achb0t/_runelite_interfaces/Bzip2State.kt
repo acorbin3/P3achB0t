@@ -1,16 +1,16 @@
 package com.p3achb0t._runelite_interfaces
 
 interface Bzip2State {
-    fun get__ag(): Array<Boolean>
-    fun get__aq(): Array<Boolean>
+    fun get__ag(): BooleanArray
+    fun get__aq(): BooleanArray
     fun get__i(): Byte
-    fun get__ac(): Array<Byte>
-    fun get__aj(): Array<Byte>
-    fun get__av(): Array<Byte>
-    fun get__ay(): Array<Byte>
-    fun get__g(): Array<Byte>
-    fun get__x(): Array<Byte>
-    fun get__ah(): Array<Array<Byte>>
+    fun get__ac(): ByteArray
+    fun get__aj(): ByteArray
+    fun get__av(): ByteArray
+    fun get__ay(): ByteArray
+    fun get__g(): ByteArray
+    fun get__x(): ByteArray
+    fun get__ah(): Array<ByteArray>
     fun get__a(): Int
     fun get__ae(): Int
     fun get__c(): Int
@@ -26,13 +26,13 @@ interface Bzip2State {
     fun get__v(): Int
     fun get__y(): Int
     fun get__z(): Int
-    fun get__ab(): Array<Int>
-    fun get__ar(): Array<Int>
-    fun get__b(): Array<Int>
-    fun get__r(): Array<Int>
-    fun get__ak(): Array<Array<Int>>
-    fun get__al(): Array<Array<Int>>
-    fun get__aw(): Array<Array<Int>>
+    fun get__ab(): IntArray
+    fun get__ar(): IntArray
+    fun get__b(): IntArray
+    fun get__r(): IntArray
+    fun get__ak(): Array<IntArray>
+    fun get__al(): Array<IntArray>
+    fun get__aw(): Array<IntArray>
     fun get__f(): Int
     fun get__m(): Int
     fun get__o(): Int

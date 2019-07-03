@@ -10,9 +10,9 @@ interface Widget : Node {
     fun getColor(): Int
     fun getColor2(): Int
     fun getContentType(): Int
-    fun getCs1ComparisonValues(): Array<Int>
-    fun getCs1Comparisons(): Array<Int>
-    fun getCs1Instructions(): Array<Array<Int>>
+    fun getCs1ComparisonValues(): IntArray
+    fun getCs1Comparisons(): IntArray
+    fun getCs1Instructions(): Array<IntArray>
     fun getCycle(): Int
     fun getDataText(): String
     fun getDragThreshold(): Int
@@ -23,17 +23,17 @@ interface Widget : Node {
     fun getHeight(): Int
     fun getHeightAlignment(): Int
     fun getId(): Int
-    fun getInvTransmitTriggers(): Array<Int>
-    fun getInventorySprites(): Array<Int>
-    fun getInventoryXOffsets(): Array<Int>
-    fun getInventoryYOffsets(): Array<Int>
+    fun getInvTransmitTriggers(): IntArray
+    fun getInventorySprites(): IntArray
+    fun getInventoryXOffsets(): IntArray
+    fun getInventoryYOffsets(): IntArray
     fun getIsHidden(): Boolean
     fun getIsIf3(): Boolean
     fun getIsScrollBar(): Boolean
     fun getItemActions(): Array<String>
     fun getItemId(): Int
-    fun getItemIds(): Array<Int>
-    fun getItemQuantities(): Array<Int>
+    fun getItemIds(): IntArray
+    fun getItemQuantities(): IntArray
     fun getItemQuantity(): Int
     fun getLineWid(): Int
     fun getModelAngleX(): Int
@@ -97,7 +97,7 @@ interface Widget : Node {
     fun getSpriteId2(): Int
     fun getSpriteShadow(): Int
     fun getSpriteTiling(): Boolean
-    fun getStatTransmitTriggers(): Array<Int>
+    fun getStatTransmitTriggers(): IntArray
     fun getText(): String
     fun getText2(): String
     fun getTextLineHeight(): Int
@@ -106,7 +106,7 @@ interface Widget : Node {
     fun getTextYAlignment(): Int
     fun getTransparency(): Int
     fun getType(): Int
-    fun getVarTransmitTriggers(): Array<Int>
+    fun getVarTransmitTriggers(): IntArray
     fun getWidth(): Int
     fun getWidthAlignment(): Int
     fun getX(): Int
@@ -120,8 +120,8 @@ interface Widget : Node {
     fun get__fq(): Boolean
     fun get__fw(): Boolean
     fun get__fz(): Boolean
-    fun get__cf(): Array<Array<Byte>>
-    fun get__cp(): Array<Array<Byte>>
+    fun get__cf(): Array<ByteArray>
+    fun get__cp(): Array<ByteArray>
     fun get__af(): Int
     fun get__al(): Int
     fun get__aw(): Int
@@ -132,9 +132,9 @@ interface Widget : Node {
     fun get__fg(): Int
     fun get__fj(): Int
     fun get__fl(): Int
-    fun get__cc(): Array<Int>
-    fun get__ci(): Array<Int>
-    fun get__fh(): Array<Int>
+    fun get__cc(): IntArray
+    fun get__ci(): IntArray
+    fun get__fh(): IntArray
     fun get__ed(): Any
     fun get__ee(): Any
     fun get__eh(): Any

@@ -5,10 +5,10 @@ interface Texture : Node {
     fun getAnimationSpeed(): Int
     fun getInt1(): Int
     fun getIsLoaded(): Boolean
-    fun getPixels(): Array<Int>
-    fun getRecords(): Array<Int>
+    fun getPixels(): IntArray
+    fun getRecords(): IntArray
     fun get__u(): Boolean
-    fun get__e(): Array<Int>
-    fun get__l(): Array<Int>
-    fun get__x(): Array<Int>
+    fun get__e(): IntArray
+    fun get__l(): IntArray
+    fun get__x(): IntArray
 }

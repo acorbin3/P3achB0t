@@ -1,8 +1,8 @@
 package com.p3achb0t._runelite_interfaces
 
 interface PlayerAppearance {
-    fun getBodyColors(): Array<Int>
-    fun getEquipment(): Array<Int>
+    fun getBodyColors(): IntArray
+    fun getEquipment(): IntArray
     fun getIsFemale(): Boolean
     fun getNpcTransformId(): Int
     fun get__o(): Long

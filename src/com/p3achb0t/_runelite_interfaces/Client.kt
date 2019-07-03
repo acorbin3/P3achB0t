@@ -17,11 +17,11 @@ interface Client : GameShell {
     fun getAttackOption_dependsOnCombatLevels(): AttackOption
     fun getAttackOption_hidden(): AttackOption
     fun getAttackOption_leftClickWhereAvailable(): AttackOption
-    fun getByteArrayPool_large(): Array<Array<Byte>>
+    fun getByteArrayPool_large(): Array<ByteArray>
     fun getByteArrayPool_largeCount(): Int
-    fun getByteArrayPool_medium(): Array<Array<Byte>>
+    fun getByteArrayPool_medium(): Array<ByteArray>
     fun getByteArrayPool_mediumCount(): Int
-    fun getByteArrayPool_small(): Array<Array<Byte>>
+    fun getByteArrayPool_small(): Array<ByteArray>
     fun getByteArrayPool_smallCount(): Int
     fun getBzip2Decompressor_state(): Bzip2State
     fun getEnumDefinition_cached(): EvictingDualNodeHashTable
@@ -49,22 +49,22 @@ interface Client : GameShell {
     fun getIndexStoreActionHandler_requestQueue(): NodeDeque
     fun getIndexStoreActionHandler_responseQueue(): NodeDeque
     fun getIndexStoreActionHandler_thread(): Any
-    fun getIndexStore_buffer(): Array<Byte>
-    fun getInstrument_delays(): Array<Int>
-    fun getInstrument_noise(): Array<Int>
-    fun getInstrument_phases(): Array<Int>
-    fun getInstrument_pitchBaseSteps(): Array<Int>
-    fun getInstrument_pitchSteps(): Array<Int>
-    fun getInstrument_samples(): Array<Int>
-    fun getInstrument_sine(): Array<Int>
-    fun getInstrument_volumeSteps(): Array<Int>
-    fun getInterpreter_arrayLengths(): Array<Int>
-    fun getInterpreter_arrays(): Array<Array<Int>>
+    fun getIndexStore_buffer(): ByteArray
+    fun getInstrument_delays(): IntArray
+    fun getInstrument_noise(): IntArray
+    fun getInstrument_phases(): IntArray
+    fun getInstrument_pitchBaseSteps(): IntArray
+    fun getInstrument_pitchSteps(): IntArray
+    fun getInstrument_samples(): IntArray
+    fun getInstrument_sine(): IntArray
+    fun getInstrument_volumeSteps(): IntArray
+    fun getInterpreter_arrayLengths(): IntArray
+    fun getInterpreter_arrays(): Array<IntArray>
     fun getInterpreter_calendar(): Any
     fun getInterpreter_frameDepth(): Int
     fun getInterpreter_frames(): Array<ScriptFrame>
-    fun getInterpreter_intLocals(): Array<Int>
-    fun getInterpreter_intStack(): Array<Int>
+    fun getInterpreter_intLocals(): IntArray
+    fun getInterpreter_intStack(): IntArray
     fun getInterpreter_intStackSize(): Int
     fun getInterpreter_stringLocals(): Array<String>
     fun getInterpreter_stringStack(): Array<String>
@@ -75,8 +75,8 @@ interface Client : GameShell {
     fun getItemDefinition_modelIndexCache(): AbstractIndexCache
     fun getKeyHandler_idleCycles(): Int
     fun getKeyHandler_instance(): KeyHandler
-    fun getKeyHandler_keyCodes(): Array<Int>
-    fun getKeyHandler_pressedKeys(): Array<Boolean>
+    fun getKeyHandler_keyCodes(): IntArray
+    fun getKeyHandler_pressedKeys(): BooleanArray
     fun getKitDefinition_cached(): EvictingDualNodeHashTable
     fun getKitDefinition_indexCache(): AbstractIndexCache
     fun getLogin_isUsernameRemembered(): Boolean
@@ -92,14 +92,14 @@ interface Client : GameShell {
     fun getMessages_count(): Int
     fun getMessages_hashTable(): IterableNodeHashTable
     fun getMessages_queue(): IterableDualNodeQueue
-    fun getModelData_cosine(): Array<Int>
-    fun getModelData_sine(): Array<Int>
-    fun getModel_cosine(): Array<Int>
+    fun getModelData_cosine(): IntArray
+    fun getModelData_sine(): IntArray
+    fun getModel_cosine(): IntArray
     fun getModel_sharedSequenceModel(): Model
-    fun getModel_sharedSequenceModelFaceAlphas(): Array<Byte>
+    fun getModel_sharedSequenceModelFaceAlphas(): ByteArray
     fun getModel_sharedSpotAnimationModel(): Model
-    fun getModel_sharedSpotAnimationModelFaceAlphas(): Array<Byte>
-    fun getModel_sine(): Array<Int>
+    fun getModel_sharedSpotAnimationModelFaceAlphas(): ByteArray
+    fun getModel_sine(): IntArray
     fun getModel_transformTempX(): Int
     fun getModel_transformTempY(): Int
     fun getModel_transformTempZ(): Int
@@ -147,7 +147,7 @@ interface Client : GameShell {
     fun getObjectDefinition_cachedModels(): EvictingDualNodeHashTable
     fun getObjectDefinition_indexCache(): AbstractIndexCache
     fun getObjectDefinition_isLowDetail(): Boolean
-    fun getPacketBuffer_masks(): Array<Int>
+    fun getPacketBuffer_masks(): IntArray
     fun getParamKeyDefinition_cached(): EvictingDualNodeHashTable
     fun getPcmPlayer_sampleRate(): Int
     fun getPlayerAppearance_cachedModels(): EvictingDualNodeHashTable
@@ -158,12 +158,12 @@ interface Client : GameShell {
     fun getPlayerType_playerModerator(): PlayerType
     fun getPlayerType_ultimateIronman(): PlayerType
     fun getPlayers_count(): Int
-    fun getPlayers_indices(): Array<Int>
-    fun getPlayers_orientations(): Array<Int>
-    fun getPlayers_regions(): Array<Int>
-    fun getPlayers_targetIndices(): Array<Int>
+    fun getPlayers_indices(): IntArray
+    fun getPlayers_orientations(): IntArray
+    fun getPlayers_regions(): IntArray
+    fun getPlayers_targetIndices(): IntArray
     fun getRasterizer2D_height(): Int
-    fun getRasterizer2D_pixels(): Array<Int>
+    fun getRasterizer2D_pixels(): IntArray
     fun getRasterizer2D_width(): Int
     fun getRasterizer2D_xClipEnd(): Int
     fun getRasterizer2D_xClipStart(): Int
@@ -178,11 +178,11 @@ interface Client : GameShell {
     fun getRasterizer3D_clipNegativeMidX(): Int
     fun getRasterizer3D_clipNegativeMidY(): Int
     fun getRasterizer3D_clipWidth(): Int
-    fun getRasterizer3D_colorPalette(): Array<Int>
-    fun getRasterizer3D_cosine(): Array<Int>
+    fun getRasterizer3D_colorPalette(): IntArray
+    fun getRasterizer3D_cosine(): IntArray
     fun getRasterizer3D_isLowDetailTexture(): Boolean
-    fun getRasterizer3D_rowOffsets(): Array<Int>
-    fun getRasterizer3D_sine(): Array<Int>
+    fun getRasterizer3D_rowOffsets(): IntArray
+    fun getRasterizer3D_sine(): IntArray
     fun getRasterizer3D_textureLoader(): TextureLoader
     fun getRasterizer3D_zoom(): Int
     fun getScene_cameraPitchCosine(): Int
@@ -203,7 +203,7 @@ interface Client : GameShell {
     fun getScene_drawnCount(): Int
     fun getScene_isLowDetail(): Boolean
     fun getScene_plane(): Int
-    fun getScene_planeOccluderCounts(): Array<Int>
+    fun getScene_planeOccluderCounts(): IntArray
     fun getScene_planeOccluders(): Array<Array<Occluder>>
     fun getScene_selectedPlane(): Int
     fun getScene_selectedScreenX(): Int
@@ -220,8 +220,8 @@ interface Client : GameShell {
     fun getScript_cached(): EvictingDualNodeHashTable
     fun getSequenceDefinition_cached(): EvictingDualNodeHashTable
     fun getSequenceDefinition_indexCache(): AbstractIndexCache
-    fun getSkills_enabled(): Array<Boolean>
-    fun getSkills_experienceTable(): Array<Int>
+    fun getSkills_enabled(): BooleanArray
+    fun getSkills_experienceTable(): IntArray
     fun getSpotAnimationDefinition_cached(): EvictingDualNodeHashTable
     fun getSpotAnimationDefinition_cachedModels(): EvictingDualNodeHashTable
     fun getSpotAnimationDefinition_indexCache(): AbstractIndexCache
@@ -305,10 +305,10 @@ interface Client : GameShell {
     fun getStrings_yourFriendListIsFull(): String
     fun getStrings_yourIgnoreListIsFull(): String
     fun getStrings_yourNormalAccountWillNotBeAffected(): String
-    fun getTexture_animatedPixels(): Array<Int>
-    fun getTiles_heights(): Array<Array<Array<Int>>>
+    fun getTexture_animatedPixels(): IntArray
+    fun getTiles_heights(): Array<Array<IntArray>>
     fun getTiles_minPlane(): Int
-    fun getTiles_renderFlags(): Array<Array<Array<Byte>>>
+    fun getTiles_renderFlags(): Array<Array<ByteArray>>
     fun getTriBool_false(): TriBool
     fun getTriBool_true(): TriBool
     fun getTriBool_unknown(): TriBool
@@ -317,9 +317,9 @@ interface Client : GameShell {
     fun getVarbitDefinition_cached(): EvictingDualNodeHashTable
     fun getVarbitDefinition_indexCache(): AbstractIndexCache
     fun getVarpDefinition_cached(): EvictingDualNodeHashTable
-    fun getVarps_main(): Array<Int>
-    fun getVarps_masks(): Array<Int>
-    fun getVarps_temp(): Array<Int>
+    fun getVarps_main(): IntArray
+    fun getVarps_masks(): IntArray
+    fun getVarps_temp(): IntArray
     fun getViewportMouse_entityCount(): Int
     fun getViewportMouse_entityTags(): Array<Long>
     fun getViewportMouse_false0(): Boolean
@@ -365,7 +365,7 @@ interface Client : GameShell {
     fun getCombatTargetPlayerIndex(): Int
     fun getCp1252AsciiExtension(): Array<Char>
     fun getCrossSprites(): Array<Sprite>
-    fun getCurrentLevels(): Array<Int>
+    fun getCurrentLevels(): IntArray
     fun getCurrentTimeMsLast(): Long
     fun getCurrentTimeMsOffset(): Long
     fun getCycle(): Int
@@ -378,7 +378,7 @@ interface Client : GameShell {
     fun getDragInventoryWidget(): Widget
     fun getDragItemSlotDestination(): Int
     fun getDragItemSlotSource(): Int
-    fun getExperience(): Array<Int>
+    fun getExperience(): IntArray
     fun getFollowerIndex(): Int
     fun getFollowerOpsLowPriority(): Boolean
     fun getFontBold12(): Font
@@ -440,7 +440,7 @@ interface Client : GameShell {
     fun getIndexCacheLoaderIndex(): Int
     fun getIndexCacheLoaders(): Any
     fun getIndexStore255(): IndexStore
-    fun getInstanceChunkTemplates(): Array<Array<Array<Int>>>
+    fun getInstanceChunkTemplates(): Array<Array<IntArray>>
     fun getIsCameraLocked(): Boolean
     fun getIsDraggingWidget(): Boolean
     fun getIsInInstance(): Boolean
@@ -463,8 +463,8 @@ interface Client : GameShell {
     fun getJs5SocketTask(): Task
     fun getJs5StartTimeMs(): Long
     fun getLanguage(): Int
-    fun getLevels(): Array<Int>
-    fun getLoadedWidgetGroups(): Array<Boolean>
+    fun getLevels(): IntArray
+    fun getLoadedWidgetGroups(): BooleanArray
     fun getLocalPlayer(): Player
     fun getLocalPlayerIndex(): Int
     fun getLocalPlayerName(): String
@@ -472,19 +472,19 @@ interface Client : GameShell {
     fun getLoginType(): LoginType
     fun getMapDotSprites(): Array<Sprite>
     fun getMapIconCount(): Int
-    fun getMapIconXs(): Array<Int>
-    fun getMapIconYs(): Array<Int>
+    fun getMapIconXs(): IntArray
+    fun getMapIconYs(): IntArray
     fun getMapIcons(): Array<Sprite>
     fun getMapMarkerSprites(): Array<Sprite>
     fun getMapSceneSprites(): Array<IndexedSprite>
     fun getMenuActions(): Array<String>
-    fun getMenuArguments0(): Array<Int>
-    fun getMenuArguments1(): Array<Int>
-    fun getMenuArguments2(): Array<Int>
+    fun getMenuArguments0(): IntArray
+    fun getMenuArguments1(): IntArray
+    fun getMenuArguments2(): IntArray
     fun getMenuHeight(): Int
-    fun getMenuOpcodes(): Array<Int>
+    fun getMenuOpcodes(): IntArray
     fun getMenuOptionsCount(): Int
-    fun getMenuShiftClick(): Array<Boolean>
+    fun getMenuShiftClick(): BooleanArray
     fun getMenuTargetNames(): Array<String>
     fun getMenuWidth(): Int
     fun getMenuX(): Int
@@ -493,8 +493,8 @@ interface Client : GameShell {
     fun getMinimapOrientation(): Int
     fun getMinimapState(): Int
     fun getModIconSprites(): Array<IndexedSprite>
-    fun getModelViewportXs(): Array<Int>
-    fun getModelViewportYs(): Array<Int>
+    fun getModelViewportXs(): IntArray
+    fun getModelViewportYs(): IntArray
     fun getMouseCrossColor(): Int
     fun getMouseCrossState(): Int
     fun getMouseCrossX(): Int
@@ -510,21 +510,21 @@ interface Client : GameShell {
     fun getMusicTrackFileId(): Int
     fun getNpcAttackOption(): AttackOption
     fun getNpcCount(): Int
-    fun getNpcIndices(): Array<Int>
+    fun getNpcIndices(): IntArray
     fun getNpcs(): Array<Npc>
     fun getObjectSounds(): NodeDeque
     fun getOsName(): String
     fun getOsNameLowerCase(): String
     fun getOverheadText(): Array<String>
-    fun getOverheadTextAscents(): Array<Int>
-    fun getOverheadTextColors(): Array<Int>
+    fun getOverheadTextAscents(): IntArray
+    fun getOverheadTextColors(): IntArray
     fun getOverheadTextCount(): Int
-    fun getOverheadTextCyclesRemaining(): Array<Int>
-    fun getOverheadTextEffects(): Array<Int>
+    fun getOverheadTextCyclesRemaining(): IntArray
+    fun getOverheadTextEffects(): IntArray
     fun getOverheadTextLimit(): Int
-    fun getOverheadTextXOffsets(): Array<Int>
-    fun getOverheadTextXs(): Array<Int>
-    fun getOverheadTextYs(): Array<Int>
+    fun getOverheadTextXOffsets(): IntArray
+    fun getOverheadTextXs(): IntArray
+    fun getOverheadTextYs(): IntArray
     fun getPacketBufferNodes(): Array<PacketBufferNode>
     fun getPacketWriter(): PacketWriter
     fun getPcmPlayer0(): PcmPlayer
@@ -537,7 +537,7 @@ interface Client : GameShell {
     fun getPlatformInfoProvider(): PlatformInfoProvider
     fun getPlayerAttackOption(): AttackOption
     fun getPlayerMenuActions(): Array<String>
-    fun getPlayerMenuOpcodes(): Array<Int>
+    fun getPlayerMenuOpcodes(): IntArray
     fun getPlayers(): Array<Player>
     fun getPort1(): Int
     fun getPort2(): Int
@@ -548,20 +548,20 @@ interface Client : GameShell {
     fun getRasterProvider(): AbstractRasterProvider
     fun getRebootTimer(): Int
     fun getReflectionChecks(): IterableNodeDeque
-    fun getRegionLandArchiveIds(): Array<Int>
-    fun getRegionLandArchives(): Array<Array<Byte>>
-    fun getRegionMapArchiveIds(): Array<Int>
-    fun getRegionMapArchives(): Array<Array<Byte>>
-    fun getRegions(): Array<Int>
+    fun getRegionLandArchiveIds(): IntArray
+    fun getRegionLandArchives(): Array<ByteArray>
+    fun getRegionMapArchiveIds(): IntArray
+    fun getRegionMapArchives(): Array<ByteArray>
+    fun getRegions(): IntArray
     fun getRenderSelf(): Boolean
     fun getRevision(): Int
     fun getRights(): Int
     fun getRootWidgetCount(): Int
     fun getRootWidgetGroup(): Int
-    fun getRootWidgetHeights(): Array<Int>
-    fun getRootWidgetWidths(): Array<Int>
-    fun getRootWidgetXs(): Array<Int>
-    fun getRootWidgetYs(): Array<Int>
+    fun getRootWidgetHeights(): IntArray
+    fun getRootWidgetWidths(): IntArray
+    fun getRootWidgetXs(): IntArray
+    fun getRootWidgetYs(): IntArray
     fun getRunEnergy(): Int
     fun getScene(): Scene
     fun getSceneMinimapSprite(): Sprite
@@ -584,7 +584,7 @@ interface Client : GameShell {
     fun getSocketTask(): Task
     fun getSoundCache(): SoundCache
     fun getSoundEffectCount(): Int
-    fun getSoundEffectIds(): Array<Int>
+    fun getSoundEffectIds(): IntArray
     fun getSoundEffects(): Array<SoundEffect>
     fun getSoundSystem(): SoundSystem
     fun getSoundSystemExecutor(): Any
@@ -594,7 +594,7 @@ interface Client : GameShell {
     fun getTaskHandler(): TaskHandler
     fun getTempMenuAction(): MenuAction
     fun getTextureProvider(): TextureProvider
-    fun getTileLastDrawnActor(): Array<Array<Int>>
+    fun getTileLastDrawnActor(): Array<IntArray>
     fun getTimer(): Timer
     fun getTitleLoadingStage(): Int
     fun getUrlRequester(): UrlRequester
@@ -610,8 +610,8 @@ interface Client : GameShell {
     fun getViewportWidget(): Widget
     fun getViewportWidth(): Int
     fun getViewportZoom(): Int
-    fun getVisibilityMap(): Array<Array<Array<Array<Boolean>>>>
-    fun getVisibleTiles(): Array<Array<Boolean>>
+    fun getVisibilityMap(): Array<Array<Array<BooleanArray>>>
+    fun getVisibleTiles(): Array<BooleanArray>
     fun getWeight(): Int
     fun getWidgetClickMasks(): NodeHashTable
     fun getWidgetClickX(): Int
@@ -627,7 +627,7 @@ interface Client : GameShell {
     fun getWorlds(): Array<World>
     fun getWorldsCount(): Int
     fun getWorldsUrl(): String
-    fun getXteaKeys(): Array<Array<Int>>
+    fun getXteaKeys(): Array<IntArray>
     fun get__f_m(): AbstractIndexCache
     fun get__w_qs(): Int
     fun get__o_m(): AbstractIndexCache
@@ -641,14 +641,14 @@ interface Client : GameShell {
     fun get__d_gz(): Sprite
     fun get__n_n(): Widget
     fun get__i_af(): Int
-    fun get__i_x(): Array<Int>
+    fun get__i_x(): IntArray
     fun get__z_si(): Long
     fun get__s_fi(): Int
     fun get__s_dq(): IndexCache
     fun get__t_i(): Widget
     fun get__y_sn(): Int
-    fun get__y_p(): Array<Int>
-    fun get__h_n(): Array<Int>
+    fun get__y_p(): IntArray
+    fun get__h_n(): IntArray
     fun get__h_e(): IndexedSprite
     fun get__h_f(): WorldMapSectionType
     fun get__h_m(): WorldMapSectionType
@@ -662,13 +662,13 @@ interface Client : GameShell {
     fun get__ar_l(): Boolean
     fun get__ar_qw(): Int
     fun get__ar_bd(): Array<Sprite>
-    fun get__ay_u(): Array<Array<Array<Byte>>>
-    fun get__ah_l(): Array<Int>
+    fun get__ay_u(): Array<Array<ByteArray>>
+    fun get__ah_l(): IntArray
     fun get__ak_qj(): Int
     fun get__ap_w(): Array<IndexedSprite>
     fun get__as_ey(): Int
     fun get__an_cl(): Int
-    fun get__an_cp(): Array<Int>
+    fun get__an_cp(): IntArray
     fun get__an_cg(): Array<Char>
     fun get__an_cc(): Int
     fun get__an_ch(): Int
@@ -676,8 +676,8 @@ interface Client : GameShell {
     fun get__an_cw(): Int
     fun get__an_cz(): Int
     fun get__an_ra(): Int
-    fun get__an_cf(): Array<Int>
-    fun get__an_cq(): Array<Int>
+    fun get__an_cf(): IntArray
+    fun get__an_cq(): IntArray
     fun get__an_i(): IndexedSprite
     fun get__an_x(): Array<IndexedSprite>
     fun get__ao_s(): Array<String>
@@ -694,19 +694,19 @@ interface Client : GameShell {
     fun get__ba_j(): Array<Long>
     fun get__bb_hz(): Int
     fun get__bs_nb(): Int
-    fun get__bq_l(): Array<Array<Array<Byte>>>
-    fun get__bq_w(): Array<Array<Array<Byte>>>
+    fun get__bq_l(): Array<Array<ByteArray>>
+    fun get__bq_w(): Array<Array<ByteArray>>
     fun get__bq_p(): Int
     fun get__bq_v(): Int
-    fun get__bq_a(): Array<Array<Array<Int>>>
-    fun get__bq_b(): Array<Int>
-    fun get__bq_c(): Array<Int>
-    fun get__bq_h(): Array<Int>
-    fun get__bq_r(): Array<Int>
-    fun get__bq_t(): Array<Int>
-    fun get__bq_y(): Array<Int>
-    fun get__bk_g(): Array<Int>
-    fun get__bd_x(): Array<Array<Short>>
+    fun get__bq_a(): Array<Array<IntArray>>
+    fun get__bq_b(): IntArray
+    fun get__bq_c(): IntArray
+    fun get__bq_h(): IntArray
+    fun get__bq_r(): IntArray
+    fun get__bq_t(): IntArray
+    fun get__bq_y(): IntArray
+    fun get__bk_g(): IntArray
+    fun get__bd_x(): Array<ShortArray>
     fun get__bd_er(): Int
     fun get__bd_u(): IndexedSprite
     fun get__bc_dm(): IndexCache
@@ -714,7 +714,7 @@ interface Client : GameShell {
     fun get__bx_o(): Int
     fun get__by_hb(): Int
     fun get__bu_hy(): Int
-    fun get__bm_i(): Array<Int>
+    fun get__bm_i(): IntArray
     fun get__client_il(): Int
     fun get__client_ss(): Int
     fun get__client_sj(): OwnWorldComparator
@@ -730,12 +730,12 @@ interface Client : GameShell {
     fun get__client_nn(): Boolean
     fun get__client_nt(): Boolean
     fun get__client_qq(): Boolean
-    fun get__client_kv(): Array<Boolean>
-    fun get__client_od(): Array<Boolean>
-    fun get__client_oq(): Array<Boolean>
-    fun get__client_ot(): Array<Boolean>
-    fun get__client_rh(): Array<Boolean>
-    fun get__client_ev(): Array<Byte>
+    fun get__client_kv(): BooleanArray
+    fun get__client_od(): BooleanArray
+    fun get__client_oq(): BooleanArray
+    fun get__client_ot(): BooleanArray
+    fun get__client_rh(): BooleanArray
+    fun get__client_ev(): ByteArray
     fun get__client_ru(): PlayerAppearance
     fun get__client_md(): Widget
     fun get__client_mo(): Widget
@@ -817,24 +817,24 @@ interface Client : GameShell {
     fun get__client_sd(): Int
     fun get__client_sl(): Int
     fun get__client_sx(): Int
-    fun get__client_fg(): Array<Int>
-    fun get__client_kd(): Array<Int>
-    fun get__client_kn(): Array<Int>
-    fun get__client_nf(): Array<Int>
-    fun get__client_nr(): Array<Int>
-    fun get__client_nz(): Array<Int>
-    fun get__client_pn(): Array<Int>
-    fun get__client_pq(): Array<Int>
-    fun get__client_pv(): Array<Int>
-    fun get__client_qd(): Array<Int>
-    fun get__client_qk(): Array<Int>
-    fun get__client_qn(): Array<Int>
-    fun get__client_rd(): Array<Int>
-    fun get__client_rj(): Array<Int>
-    fun get__client_rk(): Array<Int>
-    fun get__client_rl(): Array<Int>
-    fun get__client_th(): Array<Int>
-    fun get__client_tp(): Array<Int>
+    fun get__client_fg(): IntArray
+    fun get__client_kd(): IntArray
+    fun get__client_kn(): IntArray
+    fun get__client_nf(): IntArray
+    fun get__client_nr(): IntArray
+    fun get__client_nz(): IntArray
+    fun get__client_pn(): IntArray
+    fun get__client_pq(): IntArray
+    fun get__client_pv(): IntArray
+    fun get__client_qd(): IntArray
+    fun get__client_qk(): IntArray
+    fun get__client_qn(): IntArray
+    fun get__client_rd(): IntArray
+    fun get__client_rj(): IntArray
+    fun get__client_rk(): IntArray
+    fun get__client_rl(): IntArray
+    fun get__client_th(): IntArray
+    fun get__client_tp(): IntArray
     fun get__client_pz(): String
     fun get__client_kh(): NodeDeque
     fun get__client_oc(): NodeDeque
@@ -851,10 +851,10 @@ interface Client : GameShell {
     fun get__client_rs(): Short
     fun get__client_rv(): Short
     fun get__client_rw(): Short
-    fun get__client_gd(): Array<Int>
+    fun get__client_gd(): IntArray
     fun get__bt_g(): Int
-    fun get__bt_e(): Array<Int>
-    fun get__bt_l(): Array<Int>
+    fun get__bt_e(): IntArray
+    fun get__bt_l(): IntArray
     fun get__bf_m(): Int
     fun get__bv_s(): Boolean
     fun get__bv_t(): Boolean
@@ -865,13 +865,13 @@ interface Client : GameShell {
     fun get__bw_k(): IndexedSprite
     fun get__ce_o(): Any
     fun get__ce_u(): Any
-    fun get__cy_d(): Array<Int>
+    fun get__cy_d(): IntArray
     fun get__cm_e(): Int
     fun get__cm_f(): Any
     fun get__cm_m(): Any
     fun get__cj_ay(): String
     fun get__cj_bo(): Array<IndexedSprite>
-    fun get__cj_sp(): Array<Short>
+    fun get__cj_sp(): ShortArray
     fun get__cu_aa(): Boolean
     fun get__cu_ax(): Boolean
     fun get__cu_ba(): Boolean
@@ -895,17 +895,17 @@ interface Client : GameShell {
     fun get__cu_d(): IndexedSprite
     fun get__cu_o(): IndexedSprite
     fun get__cn_bu(): IndexedSprite
-    fun get__cq_q(): Array<Byte>
-    fun get__cq_w(): Array<Byte>
+    fun get__cq_q(): ByteArray
+    fun get__cq_w(): ByteArray
     fun get__cq_a(): Buffer
     fun get__cq_o(): Array<Buffer>
     fun get__cq_l(): Int
     fun get__cq_n(): Int
-    fun get__cq_e(): Array<Int>
-    fun get__cq_i(): Array<Int>
+    fun get__cq_e(): IntArray
+    fun get__cq_i(): IntArray
     fun get__cd_s(): Boolean
-    fun get__cd_z(): Array<Boolean>
-    fun get__cd_g(): Array<Byte>
+    fun get__cd_z(): BooleanArray
+    fun get__cd_g(): ByteArray
     fun get__cd_ag(): Array<Float>
     fun get__cd_aj(): Array<Float>
     fun get__cd_aq(): Array<Float>
@@ -917,54 +917,54 @@ interface Client : GameShell {
     fun get__cd_e(): Int
     fun get__cd_l(): Int
     fun get__cd_x(): Int
-    fun get__cd_ar(): Array<Int>
-    fun get__cd_av(): Array<Int>
-    fun get__cd_j(): Array<Int>
-    fun get__ca_k(): Array<Boolean>
-    fun get__ca_d(): Array<Int>
-    fun get__ca_x(): Array<Int>
+    fun get__cd_ar(): IntArray
+    fun get__cd_av(): IntArray
+    fun get__cd_j(): IntArray
+    fun get__ca_k(): BooleanArray
+    fun get__ca_d(): IntArray
+    fun get__ca_x(): IntArray
     fun get__ca_f(): Array<Float>
-    fun get__ca_m(): Array<Int>
+    fun get__ca_m(): IntArray
     fun get__di_l(): Float
     fun get__di_u(): Array<Array<Float>>
     fun get__di_e(): Int
-    fun get__di_g(): Array<Array<Int>>
+    fun get__di_g(): Array<IntArray>
     fun get__dk_lm(): Widget
     fun get__dk_o(): Int
     fun get__dr_ao(): Int
     fun get__dw_ab(): Int
-    fun get__dw_al(): Array<Int>
-    fun get__dw_aw(): Array<Int>
-    fun get__dv_j(): Array<Int>
-    fun get__dv_s(): Array<Int>
-    fun get__dv_t(): Array<Int>
-    fun get__dv_y(): Array<Int>
-    fun get__dv_z(): Array<Int>
-    fun get__dv_b(): Array<Array<Int>>
-    fun get__dv_h(): Array<Array<Int>>
-    fun get__dz_f(): Array<Int>
-    fun get__dz_m(): Array<Int>
-    fun get__dz_q(): Array<Int>
-    fun get__dz_w(): Array<Int>
+    fun get__dw_al(): IntArray
+    fun get__dw_aw(): IntArray
+    fun get__dv_j(): IntArray
+    fun get__dv_s(): IntArray
+    fun get__dv_t(): IntArray
+    fun get__dv_y(): IntArray
+    fun get__dv_z(): IntArray
+    fun get__dv_b(): Array<IntArray>
+    fun get__dv_h(): Array<IntArray>
+    fun get__dz_f(): IntArray
+    fun get__dz_m(): IntArray
+    fun get__dz_q(): IntArray
+    fun get__dz_w(): IntArray
     fun get__du_bx(): Boolean
-    fun get__du_ad(): Array<Boolean>
-    fun get__du_at(): Array<Boolean>
-    fun get__du_aa(): Array<Int>
-    fun get__du_af(): Array<Int>
-    fun get__du_am(): Array<Int>
-    fun get__du_an(): Array<Int>
-    fun get__du_au(): Array<Int>
-    fun get__du_az(): Array<Int>
-    fun get__du_ba(): Array<Int>
-    fun get__du_bb(): Array<Int>
-    fun get__du_bj(): Array<Int>
-    fun get__du_bk(): Array<Int>
-    fun get__du_bn(): Array<Int>
-    fun get__du_bq(): Array<Int>
-    fun get__du_br(): Array<Int>
-    fun get__du_bs(): Array<Int>
-    fun get__du_ai(): Array<Array<Int>>
-    fun get__du_ax(): Array<Array<Int>>
+    fun get__du_ad(): BooleanArray
+    fun get__du_at(): BooleanArray
+    fun get__du_aa(): IntArray
+    fun get__du_af(): IntArray
+    fun get__du_am(): IntArray
+    fun get__du_an(): IntArray
+    fun get__du_au(): IntArray
+    fun get__du_az(): IntArray
+    fun get__du_ba(): IntArray
+    fun get__du_bb(): IntArray
+    fun get__du_bj(): IntArray
+    fun get__du_bk(): IntArray
+    fun get__du_bn(): IntArray
+    fun get__du_bq(): IntArray
+    fun get__du_br(): IntArray
+    fun get__du_bs(): IntArray
+    fun get__du_ai(): Array<IntArray>
+    fun get__du_ax(): Array<IntArray>
     fun get__dm_g(): Int
     fun get__dm_k(): Int
     fun get__dm_l(): Int
@@ -974,21 +974,21 @@ interface Client : GameShell {
     fun get__et_w(): Boolean
     fun get__et_f(): Boolean
     fun get__et_m(): Boolean
-    fun get__et_p(): Array<Int>
-    fun get__et_r(): Array<Int>
+    fun get__et_p(): IntArray
+    fun get__et_r(): IntArray
     fun get__eb_ah(): Bounds
     fun get__ek_x(): Int
     fun get__em_ab(): Boolean
     fun get__em_ac(): Boolean
     fun get__em_a(): Int
     fun get__em_ad(): Int
-    fun get__em_aa(): Array<Int>
-    fun get__em_af(): Array<Int>
-    fun get__em_ai(): Array<Int>
-    fun get__em_ao(): Array<Int>
-    fun get__em_au(): Array<Int>
-    fun get__em_ax(): Array<Int>
-    fun get__em_ba(): Array<Int>
+    fun get__em_aa(): IntArray
+    fun get__em_af(): IntArray
+    fun get__em_ai(): IntArray
+    fun get__em_ao(): IntArray
+    fun get__em_au(): IntArray
+    fun get__em_ax(): IntArray
+    fun get__em_ba(): IntArray
     fun get__ej_jv(): Widget
     fun get__el_x(): Int
     fun get__el_gm(): Sprite
@@ -1008,11 +1008,11 @@ interface Client : GameShell {
     fun get__fo_ro(): Int
     fun get__fo_q(): Any
     fun get__fb_bm(): IndexedSprite
-    fun get__fi_e(): Array<Int>
-    fun get__fi_l(): Array<Int>
-    fun get__fi_q(): Array<Array<Int>>
-    fun get__fi_w(): Array<Array<Int>>
-    fun get__fe_e(): Array<Array<Array<Byte>>>
+    fun get__fi_e(): IntArray
+    fun get__fi_l(): IntArray
+    fun get__fi_q(): Array<IntArray>
+    fun get__fi_w(): Array<IntArray>
+    fun get__fe_e(): Array<Array<ByteArray>>
     fun get__ge_a(): ServerPacket
     fun get__ge_aa(): ServerPacket
     fun get__ge_ab(): ServerPacket
@@ -1206,14 +1206,14 @@ interface Client : GameShell {
     fun get__gl_o(): LoginPacket
     fun get__gl_g(): Array<LoginPacket>
     fun get__gg_u(): Int
-    fun get__gd_e(): Array<Array<Int>>
+    fun get__gd_e(): Array<IntArray>
     fun get__go_ck(): Char
-    fun get__gr_q(): Array<Int>
+    fun get__gr_q(): IntArray
     fun get__gr_o(): Array<Long>
-    fun get__gi_g(): Array<Int>
+    fun get__gi_g(): IntArray
     fun get__gx_n(): Font
-    fun get__gx_d(): Array<Int>
-    fun get__gx_x(): Array<Int>
+    fun get__gx_d(): IntArray
+    fun get__gx_x(): IntArray
     fun get__gu_et(): IndexCache
     fun get__hx_z(): Int
     fun get__hg_q(): Any
@@ -1224,26 +1224,26 @@ interface Client : GameShell {
     fun get__hf_f(): AbstractIndexCache
     fun get__hf_q(): AbstractIndexCache
     fun get__hf_u(): AbstractIndexCache
-    fun get__hf_k(): Array<Int>
-    fun get__hs_x(): Array<Byte>
+    fun get__hf_k(): IntArray
+    fun get__hs_x(): ByteArray
     fun get__hq_qg(): Int
     fun get__hv_h(): Int
-    fun get__hi_g(): Array<Short>
-    fun get__hi_d(): Array<Int>
-    fun get__ht_m(): Array<Short>
-    fun get__ht_q(): Array<Short>
-    fun get__ht_f(): Array<Array<Short>>
-    fun get__ht_w(): Array<Array<Short>>
-    fun get__hj_e(): Array<Short>
+    fun get__hi_g(): ShortArray
+    fun get__hi_d(): IntArray
+    fun get__ht_m(): ShortArray
+    fun get__ht_q(): ShortArray
+    fun get__ht_f(): Array<ShortArray>
+    fun get__ht_w(): Array<ShortArray>
+    fun get__hj_e(): ShortArray
     fun get__ho_j(): Boolean
     fun get__ho_d(): AbstractIndexCache
     fun get__ho_n(): EvictingDualNodeHashTable
     fun get__ho_z(): EvictingDualNodeHashTable
-    fun get__hz_l(): Array<Array<Short>>
+    fun get__hz_l(): Array<ShortArray>
     fun get__hy_az(): Boolean
     fun get__hb_sg(): Int
     fun get__hb_av(): Any
-    fun get__hc_ef(): Array<Int>
+    fun get__hc_ef(): IntArray
     fun get__id_aa(): String
     fun get__id_ad(): String
     fun get__id_ae(): String
@@ -1485,7 +1485,7 @@ interface Client : GameShell {
     fun get__iq_j(): Int
     fun get__iq_q(): Long
     fun get__iu_n(): Int
-    fun get__iu_e(): Array<Int>
+    fun get__iu_e(): IntArray
     fun get__ib_f(): EvictingDualNodeHashTable
     fun get__ix_f(): Int
     fun get__ix_m(): AbstractIndexCache
@@ -1496,7 +1496,7 @@ interface Client : GameShell {
     fun get__im_f(): AbstractIndexCache
     fun get__ii_f(): AbstractIndexCache
     fun get__ii_m(): AbstractIndexCache
-    fun get__ia_u(): Array<Int>
+    fun get__ia_u(): IntArray
     fun get__jb_m(): AbstractIndexCache
     fun get__jq_f(): EvictingDualNodeHashTable
     fun get__jq_m(): AbstractIndexCache
@@ -1537,28 +1537,28 @@ interface Client : GameShell {
     fun get__ji_z(): ClientParameter
     fun get__ks_at(): String
     fun get__kn_x(): UrlRequest
-    fun get__kz_o(): Array<Array<Array<Byte>>>
+    fun get__kz_o(): Array<Array<ByteArray>>
     fun get__kz_l(): Sprite
     fun get__kb_q(): Array<Char>
     fun get__kb_w(): Array<Char>
     fun get__kc_m(): Array<Char>
-    fun get__kc_g(): Array<Array<Array<Byte>>>
+    fun get__kc_g(): Array<Array<ByteArray>>
     fun get__kc_f(): Array<Char>
     fun get__kc_q(): Array<Char>
-    fun get__kc_w(): Array<Int>
+    fun get__kc_w(): IntArray
     fun get__kw_n(): IndexedSprite
     fun get__ka_e(): Int
     fun get__lp_ca(): Boolean
     fun get__lj_m(): RectangleMode
     fun get__lj_f(): RectangleMode
     fun get__lj_q(): RectangleMode
-    fun get__lr_e(): Array<Array<Byte>>
+    fun get__lr_e(): Array<ByteArray>
     fun get__lr_f(): Int
     fun get__lr_m(): Int
     fun get__lr_q(): Int
-    fun get__lr_l(): Array<Int>
-    fun get__lr_o(): Array<Int>
-    fun get__lr_w(): Array<Int>
+    fun get__lr_l(): IntArray
+    fun get__lr_o(): IntArray
+    fun get__lr_w(): IntArray
     fun get__lx_e(): LoginType
     fun get__lx_m(): LoginType
     fun get__lx_f(): LoginType

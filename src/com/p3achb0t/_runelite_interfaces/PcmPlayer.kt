@@ -5,7 +5,7 @@ interface PcmPlayer {
     fun getFrequency(): Int
     fun getNextPosition(): Int
     fun getRetryTimeMs(): Long
-    fun getSamples(): Array<Int>
+    fun getSamples(): IntArray
     fun getStream0(): PcmStream
     fun getTimeMs(): Long
     fun get__v(): Boolean

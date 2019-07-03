@@ -6,14 +6,14 @@ interface TileModel {
     fun getRotation(): Int
     fun getShape(): Int
     fun getUnderlayRgb(): Int
-    fun get__e(): Array<Int>
-    fun get__f(): Array<Int>
-    fun get__g(): Array<Int>
-    fun get__l(): Array<Int>
-    fun get__m(): Array<Int>
-    fun get__o(): Array<Int>
-    fun get__q(): Array<Int>
-    fun get__u(): Array<Int>
-    fun get__w(): Array<Int>
-    fun get__x(): Array<Int>
+    fun get__e(): IntArray
+    fun get__f(): IntArray
+    fun get__g(): IntArray
+    fun get__l(): IntArray
+    fun get__m(): IntArray
+    fun get__o(): IntArray
+    fun get__q(): IntArray
+    fun get__u(): IntArray
+    fun get__w(): IntArray
+    fun get__x(): IntArray
 }

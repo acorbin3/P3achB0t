@@ -11,21 +11,21 @@ interface MidiPcmStream : PcmStream {
     fun get__v(): Array<Array<MusicPatchNode>>
     fun get__f(): Int
     fun get__q(): Int
-    fun get__b(): Array<Int>
-    fun get__c(): Array<Int>
-    fun get__d(): Array<Int>
-    fun get__e(): Array<Int>
-    fun get__g(): Array<Int>
-    fun get__h(): Array<Int>
-    fun get__k(): Array<Int>
-    fun get__l(): Array<Int>
-    fun get__n(): Array<Int>
-    fun get__o(): Array<Int>
-    fun get__p(): Array<Int>
-    fun get__r(): Array<Int>
-    fun get__u(): Array<Int>
-    fun get__x(): Array<Int>
-    fun get__y(): Array<Int>
+    fun get__b(): IntArray
+    fun get__c(): IntArray
+    fun get__d(): IntArray
+    fun get__e(): IntArray
+    fun get__g(): IntArray
+    fun get__h(): IntArray
+    fun get__k(): IntArray
+    fun get__l(): IntArray
+    fun get__n(): IntArray
+    fun get__o(): IntArray
+    fun get__p(): IntArray
+    fun get__r(): IntArray
+    fun get__u(): IntArray
+    fun get__x(): IntArray
+    fun get__y(): IntArray
     fun get__ac(): Long
     fun get__ay(): Long
 }

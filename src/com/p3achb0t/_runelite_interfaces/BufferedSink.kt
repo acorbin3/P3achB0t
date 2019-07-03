@@ -1,7 +1,7 @@
 package com.p3achb0t._runelite_interfaces
 
 interface BufferedSink {
-    fun getBuffer(): Array<Byte>
+    fun getBuffer(): ByteArray
     fun getCapacity(): Int
     fun getException(): Any
     fun getIsClosed0(): Boolean

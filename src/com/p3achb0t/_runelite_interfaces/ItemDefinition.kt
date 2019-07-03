@@ -32,13 +32,13 @@ interface ItemDefinition : DualNode {
     fun getPlaceholder(): Int
     fun getPlaceholderTemplate(): Int
     fun getPrice(): Int
-    fun getRecolorFrom(): Array<Short>
-    fun getRecolorTo(): Array<Short>
+    fun getRecolorFrom(): ShortArray
+    fun getRecolorTo(): ShortArray
     fun getResizeX(): Int
     fun getResizeY(): Int
     fun getResizeZ(): Int
-    fun getRetextureFrom(): Array<Short>
-    fun getRetextureTo(): Array<Short>
+    fun getRetextureFrom(): ShortArray
+    fun getRetextureTo(): ShortArray
     fun getShiftClickIndex0(): Int
     fun getUnnotedId(): Int
     fun getXan2d(): Int
@@ -46,6 +46,6 @@ interface ItemDefinition : DualNode {
     fun getZan2d(): Int
     fun getZoom2d(): Int
     fun get__a(): Int
-    fun get__au(): Array<Int>
-    fun get__az(): Array<Int>
+    fun get__au(): IntArray
+    fun get__az(): IntArray
 }

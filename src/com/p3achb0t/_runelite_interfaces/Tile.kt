@@ -7,7 +7,7 @@ interface Tile : Node {
     fun getDrawPrimary(): Boolean
     fun getDrawSecondary(): Boolean
     fun getFloorDecoration(): FloorDecoration
-    fun getGameObjectEdgeMasks(): Array<Int>
+    fun getGameObjectEdgeMasks(): IntArray
     fun getGameObjects(): Array<GameObject>
     fun getGameObjectsCount(): Int
     fun getGameObjectsEdgeMask(): Int

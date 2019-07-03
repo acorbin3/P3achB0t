@@ -2,17 +2,17 @@ package com.p3achb0t._runelite_interfaces
 
 interface AbstractIndexCache {
     fun getArchiveCount(): Int
-    fun getArchiveCrcs(): Array<Int>
-    fun getArchiveIds(): Array<Int>
+    fun getArchiveCrcs(): IntArray
+    fun getArchiveIds(): IntArray
     fun getArchiveNameHashTable(): IntHashTable
-    fun getArchiveNameHashes(): Array<Int>
-    fun getArchiveVersions(): Array<Int>
+    fun getArchiveNameHashes(): IntArray
+    fun getArchiveVersions(): IntArray
     fun getArchives(): Any
     fun getHash(): Int
-    fun getRecordCounts(): Array<Int>
-    fun getRecordIds(): Array<Array<Int>>
+    fun getRecordCounts(): IntArray
+    fun getRecordIds(): Array<IntArray>
     fun getRecordNameHashTables(): Array<IntHashTable>
-    fun getRecordNameHashes(): Array<Array<Int>>
+    fun getRecordNameHashes(): Array<IntArray>
     fun getRecords(): Any
     fun getReleaseArchives(): Boolean
     fun getShallowRecords(): Boolean

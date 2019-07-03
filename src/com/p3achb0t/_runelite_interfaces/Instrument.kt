@@ -6,9 +6,9 @@ interface Instrument {
     fun getDuration(): Int
     fun getFilter(): AudioFilter
     fun getOffset(): Int
-    fun getOscillatorDelays(): Array<Int>
-    fun getOscillatorPitch(): Array<Int>
-    fun getOscillatorVolume(): Array<Int>
+    fun getOscillatorDelays(): IntArray
+    fun getOscillatorPitch(): IntArray
+    fun getOscillatorVolume(): IntArray
     fun get__a(): SoundEnvelope
     fun get__f(): SoundEnvelope
     fun get__g(): SoundEnvelope

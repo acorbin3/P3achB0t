@@ -3,7 +3,7 @@ package com.p3achb0t._runelite_interfaces
 interface ObjectSound : Node {
     fun getObj(): ObjectDefinition
     fun getSoundEffectId(): Int
-    fun getSoundEffectIds(): Array<Int>
+    fun getSoundEffectIds(): IntArray
     fun getStream1(): RawPcmStream
     fun getStream2(): RawPcmStream
     fun get__d(): Int
