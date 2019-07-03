@@ -2,10 +2,13 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
+import com.p3achb0t.api.wrappers.Locatable
+import com.p3achb0t.api.wrappers.Tile
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
 import kotlin.experimental.and
+
 
 class Calculations {
 
@@ -98,6 +101,10 @@ class Calculations {
 
         fun isOnscreen(x: Int, y: Int): Boolean {
             return GAMESCREEN.contains(Point(x, y))
+        }
+
+        fun isOnscreen(rectangle: Rectangle): Boolean {
+            return GAMESCREEN.intersects(rectangle)
         }
 
 //        fun worldToMap(regionX: Int, regionY: Int): Point {
@@ -210,6 +217,32 @@ class Calculations {
             poly.addPoint(p4.getX().toInt(), p4.getY().toInt())
 
             return poly
+        }
+
+        fun distanceBetween(a: Tile, b: Tile): Int {
+            return distanceBetween(a.x, a.y, b.x, b.y)
+        }
+
+        fun distanceBetween(a: Point, b: Point): Int {
+            return distanceBetween(a.x, a.y, b.x, b.y)
+        }
+
+        fun distanceBetween(x: Int, y: Int, x1: Int, y1: Int): Int {
+            return Math.sqrt(Math.pow((x1 - x).toDouble(), 2.0) + Math.pow((y1 - y).toDouble(), 2.0)).toInt()
+        }
+
+        /**
+         * @param a tile
+         * @return current distance between player and specific tile
+         */
+        fun distanceTo(a: Tile): Int {
+            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getLocation()
+            return distanceBetween(a.x, a.y, loc.x, loc.y)
+        }
+
+        fun distanceTo(a: Locatable): Int {
+            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getLocation()
+            return distanceBetween(a.getLocation().x, a.getLocation().y, loc.x, loc.y)
         }
     }
 }

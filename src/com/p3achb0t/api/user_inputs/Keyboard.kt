@@ -43,3 +43,25 @@ fun sendKeys(keys: String) = runBlocking {
         delay(20)
     }
 }
+
+fun pressDownKey(keyCode: Int) {
+    val down = KeyEvent(
+        Main.customCanvas,
+        KeyEvent.KEY_PRESSED,
+        System.currentTimeMillis(),
+        0,
+        keyCode, keyCode.toChar()
+    )
+    Main.customCanvas?.dispatchEvent(down)
+}
+
+fun release(keyCode: Int) {
+    val up = KeyEvent(
+        Main.customCanvas,
+        KeyEvent.KEY_RELEASED,
+        System.currentTimeMillis(),
+        0,
+        keyCode, keyCode.toChar()
+    )
+    Main.customCanvas?.dispatchEvent(up)
+}

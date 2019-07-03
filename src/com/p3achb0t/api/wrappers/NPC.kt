@@ -6,7 +6,8 @@ import com.p3achb0t.hook_interfaces.Npc
 import kotlin.math.abs
 import kotlin.math.max
 
-class NPC(var npc: Npc) {
+class NPC(var npc: Npc) : Actor(npc) {
+
     companion object {
         // This function will return a list of NPCs with closes distance to you
         fun findNPCs(sortByDist: Boolean = false): ArrayList<NPC> {
@@ -34,6 +35,7 @@ class NPC(var npc: Npc) {
         //TODO check is player is on scree
         //  TODO - Move camera for player to be on screen
         try {
+
             val ch = getConvexHull(
                 this.npc,
                 Main.clientData.getNpcModelCache(),

@@ -1,6 +1,7 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.hook_interfaces.*
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
@@ -17,6 +18,11 @@ fun debugPaint(): PaintListener {
             g.drawString("Game State:: ${Main.clientData.getGameState()}", 50, 70)
             g.drawString("clientData.loginState :${Main.clientData.getLoginState()}", 50, 80)
             g.drawString("Account status :${Main.clientData.getAccountStatus()}", 50, 90)
+            g.drawString(
+                "Camera: x:${Camera.x} y:${Camera.y} z:${Camera.z} pitch:${Camera.pitch} yaw: ${Camera.yaw} angle: ${Camera.angle}",
+                50,
+                110
+            )
             try {
                 g.drawString("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}", 50, 100)
             } catch (e: Exception) {
@@ -132,7 +138,7 @@ fun debugPaint(): PaintListener {
 
 
             ///////Object paint//////////
-            if (true) {
+            if (false) {
 
                 val region = Main.clientData.getRegion()
 

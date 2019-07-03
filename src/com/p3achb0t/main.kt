@@ -8,10 +8,18 @@ import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.debugPaint
+import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.NPC
+import com.p3achb0t.api.wrappers.Player
+import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -24,6 +32,7 @@ import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarFile
 import javax.swing.JFrame
+import javax.swing.JPanel
 import javax.swing.WindowConstants
 
 
@@ -40,6 +49,7 @@ class Main(game: Applet) {
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
         lateinit var clientData: com.p3achb0t.hook_interfaces.Client
+        val mouse = Mouse()
 
     }
 }
@@ -85,16 +95,20 @@ fun main() {
 
     val jFrame = JFrame()
     jFrame.title = "Runescape"
+
     jFrame.apply {
 
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-        add(game)
-
-        pack()
-        preferredSize = size
+        jMenuBar = MenuBar()
+        size = Dimension(800, 600)
         minimumSize = game.minimumSize
         setLocationRelativeTo(null)
         isVisible = true
+
+        val panel = JPanel()
+        add(panel)
+        panel.add(game)
+        pack()
     }
 
     game.apply {
@@ -186,6 +200,37 @@ fun main() {
             }
         }
     }
+    GlobalScope.launch {
+        // launch a new coroutine in background and continue
+
+        while (true) {
+            try {
+                val npcs = NPC.findNPCs(sortByDist = true)
+                if (npcs.size > 0) {
+                    npcs.forEach {
+                        if (!it.isOnScreen()) {
+                            println("Turning to: ${it.npc.getComposite().getName()}")
+                            Camera.turnTo(it)
+                        }
+                        it.interact("Cancel")
+                    }
+                }
+                val players = Player.findPlayers(true)
+                players.forEach {
+                    if (!it.isOnScreen()) {
+                        println("Turning to: ${it.player.getName()}")
+                        Camera.turnTo(it)
+                    }
+                    it.interact("Cancel")
+                }
+            } catch (e: Exception) {
+            }
+
+            //Delay between 0-50 ms
+            delay((Math.random() * 50).toLong())
+        }
+    }
+
 
     LoggingIntoAccount()
 //    class MyApp : App(WidgetExplorer::class)
