@@ -23,22 +23,25 @@ class Interact {
                     if (ch.contains(point))
                         break
                 }
-                // Check to see if we need to right click or not
+                point?.let { interact(it, action) }
+            }
+        }
 
-                point?.let { it1 -> Main.mouse.moveMouse(it1, click = true, clickType = Mouse.ClickType.Right) }
+        suspend fun interact(point: Point, action: String) {
+            // TODO - Check to see if we need to right click or not
+            point.let { it1 -> Main.mouse.moveMouse(it1, click = true, clickType = Mouse.ClickType.Right) }
+            delay((Math.random() * 50).toLong())
+            // Move to Action String
+            val actionPoint = Menu.getPointForInteraction(action)
+            Main.mouse.moveMouse(actionPoint, click = true)
+            var count = 0
+            while (Main.clientData.getMenuVisible()) {
                 delay((Math.random() * 50).toLong())
-                // Move to Cancel
-                val cancelPoint = Menu.getPointForInteraction(action)
-                Main.mouse.moveMouse(cancelPoint, click = true)
-                var count = 0
-                while (Main.clientData.getMenuVisible()) {
-                    delay((Math.random() * 50).toLong())
-                    count += 1
-                    if (count == 10) {
-                        val cancelPoint = Menu.getPointForInteraction(action)
-                        Main.mouse.moveMouse(cancelPoint, click = true)
-                        print("Failed, retrying")
-                    }
+                count += 1
+                if (count == 10) {
+                    val cancelPoint = Menu.getPointForInteraction(action)
+                    Main.mouse.moveMouse(cancelPoint, click = true)
+                    print("Failed, retrying")
                 }
             }
         }

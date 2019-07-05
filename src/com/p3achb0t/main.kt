@@ -10,6 +10,7 @@ import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.Inventory
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.api.wrappers.Player
 import com.p3achb0t.client.MenuBar
@@ -17,9 +18,12 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
+import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tornadofx.App
+import tornadofx.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -226,6 +230,14 @@ fun main() {
             } catch (e: Exception) {
             }
 
+            val items = Inventory.getAll()
+            if (items.size > 0) {
+
+                items.forEach {
+                    it.interact("Cancel")
+                }
+            }
+
             //Delay between 0-50 ms
             delay((Math.random() * 50).toLong())
         }
@@ -233,8 +245,8 @@ fun main() {
 
 
     LoggingIntoAccount()
-//    class MyApp : App(WidgetExplorer::class)
-//    launch<MyApp>()
+    class MyApp : App(WidgetExplorer::class)
+    launch<MyApp>()
 
 }
 

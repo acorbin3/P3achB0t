@@ -2,6 +2,7 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.wrappers.Inventory
 import com.p3achb0t.hook_interfaces.*
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
@@ -196,33 +197,7 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
-//TODO - itterating over inventory
-//            val itemTable = Main.clientData.getItemTable()
-//            itemTable.getBuckets().iterator().forEach {
-//                if(it != null){
-//                    var item = it.getNext()
-//                    while(item != null && item.getId()>0){
-//                        if(item is ItemNode){
-//                            println("Found ItemNode ${item.getId()}.")
-//                            item.getIds().iterator().forEach {
-//                                print("$it,")
-//                            }
-//                            println()
-//                            item.getStackSizes().iterator().forEach {
-//                                print("$it,")
-//                            }
-//                            println()
-//                        }
-//                        if(item is Item){
-//                            println("Found Item ${item.getItem_id()}")
-//                        }
-//                        if(item is ItemComposite){
-//                            println("Found ItemComposite ${item.getName()} ${item.getItemComposite_id()}")
-//                        }
-//                        item = item.getNext()
-//                    }
-//                }
-//            }
+
             val groundItems = Main.clientData.getGroundItemList()
             val groundItemModels = Main.clientData.getGroundItemModelCache()
             val tiles = Main.clientData.getRegion().getTiles()
@@ -291,32 +266,7 @@ fun debugPaint(): PaintListener {
                 }
             }
 
-            // Look into menue
-            var menuCount = 0
-            //This is based on possible interactions with mouse
-
-//            Main.clientData.getMenuActions().iterator().forEach {
-//                if(it != null){
-//                    menuCount += 1
-//                    if(menuCount == 1)
-//                        print("Actions: ")
-//                    print("$it,")
-//                }
-//            }
-//            if(menuCount > 0)
-//                println("")
-//            menuCount = 0
-//
-//            Main.clientData.getMenuOptions().iterator().forEach {
-//                if(it != null){
-//                    menuCount += 1
-//                    if(menuCount == 1)
-//                        print("Options: ")
-//                    print("$it,")
-//                }
-//            }
-            if (menuCount > 0)
-                println("")
+            // Look into menu
             val mCount = Main.clientData.getMenuCount()
             val heigth = Main.clientData.getMenuHeight()
             val width = Main.clientData.getMenuWidth()
@@ -342,29 +292,20 @@ fun debugPaint(): PaintListener {
                 }
             }
 
-//            println("Menu Count:$mCount heigth:$heigth Visible:$mVisible ($mX,$mY) mouse(${Main.mouseEvent?.x},${Main.mouseEvent?.y})")
+            // Look at inventory
+            val items = Inventory.getAll()
+            if (items.size > 0) {
 
-//            menuCount = 0
-//            Main.clientData.getMenuXInteractions().iterator().forEach {
-//                menuCount += 1
-//                if(menuCount == 1)
-//                    print("xInteractions: ")
-//                print("$it,")
-//            }
-//            if(menuCount > 0)
-//                println("")
-//            menuCount = 0
-//            Main.clientData.getMenuYInteractions().iterator().forEach {
-//                menuCount += 1
-//                if(menuCount == 1)
-//                    print("yInteractions: ")
-//                print("$it,")
-//            }
-//            if(menuCount > 0)
-//                println("")
-//            menuCount = 0
+                items.forEach {
+                    g.color = Color.YELLOW
+                    g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y)
+                    g.color = Color.GREEN
+                    g.drawString("${it.stackSize}", it.getBasePoint().x + 10, it.getBasePoint().y + 10)
 
-
+                    g.color = Color.RED
+                    g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                }
+            }
         }
 
         fun getAllObjectModels(objectModels: Cache): ArrayList<Model> {

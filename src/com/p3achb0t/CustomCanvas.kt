@@ -2,7 +2,6 @@ package com.p3achb0t
 
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.interfaces.PaintListener
-import java.awt.AWTEventMulticaster
 import java.awt.Canvas
 import java.awt.Color
 import java.awt.Graphics
@@ -15,20 +14,18 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
 
     val image = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
     @Transient
-    var paintListener: PaintListener? = null
+    var paintListener = ArrayList<PaintListener>()
 
     fun addPaintListener(listener: ActionListener) {
-        this.paintListener = AWTEventMulticaster.add(
-            this.paintListener,
-            listener
-        ) as PaintListener
+        this.paintListener.add(listener as PaintListener)
     }
 
     override fun getGraphics(): Graphics {
         val g = image.graphics
         g.color = Color.GREEN
 
-        paintListener?.onPaint(g)
+        paintListener.forEach { it.onPaint(g) }
+//        paintListener?.onPaint(g)
 
         g.color = Color.GREEN
         if (Main.selectedWidget != null) {

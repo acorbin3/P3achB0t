@@ -24,6 +24,9 @@ class Mouse {
     //////
 
     suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left) {
+        if (destPoint == Point(-1, -1)) {
+            return
+        }
 
         val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
             Main.mouseEvent?.point?.y?.let { _y ->
