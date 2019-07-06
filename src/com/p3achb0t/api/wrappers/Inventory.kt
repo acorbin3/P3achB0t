@@ -10,10 +10,19 @@ class Inventory {
         private const val PARENT_ID = 149
         private const val CHILD_ID = 0
 
+        suspend fun open() {
+            Tabs.openTab(Tabs.Tab_Types.Inventory)
+        }
+
+        fun isOpen(): Boolean {
+            return Tabs.getOpenTab() == Tabs.Tab_Types.Inventory
+        }
+
         fun getAll(): ArrayList<WidgetItem> {
             val items = ArrayList<WidgetItem>()
             val inventory = getWidget()
-            if (inventory != null) {
+            // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
+            if (inventory != null && Widget.getDrawableRect(inventory).x > 0) {
                 val ids = inventory.getSlotIds()
                 val stacks = inventory.getSlotStackSizes()
                 for (i in 0 until ids.size) {

@@ -74,7 +74,7 @@ class WidgetExplorer : View() {
 class WidgetController : Controller() {
     var allWidgets: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
     val parentWidgetList: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
-    var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,child)
+    var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,id)
     var parentList = emptyList<Widget.WidgetIndex>()
     var currentDetail = SimpleStringProperty()
 
@@ -112,18 +112,37 @@ class WidgetController : Controller() {
 
     fun getWidgetDetails(widget: Widget): String {
         var result = ""
-        result += "Widget ID:" + widget.getWidget_id() + "\n"
-        result += "Text:" + widget.getText() + "\n"
-        var actions = "["
-        if (widget.getActions() != null) {
-            widget.getActions().iterator().forEach { actions += "$it," }
+        try {
+            result += "Widget ID:" + widget.getWidget_id() + "\n"
+            result += "Text:" + widget.getText() + "\n"
+            var actions = "["
+            if (widget.getActions() != null) {
+                widget.getActions().iterator().forEach { actions += "$it," }
+            }
+            result += "Actions:$actions]\n"
+            result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
+            result += "Item ID:" + widget.getItemId() + "\n"
+            result += "Component Index:" + widget.getComponentIndex() + "\n"
+            result += "Heigth:" + widget.getHeight() + "\n"
+            result += "Width:" + widget.getWidth() + "\n"
+            result += "SpriteID:" + widget.getSpriteId() + "\n"
+            result += "Shadow Color: " + widget.getShadowColor() + "\n"
+            result += "Action Type: " + widget.getActionType() + "\n"
+            result += "EnabledMediaId: " + widget.getEnabledMediaId() + "\n"
+            result += "EnabledMediaType: " + widget.getEnabledMediaType() + "\n"
+            result += "DisabledMediaId: " + widget.getDisabledMediaId() + "\n"
+            result += "DisabledMediaType: " + widget.getDisabledMediaType() + "\n"
+            result += "Hidden: " + widget.getHidden() + "\n"
+            result += "TextureId: " + widget.getTextureId() + "\n"
+            result += "Tooltip: " + widget.getTooltip() + "\n"
+            result += "SelectedAction: " + widget.getSelectedAction() + "\n"
+            result += "Children: ${widget.getChildren().size}"
+            if (widget.getChildren().isNotEmpty()) {
+                widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
+            }
+        } catch (e: Exception) {
+            return result
         }
-        result += "Actions:$actions\n]"
-        result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
-        result += "Item ID:" + widget.getItemId() + "\n"
-        result += "Component Index:" + widget.getComponentIndex() + "\n"
-        result += "Heigth:" + widget.getHeight() + "\n"
-        result += "Width:" + widget.getWidth() + "\n"
         return result
     }
 

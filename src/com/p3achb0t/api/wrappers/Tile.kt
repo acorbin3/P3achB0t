@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Color
 import java.awt.Graphics2D
 

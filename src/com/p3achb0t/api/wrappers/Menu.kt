@@ -7,6 +7,13 @@ import kotlin.random.Random
 
 class Menu {
     companion object {
+        fun getRect(): Rectangle {
+            val mX = Main.clientData.getMenuX()
+            val mY = Main.clientData.getMenuY()
+            val width = Main.clientData.getMenuWidth()
+            val heigth = Main.clientData.getMenuHeight()
+            return Rectangle(mX, mY, width, heigth)
+        }
         fun getPointForInteraction(action: String): Point {
             var point = Point(-1, -1)
             val mCount = Main.clientData.getMenuCount()

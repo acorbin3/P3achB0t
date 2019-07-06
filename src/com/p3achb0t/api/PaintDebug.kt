@@ -2,8 +2,13 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.wrappers.GroundItems
 import com.p3achb0t.api.wrappers.Inventory
-import com.p3achb0t.hook_interfaces.*
+import com.p3achb0t.api.wrappers.Tabs
+import com.p3achb0t.hook_interfaces.Cache
+import com.p3achb0t.hook_interfaces.Model
+import com.p3achb0t.hook_interfaces.Npc
+import com.p3achb0t.hook_interfaces.ObjectComposite
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
@@ -19,11 +24,13 @@ fun debugPaint(): PaintListener {
             g.drawString("Game State:: ${Main.clientData.getGameState()}", 50, 70)
             g.drawString("clientData.loginState :${Main.clientData.getLoginState()}", 50, 80)
             g.drawString("Account status :${Main.clientData.getAccountStatus()}", 50, 90)
+
             g.drawString(
                 "Camera: x:${Camera.x} y:${Camera.y} z:${Camera.z} pitch:${Camera.pitch} yaw: ${Camera.yaw} angle: ${Camera.angle}",
                 50,
                 110
             )
+            g.drawString("OpenTab: ${Tabs.getOpenTab()?.name}", 50, 120)
             try {
                 g.drawString("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}", 50, 100)
             } catch (e: Exception) {
@@ -197,74 +204,90 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
-
-            val groundItems = Main.clientData.getGroundItemList()
-            val groundItemModels = Main.clientData.getGroundItemModelCache()
-            val tiles = Main.clientData.getRegion().getTiles()
-            for ((iP, plane) in groundItems.withIndex()) {
-                for ((iX, x) in plane.iterator().withIndex()) {
-                    for ((iY, itemPile) in x.iterator().withIndex()) {
-                        if (itemPile != null) {
-
-                            var gi = itemPile.getTail()
-
-                            if (gi != null) {
-                                gi = gi.getPrevious()
-                            }
-                            if (gi != null) {
-                                if (gi is Item) {
-//                                    println(" ID: ${gi.getId()} ($iP,$iX,$iY) Found Item: ${gi.getItem_id()} stackSize: ${gi.getStackSize()}")
-                                    groundItemModels.getHashTable().getBuckets().iterator().forEach {
-                                        if (it != null) {
-                                            var next = it.getNext()
-                                            while (next.getId() > 0) {
-//                                                println("M - ${next.getId()}")
-                                                if (next.getId() > 0 && next.getId().toInt() == gi.getItem_id()) {
-//                                                    println("M - ${next.getId()}")
-                                                    if (next is Model) {
-
-
-                                                        val x = tiles[iP][iX][iY].getX() * 128 + 64
-                                                        val y = tiles[iP][iX][iY].getY() * 128 + 64
-
-                                                        val point =
-                                                            Calculations.worldToScreen(x, y, iP)
-                                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                                point
-                                                            )
-                                                        ) {
-                                                            g.color = Color.GREEN
-                                                            g.drawString(
-                                                                "(${gi.getItem_id()})",
-                                                                point.x,
-                                                                point.y - 20
-                                                            ) // moving id up 20 pixels
-                                                        }
-
-                                                        val positionInfo =
-                                                            ObjectPositionInfo(x, y, 0)
-
-                                                        val modelTriangles = getTrianglesFromModel(positionInfo, next)
-                                                        g.color = Color.RED
-                                                        modelTriangles.forEach {
-                                                            g.drawPolygon(it)
-                                                        }
-                                                        val hull = getConvexHullFromModel(positionInfo, next)
-                                                        g.color = Color.CYAN
-                                                        g.drawPolygon(hull)
-                                                    }
-
-                                                }
-                                                next = next.getNext()
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            val groundItems = GroundItems.getAllItems()
+            groundItems.forEach {
+                val point1 = Calculations.worldToScreen(it.position.x, it.position.y, it.position.plane)
+                if (point1.x != -1 && point1.y != -1 && Calculations.isOnscreen(point1)) {
+                    g.color = Color.GREEN
+                    g.drawString("(${it.id})", point1.x, point1.y - 20) // moving id up 20 pixels
+                    val modelTriangles = it.getTriangles()
+                    g.color = Color.RED
+                    modelTriangles.forEach {
+                        g.drawPolygon(it)
                     }
+                    val hull = it.getConvexHull()
+                    g.color = Color.CYAN
+                    g.drawPolygon(hull)
                 }
             }
+
+//            val groundItems = Main.clientData.getGroundItemList()
+//            val groundItemModels = Main.clientData.getGroundItemModelCache()
+//            val tiles = Main.clientData.getRegion().getTiles()
+//            for ((iP, plane) in groundItems.withIndex()) {
+//                for ((iX, x) in plane.iterator().withIndex()) {
+//                    for ((iY, itemPile) in x.iterator().withIndex()) {
+//                        if (itemPile != null) {
+//
+//                            var gi = itemPile.getTail()
+//
+//                            if (gi != null) {
+//                                gi = gi.getPrevious()
+//                            }
+//                            if (gi != null) {
+//                                if (gi is Item) {
+////                                    println(" ID: ${gi.getId()} ($iP,$iX,$iY) Found Item: ${gi.getItem_id()} stackSize: ${gi.getStackSize()}")
+//                                    groundItemModels.getHashTable().getBuckets().iterator().forEach {
+//                                        if (it != null) {
+//                                            var next = it.getNext()
+//                                            while (next.getId() > 0) {
+////                                                println("M - ${next.getId()}")
+//                                                if (next.getId() > 0 && next.getId().toInt() == gi.getItem_id()) {
+////                                                    println("M - ${next.getId()}")
+//                                                    if (next is Model) {
+//
+//
+//                                                        val x = tiles[iP][iX][iY].getX() * 128 + 64
+//                                                        val y = tiles[iP][iX][iY].getY() * 128 + 64
+//
+//                                                        val point =
+//                                                            Calculations.worldToScreen(x, y, iP)
+//                                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+//                                                                point
+//                                                            )
+//                                                        ) {
+//                                                            g.color = Color.GREEN
+//                                                            g.drawString(
+//                                                                "(${gi.getItem_id()})",
+//                                                                point.x,
+//                                                                point.y - 20
+//                                                            ) // moving id up 20 pixels
+//                                                        }
+//
+//                                                        val positionInfo =
+//                                                            ObjectPositionInfo(x, y, 0)
+//
+//                                                        val modelTriangles = getTrianglesFromModel(positionInfo, next)
+//                                                        g.color = Color.RED
+//                                                        modelTriangles.forEach {
+//                                                            g.drawPolygon(it)
+//                                                        }
+//                                                        val hull = getConvexHullFromModel(positionInfo, next)
+//                                                        g.color = Color.CYAN
+//                                                        g.drawPolygon(hull)
+//                                                    }
+//
+//                                                }
+//                                                next = next.getNext()
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 
             // Look into menu
             val mCount = Main.clientData.getMenuCount()
@@ -293,17 +316,19 @@ fun debugPaint(): PaintListener {
             }
 
             // Look at inventory
-            val items = Inventory.getAll()
-            if (items.size > 0) {
+            if (Tabs.getOpenTab() == Tabs.Tab_Types.Inventory) {
+                val items = Inventory.getAll()
+                if (items.size > 0) {
 
-                items.forEach {
-                    g.color = Color.YELLOW
-                    g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y)
-                    g.color = Color.GREEN
-                    g.drawString("${it.stackSize}", it.getBasePoint().x + 10, it.getBasePoint().y + 10)
+                    items.forEach {
+                        g.color = Color.YELLOW
+                        g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y)
+                        g.color = Color.GREEN
+                        g.drawString("${it.stackSize}", it.getBasePoint().x + 10, it.getBasePoint().y + 10)
 
-                    g.color = Color.RED
-                    g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                        g.color = Color.RED
+                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                    }
                 }
             }
         }

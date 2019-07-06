@@ -18,12 +18,9 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tornadofx.App
-import tornadofx.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -208,35 +205,80 @@ fun main() {
         // launch a new coroutine in background and continue
 
         while (true) {
-            try {
-                val npcs = NPC.findNPCs(sortByDist = true)
-                if (npcs.size > 0) {
-                    npcs.forEach {
+            if (false) {
+                try {
+                    val npcs = NPC.findNPCs(sortByDist = true)
+                    if (npcs.size > 0) {
+                        npcs.forEach {
+                            if (!it.isOnScreen()) {
+                                println("Turning to: ${it.npc.getComposite().getName()}")
+                                Camera.turnTo(it)
+                            }
+                            it.interact("Cancel")
+                        }
+                    }
+                    val players = Player.findPlayers(true)
+                    players.forEach {
                         if (!it.isOnScreen()) {
-                            println("Turning to: ${it.npc.getComposite().getName()}")
+                            println("Turning to: ${it.player.getName()}")
                             Camera.turnTo(it)
                         }
                         it.interact("Cancel")
                     }
+                } catch (e: Exception) {
                 }
-                val players = Player.findPlayers(true)
-                players.forEach {
-                    if (!it.isOnScreen()) {
-                        println("Turning to: ${it.player.getName()}")
-                        Camera.turnTo(it)
+
+                val items = Inventory.getAll()
+                if (items.size > 0) {
+
+                    items.forEach {
+                        if (!Inventory.isOpen()) {
+                            Inventory.open()
+                        }
+                        it.interact("Cancel")
                     }
-                    it.interact("Cancel")
-                }
-            } catch (e: Exception) {
-            }
-
-            val items = Inventory.getAll()
-            if (items.size > 0) {
-
-                items.forEach {
-                    it.interact("Cancel")
                 }
             }
+
+            // Dont drop any items if there are still some on the ground
+
+//            val groundItems2 = GroundItems.getAllItems()
+//            var count = 0
+//            groundItems2.forEach {
+//                if(it.isOnScreen()){
+////                    println("Requesting to take ${it.id}")
+//                    count += 1
+//                }
+//            }
+//
+//            //Drop items
+//            val items = Inventory.getAll()
+//            if (items.size > 0 && count == 0) {
+//
+//                items.forEach {
+//                    if (!Inventory.isOpen()) {
+//                        Inventory.open()
+//                    }
+//                    var inventoryCount = Inventory.getCount()
+//                    it.interact("Drop")
+//                    Utils.waitFor(2, object : Utils.Condition {
+//                        override suspend fun accept(): Boolean {
+//                            delay(100)
+//                            println("Waiting for inventory to change $inventoryCount == ${Inventory.getCount()}")
+//                            return inventoryCount != Inventory.getCount()
+//                        }
+//                    })
+//                }
+//            }
+//
+//            //Pick up items
+//            val groundItems = GroundItems.getAllItems()
+//            groundItems.forEach {
+//                if(it.isOnScreen()){
+////                    println("Requesting to take ${it.id}")
+//                    it.take()
+//                }
+//            }
 
             //Delay between 0-50 ms
             delay((Math.random() * 50).toLong())
@@ -245,8 +287,8 @@ fun main() {
 
 
     LoggingIntoAccount()
-    class MyApp : App(WidgetExplorer::class)
-    launch<MyApp>()
+//    class MyApp : App(WidgetExplorer::class)
+//    launch<MyApp>()
 
 }
 

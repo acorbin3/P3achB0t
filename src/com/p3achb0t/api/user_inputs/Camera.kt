@@ -1,7 +1,7 @@
 package com.p3achb0t.api.user_inputs
 
 import com.p3achb0t.Main
-import com.p3achb0t.api.wrappers.Locatable
+import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
 import kotlin.math.abs

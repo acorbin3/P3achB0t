@@ -23,9 +23,9 @@ class Mouse {
 
     //////
 
-    suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left) {
+    suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
-            return
+            return false
         }
 
         val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
@@ -100,5 +100,6 @@ class Mouse {
             }
             Main.customCanvas?.dispatchEvent(mouseRelease)
         }
+        return true
     }
 }

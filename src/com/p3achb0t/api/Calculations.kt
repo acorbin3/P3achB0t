@@ -2,8 +2,8 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
-import com.p3achb0t.api.wrappers.Locatable
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle

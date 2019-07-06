@@ -30,7 +30,7 @@ class WidgetItem(
     }
 
     suspend fun interact(action: String) {
-
+        println("Interacting with: $id")
         Interact.interact(getClickPoint(), action)
     }
 }
