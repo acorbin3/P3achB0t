@@ -240,6 +240,11 @@ fun main() {
                 }
             }
 
+            // Cycle between tabs
+//            Tabs.Tab_Types.values().iterator().forEach {
+//                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
+//            }
+
             // Dont drop any items if there are still some on the ground
 
 //            val groundItems2 = GroundItems.getAllItems()
