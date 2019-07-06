@@ -11,6 +11,9 @@ import kotlin.random.Random
 // This class is used to interact with points on a screen and menu Items such as players, objects, NPCs
 class Interact {
     companion object {
+        suspend fun interact(rectangle: Rectangle) {
+            interact(rectangle, "")
+        }
         suspend fun interact(rectangle: Rectangle, action: String) {
             //Checking to see if this is on screen
             var point: Point? = null

@@ -56,9 +56,14 @@ class Tabs {
         }
 
         suspend fun openTab(tab: Tab_Types) {
-            val widget = Main.clientData.getWidgets()[PARENT_ID][tab.id]
-            val interactRect = Widget.getDrawableRect(widget)
-            Interact.interact(interactRect, "")
+            try {
+                val widget = Main.clientData.getWidgets()[PARENT_ID][tab.id]
+                if (!widget.getHidden()) {
+                    val interactRect = Widget.getDrawableRect(widget)
+                    Interact.interact(interactRect)
+                }
+            } catch (e: Exception) {
+            }
         }
     }
 }
