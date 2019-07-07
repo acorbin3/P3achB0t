@@ -1,13 +1,15 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.hook_interfaces.Widget
 import java.awt.Rectangle
 
 class Inventory {
 
     companion object {
-        private const val PARENT_ID = 149
+        private const val PARENT_ID = WidgetID.INVENTORY_GROUP_ID
         private const val CHILD_ID = 0
 
         suspend fun open() {
@@ -50,6 +52,14 @@ class Inventory {
             return items
         }
 
+        fun getItem(id: Int): WidgetItem? {
+            val items = getAll()
+            items.forEach {
+                if (it.id == id)
+                    return it
+            }
+            return null
+        }
         fun getWidget(): Widget? {
             var widget: Widget? = null
             try {

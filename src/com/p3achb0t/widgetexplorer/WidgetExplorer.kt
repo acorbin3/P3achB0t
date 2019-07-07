@@ -60,7 +60,8 @@ class WidgetExplorer : View() {
         }
         right = vbox {
             label("Details")
-            text("Text").textProperty().bindBidirectional(controller.currentDetail)
+            scrollpane { text("Text").textProperty().bindBidirectional(controller.currentDetail) }
+
 //            controller.currentDetail.addListener(ChangeListener { observable, oldValue, newValue ->
 //                text(newValue)
 //                println(newValue)
@@ -136,10 +137,11 @@ class WidgetController : Controller() {
             result += "TextureId: " + widget.getTextureId() + "\n"
             result += "Tooltip: " + widget.getTooltip() + "\n"
             result += "SelectedAction: " + widget.getSelectedAction() + "\n"
-            result += "Children: ${widget.getChildren().size}"
-            if (widget.getChildren().isNotEmpty()) {
-                widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
-            }
+//            result += "Children: ${widget.getChildren().size}"
+            widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
+//                if (widget.getChildren().isNotEmpty()) {
+//                widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
+//            }
         } catch (e: Exception) {
             return result
         }

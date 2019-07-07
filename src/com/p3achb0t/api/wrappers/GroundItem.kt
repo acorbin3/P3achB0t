@@ -2,7 +2,6 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.*
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.hook_interfaces.Cache
@@ -18,27 +17,6 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     Interactable {
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
-    }
-
-    override suspend fun interact(action: String, option: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override suspend fun interact(action: String): Boolean {
-        println("Requesting to take item")
-        return Interact.interact(getInteractPoint(), action)
-    }
-
-    override suspend fun click(left: Boolean): Boolean {
-        return Main.mouse.moveMouse(
-            getInteractPoint(),
-            click = true,
-            clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
-        )
-    }
-
-    override suspend fun click(): Boolean {
-        return Main.mouse.moveMouse(getInteractPoint(), click = true)
     }
 
     override fun draw(g: Graphics2D) {

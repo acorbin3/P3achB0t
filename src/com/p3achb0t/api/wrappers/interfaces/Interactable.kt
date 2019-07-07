@@ -1,5 +1,8 @@
 package com.p3achb0t.api.wrappers.interfaces
 
+import com.p3achb0t.Main
+import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.Interact
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
@@ -25,11 +28,23 @@ interface Interactable {
         return Point(-1, -1)
     }
 
-    suspend fun interact(action: String, option: String): Boolean
+    suspend fun interact(action: String, option: String = ""): Boolean {
+        return false
+    }
 
-    suspend fun interact(action: String): Boolean
+    suspend fun interact(action: String): Boolean {
+        return Interact.interact(getInteractPoint(), action)
+    }
 
-    suspend fun click(left: Boolean): Boolean
+    suspend fun click(left: Boolean): Boolean {
+        return Main.mouse.moveMouse(
+            getInteractPoint(),
+            click = true,
+            clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
+        )
+    }
 
-    suspend fun click(): Boolean
+    suspend fun click(): Boolean {
+        return Main.mouse.moveMouse(getInteractPoint(), click = true)
+    }
 }
