@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.Main
 import java.awt.Point
 import java.awt.Rectangle
+import java.util.regex.Pattern
 import kotlin.random.Random
 
 class Menu {
@@ -26,7 +27,10 @@ class Menu {
                 val lineHeight = 15
                 var yDiff = baseHeight
                 for (i in 1..mCount) {
-                    if (Main.clientData.getMenuActions()[mCount - i].contains(action)) {
+                    var input = Main.clientData.getMenuActions()[mCount - i]
+                    input = Pattern.compile("<.+?>").matcher(input).replaceAll("")
+
+                    if (input.contains(action)) {
                         val rec = Rectangle(mX - 1, mY + yDiff, width, lineHeight)
                         while (true) {
                             // Just grab first point and move it to on screen.

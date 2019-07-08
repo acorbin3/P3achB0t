@@ -58,26 +58,26 @@ class Camera {
                 return true
             } else if (_pitch < pitch) {
                 println("Starting to move camera UP")
-                pressDownKey(KeyEvent.VK_UP)
+                Keyboard.pressDownKey(KeyEvent.VK_UP)
                 val t = com.p3achb0t.api.Timer(5000)
 
                 while (_pitch < pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                     _pitch = this.pitch
                     sleep(59, 100)
                 }
-                release(KeyEvent.VK_UP)
+                Keyboard.release(KeyEvent.VK_UP)
                 println("Finished moving camera Up")
 
             } else if (_pitch > pitch) {
                 println("Starting to move camera Down")
-                pressDownKey(KeyEvent.VK_DOWN)
+                Keyboard.pressDownKey(KeyEvent.VK_DOWN)
                 val t = com.p3achb0t.api.Timer(5000)
 
                 while (_pitch > pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                     _pitch = this.pitch
                     sleep(59, 100)
                 }
-                release(KeyEvent.VK_DOWN)
+                Keyboard.release(KeyEvent.VK_DOWN)
                 println("Finished moving camera Down")
             }
 
@@ -109,7 +109,7 @@ class Camera {
             if (diff > 5) {
                 // Figure out where we are
                 println("Starting to swing camera Left or right")
-                pressDownKey(dir)
+                Keyboard.pressDownKey(dir)
                 for (i in 0..99) {
 
                     if (turnLeft) {
@@ -126,7 +126,7 @@ class Camera {
 
                     sleep(100, 200)
                 }
-                release(dir)
+                Keyboard.release(dir)
                 println("Finished moving camera Left or right")
             }
             return getDiff(this.angle, angle) <= 5

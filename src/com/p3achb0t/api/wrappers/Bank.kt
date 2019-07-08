@@ -1,19 +1,19 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
+import kotlin.random.Random
 
 class Bank {
-    //TODO - open bank
-    //TODO - deposit all items
+    //DONE - open bank
+    //DONE - deposit all items
     //TODO - deposit all items from a list
-    //TODO - get items from bank from id and count
-    //TODO - get
     private val BANK_OBJECTS = intArrayOf(
         782,
         2012,
@@ -96,34 +96,19 @@ class Bank {
         suspend fun depositAll() {
             val depositAllWidget = WidgetItem(Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY))
             depositAllWidget.click()
+            val inventoryCount = Inventory.getCount()
+            Utils.waitFor(3, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return inventoryCount != Inventory.getCount()
+                }
+            })
         }
 
         fun itemVisible(itemRect: Rectangle): Boolean {
             return WidgetItem(getWidget()).area.intersects(itemRect)
         }
 
-        suspend fun withdraw(id: Int, count: Int = 1) {
-            if (isOpen()) {
-                val items = getAll()
-                items.forEach {
-                    if (it.id == id) {
-                        //Check to see if its bvisible
-                        if (itemVisible(it.area)) {
-                            val itemCount = getItemCount(id)
-                            it.interact("Withdraw-5")
-                            Utils.waitFor(3, object : Utils.Condition {
-                                override suspend fun accept(): Boolean {
-                                    delay(100)
-                                    return itemCount != getItemCount(id)
-                                }
-                            })
-                        } else {
-                            //TODO- scroll to item
-                        }
-                    }
-                }
-            }
-        }
 
         fun getItemCount(id: Int): Int {
             var count = 0
@@ -139,10 +124,67 @@ class Bank {
             return count
         }
 
+        suspend fun withdraw(id: Int, count: Int = 1) {
+            if (isOpen()) {
+                val items = getAll()
+                items.forEach {
+                    if (it.id == id) {
+                        //Check to see if its visible
+                        if (itemVisible(it.area)) {
+                            val itemCount = getItemCount(id)
+                            if (count in listOf(1, 5, 10)) {
+                                it.interact("Withdraw-$count")
+                            } else {
+                                it.interact("Withdraw-X")
+                                Utils.waitFor(3, object : Utils.Condition {
+                                    override suspend fun accept(): Boolean {
+                                        delay(100)
+                                        val chatText =
+                                            Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                        val text = chatText?.getText()
+                                        println(text + " " + chatText?.getHidden())
+                                        return text?.equals("*") ?: false
+                                    }
+                                })
+                                delay(Random.nextLong(100, 350))
+                                Keyboard.sendKeys(count.toString(), sendReturn = true)
+                            }
+
+                            Utils.waitFor(3, object : Utils.Condition {
+                                override suspend fun accept(): Boolean {
+                                    delay(100)
+                                    return itemCount != getItemCount(id)
+                                }
+                            })
+                        } else {
+                            //TODO- scroll to item
+                        }
+                    }
+                }
+            }
+        }
+
         suspend fun deposit(id: Int, count: Int = 1) {
             if (isOpen()) {
                 val itemCount = getItemCount(id)
-                Inventory.getItem(id)?.interact("Deposit-5")
+                if (count in listOf(1, 5, 10)) {
+                    Inventory.getItem(id)?.interact("Deposit-$count")
+                } else {
+                    Inventory.getItem(id)?.interact("Deposit-X")
+                    //Wait till the * shows up in the chat box
+                    Utils.waitFor(3, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            val chatText = Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                            val text = chatText?.getText()
+                            println(text + " " + chatText?.getHidden())
+                            return text?.equals("*") ?: false
+                        }
+                    })
+                    delay(Random.nextLong(100, 350))
+
+                    Keyboard.sendKeys(count.toString(), sendReturn = true)
+                }
                 // wait till item get into the bank
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {

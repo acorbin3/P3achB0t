@@ -14,6 +14,7 @@ import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
+import java.util.regex.Pattern
 
 
 fun debugPaint(): PaintListener {
@@ -254,8 +255,11 @@ fun debugPaint(): PaintListener {
 
                     g.color = Color.BLUE
                     g.drawRect(mX - 1, mY + yDiff, width, lineHeight)
-                    val action =
-                        Main.clientData.getMenuActions()[mCount - i] + " " + Main.clientData.getMenuOptions()[mCount - i]
+                    var menuAction = Main.clientData.getMenuActions()[mCount - i]
+                    menuAction = Pattern.compile("<.+?>").matcher(menuAction).replaceAll("")
+                    var menuOption = Main.clientData.getMenuOptions()[mCount - i]
+                    menuOption = Pattern.compile("<.+?>").matcher(menuOption).replaceAll("")
+                    val action = "$menuAction $menuOption"
                     g.color = Color.GREEN
 
                     g.drawString(action, mX + width, mY + yDiff + (lineHeight / 2) + 7)

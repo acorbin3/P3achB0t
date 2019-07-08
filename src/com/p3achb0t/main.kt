@@ -18,12 +18,9 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tornadofx.App
-import tornadofx.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -247,8 +244,10 @@ fun main() {
 //            if(!Bank.isOpen()){
 //                Bank.open()
 //                //TODO -withdraw
-//                Bank.withdraw(995)
-//                Bank.deposit(995)
+//                Bank.withdraw(995,3)
+//                Bank.deposit(995,3)
+//                Bank.withdraw(995,7)
+//                Bank.depositAll()
 //                Bank.close()
 //            }else{
 //                println("Bank Size: ${Bank.getSize()}")
@@ -256,7 +255,7 @@ fun main() {
 //                items.forEach {
 //                    println("${it.id}:${it.stackSize}")
 //                }
-////                Bank.close()
+//                Bank.close()
 //            }
 
             // Cycle between tabs
@@ -311,8 +310,8 @@ fun main() {
 
 
     LoggingIntoAccount()
-    class MyApp : App(WidgetExplorer::class)
-    launch<MyApp>()
+//    class MyApp : App(WidgetExplorer::class)
+//    launch<MyApp>()
 
 }
 

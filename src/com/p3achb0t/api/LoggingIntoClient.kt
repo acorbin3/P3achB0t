@@ -2,8 +2,8 @@ package com.p3achb0t.api
 
 import UserDetails
 import com.p3achb0t.Main
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.user_inputs.sendKeys
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ fun LoggingIntoAccount() {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
-                    sendKeys(UserDetails.data.password)
+                    Keyboard.sendKeys(UserDetails.data.password)
                     delay(200)
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
