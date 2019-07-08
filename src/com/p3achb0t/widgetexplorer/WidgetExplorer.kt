@@ -27,10 +27,27 @@ class WidgetExplorer : View() {
                     controller.getUpdatedWidgets()
                 }
             }
+            form {
+                fieldset("Search") {
+                    field("Search") {
+                        textfield {
+                            action {
+                                println("Filtering on: +${this.text}")
+                                controller.getUpdatedWidgets(this.text)
+                            }
+                        }
+
+
+                    }
+
+                }
+            }
         }
-        center = vbox {
+        left = vbox {
             label("Parent Widgets")
             treeview<Widget.WidgetIndex> {
+                this.maxWidth = 150.0
+
                 root = TreeItem(Widget.WidgetIndex("Widgets", "Widgets"))
                 cellFormat { text = it.childID }
                 populate { parent ->
@@ -58,14 +75,10 @@ class WidgetExplorer : View() {
 
             }
         }
-        right = vbox {
+        center = vbox {
             label("Details")
             scrollpane { text("Text").textProperty().bindBidirectional(controller.currentDetail) }
 
-//            controller.currentDetail.addListener(ChangeListener { observable, oldValue, newValue ->
-//                text(newValue)
-//                println(newValue)
-//            })
         }
 
 
@@ -82,7 +95,7 @@ class WidgetController : Controller() {
     var allWidgetFileHookData = mutableMapOf<String, Widget>()
 
 
-    fun getUpdatedWidgets() {
+    fun getUpdatedWidgets(filter: String = "") {
 
         allWidgets.clear()
 
@@ -92,12 +105,18 @@ class WidgetController : Controller() {
             if (childArray != null) {
                 childArray.forEachIndexed { childIndex, childItem ->
                     if (childItem != null) {
-                        allWidgets.add(Widget.WidgetIndex("Parent $parentIndex", childIndex.toString()))
-                        val widgetDetailIndex = "$parentIndex,$childIndex"
-                        allWidgetFileHookData[widgetDetailIndex] = childItem
-                        val result = getWidgetDetails(childItem)
-                        println("\t $result")
-                        widgetDetails[widgetDetailIndex] = result
+                        var add = true
+                        if (filter.isNotEmpty()) {
+                            add = doesWidgetContainText(childItem, filter)
+                        }
+                        if (add) {
+                            allWidgets.add(Widget.WidgetIndex("Parent $parentIndex", childIndex.toString()))
+                            val widgetDetailIndex = "$parentIndex,$childIndex"
+                            allWidgetFileHookData[widgetDetailIndex] = childItem
+                            val result = getWidgetDetails(childItem)
+                            println("\t $result")
+                            widgetDetails[widgetDetailIndex] = result
+                        }
                     }
                 }
             }
@@ -109,6 +128,45 @@ class WidgetController : Controller() {
         for (item in parentList) {
             parentWidgetList.add(item)
         }
+    }
+
+    fun getStrippedWidgetDetails(widget: Widget): String {
+        var result = ""
+        try {
+            result += widget.getWidget_id().toString() + "\n"
+            result += widget.getText() + "\n"
+            var actions = ""
+            if (widget.getActions() != null) {
+                widget.getActions().iterator().forEach { actions += "$it," }
+            }
+            result += "$actions\n"
+            result += widget.getChildTextureId().toString() + "\n"
+            result += widget.getItemId().toString() + "\n"
+            result += widget.getComponentIndex().toString() + "\n"
+            result += widget.getHeight().toString() + "\n"
+            result += widget.getWidth().toString() + "\n"
+            result += widget.getSpriteId().toString() + "\n"
+            result += widget.getShadowColor().toString() + "\n"
+            result += widget.getActionType().toString() + "\n"
+            result += widget.getEnabledMediaId().toString() + "\n"
+            result += widget.getEnabledMediaType().toString() + "\n"
+            result += widget.getDisabledMediaId().toString() + "\n"
+            result += widget.getDisabledMediaType().toString() + "\n"
+            result += widget.getHidden().toString() + "\n"
+            result += widget.getTextureId().toString() + "\n"
+            result += widget.getTooltip() + "\n"
+            result += widget.getSelectedAction() + "\n"
+            result += widget.getTextColor().toString() + "\n"
+            widget.getChildren().iterator().forEach { result += getStrippedWidgetDetails(it) }
+        } catch (e: Exception) {
+            return result
+        }
+        return result
+    }
+
+    fun doesWidgetContainText(widget: Widget, filter: String): Boolean {
+        val text = getStrippedWidgetDetails(widget)
+        return text.contains(filter)
     }
 
     fun getWidgetDetails(widget: Widget): String {
@@ -137,6 +195,7 @@ class WidgetController : Controller() {
             result += "TextureId: " + widget.getTextureId() + "\n"
             result += "Tooltip: " + widget.getTooltip() + "\n"
             result += "SelectedAction: " + widget.getSelectedAction() + "\n"
+            result += "Text Color: " + widget.getTextColor().toString() + "\n"
 //            result += "Children: ${widget.getChildren().size}"
             widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
 //                if (widget.getChildren().isNotEmpty()) {
