@@ -6,7 +6,6 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
@@ -18,9 +17,12 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
+import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tornadofx.App
+import tornadofx.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
@@ -240,6 +242,37 @@ fun main() {
                 }
             }
 
+
+            // Cycle between tabs
+//            Tabs.Tab_Types.values().iterator().forEach {
+//                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
+//            }
+
+//            // Go between equiptment unequipt & back to inventory to equipt
+//            Equipment.Companion.Slot.values().iterator().forEach {
+//                if(Equipment.isEquipmentSlotEquipted(it)){
+//                    if(!Equipment.isOpen()) Equipment.open()
+//                    Equipment.unEquiptItem(it)
+//                }
+//            }
+//            // Loop over inventory to see if there is an item that has action Wield, and if so equipt it
+//            Inventory.getAll().forEach {
+//                if(!Inventory.isOpen()) Inventory.open()
+//                it.hover(true,Mouse.ClickType.Right)
+//                if(Menu.isActionInMenu("Wield")) {
+//                    println("Wielding: ${it.id}")
+//                    it.interact("Wield")
+//                    // Wait till item leaves inventory
+//                    Utils.waitFor(2, object : Utils.Condition {
+//                        override suspend fun accept(): Boolean {
+//                            delay(100)
+//                            return Inventory.getCount(it.id) == 0
+//                        }
+//                    })
+//                }
+//            }
+            
+
             //If bank not open, find a banker and open it
 //            if(!Bank.isOpen()){
 //                Bank.open()
@@ -253,15 +286,12 @@ fun main() {
 //                println("Bank Size: ${Bank.getSize()}")
 //                val items = Bank.getAll()
 //                items.forEach {
-//                    println("${it.id}:${it.stackSize}")
+//                    println("${it.widgetID}:${it.stackSize}")
 //                }
 //                Bank.close()
 //            }
 
-            // Cycle between tabs
-//            Tabs.Tab_Types.values().iterator().forEach {
-//                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
-//            }
+
 
             // Dont drop any items if there are still some on the ground
 
@@ -269,7 +299,7 @@ fun main() {
 //            var count = 0
 //            groundItems2.forEach {
 //                if(it.isOnScreen()){
-////                    println("Requesting to take ${it.id}")
+////                    println("Requesting to take ${it.widgetID}")
 //                    count += 1
 //                }
 //            }
@@ -298,7 +328,7 @@ fun main() {
 //            val groundItems = GroundItems.getAllItems()
 //            groundItems.forEach {
 //                if(it.isOnScreen()){
-////                    println("Requesting to take ${it.id}")
+////                    println("Requesting to take ${it.widgetID}")
 //                    it.take()
 //                }
 //            }
@@ -309,9 +339,9 @@ fun main() {
     }
 
 
-    LoggingIntoAccount()
-//    class MyApp : App(WidgetExplorer::class)
-//    launch<MyApp>()
+    //    LoggingIntoAccount()
+    class MyApp : App(WidgetExplorer::class)
+    launch<MyApp>()
 
 }
 

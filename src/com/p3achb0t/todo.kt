@@ -63,7 +63,7 @@ package com.p3achb0t
 //  TODO - Identify - ground Items
 //  DONE 4/29/2019 - Identify - NPCs
 //  DONE 5/7/2019 - Identify - local players
-//  DONE 6/??/2019 - Be smarter when getting all the field names. Its possible there could be multiple id's between the different classes and they could get over written
+//  DONE 6/??/2019 - Be smarter when getting all the field names. Its possible there could be multiple widgetID's between the different classes and they could get over written
 
 //  DONE 6/18/2019 - Identify - Tiles
 //  TODO - Paint - Ground Items

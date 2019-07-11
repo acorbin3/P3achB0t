@@ -2,10 +2,7 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.GroundItems
-import com.p3achb0t.api.wrappers.Inventory
-import com.p3achb0t.api.wrappers.Tabs
+import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.hook_interfaces.Cache
 import com.p3achb0t.hook_interfaces.Model
 import com.p3achb0t.hook_interfaces.Npc
@@ -181,7 +178,7 @@ fun debugPaint(): PaintListener {
                                                     g.color = Color.GREEN
                                                     val id = it.getId().shr(17).and(0x7fff).toInt()
                                                     val rawID = it.getId().shr(14).and(0x7fff)
-//                                            println("${it.getId()},$rawID,$id,${it.getRenderable().getId()}")
+//                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                                     val objectComposite = getObjectComposite(sceneData, id)
                                                     g.drawString(objectComposite?.getName() + "($id)", point.x, point.y)
                                                 }
@@ -215,7 +212,7 @@ fun debugPaint(): PaintListener {
                     val point1 = Calculations.worldToScreen(it.position.x, it.position.y, it.position.plane)
                     if (point1.x != -1 && point1.y != -1 && Calculations.isOnscreen(point1)) {
                         g.color = Color.GREEN
-                        g.drawString("(${it.id})", point1.x, point1.y - 20) // moving id up 20 pixels
+                        g.drawString("(${it.id})", point1.x, point1.y - 20) // moving widgetID up 20 pixels
                         val modelTriangles = it.getTriangles()
                         g.color = Color.RED
                         modelTriangles.forEach {
@@ -268,7 +265,7 @@ fun debugPaint(): PaintListener {
             }
 
             // Look at inventory
-            if (Tabs.getOpenTab() == Tabs.Tab_Types.Inventory) {
+            if (Inventory.isOpen()) {
                 val items = Inventory.getAll()
                 if (items.size > 0) {
 
@@ -283,13 +280,42 @@ fun debugPaint(): PaintListener {
                     }
                 }
             }
+
+            //Look at equipment
+            if (Equipment.isOpen()) {
+
+                Equipment.Companion.Slot.values().iterator().forEach { slot ->
+
+                    val widget = Equipment.getItemAtSlot(slot)
+                    if (widget != null) {
+                        g.color = Color.PINK
+                        g.drawRect(widget.area.x, widget.area.y, widget.area.width, widget.area.height)
+                        if (widget.id != -1) {
+                            g.color = Color.YELLOW
+                            g.drawString("${widget.id}", widget.getBasePoint().x, widget.getBasePoint().y)
+                            g.color = Color.GREEN
+                            g.drawString(
+                                "${widget.stackSize}",
+                                widget.getBasePoint().x + 10,
+                                widget.getBasePoint().y + 10
+                            )
+                        }
+
+
+                    }
+                }
+
+            }
         }
+
+
+
 
         fun getAllObjectModels(objectModels: Cache): ArrayList<Model> {
             val modelList = ArrayList<Model>()
             objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
                 if (bucket != null) {
-//                    println(bucket.getId())
+//                    println(bucket.getWidgetID())
                     var model = bucket.getNext()
                     while (model != null && model is Model && model.getId() > 0) {
                         modelList.add(model)

@@ -1,6 +1,7 @@
 package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.hook_interfaces.Widget
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
@@ -69,7 +70,8 @@ class WidgetExplorer : View() {
                     } else {
                         Main.selectedWidget = null
                     }
-                    controller.currentDetail.set(currentWidget?.let { it1 -> controller.getWidgetDetails(it1) })
+                    controller.currentDetail.set(currentWidget?.let { it1 -> controller.getWidgetDetails(it1, 0) })
+                    Items.dumpItems()
 
                 }
 
@@ -88,7 +90,7 @@ class WidgetExplorer : View() {
 class WidgetController : Controller() {
     var allWidgets: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
     val parentWidgetList: ObservableList<Widget.WidgetIndex> = FXCollections.observableArrayList()
-    var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,id)
+    var widgetDetails = mutableMapOf<String, String>()//Index will be (parent,widgetID)
     var parentList = emptyList<Widget.WidgetIndex>()
     var currentDetail = SimpleStringProperty()
 
@@ -113,7 +115,7 @@ class WidgetController : Controller() {
                             allWidgets.add(Widget.WidgetIndex("Parent $parentIndex", childIndex.toString()))
                             val widgetDetailIndex = "$parentIndex,$childIndex"
                             allWidgetFileHookData[widgetDetailIndex] = childItem
-                            val result = getWidgetDetails(childItem)
+                            val result = getWidgetDetails(childItem, 0)
                             println("\t $result")
                             widgetDetails[widgetDetailIndex] = result
                         }
@@ -145,6 +147,8 @@ class WidgetController : Controller() {
             result += widget.getComponentIndex().toString() + "\n"
             result += widget.getHeight().toString() + "\n"
             result += widget.getWidth().toString() + "\n"
+            result += widget.getItemStackSize().toString() + "\n"
+
             result += widget.getSpriteId().toString() + "\n"
             result += widget.getShadowColor().toString() + "\n"
             result += widget.getActionType().toString() + "\n"
@@ -157,6 +161,7 @@ class WidgetController : Controller() {
             result += widget.getTooltip() + "\n"
             result += widget.getSelectedAction() + "\n"
             result += widget.getTextColor().toString() + "\n"
+
             widget.getChildren().iterator().forEach { result += getStrippedWidgetDetails(it) }
         } catch (e: Exception) {
             return result
@@ -169,8 +174,8 @@ class WidgetController : Controller() {
         return text.contains(filter)
     }
 
-    fun getWidgetDetails(widget: Widget): String {
-        var result = ""
+    fun getWidgetDetails(widget: Widget, index: Int): String {
+        var result = "--$index--\n"
         try {
             result += "Widget ID:" + widget.getWidget_id() + "\n"
             result += "Text:" + widget.getText() + "\n"
@@ -182,8 +187,9 @@ class WidgetController : Controller() {
             result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
             result += "Item ID:" + widget.getItemId() + "\n"
             result += "Component Index:" + widget.getComponentIndex() + "\n"
-            result += "Heigth:" + widget.getHeight() + "\n"
+            result += "Height:" + widget.getHeight() + "\n"
             result += "Width:" + widget.getWidth() + "\n"
+            result += "StackCount" + widget.getItemStackSize() + "\n"
             result += "SpriteID:" + widget.getSpriteId() + "\n"
             result += "Shadow Color: " + widget.getShadowColor() + "\n"
             result += "Action Type: " + widget.getActionType() + "\n"
@@ -196,8 +202,24 @@ class WidgetController : Controller() {
             result += "Tooltip: " + widget.getTooltip() + "\n"
             result += "SelectedAction: " + widget.getSelectedAction() + "\n"
             result += "Text Color: " + widget.getTextColor().toString() + "\n"
+            if (widget.getSlotIds() != null) {
+                result += "Slot IDs:"
+                widget.getSlotIds().iterator().forEach { result += "$it,\t" }
+                result += "\n"
+            }
+
+            if (widget.getSlotStackSizes() != null) {
+                result += "Slot Stack sizes:"
+                widget.getSlotStackSizes().iterator().forEach { result += "$it,\t" }
+                result += "\n"
+            }
+            result += "-----\n"
 //            result += "Children: ${widget.getChildren().size}"
-            widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
+            var i = 0
+            widget.getChildren().iterator().forEach {
+                result += getWidgetDetails(it, i)
+                i += 1
+            }
 //                if (widget.getChildren().isNotEmpty()) {
 //                widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
 //            }

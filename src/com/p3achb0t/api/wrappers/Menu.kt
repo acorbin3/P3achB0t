@@ -30,7 +30,7 @@ class Menu {
                     var input = Main.clientData.getMenuActions()[mCount - i]
                     input = Pattern.compile("<.+?>").matcher(input).replaceAll("")
 
-                    if (input.contains(action)) {
+                    if (input.toLowerCase().contains(action.toLowerCase())) {
                         val rec = Rectangle(mX - 1, mY + yDiff, width, lineHeight)
                         while (true) {
                             // Just grab first point and move it to on screen.
@@ -50,6 +50,10 @@ class Menu {
                 println("Not visible")
             }
             return point
+        }
+
+        fun isActionInMenu(action: String): Boolean {
+            return getPointForInteraction(action) != Point(-1, -1)
         }
 
     }

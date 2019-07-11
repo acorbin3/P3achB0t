@@ -36,6 +36,14 @@ interface Interactable {
         return Interact.interact(getInteractPoint(), action)
     }
 
+    suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
+        Main.mouse.moveMouse(
+            getInteractPoint(),
+            click = click,
+            clickType = clickType
+        )
+    }
+
     suspend fun click(left: Boolean): Boolean {
         return Main.mouse.moveMouse(
             getInteractPoint(),

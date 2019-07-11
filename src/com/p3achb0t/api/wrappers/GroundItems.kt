@@ -24,7 +24,7 @@ class GroundItems {
                             }
                             if (gi != null) {
                                 if (gi is Item) {
-//                                    println(" ID: ${gi.getId()} ($iP,$iX,$iY) Found Item: ${gi.getItem_id()} stackSize: ${gi.getStackSize()}")
+//                                    println(" ID: ${gi.getWidgetID()} ($iP,$iX,$iY) Found Item: ${gi.getItem_id()} stackSize: ${gi.getStackSize()}")
                                     groundItemModels.getHashTable().getBuckets().iterator().forEach {
                                         if (it != null) {
                                             var next = it.getNext()

@@ -4,7 +4,7 @@ import com.p3achb0t.Main
 import com.p3achb0t.hook_interfaces.Widget
 
 class Tabs {
-    // Section of id IDs for tabs
+    // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int) {
         ClanChat(31),
         AccountManagement(32),
