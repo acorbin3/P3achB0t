@@ -1,6 +1,7 @@
 package com.p3achb0t.api
 
 import kotlinx.coroutines.delay
+import java.util.regex.Pattern
 import kotlin.random.Random
 
 
@@ -20,6 +21,10 @@ class Utils {
                 delay(Random.nextLong(100, 150))
             }
             return false
+        }
+
+        fun cleanColorText(input: String): String {
+            return Pattern.compile("<.+?>").matcher(input).replaceAll("")
         }
     }
 }

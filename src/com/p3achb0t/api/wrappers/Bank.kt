@@ -2,6 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Keyboard
+import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets

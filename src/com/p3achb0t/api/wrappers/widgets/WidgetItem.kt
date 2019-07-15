@@ -30,5 +30,19 @@ class WidgetItem(
         return Point(area.x, area.y)
     }
 
+    override suspend fun interact(action: String): Boolean {
+        if (this.widget?.getText()?.contains(action)!!)
+            return super.interact(action)
+        else {
+            // Need to look at children
+            this.widget!!.getChildren().iterator().forEach {
+                if (it.getText().contains(action)) {
+                    return WidgetItem(it).interact(action)
+                }
+            }
+            return false
+        }
+    }
+
 
 }

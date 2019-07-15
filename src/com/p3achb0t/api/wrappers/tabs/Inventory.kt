@@ -1,4 +1,4 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.wrappers.widgets.WidgetID
@@ -14,6 +14,7 @@ class Inventory {
 
         suspend fun open() {
             Tabs.openTab(Tabs.Tab_Types.Inventory)
+            if (!isOpen()) open()
         }
 
         fun isOpen(): Boolean {
@@ -27,16 +28,18 @@ class Inventory {
             if (inventory != null && Widget.getDrawableRect(inventory).x > 0) {
                 val ids = inventory.getSlotIds()
                 val stacks = inventory.getSlotStackSizes()
-                for (i in 0 until ids.size) {
+
+                val columns = inventory.getWidth()
+                val rows = inventory.getHeight()
+                val baseX = Widget.getWidgetX(inventory)
+                val baseY = Widget.getWidgetY(inventory)
+                for (i in 0 until (columns * rows)) {
                     if (ids[i] > 0 && stacks[i] > 0) {
-                        val rec = Widget.getDrawableRect(inventory)
-                        val area =
-                            Rectangle(
-                                inventory.getX() + ((i % 4) * 42) + rec.x,
-                                (inventory.getY() + ((i / 4) * 36) + rec.y),
-                                31,
-                                31
-                            )
+                        val row = i / columns
+                        val col = i % columns
+                        val _x = baseX + ((32 + 10) * col)
+                        val _y = baseY + ((32 + 4) * row)
+                        val area = Rectangle(_x, _y, 32, 32)
                         items.add(
                             WidgetItem(
                                 area = area,

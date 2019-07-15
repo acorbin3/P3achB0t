@@ -4,6 +4,7 @@ import com.p3achb0t.Main
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.hook_interfaces.Cache
 import com.p3achb0t.hook_interfaces.Model
 import kotlinx.coroutines.delay

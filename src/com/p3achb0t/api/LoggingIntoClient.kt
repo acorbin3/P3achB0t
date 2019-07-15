@@ -4,6 +4,9 @@ import UserDetails
 import com.p3achb0t.Main
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import com.p3achb0t.api.wrappers.widgets.Widgets
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,7 +31,18 @@ fun LoggingIntoAccount() {
                     delay(200)
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
+
+                    while (Main.clientData.getGameState() != 30) {
+                        delay(100)
+                    }
+                    delay(1500)
+                    println("Clicking login")
+                    val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+                    login.click()
                 }
+
+
+                //IF not on tutorial island: click the play. Widget 378,85
 //                if (Client.GameState.LoggedIn.intState == clientData.gameState.toInt()) {
 //                    getLocalNPCData()
 //                    getLocalPlayersData()

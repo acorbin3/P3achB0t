@@ -1,4 +1,4 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
@@ -9,6 +9,9 @@ import kotlinx.coroutines.delay
 class Prayer {
     //TODO - Quick prayers
     //TODO - Checking if prayer is on
+    // resource: how to get settings: https://github.com/07kit/07kit/blob/023c00545b9d104a9b1bda278dd5fdbf85a891f3/src/main/java/com/kit/api/impl/game/SettingsImpl.java
+    // resource: settings indexes: https://github.com/07kit/07kit/blob/023c00545b9d104a9b1bda278dd5fdbf85a891f3/src/main/java/com/kit/api/wrappers/Prayer.java
+
     companion object {
         private const val PARENT = PRAYER_GROUP_ID
 

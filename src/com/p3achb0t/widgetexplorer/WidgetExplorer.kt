@@ -177,7 +177,19 @@ class WidgetController : Controller() {
     fun getWidgetDetails(widget: Widget, index: Int): String {
         var result = "--$index--\n"
         try {
-            result += "Widget ID:" + widget.getWidget_id() + "\n"
+            val containerID = widget.getWidget_id().shr(16)
+            val childID = widget.getWidget_id().and(0xFF)
+            result += "Widget ID:" + widget.getWidget_id() + "($containerID,$childID)\n"
+            val parentIndex = Widget.getParentIndex(widget)
+            result += "raw parent ID: ${widget.getParentId()}\n"
+            result += "parent Index ${parentIndex.parentID}, ${parentIndex.childID} raw:${parentIndex.raw}\n"
+            val chainedParentIndexes = Widget.getChainedParentIndex(widget, ArrayList())
+            result += "parent Indexes:["
+            chainedParentIndexes.forEach {
+                result += "(${it.parentID},${it.childID}),"
+            }
+            result += "\n"
+            result += "Type: ${widget.getType()}"
             result += "Text:" + widget.getText() + "\n"
             var actions = "["
             if (widget.getActions() != null) {
@@ -187,6 +199,10 @@ class WidgetController : Controller() {
             result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
             result += "Item ID:" + widget.getItemId() + "\n"
             result += "Component Index:" + widget.getComponentIndex() + "\n"
+            result += "Raw Position: ${widget.getX()},${widget.getY()}\n"
+            result += "Position: ${Widget.getWidgetX(widget)},${Widget.getWidgetY(widget)}\n"
+            result += "Scroll(x,y) ${widget.getScrollX()},${widget.getScrollY()}\n"
+            result += "Scroll max: ${widget.getScrollMax()}\n"
             result += "Height:" + widget.getHeight() + "\n"
             result += "Width:" + widget.getWidth() + "\n"
             result += "StackCount" + widget.getItemStackSize() + "\n"
@@ -202,17 +218,53 @@ class WidgetController : Controller() {
             result += "Tooltip: " + widget.getTooltip() + "\n"
             result += "SelectedAction: " + widget.getSelectedAction() + "\n"
             result += "Text Color: " + widget.getTextColor().toString() + "\n"
+            result += "Boarder Thickness ${widget.getBorderThickness()} \n"
+            result += "Spell: ${widget.getSpell()}\n"
+            result += "Dynamic Values: ["
+            try {
+                for (i in widget.getDynamicValue()) {
+                    result += "$i,"
+                }
+            } catch (e: Exception) {
+            }
+            result += "]\n"
             if (widget.getSlotIds() != null) {
                 result += "Slot IDs:"
                 widget.getSlotIds().iterator().forEach { result += "$it,\t" }
-                result += "\n"
+                result += "]\n"
             }
 
             if (widget.getSlotStackSizes() != null) {
                 result += "Slot Stack sizes:"
                 widget.getSlotStackSizes().iterator().forEach { result += "$it,\t" }
-                result += "\n"
+                result += "]\n"
             }
+            result += "---Internal---\n"
+            result += "Bounds Index: ${widget.getBoundsIndex()}\n"
+            result += "Bounds x: ["
+            for (i in Main.clientData.getWidgetBoundsX()) {
+                result += "$i,"
+            }
+            result += "]\n"
+
+            result += "Bounds y: ["
+            for (i in Main.clientData.getWidgetBoundsY()) {
+                result += "$i,"
+            }
+            result += "]\n"
+
+            result += "Bounds Width: ["
+            for (i in Main.clientData.getWidgetWidths()) {
+                result += "$i,"
+            }
+            result += "]\n"
+
+            result += "Bounds Height: ["
+            for (i in Main.clientData.getWidgetHeights()) {
+                result += "$i,"
+            }
+            result += "]\n"
+
             result += "-----\n"
 //            result += "Children: ${widget.getChildren().size}"
             var i = 0

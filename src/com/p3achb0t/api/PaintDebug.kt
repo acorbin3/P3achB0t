@@ -2,7 +2,13 @@ package com.p3achb0t.api
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.api.wrappers.ClientMode
+import com.p3achb0t.api.wrappers.Dialog
+import com.p3achb0t.api.wrappers.GroundItems
+import com.p3achb0t.api.wrappers.tabs.Equipment
+import com.p3achb0t.api.wrappers.tabs.Inventory
+import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.hook_interfaces.Cache
 import com.p3achb0t.hook_interfaces.Model
 import com.p3achb0t.hook_interfaces.Npc
@@ -11,13 +17,15 @@ import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
-import java.util.regex.Pattern
+import java.awt.Rectangle
 
-
+fun drawRect(g: Graphics, rect: Rectangle) {
+    g.drawRect(rect.x, rect.y, rect.width, rect.height)
+}
 fun debugPaint(): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
-            if (false) {
+            if (true) {
                 g.color = Color.white
                 g.drawString("Mouse x:${Main.mouseEvent?.x} y:${Main.mouseEvent?.y}", 50, 50)
                 g.drawString("clientData.gameCycle :${Main.clientData.getGameCycle()}", 50, 60)
@@ -32,8 +40,11 @@ fun debugPaint(): PaintListener {
                 )
                 g.drawString("OpenTab: ${Tabs.getOpenTab()?.name}", 50, 120)
                 g.drawString("Bank Status: ${Bank.isOpen()}", 50, 130)
+
                 try {
+                    g.drawString("Spell: ${Main.clientData.getSelectedSpellName()}", 50, 140)
                     g.drawString("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}", 50, 100)
+                    g.drawString("Mode: ${ClientMode.getMode().name}", 50, 150)
                 } catch (e: Exception) {
                 }
             }
@@ -55,7 +66,7 @@ fun debugPaint(): PaintListener {
                 var count = 0
                 var point = Point(200, 50)
                 players.iterator().forEach { _player ->
-                    if (_player != null && _player.getLevel() > 0 && _player.getComposite().getStaticModelID() > 0) {
+                    if (_player != null && _player.getLevel() > 0) {
 //                                print("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
 //                                print("Queue size: ${_player.getQueueSize()}")
 
@@ -115,7 +126,11 @@ fun debugPaint(): PaintListener {
                             )
                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
                             g.color = Color.GREEN
-                            g.drawString(it.getComposite().getName(), point.x, point.y)
+                            g.drawString(
+                                "${it.getComposite().getName()} ${it.getComposite().getNpcComposite_id()} ${it.getAnimation()}",
+                                point.x,
+                                point.y
+                            )
                         }
 
                         val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
@@ -253,9 +268,9 @@ fun debugPaint(): PaintListener {
                     g.color = Color.BLUE
                     g.drawRect(mX - 1, mY + yDiff, width, lineHeight)
                     var menuAction = Main.clientData.getMenuActions()[mCount - i]
-                    menuAction = Pattern.compile("<.+?>").matcher(menuAction).replaceAll("")
+                    menuAction = Utils.cleanColorText(menuAction)
                     var menuOption = Main.clientData.getMenuOptions()[mCount - i]
-                    menuOption = Pattern.compile("<.+?>").matcher(menuOption).replaceAll("")
+                    menuOption = Utils.cleanColorText(menuOption)
                     val action = "$menuAction $menuOption"
                     g.color = Color.GREEN
 
@@ -306,6 +321,13 @@ fun debugPaint(): PaintListener {
                 }
 
             }
+
+            // Paint continue
+            val dialog = Dialog.getDialogContinue()
+            if (dialog.widget != null) {
+                g.color = Color.ORANGE
+                drawRect(g, dialog.area)
+            }
         }
 
 
@@ -317,7 +339,7 @@ fun debugPaint(): PaintListener {
                 if (bucket != null) {
 //                    println(bucket.getWidgetID())
                     var model = bucket.getNext()
-                    while (model != null && model is Model && model.getId() > 0) {
+                    while (model != null && model is Model && model != bucket) {
                         modelList.add(model)
                         model = model.getNext()
                     }
@@ -371,6 +393,7 @@ fun debugPaint(): PaintListener {
                     var objectComposite = bucketItem.getNext()
                     while (objectComposite != null
                         && objectComposite is ObjectComposite
+                        && objectComposite != bucketItem
                     ) {
                         if (objectComposite.getId() > 0
                             && objectComposite.getId().toInt() == gameObjectId

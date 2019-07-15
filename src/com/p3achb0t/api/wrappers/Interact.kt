@@ -46,8 +46,8 @@ class Interact {
         }
 
         //TODO Check if action is in the menu, if not move off menuse and retry
-        suspend fun interact(point: Point, action: String): Boolean {
-            println("${point.x},${point.y}")
+        suspend fun interact(point: Point, action: String, retryCount: Int = 0): Boolean {
+            println("Action: $action ${point.x},${point.y}")
             if (point == Point(-1, -1)) {
                 return false
             }
@@ -70,8 +70,10 @@ class Interact {
                             break
                         }
                     }
+                    //Give up after 5 trys
+                    if (retryCount == 5) return false
                     //Reinteracte with menu
-                    interact(point, action)
+                    interact(point, action, retryCount + 1)
                 }
                 println("Clicking $action")
                 var res = Main.mouse.moveMouse(actionPoint, click = true)
@@ -82,7 +84,7 @@ class Interact {
                 while (Main.clientData.getMenuVisible()) {
                     delay((Math.random() * 50).toLong())
                     count += 1
-                    if (count == 10) {
+                    if (count == 5) {
                         val cancelPoint = Menu.getPointForInteraction(action)
                         res = Main.mouse.moveMouse(cancelPoint, click = true)
                         print("Failed, retrying")

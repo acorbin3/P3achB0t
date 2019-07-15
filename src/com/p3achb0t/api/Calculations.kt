@@ -1,5 +1,6 @@
 package com.p3achb0t.api
 
+import com.p3achb0t.CustomCanvas
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.Tile
@@ -64,15 +65,15 @@ class Calculations {
          * @return Point : Convert from tile to point on screen
          */
         fun worldToScreen(regionX: Int, regionY: Int, height: Int): Point {
-            var regionX = regionX
-            var regionY = regionY
-            if (regionX < 128 || regionY < 128 || regionX > 13056 || regionY > 13056) {
+            var x = regionX
+            var y = regionY
+            if (x < 128 || y < 128 || x > 13056 || y > 13056) {
                 return Point(-1, -1)
             }
-            var z = getTileHeight(clientData.getPlane(), regionX, regionY) - height
-            regionX -= clientData.getCameraX()
+            var z = getTileHeight(clientData.getPlane(), x, y) - height
+            x -= clientData.getCameraX()
             z -= clientData.getCameraZ()
-            regionY -= clientData.getCameraY()
+            y -= clientData.getCameraY()
 
             val yaw = clientData.getCameraYaw()
             val pitch = clientData.getCameraPitch()
@@ -82,19 +83,24 @@ class Calculations {
             val yaw_sin = SINE[yaw]
             val yaw_cos = COSINE[yaw]
 
-            var _angle = regionY * yaw_sin + regionX * yaw_cos shr 16
+            var _angle = y * yaw_sin + x * yaw_cos shr 16
 
-            regionY = regionY * yaw_cos - regionX * yaw_sin shr 16
-            regionX = _angle
-            _angle = z * pitch_cos - regionY * pitch_sin shr 16
-            regionY = z * pitch_sin + regionY * pitch_cos shr 16
+            y = y * yaw_cos - x * yaw_sin shr 16
+            x = _angle
+            _angle = z * pitch_cos - y * pitch_sin shr 16
+            y = z * pitch_sin + y * pitch_cos shr 16
+            z = _angle
 
 
-            return if (regionY >= 50) {
-                Point(258 + (regionX shl 9) / regionY, (_angle shl 9) / regionY + 170)
+            return if (y >= 50) {
+                val screenX = x * clientData.getZoomExact() / y + CustomCanvas.dimension.width / 2
+                val screenY = z * clientData.getZoomExact() / y + CustomCanvas.dimension.height / 2
+                Point(screenX, screenY)
             } else Point(-1, -1)
         }
 
+
+        //TODO - Recalculate GameScreen for resize mode
         fun isOnscreen(point: Point): Boolean {
             return GAMESCREEN.contains(point)
         }

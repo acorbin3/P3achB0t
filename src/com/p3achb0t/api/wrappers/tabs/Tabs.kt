@@ -1,7 +1,10 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.hook_interfaces.Widget
+import kotlinx.coroutines.delay
 
 class Tabs {
     // Section of widgetID IDs for tabs
@@ -34,7 +37,8 @@ class Tabs {
         private val BOTTOM_ROW = 31..37
 
         fun getOpenTab(): Tab_Types? {
-            var tab: Tab_Types? = Tab_Types.Logout
+            var tab: Tab_Types? =
+                Tab_Types.Logout
             try {
                 for (childID in TOP_ROW) {
                     val widget = Main.clientData.getWidgets()[PARENT_ID][childID]
@@ -57,10 +61,17 @@ class Tabs {
 
         suspend fun openTab(tab: Tab_Types) {
             try {
+                println("Opening Tab: ${tab.name}")
                 val widget = Main.clientData.getWidgets()[PARENT_ID][tab.id]
                 if (!widget.getHidden()) {
                     val interactRect = Widget.getDrawableRect(widget)
                     Interact.interact(interactRect)
+                    Utils.waitFor(2, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return getOpenTab() == tab
+                        }
+                    })
                 }
             } catch (e: Exception) {
             }

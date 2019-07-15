@@ -11,7 +11,7 @@ class Items {
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
-                    while (item != null && item.getId() > 0) {
+                    while (item != null && item != it) {
                         if (item is ItemNode) {
                             println("Found ItemNode ${item.getId()}.")
                             item.getIds().iterator().forEach {
@@ -34,7 +34,7 @@ class Items {
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
-                    while (item != null && item.getId() > 0) {
+                    while (item != null && item != it) {
                         if (item is ItemNode && item.getId().toInt() == nodeId) {
                             return Item(
                                 item.getIds()[index],
@@ -54,7 +54,7 @@ class Items {
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
-                    while (item != null && item.getId() > 0) {
+                    while (item != null && item != it) {
                         if (item is ItemNode) {
                             println("Found ItemNode ${item.getId()}.")
                             item.getIds().iterator().forEach {

@@ -15,7 +15,7 @@ fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Po
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
-            while (next != null && next.getId() > 0L) {
+            while (next != null && next != bucketItem) {
                 if (next.getId() == modelID) {
 
                     val model = next as Model
@@ -104,7 +104,7 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
-            while (next != null && next.getId() > 0L) {
+            while (next != null && next != bucketItem) {
                 if (next.getId() == modelID) {
 
                     val model = next as Model

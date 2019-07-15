@@ -6,13 +6,12 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.Inventory
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.api.wrappers.Player
+import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
@@ -92,7 +91,7 @@ fun main() {
 
 
     game.apply {
-        preferredSize = Dimension(765, 503)
+        preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
         val loader = RSLoader()
         game.setStub(loader)
     }
@@ -104,7 +103,7 @@ fun main() {
 
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
         jMenuBar = MenuBar()
-        size = Dimension(800, 600)
+        size = Dimension(850, 650)
         minimumSize = game.minimumSize
         setLocationRelativeTo(null)
         isVisible = true
@@ -114,6 +113,16 @@ fun main() {
         panel.add(game)
         pack()
     }
+    //Attempt to resize but didnt work
+//    jFrame.addComponentListener( object : ComponentAdapter(){
+//        override fun componentResized(e: ComponentEvent?) {
+//            println("REsizing to ${jFrame.size}")
+//            CustomCanvas.dimension = jFrame.size
+//            CustomCanvas.updateImageSize()
+//            super.componentResized(e)
+//        }
+//    })
+
 
     game.apply {
         init()
@@ -208,43 +217,45 @@ fun main() {
         // launch a new coroutine in background and continue
 
         while (true) {
-            if (false) {
-                try {
-                    val npcs = NPC.findNPCs(sortByDist = true)
-                    if (npcs.size > 0) {
-                        npcs.forEach {
+            //Wait till we are logged in
+            if (clientData.getGameState() == 30) {
+                if (false) {
+                    try {
+                        val npcs = NPC.findNPCs(sortByDist = true)
+                        if (npcs.size > 0) {
+                            npcs.forEach {
+                                if (!it.isOnScreen()) {
+                                    println("Turning to: ${it.npc.getComposite().getName()}")
+                                    Camera.turnTo(it)
+                                }
+                                it.interact("Cancel")
+                            }
+                        }
+                        val players = Player.findPlayers(true)
+                        players.forEach {
                             if (!it.isOnScreen()) {
-                                println("Turning to: ${it.npc.getComposite().getName()}")
+                                println("Turning to: ${it.player.getName()}")
                                 Camera.turnTo(it)
                             }
                             it.interact("Cancel")
                         }
+                    } catch (e: Exception) {
                     }
-                    val players = Player.findPlayers(true)
-                    players.forEach {
-                        if (!it.isOnScreen()) {
-                            println("Turning to: ${it.player.getName()}")
-                            Camera.turnTo(it)
+
+                    val items = Inventory.getAll()
+                    if (items.size > 0) {
+
+                        items.forEach {
+                            if (!Inventory.isOpen()) {
+                                Inventory.open()
+                            }
+                            it.interact("Cancel")
                         }
-                        it.interact("Cancel")
                     }
-                } catch (e: Exception) {
                 }
 
-                val items = Inventory.getAll()
-                if (items.size > 0) {
 
-                    items.forEach {
-                        if (!Inventory.isOpen()) {
-                            Inventory.open()
-                        }
-                        it.interact("Cancel")
-                    }
-                }
-            }
-
-
-            // Cycle between tabs
+                // Cycle between tabs
 //            Tabs.Tab_Types.values().iterator().forEach {
 //                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
 //            }
@@ -272,9 +283,9 @@ fun main() {
 //                    })
 //                }
 //            }
-            
 
-            //If bank not open, find a banker and open it
+
+                //If bank not open, find a banker and open it
 //            if(!Bank.isOpen()){
 //                Bank.open()
 //                //TODO -withdraw
@@ -293,8 +304,7 @@ fun main() {
 //            }
 
 
-
-            // Dont drop any items if there are still some on the ground
+                // Dont drop any items if there are still some on the ground
 
 //            val groundItems2 = GroundItems.getAllItems()
 //            var count = 0
@@ -337,14 +347,24 @@ fun main() {
 //            Prayer.activate(Prayer.Companion.PrayerKind.THICK_SKIN)
 //            delay(500)
 //            Prayer.disable(Prayer.Companion.PrayerKind.THICK_SKIN)
+//                Magic.cast(Magic.Companion.Spells.Wind_Strike)
+//                Inventory.open()
+                // Cast wind Strike on a chicken
+//                Magic.cast(Magic.Companion.Spells.Wind_Strike)
+//                val chickens = NPC.findNpc("Chicken")
+//                if(chickens.isNotEmpty()){
+//                    chickens[0].interact("Cast")
+//                }
 
+
+            }
             //Delay between 0-50 ms
             delay((Math.random() * 50).toLong())
         }
     }
 
 
-    LoggingIntoAccount()
+    //    LoggingIntoAccount()
     class MyApp : App(WidgetExplorer::class)
     launch<MyApp>()
 

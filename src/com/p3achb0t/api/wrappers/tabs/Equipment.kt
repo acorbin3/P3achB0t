@@ -1,6 +1,7 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -67,7 +68,10 @@ class Equipment {
 
         fun isEquipmentSlotEquipted(slot: Slot): Boolean {
             try {
-                val item = Items.getItemInfo(NODE_ID, slot.cacheIndex)
+                val item = Items.getItemInfo(
+                    NODE_ID,
+                    slot.cacheIndex
+                )
                 if (item.id > -1)
                     return true
             } catch (e: Exception) {
@@ -79,7 +83,10 @@ class Equipment {
         fun getItemAtSlot(slot: Slot): WidgetItem? {
             return try {
                 val widget = Widgets.find(WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
-                val item = Items.getItemInfo(NODE_ID, slot.cacheIndex)
+                val item = Items.getItemInfo(
+                    NODE_ID,
+                    slot.cacheIndex
+                )
                 WidgetItem(widget, id = item.id, stackSize = item.stackSize)
             } catch (e: Exception) {
                 null

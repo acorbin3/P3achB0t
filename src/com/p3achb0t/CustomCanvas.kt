@@ -4,6 +4,7 @@ import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Canvas
 import java.awt.Color
+import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.event.ActionListener
 import java.awt.image.BufferedImage
@@ -12,7 +13,17 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
 
     var counter = 0
 
-    val image = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
+    companion object {
+        var dimension: Dimension = Dimension(800, 600)
+        var image = BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_RGB)
+        fun updateImageSize() {
+            println("dim: ${dimension}")
+            image = BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_INT_RGB)
+
+        }
+    }
+
+
     @Transient
     var paintListener = ArrayList<PaintListener>()
 
@@ -20,27 +31,34 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
         this.paintListener.add(listener as PaintListener)
     }
 
+
     override fun getGraphics(): Graphics {
         val g = image.graphics
         g.color = Color.GREEN
 
         paintListener.forEach { it.onPaint(g) }
-//        paintListener?.onPaint(g)
-
-        g.color = Color.GREEN
-        if (Main.selectedWidget != null) {
-            if (Main.selectedWidget!!.getType() == 2) {
-                val retcs = Widget.getItemsRects(Main.selectedWidget!!)
-                retcs.iterator().forEach { rect ->
-                    g.drawRect(rect.x, rect.y, rect.width, rect.height)
-                }
-            } else {
-                val rect = Widget.getDrawableRect(Main.selectedWidget!!)
-                rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
-            }
-        }
-
         try {
+            g.color = Color.GREEN
+            if (Main.selectedWidget != null) {
+                if (Main.selectedWidget!!.getType() == 2) {
+                    val retcs = Widget.getItemsRects(Main.selectedWidget!!)
+                    retcs.iterator().forEach { rect ->
+                        g.drawRect(rect.x, rect.y, rect.width, rect.height)
+                    }
+                } else {
+                    val rect = Widget.getDrawableRect(Main.selectedWidget!!)
+                    rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
+                    try {
+                        g.color = Color.MAGENTA
+                        for (child in Main.selectedWidget?.getChildren()!!) {
+                            val rect2 = Widget.getDrawableRect(child)
+                            g.drawRect(rect2.x, rect2.y, rect2.width, rect2.height)
+                        }
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+
             super.getGraphics().drawImage(image, 0, 0, null)
         } catch (e: Exception) {
         }
@@ -62,7 +80,6 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
 
         if (oldCanvasHash != other.oldCanvasHash) return false
         if (counter != other.counter) return false
-        if (image != other.image) return false
 
         return true
     }

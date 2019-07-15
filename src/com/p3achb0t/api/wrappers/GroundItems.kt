@@ -28,7 +28,7 @@ class GroundItems {
                                     groundItemModels.getHashTable().getBuckets().iterator().forEach {
                                         if (it != null) {
                                             var next = it.getNext()
-                                            while (next.getId() > 0 && next is Model && next.getId().toInt() == gi.getItem_id()) {
+                                            while (next != null && next != it && next is Model && next.getId().toInt() == gi.getItem_id()) {
                                                 try {
                                                     val x = tiles[iP][iX][iY].getX() * 128 + 64
                                                     val y = tiles[iP][iX][iY].getY() * 128 + 64

@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Utils
 import java.awt.Point
 import java.awt.Rectangle
-import java.util.regex.Pattern
 import kotlin.random.Random
 
 class Menu {
@@ -28,7 +28,7 @@ class Menu {
                 var yDiff = baseHeight
                 for (i in 1..mCount) {
                     var input = Main.clientData.getMenuActions()[mCount - i]
-                    input = Pattern.compile("<.+?>").matcher(input).replaceAll("")
+                    input = Utils.cleanColorText(input)
 
                     if (input.toLowerCase().contains(action.toLowerCase())) {
                         val rec = Rectangle(mX - 1, mY + yDiff, width, lineHeight)
