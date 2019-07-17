@@ -140,7 +140,6 @@ class Calculations {
             }
         }
 
-        //TODO - Recalculate GameScreen for resize mode
         fun isOnscreen(point: Point): Boolean {
             return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.contains(point)
@@ -237,26 +236,8 @@ class Calculations {
             return 0
         }
 
-        class LineF(var s: Point, var e: Point)
-
-        fun findIntersection(l1: LineF, l2: LineF): Point {
-            val a1 = l1.e.y - l1.s.y
-            val b1 = l1.s.x - l1.e.x
-            val c1 = a1 * l1.s.x + b1 * l1.s.y
-
-            val a2 = l2.e.y - l2.s.y
-            val b2 = l2.s.x - l2.e.x
-            val c2 = a2 * l2.s.x + b2 * l2.s.y
-
-            val delta = a1 * b2 - a2 * b1
-            if (delta == 0) {
-                return Point(-1, -1)
-            }
-            // If lines are parallel, intersection point will contain infinite values
-            return Point((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta)
-        }
-
-        fun lineIntersectionWithRect(A: Point, B: Point, rect: Rectangle): Point {
+        @JvmStatic
+        private fun lineIntersectionWithRect(A: Point, B: Point, rect: Rectangle): Point {
             var validPoint = Point(-1, -1)
             val topLeft = Point(rect.x, rect.y)
             val topRight = Point(rect.width, rect.y)
@@ -266,19 +247,16 @@ class Calculations {
             val p2 = lineLineIntersection(A, B, topRight, bottomRight)
             val p3 = lineLineIntersection(A, B, bottomRight, bottomLeft)
             val p4 = lineLineIntersection(A, B, bottomLeft, topLeft)
-//            println("Main 2 points: (${A.x},${A.y}), (${B.x},${B.y}), ")
-//            println("4 main points: (${topLeft.x},${topLeft.y}),(${topRight.x},${topRight.y}),(${bottomLeft.x},${bottomLeft.y}),(${bottomRight.x},${bottomRight.y}),")
-//            println("possiblePoints: (${p1.x},${p1.y}), (${p2.x},${p2.y}), (${p3.x},${p3.y}), (${p4.x},${p4.y})")
 
             if (p1.x != -1 && p1.y != -1) validPoint = p1
             if (p2.x != -1 && p2.y != -1) validPoint = p2
             if (p3.x != -1 && p3.y != -1) validPoint = p3
             if (p4.x != -1 && p4.y != -1) validPoint = p4
-//            println("Valid point $validPoint")
             return validPoint
         }
 
-        fun lineLineIntersection(A: Point, B: Point, C: Point, D: Point): Point {
+        @JvmStatic
+        private fun lineLineIntersection(A: Point, B: Point, C: Point, D: Point): Point {
             // Line AB represented as a1x + b1y = c1
             val a1 = (B.y - A.y).toDouble()
             val b1 = (A.x - B.x).toDouble()
@@ -368,7 +346,6 @@ class Calculations {
             }
 
             // Segments, p1 -> p2, p2 -> p3, p3 -> p4, p4 -> p1
-
             val line1 = arrayListOf(p1, p2)
             val line2 = arrayListOf(p2, p3)
             val line3 = arrayListOf(p3, p4)
@@ -394,6 +371,7 @@ class Calculations {
             return poly
         }
 
+        // Finding the correct intersection between the 2 main points and the 4 lines of an off screen rectangle
         private fun addIntersectionWithOffscreen(mainPoint: Point, nextPoint: Point, poly: Polygon) {
             val validPoints = ArrayList<Point>()
             if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
@@ -401,9 +379,9 @@ class Calculations {
                 if (candidatePoint.x != -1 && candidatePoint.y != -1)
                     validPoints.add(candidatePoint)
             } else {
+                //Collected rectangles of components/widgets that are deemed offscreen
                 resizeableOffScreenAreas.forEach {
                     if (it.contains(mainPoint)) {
-                        println("\t(${mainPoint.x},${mainPoint.y}) in $it")
                         val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, it)
                         if (candidatePoint.x != -1 && candidatePoint.y != -1)
                             validPoints.add(candidatePoint)
