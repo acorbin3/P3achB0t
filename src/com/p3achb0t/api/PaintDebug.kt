@@ -43,8 +43,15 @@ fun debugPaint(): PaintListener {
 
                 try {
                     g.drawString("Spell: ${Main.clientData.getSelectedSpellName()}", 50, 140)
+
                     g.drawString("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}", 50, 100)
                     g.drawString("Mode: ${ClientMode.getMode().name}", 50, 150)
+                    g.drawString(
+                        "LocalPlayer Position: (${Main.clientData.getLocalPlayer().getLocalX()},${Main.clientData.getLocalPlayer().getLocalY()})",
+                        15,
+                        160
+                    )
+                    g.drawString("Zoom: ${Main.clientData.getZoomExact()}", 50, 170)
                 } catch (e: Exception) {
                 }
             }
@@ -162,6 +169,15 @@ fun debugPaint(): PaintListener {
                 }
                 val sceneData = Main.clientData.getObjectCompositeCache()
 
+                try {
+                    g.color = Color.red
+                    drawRect(g, Calculations.chatBoxDimensions)
+                    drawRect(g, Calculations.inventoryBarBottomDimensions)
+                    drawRect(g, Calculations.inventoryDimensions)
+                    drawRect(g, Calculations.inventoryBarTopDimensions)
+                    drawRect(g, Calculations.miniMapDimensions)
+                } catch (e: Exception) {
+                }
 
                 ///////Object paint//////////
                 if (false) {
@@ -195,24 +211,40 @@ fun debugPaint(): PaintListener {
                                                     val rawID = it.getId().shr(14).and(0x7fff)
 //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                                     val objectComposite = getObjectComposite(sceneData, id)
-                                                    g.drawString(objectComposite?.getName() + "($id)", point.x, point.y)
+                                                    val point2 =
+                                                        Calculations.worldToScreen(
+                                                            it.getX(),
+                                                            it.getY(),
+                                                            it.getRenderable().getModelHeight()
+                                                        )
+                                                    g.drawString(
+                                                        objectComposite?.getName() + "($id)",
+                                                        point2.x,
+                                                        point2.y
+                                                    )
                                                 }
 
                                                 //Printing out the model and the hull
-                                                val model = it.getRenderable()
-                                                if (model is Model) {
-                                                    val positionInfo =
-                                                        ObjectPositionInfo(it.getX(), it.getY(), it.getOrientation())
+                                                if (false) {
+                                                    val model = it.getRenderable()
+                                                    if (model is Model) {
+                                                        val positionInfo =
+                                                            ObjectPositionInfo(
+                                                                it.getX(),
+                                                                it.getY(),
+                                                                it.getOrientation()
+                                                            )
 
-                                                    val modelTriangles = getTrianglesFromModel(positionInfo, model)
-                                                    g.color = Color.RED
-                                                    modelTriangles.forEach {
-                                                        g.drawPolygon(it)
+                                                        val modelTriangles = getTrianglesFromModel(positionInfo, model)
+                                                        g.color = Color.RED
+                                                        modelTriangles.forEach {
+                                                            g.drawPolygon(it)
+                                                        }
+                                                        val hull = getConvexHullFromModel(positionInfo, model)
+                                                        g.color = Color.CYAN
+                                                        g.drawPolygon(hull)
+
                                                     }
-                                                    val hull = getConvexHullFromModel(positionInfo, model)
-                                                    g.color = Color.CYAN
-                                                    g.drawPolygon(hull)
-
                                                 }
                                             }
                                         }

@@ -2,53 +2,86 @@ package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 
 class Tabs {
     // Section of widgetID IDs for tabs
-    enum class Tab_Types(val id: Int) {
-        ClanChat(31),
-        AccountManagement(32),
-        FriendsList(33),
+    enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
+        None(0),
+        ClanChat(31, 35),
+        AccountManagement(32, 36),
+        FriendsList(33, 37),
         Logout(34),
-        Options(35),
-        Emotes(36),
-        Music(37),
-        Combat(48),
-        Skills(49),
-        QuestList(50),
-        Inventory(51),
-        Equiptment(52),
-        Prayer(53),
-        Magic(54);
+        Options(35, 38),
+        Emotes(36, 39),
+        Music(37, 40),
+        Combat(48, 50),
+        Skills(49, 51),
+        QuestList(50, 52),
+        Inventory(51, 53),
+        Equiptment(52, 54),
+        Prayer(53, 55),
+        Magic(54, 56);
 
         companion object {
-            fun valueOf(id: Int): Tab_Types? = values().find { it.id == id }
+            fun valueOf(id: Int): Tab_Types? = values().find {
+                if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode)
+                    it.id == id
+                else
+                    it.resizeID == id
+            }
         }
     }
 
     companion object {
         const val PARENT_ID = 548
-
-
+        const val RESIZE_PARENT_ID = 164
         private val TOP_ROW = 48..54
         private val BOTTOM_ROW = 31..37
 
+        private val RESIZE_TOP_ROW = 50..56
+        private val RESIZE_BOTTOM_ROW = 35..40
+
+
+        // This function
+        suspend fun minimizeTab() {
+            val tab = getOpenTab()
+            // Dont need to minimize a tab when already none are open
+            if (tab != null && tab == Tab_Types.None) return
+
+            val parentID =
+                if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+            val childID =
+                if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
+            if (childID != null) {
+                val widget = Main.clientData.getWidgets()[parentID][childID]
+                WidgetItem(widget).click()
+            }
+        }
+
         fun getOpenTab(): Tab_Types? {
             var tab: Tab_Types? =
-                Tab_Types.Logout
+                Tab_Types.None
             try {
-                for (childID in TOP_ROW) {
-                    val widget = Main.clientData.getWidgets()[PARENT_ID][childID]
+                val top =
+                    if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) TOP_ROW else RESIZE_TOP_ROW
+                val bottom =
+                    if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) BOTTOM_ROW else RESIZE_BOTTOM_ROW
+                val parentID =
+                    if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+                for (childID in top) {
+                    val widget = Main.clientData.getWidgets()[parentID][childID]
                     if (widget.getTextureId() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
 
                 }
-                for (childID in BOTTOM_ROW) {
-                    val widget = Main.clientData.getWidgets()[PARENT_ID][childID]
+                for (childID in bottom) {
+                    val widget = Main.clientData.getWidgets()[parentID][childID]
                     if (widget.getTextureId() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
@@ -62,7 +95,11 @@ class Tabs {
         suspend fun openTab(tab: Tab_Types) {
             try {
                 println("Opening Tab: ${tab.name}")
-                val widget = Main.clientData.getWidgets()[PARENT_ID][tab.id]
+                val parentID =
+                    if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+                val childID =
+                    if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
+                val widget = Main.clientData.getWidgets()[parentID][childID]
                 if (!widget.getHidden()) {
                     val interactRect = Widget.getDrawableRect(widget)
                     Interact.interact(interactRect)

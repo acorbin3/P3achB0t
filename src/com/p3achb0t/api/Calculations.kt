@@ -3,12 +3,19 @@ package com.p3achb0t.api
 import com.p3achb0t.CustomCanvas
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
+import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.tabs.Tabs
+import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
 import kotlin.experimental.and
+import kotlin.math.max
+import kotlin.math.min
 
 
 class Calculations {
@@ -22,55 +29,55 @@ class Calculations {
         var SINE = IntArray(2048)
         var COSINE = IntArray(2048)
         val GAMESCREEN = Rectangle(4, 4, 512, 334)
-        val GAMESCREEN_TOP_LEFT = Point(GAMESCREEN.x, GAMESCREEN.y)
-        val GAMESCREEN_TOP_RIGHT = Point(GAMESCREEN.width, GAMESCREEN.y)
-        val GAMESCREEN_BOTTOM_LEFT = Point(GAMESCREEN.x, GAMESCREEN.height)
-        val GAMESCREEN_BOTTOM_RIGHT = Point(GAMESCREEN.width, GAMESCREEN.height)
-        val gameScreenPoints = ArrayList<Point>()
-        val gameScreenLines = ArrayList<LineF>()
+        var chatBoxDimensions = Rectangle()
+        var miniMapDimensions = Rectangle()
+        var inventoryDimensions = Rectangle()
+        var inventoryBarTopDimensions = Rectangle()
+        var inventoryBarBottomDimensions = Rectangle()
+        val resizeableOffScreenAreas = ArrayList<Rectangle>()
+        var screenInit = false
 
         init {
             for (i in 0 until SINE.size) {
                 SINE[i] = (65536.0 * Math.sin(i.toDouble() * 0.0030679615)).toInt()
                 COSINE[i] = (65536.0 * Math.cos(i.toDouble() * 0.0030679615)).toInt()
             }
-            gameScreenPoints.add(GAMESCREEN_TOP_LEFT)
-            gameScreenPoints.add(GAMESCREEN_TOP_RIGHT)
-            gameScreenPoints.add(GAMESCREEN_BOTTOM_RIGHT)
-            gameScreenPoints.add(GAMESCREEN_BOTTOM_LEFT)
-            gameScreenLines.add(LineF(GAMESCREEN_TOP_LEFT, GAMESCREEN_TOP_RIGHT))
-            gameScreenLines.add(LineF(GAMESCREEN_TOP_RIGHT, GAMESCREEN_BOTTOM_RIGHT))
-            gameScreenLines.add(LineF(GAMESCREEN_BOTTOM_RIGHT, GAMESCREEN_BOTTOM_LEFT))
-            gameScreenLines.add(LineF(GAMESCREEN_BOTTOM_LEFT, GAMESCREEN_TOP_LEFT))
         }
 
         fun getTileHeight(plane: Int, x: Int, y: Int): Int {
-            val xx = x shr 7
-            val yy = y shr 7
-            if (xx < 0 || yy < 0 || xx > 103 || yy > 103) {
+            val x1 = x shr 7
+            val y1 = y shr 7
+            val x2 = x and 127
+            val y2 = y and 127
+            if (x1 < 0 || y1 < 0 || x1 > 103 || y1 > 103) {
                 return 0
             }
-            val tileHeights = clientData.getTileHeights()
-            val aa = tileHeights[plane][xx][yy] * (128 - (x and 0x7F)) + tileHeights[plane][xx + 1][yy] * (x and 0x7F) shr 7
 
-            val ab =
-                tileHeights[plane][xx][yy + 1] * (128 - (x and 0x7F)) + tileHeights[plane][xx + 1][yy + 1] * (x and 0x7F) shr 7
-            return aa * (128 - (y and 0x7F)) + ab * (y and 0x7F) shr 7
+            var zidx = plane
+            if (zidx < 3 && (2 and clientData.getTileSettings()[1][x1][y1].toInt()) == 2) {
+                zidx++
+            }
+
+            val ground = clientData.getTileHeights()
+            val i = ground[zidx][x1 + 1][y1] * x2 + ground[zidx][x1][y1] * (128 - x2) shr 7
+            val j = ground[zidx][x1 + 1][y1 + 1] * x2 + ground[zidx][x1][y1 + 1] * (128 - x2) shr 7
+
+            return j * y2 + (128 - y2) * i shr 7
         }
 
         /**
          * @param regionX
          * @param regionY
-         * @param height
+         * @param modelHeight
          * @return Point : Convert from tile to point on screen
          */
-        fun worldToScreen(regionX: Int, regionY: Int, height: Int): Point {
+        fun worldToScreen(regionX: Int, regionY: Int, modelHeight: Int): Point {
             var x = regionX
             var y = regionY
             if (x < 128 || y < 128 || x > 13056 || y > 13056) {
                 return Point(-1, -1)
             }
-            var z = getTileHeight(clientData.getPlane(), x, y) - height
+            var z = getTileHeight(clientData.getPlane(), x, y) - modelHeight
             x -= clientData.getCameraX()
             z -= clientData.getCameraZ()
             y -= clientData.getCameraY()
@@ -78,17 +85,18 @@ class Calculations {
             val yaw = clientData.getCameraYaw()
             val pitch = clientData.getCameraPitch()
 
-            val pitch_sin = SINE[pitch]
-            val pitch_cos = COSINE[pitch]
-            val yaw_sin = SINE[yaw]
-            val yaw_cos = COSINE[yaw]
+            val sinCurveY = SINE[pitch]
+            val cosCurveY = COSINE[pitch]
+            val sinCurveX = SINE[yaw]
+            val cosCurveX = COSINE[yaw]
 
-            var _angle = y * yaw_sin + x * yaw_cos shr 16
+            var _angle = (y * sinCurveX + x * cosCurveX) shr 16
 
-            y = y * yaw_cos - x * yaw_sin shr 16
+            y = y * cosCurveX - x * sinCurveX shr 16
             x = _angle
-            _angle = z * pitch_cos - y * pitch_sin shr 16
-            y = z * pitch_sin + y * pitch_cos shr 16
+
+            _angle = z * cosCurveY - y * sinCurveY shr 16
+            y = z * sinCurveY + y * cosCurveY shr 16
             z = _angle
 
 
@@ -99,22 +107,102 @@ class Calculations {
             } else Point(-1, -1)
         }
 
+        fun initScreenWidgetDimentions() {
+            // main screen 122,0
+            //Mini map 164, 17
+            val miniMapWidget = WidgetItem(
+                Widgets.find(
+                    WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
+                    WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
+                )
+            )
+            miniMapDimensions = miniMapWidget.area
+
+
+            //inventory bar 164,47(topbar), bottom 164,33
+            val inventoryTop = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47))
+            inventoryBarTopDimensions = inventoryTop.area
+            val inventoryBottom = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33))
+            inventoryBarBottomDimensions = inventoryBottom.area
+            //chatbox 162,0
+            val chatbox = WidgetItem(Widgets.find(WidgetID.CHATBOX_GROUP_ID, 0))
+            chatBoxDimensions = chatbox.area
+            val tabWidget = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65))
+            inventoryDimensions = tabWidget.area
+            // Only set to true if login screen is not visible
+            val login = Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85)
+            if (login == null) {
+                screenInit = true
+                resizeableOffScreenAreas.add(chatBoxDimensions)
+                resizeableOffScreenAreas.add(miniMapDimensions)
+                resizeableOffScreenAreas.add(inventoryBarBottomDimensions)
+                resizeableOffScreenAreas.add(inventoryBarTopDimensions)
+            }
+        }
 
         //TODO - Recalculate GameScreen for resize mode
         fun isOnscreen(point: Point): Boolean {
-            return GAMESCREEN.contains(point)
+            return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
+                GAMESCREEN.contains(point)
+            } else {
+                if (!screenInit) initScreenWidgetDimentions()
+
+                var isBehindInventory = false
+                // Inventory if visible area:164,65
+                if (Tabs.getOpenTab() != Tabs.Tab_Types.None) {
+                    isBehindInventory = inventoryDimensions.contains(point)
+                }
+
+                !miniMapDimensions.contains(point)
+                        && !inventoryBarTopDimensions.contains(point)
+                        && !inventoryBarBottomDimensions.contains(point)
+                        && !chatBoxDimensions.contains(point)
+                        && !isBehindInventory
+            }
         }
 
         fun isOnscreen(x: Int, y: Int): Boolean {
-            return GAMESCREEN.contains(Point(x, y))
+            return isOnscreen(Point(x, y))
         }
 
         fun isOnscreen(rectangle: Rectangle): Boolean {
-            return GAMESCREEN.intersects(rectangle)
+            return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
+                GAMESCREEN.intersects(rectangle)
+            } else {
+                if (!screenInit) initScreenWidgetDimentions()
+
+
+                var isBehindInventory = false
+                // Inventory if visible area:164,65
+                if (Tabs.getOpenTab() != Tabs.Tab_Types.None) {
+                    isBehindInventory = inventoryDimensions.intersects(rectangle)
+                }
+
+                !miniMapDimensions.intersects(rectangle)
+                        && !inventoryBarTopDimensions.intersects(rectangle)
+                        && !inventoryBarBottomDimensions.intersects(rectangle)
+                        && !chatBoxDimensions.intersects(rectangle)
+                        && !isBehindInventory
+            }
         }
 
 //        fun worldToMap(regionX: Int, regionY: Int): Point {
-//            clientData.getMap
+////            clientData.getMap
+//            var x = regionX
+//            var y = regionY
+//            val local = Main.clientData.getLocalPlayer()
+//            x -= Main.clientData.getBaseX()
+//            y -= Main.clientData.getBaseY()
+//
+//            if (x > 104 || x < 0 || y > 104 || y < 0) {
+//                return Point(-1, -1)
+//            }
+//            val regionTileX = local.getLocalX() - Main.clientData.getBaseX()
+//            val regionTileY = local.getLocalY() - Main.clientData.getBaseY()
+//
+//            val cX = (x * 4 + 2 - (regionTileX shl 9) / 128f) as Int
+//            val cY = (y * 4 + 2 - (regionTileY shl 9) / 128f) as Int
+//
 //            val mapScale = Reflection.value("Client#getMapScale()", null) as Int
 //            val mapOffset = Reflection.value("Client#getMapOffset()", null) as Int
 //            val angle = clientData.getMapAngle() + mapScale and 0x7FF
@@ -168,8 +256,71 @@ class Calculations {
             return Point((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta)
         }
 
+        fun lineIntersectionWithRect(A: Point, B: Point, rect: Rectangle): Point {
+            var validPoint = Point(-1, -1)
+            val topLeft = Point(rect.x, rect.y)
+            val topRight = Point(rect.width, rect.y)
+            val bottomLeft = Point(rect.x, rect.height)
+            val bottomRight = Point(rect.width, rect.height)
+            val p1 = lineLineIntersection(A, B, topLeft, topRight)
+            val p2 = lineLineIntersection(A, B, topRight, bottomRight)
+            val p3 = lineLineIntersection(A, B, bottomRight, bottomLeft)
+            val p4 = lineLineIntersection(A, B, bottomLeft, topLeft)
+//            println("Main 2 points: (${A.x},${A.y}), (${B.x},${B.y}), ")
+//            println("4 main points: (${topLeft.x},${topLeft.y}),(${topRight.x},${topRight.y}),(${bottomLeft.x},${bottomLeft.y}),(${bottomRight.x},${bottomRight.y}),")
+//            println("possiblePoints: (${p1.x},${p1.y}), (${p2.x},${p2.y}), (${p3.x},${p3.y}), (${p4.x},${p4.y})")
+
+            if (p1.x != -1 && p1.y != -1) validPoint = p1
+            if (p2.x != -1 && p2.y != -1) validPoint = p2
+            if (p3.x != -1 && p3.y != -1) validPoint = p3
+            if (p4.x != -1 && p4.y != -1) validPoint = p4
+//            println("Valid point $validPoint")
+            return validPoint
+        }
+
+        fun lineLineIntersection(A: Point, B: Point, C: Point, D: Point): Point {
+            // Line AB represented as a1x + b1y = c1
+            val a1 = (B.y - A.y).toDouble()
+            val b1 = (A.x - B.x).toDouble()
+            val c1 = a1 * A.x + b1 * A.y
+
+            // Line CD represented as a2x + b2y = c2
+            val a2 = (D.y - C.y).toDouble()
+            val b2 = (C.x - D.x).toDouble()
+            val c2 = a2 * C.x + b2 * C.y
+
+            val determinant = a1 * b2 - a2 * b1
+            // The lines are parallel. This is simplified
+            // by returning a pair of FLT_MAX
+            if (determinant == 0.0) return Point(-1, -1) else {
+                val x = ((b2 * c1 - b1 * c2) / determinant).toInt()
+                val y = ((a1 * c2 - a2 * c1) / determinant).toInt()
+
+                // Points are all on a line with a slope BUT they could be outside the line segment
+                //Cases would be, x cant be greater than max x on both points or less than the min on both points. Same goes for y
+                val l1MaxX = max(A.x, B.x)
+                val l1MinX = min(A.x, B.x)
+                val l1MaxY = max(A.y, B.y)
+                val l1MinY = min(A.y, B.y)
+                val l2MaxX = max(A.x, B.x)
+                val l2MinX = min(A.x, B.x)
+                val l2MaxY = max(A.y, B.y)
+                val l2MinY = min(A.y, B.y)
+                return if (x in (l1MinX..l1MaxX)
+                    && x in (l2MinX..l2MaxX)
+                    && y in (l1MinY..l1MaxY)
+                    && y in (l2MinY..l2MaxY)
+                ) {
+                    Point(x, y)
+                } else {
+                    Point(-1, -1)
+                }
+
+            }
+        }
+
         /**
-         * Returns a polygon representing an area. TODO- Make it so the points are all on the screen
+         * Returns a polygon representing an area.
          *
          * @param client the game client
          * @param localLocation the center location of the AoE
@@ -211,18 +362,62 @@ class Calculations {
             val p3 = worldToScreen(neX, neY, neHeight)
             val p4 = worldToScreen(swX, neY, seHeight)
 
-            //All off screen
-            if (!isOnscreen(p1) && !isOnscreen(p2) && !isOnscreen(p3) && !isOnscreen(p4)) {
+            //Return empty poloy if 1 is -1,-1
+            if (p1 == Point(-1, -1) || p2 == Point(-1, -1) || p3 == Point(-1, -1) || p4 == Point(-1, -1)) {
                 return Polygon()
             }
 
+            // Segments, p1 -> p2, p2 -> p3, p3 -> p4, p4 -> p1
+
+            val line1 = arrayListOf(p1, p2)
+            val line2 = arrayListOf(p2, p3)
+            val line3 = arrayListOf(p3, p4)
+            val line4 = arrayListOf(p4, p1)
+            val lines = arrayListOf(line1, line2, line3, line4)
+
             val poly = Polygon()
-            poly.addPoint(p1.getX().toInt(), p1.getY().toInt())
-            poly.addPoint(p2.getX().toInt(), p2.getY().toInt())
-            poly.addPoint(p3.getX().toInt(), p3.getY().toInt())
-            poly.addPoint(p4.getX().toInt(), p4.getY().toInt())
+            lines.forEach { line ->
+                val mainPoint = line[0]
+                val nextPoint = line[1]
+                if (isOnscreen(mainPoint)) {
+                    poly.addPoint(mainPoint.getX().toInt(), mainPoint.getY().toInt())
+                } else {
+                    addIntersectionWithOffscreen(mainPoint, nextPoint, poly)
+                }
+
+                // Also need to check if next point is off screen then we need to add that intersection
+                if (!isOnscreen(nextPoint)) {
+                    addIntersectionWithOffscreen(nextPoint, mainPoint, poly)
+                }
+            }
 
             return poly
+        }
+
+        private fun addIntersectionWithOffscreen(mainPoint: Point, nextPoint: Point, poly: Polygon) {
+            val validPoints = ArrayList<Point>()
+            if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
+                val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, GAMESCREEN)
+                if (candidatePoint.x != -1 && candidatePoint.y != -1)
+                    validPoints.add(candidatePoint)
+            } else {
+                resizeableOffScreenAreas.forEach {
+                    if (it.contains(mainPoint)) {
+                        println("\t(${mainPoint.x},${mainPoint.y}) in $it")
+                        val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, it)
+                        if (candidatePoint.x != -1 && candidatePoint.y != -1)
+                            validPoints.add(candidatePoint)
+                    }
+                }
+                if (Tabs.getOpenTab() != Tabs.Tab_Types.None && inventoryDimensions.contains(mainPoint)) {
+                    val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, inventoryDimensions)
+                    if (candidatePoint.x != -1 && candidatePoint.y != -1)
+                        validPoints.add(candidatePoint)
+                }
+            }
+            validPoints.forEach {
+                poly.addPoint(it.getX().toInt(), it.getY().toInt())
+            }
         }
 
         fun distanceBetween(a: Tile, b: Tile): Int {
