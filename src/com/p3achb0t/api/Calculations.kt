@@ -14,9 +14,8 @@ import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
 import java.awt.geom.Area
+import java.awt.geom.PathIterator
 import kotlin.experimental.and
-import kotlin.math.max
-import kotlin.math.min
 
 
 class Calculations {
@@ -237,80 +236,6 @@ class Calculations {
             return 0
         }
 
-        @JvmStatic
-        private fun lineIntersectionWithRect(A: Point, B: Point, rect: Rectangle): Point {
-            var validPoint = Point(-1, -1)
-            val topLeft = Point(rect.x, rect.y)
-            val topRight = Point(rect.width, rect.y)
-            val bottomLeft = Point(rect.x, rect.height)
-            val bottomRight = Point(rect.width, rect.height)
-            val p1 = lineLineIntersection(A, B, topLeft, topRight)
-            val p2 = lineLineIntersection(A, B, topRight, bottomRight)
-            val p3 = lineLineIntersection(A, B, bottomRight, bottomLeft)
-            val p4 = lineLineIntersection(A, B, bottomLeft, topLeft)
-
-            if (p1.x != -1 && p1.y != -1) validPoint = p1
-            if (p2.x != -1 && p2.y != -1) validPoint = p2
-            if (p3.x != -1 && p3.y != -1) validPoint = p3
-            if (p4.x != -1 && p4.y != -1) validPoint = p4
-            return validPoint
-        }
-
-        @JvmStatic
-        private fun lineLineIntersection(A: Point, B: Point, C: Point, D: Point): Point {
-            // Line AB represented as a1x + b1y = c1
-            val a1 = (B.y - A.y).toDouble()
-            val b1 = (A.x - B.x).toDouble()
-            val c1 = a1 * A.x + b1 * A.y
-
-            // Line CD represented as a2x + b2y = c2
-            val a2 = (D.y - C.y).toDouble()
-            val b2 = (C.x - D.x).toDouble()
-            val c2 = a2 * C.x + b2 * C.y
-
-            val determinant = a1 * b2 - a2 * b1
-            // The lines are parallel. This is simplified
-            // by returning a pair of FLT_MAX
-            if (determinant == 0.0) return Point(-1, -1) else {
-                val x = ((b2 * c1 - b1 * c2) / determinant).toInt()
-                val y = ((a1 * c2 - a2 * c1) / determinant).toInt()
-
-                // Points are all on a line with a slope BUT they could be outside the line segment
-                //Cases would be, x cant be greater than max x on both points or less than the min on both points. Same goes for y
-                val l1MaxX = max(A.x, B.x)
-                val l1MinX = min(A.x, B.x)
-                val l1MaxY = max(A.y, B.y)
-                val l1MinY = min(A.y, B.y)
-                val l2MaxX = max(A.x, B.x)
-                val l2MinX = min(A.x, B.x)
-                val l2MaxY = max(A.y, B.y)
-                val l2MinY = min(A.y, B.y)
-                return if (x in (l1MinX..l1MaxX)
-                    && x in (l2MinX..l2MaxX)
-                    && y in (l1MinY..l1MaxY)
-                    && y in (l2MinY..l2MaxY)
-                ) {
-                    Point(x, y)
-                } else {
-                    Point(-1, -1)
-                }
-
-            }
-        }
-
-        fun rectToPolygon(rect: Rectangle): Polygon{
-
-            val xPoints = intArrayOf(rect.x, rect.x + rect.width, rect.x + rect.width, rect.x)
-            val yPoints = intArrayOf(rect.y, rect.y, rect.y + rect.height, rect.y + rect.height)
-            return Polygon(xPoints, yPoints, 4)
-        }
-
-//        static Polygon RectangleToPolygon(Rectangle rect) {
-//            int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x}:
-//            int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
-//            return new Polygon(xpoints, ypoints, 4);
-//        }
-
         /**
          * Returns a polygon representing an area.
          *
@@ -364,68 +289,32 @@ class Calculations {
             poly.addPoint(p2.x,p2.y)
             poly.addPoint(p3.x,p3.y)
             poly.addPoint(p4.x,p4.y)
+
+            //Covert polygon to an Area and each rectangle to an Area. With the area class you can use subtract
+            // as an easy way to computer the masked section.
+            val polyArea = Area(poly)
             resizeableOffScreenAreas.forEach {
-                val rectPoly = rectToPolygon(it)
-                poly.contains(it)
-                val area = Area(poly)
-                area.subtract(Area(rectPoly))
-
-
+                if (poly.intersects(it))
+                    polyArea.subtract(Area(it))
+            }
+            if (Tabs.getOpenTab() != Tabs.Tab_Types.None && poly.intersects(inventoryDimensions)) {
+                polyArea.subtract(Area(inventoryDimensions))
+            }
+            // Convert back to polygon using the path iterator.
+            val convertedPoly = Polygon()
+            val floats = floatArrayOf(0F, 0F, 0F, 0F, 0F, 0F)
+            val iterator = polyArea.getPathIterator(null)
+            while (!iterator.isDone) {
+                val type = iterator.currentSegment(floats)
+                val x = floats[0].toInt()
+                val y = floats[1].toInt()
+                if (type != PathIterator.SEG_CLOSE) {
+                    convertedPoly.addPoint(x, y)
+                }
+                iterator.next()
             }
 
-
-
-
-            // Segments, p1 -> p2, p2 -> p3, p3 -> p4, p4 -> p1
-            val line1 = arrayListOf(p1, p2)
-            val line2 = arrayListOf(p2, p3)
-            val line3 = arrayListOf(p3, p4)
-            val line4 = arrayListOf(p4, p1)
-            val lines = arrayListOf(line1, line2, line3, line4)
-
-            lines.forEach { line ->
-                val mainPoint = line[0]
-                val nextPoint = line[1]
-                if (isOnscreen(mainPoint)) {
-                    poly.addPoint(mainPoint.getX().toInt(), mainPoint.getY().toInt())
-                } else {
-                    addIntersectionWithOffscreen(mainPoint, nextPoint, poly)
-                }
-
-                // Also need to check if next point is off screen then we need to add that intersection
-                if (!isOnscreen(nextPoint)) {
-                    addIntersectionWithOffscreen(nextPoint, mainPoint, poly)
-                }
-            }
-
-            return poly
-        }
-
-        // Finding the correct intersection between the 2 main points and the 4 lines of an off screen rectangle
-        private fun addIntersectionWithOffscreen(mainPoint: Point, nextPoint: Point, poly: Polygon) {
-            val validPoints = ArrayList<Point>()
-            if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
-                val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, GAMESCREEN)
-                if (candidatePoint.x != -1 && candidatePoint.y != -1)
-                    validPoints.add(candidatePoint)
-            } else {
-                //Collected rectangles of components/widgets that are deemed offscreen
-                resizeableOffScreenAreas.forEach {
-                    if (it.contains(mainPoint)) {
-                        val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, it)
-                        if (candidatePoint.x != -1 && candidatePoint.y != -1)
-                            validPoints.add(candidatePoint)
-                    }
-                }
-                if (Tabs.getOpenTab() != Tabs.Tab_Types.None && inventoryDimensions.contains(mainPoint)) {
-                    val candidatePoint = lineIntersectionWithRect(mainPoint, nextPoint, inventoryDimensions)
-                    if (candidatePoint.x != -1 && candidatePoint.y != -1)
-                        validPoints.add(candidatePoint)
-                }
-            }
-            validPoints.forEach {
-                poly.addPoint(it.getX().toInt(), it.getY().toInt())
-            }
+            return convertedPoly
         }
 
         fun distanceBetween(a: Tile, b: Tile): Int {
