@@ -13,6 +13,7 @@ import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
+import java.awt.geom.Area
 import kotlin.experimental.and
 import kotlin.math.max
 import kotlin.math.min
@@ -297,6 +298,19 @@ class Calculations {
             }
         }
 
+        fun rectToPolygon(rect: Rectangle): Polygon{
+
+            val xPoints = intArrayOf(rect.x, rect.x + rect.width, rect.x + rect.width, rect.x)
+            val yPoints = intArrayOf(rect.y, rect.y, rect.y + rect.height, rect.y + rect.height)
+            return Polygon(xPoints, yPoints, 4)
+        }
+
+//        static Polygon RectangleToPolygon(Rectangle rect) {
+//            int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x}:
+//            int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
+//            return new Polygon(xpoints, ypoints, 4);
+//        }
+
         /**
          * Returns a polygon representing an area.
          *
@@ -345,6 +359,23 @@ class Calculations {
                 return Polygon()
             }
 
+            val poly = Polygon()
+            poly.addPoint(p1.x,p1.y)
+            poly.addPoint(p2.x,p2.y)
+            poly.addPoint(p3.x,p3.y)
+            poly.addPoint(p4.x,p4.y)
+            resizeableOffScreenAreas.forEach {
+                val rectPoly = rectToPolygon(it)
+                poly.contains(it)
+                val area = Area(poly)
+                area.subtract(Area(rectPoly))
+
+
+            }
+
+
+
+
             // Segments, p1 -> p2, p2 -> p3, p3 -> p4, p4 -> p1
             val line1 = arrayListOf(p1, p2)
             val line2 = arrayListOf(p2, p3)
@@ -352,7 +383,6 @@ class Calculations {
             val line4 = arrayListOf(p4, p1)
             val lines = arrayListOf(line1, line2, line3, line4)
 
-            val poly = Polygon()
             lines.forEach { line ->
                 val mainPoint = line[0]
                 val nextPoint = line[1]
