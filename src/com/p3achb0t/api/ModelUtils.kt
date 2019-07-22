@@ -69,30 +69,32 @@ fun getTrianglesFromModel(
 
 
     for (i in 0 until model.getIndicesLength()) {
-        val one = Calculations.worldToScreen(
-            locX + xPoints[indiciesX[i]],
-            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-        )
-        val two = Calculations.worldToScreen(
-            locX + xPoints[indiciesY[i]],
-            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-        )
-        val three = Calculations.worldToScreen(
-            locX + xPoints[indiciesZ[i]],
-            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-        )
-        if (one.x >= 0 && two.x >= 0 && three.x >= 0
-            && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
-                three
+        if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
+            val one = Calculations.worldToScreen(
+                locX + xPoints[indiciesX[i]],
+                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
             )
-        ) {
-            polygonList.add(
-                Polygon(
-                    intArrayOf(one.x, two.x, three.x),
-                    intArrayOf(one.y, two.y, three.y),
-                    3
+            val two = Calculations.worldToScreen(
+                locX + xPoints[indiciesY[i]],
+                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+            )
+            val three = Calculations.worldToScreen(
+                locX + xPoints[indiciesZ[i]],
+                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+            )
+            if (one.x >= 0 && two.x >= 0 && three.x >= 0
+                && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
+                    three
                 )
-            )
+            ) {
+                polygonList.add(
+                    Polygon(
+                        intArrayOf(one.x, two.x, three.x),
+                        intArrayOf(one.y, two.y, three.y),
+                        3
+                    )
+                )
+            }
         }
 
     }
@@ -159,23 +161,25 @@ fun getConvexHullFromModel(
 
 
     for (i in 0 until model.getIndicesLength()) {
-        val one = Calculations.worldToScreen(
-            locX + xPoints[indiciesX[i]],
-            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-        )
-        if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
+        if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
+            val one = Calculations.worldToScreen(
+                locX + xPoints[indiciesX[i]],
+                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+            )
+            if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
 
-        val two = Calculations.worldToScreen(
-            locX + xPoints[indiciesY[i]],
-            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-        )
-        if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
+            val two = Calculations.worldToScreen(
+                locX + xPoints[indiciesY[i]],
+                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+            )
+            if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
 
-        val three = Calculations.worldToScreen(
-            locX + xPoints[indiciesZ[i]],
-            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-        )
-        if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+            val three = Calculations.worldToScreen(
+                locX + xPoints[indiciesZ[i]],
+                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+            )
+            if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+        }
     }
 
     val points = calculateConvexHull(pointList)

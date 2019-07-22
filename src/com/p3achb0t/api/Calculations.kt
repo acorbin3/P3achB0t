@@ -1,15 +1,18 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.CustomCanvas
+import com.p3achb0t.Main
 import com.p3achb0t.Main.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
+import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.hook_interfaces.Widget
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
@@ -185,38 +188,38 @@ class Calculations {
             }
         }
 
-//        fun worldToMap(regionX: Int, regionY: Int): Point {
-////            clientData.getMap
-//            var x = regionX
-//            var y = regionY
-//            val local = Main.clientData.getLocalPlayer()
-//            x -= Main.clientData.getBaseX()
-//            y -= Main.clientData.getBaseY()
-//
-//            if (x > 104 || x < 0 || y > 104 || y < 0) {
-//                return Point(-1, -1)
-//            }
-//            val regionTileX = local.getLocalX() - Main.clientData.getBaseX()
-//            val regionTileY = local.getLocalY() - Main.clientData.getBaseY()
-//
-//            val cX = (x * 4 + 2 - (regionTileX shl 9) / 128f) as Int
-//            val cY = (y * 4 + 2 - (regionTileY shl 9) / 128f) as Int
-//
-//            val mapScale = Reflection.value("Client#getMapScale()", null) as Int
-//            val mapOffset = Reflection.value("Client#getMapOffset()", null) as Int
-//            val angle = clientData.getMapAngle() + mapScale and 0x7FF
-//            val j = regionX * regionX + regionY * regionY
-//            if (j > 6400)
-//                return Point(-1, -1)
-//
-//            val sin = SINE[angle] * 256 / (mapOffset + 256)
-//            val cos = COSINE[angle] * 256 / (mapOffset + 256)
-//
-//            val xMap = regionY * sin + regionX * cos shr 16
-//            val yMap = regionY * cos - regionX * sin shr 16
-//
-//            return Point(644 + xMap, 80 - yMap)
-//        }
+
+        fun worldToMap(x: Int, y: Int): Point {
+            // Note: Multiply by tile size before converting to local coordinates to preserve precision
+            val tilePX = ((x - Main.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+            val tilePY = ((y - Main.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+            val local = Main.clientData.getLocalPlayer()
+
+            val playerPX =
+                ((local.getLocalX() - Main.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+            val playerPY =
+                ((local.getLocalY() - Main.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+
+
+            val diffX = tilePX - playerPX
+            val diffY = tilePY - playerPY
+
+            val miniMapWidget = MiniMap.getWidget() ?: return Point(-1, -1)
+
+            val angle = Main.clientData.getMapAngle() and 0x7ff
+
+            val sineCalc = SINE[angle]
+            val cosCalc = COSINE[angle]
+
+            val calcCenterX = (sineCalc * diffY + cosCalc * diffX) shr Constants.TRIG_SHIFT
+            val calcCenterY = (sineCalc * diffX - cosCalc * diffY) shr Constants.TRIG_SHIFT
+
+            val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget) + miniMapWidget.getWidth() / 2
+            val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget) + miniMapWidget.getHeight() / 2
+            return if (MiniMap.getMapArea().contains(Point(screenX, screenY))) {
+                Point(screenX, screenY)
+            } else Point(-1, -1)
+        }
 
         private fun getHeight(localX: Int, localY: Int, plane: Int): Int {
             val sceneX = localX shr LOCAL_COORD_BITS
@@ -341,6 +344,20 @@ class Calculations {
         fun distanceTo(a: Locatable): Int {
             val loc = com.p3achb0t.api.wrappers.Players.getLocal().getLocation()
             return distanceBetween(a.getLocation().x, a.getLocation().y, loc.x, loc.y)
+        }
+
+        fun convertAreaToPolygon(area: Area, poly: Polygon) {
+            val floatsFinal = floatArrayOf(0F, 0F, 0F, 0F, 0F, 0F)
+            val iteratorFinal = area.getPathIterator(null)
+            while (!iteratorFinal.isDone) {
+                val type = iteratorFinal.currentSegment(floatsFinal)
+                val x = floatsFinal[0].toInt()
+                val y = floatsFinal[1].toInt()
+                if (type != PathIterator.SEG_CLOSE) {
+                    poly.addPoint(x, y)
+                }
+                iteratorFinal.next()
+            }
         }
     }
 }

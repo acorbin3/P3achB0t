@@ -44,7 +44,7 @@ class Player(var player: com.p3achb0t.hook_interfaces.Player) : Actor(player) {
             val ch = getConvexHull(
                 this.player,
                 Main.clientData.getPlayerModelCache(),
-                this.player.getComposite().getAnimatedModelID()
+                this.player.getComposite().getStaticModelID()
             )
             //Checking to see if this is on screen
             Interact.interact(ch, action)
