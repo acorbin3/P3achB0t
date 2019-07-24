@@ -357,7 +357,9 @@ fun main() {
 //                    chickens[0].interact("Cast")
 //                }
 
-
+//                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
+//                Walking.walkPath(path)
+//                Walking.walkPath(path,true)
             }
             //Delay between 0-50 ms
             delay((Math.random() * 50).toLong())
