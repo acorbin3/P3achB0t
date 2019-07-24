@@ -1,25 +1,53 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.Main
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Color
 import java.awt.Graphics2D
+import java.awt.Point
+import java.awt.Polygon
 
-//TODO extend interactable in the future
-class Tile(val x: Int, val y: Int, val z: Int = 0) : Locatable {
+//Tile are stored in global coordinates.
+
+class Tile(val x: Int, val y: Int, val z: Int = 0) : Locatable, Interactable {
+
+    fun getPolyBounds(): Polygon {
+        val regional = getRegionalLocation()
+        return getCanvasTileAreaPoly(regional.x, regional.y)
+    }
+
+    override fun toString(): String {
+        return "($x,$y,$z)"
+    }
+
+    override suspend fun clickOnMiniMap(): Boolean {
+        val regional = getRegionalLocation()
+        val point = Calculations.worldToMiniMap(regional.x, regional.y)
+        return Main.mouse.click(point)
+    }
+
+    override fun getInteractPoint(): Point {
+        val poly = Calculations.getCanvasTileAreaPoly(x, y)
+        return getRandomPoint(poly)
+    }
+
     override fun isOnScreen(): Boolean {
         val tilePoly = Calculations.getCanvasTileAreaPoly(x, y)
         return Calculations.isOnscreen(tilePoly.bounds)
     }
 
     override fun distanceTo(locatable: Locatable): Int {
-        return Calculations.distanceBetween(getLocation(), locatable.getLocation())
+        return Calculations.distanceBetween(getGlobalLocation(), locatable.getGlobalLocation())
     }
 
     override fun distanceTo(tile: Tile): Int {
-        return Calculations.distanceBetween(getLocation(), tile)
+        return Calculations.distanceBetween(getGlobalLocation(), tile)
     }
 
+    // This is distance to local player
     override fun distanceTo(): Int {
         return Calculations.distanceTo(this)
     }
@@ -28,7 +56,7 @@ class Tile(val x: Int, val y: Int, val z: Int = 0) : Locatable {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getLocation(): Tile {
+    override fun getGlobalLocation(): Tile {
         return this
     }
 

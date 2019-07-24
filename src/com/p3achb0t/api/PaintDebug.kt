@@ -1,7 +1,7 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.Main
-import com.p3achb0t.api.Calculations.Companion.worldToMap
+import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.ClientMode
@@ -60,7 +60,7 @@ fun debugPaint(): PaintListener {
                             50,
                             180
                         )
-                        val miniMapPlayer = worldToMap(
+                        val miniMapPlayer = worldToMiniMap(
                             Main.clientData.getLocalPlayer().getLocalX(),
                             Main.clientData.getLocalPlayer().getLocalY()
                         )
@@ -134,7 +134,7 @@ fun debugPaint(): PaintListener {
                                     g.fillPolygon(tile)
 
                                     g.color = Color.GREEN
-                                    val mapPoint = worldToMap(_player.getLocalX(), _player.getLocalY())
+                                    val mapPoint = worldToMiniMap(_player.getLocalX(), _player.getLocalY())
                                     g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
                                 }
                                 point.y += 20
@@ -180,7 +180,7 @@ fun debugPaint(): PaintListener {
                                         g.drawPolygon(it)
                                     }
                                     g.color = Color.YELLOW
-                                    val mapPoint = worldToMap(it.getLocalX(), it.getLocalY())
+                                    val mapPoint = worldToMiniMap(it.getLocalX(), it.getLocalY())
                                     g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
 
                                     val ch = getConvexHull(
@@ -431,10 +431,10 @@ fun debugPaint(): PaintListener {
                     // Paint on minimap
 
                     val local = Main.clientData.getLocalPlayer()
-                    val point = worldToMap(local.getLocalX(), local.getLocalY())
+                    val point = worldToMiniMap(local.getLocalX(), local.getLocalY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
-                        g.fillRect(point.x, point.y, 4, 4)
+                        g.fillRect(point.x, point.y, 3, 3)
                     }
                 }
 

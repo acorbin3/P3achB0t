@@ -30,7 +30,8 @@ class TutorialIsland {
         // Click options tab
         // Talk to Gielinor Guide(3308)
         // Continue x2
-        // Open Doors at location(6464,6592)
+        // Open Doors at location(3098,3107)
+        // Tile path (3098,3107),(3103,3103),(3102,3095)
         // GO down to fishing lake around (6848,4800
         // "Talk-to" to "Survival Expert"(8503)
         // Continue 3x

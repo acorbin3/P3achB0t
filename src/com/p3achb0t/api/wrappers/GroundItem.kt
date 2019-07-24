@@ -16,6 +16,10 @@ import java.util.*
 
 class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0) : Locatable,
     Interactable {
+    override suspend fun clickOnMiniMap(): Boolean {
+        return Main.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
+    }
+
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
     }
@@ -28,8 +32,12 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getLocation(): Tile {
-        return Tile(position.x, position.y, position.plane)
+    override fun getGlobalLocation(): Tile {
+        return Tile(
+            position.x / 128 + Main.clientData.getBaseX(),
+            position.y / 128 + Main.clientData.getBaseY(),
+            position.plane
+        )
     }
 
 

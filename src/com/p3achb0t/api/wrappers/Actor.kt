@@ -25,9 +25,12 @@ open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getLocation(): Tile {
-
-        return Tile(raw.getLocalX(), raw.getLocalY(), Main.clientData.getPlane())
+    override fun getGlobalLocation(): Tile {
+        return Tile(
+            raw.getLocalX() / 128 + Main.clientData.getBaseX(),
+            raw.getLocalY() / 128 + Main.clientData.getBaseY(),
+            Main.clientData.getPlane()
+        )
     }
 
 }

@@ -15,6 +15,11 @@ class WidgetItem(
     var index: Int = 0,
     var type: Type = Type.SHOP
 ) : Interactable {
+    override suspend fun clickOnMiniMap(): Boolean {
+        println("Widgets are not a thing to click on minimap")
+        return false
+    }
+
     override fun getInteractPoint(): Point {
         val x = area.centerX + Random.nextInt(-(area.width / 4)..(area.width / 4))
         val y = area.centerY + Random.nextInt(-(area.height / 4)..(area.height / 4))

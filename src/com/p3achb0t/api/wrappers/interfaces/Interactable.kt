@@ -52,6 +52,8 @@ interface Interactable {
         )
     }
 
+    suspend fun clickOnMiniMap(): Boolean
+
     suspend fun click(): Boolean {
         return Main.mouse.moveMouse(getInteractPoint(), click = true)
     }

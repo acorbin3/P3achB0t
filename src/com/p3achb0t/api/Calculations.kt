@@ -7,7 +7,6 @@ import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -19,6 +18,8 @@ import java.awt.Rectangle
 import java.awt.geom.Area
 import java.awt.geom.PathIterator
 import kotlin.experimental.and
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 class Calculations {
@@ -163,10 +164,6 @@ class Calculations {
             }
         }
 
-        fun isOnscreen(x: Int, y: Int): Boolean {
-            return isOnscreen(Point(x, y))
-        }
-
         fun isOnscreen(rectangle: Rectangle): Boolean {
             return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.intersects(rectangle)
@@ -189,7 +186,9 @@ class Calculations {
         }
 
 
-        fun worldToMap(x: Int, y: Int): Point {
+        // This will convert the regional coordinates to the miniMap
+        fun worldToMiniMap(x: Int, y: Int): Point {
+
             // Note: Multiply by tile size before converting to local coordinates to preserve precision
             val tilePX = ((x - Main.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
             val tilePY = ((y - Main.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
@@ -217,7 +216,7 @@ class Calculations {
             val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget) + miniMapWidget.getWidth() / 2
             val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget) + miniMapWidget.getHeight() / 2
             return if (MiniMap.getMapArea().contains(Point(screenX, screenY))) {
-                Point(screenX, screenY)
+                Point(screenX - 2, screenY - 1)
             } else Point(-1, -1)
         }
 
@@ -242,8 +241,7 @@ class Calculations {
         /**
          * Returns a polygon representing an area.
          *
-         * @param client the game client
-         * @param localLocation the center location of the AoE
+         * @param localLocation the center location of the AoE in regional coordinates
          * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
          * @return a polygon representing the tiles in the area
          */
@@ -329,7 +327,7 @@ class Calculations {
         }
 
         fun distanceBetween(x: Int, y: Int, x1: Int, y1: Int): Int {
-            return Math.sqrt(Math.pow((x1 - x).toDouble(), 2.0) + Math.pow((y1 - y).toDouble(), 2.0)).toInt()
+            return sqrt((x1 - x).toDouble().pow(2.0) + (y1 - y).toDouble().pow(2.0)).toInt()
         }
 
         /**
@@ -337,14 +335,10 @@ class Calculations {
          * @return current distance between player and specific tile
          */
         fun distanceTo(a: Tile): Int {
-            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getLocation()
+            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getGlobalLocation()
             return distanceBetween(a.x, a.y, loc.x, loc.y)
         }
 
-        fun distanceTo(a: Locatable): Int {
-            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getLocation()
-            return distanceBetween(a.getLocation().x, a.getLocation().y, loc.x, loc.y)
-        }
 
         fun convertAreaToPolygon(area: Area, poly: Polygon) {
             val floatsFinal = floatArrayOf(0F, 0F, 0F, 0F, 0F, 0F)

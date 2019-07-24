@@ -28,8 +28,8 @@ class Camera {
 
             var degree = 360 - Math.toDegrees(
                 Math.atan2(
-                    (locatable.getLocation().x - local.getLocalX()).toDouble(),
-                    (local.getLocalY() - locatable.getLocation().y).toDouble()
+                    (locatable.getGlobalLocation().x - local.getLocalX()).toDouble(),
+                    (local.getLocalY() - locatable.getGlobalLocation().y).toDouble()
                 )
             )
             if (degree >= 360) {

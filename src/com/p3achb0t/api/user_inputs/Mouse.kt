@@ -23,6 +23,10 @@ class Mouse {
 
     //////
 
+    suspend fun click(destPoint: Point, clickType: ClickType = ClickType.Left): Boolean {
+        return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
+    }
+
     suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
             return false
