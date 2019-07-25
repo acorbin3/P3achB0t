@@ -9,19 +9,32 @@ class ClientMode {
             FixedMode,
         }
 
+        private var modeInit: Boolean = false
+        var modeType: ModeType = ModeType.ResizeMode
+
         fun getMode(): ModeType {
 
-            try {
+            if (modeInit) return modeType
+            return try {
                 val resizeModeWidget = Widgets.find(261, 34)
-                if (resizeModeWidget?.getChildren()?.get(0)?.getTextureId() == 1150)
-                    return Companion.ModeType.ResizeMode
-                else
-                    return Companion.ModeType.FixedMode
+                // For tutorial island we might not have any children yet, then it means we are in resize mode
+                if (resizeModeWidget?.getChildren() == null) {
+                    modeInit = true
+                    modeType = Companion.ModeType.ResizeMode
+                    return modeType
+                }
+                if (resizeModeWidget.getChildren()[0].getTextureId() == 1150) {
+                    modeInit = true
+                    modeType = Companion.ModeType.ResizeMode
+                    modeType
+                } else {
+                    modeInit = true
+                    modeType = Companion.ModeType.FixedMode
+                    modeType
+                }
             } catch (e: Exception) {
-                return Companion.ModeType.ResizeMode
+                modeType
             }
-
-            return Companion.ModeType.ResizeMode
         }
     }
 }

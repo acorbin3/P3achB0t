@@ -24,6 +24,20 @@ class NPC(var npc: Npc) : Actor(npc) {
             return foundNPCs
         }
 
+        fun findNpc(npcId: Int): ArrayList<NPC> {
+            val foundNPCs = ArrayList<NPC>()
+            try {
+                val npcs = findNPCs(sortByDist = true)
+                npcs.forEach {
+                    if (it.npc.getComposite().getId().toInt() == npcId) {
+                        foundNPCs.add(it)
+                    }
+                }
+            } catch (e: Exception) {
+            }
+            return foundNPCs
+        }
+
         // This function will return a list of NPCs with closes distance to you
         fun findNPCs(sortByDist: Boolean = false): ArrayList<NPC> {
             val npcs = ArrayList<NPC>()

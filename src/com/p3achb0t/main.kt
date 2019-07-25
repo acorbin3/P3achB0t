@@ -18,6 +18,7 @@ import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.hook_interfaces.Widget
 import com.p3achb0t.rsclasses.Client
+import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -80,7 +81,7 @@ fun main() {
 
 
     // Getting parameters
-    Parameters(1)
+    Parameters(83)
     println("Starting Client")
     val file = File("./injected_jar.jar")
     val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
@@ -360,6 +361,8 @@ fun main() {
 //                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
 //                Walking.walkPath(path)
 //                Walking.walkPath(path,true)
+
+                TutorialIsland.run()
             }
             //Delay between 0-50 ms
             delay((Math.random() * 50).toLong())

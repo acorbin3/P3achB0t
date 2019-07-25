@@ -63,6 +63,19 @@ class Tabs {
             }
         }
 
+        suspend fun isTabFlashing(tab: Tab_Types): Boolean {
+
+            var noneCount = 0
+            var tabOpenCount = 0
+            for (i in 1..50) {
+                val openTab = getOpenTab()
+                if (tab == openTab) tabOpenCount += 1
+                if (Tab_Types.None == openTab) noneCount += 1
+                delay(25)
+            }
+            return noneCount > 5 && tabOpenCount > 5
+        }
+
         fun getOpenTab(): Tab_Types? {
             var tab: Tab_Types? =
                 Tab_Types.None

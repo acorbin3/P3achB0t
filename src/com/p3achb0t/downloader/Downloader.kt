@@ -10,7 +10,7 @@ import java.nio.channels.Channels
 //DONE 3/20/2019 - Download game pack
 
 class Downloader{
-    private var oldschoolPageAddress: String = "http://oldschool1.runescape.com/"
+    private var oldschoolPageAddress: String = "http://oldschool83.runescape.com/"
     val gamepackDir = "\\gamepacks\\"
     fun getGamepack():String{
         val gamepackName = getLatestGamepackName()

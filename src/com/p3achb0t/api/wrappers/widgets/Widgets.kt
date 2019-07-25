@@ -15,5 +15,9 @@ class Widgets {
             }
             return widget
         }
+
+        fun isWidgetAvaliable(parent: Int, child: Int): Boolean {
+            return find(parent, child) != null
+        }
     }
 }

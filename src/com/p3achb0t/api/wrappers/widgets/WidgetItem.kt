@@ -35,13 +35,32 @@ class WidgetItem(
         return Point(area.x, area.y)
     }
 
+    fun containsText(text: String): Boolean {
+        if (this.widget == null) {
+            return false
+        } else {
+            if (this.widget?.getText()?.toLowerCase()?.contains(text.toLowerCase())!!)
+                return true
+            else {
+                // Need to look at children
+                this.widget?.getChildren()?.iterator()?.forEach {
+                    if (it.getText().toLowerCase().contains(text.toLowerCase())) {
+                        return true
+                    }
+                }
+                return false
+            }
+        }
+    }
+
     override suspend fun interact(action: String): Boolean {
-        if (this.widget?.getText()?.contains(action)!!)
+        val textContains = this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase())
+        if (textContains != null && textContains)
             return super.interact(action)
         else {
             // Need to look at children
-            this.widget!!.getChildren().iterator().forEach {
-                if (it.getText().contains(action)) {
+            this.widget?.getChildren()?.iterator()?.forEach {
+                if (it.getText().toLowerCase().contains(action)) {
                     return WidgetItem(it).interact(action)
                 }
             }
