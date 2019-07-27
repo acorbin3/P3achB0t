@@ -5,8 +5,10 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
+import com.p3achb0t.api.painting.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.hook_interfaces.BoundaryObject
 import com.p3achb0t.hook_interfaces.GameObject
 import com.p3achb0t.hook_interfaces.Model
 import java.awt.Color
@@ -15,20 +17,59 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GameObject(val raw: GameObject) : Locatable,
+class GameObject(val gameObject: GameObject? = null, val boundaryObject: BoundaryObject? = null) : Locatable,
     Interactable {
-
+    val id: Int
+        get() {
+            return when {
+                gameObject != null -> gameObject.getId().shr(17).and(0x7fff).toInt()
+                boundaryObject != null -> boundaryObject.getId().shr(17).and(0x7fff).toInt()
+                else -> 0
+            }
+        }
+    val name: String
+        get() {
+            val sceneData = Main.clientData.getObjectCompositeCache()
+            val objectComposite =
+                getObjectComposite(sceneData, id)
+            return objectComposite?.getName().toString()
+        }
     private val objectPositionInfo: ObjectPositionInfo
         get() {
-            return ObjectPositionInfo(
-                raw.getX(),
-                raw.getY(),
-                raw.getOrientation()
-            )
+            return when {
+                gameObject != null -> ObjectPositionInfo(
+                    gameObject.getX(),
+                    gameObject.getY(),
+                    gameObject.getOrientation()
+                )
+                boundaryObject != null -> ObjectPositionInfo(
+                    boundaryObject.getX(),
+                    boundaryObject.getY(),
+                    boundaryObject.getOrientation()
+                )
+                else -> ObjectPositionInfo(0, 0, 0)
+            }
+        }
+    val model: Model?
+        get() {
+            return when {
+                gameObject != null -> gameObject.getRenderable() as Model
+                boundaryObject != null -> boundaryObject.getRenderable() as Model
+                else -> null
+            }
         }
 
     override suspend fun clickOnMiniMap(): Boolean {
-        return Main.mouse.click(Calculations.worldToMiniMap(raw.getX(), raw.getY()))
+        return when {
+            gameObject != null -> Main.mouse.click(Calculations.worldToMiniMap(gameObject.getX(), gameObject.getY()))
+            boundaryObject != null -> Main.mouse.click(
+                Calculations.worldToMiniMap(
+                    boundaryObject.getX(),
+                    boundaryObject.getY()
+                )
+            )
+            else -> false
+        }
     }
 
     override fun getInteractPoint(): Point {
@@ -44,11 +85,19 @@ class GameObject(val raw: GameObject) : Locatable,
     }
 
     override fun getGlobalLocation(): Tile {
-        return Tile(
-            raw.getX() / 128 + Main.clientData.getBaseX(),
-            raw.getY() / 128 + Main.clientData.getBaseY(),
-            raw.getPlane()
-        )
+        return when {
+            gameObject != null -> Tile(
+                gameObject.getX() / 128 + Main.clientData.getBaseX(),
+                gameObject.getY() / 128 + Main.clientData.getBaseY(),
+                gameObject.getPlane()
+            )
+            boundaryObject != null -> Tile(
+                boundaryObject.getX() / 128 + Main.clientData.getBaseX(),
+                boundaryObject.getY() / 128 + Main.clientData.getBaseY(),
+                boundaryObject.getPlane()
+            )
+            else -> Tile(-1, -1)
+        }
     }
 
 
@@ -56,23 +105,29 @@ class GameObject(val raw: GameObject) : Locatable,
         return Calculations.isOnscreen(getConvexHull().bounds)
     }
 
-
     fun getTriangles(): ArrayList<Polygon> {
 
-        val model = raw.getRenderable() as Model
-        val positionInfo =
-            objectPositionInfo
+        return if (model != null) {
+            val positionInfo =
+                objectPositionInfo
 
-        val modelTriangles =
-            getTrianglesFromModel(positionInfo, model)
+            val modelTriangles =
+                getTrianglesFromModel(positionInfo, model!!)
 
-        return modelTriangles
+            modelTriangles
+        } else {
+            ArrayList()
+        }
     }
 
 
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
-        return getConvexHullFromModel(positionInfo, raw.getRenderable() as Model)
+        return when {
+            gameObject != null -> getConvexHullFromModel(positionInfo, gameObject.getRenderable() as Model)
+            boundaryObject != null -> getConvexHullFromModel(positionInfo, boundaryObject.getRenderable() as Model)
+            else -> Polygon()
+        }
     }
 
 }

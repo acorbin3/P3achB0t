@@ -2,8 +2,7 @@ package com.p3achb0t.scripts
 
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.wrappers.Dialog
-import com.p3achb0t.api.wrappers.NPC
+import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -27,6 +26,8 @@ class TutorialIsland {
             jobs.add(ChatWithGielinorGuide())
             jobs.add(OpenOptions())
             jobs.add(FinalChatWithGielinor())
+            jobs.add(OpenDoorFromFirstBuilding())
+            jobs.add(MoveToFishingSpot())
             isInititilized = true
         }
 
@@ -47,10 +48,10 @@ class TutorialIsland {
                 //Name widget to click into and type a name 558,7
                 val nameEntry = WidgetItem(Widgets.find(558, 7))
                 nameEntry.click()
-                delay(Random.nextLong(200, 550))
+                delay(Random.nextLong(2200, 5550))
 
                 Keyboard.sendKeys(names.random(), sendReturn = true)
-                delay(Random.nextLong(200, 550))
+                delay(Random.nextLong(2200, 5550))
 
                 // If not a valid name then random name in the follow selections 558,(14,15,16)
                 // Once picked It should say available in 558,12
@@ -61,12 +62,12 @@ class TutorialIsland {
                     val rand = Random.nextInt(14, 16)
                     val selectRandomName = WidgetItem(Widgets.find(558, rand))
                     selectRandomName.click()
-                    delay(Random.nextLong(200, 550))
+                    delay(Random.nextLong(2200, 5550))
                 }
                 //Pick set name in 558,18
                 val pickName = WidgetItem(Widgets.find(558, 18))
                 pickName.click()
-                delay(Random.nextLong(200, 550))
+                delay(Random.nextLong(2200, 5550))
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -86,7 +87,7 @@ class TutorialIsland {
             }
 
             override suspend fun execute() {
-                val randomNumberOfChanges = Random.nextInt(4, 15)
+                val randomNumberOfChanges = Random.nextInt(4, 35)
                 println("Making $randomNumberOfChanges of changes")
                 for (i in 0..randomNumberOfChanges) {
                     val column = Random.nextInt(1, 5)
@@ -195,21 +196,53 @@ class TutorialIsland {
 
         }
 
-        class OpenDoorAndGoToFishingSpot : Job() {
+        class OpenDoorFromFirstBuilding : Job() {
             override suspend fun isValidToRun(): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                val text = "time to meet your first instructor"
+                val chatBox = WidgetItem(Widgets.find(263, 1))
+                return chatBox.containsText(text)
+
             }
 
             override suspend fun execute() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                println("START: Opening door and walking to fishing spot")
+                // Get doors, find one at location(3098,3107), and open it
+                val gameObjects = GameObjects.find(9398)
+                val doorLocation = Tile(3098, 3107)
+                gameObjects.forEach {
+                    if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
+                        it.interact("Open")
+                        //Wait till here Tile(3098,3107)
+                        Utils.waitFor(4, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                delay(100)
+                                return Players.getLocal().getGlobalLocation() == Tile(3098, 3107)
+                            }
+                        })
+                    }
+                }
             }
 
         }
 
+        class MoveToFishingSpot : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Follow the path to find the next instructor"
+                val chatBox = WidgetItem(Widgets.find(263, 1))
+                val doorLocation = Tile(3098, 3107)
+                val playerGlobalLoc = Players.getLocal().getGlobalLocation()
 
-        // Open Doors at location(3098,3107)
-        //Action "open"
-        // Tile path (3098,3107),(3103,3103),(3102,3095)
+                return chatBox.containsText(text) && (playerGlobalLoc.x == doorLocation.x && playerGlobalLoc.y == doorLocation.y)
+            }
+
+            override suspend fun execute() {
+                val path = arrayListOf(Tile(3098, 3107), Tile(3103, 3103), Tile(3102, 3095))
+                Walking.walkPath(path)
+                println("COMPLETE : Opening door and walking to fishing spot")
+            }
+        }
+
+
         // GO down to fishing lake around (6848,4800
         // "Talk-to" to "Survival Expert"(8503)
         // Continue 3x
