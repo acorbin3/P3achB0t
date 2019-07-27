@@ -12,7 +12,8 @@ import java.awt.Polygon
 
 //Tile are stored in global coordinates.
 
-class Tile(val x: Int, val y: Int, val z: Int = 0) : Locatable, Interactable {
+//Default of -1,-1 means the tile is not valid
+class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Interactable {
 
     fun getPolyBounds(): Polygon {
         val regional = getRegionalLocation()

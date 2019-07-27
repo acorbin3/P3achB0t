@@ -195,17 +195,20 @@ class TutorialIsland {
 
         }
 
+        class OpenDoorAndGoToFishingSpot : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
-        //Talk to Gielinor Guide(3308)
-        // 4 continues
-        // 1 continue at (229,2)
-        // Pick option if experience, its been a while, or bran new
-        //Continue x3
-        // Click options tab
+            override suspend fun execute() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
-        // Talk to Gielinor Guide(3308)
-        // Continue x2
+        }
+
+
         // Open Doors at location(3098,3107)
+        //Action "open"
         // Tile path (3098,3107),(3103,3103),(3102,3095)
         // GO down to fishing lake around (6848,4800
         // "Talk-to" to "Survival Expert"(8503)

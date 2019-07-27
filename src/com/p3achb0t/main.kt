@@ -7,7 +7,7 @@ import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
-import com.p3achb0t.api.debugPaint
+import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.NPC
@@ -49,7 +49,7 @@ class Main(game: Applet) {
     companion object Data {
         var client: Applet? = null
         var dream: DreamBotAnalyzer? = null
-        var classLoader: ClassLoader? = null
+        var classLoader: URLClassLoader? = null
         var selectedWidget: Widget? = null
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
