@@ -55,6 +55,11 @@ interface Interactable {
     suspend fun clickOnMiniMap(): Boolean
 
     suspend fun click(): Boolean {
-        return Main.mouse.moveMouse(getInteractPoint(), click = true)
+        val point = getInteractPoint()
+        return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
+            false
+        } else {
+            Main.mouse.moveMouse(getInteractPoint(), click = true)
+        }
     }
 }

@@ -15,6 +15,8 @@ class Dialog {
         private const val PARENT_DIALOG_OPTIONS = WidgetID.DIALOG_OPTION_GROUP_ID
         private const val PARENT_BACKUP_2 = 229
         private const val CONTINUE_BACKUP_2 = 2
+        private const val PARENT_BACKUP_3 = 193
+        private const val CONTINUE_BACKUP_3 = 0
 
 
         fun isDialogUp(): Boolean {
@@ -27,6 +29,9 @@ class Dialog {
                 dialog = WidgetItem(Widgets.find(PARENT_BACKUP, CONTINUE_BACKUP))
                 if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
                     dialog = WidgetItem(Widgets.find(PARENT_BACKUP_2, CONTINUE_BACKUP_2))
+                    if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
+                        dialog = WidgetItem(Widgets.find(PARENT_BACKUP_3, CONTINUE_BACKUP_3))
+                    }
                 }
             }
             return dialog

@@ -68,7 +68,7 @@ fun gameObjectPaint(g: Graphics) {
 
 
                                         //For now only filter objects near m
-                                        if (globalPos.x == localPlayer.getGlobalLocation().x && globalPos.y == localPlayer.getGlobalLocation().y)
+                                        if (localPlayer.distanceTo(globalPos) < 5)
                                             g.drawString(
                                                 objectComposite?.getName() + "($id)(${globalPos.x},${globalPos.y}",
                                                 point2.x,
@@ -79,7 +79,7 @@ fun gameObjectPaint(g: Graphics) {
                                     }
 
                                     //Printing out the model and the hull
-                                    if (globalPos.x == localPlayer.getGlobalLocation().x && globalPos.y == localPlayer.getGlobalLocation().y) {
+                                    if (localPlayer.distanceTo(globalPos) < 5) {
                                         val model = it.getRenderable()
                                         if (model is Model) {
                                             val positionInfo =
@@ -115,9 +115,10 @@ fun gameObjectPaint(g: Graphics) {
 
                         val globalPos =
                             Tile(tile.getX() + Main.clientData.getBaseX(), tile.getY() + Main.clientData.getBaseY())
+
 //                        println("Tile: ${tile.getX()},${tile.getY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                         // Display the wall object
-                        if (tile.getBoundary() != null && (globalPos.x == localPlayer.getGlobalLocation().x && globalPos.y == localPlayer.getGlobalLocation().y)) {
+                        if (tile.getBoundary() != null && localPlayer.distanceTo(globalPos) < 5) {
                             val wall = tile.getBoundary()
 
                             g.color = Color.GREEN

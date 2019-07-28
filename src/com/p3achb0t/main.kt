@@ -6,11 +6,12 @@ import com.p3achb0t.Main.Data.dream
 import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
+import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.NPC
+import com.p3achb0t.api.wrappers.NPCs
 import com.p3achb0t.api.wrappers.Player
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.client.MenuBar
@@ -223,7 +224,7 @@ fun main() {
             if (clientData.getGameState() == 30) {
                 if (false) {
                     try {
-                        val npcs = NPC.findNPCs(sortByDist = true)
+                        val npcs = NPCs.findNpcs(sortByDist = true)
                         if (npcs.size > 0) {
                             npcs.forEach {
                                 if (!it.isOnScreen()) {
@@ -353,7 +354,7 @@ fun main() {
 //                Inventory.open()
                 // Cast wind Strike on a chicken
 //                Magic.cast(Magic.Companion.Spells.Wind_Strike)
-//                val chickens = NPC.findNpc("Chicken")
+//                val chickens = NPCs.findNpc("Chicken")
 //                if(chickens.isNotEmpty()){
 //                    chickens[0].interact("Cast")
 //                }
@@ -361,6 +362,9 @@ fun main() {
 //                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
 //                Walking.walkPath(path)
 //                Walking.walkPath(path,true)
+                if (!Calculations.screenInit) {
+                    Calculations.initScreenWidgetDimentions()
+                }
 
                 TutorialIsland.run()
             }

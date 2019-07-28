@@ -26,5 +26,6 @@ class Utils {
         fun cleanColorText(input: String): String {
             return Pattern.compile("<.+?>").matcher(input).replaceAll("")
         }
+
     }
 }

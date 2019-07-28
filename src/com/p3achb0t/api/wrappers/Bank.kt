@@ -51,7 +51,7 @@ class Bank {
 
             //First look for bankers, if that doesnt work then look for bank objects
             if (!isOpen()) {
-                val bankers = NPC.findNpc("Banker")
+                val bankers = NPCs.findNpc("Banker")
                 if (bankers.size > 0) {
                     bankers[0].interact("Use")
                     Utils.waitFor(3, object : Utils.Condition {

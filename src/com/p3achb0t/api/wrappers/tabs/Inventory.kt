@@ -13,7 +13,8 @@ class Inventory {
         private const val CHILD_ID = 0
 
         suspend fun open() {
-            Tabs.openTab(Tabs.Tab_Types.Inventory)
+
+            if (!isOpen()) Tabs.openTab(Tabs.Tab_Types.Inventory)
             if (!isOpen()) open()
         }
 
@@ -56,10 +57,13 @@ class Inventory {
         }
 
         fun getItem(id: Int): WidgetItem? {
+            println("Looking for Item $id")
             val items = getAll()
             items.forEach {
-                if (it.id == id)
+                if (it.id == id) {
+                    println("Found Item! $id")
                     return it
+                }
             }
             return null
         }

@@ -1,8 +1,10 @@
 package com.p3achb0t.scripts
 
+import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -10,7 +12,12 @@ import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
+
+private val SHRIMP_ID = 2514
+private val LOGS_ID_2511 = 2511
+
 class TutorialIsland {
+
     companion object {
 
         val names = arrayListOf(
@@ -28,6 +35,17 @@ class TutorialIsland {
             jobs.add(FinalChatWithGielinor())
             jobs.add(OpenDoorFromFirstBuilding())
             jobs.add(MoveToFishingSpot())
+            jobs.add(TalkToSurvivalExpertFirstTime())
+            jobs.add(CatchSomeShrimp())
+            jobs.add(ClickSkillsTab())
+            jobs.add(TalkToSurvivalGuideAfterSkillsTab())
+            jobs.add(ChopTree())
+            jobs.add(LightLog())
+            jobs.add(CookShrimp())
+            jobs.add(OpenGateAfterFishing())
+            jobs.add(MoveToKitchen())
+            jobs.add(TalkToMasterChef())
+            jobs.add(MakeDough())
             isInititilized = true
         }
 
@@ -36,6 +54,15 @@ class TutorialIsland {
             jobs.forEach {
                 if (it.isValidToRun()) it.execute()
             }
+        }
+
+        fun getPercentComplete(): Double {
+            // widget for progress 614,18
+            val complete = WidgetItem(Widgets.find(614, 18)).widget?.getWidth()?.toDouble() ?: 0.0
+            //widget for total 614, 17
+            val total = WidgetItem(Widgets.find(614, 17)).widget?.getWidth()?.toDouble() ?: 0.0
+
+            return (complete / total)
         }
 
         class PickName : Job() {
@@ -121,13 +148,12 @@ class TutorialIsland {
         class ChatWithGielinorGuide : Job() {
             override suspend fun isValidToRun(): Boolean {
                 val text = "Before you begin, have a read"
-                val chatBox = WidgetItem(Widgets.find(263, 1))
-                return chatBox.containsText(text)
+                return findTextInGuideBox(text)
             }
 
             override suspend fun execute() {
                 println("Time to interact with Gielinor Guide")
-                val gielinorGuide = NPC.findNpc("Gielinor Guide")[0]
+                val gielinorGuide = NPCs.findNpc("Gielinor Guide")[0]
                 gielinorGuide.interact("Talk-to")
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -173,13 +199,12 @@ class TutorialIsland {
         class FinalChatWithGielinor : Job() {
             override suspend fun isValidToRun(): Boolean {
                 val text = "On the side"
-                val chatBox = WidgetItem(Widgets.find(263, 1))
-                return chatBox.containsText(text)
+                return findTextInGuideBox(text)
             }
 
             override suspend fun execute() {
                 println("Time to interact with Gielinor Guide")
-                val gielinorGuide = NPC.findNpc("Gielinor Guide")[0]
+                val gielinorGuide = NPCs.findNpc("Gielinor Guide")[0]
                 gielinorGuide.interact("Talk-to")
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -199,8 +224,7 @@ class TutorialIsland {
         class OpenDoorFromFirstBuilding : Job() {
             override suspend fun isValidToRun(): Boolean {
                 val text = "time to meet your first instructor"
-                val chatBox = WidgetItem(Widgets.find(263, 1))
-                return chatBox.containsText(text)
+                return findTextInGuideBox(text)
 
             }
 
@@ -242,19 +266,328 @@ class TutorialIsland {
             }
         }
 
+        class TalkToSurvivalExpertFirstTime : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val survivalExpert = NPCs.findNpc(8503)
+                val text = "Follow the path to find the next instructor"
+                val chatBox = WidgetItem(Widgets.find(263, 1))
+                return chatBox.containsText(text) && survivalExpert.size > 0 && survivalExpert[0].isOnScreen()
+            }
 
-        // GO down to fishing lake around (6848,4800
-        // "Talk-to" to "Survival Expert"(8503)
-        // Continue 3x
-        // Open inventory
-        // Click fishing spot ID: 3317
-        // Wait till you have a Dialog(10 sec?) This might be optional
-        //Click continue
-        //Open up Skills
-        // "Talk-to" to "Survival Expert"(8503)
-        // Continue 3x
-        // Chop tree 9730
-        // Click contune after you get a log
+            override suspend fun execute() {
+                val survivalExpert = NPCs.findNpc(8503)
+                survivalExpert[0].talkTo()
+                // WAit till the continue is avaliable
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return Dialog.isDialogUp()
+                    }
+                })
+                delay(Random.nextLong(3000, 5000))
+
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+
+                var tabFlashing = false
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        tabFlashing = Tabs.isTabFlashing(Tabs.Tab_Types.Inventory)
+                        return tabFlashing
+                    }
+                })
+
+                if (tabFlashing) {
+                    Tabs.openTab(Tabs.Tab_Types.Inventory)
+                }
+            }
+
+        }
+
+        class CatchSomeShrimp : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "catch some shrimp"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                catchShrimp()
+
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.Skills)) {
+                    Tabs.openTab(Tabs.Tab_Types.Skills)
+                }
+            }
+        }
+
+        private suspend fun catchShrimp() {
+            val shrimps = NPCs.findNpc(3317)
+            shrimps[0].interact("Net")
+            // Wait till shrimp is in Inventory
+            Utils.waitFor(10, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return Inventory.getCount(SHRIMP_ID) > 0
+                }
+            })
+        }
+
+        class ClickSkillsTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "on the flashing bar graph icon near the inventory"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                Tabs.openTab(Tabs.Tab_Types.Skills)
+            }
+        }
+
+        class TalkToSurvivalGuideAfterSkillsTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "this menu you can view your skills."
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                val survivalExpert = NPCs.findNpc(8503)
+                survivalExpert[0].talkTo()
+                // WAit till the continue is avaliable
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return Dialog.isDialogUp()
+                    }
+                })
+                delay(Random.nextLong(3000, 5000))
+
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+
+            }
+
+        }
+
+        class ChopTree : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "time to cook your shrimp. However, you require"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                chopTree()
+
+                Dialog.continueDialog()
+
+
+            }
+
+        }
+
+        private suspend fun chopTree() {
+            val trees = GameObjects.find(9730, sortDistance = true)
+            // Should be more than 4, lets pick a random one between 1 and 4
+            trees[Random.nextInt(0, 3)].interact("Chop")
+
+            // Wait till we get a log in the invetory.
+            Utils.waitFor(4, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return Inventory.getCount(LOGS_ID_2511) > 0
+                }
+            })
+        }
+
+        class LightLog : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "that you have some logs, it's time"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                // Use tinderbox(590) with logs(2511)
+                lightFire()
+            }
+
+        }
+
+        private suspend fun lightFire() {
+            Inventory.open()
+            Inventory.getItem(590)?.click()
+            Inventory.getItem(LOGS_ID_2511)?.click()
+            delay(Random.nextLong(2500, 4500))
+            //Wait till hes not doing anything which should mean fire has been made
+            Utils.waitFor(4, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return Players.getLocal().player.getAnimation() == -1
+                }
+            })
+        }
+
+        class CookShrimp : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Now it's time to get cooking."
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                // Check to make sure we have shrimp, If not go fish for them
+                if (Inventory.getCount(SHRIMP_ID) == 0) {
+                    catchShrimp()
+                }
+
+                var fires = GameObjects.find(26185, sortDistance = true)
+                //No fire & no logs
+                if (fires.size == 0 && Inventory.getCount(LOGS_ID_2511) == 0) {
+                    chopTree()
+                }
+
+                //If no fire && have logs, light a fire
+                fires = GameObjects.find(26185, sortDistance = true)
+                if (fires.size == 0 && Inventory.getCount(LOGS_ID_2511) > 0) {
+                    lightFire()
+                }
+
+                // Check if there is a fire cook the shrimp
+                fires = GameObjects.find(26185, sortDistance = true)
+                if (fires.size > 0) {
+                    Inventory.open()
+                    Inventory.getItem(SHRIMP_ID)?.click()
+                    // The fire is an animated object so it thows a NPE when trying to interacte with model.
+                    if (fires[0].gameObject != null) {
+                        val point = Calculations.worldToScreen(
+                            fires[0].gameObject!!.getX(),
+                            fires[0].gameObject!!.getY(),
+                            0
+                        )
+                        Interact.interact(point, "Use")
+                    }
+
+                    //Wait till idle
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().player.getAnimation() == -1
+                        }
+                    })
+                    Dialog.continueDialog()
+                }
+            }
+        }
+
+        class OpenGateAfterFishing : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Well done, you've just cooked your first meal!"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                println("START: Going to open gate")
+                // Open gate at 3090,3092
+                val gateTile = Tile(3090, 3092, 0)
+                println("Onscreen? ${gateTile.isOnScreen()}")
+                if (gateTile.distanceTo() > 5) {
+                    gateTile.clickOnMiniMap()
+                    Utils.waitFor(10, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return gateTile.distanceTo() < 5
+                        }
+                    })
+                }
+
+                //Open gate at 9708 or 9470
+                val gateIDs = arrayOf(9708, 9470)
+                val gates = GameObjects.find(gateIDs.random(), sortDistance = true)
+                if (gates.size > 0) {
+                    gates[0].interact("Open")
+                }
+                println("Complete: Going to open gate")
+            }
+
+        }
+
+        class MoveToKitchen : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Follow the path until you get to the door with the yellow arrow above it."
+                val percentComplete = getPercentComplete()
+                return findTextInGuideBox(text) && percentComplete == .196875
+            }
+
+            override suspend fun execute() {
+                val tile = Tile(3079, 3084, 0)
+                if (tile.distanceTo() > 5) {
+                    tile.clickOnMiniMap()
+                    Utils.waitFor(10, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tile.distanceTo() < 5
+                        }
+                    })
+                }
+
+                val gameObjects = GameObjects.find(9709, sortDistance = true)
+                if (gameObjects.size > 0) {
+                    gameObjects[0].interact("Open")
+                }
+            }
+        }
+
+        class TalkToMasterChef : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Talk to the chef indicated"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                NPCs.findNpc(3305)[0].talkTo()
+
+                delay(Random.nextLong(3000, 5000))
+
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+            }
+        }
+
+        class MakeDough : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "This is the base for many meals"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                // Mix water(1929) and flower(2516)
+                Inventory.getItem(1929)?.click()
+                Inventory.getItem(2516)?.click()
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+
+
+            }
+
+        }
+
+        private fun findTextInGuideBox(text: String): Boolean {
+            val chatBox = WidgetItem(Widgets.find(263, 1))
+            val textFound = chatBox.containsText(text)
+            return textFound
+        }
+
+
 
 
 

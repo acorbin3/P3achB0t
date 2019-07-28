@@ -8,6 +8,7 @@ import java.awt.Graphics2D
 
 
 open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
+
     override fun isOnScreen(): Boolean {
         val tilePoly = Calculations.getCanvasTileAreaPoly(
             raw.getLocalX(),

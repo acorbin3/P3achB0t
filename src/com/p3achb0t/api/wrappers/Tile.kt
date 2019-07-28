@@ -36,7 +36,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
     }
 
     override fun isOnScreen(): Boolean {
-        val tilePoly = Calculations.getCanvasTileAreaPoly(x, y)
+        val tilePoly = getCanvasTileAreaPoly(getRegionalLocation().x, getRegionalLocation().y)
         return Calculations.isOnscreen(tilePoly.bounds)
     }
 

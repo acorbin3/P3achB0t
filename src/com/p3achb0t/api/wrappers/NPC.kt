@@ -1,66 +1,36 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.hook_interfaces.Npc
-import kotlin.math.abs
-import kotlin.math.max
+import java.awt.Point
+import java.awt.Polygon
 
-class NPC(var npc: Npc) : Actor(npc) {
+class NPC(var npc: Npc) : Actor(npc), Interactable {
 
-    companion object {
-
-        fun findNpc(npcName: String): ArrayList<NPC> {
-            val foundNPCs = ArrayList<NPC>()
-            try {
-                val npcs = findNPCs(sortByDist = true)
-                npcs.forEach {
-                    if (it.npc.getComposite().getName() == npcName) {
-                        foundNPCs.add(it)
-                    }
-                }
-            } catch (e: Exception) {
-            }
-            return foundNPCs
-        }
-
-        fun findNpc(npcId: Int): ArrayList<NPC> {
-            val foundNPCs = ArrayList<NPC>()
-            try {
-                val npcs = findNPCs(sortByDist = true)
-                npcs.forEach {
-                    if (it.npc.getComposite().getId().toInt() == npcId) {
-                        foundNPCs.add(it)
-                    }
-                }
-            } catch (e: Exception) {
-            }
-            return foundNPCs
-        }
-
-        // This function will return a list of NPCs with closes distance to you
-        fun findNPCs(sortByDist: Boolean = false): ArrayList<NPC> {
-            val npcs = ArrayList<NPC>()
-            Main.clientData.getLocalNPCs().forEach {
-                if (it != null) {
-                    npcs.add(NPC(it))
-                }
-            }
-            if (sortByDist) {
-                npcs.sortBy {
-                    // Sort closest to player
-                    val localPlayer = Main.clientData.getLocalPlayer()
-                    max(
-                        abs(localPlayer.getLocalX() - it.npc.getLocalX()),
-                        abs(localPlayer.getLocalY() - it.npc.getLocalY())
-                    )
-                }
-            }
-            return npcs
-        }
+    fun getConvexHull(): Polygon {
+        return getConvexHull(
+            this.npc,
+            Main.clientData.getNpcModelCache(),
+            this.npc.getComposite().getNpcComposite_id().toLong()
+        )
     }
 
-    suspend fun interact(action: String) {
+    override fun getInteractPoint(): Point {
+        return getRandomPoint(getConvexHull())
+    }
+
+    override suspend fun clickOnMiniMap(): Boolean {
+        return Main.mouse.click(Calculations.worldToMiniMap(npc.getLocalX(), npc.getLocalY()))
+    }
+
+    suspend fun talkTo(): Boolean {
+        return interact("Talk-to")
+    }
+
+    override suspend fun interact(action: String): Boolean {
         //TODO check is player is on scree
         //  TODO - Move camera for player to be on screen
         try {
@@ -74,5 +44,6 @@ class NPC(var npc: Npc) : Actor(npc) {
             Interact.interact(ch, action)
         } catch (e: Exception) {
         }
+        return true
     }
 }
