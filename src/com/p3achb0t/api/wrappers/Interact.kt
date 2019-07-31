@@ -45,52 +45,59 @@ class Interact {
             }
         }
 
-        //TODO Check if action is in the menu, if not move off menuse and retry
+
         suspend fun interact(point: Point, action: String, retryCount: Int = 0): Boolean {
             println("Action: $action ${point.x},${point.y}")
             if (point == Point(-1, -1)) {
                 return false
             }
             if (action.isNotEmpty()) {
-                // TODO - Check to see if we need to right click or not
-                point.let { it1 -> Main.mouse.moveMouse(it1, click = true, clickType = Mouse.ClickType.Right) }
-                delay((Math.random() * 50).toLong())
-                // Move to Action String
-                val actionPoint = Menu.getPointForInteraction(action)
-                if (actionPoint == Point(-1, -1)) {
-                    //Get large box, pick random point thats outside of the menue rect
-                    val menuRect = Menu.getRect()
-                    while (true) {
-                        val x = Random.nextInt(point.x - menuRect.width, point.x + menuRect.width)
-                        val y = Random.nextInt(point.y - menuRect.height, point.y + menuRect.height)
-                        val newPoint = Point(x, y)
-                        // Move mouse out side of menue
-                        if (!menuRect.bounds.contains(newPoint)) {
-                            Main.mouse.moveMouse(newPoint)
-                            break
+                point.let { it1 -> Main.mouse.moveMouse(it1, click = false) }
+
+                // Check to see if we need to right click or not
+                if (Menu.getHoverAction().contains(action)) {
+                    point.let { it1 -> Main.mouse.moveMouse(it1, click = true) }
+                    return true
+                } else {
+
+                    delay((Math.random() * 20).toLong())
+                    // Move to Action String
+                    val actionPoint = Menu.getPointForInteraction(action)
+                    if (actionPoint == Point(-1, -1)) {
+                        //Get large box, pick random point thats outside of the menue rect
+                        val menuRect = Menu.getRect()
+                        while (true) {
+                            val x = Random.nextInt(point.x - menuRect.width, point.x + menuRect.width)
+                            val y = Random.nextInt(point.y - menuRect.height, point.y + menuRect.height)
+                            val newPoint = Point(x, y)
+                            // Move mouse out side of menue
+                            if (!menuRect.bounds.contains(newPoint)) {
+                                Main.mouse.moveMouse(newPoint)
+                                break
+                            }
+                        }
+                        //Give up after 5 trys
+                        if (retryCount == 5) return false
+                        //Reinteracte with menu
+                        interact(point, action, retryCount + 1)
+                    }
+                    println("Clicking $action")
+                    var res = Main.mouse.moveMouse(actionPoint, click = true)
+                    println("Res: $res")
+                    delay((Math.random() * 200 + 100).toLong())
+                    if (res) return true
+                    var count = 0
+                    while (Main.clientData.getMenuVisible()) {
+                        delay((Math.random() * 50).toLong())
+                        count += 1
+                        if (count == 5) {
+                            val cancelPoint = Menu.getPointForInteraction(action)
+                            res = Main.mouse.moveMouse(cancelPoint, click = true)
+                            print("Failed, retrying")
                         }
                     }
-                    //Give up after 5 trys
-                    if (retryCount == 5) return false
-                    //Reinteracte with menu
-                    interact(point, action, retryCount + 1)
+                    return res
                 }
-                println("Clicking $action")
-                var res = Main.mouse.moveMouse(actionPoint, click = true)
-                println("Res: $res")
-                delay((Math.random() * 200 + 100).toLong())
-                if (res) return true
-                var count = 0
-                while (Main.clientData.getMenuVisible()) {
-                    delay((Math.random() * 50).toLong())
-                    count += 1
-                    if (count == 5) {
-                        val cancelPoint = Menu.getPointForInteraction(action)
-                        res = Main.mouse.moveMouse(cancelPoint, click = true)
-                        print("Failed, retrying")
-                    }
-                }
-                return res
             } else {
                 point.let { it1 -> return Main.mouse.moveMouse(it1, click = true, clickType = Mouse.ClickType.Left) }
             }

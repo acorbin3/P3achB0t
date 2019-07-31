@@ -15,7 +15,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 fun gameObjectPaint(g: Graphics) {
-    if (true) {
+    if (false) {
         val sceneData = Main.clientData.getObjectCompositeCache()
         val region = Main.clientData.getRegion()
         val localPlayer = Players.getLocal()

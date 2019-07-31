@@ -14,6 +14,9 @@ import java.awt.Polygon
 
 //Default of -1,-1 means the tile is not valid
 class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Interactable {
+    companion object {
+        val NIL = Tile(-1, -1, -1)
+    }
 
     fun getPolyBounds(): Polygon {
         val regional = getRegionalLocation()

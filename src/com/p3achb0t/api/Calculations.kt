@@ -38,6 +38,7 @@ class Calculations {
         var inventoryDimensions = Rectangle()
         var inventoryBarTopDimensions = Rectangle()
         var inventoryBarBottomDimensions = Rectangle()
+        var mainScreen = Rectangle()
         val resizeableOffScreenAreas = ArrayList<Rectangle>()
         var screenInit = false
 
@@ -134,6 +135,8 @@ class Calculations {
             chatBoxDimensions = chatbox.area
             val tabWidget = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65))
             inventoryDimensions = tabWidget.area
+
+            mainScreen = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0)).area
             // Only set to true if login screen is not visible
             val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
             println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${inventoryDimensions.x},${inventoryDimensions.y}")
@@ -184,6 +187,7 @@ class Calculations {
                         && !inventoryBarBottomDimensions.intersects(rectangle)
                         && !chatBoxDimensions.intersects(rectangle)
                         && !isBehindInventory
+                        && mainScreen.intersects(rectangle)
             }
         }
 

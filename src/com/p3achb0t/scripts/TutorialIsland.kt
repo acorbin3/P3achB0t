@@ -40,6 +40,7 @@ class TutorialIsland {
             jobs.add(OpenDoorFromFirstBuilding())
             jobs.add(MoveToFishingSpot())
             jobs.add(TalkToSurvivalExpertFirstTime())
+            jobs.add(OpenInvetory())
             jobs.add(CatchSomeShrimp())
             jobs.add(ClickSkillsTab())
             jobs.add(TalkToSurvivalGuideAfterSkillsTab())
@@ -98,7 +99,8 @@ class TutorialIsland {
         suspend fun run() {
             if (!isInititilized) init()
             jobs.forEach {
-                if (it.isValidToRun()) {
+                val chatBox = WidgetItem(Widgets.find(263, 1))
+                if (it.isValidToRun(chatBox)) {
                     println("Running: ${it.javaClass.name}")
                     it.execute()
                     println("Completed: ${it.javaClass.name}")
@@ -116,7 +118,7 @@ class TutorialIsland {
         }
 
         class PickName : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 return Widgets.isWidgetAvaliable(558, 0)
             }
 
@@ -159,7 +161,7 @@ class TutorialIsland {
         }
 
         class SelectCharOutfit : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 return Widgets.isWidgetAvaliable(269, 0)
             }
 
@@ -196,9 +198,9 @@ class TutorialIsland {
         }
 
         class ChatWithGielinorGuide : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Before you begin, have a read"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -214,14 +216,14 @@ class TutorialIsland {
                 Dialog.continueDialog(5)
                 Dialog.selectRandomOption()
                 delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog(3)
+                Dialog.continueDialog(completeConvo = true)
                 println("Interact with Gielinor Guide Complete")
             }
 
         }
 
         class OpenOptions : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 return Tabs.isTabFlashing(Tabs.Tab_Types.Options)
             }
 
@@ -233,9 +235,9 @@ class TutorialIsland {
         }
 
         class FinalChatWithGielinor : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "On the side"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -248,16 +250,16 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                Dialog.continueDialog(2)
+                Dialog.continueDialog(completeConvo = true)
                 println("Finished final chat with Gielinor")
             }
 
         }
 
         class OpenDoorFromFirstBuilding : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "time to meet your first instructor"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
 
             }
 
@@ -283,7 +285,7 @@ class TutorialIsland {
         }
 
         class MoveToFishingSpot : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Follow the path to find the next instructor"
                 val chatBox = WidgetItem(Widgets.find(263, 1))
                 val doorLocation = Tile(3098, 3107)
@@ -300,7 +302,7 @@ class TutorialIsland {
         }
 
         class TalkToSurvivalExpertFirstTime : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val survivalExpert = NPCs.findNpc(8503)
                 val text = "Follow the path to find the next instructor"
                 val chatBox = WidgetItem(Widgets.find(263, 1))
@@ -314,33 +316,30 @@ class TutorialIsland {
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        return Dialog.isDialogUp()
-                    }
-                })
-                delay(Random.nextLong(3000, 5000))
-
-                Dialog.continueDialog(3)
-
-                var tabFlashing = false
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        tabFlashing = Tabs.isTabFlashing(Tabs.Tab_Types.Inventory)
-                        return tabFlashing
+                        return Players.getLocal().isIdle()
                     }
                 })
 
-                if (tabFlashing) {
-                    Tabs.openTab(Tabs.Tab_Types.Inventory)
-                }
+                Dialog.continueDialog(completeConvo = true)
+            }
+
+        }
+
+        class OpenInvetory : Job() {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("To view the item you've been given, you'll")
+            }
+
+            override suspend fun execute() {
+                Tabs.openTab(Tabs.Tab_Types.Inventory)
             }
 
         }
 
         class CatchSomeShrimp : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "catch some shrimp"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -367,9 +366,9 @@ class TutorialIsland {
         }
 
         class ClickSkillsTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "on the flashing bar graph icon near the inventory"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -378,9 +377,9 @@ class TutorialIsland {
         }
 
         class TalkToSurvivalGuideAfterSkillsTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "this menu you can view your skills."
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -393,18 +392,17 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog(3)
+                Dialog.continueDialog(completeConvo = true)
 
             }
 
         }
 
         class ChopTree : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "time to cook your shrimp. However, you require"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -432,9 +430,9 @@ class TutorialIsland {
         }
 
         class LightLog : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "that you have some logs, it's time"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -459,9 +457,9 @@ class TutorialIsland {
         }
 
         class CookShrimp : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Now it's time to get cooking."
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -510,9 +508,9 @@ class TutorialIsland {
         }
 
         class OpenGateAfterFishing : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Well done, you've just cooked your first meal!"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -522,6 +520,7 @@ class TutorialIsland {
                 println("Onscreen? ${gateTile.isOnScreen()}")
                 if (gateTile.distanceTo() > 5) {
                     gateTile.clickOnMiniMap()
+                    Camera.turnEast()
                     Utils.waitFor(10, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -542,10 +541,10 @@ class TutorialIsland {
         }
 
         class MoveToKitchen : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Follow the path until you get to the door with the yellow arrow above it."
                 val percentComplete = getPercentComplete()
-                return findTextInGuideBox(text) && percentComplete == .196875
+                return dialogWidget.containsText(text) && percentComplete == .196875
             }
 
             override suspend fun execute() {
@@ -568,9 +567,9 @@ class TutorialIsland {
         }
 
         class TalkToMasterChef : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Talk to the chef indicated"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -578,14 +577,14 @@ class TutorialIsland {
 
                 delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog(5)
+                Dialog.continueDialog(completeConvo = true)
             }
         }
 
         class MakeDough : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "This is the base for many meals"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -601,9 +600,9 @@ class TutorialIsland {
         }
 
         class MakeBread : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Now you have made the dough,"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -614,7 +613,7 @@ class TutorialIsland {
                 val range = GameObjects.find(9736)[0]
                 Camera.turnTo(range)
                 //TODO - Need to improve ineract when menu is full
-                range.interact("Use Dough -> Range")
+                range.interact("Cook Range")
                 // Wait till bread in inventory
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -630,9 +629,9 @@ class TutorialIsland {
         }
 
         class ExitKitchen : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "You've baked your first loaf of bread"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -661,9 +660,9 @@ class TutorialIsland {
         }
 
         class TurnOnRun : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "When navigating the world, you can either run or walk"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -673,9 +672,9 @@ class TutorialIsland {
         }
 
         class MoveToNextBuilding : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Follow the path to the next guide"
-                return findTextInGuideBox(text) && getPercentComplete() == .296875
+                return dialogWidget.containsText(text) && getPercentComplete() == .296875
             }
 
             override suspend fun execute() {
@@ -698,26 +697,31 @@ class TutorialIsland {
         }
 
         class TalkToQuestGuide : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "It's time to learn about quests!"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
                 val questGuide = NPCs.findNpc("Quest Guide")
                 if (questGuide.size > 0) {
-                    Camera.turnTo(questGuide[0])
-                    questGuide[0].interact("Talk to Quest Guide")
-                    delay(Random.nextLong(3250, 5650))
+                    if (!questGuide[0].isOnScreen()) Camera.turnTo(questGuide[0])
+                    questGuide[0].interact("Talk-to Quest Guide")
+                    Utils.waitFor(3, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
                     Dialog.continueDialog()
                 }
             }
         }
 
         class OpenQuestList : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Click on the flashing icon to the left of your inventory."
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -729,9 +733,9 @@ class TutorialIsland {
         }
 
         class TalkToQuestGuide2ndTime : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "This is your quest journal."
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -739,17 +743,22 @@ class TutorialIsland {
                 if (questGuide.size > 0) {
                     if (!questGuide[0].isOnScreen()) Camera.turnTo(questGuide[0])
                     Camera.setHighPitch()
-                    questGuide[0].interact("Talk to Quest Guide")
-                    delay(Random.nextLong(3250, 5650))
+                    questGuide[0].interact("Talk-to Quest Guide")
+                    Utils.waitFor(3, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
                     Dialog.continueDialog(completeConvo = true)
                 }
             }
         }
 
         class GoDownToTheCaves : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "It's time to enter some caves"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -766,9 +775,9 @@ class TutorialIsland {
         }
 
         class WalkAndTalkToSmitingAndMiningGuide : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Next let's get you a weapon,"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -780,7 +789,7 @@ class TutorialIsland {
                     if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
                     miningGuide[0].talkTo()
                     delay(Random.nextLong(1250, 3650))
-                    Dialog.continueDialog(5)
+                    Dialog.continueDialog(completeConvo = true)
 
                 }
             }
@@ -788,9 +797,9 @@ class TutorialIsland {
         }
 
         class MineTin : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "It's quite simple really. To mine a rock, all you need"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -823,9 +832,9 @@ class TutorialIsland {
         }
 
         class MineCopper : Job() {
-            override suspend fun isValidToRun(): Boolean {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Now that you have some tin ore"
-                return findTextInGuideBox(text)
+                return dialogWidget.containsText(text)
             }
 
             override suspend fun execute() {
@@ -841,27 +850,34 @@ class TutorialIsland {
         }
 
         class SmeltBronze : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You now have some tin ore and some copper ore.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You now have some tin ore and some copper ore.")
             }
 
             override suspend fun execute() {
                 val miningspot = Tile(3079, 9498, 0)
-                if (miningspot.distanceTo() > 5) {
-                    miningspot.turnTo()
+                if (miningspot.distanceTo() > 3) {
+
                     miningspot.clickOnMiniMap()
-                    delay(Random.nextLong(3500, 5500))
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return miningspot.distanceTo() < 3
+                        }
+                    })
                 }
 
                 val furnace = GameObjects.find("Furnace")[0]
+                if (!furnace.isOnScreen()) furnace.turnTo()
+                Camera.setHighPitch()
                 furnace.click()
             }
 
         }
 
         class TalkToMiningGuideAboutSmiting : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You've made a bronze bar!")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You've made a bronze bar!")
             }
 
             override suspend fun execute() {
@@ -883,8 +899,8 @@ class TutorialIsland {
         }
 
         class MakeBronzeDagger : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("To smith you'll need a hammer") || findTextInGuideBox("Use an anvil to open") || findTextInGuideBox(
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("To smith you'll need a hammer") || dialogWidget.containsText("Use an anvil to open") || dialogWidget.containsText(
                     "Now you have the smithing"
                 )
             }
@@ -908,9 +924,10 @@ class TutorialIsland {
                             return !Widgets.isWidgetAvaliable(312, 0)
                         }
                     })
+                    delay(Random.nextLong(1000, 2000))
 
                     val oldInventoryCount = Inventory.getCount()
-                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 2))
+                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 2)?.getChildren()?.get(2))
                     daggerSmitingPage.click()
 
                     Utils.waitFor(4, object : Utils.Condition {
@@ -927,8 +944,8 @@ class TutorialIsland {
         }
 
         class AfterSmithingMovetoGate : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Congratulations, you've made your first weapon")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Congratulations, you've made your first weapon")
             }
 
             override suspend fun execute() {
@@ -947,8 +964,8 @@ class TutorialIsland {
         }
 
         class TalkToCombatInstructor : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("In this area you will find out about melee and ranged combat.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("In this area you will find out about melee and ranged combat.")
             }
 
             override suspend fun execute() {
@@ -969,26 +986,26 @@ class TutorialIsland {
                 //Talk with combat instructor
                 val combatInstructor = NPCs.findNpc("Combat Instructor")
                 combatInstructor[0].talkTo()
-                Dialog.continueDialog(3)
+                Dialog.continueDialog(completeConvo = true)
 
             }
 
         }
 
         class OpenEquipment : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You now have access to a new")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You now have access to a new")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.Equiptment)) Tabs.openTab(Tabs.Tab_Types.Equiptment)
+                Tabs.openTab(Tabs.Tab_Types.Equiptment)
             }
 
         }
 
         class OpenEquipmentStats : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("This is your worn inventory.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("This is your worn inventory.")
             }
 
             override suspend fun execute() {
@@ -1000,8 +1017,8 @@ class TutorialIsland {
         }
 
         class EquipBronzeDagger : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You can see what items you are")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You can see what items you are")
             }
 
             override suspend fun execute() {
@@ -1013,8 +1030,8 @@ class TutorialIsland {
         }
 
         class SpeakWithCombatAfterBronzeDaggerEquipt : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You're now holding your dagger")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You're now holding your dagger")
             }
 
             override suspend fun execute() {
@@ -1022,15 +1039,15 @@ class TutorialIsland {
                 //Talk with combat instructor
                 val combatInstructor = NPCs.findNpc("Combat Instructor")
                 combatInstructor[0].talkTo()
-                Dialog.continueDialog(3)
+                Dialog.continueDialog(completeConvo = true)
 
             }
 
         }
 
         class EquipLongSwordAndShield : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("To unequip an item, go to your")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("To unequip an item, go to your")
             }
 
             override suspend fun execute() {
@@ -1043,19 +1060,19 @@ class TutorialIsland {
         }
 
         class OpenCombatTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Click on the flashing crossed")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Click on the flashing crossed")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.Combat)) Tabs.openTab(Tabs.Tab_Types.Combat)
+                Tabs.openTab(Tabs.Tab_Types.Combat)
             }
 
         }
 
         class GoIntoRatCage : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("This is your combat interface. From here,")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("This is your combat interface. From here,")
             }
 
             override suspend fun execute() {
@@ -1075,6 +1092,7 @@ class TutorialIsland {
                 //Enter cage
                 val gates = GameObjects.find("Gate", sortByDistance = true)
                 if (gates.size > 0) {
+                    Camera.turnWest()
                     gates[0].interact("Open")
                     Utils.waitFor(2, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -1089,8 +1107,8 @@ class TutorialIsland {
         }
 
         class MeleeKillRat : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("It's time to slay some rats!")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("It's time to slay some rats!")
             }
 
             override suspend fun execute() {
@@ -1111,8 +1129,8 @@ class TutorialIsland {
         }
 
         class GoTalkToCombatInstructorFor2ndTime : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Pass through the gate and talk to the combat")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Pass through the gate and talk to the combat")
             }
 
             override suspend fun execute() {
@@ -1140,14 +1158,14 @@ class TutorialIsland {
                     }
                 })
                 combatInstructor[0].talkTo()
-                Dialog.continueDialog(4)
+                Dialog.continueDialog(completeConvo = true)
             }
 
         }
 
         class KillRatWithBow : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Now you have a bow and some arrows.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Now you have a bow and some arrows.")
             }
 
             override suspend fun execute() {
@@ -1175,8 +1193,8 @@ class TutorialIsland {
         }
 
         class ExitCaves : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You have completed the tasks here")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You have completed the tasks here")
             }
 
             override suspend fun execute() {
@@ -1200,8 +1218,8 @@ class TutorialIsland {
         }
 
         class UseBank : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Follow the path and you will come to the front of the building")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Follow the path and you will come to the front of the building")
             }
 
             override suspend fun execute() {
@@ -1227,8 +1245,8 @@ class TutorialIsland {
         }
 
         class CloseBankAndDoPollBooth : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("This is your bank.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("This is your bank.")
             }
 
             override suspend fun execute() {
@@ -1248,17 +1266,18 @@ class TutorialIsland {
 
             Camera.turnWest()
             pollTile.click()
+            Dialog.continueDialog(completeConvo = true)
         }
 
         class DoPollBooth : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Now it's time for a quick look at polls")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Now it's time for a quick look at polls")
             }
 
             override suspend fun execute() {
                 //TODO figure out how to access moving objects OR need to find a more center tile point
                 OpenPollBooth()
-                Dialog.continueDialog(3)
+                Dialog.continueDialog(completeConvo = true)
                 //If poll widget open, Close out of polling booth widget (310,2) child index 3
                 closePollWidget()
 
@@ -1268,9 +1287,9 @@ class TutorialIsland {
 
         private suspend fun closePollWidget() {
             try {
-                val pollWidget = Widgets.find(310, 0)
+                val pollWidget = Widgets.find(345, 0)
                 if (pollWidget != null) {
-                    val pollExitWidget = WidgetItem(Widgets.find(310, 2)?.getChildren()?.get(3))
+                    val pollExitWidget = WidgetItem(Widgets.find(345, 2)?.getChildren()?.get(3))
                     pollExitWidget.click()
                 }
             } catch (e: Exception) {
@@ -1279,8 +1298,8 @@ class TutorialIsland {
         }
 
         class ClosePollAndMoveOutOfBank : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Polls are run periodically to let the Old School")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Polls are run periodically to let the Old School")
             }
 
             override suspend fun execute() {
@@ -1307,9 +1326,9 @@ class TutorialIsland {
         }
 
         class TalkToAccountManager : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("The guide here will tell you all about your account.") ||
-                        findTextInGuideBox("This is your Account Management menu")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("The guide here will tell you all about your account.") ||
+                        dialogWidget.containsText("This is your Account Management menu")
             }
 
             override suspend fun execute() {
@@ -1325,19 +1344,19 @@ class TutorialIsland {
         }
 
         class OpenAccountManager : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Click on the flashing icon to open your Account Management")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Click on the flashing icon to open your Account Management")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.AccountManagement)) Tabs.openTab(Tabs.Tab_Types.AccountManagement)
+                Tabs.openTab(Tabs.Tab_Types.AccountManagement)
             }
 
         }
 
         class ExitAccountManagerRoom : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Continue through the next door.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Continue through the next door.")
             }
 
             override suspend fun execute() {
@@ -1356,10 +1375,10 @@ class TutorialIsland {
         }
 
         class MoveToChapelAndTalkToBrotherBrace : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Follow the path to the chapel")
-                        || findTextInGuideBox("Talk with Brother Brace")
-                        || findTextInGuideBox("These two lists can be very helpful for keeping track")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Follow the path to the chapel")
+                        || dialogWidget.containsText("Talk with Brother Brace")
+                        || dialogWidget.containsText("These two lists can be very helpful for keeping track")
             }
 
             override suspend fun execute() {
@@ -1379,30 +1398,30 @@ class TutorialIsland {
         }
 
         class OpenPrayerTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Click on the flashing icon to open the Prayer menu.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.Prayer)) Tabs.openTab(Tabs.Tab_Types.Prayer)
+                Tabs.openTab(Tabs.Tab_Types.Prayer)
             }
 
         }
 
         class OpenFriendsTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You should now see another new icon. Click on the flashing face")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You should now see another new icon. Click on the flashing face")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.FriendsList)) Tabs.openTab(Tabs.Tab_Types.FriendsList)
+                Tabs.openTab(Tabs.Tab_Types.FriendsList)
             }
 
         }
 
         class ExitChapleHouse : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You're almost finished on tutorial island")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You're almost finished on tutorial island")
             }
 
             override suspend fun execute() {
@@ -1421,9 +1440,9 @@ class TutorialIsland {
         }
 
         class GoToWizardHouseAndSpeakWithWizard : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Follow the path to the wizard")
-                        || findTextInGuideBox("This is your magic interface")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Follow the path to the wizard")
+                        || dialogWidget.containsText("This is your magic interface")
             }
 
             override suspend fun execute() {
@@ -1448,19 +1467,19 @@ class TutorialIsland {
         }
 
         class OpenMagicTab : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Open up the magic interface")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Open up the magic interface")
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.Magic)) Tabs.openTab(Tabs.Tab_Types.Magic)
+                Tabs.openTab(Tabs.Tab_Types.Magic)
             }
 
         }
 
         class SelectWindStrikeAndAttackChicken : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You now have some runes.")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You now have some runes.")
             }
 
             override suspend fun execute() {
@@ -1485,8 +1504,8 @@ class TutorialIsland {
         }
 
         class ExitTutIsland : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("You're nearly finished with the tutorial")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("You're nearly finished with the tutorial")
             }
 
             override suspend fun execute() {
@@ -1508,8 +1527,8 @@ class TutorialIsland {
         }
 
         class MainlandLogout : Job() {
-            override suspend fun isValidToRun(): Boolean {
-                return findTextInGuideBox("Welcome to Lumbridge!")
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return dialogWidget.containsText("Welcome to Lumbridge!")
             }
 
             override suspend fun execute() {
@@ -1517,15 +1536,6 @@ class TutorialIsland {
             }
 
         }
-
-
-        private fun findTextInGuideBox(text: String): Boolean {
-            val chatBox = WidgetItem(Widgets.find(263, 1))
-            val textFound = chatBox.containsText(text)
-            return textFound
-        }
-
-
 
 
 

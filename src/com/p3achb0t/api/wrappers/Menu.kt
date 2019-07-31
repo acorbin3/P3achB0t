@@ -57,5 +57,14 @@ class Menu {
             return getPointForInteraction(action) != Point(-1, -1)
         }
 
+        fun getHoverAction(): String {
+            val count = Main.clientData.getMenuCount()
+            val action = Utils.cleanColorText(Main.clientData.getMenuActions()[count - 1])
+            val option = Utils.cleanColorText(Main.clientData.getMenuOptions()[count - 1])
+            return "$action $option"
+
+        }
+
+
     }
 }

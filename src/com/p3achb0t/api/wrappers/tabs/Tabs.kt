@@ -67,13 +67,13 @@ class Tabs {
 
             var noneCount = 0
             var tabOpenCount = 0
-            for (i in 1..50) {
+            for (i in 1..30) {
                 val openTab = getOpenTab()
                 if (tab == openTab) tabOpenCount += 1
                 if (Tab_Types.None == openTab) noneCount += 1
                 delay(25)
             }
-            return noneCount > 5 && tabOpenCount > 5
+            return noneCount > 3 && tabOpenCount > 3
         }
 
         fun getOpenTab(): Tab_Types? {
