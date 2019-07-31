@@ -1,10 +1,14 @@
 package com.p3achb0t.scripts
 
+import com.p3achb0t.Main
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
+import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -46,13 +50,59 @@ class TutorialIsland {
             jobs.add(MoveToKitchen())
             jobs.add(TalkToMasterChef())
             jobs.add(MakeDough())
+            jobs.add(MakeBread())
+            jobs.add(ExitKitchen())
+            jobs.add(TurnOnRun())
+            jobs.add(MoveToNextBuilding())
+            jobs.add(TalkToQuestGuide())
+            jobs.add(OpenQuestList())
+            jobs.add(TalkToQuestGuide2ndTime())
+            jobs.add(GoDownToTheCaves())
+            jobs.add(WalkAndTalkToSmitingAndMiningGuide())
+            jobs.add(MineTin())
+            jobs.add(MineCopper())
+            jobs.add(SmeltBronze())
+            jobs.add(TalkToMiningGuideAboutSmiting())
+            jobs.add(MakeBronzeDagger())
+            jobs.add(AfterSmithingMovetoGate())
+            jobs.add(TalkToCombatInstructor())
+            jobs.add(OpenEquipment())
+            jobs.add(OpenEquipmentStats())
+            jobs.add(EquipBronzeDagger())
+            jobs.add(SpeakWithCombatAfterBronzeDaggerEquipt())
+            jobs.add(EquipLongSwordAndShield())
+            jobs.add(OpenCombatTab())
+            jobs.add(GoIntoRatCage())
+            jobs.add(MeleeKillRat())
+            jobs.add(GoTalkToCombatInstructorFor2ndTime())
+            jobs.add(KillRatWithBow())
+            jobs.add(ExitCaves())
+            jobs.add(UseBank())
+            jobs.add(CloseBankAndDoPollBooth())
+            jobs.add(DoPollBooth())
+            jobs.add(ClosePollAndMoveOutOfBank())
+            jobs.add(TalkToAccountManager())
+            jobs.add(OpenAccountManager())
+            jobs.add(ExitAccountManagerRoom())
+            jobs.add(MoveToChapelAndTalkToBrotherBrace())
+            jobs.add(OpenPrayerTab())
+            jobs.add(OpenFriendsTab())
+            jobs.add(ExitChapleHouse())
+            jobs.add(GoToWizardHouseAndSpeakWithWizard())
+            jobs.add(OpenMagicTab())
+            jobs.add(SelectWindStrikeAndAttackChicken())
+            jobs.add(ExitTutIsland())
             isInititilized = true
         }
 
         suspend fun run() {
             if (!isInititilized) init()
             jobs.forEach {
-                if (it.isValidToRun()) it.execute()
+                if (it.isValidToRun()) {
+                    println("Running: ${it.javaClass.name}")
+                    it.execute()
+                    println("Completed: ${it.javaClass.name}")
+                }
             }
         }
 
@@ -161,24 +211,10 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog(5)
                 Dialog.selectRandomOption()
                 delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog(3)
                 println("Interact with Gielinor Guide Complete")
             }
 
@@ -212,10 +248,7 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog(2)
                 println("Finished final chat with Gielinor")
             }
 
@@ -286,11 +319,7 @@ class TutorialIsland {
                 })
                 delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
+                Dialog.continueDialog(3)
 
                 var tabFlashing = false
                 Utils.waitFor(4, object : Utils.Condition {
@@ -325,6 +354,8 @@ class TutorialIsland {
 
         private suspend fun catchShrimp() {
             val shrimps = NPCs.findNpc(3317)
+            Camera.setHighPitch()
+            shrimps[0].turnTo()
             shrimps[0].interact("Net")
             // Wait till shrimp is in Inventory
             Utils.waitFor(10, object : Utils.Condition {
@@ -364,11 +395,7 @@ class TutorialIsland {
                 })
                 delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
+                Dialog.continueDialog(3)
 
             }
 
@@ -391,7 +418,7 @@ class TutorialIsland {
         }
 
         private suspend fun chopTree() {
-            val trees = GameObjects.find(9730, sortDistance = true)
+            val trees = GameObjects.find(9730, sortByDistance = true)
             // Should be more than 4, lets pick a random one between 1 and 4
             trees[Random.nextInt(0, 3)].interact("Chop")
 
@@ -443,20 +470,20 @@ class TutorialIsland {
                     catchShrimp()
                 }
 
-                var fires = GameObjects.find(26185, sortDistance = true)
+                var fires = GameObjects.find(26185, sortByDistance = true)
                 //No fire & no logs
                 if (fires.size == 0 && Inventory.getCount(LOGS_ID_2511) == 0) {
                     chopTree()
                 }
 
                 //If no fire && have logs, light a fire
-                fires = GameObjects.find(26185, sortDistance = true)
+                fires = GameObjects.find(26185, sortByDistance = true)
                 if (fires.size == 0 && Inventory.getCount(LOGS_ID_2511) > 0) {
                     lightFire()
                 }
 
                 // Check if there is a fire cook the shrimp
-                fires = GameObjects.find(26185, sortDistance = true)
+                fires = GameObjects.find(26185, sortByDistance = true)
                 if (fires.size > 0) {
                     Inventory.open()
                     Inventory.getItem(SHRIMP_ID)?.click()
@@ -505,7 +532,7 @@ class TutorialIsland {
 
                 //Open gate at 9708 or 9470
                 val gateIDs = arrayOf(9708, 9470)
-                val gates = GameObjects.find(gateIDs.random(), sortDistance = true)
+                val gates = GameObjects.find(gateIDs.random(), sortByDistance = true)
                 if (gates.size > 0) {
                     gates[0].interact("Open")
                 }
@@ -533,7 +560,7 @@ class TutorialIsland {
                     })
                 }
 
-                val gameObjects = GameObjects.find(9709, sortDistance = true)
+                val gameObjects = GameObjects.find(9709, sortByDistance = true)
                 if (gameObjects.size > 0) {
                     gameObjects[0].interact("Open")
                 }
@@ -551,15 +578,7 @@ class TutorialIsland {
 
                 delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
-                delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog()
+                Dialog.continueDialog(5)
             }
         }
 
@@ -580,6 +599,925 @@ class TutorialIsland {
             }
 
         }
+
+        class MakeBread : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Now you have made the dough,"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                //dough is 2307
+                //Range is 9736
+                Inventory.open()
+                Inventory.getItem(2307)?.click()
+                val range = GameObjects.find(9736)[0]
+                Camera.turnTo(range)
+                //TODO - Need to improve ineract when menu is full
+                range.interact("Use Dough -> Range")
+                // Wait till bread in inventory
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return Dialog.isDialogUp()
+                    }
+                })
+                delay(Random.nextLong(1250, 1650))
+                Dialog.continueDialog()
+
+            }
+
+        }
+
+        class ExitKitchen : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "You've baked your first loaf of bread"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                //Location 3073,3090
+
+                val tileNearDoor = Tile(3073, 3090)
+                if (tileNearDoor.distanceTo() > 4) {
+                    tileNearDoor.clickOnMiniMap()
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tileNearDoor.distanceTo() < 4
+                        }
+                    })
+                }
+
+                Camera.turnWest()
+
+                //DOOR 9710
+                val door = GameObjects.find(9710)
+                if (door.size > 0) {
+                    door[0].interact("Open Door")
+                }
+            }
+
+        }
+
+        class TurnOnRun : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "When navigating the world, you can either run or walk"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                Run.activateRun()
+            }
+
+        }
+
+        class MoveToNextBuilding : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Follow the path to the next guide"
+                return findTextInGuideBox(text) && getPercentComplete() == .296875
+            }
+
+            override suspend fun execute() {
+                val walkingPath = arrayListOf(
+                    Tile(3073, 3103), Tile(3074, 3117),
+                    Tile(3079, 3127), Tile(3086, 3127)
+                )
+                Walking.walkPath(walkingPath)
+                //Open Door(9716)
+                Camera.setHighPitch()
+                Camera.turnSouth()
+                val doors = GameObjects.find("Door", sortByDistance = true)
+                if (doors.size > 0) {
+                    doors[0].interact("Open Door")
+                }
+
+
+            }
+
+        }
+
+        class TalkToQuestGuide : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "It's time to learn about quests!"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                val questGuide = NPCs.findNpc("Quest Guide")
+                if (questGuide.size > 0) {
+                    Camera.turnTo(questGuide[0])
+                    questGuide[0].interact("Talk to Quest Guide")
+                    delay(Random.nextLong(3250, 5650))
+                    Dialog.continueDialog()
+                }
+            }
+        }
+
+        class OpenQuestList : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Click on the flashing icon to the left of your inventory."
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.QuestList)) {
+                    Tabs.openTab(Tabs.Tab_Types.QuestList)
+                }
+            }
+
+        }
+
+        class TalkToQuestGuide2ndTime : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "This is your quest journal."
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                val questGuide = NPCs.findNpc("Quest Guide")
+                if (questGuide.size > 0) {
+                    if (!questGuide[0].isOnScreen()) Camera.turnTo(questGuide[0])
+                    Camera.setHighPitch()
+                    questGuide[0].interact("Talk to Quest Guide")
+                    delay(Random.nextLong(3250, 5650))
+                    Dialog.continueDialog(completeConvo = true)
+                }
+            }
+        }
+
+        class GoDownToTheCaves : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "It's time to enter some caves"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                // Go down ladder
+                val ladder = GameObjects.find("Ladder")
+                if (ladder.size > 0) {
+                    Camera.turnTo(ladder[0])
+                    ladder[0].interact("Climb-down Ladder")
+                    delay(Random.nextLong(3500, 6400))
+                }
+            }
+
+        }
+
+        class WalkAndTalkToSmitingAndMiningGuide : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Next let's get you a weapon,"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                val walkingPath = arrayListOf(Tile(3079, 9512), Tile(3081, 9504))
+                Walking.walkPath(walkingPath)
+                val miningGuide = NPCs.findNpc("Mining Instructor")
+                if (miningGuide.size > 0) {
+                    Camera.setHighPitch()
+                    if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
+                    miningGuide[0].talkTo()
+                    delay(Random.nextLong(1250, 3650))
+                    Dialog.continueDialog(5)
+
+                }
+            }
+
+        }
+
+        class MineTin : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "It's quite simple really. To mine a rock, all you need"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                //walk to tile(3076,9505
+                //Mine rocks
+                val miningspot = Tile(3076, 9505, 0)
+                if (miningspot.distanceTo() > 5) {
+                    miningspot.clickOnMiniMap()
+                    delay(Random.nextLong(3500, 5500))
+                }
+                Camera.setHighPitch()
+
+                mineRock()
+            }
+        }
+
+        private suspend fun mineRock() {
+            val rocks = GameObjects.find("Rocks", sortByDistance = true)
+            if (rocks.size > 0) {
+                val oldInventoryCount = Inventory.getCount()
+                rocks[0].interact("Mine")
+                Utils.waitFor(8, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return oldInventoryCount != Inventory.getCount()
+                    }
+                })
+            }
+            Dialog.continueDialog()
+        }
+
+        class MineCopper : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                val text = "Now that you have some tin ore"
+                return findTextInGuideBox(text)
+            }
+
+            override suspend fun execute() {
+                val miningspot = Tile(3085, 9502, 0)
+                if (miningspot.distanceTo() > 5) {
+                    miningspot.clickOnMiniMap()
+                    delay(Random.nextLong(3500, 5500))
+                }
+                Camera.setHighPitch()
+                mineRock()
+            }
+
+        }
+
+        class SmeltBronze : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You now have some tin ore and some copper ore.")
+            }
+
+            override suspend fun execute() {
+                val miningspot = Tile(3079, 9498, 0)
+                if (miningspot.distanceTo() > 5) {
+                    miningspot.turnTo()
+                    miningspot.clickOnMiniMap()
+                    delay(Random.nextLong(3500, 5500))
+                }
+
+                val furnace = GameObjects.find("Furnace")[0]
+                furnace.click()
+            }
+
+        }
+
+        class TalkToMiningGuideAboutSmiting : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You've made a bronze bar!")
+            }
+
+            override suspend fun execute() {
+
+                val miningGuide = NPCs.findNpc("Mining Instructor")
+                if (miningGuide.size > 0) {
+                    Camera.setHighPitch()
+                    miningGuide[0].turnTo()
+                    if (!miningGuide[0].isOnScreen()) {
+                        Tile(3081, 9504).clickOnMiniMap()
+                    }
+                    miningGuide[0].talkTo()
+                    delay(Random.nextLong(1250, 3650))
+                    Dialog.continueDialog(completeConvo = true)
+
+                }
+            }
+
+        }
+
+        class MakeBronzeDagger : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("To smith you'll need a hammer") || findTextInGuideBox("Use an anvil to open") || findTextInGuideBox(
+                    "Now you have the smithing"
+                )
+            }
+
+            override suspend fun execute() {
+                //Find Anvil
+                val anvil = GameObjects.find("Anvil", sortByDistance = true)
+                if (anvil.size > 0) {
+
+                    val index = (0..1).random()
+                    anvil[index].turnTo()
+                    Camera.setHighPitch()
+                    Inventory.open()
+                    val bronzeBar = Inventory.getItem(2349)
+                    bronzeBar?.interact("Use")
+                    anvil[index].click()
+                    //Wait for smiting widgets
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return !Widgets.isWidgetAvaliable(312, 0)
+                        }
+                    })
+
+                    val oldInventoryCount = Inventory.getCount()
+                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 2))
+                    daggerSmitingPage.click()
+
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return oldInventoryCount != Inventory.getCount()
+                        }
+                    })
+
+
+                }
+            }
+
+        }
+
+        class AfterSmithingMovetoGate : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Congratulations, you've made your first weapon")
+            }
+
+            override suspend fun execute() {
+                val walkingPath = arrayListOf(Tile(3086, 9505), Tile(3091, 9503))
+                Walking.walkPath(walkingPath)
+                val gate = GameObjects.find("Gate", sortByDistance = true)
+                if (gate.size > 0) {
+                    Camera.setHighPitch()
+                    Camera.turnEast()
+                    gate[0].interact("Open")
+                    delay(Random.nextLong(3500, 5500))
+                }
+
+            }
+
+        }
+
+        class TalkToCombatInstructor : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("In this area you will find out about melee and ranged combat.")
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                // Move to combat insturctor
+                val tileNearCombatInstructor = Tile(3107, 9509)
+                if (tileNearCombatInstructor.distanceTo() > 5) {
+                    tileNearCombatInstructor.clickOnMiniMap()
+                    val local = Players.getLocal()
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tileNearCombatInstructor.distanceTo() < 5 && local.player.getAnimation() == -1
+                        }
+                    })
+                }
+
+                //Talk with combat instructor
+                val combatInstructor = NPCs.findNpc("Combat Instructor")
+                combatInstructor[0].talkTo()
+                Dialog.continueDialog(3)
+
+            }
+
+        }
+
+        class OpenEquipment : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You now have access to a new")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.Equiptment)) Tabs.openTab(Tabs.Tab_Types.Equiptment)
+            }
+
+        }
+
+        class OpenEquipmentStats : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("This is your worn inventory.")
+            }
+
+            override suspend fun execute() {
+                Equipment.open()
+                Equipment.clickButton(Equipment.Companion.Slot.EquiptmentStats)
+                delay(Random.nextLong(1500, 2637))
+            }
+
+        }
+
+        class EquipBronzeDagger : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You can see what items you are")
+            }
+
+            override suspend fun execute() {
+                Inventory.getItem(1205)?.click()
+                delay(Random.nextLong(2500, 4000))
+                WidgetItem(Widgets.find(84, 4)).click() // Close out of Equoptment status
+            }
+
+        }
+
+        class SpeakWithCombatAfterBronzeDaggerEquipt : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You're now holding your dagger")
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                //Talk with combat instructor
+                val combatInstructor = NPCs.findNpc("Combat Instructor")
+                combatInstructor[0].talkTo()
+                Dialog.continueDialog(3)
+
+            }
+
+        }
+
+        class EquipLongSwordAndShield : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("To unequip an item, go to your")
+            }
+
+            override suspend fun execute() {
+                Inventory.getItem(1277)?.click()
+                delay(Random.nextLong(1500, 2500))
+                Inventory.getItem(1171)?.click()
+                delay(Random.nextLong(1500, 2500))
+            }
+
+        }
+
+        class OpenCombatTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Click on the flashing crossed")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.Combat)) Tabs.openTab(Tabs.Tab_Types.Combat)
+            }
+
+        }
+
+        class GoIntoRatCage : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("This is your combat interface. From here,")
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                //Walk over to tile
+                val tileNearGate = Tile(3111, 9519)
+                if (tileNearGate.distanceTo() > 5) {
+                    tileNearGate.clickOnMiniMap()
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tileNearGate.distanceTo() < 5
+                        }
+                    })
+                }
+
+                //Enter cage
+                val gates = GameObjects.find("Gate", sortByDistance = true)
+                if (gates.size > 0) {
+                    gates[0].interact("Open")
+                    Utils.waitFor(2, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
+                }
+
+            }
+
+        }
+
+        class MeleeKillRat : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("It's time to slay some rats!")
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                val rats = NPCs.findNpc("Giant rat")
+                if (rats.size > 0) {
+                    val randomIndex = (0..5).random()
+                    rats[randomIndex].interact("Attack")
+                    Utils.waitFor(20, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
+                }
+            }
+
+        }
+
+        class GoTalkToCombatInstructorFor2ndTime : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Pass through the gate and talk to the combat")
+            }
+
+            override suspend fun execute() {
+                Camera.turnEast()
+
+                val gates = GameObjects.find("Gate", sortByDistance = true)
+                if (gates.size > 0) {
+                    gates[0].interact("Open")
+                    delay(Random.nextLong(4500, 6500))
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
+                }
+
+                val combatInstructor = NPCs.findNpc("Combat Instructor")
+                combatInstructor[0].clickOnMiniMap()
+                delay(Random.nextLong(4500, 6500))
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return combatInstructor[0].distanceTo() < 3
+                    }
+                })
+                combatInstructor[0].talkTo()
+                Dialog.continueDialog(4)
+            }
+
+        }
+
+        class KillRatWithBow : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Now you have a bow and some arrows.")
+            }
+
+            override suspend fun execute() {
+                Inventory.open()
+                Inventory.getItem(841)?.click()
+                delay(Random.nextLong(1500, 2500))
+                Inventory.getItem(882)?.click()
+                delay(Random.nextLong(1500, 2500))
+
+                Camera.setHighPitch()
+                val rats = NPCs.findNpc("Giant rat")
+                if (rats.size > 0) {
+                    val randomIndex = (0..3).random()
+                    rats[randomIndex].turnTo()
+                    rats[randomIndex].interact("Attack")
+                    Utils.waitFor(20, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle()
+                        }
+                    })
+                }
+            }
+
+        }
+
+        class ExitCaves : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You have completed the tasks here")
+            }
+
+            override suspend fun execute() {
+                Camera.setHighPitch()
+                val tileNearLadder = Tile(3110, 9526)
+                if (tileNearLadder.distanceTo() > 3) {
+                    tileNearLadder.clickOnMiniMap()
+                    Utils.waitFor(4, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tileNearLadder.distanceTo() < 3
+                        }
+                    })
+
+                }
+
+                val ladder = GameObjects.find("Ladder", sortByDistance = true)
+                ladder[0].interact("Climb")
+            }
+
+        }
+
+        class UseBank : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Follow the path and you will come to the front of the building")
+            }
+
+            override suspend fun execute() {
+                val tileNearBank = Tile(3122, 3123)
+                if (tileNearBank.distanceTo() > 5) {
+                    tileNearBank.clickOnMiniMap()
+                    Utils.waitFor(10, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return tileNearBank.distanceTo() < 3
+                        }
+                    })
+
+                }
+
+                val bankBooth = GameObjects.find("Bank booth", sortByDistance = true)
+                if (bankBooth.size > 0) {
+                    bankBooth[0].interact("Use")
+                }
+
+            }
+
+        }
+
+        class CloseBankAndDoPollBooth : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("This is your bank.")
+            }
+
+            override suspend fun execute() {
+                Bank.close()
+                OpenPollBooth()
+            }
+
+        }
+
+        private suspend fun OpenPollBooth() {
+            Camera.setHighPitch()
+            val pollBooth = GameObjects.find(26815)
+            val pollTile = Tile(3119, 3121, Main.clientData.getPlane())
+            if (pollTile.distanceTo() > 3)
+                Tile(3120, 3121, Main.clientData.getPlane()).clickOnMiniMap()
+
+
+            Camera.turnWest()
+            pollTile.click()
+        }
+
+        class DoPollBooth : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Now it's time for a quick look at polls")
+            }
+
+            override suspend fun execute() {
+                //TODO figure out how to access moving objects OR need to find a more center tile point
+                OpenPollBooth()
+                Dialog.continueDialog(3)
+                //If poll widget open, Close out of polling booth widget (310,2) child index 3
+                closePollWidget()
+
+            }
+
+        }
+
+        private suspend fun closePollWidget() {
+            try {
+                val pollWidget = Widgets.find(310, 0)
+                if (pollWidget != null) {
+                    val pollExitWidget = WidgetItem(Widgets.find(310, 2)?.getChildren()?.get(3))
+                    pollExitWidget.click()
+                }
+            } catch (e: Exception) {
+                println("ERROR: Somthing happened when trying to find the poll widget")
+            }
+        }
+
+        class ClosePollAndMoveOutOfBank : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Polls are run periodically to let the Old School")
+            }
+
+            override suspend fun execute() {
+                closePollWidget()
+                //Open Door(9721) at location(3125,3124)
+                val doors = GameObjects.find(9721, sortByDistance = true)
+                if (doors.isNotEmpty()) {
+                    doors.forEach {
+                        if (it.getGlobalLocation().x == 3125 && it.getGlobalLocation().y == 3124) {
+                            Camera.setHighPitch()
+                            it.turnTo()
+                            it.interact("Open")
+                            Utils.waitFor(6, object : Utils.Condition {
+                                override suspend fun accept(): Boolean {
+                                    delay(100)
+                                    return Players.getLocal().isIdle() && Players.getLocal().getGlobalLocation().x == 3125
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+
+        }
+
+        class TalkToAccountManager : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("The guide here will tell you all about your account.") ||
+                        findTextInGuideBox("This is your Account Management menu")
+            }
+
+            override suspend fun execute() {
+                val accountManager = NPCs.findNpc("Account Guide")
+                if (accountManager.isNotEmpty()) {
+                    Camera.setHighPitch()
+                    accountManager[0].talkTo()
+                    delay(Random.nextLong(2500, 4500))
+                    Dialog.continueDialog(completeConvo = true)
+                }
+            }
+
+        }
+
+        class OpenAccountManager : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Click on the flashing icon to open your Account Management")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.AccountManagement)) Tabs.openTab(Tabs.Tab_Types.AccountManagement)
+            }
+
+        }
+
+        class ExitAccountManagerRoom : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Continue through the next door.")
+            }
+
+            override suspend fun execute() {
+                val doors = GameObjects.find(9722, sortByDistance = true)
+                if (doors.isNotEmpty()) {
+                    doors.forEach {
+                        if (it.getGlobalLocation().x == 3130 && it.getGlobalLocation().y == 3124) {
+                            Camera.turnEast()
+                            Camera.setHighPitch()
+                            it.interact("Open")
+                        }
+                    }
+                }
+            }
+
+        }
+
+        class MoveToChapelAndTalkToBrotherBrace : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Follow the path to the chapel")
+                        || findTextInGuideBox("Talk with Brother Brace")
+                        || findTextInGuideBox("These two lists can be very helpful for keeping track")
+            }
+
+            override suspend fun execute() {
+                var brotherBrace = NPCs.findNpc("Brother Brace")
+                val pathToChapel = arrayListOf(Tile(3132, 3115), Tile(3130, 3107))
+                if ((brotherBrace.isNotEmpty() && brotherBrace[0].distanceTo() > 13) || brotherBrace.isEmpty())
+                    Walking.walkPath(pathToChapel)
+                Camera.setHighPitch()
+                brotherBrace = NPCs.findNpc("Brother Brace")
+                if (!brotherBrace[0].isOnScreen())
+                    brotherBrace[0].turnTo()
+                brotherBrace[0].talkTo()
+                delay(Random.nextLong(3500, 6500))
+                Dialog.continueDialog(completeConvo = true)
+            }
+
+        }
+
+        class OpenPrayerTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Click on the flashing icon to open the Prayer menu.")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.Prayer)) Tabs.openTab(Tabs.Tab_Types.Prayer)
+            }
+
+        }
+
+        class OpenFriendsTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You should now see another new icon. Click on the flashing face")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.FriendsList)) Tabs.openTab(Tabs.Tab_Types.FriendsList)
+            }
+
+        }
+
+        class ExitChapleHouse : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You're almost finished on tutorial island")
+            }
+
+            override suspend fun execute() {
+                val doors = GameObjects.find(9723, sortByDistance = true)
+                if (doors.isNotEmpty()) {
+                    doors.forEach {
+                        if (it.getGlobalLocation().x == 3122 && it.getGlobalLocation().y == 3102) {
+                            Camera.turnSouth()
+                            Camera.setHighPitch()
+                            it.interact("Open")
+                        }
+                    }
+                }
+            }
+
+        }
+
+        class GoToWizardHouseAndSpeakWithWizard : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Follow the path to the wizard")
+                        || findTextInGuideBox("This is your magic interface")
+            }
+
+            override suspend fun execute() {
+                val pathToWizardHouse = arrayListOf(
+                    Tile(3128, 3090), Tile(3138, 3087),
+                    Tile(3140, 3087)
+                )
+                if (pathToWizardHouse[2].distanceTo() > 6) {
+                    Walking.walkPath(pathToWizardHouse)
+                }
+                val magicInstructor = NPCs.findNpc("Magic Instructor")
+                if (magicInstructor.isNotEmpty()) {
+                    Camera.setHighPitch()
+                    magicInstructor[0].turnTo()
+                    magicInstructor[0].talkTo()
+                    delay(Random.nextLong(2000, 3500))
+                    Dialog.continueDialog(completeConvo = true)
+
+                }
+            }
+
+        }
+
+        class OpenMagicTab : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Open up the magic interface")
+            }
+
+            override suspend fun execute() {
+                if (Tabs.isTabFlashing(Tabs.Tab_Types.Magic)) Tabs.openTab(Tabs.Tab_Types.Magic)
+            }
+
+        }
+
+        class SelectWindStrikeAndAttackChicken : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You now have some runes.")
+            }
+
+            override suspend fun execute() {
+                Magic.cast(Magic.Companion.Spells.Wind_Strike)
+                //Attack chicken
+                Camera.setHighPitch()
+                val chickens = NPCs.findNpc("Chicken")
+                if (chickens.isNotEmpty()) {
+                    val randChick = Random.nextInt(0, chickens.size - 1)
+                    chickens[randChick].turnTo()
+                    chickens[randChick].interact("Cast")
+                    Utils.waitFor(15, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return Players.getLocal().isIdle() && chickens[randChick].isIdle()
+                        }
+                    })
+
+                }
+            }
+
+        }
+
+        class ExitTutIsland : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("You're nearly finished with the tutorial")
+            }
+
+            override suspend fun execute() {
+                val magicInstructor = NPCs.findNpc("Magic Instructor")
+                if (magicInstructor.isNotEmpty()) {
+                    Camera.setHighPitch()
+                    if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
+                    magicInstructor[0].talkTo()
+                    delay(Random.nextLong(2000, 3500))
+                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.selectionOption("Yes")
+                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.selectionOption("No")
+                    Dialog.continueDialog(completeConvo = true)
+
+                }
+            }
+
+        }
+
+        class MainlandLogout : Job() {
+            override suspend fun isValidToRun(): Boolean {
+                return findTextInGuideBox("Welcome to Lumbridge!")
+            }
+
+            override suspend fun execute() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        }
+
 
         private fun findTextInGuideBox(text: String): Boolean {
             val chatBox = WidgetItem(Widgets.find(263, 1))

@@ -18,6 +18,7 @@ class NPC(var npc: Npc) : Actor(npc), Interactable {
         )
     }
 
+
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
     }

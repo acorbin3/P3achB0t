@@ -7,6 +7,10 @@ class Walking {
     companion object {
         suspend fun walkPath(path: ArrayList<Tile>, reverse: Boolean = false) {
             if (reverse) path.reverse()
+            //Check to see if we are alreay at the end of the path, return if so
+            if (path[path.size - 1].distanceTo() < 5)
+                return
+            var distance = 0
             path.forEach {
                 val t = it.getGlobalLocation()
                 println("Clicking on map: for tile: (${t.x},${t.y})")
@@ -16,8 +20,12 @@ class Walking {
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        println("Distance: " + it.distanceTo())
-                        return it.distanceTo() < 2
+                        val curDist = it.distanceTo()
+                        if (distance != curDist) {
+                            println("Distance: $curDist")
+                            distance = curDist
+                        }
+                        return curDist < 2
                     }
                 })
             }

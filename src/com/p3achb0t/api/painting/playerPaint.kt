@@ -31,7 +31,11 @@ fun playerPaint(g: Graphics) {
                     )
                 ) {
                     g.color = Color.GREEN
-                    g.drawString(_player.getName().getName(), point.x, point.y)
+                    g.drawString(
+                        _player.getName().getName() + " ${_player.getAnimation()}  ${_player.getInteracting()}",
+                        point.x,
+                        point.y
+                    )
                 }
                 val polygon = getActorTriangles(
                     _player,

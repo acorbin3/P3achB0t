@@ -137,7 +137,7 @@ class Calculations {
             // Only set to true if login screen is not visible
             val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
             println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${inventoryDimensions.x},${inventoryDimensions.y}")
-            if (login.area.x == 0 && login.area.y == 0 && login.area.height == 0 && login.area.width == 0 && inventoryDimensions.x > 10) {
+            if (login.area.x == 0 && login.area.y == 0 && login.area.height == 0 && login.area.width == 0 && miniMapWidget.area.x > 500) {
                 screenInit = true
                 resizeableOffScreenAreas.add(chatBoxDimensions)
                 resizeableOffScreenAreas.add(miniMapDimensions)

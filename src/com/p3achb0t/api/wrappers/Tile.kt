@@ -31,7 +31,8 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
     }
 
     override fun getInteractPoint(): Point {
-        val poly = Calculations.getCanvasTileAreaPoly(x, y)
+        val regional = getRegionalLocation()
+        val poly = Calculations.getCanvasTileAreaPoly(regional.x, regional.y)
         return getRandomPoint(poly)
     }
 

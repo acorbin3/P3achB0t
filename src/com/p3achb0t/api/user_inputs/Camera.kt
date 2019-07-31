@@ -5,6 +5,7 @@ import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
 import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.random.Random
 
 
@@ -27,9 +28,9 @@ class Camera {
             val local = Main.clientData.getLocalPlayer()
 
             var degree = 360 - Math.toDegrees(
-                Math.atan2(
-                    (locatable.getGlobalLocation().x - local.getLocalX()).toDouble(),
-                    (local.getLocalY() - locatable.getGlobalLocation().y).toDouble()
+                atan2(
+                    (locatable.getRegionalLocation().x - local.getLocalX()).toDouble(),
+                    (local.getLocalY() - locatable.getRegionalLocation().y).toDouble()
                 )
             )
             if (degree >= 360) {
@@ -41,6 +42,27 @@ class Camera {
         fun turnTo(locatable: Locatable) {
 //            turnPitchTo(locatable)
             turnAngleTo(locatable)
+        }
+
+        fun turnWest() {
+            setAngle(270 + Random.nextInt(-10, 10))
+        }
+
+        fun turnEast() {
+            setAngle(90 + Random.nextInt(-10, 10))
+        }
+
+        fun turnNorth() {
+            setAngle(0 + Random.nextInt(-10, 10))
+        }
+
+        fun turnSouth() {
+            setAngle(180 + Random.nextInt(-10, 10))
+        }
+
+        fun setHighPitch() {
+            if (pitch < 300)
+                setPitch(350 + Random.nextInt(-10, 10))
         }
 
         /**

@@ -2,17 +2,13 @@ package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.wrappers.Items
+import com.p3achb0t.api.wrappers.widgets.doesWidgetContainText
 import com.p3achb0t.hook_interfaces.Widget
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.control.TreeItem
 import tornadofx.*
-
-//This class is used to create a widget explorer to find widgets
-// To lanch the widget explorer you just
-// 1. Create an app object/class:// class MyApp : App(WidgetExplorer::class)
-// 2. Then need to call: //    launch<MyApp>(args)
 
 class WidgetExplorer : View() {
     private val controller: WidgetController by inject()
@@ -132,47 +128,6 @@ class WidgetController : Controller() {
         }
     }
 
-    fun getStrippedWidgetDetails(widget: Widget): String {
-        var result = ""
-        try {
-            result += widget.getWidget_id().toString() + "\n"
-            result += widget.getText() + "\n"
-            var actions = ""
-            if (widget.getActions() != null) {
-                widget.getActions().iterator().forEach { actions += "$it," }
-            }
-            result += "$actions\n"
-            result += widget.getChildTextureId().toString() + "\n"
-            result += widget.getItemId().toString() + "\n"
-            result += widget.getComponentIndex().toString() + "\n"
-            result += widget.getHeight().toString() + "\n"
-            result += widget.getWidth().toString() + "\n"
-            result += widget.getItemStackSize().toString() + "\n"
-
-            result += widget.getSpriteId().toString() + "\n"
-            result += widget.getShadowColor().toString() + "\n"
-            result += widget.getActionType().toString() + "\n"
-            result += widget.getEnabledMediaId().toString() + "\n"
-            result += widget.getEnabledMediaType().toString() + "\n"
-            result += widget.getDisabledMediaId().toString() + "\n"
-            result += widget.getDisabledMediaType().toString() + "\n"
-            result += widget.getHidden().toString() + "\n"
-            result += widget.getTextureId().toString() + "\n"
-            result += widget.getTooltip() + "\n"
-            result += widget.getSelectedAction() + "\n"
-            result += widget.getTextColor().toString() + "\n"
-
-            widget.getChildren().iterator().forEach { result += getStrippedWidgetDetails(it) }
-        } catch (e: Exception) {
-            return result
-        }
-        return result
-    }
-
-    fun doesWidgetContainText(widget: Widget, filter: String): Boolean {
-        val text = getStrippedWidgetDetails(widget)
-        return text.contains(filter)
-    }
 
     fun getWidgetDetails(widget: Widget, index: Int): String {
         var result = "--$index--\n"

@@ -27,10 +27,11 @@ class Menu {
                 val lineHeight = 15
                 var yDiff = baseHeight
                 for (i in 1..mCount) {
-                    var input = Main.clientData.getMenuActions()[mCount - i]
-                    input = Utils.cleanColorText(input)
+                    val action = Utils.cleanColorText(Main.clientData.getMenuActions()[mCount - i])
+                    val option = Utils.cleanColorText(Main.clientData.getMenuOptions()[mCount - i])
+                    val menuItem = "$action $option"
 
-                    if (input.toLowerCase().contains(action.toLowerCase())) {
+                    if (menuItem.toLowerCase().contains(action.toLowerCase())) {
                         val rec = Rectangle(mX - 1, mY + yDiff, width, lineHeight)
                         while (true) {
                             // Just grab first point and move it to on screen.

@@ -8,6 +8,7 @@ import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.LoggingIntoAccount
+import com.p3achb0t.api.LoggingIntoClient
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
@@ -362,7 +363,7 @@ fun main() {
 //                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
 //                Walking.walkPath(path)
 //                Walking.walkPath(path,true)
-                if (!Calculations.screenInit) {
+                if (!Calculations.screenInit && LoggingIntoClient.loggedIn) {
                     Calculations.initScreenWidgetDimentions()
                 }
 

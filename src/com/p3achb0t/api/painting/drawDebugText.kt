@@ -53,7 +53,7 @@ fun drawDebugText(g: Graphics) {
                         "${Main.clientData.getLocalPlayer().getLocalY() / 128 + Main.clientData.getBaseY()})  " +
                         "mapAngle: ${Main.clientData.getMapAngle()}", 50, 190
             )
-            g.drawString("Tutorial Island % Complete: ${TutorialIsland.getPercentComplete()}", 50, 200)
+            g.drawString("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete() * 100)}", 50, 200)
             g.drawString("Zoom: ${Main.clientData.getZoomExact()}", 50, 170)
         } catch (e: Exception) {
         }

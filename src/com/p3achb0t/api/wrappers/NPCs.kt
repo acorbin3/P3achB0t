@@ -6,10 +6,10 @@ import kotlin.math.max
 
 class NPCs {
     companion object {
-        fun findNpc(npcName: String): ArrayList<NPC> {
+        fun findNpc(npcName: String, sortByDist: Boolean = true): ArrayList<NPC> {
             val foundNPCs = ArrayList<NPC>()
             try {
-                val npcs = findNpcs(sortByDist = true)
+                val npcs = findNpcs(sortByDist = sortByDist)
                 npcs.forEach {
                     if (it.npc.getComposite().getName() == npcName) {
                         foundNPCs.add(it)

@@ -29,7 +29,7 @@ class GameObjects {
                 return gameObjects
             }
 
-        fun find(id: Int, tile: Tile = Tile(), sortDistance: Boolean = false): ArrayList<GameObject> {
+        fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
             val gameObjects = ArrayList<GameObject>()
             val region = Main.clientData.getRegion()
 
@@ -64,14 +64,14 @@ class GameObjects {
                 //TODO - Specific tile we will zoom into that specific spot. This should be faster
 
             }
-            if (sortDistance) {
+            if (sortByDistance) {
                 val local = Players.getLocal()
                 gameObjects.sortBy { it.distanceTo(local) }
             }
             return gameObjects
         }
 
-        fun find(name: String, tile: Tile = Tile(), sortDistance: Boolean = false): ArrayList<GameObject> {
+        fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
             val gameObjects = ArrayList<GameObject>()
             val region = Main.clientData.getRegion()
 
@@ -106,7 +106,7 @@ class GameObjects {
                 //TODO - Specific tile we will zoom into that specific spot. This should be faster
 
             }
-            if (sortDistance) {
+            if (sortByDistance) {
                 val local = Players.getLocal()
                 gameObjects.sortBy { it.distanceTo(local) }
             }

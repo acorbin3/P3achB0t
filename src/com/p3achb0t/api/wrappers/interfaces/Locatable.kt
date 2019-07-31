@@ -3,9 +3,12 @@ package com.p3achb0t.api.wrappers.interfaces
 import com.p3achb0t.Main
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
+import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Tile
+import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
+import kotlin.random.Random
 
 interface Locatable {
     fun draw(g: Graphics2D)
@@ -33,6 +36,11 @@ interface Locatable {
         val y = (tile.y - Main.clientData.getBaseY() shl Constants.REGION_SHIFT)
 
         return Tile(x, y, tile.z)
+    }
+
+    suspend fun turnTo() {
+        Camera.turnTo(this)
+        delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     fun isOnScreen(): Boolean
 

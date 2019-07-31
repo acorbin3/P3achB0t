@@ -9,6 +9,7 @@ import kotlin.math.max
 class Player(var player: com.p3achb0t.hook_interfaces.Player) : Actor(player) {
     companion object {
 
+
         // This function will return a list of NPCs with closes distance to you
         fun findPlayers(sortByDist: Boolean = false): ArrayList<Player> {
             val players = ArrayList<Player>()

@@ -38,6 +38,8 @@ class Equipment {
         }
 
         suspend fun open(waitForActionToComplete: Boolean = true) {
+            if (isOpen()) return
+
             println("Opening Equiptment tab")
             Tabs.openTab(Tabs.Tab_Types.Equiptment)
             //Wait for tab to be open
@@ -49,6 +51,20 @@ class Equipment {
                     }
                 })
             if (!isOpen()) open()
+        }
+
+        suspend fun clickButton(slot: Slot, waitForActionToComplete: Boolean = true) {
+            val item = getItemAtSlot(slot)
+            println("Removing item from ${slot.name} ${item?.area}")
+            item?.click()
+            // Wait till item gets removed
+            if (waitForActionToComplete)
+                Utils.waitFor(2, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return !isEquipmentSlotEquipted(slot)
+                    }
+                })
         }
 
         suspend fun unEquiptItem(slot: Slot, waitForActionToComplete: Boolean = true) {

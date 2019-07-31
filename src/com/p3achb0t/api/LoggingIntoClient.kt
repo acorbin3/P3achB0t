@@ -12,18 +12,24 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Point
 
+class LoggingIntoClient {
+    companion object {
+        var loggedIn = false
+    }
+}
+
 fun LoggingIntoAccount() {
     //Logging into the client
     Thread.sleep(100)
     GlobalScope.launch {
-        var loggedIn = false
+
         val mouse = Mouse()
         repeat(1000) {
             try {
 //                clientData = getClientData()
 
                 // When loaded login
-                if (!loggedIn && Main.clientData.getGameState() == 10) {
+                if (!LoggingIntoClient.loggedIn && Main.clientData.getGameState() == 10) {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
@@ -41,6 +47,7 @@ fun LoggingIntoAccount() {
                     println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()
+                    LoggingIntoClient.loggedIn = true
                 }
 
 

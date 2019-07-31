@@ -36,7 +36,8 @@ class Magic {
         //TODO - Select spell
         //TODO - deselect spell
 
-        suspend fun cast(spell: Spells, reTryCount: Int = 0) {
+
+        suspend fun cast(spell: Spells) {
             // Ingore if spell is already selected
             try {
                 if (Utils.cleanColorText(
@@ -52,6 +53,7 @@ class Magic {
             val spellWidget = WidgetItem(Widgets.find(PARENT, spell.widgetID))
             if (spellWidget.widget != null) {
                 println(spellWidget.getInteractPoint())
+
                 spellWidget.interact("Cast")
             }
         }
