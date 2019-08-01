@@ -15,7 +15,7 @@ open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
 
 
     fun isIdle(): Boolean {
-        return raw.getAnimation() == -1 && raw.getInteracting() == -1
+        return raw.getAnimation() == -1 && raw.getInteracting() == -1 && raw.getRuntimeAnimation() == 808
     }
 
     suspend fun waitTillIdle(time: Int = 4) {

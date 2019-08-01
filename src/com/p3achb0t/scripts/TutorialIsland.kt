@@ -395,7 +395,6 @@ class TutorialIsland {
 
         private suspend fun catchShrimp() {
             val shrimps = NPCs.findNpc(3317)
-            Camera.setHighPitch()
             shrimps[0].turnTo()
             shrimps[0].interact("Net")
             // Wait till shrimp is in Inventory
@@ -781,7 +780,6 @@ class TutorialIsland {
                 val questGuide = NPCs.findNpc("Quest Guide")
                 if (questGuide.size > 0) {
                     if (!questGuide[0].isOnScreen()) Camera.turnTo(questGuide[0])
-                    Camera.setHighPitch()
                     questGuide[0].interact("Talk-to Quest Guide")
                     Utils.waitFor(3, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -839,6 +837,7 @@ class TutorialIsland {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "It's quite simple really. To mine a rock, all you need"
                 return dialogWidget.containsText(text)
+                        || dialogWidget.containsText("Now that you have some copper ore,")
             }
 
             override suspend fun execute() {
@@ -919,7 +918,6 @@ class TutorialIsland {
 
                 val miningGuide = NPCs.findNpc("Mining Instructor")
                 if (miningGuide.size > 0) {
-                    Camera.setHighPitch()
                     miningGuide[0].turnTo()
                     if (!miningGuide[0].isOnScreen()) {
                         Tile(3081, 9504).clickOnMiniMap()
@@ -1216,7 +1214,6 @@ class TutorialIsland {
                 Inventory.getItem(882)?.click()
                 delay(Random.nextLong(1500, 2500))
 
-                Camera.setHighPitch()
                 val rats = NPCs.findNpc("Giant rat")
                 if (rats.size > 0) {
                     val randomIndex = (0..3).random()
@@ -1348,7 +1345,6 @@ class TutorialIsland {
                 if (doors.isNotEmpty()) {
                     doors.forEach {
                         if (it.getGlobalLocation().x == 3125 && it.getGlobalLocation().y == 3124) {
-                            Camera.setHighPitch()
                             it.turnTo()
                             it.interact("Open")
                             Utils.waitFor(6, object : Utils.Condition {
@@ -1527,7 +1523,6 @@ class TutorialIsland {
             override suspend fun execute() {
                 Magic.cast(Magic.Companion.Spells.Wind_Strike)
                 //Attack chicken
-                Camera.setHighPitch()
                 val chickens = NPCs.findNpc("Chicken")
                 if (chickens.isNotEmpty()) {
                     val randChick = Random.nextInt(0, chickens.size - 1)

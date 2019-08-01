@@ -58,7 +58,7 @@ fun playerPaint(g: Graphics) {
                 ) {
                     g.color = Color.GREEN
                     g.drawString(
-                        _player.getName().getName() + " ${_player.getAnimation()}  ${_player.getInteracting()}",
+                        _player.getName().getName() + " ${_player.getAnimation()}  ${_player.getInteracting()} ${_player.getRuntimeAnimation()} ${_player.getStandAnimation()}",
                         namePoint.x,
                         namePoint.y
                     )
