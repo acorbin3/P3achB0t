@@ -34,12 +34,8 @@ fun debugPaint(): PaintListener {
                     if (!Bank.isOpen()) {
 
                         playerPaint(g)
-
                         paintNPCs(g)
-
-
                         widgetBlockingPaint(g)
-
                         ///////Object paint//////////
                         gameObjectPaint(g)
 //TODO - ground items issue

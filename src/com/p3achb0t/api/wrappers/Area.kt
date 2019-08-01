@@ -28,9 +28,12 @@ class Area {
 
     constructor(vararg tiles: Tile) {
         this.plane = tiles[0].z
+        //Create a polygon from the files
         for (tile in tiles) {
-            polygon.addPoint(tile.x, tile.y)
+            polygon.addPoint(tile.x + 1, tile.y + 1)
         }
+
+        //Convert the polygon to all tiles that would be associated with this area
         val r = polygon.bounds
         var c = 0
         val lTiles = Array(r.width * r.height) { _ -> Tile() }
@@ -63,8 +66,8 @@ class Area {
         for (locatable in locatables) {
             val tile = locatable.getGlobalLocation()
             if (tile.z != plane || !polygon.contains(tile.x, tile.y) && !polygon.intersects(
-                    tile.x - 0.5,
-                    tile.y - 0.5,
+                    tile.x + 0.5,
+                    tile.y + 0.5,
                     1.0,
                     1.0
                 )

@@ -12,11 +12,10 @@ import java.awt.Color
 import java.awt.Graphics
 
 data class DebugText(val text: String = "", val color: Color = Color.WHITE)
-
 fun drawDebugText(g: Graphics) {
 
     val debugText = arrayListOf<DebugText>()
-    if (false) {
+    if (true) {
         g.color = Color.white
         debugText.add(DebugText("Mouse x:${Main.mouseEvent?.x} y:${Main.mouseEvent?.y}"))
         debugText.add(DebugText("clientData.gameCycle :${Main.clientData.getGameCycle()}"))

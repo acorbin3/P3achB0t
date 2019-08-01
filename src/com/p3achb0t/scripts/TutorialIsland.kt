@@ -38,6 +38,7 @@ class TutorialIsland {
             jobs.add(OpenOptions())
             jobs.add(FinalChatWithGielinor())
             jobs.add(OpenDoorFromFirstBuilding())
+            jobs.add(turnOffRoofsAndSound())
             jobs.add(MoveToFishingSpot())
             jobs.add(TalkToSurvivalExpertFirstTime())
             jobs.add(OpenInvetory())
@@ -177,9 +178,10 @@ class TutorialIsland {
                         3 -> widgetIndex.childID = arrayListOf(125, 124, 123, 122, 105).random().toString()
                         4 -> widgetIndex.childID = arrayListOf(131, 130, 129, 127, 121).random().toString()
                     }
-
-                    WidgetItem(Widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt())).click()
-                    delay(Random.nextLong(250, 650))
+                    for (i in 0..Random.nextInt(5)) {
+                        WidgetItem(Widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt())).click()
+                        delay(Random.nextLong(250, 650))
+                    }
                 }
                 //Randomly pick if you are going to be afemale
                 if (Random.nextBoolean()) {
@@ -213,10 +215,10 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                Dialog.continueDialog(5)
+                Dialog.continueDialog()
                 Dialog.selectRandomOption()
                 delay(Random.nextLong(1250, 1650))
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
                 println("Interact with Gielinor Guide Complete")
             }
 
@@ -230,6 +232,45 @@ class TutorialIsland {
             override suspend fun execute() {
                 Tabs.openTab(Tabs.Tab_Types.Options)
                 delay(Random.nextLong(1250, 1650))
+            }
+
+        }
+
+        class turnOffRoofsAndSound : Job() {
+            override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+                return Players.getLocal().getGlobalLocation().x == 3098
+                        && Players.getLocal().getGlobalLocation().y == 3107
+            }
+
+            override suspend fun execute() {
+                Tabs.openTab(Tabs.Tab_Types.Options)
+                delay(Random.nextLong(500, 1500))
+                //Display settings(261,1)child 1
+                WidgetItem(Widgets.find(261, 1)?.getChildren()?.get(1)).click()
+                delay(Random.nextLong(500, 1500))
+                //Advanced options(261,35
+                WidgetItem(Widgets.find(261, 35)).click()
+                delay(Random.nextLong(500, 1500))
+                //Turn off roofs(60,14). Texture Id when on is 762
+                Widgets.waitTillWidgetNotNull(60, 14)
+                val roofToggle = Widgets.find(60, 14)
+                if (roofToggle?.getTextureId() == 761) {
+                    WidgetItem(Widgets.find(60, 14)).click()
+                    delay(Random.nextLong(500, 1500))
+                }
+                //Close out of Advanced options widget(60,2) child index 3
+                WidgetItem(Widgets.find(60, 2)?.getChildren()?.get(3)).click()
+
+                //Turn off music
+                //Open audio section
+                WidgetItem(Widgets.find(261, 1)?.getChildren()?.get(3)).click()
+                delay(Random.nextLong(300, 700))
+                WidgetItem(Widgets.find(261, 43)).click()
+                delay(Random.nextLong(300, 700))
+                WidgetItem(Widgets.find(261, 51)).click()
+                delay(Random.nextLong(300, 700))
+                WidgetItem(Widgets.find(261, 57)).click()
+
             }
 
         }
@@ -250,7 +291,7 @@ class TutorialIsland {
                         return Dialog.isDialogUp()
                     }
                 })
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
                 println("Finished final chat with Gielinor")
             }
 
@@ -270,6 +311,7 @@ class TutorialIsland {
                 val doorLocation = Tile(3098, 3107)
                 gameObjects.forEach {
                     if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
+                        if (!it.isOnScreen()) it.turnTo()
                         it.interact("Open")
                         //Wait till here Tile(3098,3107)
                         Utils.waitFor(4, object : Utils.Condition {
@@ -320,7 +362,7 @@ class TutorialIsland {
                     }
                 })
 
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
             }
 
         }
@@ -393,7 +435,7 @@ class TutorialIsland {
                     }
                 })
 
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
 
             }
 
@@ -520,7 +562,6 @@ class TutorialIsland {
                 println("Onscreen? ${gateTile.isOnScreen()}")
                 if (gateTile.distanceTo() > 5) {
                     gateTile.clickOnMiniMap()
-                    Camera.turnEast()
                     Utils.waitFor(10, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -533,6 +574,7 @@ class TutorialIsland {
                 val gateIDs = arrayOf(9708, 9470)
                 val gates = GameObjects.find(gateIDs.random(), sortByDistance = true)
                 if (gates.size > 0) {
+                    gates[0].turnTo()
                     gates[0].interact("Open")
                 }
                 println("Complete: Going to open gate")
@@ -577,7 +619,7 @@ class TutorialIsland {
 
                 delay(Random.nextLong(3000, 5000))
 
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
             }
         }
 
@@ -609,7 +651,6 @@ class TutorialIsland {
                 //dough is 2307
                 //Range is 9736
                 Inventory.open()
-                Inventory.getItem(2307)?.click()
                 val range = GameObjects.find(9736)[0]
                 Camera.turnTo(range)
                 //TODO - Need to improve ineract when menu is full
@@ -725,9 +766,7 @@ class TutorialIsland {
             }
 
             override suspend fun execute() {
-                if (Tabs.isTabFlashing(Tabs.Tab_Types.QuestList)) {
-                    Tabs.openTab(Tabs.Tab_Types.QuestList)
-                }
+                Tabs.openTab(Tabs.Tab_Types.QuestList)
             }
 
         }
@@ -750,7 +789,7 @@ class TutorialIsland {
                             return Players.getLocal().isIdle()
                         }
                     })
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
                 }
             }
         }
@@ -789,7 +828,7 @@ class TutorialIsland {
                     if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
                     miningGuide[0].talkTo()
                     delay(Random.nextLong(1250, 3650))
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
 
                 }
             }
@@ -806,12 +845,9 @@ class TutorialIsland {
                 //walk to tile(3076,9505
                 //Mine rocks
                 val miningspot = Tile(3076, 9505, 0)
-                if (miningspot.distanceTo() > 5) {
-                    miningspot.clickOnMiniMap()
-                    delay(Random.nextLong(3500, 5500))
-                }
+                miningspot.clickOnMiniMap()
+                Players.getLocal().waitTillIdle()
                 Camera.setHighPitch()
-
                 mineRock()
             }
         }
@@ -869,7 +905,6 @@ class TutorialIsland {
 
                 val furnace = GameObjects.find("Furnace")[0]
                 if (!furnace.isOnScreen()) furnace.turnTo()
-                Camera.setHighPitch()
                 furnace.click()
             }
 
@@ -891,7 +926,7 @@ class TutorialIsland {
                     }
                     miningGuide[0].talkTo()
                     delay(Random.nextLong(1250, 3650))
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
 
                 }
             }
@@ -912,30 +947,25 @@ class TutorialIsland {
 
                     val index = (0..1).random()
                     anvil[index].turnTo()
-                    Camera.setHighPitch()
                     Inventory.open()
                     val bronzeBar = Inventory.getItem(2349)
                     bronzeBar?.interact("Use")
                     anvil[index].click()
                     //Wait for smiting widgets
-                    Utils.waitFor(4, object : Utils.Condition {
-                        override suspend fun accept(): Boolean {
-                            delay(100)
-                            return !Widgets.isWidgetAvaliable(312, 0)
-                        }
-                    })
-                    delay(Random.nextLong(1000, 2000))
+                    Widgets.waitTillWidgetNotNull(312, 2)
 
                     val oldInventoryCount = Inventory.getCount()
                     val daggerSmitingPage = WidgetItem(Widgets.find(312, 2)?.getChildren()?.get(2))
-                    daggerSmitingPage.click()
+                    if (daggerSmitingPage.widget != null) {
+                        daggerSmitingPage.click()
 
-                    Utils.waitFor(4, object : Utils.Condition {
-                        override suspend fun accept(): Boolean {
-                            delay(100)
-                            return oldInventoryCount != Inventory.getCount()
-                        }
-                    })
+                        Utils.waitFor(4, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                delay(100)
+                                return oldInventoryCount != Inventory.getCount()
+                            }
+                        })
+                    }
 
 
                 }
@@ -986,7 +1016,7 @@ class TutorialIsland {
                 //Talk with combat instructor
                 val combatInstructor = NPCs.findNpc("Combat Instructor")
                 combatInstructor[0].talkTo()
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
 
             }
 
@@ -1039,7 +1069,7 @@ class TutorialIsland {
                 //Talk with combat instructor
                 val combatInstructor = NPCs.findNpc("Combat Instructor")
                 combatInstructor[0].talkTo()
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
 
             }
 
@@ -1128,37 +1158,48 @@ class TutorialIsland {
 
         }
 
+        val ratCageArea = Area(
+            Tile(3109, 9521), Tile(3110, 9519),
+            Tile(3110, 9518), Tile(3109, 9516), Tile(3109, 9515),
+            Tile(3108, 9514), Tile(3107, 9514), Tile(3106, 9513),
+            Tile(3106, 9512), Tile(3105, 9511), Tile(3103, 9512),
+            Tile(3100, 9512), Tile(3099, 9514), Tile(3098, 9515),
+            Tile(3097, 9517), Tile(3098, 9519), Tile(3099, 9521),
+            Tile(3100, 9522), Tile(3101, 9522), Tile(3102, 9525),
+            Tile(3104, 9524), Tile(3106, 9522), Tile(3108, 9522),
+            Tile(3109, 9521)
+        )
         class GoTalkToCombatInstructorFor2ndTime : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 return dialogWidget.containsText("Pass through the gate and talk to the combat")
             }
 
             override suspend fun execute() {
+                Camera.setHighPitch()
                 Camera.turnEast()
-
-                val gates = GameObjects.find("Gate", sortByDistance = true)
-                if (gates.size > 0) {
-                    gates[0].interact("Open")
-                    delay(Random.nextLong(4500, 6500))
-                    Utils.waitFor(4, object : Utils.Condition {
-                        override suspend fun accept(): Boolean {
-                            delay(100)
-                            return Players.getLocal().isIdle()
+                // Check to see if we are still in the rat cage
+                if (ratCageArea.containsOrIntersects(Players.getLocal().getGlobalLocation())) {
+                    val gates = GameObjects.find("Gate", sortByDistance = true)
+                    if (gates.size > 0) {
+                        if (!gates[0].isOnScreen()) {
+                            gates[0].clickOnMiniMap()
+                            Players.getLocal().waitTillIdle()
                         }
-                    })
+                        gates[0].interact("Open")
+                        Players.getLocal().waitTillIdle()
+                    }
                 }
 
-                val combatInstructor = NPCs.findNpc("Combat Instructor")
-                combatInstructor[0].clickOnMiniMap()
-                delay(Random.nextLong(4500, 6500))
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return combatInstructor[0].distanceTo() < 3
+                if (!ratCageArea.containsOrIntersects(Players.getLocal().getGlobalLocation())) {
+                    val combatInstructor = NPCs.findNpc("Combat Instructor")
+                    if (combatInstructor[0].distanceTo() > 5) {
+                        combatInstructor[0].clickOnMiniMap()
+                        combatInstructor[0].waitTillNearObject()
                     }
-                })
-                combatInstructor[0].talkTo()
-                Dialog.continueDialog(completeConvo = true)
+
+                    combatInstructor[0].talkTo()
+                    Dialog.continueDialog()
+                }
             }
 
         }
@@ -1181,12 +1222,8 @@ class TutorialIsland {
                     val randomIndex = (0..3).random()
                     rats[randomIndex].turnTo()
                     rats[randomIndex].interact("Attack")
-                    Utils.waitFor(20, object : Utils.Condition {
-                        override suspend fun accept(): Boolean {
-                            delay(100)
-                            return Players.getLocal().isIdle()
-                        }
-                    })
+                    delay(Random.nextLong(1000, 1500))
+                    Players.getLocal().waitTillIdle()
                 }
             }
 
@@ -1212,7 +1249,10 @@ class TutorialIsland {
                 }
 
                 val ladder = GameObjects.find("Ladder", sortByDistance = true)
-                ladder[0].interact("Climb")
+                if (ladder.size > 0) {
+                    ladder[0].interact("Climb")
+                    Players.getLocal().waitTillIdle()
+                }
             }
 
         }
@@ -1257,16 +1297,15 @@ class TutorialIsland {
         }
 
         private suspend fun OpenPollBooth() {
-            Camera.setHighPitch()
             val pollBooth = GameObjects.find(26815)
+            pollBooth[0].turnTo()
             val pollTile = Tile(3119, 3121, Main.clientData.getPlane())
             if (pollTile.distanceTo() > 3)
                 Tile(3120, 3121, Main.clientData.getPlane()).clickOnMiniMap()
 
-
-            Camera.turnWest()
             pollTile.click()
-            Dialog.continueDialog(completeConvo = true)
+            delay(Random.nextLong(1500, 2500))
+            Dialog.continueDialog()
         }
 
         class DoPollBooth : Job() {
@@ -1277,7 +1316,7 @@ class TutorialIsland {
             override suspend fun execute() {
                 //TODO figure out how to access moving objects OR need to find a more center tile point
                 OpenPollBooth()
-                Dialog.continueDialog(completeConvo = true)
+                Dialog.continueDialog()
                 //If poll widget open, Close out of polling booth widget (310,2) child index 3
                 closePollWidget()
 
@@ -1337,7 +1376,7 @@ class TutorialIsland {
                     Camera.setHighPitch()
                     accountManager[0].talkTo()
                     delay(Random.nextLong(2500, 4500))
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
                 }
             }
 
@@ -1383,16 +1422,18 @@ class TutorialIsland {
 
             override suspend fun execute() {
                 var brotherBrace = NPCs.findNpc("Brother Brace")
-                val pathToChapel = arrayListOf(Tile(3132, 3115), Tile(3130, 3107))
+                val pathToChapel = arrayListOf(Tile(3132, 3115), Tile(3130, 3107), Tile(3124, 3106))
                 if ((brotherBrace.isNotEmpty() && brotherBrace[0].distanceTo() > 13) || brotherBrace.isEmpty())
                     Walking.walkPath(pathToChapel)
                 Camera.setHighPitch()
                 brotherBrace = NPCs.findNpc("Brother Brace")
-                if (!brotherBrace[0].isOnScreen())
-                    brotherBrace[0].turnTo()
-                brotherBrace[0].talkTo()
-                delay(Random.nextLong(3500, 6500))
-                Dialog.continueDialog(completeConvo = true)
+                if (brotherBrace.size > 0) {
+                    if (!brotherBrace[0].isOnScreen())
+                        brotherBrace[0].turnTo()
+                    brotherBrace[0].talkTo()
+                    delay(Random.nextLong(3500, 6500))
+                    Dialog.continueDialog()
+                }
             }
 
         }
@@ -1432,6 +1473,8 @@ class TutorialIsland {
                             Camera.turnSouth()
                             Camera.setHighPitch()
                             it.interact("Open")
+                            delay(Random.nextLong(1500, 2500))
+                            Players.getLocal().waitTillIdle()
                         }
                     }
                 }
@@ -1455,11 +1498,10 @@ class TutorialIsland {
                 }
                 val magicInstructor = NPCs.findNpc("Magic Instructor")
                 if (magicInstructor.isNotEmpty()) {
-                    Camera.setHighPitch()
                     magicInstructor[0].turnTo()
                     magicInstructor[0].talkTo()
                     delay(Random.nextLong(2000, 3500))
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
 
                 }
             }
@@ -1511,15 +1553,14 @@ class TutorialIsland {
             override suspend fun execute() {
                 val magicInstructor = NPCs.findNpc("Magic Instructor")
                 if (magicInstructor.isNotEmpty()) {
-                    Camera.setHighPitch()
                     if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
                     magicInstructor[0].talkTo()
                     delay(Random.nextLong(2000, 3500))
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
                     Dialog.selectionOption("Yes")
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
                     Dialog.selectionOption("No")
-                    Dialog.continueDialog(completeConvo = true)
+                    Dialog.continueDialog()
 
                 }
             }

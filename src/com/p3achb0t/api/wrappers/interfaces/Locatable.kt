@@ -3,7 +3,9 @@ package com.p3achb0t.api.wrappers.interfaces
 import com.p3achb0t.Main
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
+import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
 import java.awt.Color
@@ -36,6 +38,15 @@ interface Locatable {
         val y = (tile.y - Main.clientData.getBaseY() shl Constants.REGION_SHIFT)
 
         return Tile(x, y, tile.z)
+    }
+
+    suspend fun waitTillNearObject(time: Int = 4, desired: Int = 4) {
+        Utils.waitFor(time, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(100)
+                return Players.getLocal().isIdle() || distanceTo() < desired
+            }
+        })
     }
 
     suspend fun turnTo() {

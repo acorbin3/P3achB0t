@@ -15,7 +15,7 @@ class Camera {
         val y: Int get() = Main.clientData.getCameraY()
         val z: Int get() = Main.clientData.getCameraZ()
         val yaw: Int get() = Main.clientData.getCameraYaw()
-        val pitch: Int get() = Main.clientData.getCameraPitch()
+        val pitch: Int get() = ((Main.clientData.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
         val angle: Int get() = abs(((this.yaw / 5.68).toInt()) - 360)
 
         /**
@@ -40,7 +40,7 @@ class Camera {
         }
 
         fun turnTo(locatable: Locatable) {
-//            turnPitchTo(locatable)
+            turnPitchTo(locatable)
             turnAngleTo(locatable)
         }
 
@@ -61,8 +61,8 @@ class Camera {
         }
 
         fun setHighPitch() {
-            if (pitch < 300)
-                setPitch(350 + Random.nextInt(-10, 10))
+            if (pitch < 100)
+                setPitch(90 + Random.nextInt(-5, 7))
         }
 
         /**
@@ -76,6 +76,7 @@ class Camera {
 //                return false
 
             var _pitch = this.pitch
+            println("Pitch update: $_pitch -> $pitch")
             if (_pitch == pitch || Math.abs(_pitch - pitch) <= 5) {
                 return true
             } else if (_pitch < pitch) {
@@ -159,8 +160,9 @@ class Camera {
          *
          * @param locatable
          */
+        //Higest pitch is 383?, lowest is 128
         fun turnPitchTo(locatable: Locatable) {
-            var pitch = 90 - locatable.distanceTo() * 5
+            var pitch = 90 - locatable.distanceTo() * 8
             val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
             pitch += factor * Random.nextInt(5, 10)
 

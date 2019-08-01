@@ -44,35 +44,29 @@ class Dialog {
             return dialog
         }
 
-        suspend fun continueDialog(count: Int = 1, sleep: Boolean = true, completeConvo: Boolean = false) {
-
-            if (completeConvo) {
-                while (getDialogContinue().containsText("continue")) {
-                    doConversation(sleep)
-                }
-            } else {
-                for (i in 0..count) {
-                    doConversation(sleep)
-                }
+        suspend fun continueDialog(sleep: Boolean = true) {
+            while (getDialogContinue().containsText("continue")) {
+                doConversation(sleep)
             }
-
         }
 
         private suspend fun doConversation(sleep: Boolean) {
             val dialog = getDialogContinue()
             if (dialog.containsText("continue", false)) {
                 dialog.click()
+                delay(Random.nextLong(100, 200))
 
             } else if (dialog.containsText("continue")) {
                 //NEed to find children
                 dialog.widget?.getChildren()?.iterator()?.forEach {
                     if (WidgetItem(it).containsText("continue")) {
                         WidgetItem(it).click()
+                        delay(Random.nextLong(100, 200))
                     }
                 }
             }
             //TODO - add a smart sleep based on the number of words in the continue dialog
-            if (sleep && getDialogContinue().containsText("continue"))
+            if (sleep)//&& getDialogContinue().containsText("continue"))
                 delay(Random.nextLong(1250, 3650))
         }
 

@@ -21,20 +21,14 @@ fun paintNPCs(g: Graphics) {
 
                 //                                print("Name: ${it.getComposite().getName()}, ID:${it.getComposite().getNpcComposite_id()} x:${it.getLocalX()} y:${it.getLocalY()},")
                 count += 1
-                val point =
-                    Calculations.worldToScreen(
-                        it.getLocalX(),
-                        it.getLocalY(),
-                        it.getModelHeight()
-                    )
-                if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(point)) {
-                    g.color = Color.GREEN
-                    g.drawString(
-                        "${it.getComposite().getName()} ${it.getComposite().getNpcComposite_id()} ${it.getAnimation()}",
-                        point.x,
-                        point.y
-                    )
-                }
+
+                val tile =
+                    Calculations.getCanvasTileAreaPoly(it.getLocalX(), it.getLocalY())
+                g.color = Color.CYAN
+                g.drawPolygon(tile)
+                g.color = Color(0, 0, 0, 50)
+                g.fillPolygon(tile)
+
                 val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
                     getActorTriangles(
                         npc, Main.clientData.getNpcModelCache(),
@@ -57,13 +51,20 @@ fun paintNPCs(g: Graphics) {
                 g.color = Color.PINK
                 g.drawPolygon(ch)
 
-                val tile =
-                    Calculations.getCanvasTileAreaPoly(it.getLocalX(), it.getLocalY())
-                g.color = Color.CYAN
-                g.drawPolygon(tile)
-                g.color = Color(0, 0, 0, 50)
-                g.fillPolygon(tile)
-
+                val namePoint =
+                    Calculations.worldToScreen(
+                        it.getLocalX(),
+                        it.getLocalY(),
+                        it.getModelHeight()
+                    )
+                if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(namePoint)) {
+                    g.color = Color.GREEN
+                    g.drawString(
+                        "${it.getComposite().getName()} ${it.getComposite().getNpcComposite_id()} ${it.getAnimation()}",
+                        namePoint.x,
+                        namePoint.y
+                    )
+                }
             }
         }
     } catch (e: Exception) {

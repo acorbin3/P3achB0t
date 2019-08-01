@@ -2,9 +2,11 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.hook_interfaces.HealthBar
 import com.p3achb0t.hook_interfaces.HealthBarData
+import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
 
@@ -14,6 +16,15 @@ open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
 
     fun isIdle(): Boolean {
         return raw.getAnimation() == -1 && raw.getInteracting() == -1
+    }
+
+    suspend fun waitTillIdle(time: Int = 4) {
+        Utils.waitFor(time, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(100)
+                return Players.getLocal().isIdle()
+            }
+        })
     }
 
     //TODO - fix getting health

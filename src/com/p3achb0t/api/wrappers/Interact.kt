@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Point
@@ -38,7 +39,7 @@ class Interact {
                         Random.nextInt(ch.bounds.x, ch.bounds.width + ch.bounds.x),
                         Random.nextInt(ch.bounds.y, ch.bounds.height + ch.bounds.y)
                     )
-                    if (ch.contains(point))
+                    if (ch.contains(point) && Calculations.isOnscreen(point))
                         break
                 }
                 point?.let { interact(it, action) }

@@ -1,9 +1,11 @@
 package com.p3achb0t.api.user_inputs
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Constants
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.event.MouseEvent
+import kotlin.random.Random
 
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
@@ -36,7 +38,9 @@ class Mouse {
             Main.mouseEvent?.point?.y?.let { _y ->
                 Point(_x, _y)
             }
-        } else Point(0, 0)
+        } else {
+            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
+        }
         val distance = startPoint?.distance(destPoint)
         val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
         val iterations = distance?.div(MIN_DIST_PIXELS)
