@@ -25,8 +25,8 @@ class TutorialIsland {
     companion object {
 
         val names = arrayListOf(
-            "starlenee", "FsckingSith", "loredanalonero", "MooseMuffin", "BossOfAwesome",
-            "fishlet1233", "FrozenSprinkles", "aalinizi"
+            "PapaBadass", "randomBJ", "kamalchettiar", "all_negative_", "s0meguy",
+            "shouldidivorce", "kisskross", "ccnelson", "w4rf19ht3r", "lili999", "qwerqtwfnhnqufh"
         )
 
         var isInititilized = false
@@ -94,6 +94,7 @@ class TutorialIsland {
             jobs.add(OpenMagicTab())
             jobs.add(SelectWindStrikeAndAttackChicken())
             jobs.add(ExitTutIsland())
+            jobs.add(MainlandLogout())
             isInititilized = true
         }
 
@@ -946,9 +947,8 @@ class TutorialIsland {
                     val index = (0..1).random()
                     anvil[index].turnTo()
                     Inventory.open()
-                    val bronzeBar = Inventory.getItem(2349)
-                    bronzeBar?.interact("Use")
                     anvil[index].click()
+                    Players.getLocal().waitTillIdle()
                     //Wait for smiting widgets
                     Widgets.waitTillWidgetNotNull(312, 2)
 
@@ -1323,11 +1323,17 @@ class TutorialIsland {
 
         private suspend fun closePollWidget() {
             try {
-                val pollWidget = Widgets.find(345, 0)
+                var pollWidget = Widgets.find(345, 0)
                 if (pollWidget != null) {
                     val pollExitWidget = WidgetItem(Widgets.find(345, 2)?.getChildren()?.get(3))
                     pollExitWidget.click()
                 }
+                pollWidget = Widgets.find(310, 0)
+                if (pollWidget != null) {
+                    val pollExitWidget = WidgetItem(Widgets.find(310, 2)?.getChildren()?.get(3))
+                    pollExitWidget.click()
+                }
+
             } catch (e: Exception) {
                 println("ERROR: Somthing happened when trying to find the poll widget")
             }
@@ -1427,7 +1433,7 @@ class TutorialIsland {
                     if (!brotherBrace[0].isOnScreen())
                         brotherBrace[0].turnTo()
                     brotherBrace[0].talkTo()
-                    delay(Random.nextLong(3500, 6500))
+                    Players.getLocal().waitTillIdle()
                     Dialog.continueDialog()
                 }
             }
@@ -1496,7 +1502,7 @@ class TutorialIsland {
                 if (magicInstructor.isNotEmpty()) {
                     magicInstructor[0].turnTo()
                     magicInstructor[0].talkTo()
-                    delay(Random.nextLong(2000, 3500))
+                    Players.getLocal().waitTillIdle()
                     Dialog.continueDialog()
 
                 }
@@ -1550,7 +1556,7 @@ class TutorialIsland {
                 if (magicInstructor.isNotEmpty()) {
                     if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
                     magicInstructor[0].talkTo()
-                    delay(Random.nextLong(2000, 3500))
+                    Players.getLocal().waitTillIdle()
                     Dialog.continueDialog()
                     Dialog.selectionOption("Yes")
                     Dialog.continueDialog()
@@ -1568,7 +1574,35 @@ class TutorialIsland {
             }
 
             override suspend fun execute() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                //Run few different paths and then logout
+                val pathNorth = arrayListOf(
+                    Tile(3234, 3225), Tile(3224, 3237),
+                    Tile(3218, 3250), Tile(3214, 3262)
+                )
+                val pathEast = arrayListOf(
+                    Tile(3240, 3225), Tile(3256, 3227),
+                    Tile(3258, 3233), Tile(3257, 3245), Tile(3251, 3257)
+                )
+                val pathSouth = arrayListOf(
+                    Tile(3235, 3204), Tile(3243, 3193),
+                    Tile(3241, 3181), Tile(3231, 3175), Tile(3238, 3163)
+                )
+                val pathWest = arrayListOf(
+                    Tile(3223, 3219), Tile(3213, 3210),
+                    Tile(3206, 3210)
+                )
+                if (Random.nextBoolean()) {
+                    val investigationPaths = arrayListOf(pathNorth, pathSouth, pathEast)
+                    val path = investigationPaths.random()
+                    //Walk the path and then come back
+                    Walking.walkPath(path)
+                    Walking.walkPath(path, reverse = true)
+                    Logout.logout()
+                } else {
+                    Walking.walkPath(pathWest)
+                    Logout.logout()
+                }
+
             }
 
         }

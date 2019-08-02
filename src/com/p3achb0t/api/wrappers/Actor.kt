@@ -9,6 +9,7 @@ import com.p3achb0t.hook_interfaces.HealthBarData
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
+import kotlin.random.Random
 
 
 open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
@@ -19,6 +20,8 @@ open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
     }
 
     suspend fun waitTillIdle(time: Int = 4) {
+        //Add a small delay to allow for initial movement from the previous command
+        delay(Random.nextLong(100, 400))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
