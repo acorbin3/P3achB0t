@@ -25,7 +25,7 @@ class Walking {
                             println("Distance: $curDist")
                             distance = curDist
                         }
-                        return curDist < 2
+                        return curDist < 4
                     }
                 })
             }

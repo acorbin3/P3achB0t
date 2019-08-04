@@ -107,6 +107,7 @@ class Tabs {
 
         suspend fun openTab(tab: Tab_Types) {
             try {
+                if (getOpenTab() == tab) return
                 println("Opening Tab: ${tab.name}")
                 val parentID =
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID

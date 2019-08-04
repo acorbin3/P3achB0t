@@ -30,21 +30,4 @@ class NPC(var npc: Npc) : Actor(npc), Interactable {
     suspend fun talkTo(): Boolean {
         return interact("Talk-to")
     }
-
-    override suspend fun interact(action: String): Boolean {
-        //TODO check is player is on scree
-        //  TODO - Move camera for player to be on screen
-        try {
-
-            val ch = getConvexHull(
-                this.npc,
-                Main.clientData.getNpcModelCache(),
-                this.npc.getComposite().getNpcComposite_id().toLong()
-            )
-
-            Interact.interact(ch, action)
-        } catch (e: Exception) {
-        }
-        return true
-    }
 }

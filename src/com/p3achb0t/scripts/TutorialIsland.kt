@@ -266,7 +266,7 @@ class TutorialIsland {
                 //Open audio section
                 WidgetItem(Widgets.find(261, 1)?.getChildren()?.get(3)).click()
                 delay(Random.nextLong(300, 700))
-                WidgetItem(Widgets.find(261, 43)).click()
+                WidgetItem(Widgets.find(261, 45)).click()
                 delay(Random.nextLong(300, 700))
                 WidgetItem(Widgets.find(261, 51)).click()
                 delay(Random.nextLong(300, 700))
@@ -356,12 +356,7 @@ class TutorialIsland {
                 val survivalExpert = NPCs.findNpc(8503)
                 survivalExpert[0].talkTo()
                 // WAit till the continue is avaliable
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return Players.getLocal().isIdle()
-                    }
-                })
+                Players.getLocal().waitTillIdle()
 
                 Dialog.continueDialog()
             }
@@ -920,11 +915,11 @@ class TutorialIsland {
                 val miningGuide = NPCs.findNpc("Mining Instructor")
                 if (miningGuide.size > 0) {
                     miningGuide[0].turnTo()
-                    if (!miningGuide[0].isOnScreen()) {
+                    if (Tile(3081, 9504).distanceTo() > 4) {
                         Tile(3081, 9504).clickOnMiniMap()
                     }
                     miningGuide[0].talkTo()
-                    delay(Random.nextLong(1250, 3650))
+                    Players.getLocal().waitTillIdle()
                     Dialog.continueDialog()
 
                 }
@@ -984,7 +979,7 @@ class TutorialIsland {
                     Camera.setHighPitch()
                     Camera.turnEast()
                     gate[0].interact("Open")
-                    delay(Random.nextLong(3500, 5500))
+                    Players.getLocal().waitTillIdle()
                 }
 
             }
@@ -1014,6 +1009,7 @@ class TutorialIsland {
                 //Talk with combat instructor
                 val combatInstructor = NPCs.findNpc("Combat Instructor")
                 combatInstructor[0].talkTo()
+                Players.getLocal().waitTillIdle()
                 Dialog.continueDialog()
 
             }
@@ -1216,7 +1212,7 @@ class TutorialIsland {
 
                 val rats = NPCs.findNpc("Giant rat")
                 if (rats.size > 0) {
-                    val randomIndex = (0..3).random()
+                    val randomIndex = (0..2).random()
                     rats[randomIndex].turnTo()
                     rats[randomIndex].interact("Attack")
                     delay(Random.nextLong(1000, 1500))
@@ -1534,7 +1530,7 @@ class TutorialIsland {
                     val randChick = Random.nextInt(0, chickens.size - 1)
                     chickens[randChick].turnTo()
                     chickens[randChick].interact("Cast")
-                    Utils.waitFor(15, object : Utils.Condition {
+                    Utils.waitFor(7, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
                             return Players.getLocal().isIdle() && chickens[randChick].isIdle()
@@ -1592,6 +1588,7 @@ class TutorialIsland {
                     Tile(3206, 3210)
                 )
                 if (Random.nextBoolean()) {
+                    println("Walking path random")
                     val investigationPaths = arrayListOf(pathNorth, pathSouth, pathEast)
                     val path = investigationPaths.random()
                     //Walk the path and then come back
@@ -1599,6 +1596,7 @@ class TutorialIsland {
                     Walking.walkPath(path, reverse = true)
                     Logout.logout()
                 } else {
+                    println("Walking path west")
                     Walking.walkPath(pathWest)
                     Logout.logout()
                 }

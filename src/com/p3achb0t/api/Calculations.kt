@@ -112,6 +112,10 @@ class Calculations {
             } else Point(-1, -1)
         }
 
+        fun midPoint(p1: Point, p2: Point): Point {
+            return Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2)
+        }
+
         fun initScreenWidgetDimentions() {
             println("Init screenDimentions")
             // main screen 122,0

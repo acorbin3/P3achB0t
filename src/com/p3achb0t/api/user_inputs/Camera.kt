@@ -162,7 +162,7 @@ class Camera {
          */
         //Higest pitch is 383?, lowest is 128
         fun turnPitchTo(locatable: Locatable) {
-            var pitch = 90 - locatable.distanceTo() * 8
+            var pitch = 90 - locatable.distanceTo() * 9
             val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
             pitch += factor * Random.nextInt(5, 10)
 

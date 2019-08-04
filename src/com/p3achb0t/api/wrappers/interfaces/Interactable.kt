@@ -1,6 +1,8 @@
 package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.Calculations.Companion.midPoint
+import com.p3achb0t.api.Constants
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
 import java.awt.Point
@@ -32,7 +34,28 @@ interface Interactable {
         return false
     }
 
+
     suspend fun interact(action: String): Boolean {
+        //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
+        while (true) {
+            val desiredPoint = getInteractPoint()
+            val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
+                Main.mouseEvent?.point?.y?.let { _y ->
+                    Point(_x, _y)
+                }
+            } else {
+                Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
+            }
+            val distance = startPoint?.distance(desiredPoint)
+            if (distance != null) {
+                if (distance < 25) {
+                    break
+                } else {
+                    val midPoint = midPoint(desiredPoint, startPoint)
+                    Main.mouse.moveMouse(midPoint, click = false)
+                }
+            }
+        }
         return Interact.interact(getInteractPoint(), action)
     }
 

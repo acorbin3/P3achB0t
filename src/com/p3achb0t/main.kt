@@ -7,7 +7,6 @@ import com.p3achb0t.Main.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.LoggingIntoClient
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
@@ -375,7 +374,7 @@ fun main() {
     }
 
 
-    LoggingIntoAccount()
+    //    LoggingIntoAccount()
     class MyApp : App(WidgetExplorer::class)
     launch<MyApp>()
 

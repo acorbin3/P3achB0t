@@ -53,10 +53,14 @@ class Interact {
                 return false
             }
             if (action.isNotEmpty()) {
+
+                //Move mouse to the point
                 point.let { it1 -> Main.mouse.moveMouse(it1, click = false) }
+                delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
 
                 // Check to see if we need to right click or not
                 if (Menu.getHoverAction().contains(action)) {
+                    // Left click, we are alreay there
                     point.let { it1 -> Main.mouse.moveMouse(it1, click = true) }
                     return true
                 } else {
@@ -77,8 +81,8 @@ class Interact {
                                 break
                             }
                         }
-                        //Give up after 5 trys
-                        if (retryCount == 5) return false
+                        //Give up after 2 trys
+                        if (retryCount == 2) return false
                         //Reinteracte with menu
                         interact(point, action, retryCount + 1)
                     }
