@@ -1,6 +1,6 @@
 package com.p3achb0t.analyser
 
-import com.p3achb0t.Main.Data.dream
+import com.p3achb0t.MainApplet.Data.dream
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.rsclasses.*
@@ -43,7 +43,7 @@ class Analyser{
             }
         }
 
-        //        analyzeClasses(analyzers)
+        analyzeClasses(analyzers)
 
         injectJARWithInterfaces(classes, dream)
 
@@ -61,6 +61,7 @@ class Analyser{
         analyzers[Player.deobName] = Player()
         analyzers[Npc.deobName] = Npc()
         analyzers[AnimatedObject.deobName] = AnimatedObject()
+        analyzers[VarpBit.deobName] = VarpBit()
 
         for (analyzerObj in analyzers) {
             for (obClass in classes) {
@@ -121,7 +122,8 @@ class Analyser{
                 }
             }
             for (method in getterList) {
-                injectMethod(method, classes, clazzData._class)
+                if (method.fieldDescription != "")
+                    injectMethod(method, classes, clazzData._class)
             }
 //            }
         }
@@ -144,6 +146,7 @@ class Analyser{
     }
 
     private fun getOpcode(fieldDescription: String, opcodeType: OpcodeType): Int {
+        println(fieldDescription)
         return when (fieldDescription[0]) {
             'F' -> if (opcodeType == OpcodeType.LOAD) FLOAT else FRETURN
             'D' -> if (opcodeType == OpcodeType.LOAD) DLOAD else DRETURN

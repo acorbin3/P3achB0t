@@ -1,6 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Constants
 import kotlinx.coroutines.delay
 import java.awt.Point
@@ -34,8 +34,8 @@ class Mouse {
             return false
         }
 
-        val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
-            Main.mouseEvent?.point?.y?.let { _y ->
+        val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
+            MainApplet.mouseEvent?.point?.y?.let { _y ->
                 Point(_x, _y)
             }
         } else {
@@ -63,12 +63,12 @@ class Mouse {
                         currentPoint?.x = _x
                         currentPoint?.y = _y
                         MouseEvent(
-                            Main.customCanvas,
+                            MainApplet.customCanvas,
                             MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, _x, _y, 0, false
                         )
                     }
                 }
-                Main.customCanvas?.dispatchEvent(mouseMove)
+                MainApplet.customCanvas?.dispatchEvent(mouseMove)
                 interval?.toLong()?.let { delay(it) }
             }
         }
@@ -76,7 +76,7 @@ class Mouse {
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress = currentPoint?.let {
                 MouseEvent(
-                    Main.customCanvas,
+                    MainApplet.customCanvas,
                     MouseEvent.MOUSE_PRESSED,
                     System.currentTimeMillis(),
                     clickMask,
@@ -87,7 +87,7 @@ class Mouse {
                 )
 
             }
-            Main.customCanvas?.dispatchEvent(mousePress)
+            MainApplet.customCanvas?.dispatchEvent(mousePress)
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
@@ -95,7 +95,7 @@ class Mouse {
 
             val mouseRelease = currentPoint?.let {
                 MouseEvent(
-                    Main.customCanvas,
+                    MainApplet.customCanvas,
                     MouseEvent.MOUSE_RELEASED,
                     System.currentTimeMillis(),
                     clickMask,
@@ -106,7 +106,7 @@ class Mouse {
                 )
 
             }
-            Main.customCanvas?.dispatchEvent(mouseRelease)
+            MainApplet.customCanvas?.dispatchEvent(mouseRelease)
         }
         return true
     }

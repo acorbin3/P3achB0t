@@ -1,6 +1,6 @@
 package com.p3achb0t.hook_interfaces
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import java.awt.Rectangle
 
 interface Widget : Node {
@@ -12,7 +12,7 @@ interface Widget : Node {
 			val childIndex = widget.getParentId().and(0xFFFF)
 			if (parentIndex == -1) {
 				val containerIndex = widget.getWidget_id().shr(16)
-				val hTable = Main.clientData.getWidgetNodes()
+                val hTable = MainApplet.clientData.getWidgetNodes()
 				for (node in hTable.getBuckets()) {
 					if (node is WidgetNode && node.getWidgetNode_id() == containerIndex) {
 						val parent = node.getId().toInt().shr(16)
@@ -47,10 +47,10 @@ interface Widget : Node {
 
 		private fun getBoundInfo(widget: Widget): Rectangle {
 			return if (widget.getBoundsIndex() >= 0) {
-				val widgetX = Main.clientData.getWidgetBoundsX()[widget.getBoundsIndex()]
-				val widgetY = Main.clientData.getWidgetBoundsY()[widget.getBoundsIndex()]
-				val widgetHeight = Main.clientData.getWidgetHeights()[widget.getBoundsIndex()]
-				val widgetWidth = Main.clientData.getWidgetWidths()[widget.getBoundsIndex()]
+                val widgetX = MainApplet.clientData.getWidgetBoundsX()[widget.getBoundsIndex()]
+                val widgetY = MainApplet.clientData.getWidgetBoundsY()[widget.getBoundsIndex()]
+                val widgetHeight = MainApplet.clientData.getWidgetHeights()[widget.getBoundsIndex()]
+                val widgetWidth = MainApplet.clientData.getWidgetWidths()[widget.getBoundsIndex()]
 				Rectangle(widgetX, widgetY, widgetWidth, widgetHeight)
 			} else {
 				Rectangle(0, 0, 0, 0)
@@ -69,7 +69,7 @@ interface Widget : Node {
 		}
 
 		fun getWidget(index: WidgetIndex): Widget {
-			return Main.clientData.getWidgets()[index.parentID.toInt()][index.childID.toInt()]
+            return MainApplet.clientData.getWidgets()[index.parentID.toInt()][index.childID.toInt()]
 		}
 
 

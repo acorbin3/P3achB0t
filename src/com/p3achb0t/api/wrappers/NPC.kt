@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.api.wrappers.interfaces.Interactable
@@ -13,7 +13,7 @@ class NPC(var npc: Npc) : Actor(npc), Interactable {
     fun getConvexHull(): Polygon {
         return getConvexHull(
             this.npc,
-            Main.clientData.getNpcModelCache(),
+            MainApplet.clientData.getNpcModelCache(),
             this.npc.getComposite().getNpcComposite_id().toLong()
         )
     }
@@ -24,7 +24,7 @@ class NPC(var npc: Npc) : Actor(npc), Interactable {
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
-        return Main.mouse.click(Calculations.worldToMiniMap(npc.getLocalX(), npc.getLocalY()))
+        return MainApplet.mouse.click(Calculations.worldToMiniMap(npc.getLocalX(), npc.getLocalY()))
     }
 
     suspend fun talkTo(): Boolean {

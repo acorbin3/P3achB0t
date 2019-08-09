@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
@@ -58,7 +58,7 @@ class Tabs {
             val childID =
                 if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
             if (childID != null) {
-                val widget = Main.clientData.getWidgets()[parentID][childID]
+                val widget = MainApplet.clientData.getWidgets()[parentID][childID]
                 WidgetItem(widget).click()
             }
         }
@@ -87,14 +87,14 @@ class Tabs {
                 val parentID =
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
                 for (childID in top) {
-                    val widget = Main.clientData.getWidgets()[parentID][childID]
+                    val widget = MainApplet.clientData.getWidgets()[parentID][childID]
                     if (widget.getTextureId() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
 
                 }
                 for (childID in bottom) {
-                    val widget = Main.clientData.getWidgets()[parentID][childID]
+                    val widget = MainApplet.clientData.getWidgets()[parentID][childID]
                     if (widget.getTextureId() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
@@ -113,7 +113,7 @@ class Tabs {
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
                 val childID =
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
-                val widget = Main.clientData.getWidgets()[parentID][childID]
+                val widget = MainApplet.clientData.getWidgets()[parentID][childID]
                 if (!widget.getHidden()) {
                     val interactRect = Widget.getDrawableRect(widget)
                     Interact.interact(interactRect)

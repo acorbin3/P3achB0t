@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.hook_interfaces.Item
 import com.p3achb0t.hook_interfaces.Model
@@ -9,9 +9,9 @@ class GroundItems {
     companion object {
         fun getAllItems(): ArrayList<GroundItem> {
             val itemList = ArrayList<GroundItem>()
-            val groundItems = Main.clientData.getGroundItemList()
-            val groundItemModels = Main.clientData.getGroundItemModelCache()
-            val tiles = Main.clientData.getRegion().getTiles()
+            val groundItems = MainApplet.clientData.getGroundItemList()
+            val groundItemModels = MainApplet.clientData.getGroundItemModelCache()
+            val tiles = MainApplet.clientData.getRegion().getTiles()
             for ((iP, plane) in groundItems.withIndex()) {
                 for ((iX, x) in plane.iterator().withIndex()) {
                     for ((iY, itemPile) in x.iterator().withIndex()) {

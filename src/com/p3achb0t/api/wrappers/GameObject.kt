@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
@@ -29,7 +29,7 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
         }
     val name: String
         get() {
-            val sceneData = Main.clientData.getObjectCompositeCache()
+            val sceneData = MainApplet.clientData.getObjectCompositeCache()
             val objectComposite =
                 getObjectComposite(sceneData, id)
             return objectComposite?.getName().toString()
@@ -61,8 +61,13 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
 
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
-            gameObject != null -> Main.mouse.click(Calculations.worldToMiniMap(gameObject.getX(), gameObject.getY()))
-            boundaryObject != null -> Main.mouse.click(
+            gameObject != null -> MainApplet.mouse.click(
+                Calculations.worldToMiniMap(
+                    gameObject.getX(),
+                    gameObject.getY()
+                )
+            )
+            boundaryObject != null -> MainApplet.mouse.click(
                 Calculations.worldToMiniMap(
                     boundaryObject.getX(),
                     boundaryObject.getY()
@@ -87,13 +92,13 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     override fun getGlobalLocation(): Tile {
         return when {
             gameObject != null -> Tile(
-                gameObject.getX() / 128 + Main.clientData.getBaseX(),
-                gameObject.getY() / 128 + Main.clientData.getBaseY(),
+                gameObject.getX() / 128 + MainApplet.clientData.getBaseX(),
+                gameObject.getY() / 128 + MainApplet.clientData.getBaseY(),
                 gameObject.getPlane()
             )
             boundaryObject != null -> Tile(
-                boundaryObject.getX() / 128 + Main.clientData.getBaseX(),
-                boundaryObject.getY() / 128 + Main.clientData.getBaseY(),
+                boundaryObject.getX() / 128 + MainApplet.clientData.getBaseX(),
+                boundaryObject.getY() / 128 + MainApplet.clientData.getBaseY(),
                 boundaryObject.getPlane()
             )
             else -> Tile(-1, -1)

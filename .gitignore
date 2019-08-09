@@ -1,6 +1,6 @@
-src/UserDetails.kt
-out/
-deob/
-hooks/
-.idea/
-/lib/
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+/.idea/

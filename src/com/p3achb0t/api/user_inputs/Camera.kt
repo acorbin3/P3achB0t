@@ -1,6 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
@@ -11,11 +11,11 @@ import kotlin.random.Random
 
 class Camera {
     companion object {
-        val x: Int get() = Main.clientData.getCameraX()
-        val y: Int get() = Main.clientData.getCameraY()
-        val z: Int get() = Main.clientData.getCameraZ()
-        val yaw: Int get() = Main.clientData.getCameraYaw()
-        val pitch: Int get() = ((Main.clientData.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
+        val x: Int get() = MainApplet.clientData.getCameraX()
+        val y: Int get() = MainApplet.clientData.getCameraY()
+        val z: Int get() = MainApplet.clientData.getCameraZ()
+        val yaw: Int get() = MainApplet.clientData.getCameraYaw()
+        val pitch: Int get() = ((MainApplet.clientData.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
         val angle: Int get() = abs(((this.yaw / 5.68).toInt()) - 360)
 
         /**
@@ -25,7 +25,7 @@ class Camera {
          * @return Integer 0-360
          */
         fun getAngleTo(locatable: Locatable): Int {
-            val local = Main.clientData.getLocalPlayer()
+            val local = MainApplet.clientData.getLocalPlayer()
 
             var degree = 360 - Math.toDegrees(
                 atan2(

@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
@@ -16,12 +16,12 @@ import java.awt.Graphics
 
 fun gameObjectPaint(g: Graphics) {
     if (false) {
-        val sceneData = Main.clientData.getObjectCompositeCache()
-        val region = Main.clientData.getRegion()
+        val sceneData = MainApplet.clientData.getObjectCompositeCache()
+        val region = MainApplet.clientData.getRegion()
         val localPlayer = Players.getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
-            if (planeInt == Main.clientData.getPlane()) {
+            if (planeInt == MainApplet.clientData.getPlane()) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
@@ -115,7 +115,10 @@ fun gameObjectPaint(g: Graphics) {
 
 
                             val globalPos =
-                                Tile(tile.getX() + Main.clientData.getBaseX(), tile.getY() + Main.clientData.getBaseY())
+                                Tile(
+                                    tile.getX() + MainApplet.clientData.getBaseX(),
+                                    tile.getY() + MainApplet.clientData.getBaseY()
+                                )
 
 //                        println("Tile: ${tile.getX()},${tile.getY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                             // Display the wall object

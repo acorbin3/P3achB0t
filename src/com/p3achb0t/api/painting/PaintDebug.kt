@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
@@ -30,7 +30,7 @@ fun debugPaint(): PaintListener {
 //                        println("]")
 //                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
 
-                if (Main.clientData.getGameState() == 30) {
+                if (MainApplet.clientData.getGameState() == 30) {
                     if (!Bank.isOpen()) {
 
                         playerPaint(g)
@@ -92,7 +92,7 @@ fun debugPaint(): PaintListener {
 
                     // Paint on minimap
 
-                    val local = Main.clientData.getLocalPlayer()
+                    val local = MainApplet.clientData.getLocalPlayer()
                     val point = worldToMiniMap(local.getLocalX(), local.getLocalY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red

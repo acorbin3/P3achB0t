@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Utils
@@ -26,16 +26,16 @@ interface Locatable {
     // This function will remove the base and shift over by 7
     fun getLocalLocation(): Tile {
         val tile = getGlobalLocation()
-        val x = (tile.x - Main.clientData.getBaseX())
-        val y = (tile.y - Main.clientData.getBaseY())
+        val x = (tile.x - MainApplet.clientData.getBaseX())
+        val y = (tile.y - MainApplet.clientData.getBaseY())
 
         return Tile(x, y, tile.z)
     }
 
     fun getRegionalLocation(): Tile {
         val tile = getGlobalLocation()
-        val x = (tile.x - Main.clientData.getBaseX() shl Constants.REGION_SHIFT)
-        val y = (tile.y - Main.clientData.getBaseY() shl Constants.REGION_SHIFT)
+        val x = (tile.x - MainApplet.clientData.getBaseX() shl Constants.REGION_SHIFT)
+        val y = (tile.y - MainApplet.clientData.getBaseY() shl Constants.REGION_SHIFT)
 
         return Tile(x, y, tile.z)
     }

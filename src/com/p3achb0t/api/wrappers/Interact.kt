@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay
@@ -55,13 +55,13 @@ class Interact {
             if (action.isNotEmpty()) {
 
                 //Move mouse to the point
-                point.let { it1 -> Main.mouse.moveMouse(it1, click = false) }
+                point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = false) }
                 delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
 
                 // Check to see if we need to right click or not
                 if (Menu.getHoverAction().contains(action)) {
                     // Left click, we are alreay there
-                    point.let { it1 -> Main.mouse.moveMouse(it1, click = true) }
+                    point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = true) }
                     return true
                 } else {
 
@@ -77,7 +77,7 @@ class Interact {
                             val newPoint = Point(x, y)
                             // Move mouse out side of menue
                             if (!menuRect.bounds.contains(newPoint)) {
-                                Main.mouse.moveMouse(newPoint)
+                                MainApplet.mouse.moveMouse(newPoint)
                                 break
                             }
                         }
@@ -87,24 +87,30 @@ class Interact {
                         interact(point, action, retryCount + 1)
                     }
                     println("Clicking $action")
-                    var res = Main.mouse.moveMouse(actionPoint, click = true)
+                    var res = MainApplet.mouse.moveMouse(actionPoint, click = true)
                     println("Res: $res")
                     delay((Math.random() * 200 + 100).toLong())
                     if (res) return true
                     var count = 0
-                    while (Main.clientData.getMenuVisible()) {
+                    while (MainApplet.clientData.getMenuVisible()) {
                         delay((Math.random() * 50).toLong())
                         count += 1
                         if (count == 5) {
                             val cancelPoint = Menu.getPointForInteraction(action)
-                            res = Main.mouse.moveMouse(cancelPoint, click = true)
+                            res = MainApplet.mouse.moveMouse(cancelPoint, click = true)
                             print("Failed, retrying")
                         }
                     }
                     return res
                 }
             } else {
-                point.let { it1 -> return Main.mouse.moveMouse(it1, click = true, clickType = Mouse.ClickType.Left) }
+                point.let { it1 ->
+                    return MainApplet.mouse.moveMouse(
+                        it1,
+                        click = true,
+                        clickType = Mouse.ClickType.Left
+                    )
+                }
             }
         }
     }

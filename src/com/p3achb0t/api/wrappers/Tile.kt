@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
 import com.p3achb0t.api.wrappers.interfaces.Interactable
@@ -30,7 +30,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
         val point = Calculations.worldToMiniMap(regional.x, regional.y)
-        return Main.mouse.click(point)
+        return MainApplet.mouse.click(point)
     }
 
     override fun getInteractPoint(): Point {

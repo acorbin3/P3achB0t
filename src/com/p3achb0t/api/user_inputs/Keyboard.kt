@@ -1,6 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.awt.event.KeyEvent
@@ -17,31 +17,31 @@ class Keyboard {
                 }
 //        println(c)
                 val down = KeyEvent(
-                    Main.customCanvas,
+                    MainApplet.customCanvas,
                     KeyEvent.KEY_PRESSED,
                     System.currentTimeMillis(),
                     0,
                     0, c
                 )
-                Main.customCanvas?.dispatchEvent(down)
+                MainApplet.customCanvas?.dispatchEvent(down)
                 delay(20)
                 val typeed = KeyEvent(
-                    Main.customCanvas,
+                    MainApplet.customCanvas,
                     KeyEvent.KEY_TYPED,
                     System.currentTimeMillis(),
                     0,
                     0, c
                 )
-                Main.customCanvas?.dispatchEvent(typeed)
+                MainApplet.customCanvas?.dispatchEvent(typeed)
                 delay(20)
                 val up = KeyEvent(
-                    Main.customCanvas,
+                    MainApplet.customCanvas,
                     KeyEvent.KEY_RELEASED,
                     System.currentTimeMillis(),
                     0,
                     0, c
                 )
-                Main.customCanvas?.dispatchEvent(up)
+                MainApplet.customCanvas?.dispatchEvent(up)
                 delay(20)
             }
 
@@ -55,24 +55,24 @@ class Keyboard {
 
         fun pressDownKey(keyCode: Int) {
             val down = KeyEvent(
-                Main.customCanvas,
+                MainApplet.customCanvas,
                 KeyEvent.KEY_PRESSED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
             )
-            Main.customCanvas?.dispatchEvent(down)
+            MainApplet.customCanvas?.dispatchEvent(down)
         }
 
         fun release(keyCode: Int) {
             val up = KeyEvent(
-                Main.customCanvas,
+                MainApplet.customCanvas,
                 KeyEvent.KEY_RELEASED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
             )
-            Main.customCanvas?.dispatchEvent(up)
+            MainApplet.customCanvas?.dispatchEvent(up)
         }
     }
 }

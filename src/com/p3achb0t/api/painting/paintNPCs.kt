@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
@@ -13,7 +13,7 @@ fun paintNPCs(g: Graphics) {
         ///////NPC paint//////////
         var count = 0
         count = 0
-        val localNpcs = Main.clientData.getLocalNPCs()
+        val localNpcs = MainApplet.clientData.getLocalNPCs()
         var npc: Npc? = null
         localNpcs.iterator().forEach {
             if (it != null) {
@@ -31,7 +31,7 @@ fun paintNPCs(g: Graphics) {
 
                 val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
                     getActorTriangles(
-                        npc, Main.clientData.getNpcModelCache(),
+                        npc, MainApplet.clientData.getNpcModelCache(),
                         it1
                     )
                 }
@@ -45,7 +45,7 @@ fun paintNPCs(g: Graphics) {
 
                 val ch = getConvexHull(
                     npc,
-                    Main.clientData.getNpcModelCache(),
+                    MainApplet.clientData.getNpcModelCache(),
                     npc!!.getComposite().getNpcComposite_id().toLong()
                 )
                 g.color = Color.PINK

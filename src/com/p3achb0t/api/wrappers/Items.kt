@@ -1,13 +1,13 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.hook_interfaces.ItemNode
 
 class Items {
     data class Item(val id: Int, val stackSize: Int)
     companion object {
         fun getItemComposite(id: Int) {
-            val itemTable = Main.clientData.getItemTable()
+            val itemTable = MainApplet.clientData.getItemTable()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
@@ -30,7 +30,7 @@ class Items {
         }
 
         fun getItemInfo(nodeId: Int, index: Int): Item {
-            val itemTable = Main.clientData.getItemTable()
+            val itemTable = MainApplet.clientData.getItemTable()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
@@ -50,7 +50,7 @@ class Items {
 
 
         fun dumpItems() {
-            val itemTable = Main.clientData.getItemTable()
+            val itemTable = MainApplet.clientData.getItemTable()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
