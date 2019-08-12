@@ -1,11 +1,11 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 
 class Players {
     companion object {
         fun getLocal(): Player {
-            return Player(Main.clientData.getLocalPlayer())
+            return Player(MainApplet.clientData.getLocalPlayer())
         }
 
     }

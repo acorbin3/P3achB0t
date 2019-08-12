@@ -1,6 +1,6 @@
 package com.p3achb0t.widgetexplorer
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.doesWidgetContainText
 import com.p3achb0t.hook_interfaces.Widget
@@ -62,9 +62,9 @@ class WidgetExplorer : View() {
                     val currentWidget = controller.allWidgetFileHookData[widgetDetailIndex]
                     //For the parent trees, there is no parent ID
                     if (parentId != "") {
-                        Main.selectedWidget = currentWidget
+                        MainApplet.selectedWidget = currentWidget
                     } else {
-                        Main.selectedWidget = null
+                        MainApplet.selectedWidget = null
                     }
                     controller.currentDetail.set(currentWidget?.let { it1 -> controller.getWidgetDetails(it1, 0) })
                     Items.dumpItems()
@@ -98,7 +98,7 @@ class WidgetController : Controller() {
         allWidgets.clear()
 
         // Get all the widget indexes
-        val widgets = Main.clientData.getWidgets()
+        val widgets = MainApplet.clientData.getWidgets()
         widgets.forEachIndexed { parentIndex, childArray ->
             if (childArray != null) {
                 childArray.forEachIndexed { childIndex, childItem ->
@@ -197,25 +197,25 @@ class WidgetController : Controller() {
             result += "---Internal---\n"
             result += "Bounds Index: ${widget.getBoundsIndex()}\n"
             result += "Bounds x: ["
-            for (i in Main.clientData.getWidgetBoundsX()) {
+            for (i in MainApplet.clientData.getWidgetBoundsX()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds y: ["
-            for (i in Main.clientData.getWidgetBoundsY()) {
+            for (i in MainApplet.clientData.getWidgetBoundsY()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds Width: ["
-            for (i in Main.clientData.getWidgetWidths()) {
+            for (i in MainApplet.clientData.getWidgetWidths()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds Height: ["
-            for (i in Main.clientData.getWidgetHeights()) {
+            for (i in MainApplet.clientData.getWidgetHeights()) {
                 result += "$i,"
             }
             result += "]\n"

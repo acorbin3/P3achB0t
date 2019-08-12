@@ -1,12 +1,13 @@
 package com.p3achb0t
 
-import com.p3achb0t.Main.Data.clientData
-import com.p3achb0t.Main.Data.customCanvas
-import com.p3achb0t.Main.Data.dream
-import com.p3achb0t.Main.Data.mouseEvent
+import com.p3achb0t.MainApplet.Data.clientData
+import com.p3achb0t.MainApplet.Data.customCanvas
+import com.p3achb0t.MainApplet.Data.dream
+import com.p3achb0t.MainApplet.Data.mouseEvent
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.DreamBotAnalyzer
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.LoggingIntoClient
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Camera
@@ -42,7 +43,7 @@ import javax.swing.JPanel
 import javax.swing.WindowConstants
 
 
-class Main(game: Applet) {
+class MainApplet(game: Applet) {
     init {
         client = game
     }
@@ -60,63 +61,65 @@ class Main(game: Applet) {
     }
 }
 
-fun main() {
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
 
-    val downloader = Downloader()
+        val downloader = Downloader()
 //    val gamePackWithPath = downloader.getGamepack()
-    val gamePackWithPath = downloader.getLocalGamepack()
-    println("Using $gamePackWithPath")
+        val gamePackWithPath = downloader.getLocalGamepack()
+        println("Using $gamePackWithPath")
 
 //    RuneLiteAnalyzer().getHooks()
 
-    dream = DreamBotAnalyzer()
+        dream = DreamBotAnalyzer()
 
-    dream?.getDreamBotHooks()
-    dream?.parseHooks()
-    val gamePackJar = JarFile(gamePackWithPath)
-    dream?.parseJar(gamePackJar)
-
-
-    val analyser = Analyser()
-    analyser.parseJar(gamePackJar, dream)
+        dream?.getDreamBotHooks()
+        dream?.parseHooks()
+        val gamePackJar = JarFile(gamePackWithPath)
+        dream?.parseJar(gamePackJar)
 
 
-    // Getting parameters
-    Parameters(83)
-    println("Starting Client")
-    val file = File("./injected_jar.jar")
-    val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
-    Main.classLoader = URLClassLoader(urlArray)
-    val clientClazz = Main.classLoader?.loadClass("client")?.newInstance()
-    val game: Applet = clientClazz as Applet
-    Main(game)
-    clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
+        val analyser = Analyser()
+        analyser.parseJar(gamePackJar, dream)
 
 
-    game.apply {
-        preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
-        val loader = RSLoader()
-        game.setStub(loader)
-    }
+        // Getting parameters
+        Parameters(83)
+        println("Starting Client")
+        val file = File("./injected_jar.jar")
+        val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
+        MainApplet.classLoader = URLClassLoader(urlArray)
+        val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
+        val game: Applet = clientClazz as Applet
+        MainApplet(game)
+        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
 
-    val jFrame = JFrame()
-    jFrame.title = "Runescape"
 
-    jFrame.apply {
+        game.apply {
+            preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
+            val loader = RSLoader()
+            game.setStub(loader)
+        }
 
-        defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
-        jMenuBar = MenuBar()
-        size = Dimension(850, 650)
-        minimumSize = game.minimumSize
-        setLocationRelativeTo(null)
-        isVisible = true
+        val jFrame = JFrame()
+        jFrame.title = "Runescape"
 
-        val panel = JPanel()
-        add(panel)
-        panel.add(game)
-        pack()
-    }
-    //Attempt to resize but didnt work
+        jFrame.apply {
+
+            defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE
+            jMenuBar = MenuBar()
+            size = Dimension(850, 650)
+            minimumSize = game.minimumSize
+            setLocationRelativeTo(null)
+            isVisible = true
+
+            val panel = JPanel()
+            add(panel)
+            panel.add(game)
+            pack()
+        }
+        //Attempt to resize but didnt work
 //    jFrame.addComponentListener( object : ComponentAdapter(){
 //        override fun componentResized(e: ComponentEvent?) {
 //            println("REsizing to ${jFrame.size}")
@@ -127,138 +130,138 @@ fun main() {
 //    })
 
 
-    game.apply {
-        init()
-        start()
+        game.apply {
+            init()
+            start()
 
-    }
+        }
 //    sleep(500)
 
-    // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
-    game.apply {
+        // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
+        game.apply {
 
-        val canvasType =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.owner
-        val canvasFieldName =
-            dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.name
+            val canvasType =
+                dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.owner
+            val canvasFieldName =
+                dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.name
 
-        println("canvas " + canvasType + " Field parentId : $canvasFieldName")
-        var loaded = false
-        //Wait till canvas is not null so we can replace it
-        while (!loaded) {
-            try {
+            println("canvas " + canvasType + " Field parentId : $canvasFieldName")
+            var loaded = false
+            //Wait till canvas is not null so we can replace it
+            while (!loaded) {
+                try {
 
-                val canvasClazz = Main.classLoader?.loadClass(canvasType)
-                val canvasField = canvasClazz?.getDeclaredField(canvasFieldName)
-                canvasField?.isAccessible = true
-                val oldCanvas = canvasField?.get(game) as Canvas // Needed to have Applet instead of null
-                game.remove(oldCanvas)
-                customCanvas = CustomCanvas(oldCanvas.hashCode())
+                    val canvasClazz = MainApplet.classLoader?.loadClass(canvasType)
+                    val canvasField = canvasClazz?.getDeclaredField(canvasFieldName)
+                    canvasField?.isAccessible = true
+                    val oldCanvas = canvasField?.get(game) as Canvas // Needed to have Applet instead of null
+                    game.remove(oldCanvas)
+                    customCanvas = CustomCanvas(oldCanvas.hashCode())
 
-                // Adding mouse, keyboard, and paint listeners
-                for (ml in oldCanvas.mouseListeners) {
-                    customCanvas?.addMouseListener(ml)
-                }
-                for (ml in oldCanvas.mouseMotionListeners) {
+                    // Adding mouse, keyboard, and paint listeners
+                    for (ml in oldCanvas.mouseListeners) {
+                        customCanvas?.addMouseListener(ml)
+                    }
+                    for (ml in oldCanvas.mouseMotionListeners) {
 
-                    customCanvas?.addMouseMotionListener(ml)
-                }
-                val mouseListener = object : MouseMotionListener {
-                    override fun mouseMoved(e: MouseEvent?) {
-                        mouseEvent = e
+                        customCanvas?.addMouseMotionListener(ml)
+                    }
+                    val mouseListener = object : MouseMotionListener {
+                        override fun mouseMoved(e: MouseEvent?) {
+                            mouseEvent = e
+
+                        }
+
+                        override fun mouseDragged(e: MouseEvent?) {
+                            mouseEvent = e
+                        }
 
                     }
 
-                    override fun mouseDragged(e: MouseEvent?) {
-                        mouseEvent = e
+                    customCanvas?.addPaintListener(debugPaint())
+
+                    customCanvas?.addMouseMotionListener(mouseListener)
+                    for (kl in oldCanvas.keyListeners) {
+                        customCanvas?.addKeyListener(kl)
                     }
-
-                }
-
-                customCanvas?.addPaintListener(debugPaint())
-
-                customCanvas?.addMouseMotionListener(mouseListener)
-                for (kl in oldCanvas.keyListeners) {
-                    customCanvas?.addKeyListener(kl)
-                }
-                val keyboadListner = object : KeyListener {
-                    override fun keyTyped(e: KeyEvent?) {
+                    val keyboadListner = object : KeyListener {
+                        override fun keyTyped(e: KeyEvent?) {
 //                        println("KeyTyped: ${e?.keyChar} Code:${e?.keyCode}")
-                    }
+                        }
 
-                    override fun keyPressed(e: KeyEvent?) {
+                        override fun keyPressed(e: KeyEvent?) {
 //                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
-                    }
+                        }
 
-                    override fun keyReleased(e: KeyEvent?) {
+                        override fun keyReleased(e: KeyEvent?) {
 //                        println("KeyReleased: ${e?.keyChar} Code:${e?.keyCode}")
+                        }
+
+                    }
+                    customCanvas?.addKeyListener(keyboadListner)
+                    for (fl in oldCanvas.focusListeners) {
+                        customCanvas?.addFocusListener(fl)
                     }
 
-                }
-                customCanvas?.addKeyListener(keyboadListner)
-                for (fl in oldCanvas.focusListeners) {
-                    customCanvas?.addFocusListener(fl)
-                }
+                    //Replace the canvas with the custom canvas
+                    canvasField.set(game, customCanvas)
+                    game.add(customCanvas)
+                    loaded = true
+                    println("Reflected custom canvas")
 
-                //Replace the canvas with the custom canvas
-                canvasField.set(game, customCanvas)
-                game.add(customCanvas)
-                loaded = true
-                println("Reflected custom canvas")
+                    break
 
-                break
-
-            } catch (e: Exception) {
-                println("Error hooking canvas $e ")
-                for (item in e.stackTrace) {
-                    println(item.toString())
+                } catch (e: Exception) {
+                    println("Error hooking canvas $e ")
+                    for (item in e.stackTrace) {
+                        println(item.toString())
+                    }
                 }
             }
         }
-    }
-    GlobalScope.launch {
-        // launch a new coroutine in background and continue
+        GlobalScope.launch {
+            // launch a new coroutine in background and continue
 
-        while (true) {
-            //Wait till we are logged in
-            if (clientData.getGameState() == 30) {
-                if (false) {
-                    try {
-                        val npcs = NPCs.findNpcs(sortByDist = true)
-                        if (npcs.size > 0) {
-                            npcs.forEach {
+            while (true) {
+                //Wait till we are logged in
+                if (clientData.getGameState() == 30) {
+                    if (false) {
+                        try {
+                            val npcs = NPCs.findNpcs(sortByDist = true)
+                            if (npcs.size > 0) {
+                                npcs.forEach {
+                                    if (!it.isOnScreen()) {
+                                        println("Turning to: ${it.npc.getComposite().getName()}")
+                                        Camera.turnTo(it)
+                                    }
+                                    it.interact("Cancel")
+                                }
+                            }
+                            val players = Player.findPlayers(true)
+                            players.forEach {
                                 if (!it.isOnScreen()) {
-                                    println("Turning to: ${it.npc.getComposite().getName()}")
+                                    println("Turning to: ${it.player.getName()}")
                                     Camera.turnTo(it)
                                 }
                                 it.interact("Cancel")
                             }
+                        } catch (e: Exception) {
                         }
-                        val players = Player.findPlayers(true)
-                        players.forEach {
-                            if (!it.isOnScreen()) {
-                                println("Turning to: ${it.player.getName()}")
-                                Camera.turnTo(it)
+
+                        val items = Inventory.getAll()
+                        if (items.size > 0) {
+
+                            items.forEach {
+                                if (!Inventory.isOpen()) {
+                                    Inventory.open()
+                                }
+                                it.interact("Cancel")
                             }
-                            it.interact("Cancel")
                         }
-                    } catch (e: Exception) {
                     }
 
-                    val items = Inventory.getAll()
-                    if (items.size > 0) {
 
-                        items.forEach {
-                            if (!Inventory.isOpen()) {
-                                Inventory.open()
-                            }
-                            it.interact("Cancel")
-                        }
-                    }
-                }
-
-
-                // Cycle between tabs
+                    // Cycle between tabs
 //            Tabs.Tab_Types.values().iterator().forEach {
 //                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
 //            }
@@ -288,7 +291,7 @@ fun main() {
 //            }
 
 
-                //If bank not open, find a banker and open it
+                    //If bank not open, find a banker and open it
 //            if(!Bank.isOpen()){
 //                Bank.open()
 //                //TODO -withdraw
@@ -307,7 +310,7 @@ fun main() {
 //            }
 
 
-                // Dont drop any items if there are still some on the ground
+                    // Dont drop any items if there are still some on the ground
 
 //            val groundItems2 = GroundItems.getAllItems()
 //            var count = 0
@@ -352,7 +355,7 @@ fun main() {
 //            Prayer.disable(Prayer.Companion.PrayerKind.THICK_SKIN)
 //                Magic.cast(Magic.Companion.Spells.Wind_Strike)
 //                Inventory.open()
-                // Cast wind Strike on a chicken
+                    // Cast wind Strike on a chicken
 //                Magic.cast(Magic.Companion.Spells.Wind_Strike)
 //                val chickens = NPCs.findNpc("Chicken")
 //                if(chickens.isNotEmpty()){
@@ -362,21 +365,21 @@ fun main() {
 //                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
 //                Walking.walkPath(path)
 //                Walking.walkPath(path,true)
-                if (!Calculations.screenInit && LoggingIntoClient.loggedIn) {
-                    Calculations.initScreenWidgetDimentions()
+                    if (!Calculations.screenInit && LoggingIntoClient.loggedIn) {
+                        Calculations.initScreenWidgetDimentions()
+                    }
+
+                    TutorialIsland.run()
                 }
-
-                TutorialIsland.run()
+                //Delay between 0-50 ms
+                delay((Math.random() * 50).toLong())
             }
-            //Delay between 0-50 ms
-            delay((Math.random() * 50).toLong())
         }
+
+
+        LoggingIntoAccount()
+        class MyApp : App(WidgetExplorer::class)
+        launch<MyApp>()
     }
-
-
-    //    LoggingIntoAccount()
-    class MyApp : App(WidgetExplorer::class)
-    launch<MyApp>()
-
 }
 

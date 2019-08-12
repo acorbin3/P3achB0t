@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.midPoint
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.user_inputs.Mouse
@@ -39,8 +39,8 @@ interface Interactable {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         while (true) {
             val desiredPoint = getInteractPoint()
-            val startPoint = if (Main.mouseEvent != null) Main.mouseEvent?.point?.x?.let { _x ->
-                Main.mouseEvent?.point?.y?.let { _y ->
+            val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
+                MainApplet.mouseEvent?.point?.y?.let { _y ->
                     Point(_x, _y)
                 }
             } else {
@@ -52,7 +52,7 @@ interface Interactable {
                     break
                 } else {
                     val midPoint = midPoint(desiredPoint, startPoint)
-                    Main.mouse.moveMouse(midPoint, click = false)
+                    MainApplet.mouse.moveMouse(midPoint, click = false)
                 }
             }
         }
@@ -60,7 +60,7 @@ interface Interactable {
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
-        Main.mouse.moveMouse(
+        MainApplet.mouse.moveMouse(
             getInteractPoint(),
             click = click,
             clickType = clickType
@@ -68,7 +68,7 @@ interface Interactable {
     }
 
     suspend fun click(left: Boolean): Boolean {
-        return Main.mouse.moveMouse(
+        return MainApplet.mouse.moveMouse(
             getInteractPoint(),
             click = true,
             clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
@@ -82,7 +82,7 @@ interface Interactable {
         return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
             false
         } else {
-            Main.mouse.moveMouse(getInteractPoint(), click = true)
+            MainApplet.mouse.moveMouse(getInteractPoint(), click = true)
         }
     }
 }

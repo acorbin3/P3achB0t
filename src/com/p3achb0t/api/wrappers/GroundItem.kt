@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -17,7 +17,7 @@ import java.util.*
 class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0) : Locatable,
     Interactable {
     override suspend fun clickOnMiniMap(): Boolean {
-        return Main.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
+        return MainApplet.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
     }
 
     override fun getInteractPoint(): Point {
@@ -34,8 +34,8 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + Main.clientData.getBaseX(),
-            position.y / 128 + Main.clientData.getBaseY(),
+            position.x / 128 + MainApplet.clientData.getBaseX(),
+            position.y / 128 + MainApplet.clientData.getBaseY(),
             position.plane
         )
     }
@@ -60,7 +60,7 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     }
 
     fun getTriangles(): ArrayList<Polygon> {
-        val groundItemModels = Main.clientData.getGroundItemModelCache()
+        val groundItemModels = MainApplet.clientData.getGroundItemModelCache()
         val model: Model? = getModel(groundItemModels)
         return model?.let { getTrianglesFromModel(position, it) } ?: ArrayList()
     }
@@ -89,7 +89,7 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = Main.clientData.getGroundItemModelCache()
+        val groundItemModels = MainApplet.clientData.getGroundItemModelCache()
         val model: Model? = getModel(groundItemModels)
         return model?.let { getConvexHullFromModel(position, it) } ?: Polygon()
     }

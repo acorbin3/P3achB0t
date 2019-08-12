@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
@@ -11,7 +11,7 @@ fun playerPaint(g: Graphics) {
     try {
         ///////Player paint//////////
         g.color = Color.GREEN
-        val players = Main.clientData.getPlayers()
+        val players = MainApplet.clientData.getPlayers()
         var count = 0
         players.iterator().forEach { _player ->
             if (_player != null && _player.getLevel() > 0) {
@@ -32,7 +32,7 @@ fun playerPaint(g: Graphics) {
 
                 val polygon = getActorTriangles(
                     _player,
-                    Main.clientData.getPlayerModelCache(),
+                    MainApplet.clientData.getPlayerModelCache(),
                     _player.getComposite().getStaticModelID()
                 )
                 g.color = Color.YELLOW
@@ -41,7 +41,7 @@ fun playerPaint(g: Graphics) {
                 }
                 val ch = getConvexHull(
                     _player,
-                    Main.clientData.getPlayerModelCache(),
+                    MainApplet.clientData.getPlayerModelCache(),
                     _player.getComposite().getStaticModelID()
                 )
                 g.color = Color.RED

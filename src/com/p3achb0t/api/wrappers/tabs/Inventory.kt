@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.hook_interfaces.Widget
@@ -70,7 +70,7 @@ class Inventory {
         fun getWidget(): Widget? {
             var widget: Widget? = null
             try {
-                widget = Main.clientData.getWidgets()[PARENT_ID][CHILD_ID]
+                widget = MainApplet.clientData.getWidgets()[PARENT_ID][CHILD_ID]
             } catch (e: Exception) {
             }
             return widget

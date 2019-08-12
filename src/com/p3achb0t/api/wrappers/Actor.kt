@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -80,9 +80,9 @@ open class Actor(var raw: com.p3achb0t.hook_interfaces.Actor) : Locatable {
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            raw.getLocalX() / 128 + Main.clientData.getBaseX(),
-            raw.getLocalY() / 128 + Main.clientData.getBaseY(),
-            Main.clientData.getPlane()
+            raw.getLocalX() / 128 + MainApplet.clientData.getBaseX(),
+            raw.getLocalY() / 128 + MainApplet.clientData.getBaseY(),
+            MainApplet.clientData.getPlane()
         )
     }
 

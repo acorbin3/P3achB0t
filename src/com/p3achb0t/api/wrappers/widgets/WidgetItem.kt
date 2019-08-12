@@ -30,7 +30,7 @@ class WidgetItem(
         SHOP, INVENTORY, BANK, EQUIPMENT, NULL
     }
 
-    //    var itemComposite: ItemComposite get() = Main.clientData.getItem
+    //    var itemComposite: ItemComposite get() = MainApplet.clientData.getItem
     fun getBasePoint(): Point {
         return Point(area.x, area.y)
     }

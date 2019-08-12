@@ -1,10 +1,12 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
+import com.p3achb0t.api.Calculations.Companion.worldToScreen
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
 import com.p3achb0t.api.wrappers.MiniMap
+import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.hook_interfaces.Cache
 import com.p3achb0t.hook_interfaces.Model
 import com.p3achb0t.interfaces.PaintListener
@@ -30,7 +32,7 @@ fun debugPaint(): PaintListener {
 //                        println("]")
 //                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
 
-                if (Main.clientData.getGameState() == 30) {
+                if (MainApplet.clientData.getGameState() == 30) {
                     if (!Bank.isOpen()) {
 
                         playerPaint(g)
@@ -92,12 +94,18 @@ fun debugPaint(): PaintListener {
 
                     // Paint on minimap
 
-                    val local = Main.clientData.getLocalPlayer()
+                    val local = MainApplet.clientData.getLocalPlayer()
                     val point = worldToMiniMap(local.getLocalX(), local.getLocalY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
                         g.fillRect(point.x, point.y, 3, 3)
                     }
+
+                    var local2 = Players.getLocal()
+                    println("${local2.getLocalLocation()}  ${local2.getGlobalLocation()}  ${local2.getRegionalLocation()}  ${local2.player.getLocalX()},${local2.player.getLocalY()}")
+                    val point2 =
+                        worldToScreen(local2.player.getLocalX(), local2.player.getLocalY(), local.getModelHeight())
+                    g.drawString(local.getName().getName(), point2.x, point2.y)
                 }
 
             } catch (e: Exception) {

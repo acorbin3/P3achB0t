@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Utils
 import java.awt.Color
 import java.awt.Graphics
@@ -8,12 +8,12 @@ import java.awt.Graphics
 fun rightClickMenuPaint(g: Graphics) {
     try {
         // Look into menu
-        val mCount = Main.clientData.getMenuCount()
-        val heigth = Main.clientData.getMenuHeight()
-        val width = Main.clientData.getMenuWidth()
-        val mX = Main.clientData.getMenuX()
-        val mY = Main.clientData.getMenuY()
-        val mVisible = Main.clientData.getMenuVisible()
+        val mCount = MainApplet.clientData.getMenuCount()
+        val heigth = MainApplet.clientData.getMenuHeight()
+        val width = MainApplet.clientData.getMenuWidth()
+        val mX = MainApplet.clientData.getMenuX()
+        val mY = MainApplet.clientData.getMenuY()
+        val mVisible = MainApplet.clientData.getMenuVisible()
         if (mVisible) {
             g.color = Color.YELLOW
             g.drawRect(mX, mY, width, heigth)
@@ -24,9 +24,9 @@ fun rightClickMenuPaint(g: Graphics) {
 
                 g.color = Color.BLUE
                 g.drawRect(mX - 1, mY + yDiff, width, lineHeight)
-                var menuAction = Main.clientData.getMenuActions()[mCount - i]
+                var menuAction = MainApplet.clientData.getMenuActions()[mCount - i]
                 menuAction = Utils.cleanColorText(menuAction)
-                var menuOption = Main.clientData.getMenuOptions()[mCount - i]
+                var menuOption = MainApplet.clientData.getMenuOptions()[mCount - i]
                 menuOption = Utils.cleanColorText(menuOption)
                 val action = "$menuAction $menuOption"
                 g.color = Color.GREEN

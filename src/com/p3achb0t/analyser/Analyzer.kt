@@ -1,6 +1,6 @@
 package com.p3achb0t.analyser
 
-import com.p3achb0t.Main.Data.dream
+import com.p3achb0t.MainApplet.Data.dream
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.rsclasses.*

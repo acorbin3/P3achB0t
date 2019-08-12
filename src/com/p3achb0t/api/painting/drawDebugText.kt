@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Bank
@@ -17,11 +17,11 @@ fun drawDebugText(g: Graphics) {
     val debugText = arrayListOf<DebugText>()
     if (true) {
         g.color = Color.white
-        debugText.add(DebugText("Mouse x:${Main.mouseEvent?.x} y:${Main.mouseEvent?.y}"))
-        debugText.add(DebugText("clientData.gameCycle :${Main.clientData.getGameCycle()}"))
-        debugText.add(DebugText("Game State:: ${Main.clientData.getGameState()}"))
-        debugText.add(DebugText("clientData.loginState :${Main.clientData.getLoginState()}"))
-        debugText.add(DebugText("Account status :${Main.clientData.getAccountStatus()}"))
+        debugText.add(DebugText("Mouse x:${MainApplet.mouseEvent?.x} y:${MainApplet.mouseEvent?.y}"))
+        debugText.add(DebugText("clientData.gameCycle :${MainApplet.clientData.getGameCycle()}"))
+        debugText.add(DebugText("Game State:: ${MainApplet.clientData.getGameState()}"))
+        debugText.add(DebugText("clientData.loginState :${MainApplet.clientData.getLoginState()}"))
+        debugText.add(DebugText("Account status :${MainApplet.clientData.getAccountStatus()}"))
         debugText.add(DebugText("Camera: x:${Camera.x} y:${Camera.y} z:${Camera.z} pitch:${Camera.pitch} yaw: ${Camera.yaw} angle: ${Camera.angle}"))
         debugText.add(DebugText("OpenTab: ${Tabs.getOpenTab()?.name}"))
         debugText.add(DebugText("Bank Status: ${Bank.isOpen()}"))
@@ -29,31 +29,31 @@ fun drawDebugText(g: Graphics) {
 
 
         try {
-            debugText.add(DebugText("Spell: ${Main.clientData.getSelectedSpellName()}"))
-            debugText.add(DebugText("Animation: ${Main.clientData.getLocalPlayer().getAnimation()}"))
+            debugText.add(DebugText("Spell: ${MainApplet.clientData.getSelectedSpellName()}"))
+            debugText.add(DebugText("Animation: ${MainApplet.clientData.getLocalPlayer().getAnimation()}"))
             debugText.add(DebugText("Mode: ${ClientMode.getMode().name}"))
             debugText.add(
                 DebugText(
-                    "LocalPlayer Position: (${Main.clientData.getLocalPlayer().getLocalX() / 128},${Main.clientData.getLocalPlayer().getLocalY() / 128})" +
-                            " RAW: (${Main.clientData.getLocalPlayer().getLocalX()},${Main.clientData.getLocalPlayer().getLocalY()}"
+                    "LocalPlayer Position: (${MainApplet.clientData.getLocalPlayer().getLocalX() / 128},${MainApplet.clientData.getLocalPlayer().getLocalY() / 128})" +
+                            " RAW: (${MainApplet.clientData.getLocalPlayer().getLocalX()},${MainApplet.clientData.getLocalPlayer().getLocalY()}"
                 )
             )
-            debugText.add(DebugText("Base(x,y): (${Main.clientData.getBaseX()},${Main.clientData.getBaseY()})"))
+            debugText.add(DebugText("Base(x,y): (${MainApplet.clientData.getBaseX()},${MainApplet.clientData.getBaseY()})"))
 
             val miniMapPlayer = Calculations.worldToMiniMap(
-                Main.clientData.getLocalPlayer().getLocalX(),
-                Main.clientData.getLocalPlayer().getLocalY()
+                MainApplet.clientData.getLocalPlayer().getLocalX(),
+                MainApplet.clientData.getLocalPlayer().getLocalY()
             )
             debugText.add(
                 DebugText(
                     "localPlayer minimap: (x,y) (${miniMapPlayer.x},${miniMapPlayer.y})" +
-                            "Including base(${Main.clientData.getLocalPlayer().getLocalX() / 128 + Main.clientData.getBaseX()}," +
-                            "${Main.clientData.getLocalPlayer().getLocalY() / 128 + Main.clientData.getBaseY()})  " +
-                            "mapAngle: ${Main.clientData.getMapAngle()}"
+                            "Including base(${MainApplet.clientData.getLocalPlayer().getLocalX() / 128 + MainApplet.clientData.getBaseX()}," +
+                            "${MainApplet.clientData.getLocalPlayer().getLocalY() / 128 + MainApplet.clientData.getBaseY()})  " +
+                            "mapAngle: ${MainApplet.clientData.getMapAngle()}"
                 )
             )
             debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete() * 100)}"))
-            debugText.add(DebugText("Zoom: ${Main.clientData.getZoomExact()}"))
+            debugText.add(DebugText("Zoom: ${MainApplet.clientData.getZoomExact()}"))
             debugText.add(DebugText(Menu.getHoverAction()))
 //            debugText.add(DebugText())
 
@@ -68,5 +68,5 @@ fun drawDebugText(g: Graphics) {
             y += 10
         }
     }
-    Main.mouseEvent?.x?.let { Main.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+    MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
 }

@@ -1,8 +1,8 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.CustomCanvas
-import com.p3achb0t.Main
-import com.p3achb0t.Main.Data.clientData
+import com.p3achb0t.MainApplet
+import com.p3achb0t.MainApplet.Data.clientData
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.MiniMap
@@ -207,14 +207,14 @@ class Calculations {
         fun worldToMiniMap(x: Int, y: Int): Point {
 
             // Note: Multiply by tile size before converting to local coordinates to preserve precision
-            val tilePX = ((x - Main.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
-            val tilePY = ((y - Main.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
-            val local = Main.clientData.getLocalPlayer()
+            val tilePX = ((x - MainApplet.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+            val tilePY = ((y - MainApplet.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+            val local = MainApplet.clientData.getLocalPlayer()
 
             val playerPX =
-                ((local.getLocalX() - Main.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+                ((local.getLocalX() - MainApplet.clientData.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
             val playerPY =
-                ((local.getLocalY() - Main.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+                ((local.getLocalY() - MainApplet.clientData.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
 
 
             val diffX = tilePX - playerPX
@@ -222,7 +222,7 @@ class Calculations {
 
             val miniMapWidget = MiniMap.getWidget() ?: return Point(-1, -1)
 
-            val angle = Main.clientData.getMapAngle() and 0x7ff
+            val angle = MainApplet.clientData.getMapAngle() and 0x7ff
 
             val sineCalc = SINE[angle]
             val cosCalc = COSINE[angle]

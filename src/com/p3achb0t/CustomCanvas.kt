@@ -39,18 +39,18 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
         paintListener.forEach { it.onPaint(g) }
         try {
             g.color = Color.GREEN
-            if (Main.selectedWidget != null) {
-                if (Main.selectedWidget!!.getType() == 2) {
-                    val retcs = Widget.getItemsRects(Main.selectedWidget!!)
+            if (MainApplet.selectedWidget != null) {
+                if (MainApplet.selectedWidget!!.getType() == 2) {
+                    val retcs = Widget.getItemsRects(MainApplet.selectedWidget!!)
                     retcs.iterator().forEach { rect ->
                         g.drawRect(rect.x, rect.y, rect.width, rect.height)
                     }
                 } else {
-                    val rect = Widget.getDrawableRect(Main.selectedWidget!!)
+                    val rect = Widget.getDrawableRect(MainApplet.selectedWidget!!)
                     rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
                     try {
                         g.color = Color.MAGENTA
-                        for (child in Main.selectedWidget?.getChildren()!!) {
+                        for (child in MainApplet.selectedWidget?.getChildren()!!) {
                             val rect2 = Widget.getDrawableRect(child)
                             g.drawRect(rect2.x, rect2.y, rect2.width, rect2.height)
                         }

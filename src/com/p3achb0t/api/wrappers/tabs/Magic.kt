@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -41,9 +41,9 @@ class Magic {
             // Ingore if spell is already selected
             try {
                 if (Utils.cleanColorText(
-                        Main.clientData.getSelectedSpellName()
+                        MainApplet.clientData.getSelectedSpellName()
                     ).toLowerCase() == spell.name.replace("_", " ").toLowerCase()
-                    && Main.clientData.getIsSpellSelected()
+                    && MainApplet.clientData.getIsSpellSelected()
                 )
                     return
             } catch (e: Exception) {

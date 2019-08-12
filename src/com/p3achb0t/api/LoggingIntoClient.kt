@@ -1,7 +1,7 @@
 package com.p3achb0t.api
 
 import UserDetails
-import com.p3achb0t.Main
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
@@ -29,7 +29,7 @@ fun LoggingIntoAccount() {
 //                clientData = getClientData()
 
                 // When loaded login
-                if (!LoggingIntoClient.loggedIn && Main.clientData.getGameState() == 10) {
+                if (!LoggingIntoClient.loggedIn && MainApplet.clientData.getGameState() == 10) {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
@@ -38,7 +38,7 @@ fun LoggingIntoAccount() {
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
 
-                    while (Main.clientData.getGameState() != 30) {
+                    while (MainApplet.clientData.getGameState() != 30) {
                         delay(100)
                     }
                     delay(1500)
