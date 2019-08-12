@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -11,7 +10,7 @@ class NPCs {
             try {
                 val npcs = findNpcs(sortByDist = sortByDist)
                 npcs.forEach {
-                    if (it.npc.getComposite().getName() == npcName) {
+                    if (it.npc.getType().getName() == npcName) {
                         foundNPCs.add(it)
                     }
                 }
@@ -25,7 +24,7 @@ class NPCs {
             try {
                 val npcs = findNpcs(sortByDist = true)
                 npcs.forEach {
-                    if (it.npc.getComposite().getId().toInt() == npcId) {
+                    if (it.npc.getType().getId().toInt() == npcId) {
                         foundNPCs.add(it)
                     }
                 }
@@ -37,7 +36,7 @@ class NPCs {
         // This function will return a list of NPCs with closes distance to you
         fun findNpcs(sortByDist: Boolean = false): ArrayList<NPC> {
             val npcs = ArrayList<NPC>()
-            MainApplet.clientData.getLocalNPCs().forEach {
+            Client.client.getNpcs().forEach {
                 if (it != null) {
                     npcs.add(NPC(it))
                 }
@@ -45,10 +44,10 @@ class NPCs {
             if (sortByDist) {
                 npcs.sortBy {
                     // Sort closest to player
-                    val localPlayer = MainApplet.clientData.getLocalPlayer()
+                    val localPlayer = Client.client.getLocalPlayer()
                     max(
-                        abs(localPlayer.getLocalX() - it.npc.getLocalX()),
-                        abs(localPlayer.getLocalY() - it.npc.getLocalY())
+                        abs(localPlayer.getX() - it.npc.getX()),
+                        abs(localPlayer.getY() - it.npc.getY())
                     )
                 }
             }

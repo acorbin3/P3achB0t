@@ -1,24 +1,24 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
-import com.p3achb0t.hook_interfaces.ItemNode
+import com.p3achb0t._runestar_interfaces.Inventory
+
 
 class Items {
     data class Item(val id: Int, val stackSize: Int)
     companion object {
         fun getItemComposite(id: Int) {
-            val itemTable = MainApplet.clientData.getItemTable()
+            val itemTable = Client.client.getItemContainers()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
                     while (item != null && item != it) {
-                        if (item is ItemNode) {
-                            println("Found ItemNode ${item.getId()}.")
+                        if (item is Inventory) {
+                            println("Found Inventory ${item.getIds()}.")
                             item.getIds().iterator().forEach {
                                 print("$it,")
                             }
                             println()
-                            item.getStackSizes().iterator().forEach {
+                            item.getQuantities().iterator().forEach {
                                 print("$it,")
                             }
                             println()
@@ -30,15 +30,15 @@ class Items {
         }
 
         fun getItemInfo(nodeId: Int, index: Int): Item {
-            val itemTable = MainApplet.clientData.getItemTable()
+            val itemTable = Client.client.getItemContainers()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
                     while (item != null && item != it) {
-                        if (item is ItemNode && item.getId().toInt() == nodeId) {
+                        if (item is Inventory && item.getKey().toInt() == nodeId) {
                             return Item(
                                 item.getIds()[index],
-                                item.getStackSizes()[index]
+                                item.getQuantities()[index]
                             )
                         }
                         item = item.getNext()
@@ -50,18 +50,18 @@ class Items {
 
 
         fun dumpItems() {
-            val itemTable = MainApplet.clientData.getItemTable()
+            val itemTable = Client.client.getItemContainers()
             itemTable.getBuckets().iterator().forEach {
                 if (it != null) {
                     var item = it.getNext()
                     while (item != null && item != it) {
-                        if (item is ItemNode) {
-                            println("Found ItemNode ${item.getId()}.")
+                        if (item is Inventory) {
+                            println("Found Inventory ${item.getKey()}.")
                             item.getIds().iterator().forEach {
                                 print("$it,")
                             }
                             println()
-                            item.getStackSizes().iterator().forEach {
+                            item.getQuantities().iterator().forEach {
                                 print("$it,")
                             }
                             println()

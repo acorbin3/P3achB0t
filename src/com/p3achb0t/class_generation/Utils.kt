@@ -1,6 +1,7 @@
 package com.p3achb0t.class_generation
 
 import com.p3achb0t.analyser.RuneLiteJSONClasses
+import com.p3achb0t.analyser.runestar.ClassHook
 
 
 fun cleanType(descriptor: String): String {
@@ -66,12 +67,20 @@ fun stripArray(descriptor: String): String {
 }
 
 fun getArrayString(count: Int, type: String): String {
+    var updatedType = ""
+    if (count > 0) {
+        updatedType = if (type == "Int" || type == "Boolean" || type == "Byte" || type == "Short") {
+            type + "Array"
+        } else {
+            "Array<$type>"
+        }
+    }
     return when (count) {
-        1 -> "Array<$type>"
-        2 -> "Array<Array<$type>>"
-        3 -> "Array<Array<Array<$type>>>"
-        4 -> "Array<Array<Array<Array<$type>>>>"
-        5 -> "Array<Array<Array<Array<Array<$type>>>>>"
+        1 -> updatedType
+        2 -> "Array<$updatedType>"
+        3 -> "Array<Array<$updatedType>>"
+        4 -> "Array<Array<Array<$updatedType>>>"
+        5 -> "Array<Array<Array<Array<$updatedType>>>>"
         else -> type
     }
 }
@@ -87,6 +96,7 @@ fun getJavaArrayString(count: Int, type: String): String {
     }
 }
 
+
 fun isFieldNameUnique(
     clazz: RuneLiteJSONClasses.ClassDefinition?,
     fieldName: String,
@@ -97,13 +107,40 @@ fun isFieldNameUnique(
     }
     var count = 0
     clazz?.fields?.iterator()?.forEach { field ->
-//        println("\t ${field.field}")
+        //        println("\t ${field.field}")
         if (field.field == fieldName) {
             count += 1
         }
     }
 
     val superClass = clazz?._super
+//    println("$count $superClass")
+    if (superClass == "")
+        return count
+    if (superClass in classRefObs) {
+//        println(classRefObs[superClass]?._class)
+        return isFieldNameUnique(classRefObs[superClass], fieldName, classRefObs).let { count.plus(it) }
+    }
+    return count
+}
+
+fun isFieldNameUnique(
+    clazz: ClassHook?,
+    fieldName: String,
+    classRefObs: MutableMap<String, ClassHook>
+): Int {
+    if (clazz?.fields?.count() == 0) {
+        return 0
+    }
+    var count = 0
+    clazz?.fields?.iterator()?.forEach { field ->
+        //        println("\t ${field.field}")
+        if (field.field == fieldName) {
+            count += 1
+        }
+    }
+
+    val superClass = clazz?.`super`
 //    println("$count $superClass")
     if (superClass == "")
         return count

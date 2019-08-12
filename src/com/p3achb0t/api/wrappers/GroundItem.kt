@@ -1,12 +1,12 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
+import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.tabs.Inventory
-import com.p3achb0t.hook_interfaces.Cache
-import com.p3achb0t.hook_interfaces.Model
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -34,8 +34,8 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + MainApplet.clientData.getBaseX(),
-            position.y / 128 + MainApplet.clientData.getBaseY(),
+            position.x / 128 + Client.client.getBaseX(),
+            position.y / 128 + Client.client.getBaseY(),
             position.plane
         )
     }
@@ -60,21 +60,21 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     }
 
     fun getTriangles(): ArrayList<Polygon> {
-        val groundItemModels = MainApplet.clientData.getGroundItemModelCache()
+        val groundItemModels = Client.client.getObjType_cachedModels()
         val model: Model? = getModel(groundItemModels)
         return model?.let { getTrianglesFromModel(position, it) } ?: ArrayList()
     }
 
     private fun getModel(
-        groundItemModels: Cache
+        groundItemModels: EvictingDualNodeHashTable
     ): Model? {
         var model1: Model? = null
         groundItemModels.getHashTable().getBuckets().iterator().forEach {
             if (it != null) {
                 var next = it.getNext()
-                while (next.getId() > 0 && next is Model) {
+                while (next.getKey() > 0 && next is Model) {
                     try {
-                        if (next.getId().toInt() == this.id) {
+                        if (next.getKey().toInt() == this.id) {
                             model1 = next
                             break
                         }
@@ -89,7 +89,7 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = MainApplet.clientData.getGroundItemModelCache()
+        val groundItemModels = Client.client.getObjType_cachedModels()
         val model: Model? = getModel(groundItemModels)
         return model?.let { getConvexHullFromModel(position, it) } ?: Polygon()
     }

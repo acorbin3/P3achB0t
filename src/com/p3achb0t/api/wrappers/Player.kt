@@ -1,19 +1,18 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.getConvexHull
 import kotlin.math.abs
 import kotlin.math.max
 
 
-class Player(var player: com.p3achb0t.hook_interfaces.Player) : Actor(player) {
+class Player(var player: com.p3achb0t._runestar_interfaces.Player) : Actor(player) {
     companion object {
 
 
         // This function will return a list of NPCs with closes distance to you
         fun findPlayers(sortByDist: Boolean = false): ArrayList<Player> {
             val players = ArrayList<Player>()
-            MainApplet.clientData.getPlayers().forEach {
+            Client.client.getPlayers().forEach {
                 if (it != null) {
                     players.add(Player(it))
                 }
@@ -22,10 +21,10 @@ class Player(var player: com.p3achb0t.hook_interfaces.Player) : Actor(player) {
             if (sortByDist) {
                 players.sortBy {
                     // Sort closest to player
-                    val localPlayer = MainApplet.clientData.getLocalPlayer()
+                    val localPlayer = Client.client.getLocalPlayer()
                     max(
-                        abs(localPlayer.getLocalX() - it.player.getLocalX()),
-                        abs(localPlayer.getLocalY() - it.player.getLocalY())
+                        abs(localPlayer.getX() - it.player.getX()),
+                        abs(localPlayer.getY() - it.player.getY())
                     )
                 }
             }
@@ -41,11 +40,11 @@ class Player(var player: com.p3achb0t.hook_interfaces.Player) : Actor(player) {
         //  TODO - if right click interact
         //
         try {
-            println("${this.player.getName()}: Getting Hull!")
+            println("${this.player.getUsername()}: Getting Hull!")
             val ch = getConvexHull(
                 this.player,
-                MainApplet.clientData.getPlayerModelCache(),
-                this.player.getComposite().getStaticModelID()
+                Client.client.getLocType_cachedModels(),
+                this.player.getAppearance().getNpcTransformId().toLong()
             )
             //Checking to see if this is on screen
             Interact.interact(ch, action)

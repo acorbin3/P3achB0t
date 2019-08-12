@@ -1,12 +1,10 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
+import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
-import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.Dialog
-import com.p3achb0t.api.wrappers.MiniMap
-import com.p3achb0t.hook_interfaces.Cache
-import com.p3achb0t.hook_interfaces.Model
+import com.p3achb0t.api.Calculations.Companion.worldToScreen
+import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
@@ -30,14 +28,14 @@ fun debugPaint(): PaintListener {
 //                        println("]")
 //                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
 
-                if (MainApplet.clientData.getGameState() == 30) {
+                if (Client.client.getGameState() == 30) {
                     if (!Bank.isOpen()) {
 
                         playerPaint(g)
-                        paintNPCs(g)
+//                        paintNPCs(g)
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
-                        gameObjectPaint(g)
+//                        gameObjectPaint(g)
 //TODO - ground items issue
 //                    try {
 //                        val groundItems = GroundItems.getAllItems()
@@ -92,12 +90,17 @@ fun debugPaint(): PaintListener {
 
                     // Paint on minimap
 
-                    val local = MainApplet.clientData.getLocalPlayer()
-                    val point = worldToMiniMap(local.getLocalX(), local.getLocalY())
+                    val local = Client.client.getLocalPlayer()
+                    println("Local ${local.getX()},${local.getY()}")
+                    val point = worldToMiniMap(local.getX(), local.getY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
-                        g.fillRect(point.x, point.y, 3, 3)
+                        g.fillRect(point.x, point.y, 4, 4)
                     }
+                    var local2 = Players.getLocal()
+                    println("${local2.getLocalLocation()}  ${local2.getGlobalLocation()}  ${local2.getRegionalLocation()}  ${local2.player.getX()},${local2.player.getY()}")
+                    val point2 = worldToScreen(local2.player.getX(), local2.player.getY(), local.getHeight())
+                    g.drawString(local.getUsername().getCleanName(), point2.x, point2.y)
                 }
 
             } catch (e: Exception) {
@@ -116,7 +119,7 @@ fun debugPaint(): PaintListener {
         }
 
 
-        fun getAllObjectModels(objectModels: Cache): ArrayList<Model> {
+        fun getAllObjectModels(objectModels: EvictingDualNodeHashTable): ArrayList<Model> {
             val modelList = ArrayList<Model>()
             objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
                 if (bucket != null) {
@@ -132,27 +135,27 @@ fun debugPaint(): PaintListener {
             }
             if (modelList.isNotEmpty()) {
                 println("Models")
-                modelList.forEach { println(it.getId()) }
+                modelList.forEach { println(it.getKey()) }
                 println("--")
             }
             return modelList
         }
 
-        fun getObjectsModel(objectModels: Cache, renderModelID: Int): Model? {
+        fun getObjectsModel(objectModels: EvictingDualNodeHashTable, renderModelID: Int): Model? {
             var desiredModel: Model? = null
             objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
                 if (bucket != null) {
                     var model = bucket.getNext()
                     while (model != null && model is Model) {
 
-                        if (model.getId() > 0) {
+                        if (model.getKey() > 0) {
                             println(
-                                model.getId().toString() + " " + model.getId().shr(17).and(0x7fff) + " ${model.getId().shr(
+                                model.getKey().toString() + " " + model.getKey().shr(17).and(0x7fff) + " ${model.getKey().shr(
                                     16
-                                )} ${model.getId().shr(15)} ${model.getId().shr(14)}" + " UUID Count: ${(model as Model).getUidCount()}"
+                                )} ${model.getKey().shr(15)} ${model.getKey().shr(14)}"
                             )
                         }
-                        if (model.getId().toInt() == renderModelID) {
+                        if (model.getKey().toInt() == renderModelID) {
                             desiredModel = model as Model
                         }
                         model = model.getNext()

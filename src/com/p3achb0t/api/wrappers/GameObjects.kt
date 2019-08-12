@@ -1,21 +1,20 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 
 class GameObjects {
     companion object {
         val gameObjects: ArrayList<GameObject>
             get() {
                 val gameObjects = ArrayList<GameObject>()
-                val region = MainApplet.clientData.getRegion()
+                val region = Client.client.getScene()
 
                 region.getTiles().iterator().forEach { plane ->
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { tile ->
                             if (tile != null) {
-                                if (tile.getObjects().isNotEmpty()) {
-                                    tile.getObjects().iterator().forEach {
-                                        if (it != null && it.getId() > 0) {
+                                if (tile.getGameObjects().isNotEmpty()) {
+                                    tile.getGameObjects().iterator().forEach {
+                                        if (it != null && it.getTag() > 0) {
                                             gameObjects.add(GameObject(it))
 
                                         }
@@ -31,7 +30,7 @@ class GameObjects {
 
         fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
             val gameObjects = ArrayList<GameObject>()
-            val region = MainApplet.clientData.getRegion()
+            val region = Client.client.getScene()
 
             //Default tile we will iterate over the region
             if (tile.x == -1 && tile.y == -1) {
@@ -40,8 +39,8 @@ class GameObjects {
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { colTile ->
                             if (colTile != null) {
-                                if (colTile.getObjects().isNotEmpty()) {
-                                    colTile.getObjects().iterator().forEach {
+                                if (colTile.getGameObjects().isNotEmpty()) {
+                                    colTile.getGameObjects().iterator().forEach {
                                         if (it != null) {
                                             val gmObj = GameObject(it)
                                             if (gmObj.id == id)
@@ -50,8 +49,8 @@ class GameObjects {
                                         }
                                     }
                                 }
-                                if (colTile.getBoundary() != null) {
-                                    val boundaryObject = colTile.getBoundary()
+                                if (colTile.getBoundaryObject() != null) {
+                                    val boundaryObject = colTile.getBoundaryObject()
                                     val gmObj = GameObject(boundaryObject = boundaryObject)
                                     if (gmObj.id == id)
                                         gameObjects.add(gmObj)
@@ -73,7 +72,7 @@ class GameObjects {
 
         fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
             val gameObjects = ArrayList<GameObject>()
-            val region = MainApplet.clientData.getRegion()
+            val region = Client.client.getScene()
 
             //Default tile we will iterate over the region
             if (tile.x == -1 && tile.y == -1) {
@@ -82,8 +81,8 @@ class GameObjects {
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { colTile ->
                             if (colTile != null) {
-                                if (colTile.getObjects().isNotEmpty()) {
-                                    colTile.getObjects().iterator().forEach {
+                                if (colTile.getGameObjects().isNotEmpty()) {
+                                    colTile.getGameObjects().iterator().forEach {
                                         if (it != null) {
                                             val gmObj = GameObject(it)
                                             if (gmObj.name.toLowerCase() == name.toLowerCase())
@@ -92,8 +91,8 @@ class GameObjects {
                                         }
                                     }
                                 }
-                                if (colTile.getBoundary() != null) {
-                                    val boundaryObject = colTile.getBoundary()
+                                if (colTile.getBoundaryObject() != null) {
+                                    val boundaryObject = colTile.getBoundaryObject()
                                     val gmObj = GameObject(boundaryObject = boundaryObject)
                                     if (gmObj.name.toLowerCase() == name.toLowerCase())
                                         gameObjects.add(gmObj)

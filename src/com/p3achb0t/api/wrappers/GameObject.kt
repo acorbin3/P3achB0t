@@ -1,6 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.BoundaryObject
+import com.p3achb0t._runestar_interfaces.GameObject
+import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
@@ -8,9 +11,6 @@ import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.painting.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.hook_interfaces.BoundaryObject
-import com.p3achb0t.hook_interfaces.GameObject
-import com.p3achb0t.hook_interfaces.Model
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -22,14 +22,14 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     val id: Int
         get() {
             return when {
-                gameObject != null -> gameObject.getId().shr(17).and(0x7fff).toInt()
-                boundaryObject != null -> boundaryObject.getId().shr(17).and(0x7fff).toInt()
+                gameObject != null -> gameObject.getTag().shr(17).and(0x7fff).toInt()
+                boundaryObject != null -> boundaryObject.getTag().shr(17).and(0x7fff).toInt()
                 else -> 0
             }
         }
     val name: String
         get() {
-            val sceneData = MainApplet.clientData.getObjectCompositeCache()
+            val sceneData = Client.client.getLocType_cached()
             val objectComposite =
                 getObjectComposite(sceneData, id)
             return objectComposite?.getName().toString()
@@ -38,14 +38,14 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
         get() {
             return when {
                 gameObject != null -> ObjectPositionInfo(
-                    gameObject.getX(),
-                    gameObject.getY(),
+                    gameObject.getCenterX(),
+                    gameObject.getCenterY(),
                     gameObject.getOrientation()
                 )
                 boundaryObject != null -> ObjectPositionInfo(
                     boundaryObject.getX(),
                     boundaryObject.getY(),
-                    boundaryObject.getOrientation()
+                    boundaryObject.getOrientationA()
                 )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
@@ -53,8 +53,8 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     val model: Model?
         get() {
             return when {
-                gameObject != null -> gameObject.getRenderable() as Model
-                boundaryObject != null -> boundaryObject.getRenderable() as Model
+                gameObject != null -> gameObject.getEntity() as Model
+                boundaryObject != null -> boundaryObject.getEntity1() as Model
                 else -> null
             }
         }
@@ -63,8 +63,8 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
         return when {
             gameObject != null -> MainApplet.mouse.click(
                 Calculations.worldToMiniMap(
-                    gameObject.getX(),
-                    gameObject.getY()
+                    gameObject.getCenterX(),
+                    gameObject.getCenterY()
                 )
             )
             boundaryObject != null -> MainApplet.mouse.click(
@@ -92,14 +92,14 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     override fun getGlobalLocation(): Tile {
         return when {
             gameObject != null -> Tile(
-                gameObject.getX() / 128 + MainApplet.clientData.getBaseX(),
-                gameObject.getY() / 128 + MainApplet.clientData.getBaseY(),
+                gameObject.getCenterX() / 128 + Client.client.getBaseX(),
+                gameObject.getCenterY() / 128 + Client.client.getBaseY(),
                 gameObject.getPlane()
             )
             boundaryObject != null -> Tile(
-                boundaryObject.getX() / 128 + MainApplet.clientData.getBaseX(),
-                boundaryObject.getY() / 128 + MainApplet.clientData.getBaseY(),
-                boundaryObject.getPlane()
+                boundaryObject.getX() / 128 + Client.client.getBaseX(),
+                boundaryObject.getY() / 128 + Client.client.getBaseY(),
+                gameObject?.getPlane() ?: 0
             )
             else -> Tile(-1, -1)
         }
@@ -129,8 +129,8 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            gameObject != null -> getConvexHullFromModel(positionInfo, gameObject.getRenderable() as Model)
-            boundaryObject != null -> getConvexHullFromModel(positionInfo, boundaryObject.getRenderable() as Model)
+            gameObject != null -> getConvexHullFromModel(positionInfo, gameObject.getEntity() as Model)
+            boundaryObject != null -> getConvexHullFromModel(positionInfo, boundaryObject.getEntity1() as Model)
             else -> Polygon()
         }
     }

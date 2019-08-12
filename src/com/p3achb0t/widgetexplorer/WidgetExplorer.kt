@@ -1,6 +1,8 @@
 package com.p3achb0t.widgetexplorer
 
 import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.doesWidgetContainText
 import com.p3achb0t.hook_interfaces.Widget
@@ -90,7 +92,7 @@ class WidgetController : Controller() {
     var parentList = emptyList<Widget.WidgetIndex>()
     var currentDetail = SimpleStringProperty()
 
-    var allWidgetFileHookData = mutableMapOf<String, Widget>()
+    var allWidgetFileHookData = mutableMapOf<String, Component>()
 
 
     fun getUpdatedWidgets(filter: String = "") {
@@ -98,7 +100,7 @@ class WidgetController : Controller() {
         allWidgets.clear()
 
         // Get all the widget indexes
-        val widgets = MainApplet.clientData.getWidgets()
+        val widgets = Client.client.getInterfaceComponents()
         widgets.forEachIndexed { parentIndex, childArray ->
             if (childArray != null) {
                 childArray.forEachIndexed { childIndex, childItem ->
@@ -129,12 +131,12 @@ class WidgetController : Controller() {
     }
 
 
-    fun getWidgetDetails(widget: Widget, index: Int): String {
+    fun getWidgetDetails(widget: Component, index: Int): String {
         var result = "--$index--\n"
         try {
-            val containerID = widget.getWidget_id().shr(16)
-            val childID = widget.getWidget_id().and(0xFF)
-            result += "Widget ID:" + widget.getWidget_id() + "($containerID,$childID)\n"
+            val containerID = widget.getId().shr(16)
+            val childID = widget.getId().and(0xFF)
+            result += "Widget ID:" + widget.getId() + "($containerID,$childID)\n"
             val parentIndex = Widget.getParentIndex(widget)
             result += "raw parent ID: ${widget.getParentId()}\n"
             result += "parent Index ${parentIndex.parentID}, ${parentIndex.childID} raw:${parentIndex.raw}\n"
@@ -147,75 +149,75 @@ class WidgetController : Controller() {
             result += "Type: ${widget.getType()}"
             result += "Text:" + widget.getText() + "\n"
             var actions = "["
-            if (widget.getActions() != null) {
-                widget.getActions().iterator().forEach { actions += "$it," }
+            if (widget.getOps() != null) {
+                widget.getOps().iterator().forEach { actions += "$it," }
             }
             result += "Actions:$actions]\n"
-            result += "Child Texture ID:" + widget.getChildTextureId() + "\n"
+            result += "getSpriteId2:" + widget.getSpriteId2() + "\n"
             result += "Item ID:" + widget.getItemId() + "\n"
-            result += "Component Index:" + widget.getComponentIndex() + "\n"
+            result += "Component Index:" + widget.getChildIndex() + "\n"
             result += "Raw Position: ${widget.getX()},${widget.getY()}\n"
             result += "Position: ${Widget.getWidgetX(widget)},${Widget.getWidgetY(widget)}\n"
             result += "Scroll(x,y) ${widget.getScrollX()},${widget.getScrollY()}\n"
-            result += "Scroll max: ${widget.getScrollMax()}\n"
+            result += "Scroll max: ${widget.getScrollHeight()}\n"
             result += "Height:" + widget.getHeight() + "\n"
             result += "Width:" + widget.getWidth() + "\n"
-            result += "StackCount" + widget.getItemStackSize() + "\n"
+            result += "StackCount" + widget.getItemQuantity() + "\n"
             result += "SpriteID:" + widget.getSpriteId() + "\n"
-            result += "Shadow Color: " + widget.getShadowColor() + "\n"
-            result += "Action Type: " + widget.getActionType() + "\n"
-            result += "EnabledMediaId: " + widget.getEnabledMediaId() + "\n"
-            result += "EnabledMediaType: " + widget.getEnabledMediaType() + "\n"
-            result += "DisabledMediaId: " + widget.getDisabledMediaId() + "\n"
-            result += "DisabledMediaType: " + widget.getDisabledMediaType() + "\n"
-            result += "Hidden: " + widget.getHidden() + "\n"
-            result += "TextureId: " + widget.getTextureId() + "\n"
-            result += "Tooltip: " + widget.getTooltip() + "\n"
-            result += "SelectedAction: " + widget.getSelectedAction() + "\n"
-            result += "Text Color: " + widget.getTextColor().toString() + "\n"
-            result += "Boarder Thickness ${widget.getBorderThickness()} \n"
-            result += "Spell: ${widget.getSpell()}\n"
+            result += "Shadow Color: " + widget.getSpriteShadow() + "\n"
+            result += "getButtonType: " + widget.getButtonType() + "\n"
+            result += "EnabledMediaId: " + widget.getModelId2() + "\n"
+            result += "EnabledMediaType: " + widget.getModelType2() + "\n"
+            result += "DisabledMediaId: " + widget.getModelId() + "\n"
+            result += "DisabledMediaType: " + widget.getModelType() + "\n"
+            result += "Hidden: " + widget.getIsHidden() + "\n"
+            result += "TextureId: " + widget.getSpriteId2() + "\n"
+            result += "Tooltip: " + widget.getButtonText() + "\n"
+            result += "SelectedAction: " + widget.getTargetVerb() + "\n"
+            result += "Text Color: " + widget.getColor().toString() + "\n"
+            result += "Boarder Thickness ${widget.getOutline()} \n"
+            result += "Spell: ${widget.getSpellName()}\n"
             result += "Dynamic Values: ["
             try {
-                for (i in widget.getDynamicValue()) {
+                for (i in widget.getCs1Instructions()) {
                     result += "$i,"
                 }
             } catch (e: Exception) {
             }
             result += "]\n"
-            if (widget.getSlotIds() != null) {
+            if (widget.getItemIds() != null) {
                 result += "Slot IDs:"
-                widget.getSlotIds().iterator().forEach { result += "$it,\t" }
+                widget.getItemIds().iterator().forEach { result += "$it,\t" }
                 result += "]\n"
             }
 
-            if (widget.getSlotStackSizes() != null) {
+            if (widget.getItemQuantities() != null) {
                 result += "Slot Stack sizes:"
-                widget.getSlotStackSizes().iterator().forEach { result += "$it,\t" }
+                widget.getItemQuantities().iterator().forEach { result += "$it,\t" }
                 result += "]\n"
             }
             result += "---Internal---\n"
-            result += "Bounds Index: ${widget.getBoundsIndex()}\n"
+            result += "Bounds Index: ${widget.getParentId()}\n"
             result += "Bounds x: ["
-            for (i in MainApplet.clientData.getWidgetBoundsX()) {
+            for (i in Client.client.getRootComponentXs()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds y: ["
-            for (i in MainApplet.clientData.getWidgetBoundsY()) {
+            for (i in Client.client.getRootComponentYs()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds Width: ["
-            for (i in MainApplet.clientData.getWidgetWidths()) {
+            for (i in Client.client.getRootComponentWidths()) {
                 result += "$i,"
             }
             result += "]\n"
 
             result += "Bounds Height: ["
-            for (i in MainApplet.clientData.getWidgetHeights()) {
+            for (i in Client.client.getRootComponentHeights()) {
                 result += "$i,"
             }
             result += "]\n"

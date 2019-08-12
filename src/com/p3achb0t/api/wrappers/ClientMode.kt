@@ -23,7 +23,7 @@ class ClientMode {
                     modeType = Companion.ModeType.ResizeMode
                     return modeType
                 }
-                if (resizeModeWidget.getChildren()[0].getTextureId() == 1150) {
+                if (resizeModeWidget.getChildren()[0].getSpriteId2() == 1150) {
                     modeInit = true
                     modeType = Companion.ModeType.ResizeMode
                     modeType

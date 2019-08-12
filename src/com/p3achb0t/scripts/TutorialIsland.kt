@@ -1,6 +1,5 @@
 package com.p3achb0t.scripts
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
@@ -255,7 +254,7 @@ class TutorialIsland {
                 //Turn off roofs(60,14). Texture Id when on is 762
                 Widgets.waitTillWidgetNotNull(60, 14)
                 val roofToggle = Widgets.find(60, 14)
-                if (roofToggle?.getTextureId() == 761) {
+                if (roofToggle?.getSpriteId2() == 761) {
                     WidgetItem(Widgets.find(60, 14)).click()
                     delay(Random.nextLong(500, 1500))
                 }
@@ -488,7 +487,7 @@ class TutorialIsland {
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    return Players.getLocal().player.getAnimation() == -1
+                    return Players.getLocal().isIdle()
                 }
             })
         }
@@ -525,8 +524,8 @@ class TutorialIsland {
                     // The fire is an animated object so it thows a NPE when trying to interacte with model.
                     if (fires[0].gameObject != null) {
                         val point = Calculations.worldToScreen(
-                            fires[0].gameObject!!.getX(),
-                            fires[0].gameObject!!.getY(),
+                            fires[0].gameObject!!.getCenterX(),
+                            fires[0].gameObject!!.getCenterY(),
                             0
                         )
                         Interact.interact(point, "Use")
@@ -536,7 +535,7 @@ class TutorialIsland {
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
-                            return Players.getLocal().player.getAnimation() == -1
+                            return Players.getLocal().isIdle()
                         }
                     })
                     Dialog.continueDialog()
@@ -1001,7 +1000,7 @@ class TutorialIsland {
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
-                            return tileNearCombatInstructor.distanceTo() < 5 && local.player.getAnimation() == -1
+                            return tileNearCombatInstructor.distanceTo() < 5 && local.isIdle()
                         }
                     })
                 }
@@ -1292,9 +1291,9 @@ class TutorialIsland {
         private suspend fun OpenPollBooth() {
             val pollBooth = GameObjects.find(26815)
             pollBooth[0].turnTo()
-            val pollTile = Tile(3119, 3121, MainApplet.clientData.getPlane())
+            val pollTile = Tile(3119, 3121, Client.client.getPlane())
             if (pollTile.distanceTo() > 3)
-                Tile(3120, 3121, MainApplet.clientData.getPlane()).clickOnMiniMap()
+                Tile(3120, 3121, Client.client.getPlane()).clickOnMiniMap()
 
             pollTile.click()
             delay(Random.nextLong(1500, 2500))

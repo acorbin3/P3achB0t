@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.hook_interfaces.Widget
@@ -27,8 +28,8 @@ class Inventory {
             val inventory = getWidget()
             // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
             if (inventory != null && Widget.getDrawableRect(inventory).x > 0) {
-                val ids = inventory.getSlotIds()
-                val stacks = inventory.getSlotStackSizes()
+                val ids = inventory.getItemIds()
+                val stacks = inventory.getItemQuantities()
 
                 val columns = inventory.getWidth()
                 val rows = inventory.getHeight()
@@ -67,10 +68,11 @@ class Inventory {
             }
             return null
         }
-        fun getWidget(): Widget? {
-            var widget: Widget? = null
+
+        fun getWidget(): Component? {
+            var widget: Component? = null
             try {
-                widget = MainApplet.clientData.getWidgets()[PARENT_ID][CHILD_ID]
+                widget = Client.client.getInterfaceComponents()[PARENT_ID][CHILD_ID]
             } catch (e: Exception) {
             }
             return widget
@@ -88,7 +90,7 @@ class Inventory {
             var count = 0
             val widget = getWidget()
             if (widget != null) {
-                for (id in widget.getSlotIds()) {
+                for (id in widget.getItemIds()) {
                     if (id > 0) count += 1
                 }
             }

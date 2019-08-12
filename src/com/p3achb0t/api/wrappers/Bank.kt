@@ -1,12 +1,12 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -71,7 +71,7 @@ class Bank {
                 // Loop over the children to find the button that can close the bank
                 val itemContainer = Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
                 itemContainer?.getChildren()?.iterator()?.forEach {
-                    val actions = it.getActions()
+                    val actions = it.getOps()
                     if (actions != null) {
                         actions.iterator().forEach { action ->
                             if (action != null) {
@@ -143,7 +143,7 @@ class Bank {
                                         val chatText =
                                             Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                                         val text = chatText?.getText()
-                                        println(text + " " + chatText?.getHidden())
+                                        println(text + " " + chatText?.getIsHidden())
                                         return text?.equals("*") ?: false
                                     }
                                 })
@@ -178,7 +178,7 @@ class Bank {
                             delay(100)
                             val chatText = Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                             val text = chatText?.getText()
-                            println(text + " " + chatText?.getHidden())
+                            println(text + " " + chatText?.getIsHidden())
                             return text?.equals("*") ?: false
                         }
                     })
@@ -201,7 +201,7 @@ class Bank {
             return getWidget() != null
         }
 
-        fun getWidget(): Widget? {
+        fun getWidget(): Component? {
             return Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
         }
 
@@ -229,7 +229,7 @@ class Bank {
                         WidgetItem(
                             widget = it,
                             id = it.getItemId(),
-                            stackSize = it.getItemStackSize(),
+                            stackSize = it.getItemQuantity(),
                             type = WidgetItem.Type.BANK
                         )
                     )

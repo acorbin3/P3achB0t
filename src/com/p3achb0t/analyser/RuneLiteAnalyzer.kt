@@ -1,7 +1,6 @@
 package com.p3achb0t.analyser
 
 import com.google.gson.Gson
-import com.p3achb0t.class_generation.createInterfaces
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -43,7 +42,7 @@ class RuneLiteAnalyzer {
         }
         val folder = "./src/com/p3achb0t/_runelite_interfaces/"
         val _package = "com.p3achb0t._runelite_interfaces"
-        createInterfaces(folder, _package, analyzers, classRefObs)
+//        createInterfaces(folder, _package, analyzers, classRefObs)
         return path + hookDir + hookFileName
 
     }

@@ -1,9 +1,9 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.Client
 import java.awt.Color
 import java.awt.Graphics
 
@@ -11,19 +11,18 @@ fun playerPaint(g: Graphics) {
     try {
         ///////Player paint//////////
         g.color = Color.GREEN
-        val players = MainApplet.clientData.getPlayers()
+        val players = Client.client.getPlayers()
         var count = 0
         players.iterator().forEach { _player ->
-            if (_player != null && _player.getLevel() > 0) {
-                //                                println("${_player.getName()} ${_player.getLevel()} x:${_player.getLocalX()} y: ${_player.getLocalY()}, ")
-                //                                print("Queue size: ${_player.getQueueSize()}")
+            if (_player != null && _player.getCombatLevel() > 0) {
+                println("${_player.getUsername().getCleanName()} ${_player.getCombatLevel()} x:${_player.getX()} y: ${_player.getY()}, ")
 
                 count += 1
 
 
                 val tile = Calculations.getCanvasTileAreaPoly(
-                    _player.getLocalX(),
-                    _player.getLocalY()
+                    _player.getX(),
+                    _player.getY()
                 )
                 g.color = Color.CYAN
                 g.drawPolygon(tile)
@@ -32,8 +31,8 @@ fun playerPaint(g: Graphics) {
 
                 val polygon = getActorTriangles(
                     _player,
-                    MainApplet.clientData.getPlayerModelCache(),
-                    _player.getComposite().getStaticModelID()
+                    Client.client.getLocType_cachedModels(),
+                    _player.getAppearance().get__l()
                 )
                 g.color = Color.YELLOW
                 polygon.forEach {
@@ -41,16 +40,16 @@ fun playerPaint(g: Graphics) {
                 }
                 val ch = getConvexHull(
                     _player,
-                    MainApplet.clientData.getPlayerModelCache(),
-                    _player.getComposite().getStaticModelID()
+                    Client.client.getLocType_cachedModels(),
+                    _player.getAppearance().get__l()
                 )
                 g.color = Color.RED
                 g.drawPolygon(ch)
 
                 val namePoint = Calculations.worldToScreen(
-                    _player.getLocalX(),
-                    _player.getLocalY(),
-                    _player.getModelHeight()
+                    _player.getX(),
+                    _player.getY(),
+                    _player.getHeight()
                 )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(
                         namePoint
@@ -58,7 +57,7 @@ fun playerPaint(g: Graphics) {
                 ) {
                     g.color = Color.GREEN
                     g.drawString(
-                        _player.getName().getName() + " ${_player.getAnimation()}  ${_player.getInteracting()} ${_player.getRuntimeAnimation()} ${_player.getStandAnimation()}",
+                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()}",
                         namePoint.x,
                         namePoint.y
                     )
@@ -66,7 +65,7 @@ fun playerPaint(g: Graphics) {
 
                 g.color = Color.GREEN
                 val mapPoint =
-                    Calculations.worldToMiniMap(_player.getLocalX(), _player.getLocalY())
+                    Calculations.worldToMiniMap(_player.getX(), _player.getY())
                 g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
             }
         }

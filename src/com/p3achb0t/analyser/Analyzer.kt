@@ -1,6 +1,6 @@
 package com.p3achb0t.analyser
 
-import com.p3achb0t.MainApplet.Data.dream
+import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
 import com.p3achb0t.rsclasses.*
@@ -20,7 +20,7 @@ class Analyser{
 
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
 
-    fun parseJar(jar: JarFile, dream: DreamBotAnalyzer?) {
+    fun parseJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
         val analyzers = mutableMapOf<String,RSClasses>()
         while(enumeration.hasMoreElements()){
@@ -45,7 +45,7 @@ class Analyser{
 
         analyzeClasses(analyzers)
 
-        injectJARWithInterfaces(classes, dream)
+        injectJARWithInterfaces(classes, runeStar)
 
 
     }
@@ -81,11 +81,11 @@ class Analyser{
         val returnFieldDescription: String = ""
     )
 
-    private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, dream: DreamBotAnalyzer?) {
-        val classPath = "com/p3achb0t/hook_interfaces"
-        dream?.classRefObs?.forEach { obsClass, clazzData ->
+    private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, runeStar: RuneStarAnalyzer?) {
+        val classPath = "com/p3achb0t/_runestar_interfaces"
+        runeStar?.classRefObs?.forEach { obsClass, clazzData ->
             //            if (obsClass in classes) {
-            val classInterface = "$classPath/${clazzData._class}"
+            val classInterface = "$classPath/${clazzData.`class`}"
             println("Adding class iterface to $obsClass $classInterface")
             classes[obsClass]?.interfaces?.add(classInterface)
             val getterList = ArrayList<GetterData>()
@@ -97,7 +97,7 @@ class Analyser{
                         getter = GetterData(it.descriptor, it.field)
 
                     } else {
-                        val clazzName = dream.classRefObs[cleanType(it.descriptor)]?._class
+                        val clazzName = runeStar.classRefObs[cleanType(it.descriptor)]?.`class`
                         var returnType = "L$classPath/$clazzName;"
                         val arrayCount = it.descriptor.count { char -> char == '[' }
                         returnType = "[".repeat(arrayCount) + returnType
@@ -121,18 +121,21 @@ class Analyser{
                     }
                 }
             }
+            //TODO - commenting out for now. no method injection
             for (method in getterList) {
                 if (method.fieldDescription != "")
-                    injectMethod(method, classes, clazzData._class)
+                    injectMethod(method, classes, clazzData.`class`, runeStar)
             }
 //            }
         }
         val out = JarOutputStream(FileOutputStream(File("./injected_jar.jar")))
         for (classNode in classes.values) {
-            val cw = ClassWriter(ClassWriter.COMPUTE_MAXS)
+            println("Looking at class: ${classNode.name}")
+            val cw = ClassWriter(0)
             classNode.accept(cw)
             out.putNextEntry(JarEntry(classNode.name + ".class"))
             out.write(cw.toByteArray())
+            out.closeEntry()
         }
         out.flush()
         out.close()
@@ -146,12 +149,11 @@ class Analyser{
     }
 
     private fun getOpcode(fieldDescription: String, opcodeType: OpcodeType): Int {
-        println(fieldDescription)
         return when (fieldDescription[0]) {
             'F' -> if (opcodeType == OpcodeType.LOAD) FLOAT else FRETURN
             'D' -> if (opcodeType == OpcodeType.LOAD) DLOAD else DRETURN
             'J' -> if (opcodeType == OpcodeType.LOAD) LLOAD else LRETURN
-            'I', 'B', 'Z', 'S' -> if (opcodeType == OpcodeType.LOAD) ILOAD else IRETURN
+            'I', 'B', 'Z', 'S', 'C' -> if (opcodeType == OpcodeType.LOAD) ILOAD else IRETURN
             else -> if (opcodeType == OpcodeType.LOAD) ALOAD else ARETURN
         }
     }
@@ -159,36 +161,35 @@ class Analyser{
     private fun injectMethod(
         getterData: GetterData,
         classes: MutableMap<String, ClassNode>,
-        analyserClass: String
+        analyserClass: String,
+        runeStar: RuneStarAnalyzer?
     ) {
         val normalizedFieldName = getterData.methodName
-        val field = dream?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
-        val classOwner = field?.owner
+        val field = runeStar?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
+        val fieldOwner = field?.owner
         val fieldName = field?.name
 
         val fieldDescriptor = getterData.fieldDescription
         val returnFieldDescription =
             if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
-        println("yyyy::class.java.simpleName: $analyserClass")
 
 
-        println("CLass $classOwner")
-        val signature = classes[classOwner]?.fields?.find { it.name == fieldName }?.signature
+        val signature = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.signature
+        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
         val methodNode =
             MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
 
-
-        val isStatic = classes[classOwner]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
+        val isStatic = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
         val fieldType = if (isStatic) GETSTATIC else GETFIELD
         if (!isStatic) {
             methodNode.visitVarInsn(ALOAD, 0)
         }
-        methodNode.visitFieldInsn(fieldType, classOwner, fieldName, fieldDescriptor)
+        methodNode.visitFieldInsn(fieldType, fieldOwner, fieldName, fieldDescriptor)
         val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
-            println("Multiplier $multiplier ${field.decoderType} ")
-            if (field.decoderType == RuneLiteJSONClasses.DecoderType.LONG) {
+            println("Multiplier $multiplier ${field.decoder} ")
+            if (field.descriptor == "J") {
                 methodNode.visitLdcInsn(multiplier)
                 methodNode.visitInsn(LMUL)
             } else {
@@ -198,11 +199,11 @@ class Analyser{
         }
 
         println(
-            "$classOwner $normalizedFieldName $fieldName $fieldDescriptor $returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+            "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
                 fieldDescriptor
             )} Static:$isStatic"
         )
-        methodNode.visitInsn(getReturnOpcode(fieldDescriptor))
+        methodNode.visitInsn(getReturnOpcode(returnFieldDescription))
 
         if (multiplier != null) {
             methodNode.visitMaxs(5, 1)
@@ -211,7 +212,7 @@ class Analyser{
         }
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null")) {
-            methodNode.accept(classes[dream?.analyzers?.get(analyserClass)?.name])
+            methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
             println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }

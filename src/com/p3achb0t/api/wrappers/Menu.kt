@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Utils
 import java.awt.Point
 import java.awt.Rectangle
@@ -9,26 +8,26 @@ import kotlin.random.Random
 class Menu {
     companion object {
         fun getRect(): Rectangle {
-            val mX = MainApplet.clientData.getMenuX()
-            val mY = MainApplet.clientData.getMenuY()
-            val width = MainApplet.clientData.getMenuWidth()
-            val heigth = MainApplet.clientData.getMenuHeight()
+            val mX = Client.client.getMenuX()
+            val mY = Client.client.getMenuY()
+            val width = Client.client.getMenuWidth()
+            val heigth = Client.client.getMenuHeight()
             return Rectangle(mX, mY, width, heigth)
         }
         fun getPointForInteraction(action: String): Point {
             var point = Point(-1, -1)
-            val mCount = MainApplet.clientData.getMenuCount()
-            val width = MainApplet.clientData.getMenuWidth()
-            val mX = MainApplet.clientData.getMenuX()
-            val mY = MainApplet.clientData.getMenuY()
-            val mVisible = MainApplet.clientData.getMenuVisible()
+            val mCount = Client.client.getMenuOptionsCount()
+            val width = Client.client.getMenuWidth()
+            val mX = Client.client.getMenuX()
+            val mY = Client.client.getMenuY()
+            val mVisible = Client.client.getIsMiniMenuOpen()
             if (mVisible) {
                 val baseHeight = 18
                 val lineHeight = 15
                 var yDiff = baseHeight
                 for (i in 1..mCount) {
-                    val action = Utils.cleanColorText(MainApplet.clientData.getMenuActions()[mCount - i])
-                    val option = Utils.cleanColorText(MainApplet.clientData.getMenuOptions()[mCount - i])
+                    val action = Utils.cleanColorText(Client.client.getMenuActions()[mCount - i])
+                    val option = Utils.cleanColorText(Client.client.getMenuTargetNames()[mCount - i])
                     val menuItem = "$action $option"
 
                     if (menuItem.toLowerCase().contains(action.toLowerCase())) {
@@ -58,9 +57,9 @@ class Menu {
         }
 
         fun getHoverAction(): String {
-            val count = MainApplet.clientData.getMenuCount()
-            val action = Utils.cleanColorText(MainApplet.clientData.getMenuActions()[count - 1])
-            val option = Utils.cleanColorText(MainApplet.clientData.getMenuOptions()[count - 1])
+            val count = Client.client.getMenuOptionsCount()
+            val action = Utils.cleanColorText(Client.client.getMenuActions()[count - 1])
+            val option = Utils.cleanColorText(Client.client.getMenuTargetNames()[count - 1])
             return "$action $option"
 
         }

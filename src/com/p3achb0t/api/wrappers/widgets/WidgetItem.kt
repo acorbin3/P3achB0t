@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers.widgets
 
+import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.hook_interfaces.Widget
 import java.awt.Point
@@ -8,10 +9,10 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class WidgetItem(
-    var widget: Widget? = null,
+    var widget: Component? = null,
     var area: Rectangle = widget?.let { Widget.getDrawableRect(it) } ?: Rectangle(),
     var id: Int = widget?.getItemId() ?: 0,
-    var stackSize: Int = widget?.getItemStackSize() ?: 0,
+    var stackSize: Int = widget?.getItemQuantity() ?: 0,
     var index: Int = 0,
     var type: Type = Type.SHOP
 ) : Interactable {
@@ -43,7 +44,7 @@ class WidgetItem(
 
     override suspend fun interact(action: String): Boolean {
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
-                || this.widget?.getSelectedAction()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
+                || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
         if (textContains != null && textContains)
             return super.interact(action)
         else {
@@ -64,35 +65,35 @@ class WidgetItem(
 // To lanch the widget explorer you just
 // 1. Create an app object/class:// class MyApp : App(WidgetExplorer::class)
 // 2. Then need to call: //    launch<MyApp>(args)
-fun getStrippedWidgetDetails(widget: Widget, includeChildren: Boolean = true): String {
+fun getStrippedWidgetDetails(widget: Component, includeChildren: Boolean = true): String {
     var result = ""
     try {
-        result += widget.getWidget_id().toString() + "\n"
+        result += widget.getId().toString() + "\n"
         result += widget.getText() + "\n"
         var actions = ""
-        if (widget.getActions() != null) {
-            widget.getActions().iterator().forEach { actions += "$it," }
+        if (widget.getOps() != null) {
+            widget.getOps().iterator().forEach { actions += "$it," }
         }
         result += "$actions\n"
-        result += widget.getChildTextureId().toString() + "\n"
+        result += widget.getSpriteId().toString() + "\n"
         result += widget.getItemId().toString() + "\n"
-        result += widget.getComponentIndex().toString() + "\n"
+        result += widget.getChildIndex().toString() + "\n"
         result += widget.getHeight().toString() + "\n"
         result += widget.getWidth().toString() + "\n"
-        result += widget.getItemStackSize().toString() + "\n"
+        result += widget.getItemQuantity().toString() + "\n"
 
         result += widget.getSpriteId().toString() + "\n"
-        result += widget.getShadowColor().toString() + "\n"
-        result += widget.getActionType().toString() + "\n"
-        result += widget.getEnabledMediaId().toString() + "\n"
-        result += widget.getEnabledMediaType().toString() + "\n"
-        result += widget.getDisabledMediaId().toString() + "\n"
-        result += widget.getDisabledMediaType().toString() + "\n"
-        result += widget.getHidden().toString() + "\n"
-        result += widget.getTextureId().toString() + "\n"
-        result += widget.getTooltip() + "\n"
-        result += widget.getSelectedAction() + "\n"
-        result += widget.getTextColor().toString() + "\n"
+        result += widget.getSpriteShadow().toString() + "\n"
+        result += widget.getButtonType().toString() + "\n"
+        result += widget.getModelId2().toString() + "\n"
+        result += widget.getModelType2().toString() + "\n"
+        result += widget.getModelId().toString() + "\n"
+        result += widget.getModelType().toString() + "\n"
+        result += widget.getIsHidden().toString() + "\n"
+        result += widget.getSpriteId2().toString() + "\n"
+        result += widget.getButtonText() + "\n"
+        result += widget.getTargetVerb() + "\n"
+        result += widget.getColor().toString() + "\n"
 
         if (includeChildren)
             widget.getChildren().iterator().forEach { result += getStrippedWidgetDetails(it) }
@@ -102,7 +103,7 @@ fun getStrippedWidgetDetails(widget: Widget, includeChildren: Boolean = true): S
     return result
 }
 
-fun doesWidgetContainText(widget: Widget, filter: String, includeChildren: Boolean = true): Boolean {
+fun doesWidgetContainText(widget: Component, filter: String, includeChildren: Boolean = true): Boolean {
     val text = getStrippedWidgetDetails(widget, includeChildren)
     return text.contains(filter)
 }

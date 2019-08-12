@@ -1,14 +1,15 @@
 package com.p3achb0t.class_generation
 
-import com.p3achb0t.analyser.RuneLiteJSONClasses
+import com.p3achb0t.analyser.runestar.ClassHook
+import com.p3achb0t.analyser.runestar.FieldHook
 import java.io.File
 import java.io.PrintWriter
 
-fun createInterfaces(
+fun createRunestarInterfaces(
     path: String,
     _package: String,
-    analyzers: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>,
-    classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>
+    analyzers: MutableMap<String, ClassHook>,
+    classRefObs: MutableMap<String, ClassHook>
 ) {
 
     // Delete files
@@ -16,15 +17,15 @@ fun createInterfaces(
     folder.deleteRecursively()
     folder.mkdir()
     for (clazz in analyzers) {
-        val fn = path + clazz.value._class + ".kt"
+        val fn = path + clazz.value.`class` + ".kt"
         val file = File(fn)
         file.printWriter().use { out ->
             out.println("package " + _package)
             out.println("")
-            if (!clazz.value._super.contains("java/lang/Object") && clazz.value._super in classRefObs) {
-                out.println("interface ${clazz.value._class}: ${classRefObs[clazz.value._super]?._class}{")
+            if (!clazz.value.`super`.contains("java/lang/Object") && clazz.value.`super` in classRefObs) {
+                out.println("interface ${clazz.value.`class`}: ${classRefObs[clazz.value.`super`]?.`class`}{")
             } else {
-                out.println("interface ${clazz.value._class} {")
+                out.println("interface ${clazz.value.`class`} {")
             }
             for (field in clazz.value.fields) {
 
@@ -45,14 +46,14 @@ fun createInterfaces(
 
                 var returnType: String
                 if (updatedDescriptor in classRefObs) {
-                    returnType = getType(classRefObs[updatedDescriptor]?._class!!)
+                    returnType = getType(classRefObs[updatedDescriptor]?.`class`!!)
                     genFunction(field, clazz, classRefObs, out, arrayCount, returnType)
                 } else {
                     if (isBaseType(updatedDescriptor)) {
                         //Check to ensure that there are no fields with the same name in the super class
                         returnType = getType(updatedDescriptor)
 
-                        if (clazz.value._super in classRefObs) {
+                        if (clazz.value.`super` in classRefObs) {
                             genFunction(field, clazz, classRefObs, out, arrayCount, returnType)
                         } else {
                             out.println(
@@ -74,16 +75,16 @@ fun createInterfaces(
 }
 
 private fun genFunction(
-    field: RuneLiteJSONClasses.FieldDefinition,
-    clazz: MutableMap.MutableEntry<String, RuneLiteJSONClasses.ClassDefinition>,
-    classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>,
+    field: FieldHook,
+    clazz: MutableMap.MutableEntry<String, ClassHook>,
+    classRefObs: MutableMap<String, ClassHook>,
     out: PrintWriter,
     arrayCount: Int,
     returnType: String
 ): String {
     var functionName = ""
-//    println("Checking ${field.field} in class ${clazz.value._class} file is in ${classRefObs[clazz.value._super]?._class}")
-    val fieldCount = isFieldNameUnique(classRefObs[clazz.value._super], field.field, classRefObs)
+//    println("Checking ${field.field} in class ${clazz.value.`class`} file is in ${classRefObs[clazz.value.`super`]?.`class`}")
+    val fieldCount = isFieldNameUnique(classRefObs[clazz.value.`super`], field.field, classRefObs)
     if (fieldCount == 0) {
         out.println(
             "\tfun get${field.field.capitalize()}(): ${getArrayString(
@@ -96,7 +97,7 @@ private fun genFunction(
         //TODO - update internal fields to include the class
 
         val lField = classRefObs[clazz.value.name]?.fields?.find { it.field == field.field }
-        field.field = "${clazz.value._class}_${field.field}"
+        field.field = "${clazz.value.`class`}_${field.field}"
         lField?.field = field.field
         out.println(
             "\tfun get${field.field.capitalize()}(): ${getArrayString(

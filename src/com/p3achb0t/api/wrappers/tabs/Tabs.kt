@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -58,7 +58,7 @@ class Tabs {
             val childID =
                 if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
             if (childID != null) {
-                val widget = MainApplet.clientData.getWidgets()[parentID][childID]
+                val widget = Client.client.getInterfaceComponents()[parentID][childID]
                 WidgetItem(widget).click()
             }
         }
@@ -87,15 +87,15 @@ class Tabs {
                 val parentID =
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
                 for (childID in top) {
-                    val widget = MainApplet.clientData.getWidgets()[parentID][childID]
-                    if (widget.getTextureId() > 0) {
+                    val widget = Client.client.getInterfaceComponents()[parentID][childID]
+                    if (widget.getSpriteId2() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
 
                 }
                 for (childID in bottom) {
-                    val widget = MainApplet.clientData.getWidgets()[parentID][childID]
-                    if (widget.getTextureId() > 0) {
+                    val widget = Client.client.getInterfaceComponents()[parentID][childID]
+                    if (widget.getSpriteId2() > 0) {
                         tab = Tab_Types.valueOf(childID)
                     }
 
@@ -113,8 +113,8 @@ class Tabs {
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
                 val childID =
                     if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
-                val widget = MainApplet.clientData.getWidgets()[parentID][childID]
-                if (!widget.getHidden()) {
+                val widget = Client.client.getInterfaceComponents()[parentID][childID]
+                if (!widget.getIsHidden()) {
                     val interactRect = Widget.getDrawableRect(widget)
                     Interact.interact(interactRect)
                     Utils.waitFor(2, object : Utils.Condition {

@@ -92,7 +92,7 @@ class Interact {
                     delay((Math.random() * 200 + 100).toLong())
                     if (res) return true
                     var count = 0
-                    while (MainApplet.clientData.getMenuVisible()) {
+                    while (Client.client.getIsMiniMenuOpen()) {
                         delay((Math.random() * 50).toLong())
                         count += 1
                         if (count == 5) {

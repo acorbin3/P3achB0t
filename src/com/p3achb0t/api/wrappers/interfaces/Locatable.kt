@@ -1,10 +1,10 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
@@ -26,16 +26,16 @@ interface Locatable {
     // This function will remove the base and shift over by 7
     fun getLocalLocation(): Tile {
         val tile = getGlobalLocation()
-        val x = (tile.x - MainApplet.clientData.getBaseX())
-        val y = (tile.y - MainApplet.clientData.getBaseY())
+        val x = (tile.x - Client.client.getBaseX())
+        val y = (tile.y - Client.client.getBaseY())
 
         return Tile(x, y, tile.z)
     }
 
     fun getRegionalLocation(): Tile {
         val tile = getGlobalLocation()
-        val x = (tile.x - MainApplet.clientData.getBaseX() shl Constants.REGION_SHIFT)
-        val y = (tile.y - MainApplet.clientData.getBaseY() shl Constants.REGION_SHIFT)
+        val x = ((tile.x - Client.client.getBaseX()) shl Constants.REGION_SHIFT)
+        val y = ((tile.y - Client.client.getBaseY()) shl Constants.REGION_SHIFT)
 
         return Tile(x, y, tile.z)
     }

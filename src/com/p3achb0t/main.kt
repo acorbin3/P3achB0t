@@ -1,25 +1,19 @@
 package com.p3achb0t
 
-import com.p3achb0t.MainApplet.Data.clientData
 import com.p3achb0t.MainApplet.Data.customCanvas
-import com.p3achb0t.MainApplet.Data.dream
 import com.p3achb0t.MainApplet.Data.mouseEvent
+import com.p3achb0t.MainApplet.Data.runeStar
+import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
-import com.p3achb0t.analyser.DreamBotAnalyzer
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.LoggingIntoClient
+import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
+import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.painting.debugPaint
-import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.NPCs
-import com.p3achb0t.api.wrappers.Player
-import com.p3achb0t.api.wrappers.tabs.Inventory
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
-import com.p3achb0t.hook_interfaces.Widget
-import com.p3achb0t.rsclasses.Client
-import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -34,6 +28,7 @@ import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseMotionListener
 import java.io.File
+import java.lang.Thread.sleep
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarFile
@@ -49,9 +44,9 @@ class MainApplet(game: Applet) {
 
     companion object Data {
         var client: Applet? = null
-        var dream: DreamBotAnalyzer? = null
+        var runeStar: RuneStarAnalyzer? = null
         var classLoader: URLClassLoader? = null
-        var selectedWidget: Widget? = null
+        var selectedWidget: Component? = null
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
         lateinit var clientData: com.p3achb0t.hook_interfaces.Client
@@ -65,23 +60,26 @@ object Main {
     fun main(args: Array<String>) {
 
         val downloader = Downloader()
-        val gamePackWithPath = downloader.getGamepack()
-//        val gamePackWithPath = downloader.getLocalGamepack()
+//        val gamePackWithPath = downloader.getGamepack()
+        val gamePackWithPath = downloader.getLocalGamepack()
         println("Using $gamePackWithPath")
 
 //    RuneLiteAnalyzer().getHooks()
+        runeStar = RuneStarAnalyzer()
+        runeStar?.getHooks()
 
-    dream = DreamBotAnalyzer()
-
-    dream?.getDreamBotHooks()
-    dream?.parseHooks()
+//    dream = DreamBotAnalyzer()
+//
+//    dream?.getDreamBotHooks()
+//    dream?.parseHooks()
 
         val gamePackJar = JarFile(gamePackWithPath)
-        dream?.parseJar(gamePackJar)
+        runeStar?.parseJar(gamePackJar)
+//        dream?.parseJar(gamePackJar)
 
 
         val analyser = Analyser()
-        analyser.parseJar(gamePackJar, dream)
+        analyser.parseJar(gamePackJar, runeStar)
 
 //        return
 
@@ -94,7 +92,8 @@ object Main {
         val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
         val game: Applet = clientClazz as Applet
         MainApplet(game)
-        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
+//        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
+        Client.client = clientClazz as com.p3achb0t._runestar_interfaces.Client
 
 
         game.apply {
@@ -136,15 +135,17 @@ object Main {
             start()
 
         }
-//    sleep(500)
+        sleep(100)
 
         // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
         game.apply {
 
             val canvasType =
-                dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.owner
+                runeStar?.analyzers?.get(GameShell::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }
+                    ?.owner
             val canvasFieldName =
-                dream?.analyzers?.get(Client::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }?.name
+                runeStar?.analyzers?.get(GameShell::class.java.simpleName)?.fields?.find { it.field == "getCanvas" }
+                    ?.name
 
             println("canvas " + canvasType + " Field parentId : $canvasFieldName")
             var loaded = false
@@ -178,7 +179,6 @@ object Main {
                         }
 
                     }
-
                     customCanvas?.addPaintListener(debugPaint())
 
                     customCanvas?.addMouseMotionListener(mouseListener)
@@ -225,160 +225,160 @@ object Main {
 
             while (true) {
                 //Wait till we are logged in
-                if (clientData.getGameState() == 30) {
-                    if (false) {
-                        try {
-                            val npcs = NPCs.findNpcs(sortByDist = true)
-                            if (npcs.size > 0) {
-                                npcs.forEach {
-                                    if (!it.isOnScreen()) {
-                                        println("Turning to: ${it.npc.getComposite().getName()}")
-                                        Camera.turnTo(it)
-                                    }
-                                    it.interact("Cancel")
-                                }
-                            }
-                            val players = Player.findPlayers(true)
-                            players.forEach {
-                                if (!it.isOnScreen()) {
-                                    println("Turning to: ${it.player.getName()}")
-                                    Camera.turnTo(it)
-                                }
-                                it.interact("Cancel")
-                            }
-                        } catch (e: Exception) {
-                        }
-
-                        val items = Inventory.getAll()
-                        if (items.size > 0) {
-
-                            items.forEach {
-                                if (!Inventory.isOpen()) {
-                                    Inventory.open()
-                                }
-                                it.interact("Cancel")
-                            }
-                        }
-                    }
-
-
-                    // Cycle between tabs
-//            Tabs.Tab_Types.values().iterator().forEach {
-//                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
-//            }
-
-//            // Go between equiptment unequipt & back to inventory to equipt
-//            Equipment.Companion.Slot.values().iterator().forEach {
-//                if(Equipment.isEquipmentSlotEquipted(it)){
-//                    if(!Equipment.isOpen()) Equipment.open()
-//                    Equipment.unEquiptItem(it)
-//                }
-//            }
-//            // Loop over inventory to see if there is an item that has action Wield, and if so equipt it
-//            Inventory.getAll().forEach {
-//                if(!Inventory.isOpen()) Inventory.open()
-//                it.hover(true,Mouse.ClickType.Right)
-//                if(Menu.isActionInMenu("Wield")) {
-//                    println("Wielding: ${it.id}")
-//                    it.interact("Wield")
-//                    // Wait till item leaves inventory
-//                    Utils.waitFor(2, object : Utils.Condition {
-//                        override suspend fun accept(): Boolean {
-//                            delay(100)
-//                            return Inventory.getCount(it.id) == 0
+//                if (Client.client!!.getGameState() == 30) {
+//                    if (false) {
+//                        try {
+//                            val npcs = NPCs.findNpcs(sortByDist = true)
+//                            if (npcs.size > 0) {
+//                                npcs.forEach {
+//                                    if (!it.isOnScreen()) {
+//                                        println("Turning to: ${it.npc.getComposite().getName()}")
+//                                        Camera.turnTo(it)
+//                                    }
+//                                    it.interact("Cancel")
+//                                }
+//                            }
+//                            val players = Player.findPlayers(true)
+//                            players.forEach {
+//                                if (!it.isOnScreen()) {
+//                                    println("Turning to: ${it.player.getName()}")
+//                                    Camera.turnTo(it)
+//                                }
+//                                it.interact("Cancel")
+//                            }
+//                        } catch (e: Exception) {
 //                        }
-//                    })
-//                }
-//            }
-
-
-                    //If bank not open, find a banker and open it
-//            if(!Bank.isOpen()){
-//                Bank.open()
-//                //TODO -withdraw
-//                Bank.withdraw(995,3)
-//                Bank.deposit(995,3)
-//                Bank.withdraw(995,7)
-//                Bank.depositAll()
-//                Bank.close()
-//            }else{
-//                println("Bank Size: ${Bank.getSize()}")
-//                val items = Bank.getAll()
-//                items.forEach {
-//                    println("${it.widgetID}:${it.stackSize}")
-//                }
-//                Bank.close()
-//            }
-
-
-                    // Dont drop any items if there are still some on the ground
-
-//            val groundItems2 = GroundItems.getAllItems()
-//            var count = 0
-//            groundItems2.forEach {
-//                if(it.isOnScreen()){
-////                    println("Requesting to take ${it.widgetID}")
-//                    count += 1
-//                }
-//            }
 //
-//            //Drop items
-//            val items = Inventory.getAll()
-//            if (items.size > 0 && count == 0) {
+//                        val items = Inventory.getAll()
+//                        if (items.size > 0) {
 //
-//                items.forEach {
-//                    if (!Inventory.isOpen()) {
-//                        Inventory.open()
+//                            items.forEach {
+//                                if (!Inventory.isOpen()) {
+//                                    Inventory.open()
+//                                }
+//                                it.interact("Cancel")
+//                            }
+//                        }
 //                    }
-//                    var inventoryCount = Inventory.getCount()
-//                    it.interact("Drop")
-//                    Utils.waitFor(2, object : Utils.Condition {
-//                        override suspend fun accept(): Boolean {
-//                            delay(100)
-//                            println("Waiting for inventory to change $inventoryCount == ${Inventory.getCount()}")
-//                            return inventoryCount != Inventory.getCount()
-//                        }
-//                    })
-//                }
-//            }
 //
-//            //Pick up items
-//            val groundItems = GroundItems.getAllItems()
-//            groundItems.forEach {
-//                if(it.isOnScreen()){
-////                    println("Requesting to take ${it.widgetID}")
-//                    it.take()
+//
+//                    // Cycle between tabs
+////            Tabs.Tab_Types.values().iterator().forEach {
+////                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
+////            }
+//
+////            // Go between equiptment unequipt & back to inventory to equipt
+////            Equipment.Companion.Slot.values().iterator().forEach {
+////                if(Equipment.isEquipmentSlotEquipted(it)){
+////                    if(!Equipment.isOpen()) Equipment.open()
+////                    Equipment.unEquiptItem(it)
+////                }
+////            }
+////            // Loop over inventory to see if there is an item that has action Wield, and if so equipt it
+////            Inventory.getAll().forEach {
+////                if(!Inventory.isOpen()) Inventory.open()
+////                it.hover(true,Mouse.ClickType.Right)
+////                if(Menu.isActionInMenu("Wield")) {
+////                    println("Wielding: ${it.id}")
+////                    it.interact("Wield")
+////                    // Wait till item leaves inventory
+////                    Utils.waitFor(2, object : Utils.Condition {
+////                        override suspend fun accept(): Boolean {
+////                            delay(100)
+////                            return Inventory.getCount(it.id) == 0
+////                        }
+////                    })
+////                }
+////            }
+//
+//
+//                    //If bank not open, find a banker and open it
+////            if(!Bank.isOpen()){
+////                Bank.open()
+////                //TODO -withdraw
+////                Bank.withdraw(995,3)
+////                Bank.deposit(995,3)
+////                Bank.withdraw(995,7)
+////                Bank.depositAll()
+////                Bank.close()
+////            }else{
+////                println("Bank Size: ${Bank.getSize()}")
+////                val items = Bank.getAll()
+////                items.forEach {
+////                    println("${it.widgetID}:${it.stackSize}")
+////                }
+////                Bank.close()
+////            }
+//
+//
+//                    // Dont drop any items if there are still some on the ground
+//
+////            val groundItems2 = GroundItems.getAllItems()
+////            var count = 0
+////            groundItems2.forEach {
+////                if(it.isOnScreen()){
+//////                    println("Requesting to take ${it.widgetID}")
+////                    count += 1
+////                }
+////            }
+////
+////            //Drop items
+////            val items = Inventory.getAll()
+////            if (items.size > 0 && count == 0) {
+////
+////                items.forEach {
+////                    if (!Inventory.isOpen()) {
+////                        Inventory.open()
+////                    }
+////                    var inventoryCount = Inventory.getCount()
+////                    it.interact("Drop")
+////                    Utils.waitFor(2, object : Utils.Condition {
+////                        override suspend fun accept(): Boolean {
+////                            delay(100)
+////                            println("Waiting for inventory to change $inventoryCount == ${Inventory.getCount()}")
+////                            return inventoryCount != Inventory.getCount()
+////                        }
+////                    })
+////                }
+////            }
+////
+////            //Pick up items
+////            val groundItems = GroundItems.getAllItems()
+////            groundItems.forEach {
+////                if(it.isOnScreen()){
+//////                    println("Requesting to take ${it.widgetID}")
+////                    it.take()
+////                }
+////            }
+//
+////            Prayer.activate(Prayer.Companion.PrayerKind.THICK_SKIN)
+////            delay(500)
+////            Prayer.disable(Prayer.Companion.PrayerKind.THICK_SKIN)
+////                Magic.cast(Magic.Companion.Spells.Wind_Strike)
+////                Inventory.open()
+//                    // Cast wind Strike on a chicken
+////                Magic.cast(Magic.Companion.Spells.Wind_Strike)
+////                val chickens = NPCs.findNpc("Chicken")
+////                if(chickens.isNotEmpty()){
+////                    chickens[0].interact("Cast")
+////                }
+//
+////                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
+////                Walking.walkPath(path)
+////                Walking.walkPath(path,true)
+//                    if (!Calculations.screenInit && LoggingIntoClient.loggedIn) {
+//                        Calculations.initScreenWidgetDimentions()
+//                    }
+//
+//                    TutorialIsland.run()
 //                }
-//            }
-
-//            Prayer.activate(Prayer.Companion.PrayerKind.THICK_SKIN)
-//            delay(500)
-//            Prayer.disable(Prayer.Companion.PrayerKind.THICK_SKIN)
-//                Magic.cast(Magic.Companion.Spells.Wind_Strike)
-//                Inventory.open()
-                    // Cast wind Strike on a chicken
-//                Magic.cast(Magic.Companion.Spells.Wind_Strike)
-//                val chickens = NPCs.findNpc("Chicken")
-//                if(chickens.isNotEmpty()){
-//                    chickens[0].interact("Cast")
-//                }
-
-//                val path = arrayListOf(Tile(3098,3107),Tile(3103,3103),Tile(3102,3095))
-//                Walking.walkPath(path)
-//                Walking.walkPath(path,true)
-                    if (!Calculations.screenInit && LoggingIntoClient.loggedIn) {
-                        Calculations.initScreenWidgetDimentions()
-                    }
-
-                    TutorialIsland.run()
-                }
                 //Delay between 0-50 ms
                 delay((Math.random() * 50).toLong())
             }
         }
 
 
-        //    LoggingIntoAccount()
+        LoggingIntoAccount()
         class MyApp : App(WidgetExplorer::class)
         launch<MyApp>()
 

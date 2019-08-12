@@ -1,28 +1,28 @@
 package com.p3achb0t.api
 
-import com.p3achb0t.hook_interfaces.Actor
-import com.p3achb0t.hook_interfaces.Cache
-import com.p3achb0t.hook_interfaces.Model
+import com.p3achb0t._runestar_interfaces.Actor
+import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
+import com.p3achb0t._runestar_interfaces.Model
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
 data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
-fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Polygon> {
+fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
 
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
             while (next != null && next != bucketItem) {
-                if (next.getId() == modelID) {
+                if (next.getKey() == modelID) {
 
                     val model = next as Model
 
                     if (actor != null) {
                         val positionInfo =
-                            ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation())
+                            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
                         polygonList = getTrianglesFromModel(positionInfo, model)
                     }
                     break
@@ -36,7 +36,7 @@ fun getActorTriangles(actor: Actor?, models: Cache, modelID: Long): ArrayList<Po
 
 fun getTrianglesFromModel(actor: Actor, model: Model): ArrayList<Polygon> {
     return getTrianglesFromModel(
-        ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation()),
+        ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
         model
     )
 }
@@ -51,9 +51,9 @@ fun getTrianglesFromModel(
     val xPoints = model.getVerticesX().copyOf()
     val yPoints = model.getVerticesY().copyOf()
     val zPoints = model.getVerticesZ().copyOf()
-    val indiciesX = model.getIndicesX().copyOf()
-    val indiciesY = model.getIndicesY().copyOf()
-    val indiciesZ = model.getIndicesZ().copyOf()
+    val indiciesX = model.getVerticesX().copyOf()
+    val indiciesY = model.getVerticesY().copyOf()
+    val indiciesZ = model.getVerticesZ().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
     if (orientation != 0) {
@@ -68,8 +68,8 @@ fun getTrianglesFromModel(
     }
 
 
-    for (i in 0 until model.getIndicesLength()) {
-        if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
+    for (i in 0 until model.getVerticesCount()) {
+        if (i < indiciesX.size - 1 && i < indiciesY.size - 1 && i < indiciesZ.size - 1) {
             val one = Calculations.worldToScreen(
                 locX + xPoints[indiciesX[i]],
                 locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
@@ -101,19 +101,19 @@ fun getTrianglesFromModel(
     return polygonList
 }
 
-fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
+fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long): Polygon {
     var polygon = Polygon()
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
             var next = bucketItem.getNext()
             while (next != null && next != bucketItem) {
-                if (next.getId() == modelID) {
+                if (next.getKey() == modelID) {
 
                     val model = next as Model
 
                     if (actor != null) {
                         val positionInfo =
-                            ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation())
+                            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
                         polygon = getConvexHullFromModel(positionInfo, model)
                     }
                     break
@@ -128,7 +128,7 @@ fun getConvexHull(actor: Actor?, models: Cache, modelID: Long): Polygon {
 
 fun getConvexHullFromModel(actor: Actor, model: Model): Polygon {
     return getConvexHullFromModel(
-        ObjectPositionInfo(actor.getLocalX(), actor.getLocalY(), actor.getOrientation()),
+        ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
         model
     )
 }
@@ -143,9 +143,9 @@ fun getConvexHullFromModel(
     val xPoints = model.getVerticesX().copyOf()
     val yPoints = model.getVerticesY().copyOf()
     val zPoints = model.getVerticesZ().copyOf()
-    val indiciesX = model.getIndicesX().copyOf()
-    val indiciesY = model.getIndicesY().copyOf()
-    val indiciesZ = model.getIndicesZ().copyOf()
+    val indiciesX = model.getVerticesX().copyOf()
+    val indiciesY = model.getVerticesY().copyOf()
+    val indiciesZ = model.getVerticesZ().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
     if (orientation != 0) {
@@ -160,7 +160,7 @@ fun getConvexHullFromModel(
     }
 
 
-    for (i in 0 until model.getIndicesLength()) {
+    for (i in 0 until model.getVerticesCount()) {
         if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
             val one = Calculations.worldToScreen(
                 locX + xPoints[indiciesX[i]],

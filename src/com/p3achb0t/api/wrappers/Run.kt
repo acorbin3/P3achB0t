@@ -31,7 +31,7 @@ class Run {
 
         //1065 is activated, 1064 is not activated
         fun isRunActivated(): Boolean {
-            return Widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getTextureId() == 1065
+            return Widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
         }
     }
 }

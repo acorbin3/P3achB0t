@@ -1,12 +1,13 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Calculations.Companion.convertAreaToPolygon
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.hook_interfaces.Widget
 import java.awt.Polygon
 import java.awt.geom.*
+import java.awt.geom.Area
 
 class MiniMap {
 
@@ -16,7 +17,7 @@ class MiniMap {
         private var mapCircle = Polygon()
         var mapInit = false
 
-        fun getWidget(): Widget? {
+        fun getWidget(): Component? {
             return Widgets.find(PARENT, CHILD)
         }
 

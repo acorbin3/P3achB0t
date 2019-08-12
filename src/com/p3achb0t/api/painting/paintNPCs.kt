@@ -1,10 +1,10 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.hook_interfaces.Npc
+import com.p3achb0t.api.wrappers.Client
 import java.awt.Color
 import java.awt.Graphics
 
@@ -13,25 +13,25 @@ fun paintNPCs(g: Graphics) {
         ///////NPC paint//////////
         var count = 0
         count = 0
-        val localNpcs = MainApplet.clientData.getLocalNPCs()
+        val localNpcs = Client.client.getNpcs()
         var npc: Npc? = null
         localNpcs.iterator().forEach {
             if (it != null) {
                 npc = it
 
-                //                                print("Name: ${it.getComposite().getName()}, ID:${it.getComposite().getNpcComposite_id()} x:${it.getLocalX()} y:${it.getLocalY()},")
+                //                                print("Name: ${it.getComposite().getName()}, ID:${it.getType()?.getId()} x:${it.getX()} y:${it.getY()},")
                 count += 1
 
                 val tile =
-                    Calculations.getCanvasTileAreaPoly(it.getLocalX(), it.getLocalY())
+                    Calculations.getCanvasTileAreaPoly(it.getX(), it.getY())
                 g.color = Color.CYAN
                 g.drawPolygon(tile)
                 g.color = Color(0, 0, 0, 50)
                 g.fillPolygon(tile)
 
-                val polygon = npc?.getComposite()?.getNpcComposite_id()?.toLong()?.let { it1 ->
+                val polygon = npc?.getType()?.getId()?.toLong()?.let { it1 ->
                     getActorTriangles(
-                        npc, MainApplet.clientData.getNpcModelCache(),
+                        npc, Client.client.getNPCType_cachedModels(),
                         it1
                     )
                 }
@@ -40,27 +40,27 @@ fun paintNPCs(g: Graphics) {
                     g.drawPolygon(it)
                 }
                 g.color = Color.YELLOW
-                val mapPoint = Calculations.worldToMiniMap(it.getLocalX(), it.getLocalY())
+                val mapPoint = Calculations.worldToMiniMap(it.getX(), it.getY())
                 g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
 
                 val ch = getConvexHull(
                     npc,
-                    MainApplet.clientData.getNpcModelCache(),
-                    npc!!.getComposite().getNpcComposite_id().toLong()
+                    Client.client.getNPCType_cachedModels(),
+                    npc!!.getType().getId().toLong()
                 )
                 g.color = Color.PINK
                 g.drawPolygon(ch)
 
                 val namePoint =
                     Calculations.worldToScreen(
-                        it.getLocalX(),
-                        it.getLocalY(),
-                        it.getModelHeight()
+                        it.getX(),
+                        it.getY(),
+                        it.getHeight()
                     )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(namePoint)) {
                     g.color = Color.GREEN
                     g.drawString(
-                        "${it.getComposite().getName()} ${it.getComposite().getNpcComposite_id()} ${it.getAnimation()}",
+                        "${it.getType().getName()} ${it.getType().getId()} ${it.getSequence()}",
                         namePoint.x,
                         namePoint.y
                     )
@@ -70,7 +70,7 @@ fun paintNPCs(g: Graphics) {
     } catch (e: Exception) {
         println("Error: NPC Paint " + e.message)
         e.stackTrace.iterator().forEach {
-            print(it)
+            println(it)
         }
     }
 }

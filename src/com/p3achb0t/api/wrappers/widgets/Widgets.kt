@@ -1,16 +1,16 @@
 package com.p3achb0t.api.wrappers.widgets
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
-import com.p3achb0t.hook_interfaces.Widget
+import com.p3achb0t.api.wrappers.Client
 import kotlinx.coroutines.delay
 
 class Widgets {
     companion object {
-        fun find(parent: Int, child: Int): Widget? {
-            var widget: Widget? = null
+        fun find(parent: Int, child: Int): Component? {
+            var widget: Component? = null
             try {
-                widget = MainApplet.clientData.getWidgets()[parent][child]
+                widget = Client.client.getInterfaceComponents()[parent][child]
 
             } catch (e: Exception) {
                 return null
@@ -27,9 +27,9 @@ class Widgets {
             })
         }
 
-        fun find(parent: Int, text: String): Widget? {
+        fun find(parent: Int, text: String): Component? {
             try {
-                for (child in MainApplet.clientData.getWidgets()[parent]) {
+                for (child in Client.client.getInterfaceComponents()[parent]) {
                     if (child != null) {
                         val tempWidget = WidgetItem(child)
                         if (tempWidget.containsText(text)) {

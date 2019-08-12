@@ -1,41 +1,41 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
+import com.p3achb0t._runestar_interfaces.LocType
+import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.hook_interfaces.Cache
-import com.p3achb0t.hook_interfaces.Model
-import com.p3achb0t.hook_interfaces.ObjectComposite
 import java.awt.Color
 import java.awt.Graphics
 
 fun gameObjectPaint(g: Graphics) {
     if (false) {
-        val sceneData = MainApplet.clientData.getObjectCompositeCache()
-        val region = MainApplet.clientData.getRegion()
+        val sceneData = Client.client.getLocType_cached()
+        val region = Client.client.getScene()
         val localPlayer = Players.getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
-            if (planeInt == MainApplet.clientData.getPlane()) {
+            if (planeInt == Client.client.getPlane()) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
-                            if (tile.getObjects().isNotEmpty()) {
+                            if (tile.getGameObjects().isNotEmpty()) {
                                 var count = 0
-                                tile.getObjects().iterator().forEach {
-                                    if (it != null && it.getId() > 0) {
+                                tile.getGameObjects().iterator().forEach {
+                                    if (it != null && it.getTag() > 0) {
                                         count += 1
                                         // Print out the polygons for the models
                                         if (false) {
                                             val tilePolygon =
                                                 Calculations.getCanvasTileAreaPoly(
-                                                    it.getX(),
-                                                    it.getY()
+                                                    it.getCenterX(),
+                                                    it.getCenterY()
                                                 )
                                             g.color = Color.ORANGE
                                             g.drawPolygon(tilePolygon)
@@ -46,8 +46,8 @@ fun gameObjectPaint(g: Graphics) {
 
                                         val point =
                                             Calculations.worldToScreen(
-                                                it.getX(),
-                                                it.getY(),
+                                                it.getCenterX(),
+                                                it.getCenterY(),
                                                 planeInt
                                             )
                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
@@ -55,16 +55,16 @@ fun gameObjectPaint(g: Graphics) {
                                             )
                                         ) {
                                             g.color = Color.GREEN
-                                            val id = it.getId().shr(17).and(0x7fff).toInt()
-                                            val rawID = it.getId().shr(14).and(0x7fff)
+                                            val id = it.getTag().shr(17).and(0x7fff).toInt()
+                                            val rawID = it.getTag().shr(14).and(0x7fff)
                                             //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                             val objectComposite =
                                                 getObjectComposite(sceneData, id)
                                             val point2 =
                                                 Calculations.worldToScreen(
-                                                    it.getX(),
-                                                    it.getY(),
-                                                    it.getRenderable().getModelHeight()
+                                                    it.getCenterX(),
+                                                    it.getCenterY(),
+                                                    it.getEntity().getHeight()
                                                 )
 
 
@@ -81,12 +81,12 @@ fun gameObjectPaint(g: Graphics) {
 
                                         //Printing out the model and the hull
                                         if (localPlayer.distanceTo(globalPos) < 5) {
-                                            val model = it.getRenderable()
+                                            val model = it.getEntity()
                                             if (model is Model) {
                                                 val positionInfo =
                                                     ObjectPositionInfo(
-                                                        it.getX(),
-                                                        it.getY(),
+                                                        it.getCenterX(),
+                                                        it.getCenterY(),
                                                         it.getOrientation()
                                                     )
 
@@ -116,17 +116,17 @@ fun gameObjectPaint(g: Graphics) {
 
                             val globalPos =
                                 Tile(
-                                    tile.getX() + MainApplet.clientData.getBaseX(),
-                                    tile.getY() + MainApplet.clientData.getBaseY()
+                                    tile.getX() + Client.client.getBaseX(),
+                                    tile.getY() + Client.client.getBaseY()
                                 )
 
-//                        println("Tile: ${tile.getX()},${tile.getY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
+//                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                             // Display the wall object
-                            if (tile.getBoundary() != null && localPlayer.distanceTo(globalPos) < 5) {
-                                val wall = tile.getBoundary()
+                            if (tile.getBoundaryObject() != null && localPlayer.distanceTo(globalPos) < 5) {
+                                val wall = tile.getBoundaryObject()
 
                                 g.color = Color.GREEN
-                                val id = wall.getId().shr(17).and(0x7fff).toInt()
+                                val id = wall.getTag().shr(17).and(0x7fff).toInt()
                                 //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                 val objectComposite =
                                     getObjectComposite(sceneData, id)
@@ -134,7 +134,7 @@ fun gameObjectPaint(g: Graphics) {
                                     Calculations.worldToScreen(
                                         wall.getX(),
                                         wall.getY(),
-                                        wall.getRenderable().getModelHeight()
+                                        wall.getEntity1().getHeight()
                                     )
 
 
@@ -147,13 +147,13 @@ fun gameObjectPaint(g: Graphics) {
                                 )
 
 
-                                val model = wall.getRenderable()
+                                val model = wall.getEntity1()
                                 if (model is Model) {
                                     val positionInfo =
                                         ObjectPositionInfo(
                                             wall.getX(),
                                             wall.getY(),
-                                            wall.getOrientation()
+                                            wall.getOrientationA()
                                         )
 
                                     val modelTriangles =
@@ -184,20 +184,20 @@ fun gameObjectPaint(g: Graphics) {
 }
 
 fun getObjectComposite(
-    objectCache: Cache,
+    objectCache: EvictingDualNodeHashTable,
     gameObjectId: Int
-): ObjectComposite? {
-    var desiredGameObject1: ObjectComposite? = null
+): LocType? {
+    var desiredGameObject1: LocType? = null
     objectCache.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
 
             var objectComposite = bucketItem.getNext()
             while (objectComposite != null
-                && objectComposite is ObjectComposite
+                && objectComposite is LocType
                 && objectComposite != bucketItem
             ) {
-                if (objectComposite.getId() > 0
-                    && objectComposite.getId().toInt() == gameObjectId
+                if (objectComposite.getKey() > 0
+                    && objectComposite.getKey().toInt() == gameObjectId
                 ) {
                     desiredGameObject1 = objectComposite
                     break

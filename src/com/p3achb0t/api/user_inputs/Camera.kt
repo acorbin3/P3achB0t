@@ -1,6 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
@@ -11,11 +11,11 @@ import kotlin.random.Random
 
 class Camera {
     companion object {
-        val x: Int get() = MainApplet.clientData.getCameraX()
-        val y: Int get() = MainApplet.clientData.getCameraY()
-        val z: Int get() = MainApplet.clientData.getCameraZ()
-        val yaw: Int get() = MainApplet.clientData.getCameraYaw()
-        val pitch: Int get() = ((MainApplet.clientData.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
+        val x: Int get() = Client.client.getCameraX()
+        val y: Int get() = Client.client.getCameraY()
+        val z: Int get() = Client.client.getCameraZ()
+        val yaw: Int get() = Client.client.getCameraYaw()
+        val pitch: Int get() = ((Client.client.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
         val angle: Int get() = abs(((this.yaw / 5.68).toInt()) - 360)
 
         /**
@@ -25,12 +25,12 @@ class Camera {
          * @return Integer 0-360
          */
         fun getAngleTo(locatable: Locatable): Int {
-            val local = MainApplet.clientData.getLocalPlayer()
+            val local = Client.client.getLocalPlayer()
 
             var degree = 360 - Math.toDegrees(
                 atan2(
-                    (locatable.getRegionalLocation().x - local.getLocalX()).toDouble(),
-                    (local.getLocalY() - locatable.getRegionalLocation().y).toDouble()
+                    (locatable.getRegionalLocation().x - local.getX()).toDouble(),
+                    (local.getY() - locatable.getRegionalLocation().y).toDouble()
                 )
             )
             if (degree >= 360) {
