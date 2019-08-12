@@ -3,8 +3,10 @@ package com.p3achb0t.api.painting
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
-import com.p3achb0t.api.Calculations.Companion.worldToScreen
-import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.api.wrappers.Client
+import com.p3achb0t.api.wrappers.Dialog
+import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Color
 import java.awt.Graphics
@@ -32,10 +34,10 @@ fun debugPaint(): PaintListener {
                     if (!Bank.isOpen()) {
 
                         playerPaint(g)
-//                        paintNPCs(g)
+                        paintNPCs(g)
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
-//                        gameObjectPaint(g)
+                        gameObjectPaint(g)
 //TODO - ground items issue
 //                    try {
 //                        val groundItems = GroundItems.getAllItems()
@@ -91,16 +93,12 @@ fun debugPaint(): PaintListener {
                     // Paint on minimap
 
                     val local = Client.client.getLocalPlayer()
-                    println("Local ${local.getX()},${local.getY()}")
                     val point = worldToMiniMap(local.getX(), local.getY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
                         g.fillRect(point.x, point.y, 4, 4)
                     }
-                    var local2 = Players.getLocal()
-                    println("${local2.getLocalLocation()}  ${local2.getGlobalLocation()}  ${local2.getRegionalLocation()}  ${local2.player.getX()},${local2.player.getY()}")
-                    val point2 = worldToScreen(local2.player.getX(), local2.player.getY(), local.getHeight())
-                    g.drawString(local.getUsername().getCleanName(), point2.x, point2.y)
+
                 }
 
             } catch (e: Exception) {

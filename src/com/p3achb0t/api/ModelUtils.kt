@@ -51,9 +51,9 @@ fun getTrianglesFromModel(
     val xPoints = model.getVerticesX().copyOf()
     val yPoints = model.getVerticesY().copyOf()
     val zPoints = model.getVerticesZ().copyOf()
-    val indiciesX = model.getVerticesX().copyOf()
-    val indiciesY = model.getVerticesY().copyOf()
-    val indiciesZ = model.getVerticesZ().copyOf()
+    val indiciesX = model.getIndices1().copyOf()
+    val indiciesY = model.getIndices2().copyOf()
+    val indiciesZ = model.getIndices3().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
     if (orientation != 0) {
@@ -68,32 +68,44 @@ fun getTrianglesFromModel(
     }
 
 
-    for (i in 0 until model.getVerticesCount()) {
-        if (i < indiciesX.size - 1 && i < indiciesY.size - 1 && i < indiciesZ.size - 1) {
-            val one = Calculations.worldToScreen(
-                locX + xPoints[indiciesX[i]],
-                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-            )
-            val two = Calculations.worldToScreen(
-                locX + xPoints[indiciesY[i]],
-                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-            )
-            val three = Calculations.worldToScreen(
-                locX + xPoints[indiciesZ[i]],
-                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-            )
-            if (one.x >= 0 && two.x >= 0 && three.x >= 0
-                && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
-                    three
-                )
-            ) {
-                polygonList.add(
-                    Polygon(
-                        intArrayOf(one.x, two.x, three.x),
-                        intArrayOf(one.y, two.y, three.y),
-                        3
+    for (i in 0 until model.getIndicesCount()) {
+        try {
+            if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
+                val indicyX = indiciesX[i]
+                val indicyY = indiciesY[i]
+                val indicyZ = indiciesZ[i]
+//                println("i:$i  indicyX:$indicyX indicyY:$indicyY indicyZ:$indicyZ xPoints.size:${xPoints.size} yPoints.size:${yPoints.size} zPoints.size:${zPoints.size} ")
+                if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
+                    val one = Calculations.worldToScreen(
+                        locX + xPoints[indiciesX[i]],
+                        locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
                     )
-                )
+                    val two = Calculations.worldToScreen(
+                        locX + xPoints[indiciesY[i]],
+                        locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+                    )
+                    val three = Calculations.worldToScreen(
+                        locX + xPoints[indiciesZ[i]],
+                        locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+                    )
+                    if (one.x >= 0 && two.x >= 0 && three.x >= 0
+                        && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
+                            three
+                        )
+                    ) {
+                        polygonList.add(
+                            Polygon(
+                                intArrayOf(one.x, two.x, three.x),
+                                intArrayOf(one.y, two.y, three.y),
+                                3
+                            )
+                        )
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.stackTrace.iterator().forEach {
+                println(it.toString())
             }
         }
 
@@ -143,9 +155,9 @@ fun getConvexHullFromModel(
     val xPoints = model.getVerticesX().copyOf()
     val yPoints = model.getVerticesY().copyOf()
     val zPoints = model.getVerticesZ().copyOf()
-    val indiciesX = model.getVerticesX().copyOf()
-    val indiciesY = model.getVerticesY().copyOf()
-    val indiciesZ = model.getVerticesZ().copyOf()
+    val indiciesX = model.getIndices1().copyOf()
+    val indiciesY = model.getIndices2().copyOf()
+    val indiciesZ = model.getIndices3().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
     if (orientation != 0) {
@@ -160,25 +172,31 @@ fun getConvexHullFromModel(
     }
 
 
-    for (i in 0 until model.getVerticesCount()) {
+    for (i in 0 until model.getIndicesCount()) {
         if (i < indiciesX.size && i < indiciesY.size && i < indiciesZ.size) {
-            val one = Calculations.worldToScreen(
-                locX + xPoints[indiciesX[i]],
-                locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
-            )
-            if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
+            val indicyX = indiciesX[i]
+            val indicyY = indiciesY[i]
+            val indicyZ = indiciesZ[i]
+            if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
+                val one = Calculations.worldToScreen(
+                    locX + xPoints[indicyX],
+                    locY + zPoints[indicyX], 0 - yPoints[indicyX]
+                )
+                if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
 
-            val two = Calculations.worldToScreen(
-                locX + xPoints[indiciesY[i]],
-                locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
-            )
-            if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
+                val two = Calculations.worldToScreen(
+                    locX + xPoints[indicyY],
+                    locY + zPoints[indicyY], 0 - yPoints[indicyY]
+                )
+                if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
 
-            val three = Calculations.worldToScreen(
-                locX + xPoints[indiciesZ[i]],
-                locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
-            )
-            if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+//                println("indicyZ:$indicyZ xPoints.size:/=${xPoints.size}")
+                val three = Calculations.worldToScreen(
+                    locX + xPoints[indicyZ],
+                    locY + zPoints[indicyZ], 0 - yPoints[indicyZ]
+                )
+                if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+            }
         }
     }
 

@@ -15,7 +15,6 @@ fun playerPaint(g: Graphics) {
         var count = 0
         players.iterator().forEach { _player ->
             if (_player != null && _player.getCombatLevel() > 0) {
-                println("${_player.getUsername().getCleanName()} ${_player.getCombatLevel()} x:${_player.getX()} y: ${_player.getY()}, ")
 
                 count += 1
 
@@ -31,7 +30,7 @@ fun playerPaint(g: Graphics) {
 
                 val polygon = getActorTriangles(
                     _player,
-                    Client.client.getLocType_cachedModels(),
+                    Client.client.getPlayerAppearance_cachedModels(),
                     _player.getAppearance().get__l()
                 )
                 g.color = Color.YELLOW
@@ -40,7 +39,7 @@ fun playerPaint(g: Graphics) {
                 }
                 val ch = getConvexHull(
                     _player,
-                    Client.client.getLocType_cachedModels(),
+                    Client.client.getPlayerAppearance_cachedModels(),
                     _player.getAppearance().get__l()
                 )
                 g.color = Color.RED

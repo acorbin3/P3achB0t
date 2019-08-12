@@ -16,7 +16,7 @@ import java.awt.Graphics
 
 fun gameObjectPaint(g: Graphics) {
     if (false) {
-        val sceneData = Client.client.getLocType_cached()
+        val sceneData = Client.client.getObjType_cachedModels()
         val region = Client.client.getScene()
         val localPlayer = Players.getLocal()
         var planeInt = 0
