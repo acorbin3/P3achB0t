@@ -6,11 +6,16 @@ import com.p3achb0t.api.wrappers.interfaces.Locatable
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
+import java.awt.Point
 import kotlin.random.Random
 
 
 open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
 
+    override fun getNamePoint(): Point {
+        val region = getRegionalLocation()
+        return Calculations.worldToScreen(region.x, region.y, raw.getHeight())
+    }
 
     fun isIdle(): Boolean {
         return raw.getSequence() == -1 && raw.getTargetIndex() == -1 && raw.getMovementSequence() == 808

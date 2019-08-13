@@ -69,5 +69,4 @@ fun drawDebugText(g: Graphics) {
             y += 10
         }
     }
-    MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
 }

@@ -130,7 +130,6 @@ class Analyser{
         }
         val out = JarOutputStream(FileOutputStream(File("./injected_jar.jar")))
         for (classNode in classes.values) {
-            println("Looking at class: ${classNode.name}")
             val cw = ClassWriter(0)
             classNode.accept(cw)
             out.putNextEntry(JarEntry(classNode.name + ".class"))

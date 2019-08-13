@@ -1,6 +1,7 @@
 package com.p3achb0t.scripts
 
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.LoggingIntoClient
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Keyboard
@@ -99,6 +100,7 @@ class TutorialIsland {
 
         suspend fun run() {
             if (!isInititilized) init()
+            if (!LoggingIntoClient.loggedIn) return
             jobs.forEach {
                 val chatBox = WidgetItem(Widgets.find(263, 1))
                 if (it.isValidToRun(chatBox)) {
@@ -942,12 +944,13 @@ class TutorialIsland {
                     anvil[index].turnTo()
                     Inventory.open()
                     anvil[index].click()
+                    delay(Random.nextLong(300, 700))
                     Players.getLocal().waitTillIdle()
                     //Wait for smiting widgets
-                    Widgets.waitTillWidgetNotNull(312, 2)
+                    Widgets.waitTillWidgetNotNull(312, 9)
 
                     val oldInventoryCount = Inventory.getCount()
-                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 2)?.getChildren()?.get(2))
+                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 9)?.getChildren()?.get(2))
                     if (daggerSmitingPage.widget != null) {
                         daggerSmitingPage.click()
 
@@ -1565,7 +1568,8 @@ class TutorialIsland {
 
         class MainlandLogout : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-                return dialogWidget.containsText("Welcome to Lumbridge!")
+                val completedWidget = WidgetItem(Widgets.find(193, 2))
+                return completedWidget.containsText("Welcome to Lumbridge!")
             }
 
             override suspend fun execute() {

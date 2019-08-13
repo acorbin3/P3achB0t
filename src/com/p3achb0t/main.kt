@@ -14,6 +14,7 @@ import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
+import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.widgetexplorer.WidgetExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -49,7 +50,6 @@ class MainApplet(game: Applet) {
         var selectedWidget: Component? = null
         var customCanvas: CustomCanvas? = null
         var mouseEvent: MouseEvent? = null
-        lateinit var clientData: com.p3achb0t.hook_interfaces.Client
         val mouse = Mouse()
 
     }
@@ -370,7 +370,7 @@ object Main {
 //                        Calculations.initScreenWidgetDimentions()
 //                    }
 //
-//                    TutorialIsland.run()
+                TutorialIsland.run()
 //                }
                 //Delay between 0-50 ms
                 delay((Math.random() * 50).toLong())

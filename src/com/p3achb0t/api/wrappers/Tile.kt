@@ -23,6 +23,10 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
         return getCanvasTileAreaPoly(regional.x, regional.y)
     }
 
+    override fun getNamePoint(): Point {
+        val region = getRegionalLocation()
+        return Calculations.worldToScreen(region.x, region.y, z)
+    }
     override fun toString(): String {
         return "($x,$y,$z)"
     }

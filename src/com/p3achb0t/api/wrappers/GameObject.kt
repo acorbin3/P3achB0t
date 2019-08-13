@@ -59,6 +59,10 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
             }
         }
 
+    override fun getNamePoint(): Point {
+        val region = getRegionalLocation()
+        return Calculations.worldToScreen(region.x, region.y, gameObject?.getHeight() ?: 0)
+    }
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
             gameObject != null -> MainApplet.mouse.click(

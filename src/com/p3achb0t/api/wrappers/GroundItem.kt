@@ -16,6 +16,11 @@ import java.util.*
 
 class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0) : Locatable,
     Interactable {
+    override fun getNamePoint(): Point {
+        val region = getRegionalLocation()
+        return Calculations.worldToScreen(region.x, region.y, Client.client.getPlane())
+    }
+
     override suspend fun clickOnMiniMap(): Boolean {
         return MainApplet.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
     }

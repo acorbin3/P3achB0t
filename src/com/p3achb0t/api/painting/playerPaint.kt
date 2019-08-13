@@ -70,5 +70,8 @@ fun playerPaint(g: Graphics) {
         }
     } catch (e: Exception) {
         println("Error: Player pain " + e.message)
+        e.stackTrace.iterator().forEach {
+            println(it)
+        }
     }
 }

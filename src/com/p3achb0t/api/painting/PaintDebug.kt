@@ -1,7 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
-import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Client
@@ -22,41 +21,19 @@ fun debugPaint(): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
+                MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                 drawDebugText(g)
-//                        print("[")
-//                        for (x in clientData.get_widgetHeights()) {
-//                            print("$x,")
-//                        }
-//                        println("]")
-//                        println(clientData.get_username() + " " + clientData.get_isWorldSelectorOpen())
 
                 if (Client.client.getGameState() == 30) {
                     if (!Bank.isOpen()) {
 
+//                        groundItemsPaint(g)
                         playerPaint(g)
                         paintNPCs(g)
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
-                        gameObjectPaint(g)
-//TODO - ground items issue
-//                    try {
-//                        val groundItems = GroundItems.getAllItems()
-//                        groundItems.forEach {
-//                            val point1 = Calculations.worldToScreen(it.position.x, it.position.y, it.position.plane)
-//                            if (point1.x != -1 && point1.y != -1 && Calculations.isOnscreen(point1)) {
-//                                g.color = Color.GREEN
-//                                g.drawString("(${it.id})", point1.x, point1.y - 20) // moving widgetID up 20 pixels
-//                                val modelTriangles = it.getTriangles()
-//                                g.color = Color.RED
-//                                modelTriangles.forEach {
-//                                    g.drawPolygon(it)
-//                                }
-//                                val hull = it.getConvexHull()
-//                                g.color = Color.CYAN
-//                                g.drawPolygon(hull)
-//                            }
-//                        }
-//                    }catch(e: Exception){ println("Error: Gound items " + e.message)}
+//                        gameObjectPaint(g)
+
                     }
 
                     if (Bank.isOpen()) {
@@ -70,9 +47,7 @@ fun debugPaint(): PaintListener {
 
 
                     rightClickMenuPaint(g)
-
                     inventoryPaint(g)
-
                     equipmentPaint(g)
 
                     // Paint minimap circle
@@ -91,80 +66,16 @@ fun debugPaint(): PaintListener {
                     }
 
                     // Paint on minimap
-
                     val local = Client.client.getLocalPlayer()
                     val point = worldToMiniMap(local.getX(), local.getY())
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
                         g.fillRect(point.x, point.y, 4, 4)
                     }
-
                 }
-
             } catch (e: Exception) {
                 println("Error:  General  $e\n ${e.stackTrace} \n ${e.localizedMessage}")
             }
         }
-
-
-        fun drawCenteredCircle(g: Graphics, x: Int, y: Int, r: Int) {
-            var x = x
-            var y = y
-            x -= r / 2
-            y -= r / 2
-            g.color = Color.PINK
-            g.drawOval(x, y, r, r)
-        }
-
-
-        fun getAllObjectModels(objectModels: EvictingDualNodeHashTable): ArrayList<Model> {
-            val modelList = ArrayList<Model>()
-            objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
-                if (bucket != null) {
-//                    println(bucket.getWidgetID())
-                    var model = bucket.getNext()
-                    while (model != null && model is Model && model != bucket) {
-                        modelList.add(model)
-                        model = model.getNext()
-                    }
-
-
-                }
-            }
-            if (modelList.isNotEmpty()) {
-                println("Models")
-                modelList.forEach { println(it.getKey()) }
-                println("--")
-            }
-            return modelList
-        }
-
-        fun getObjectsModel(objectModels: EvictingDualNodeHashTable, renderModelID: Int): Model? {
-            var desiredModel: Model? = null
-            objectModels.getHashTable().getBuckets().iterator().forEach { bucket ->
-                if (bucket != null) {
-                    var model = bucket.getNext()
-                    while (model != null && model is Model) {
-
-                        if (model.getKey() > 0) {
-                            println(
-                                model.getKey().toString() + " " + model.getKey().shr(17).and(0x7fff) + " ${model.getKey().shr(
-                                    16
-                                )} ${model.getKey().shr(15)} ${model.getKey().shr(14)}"
-                            )
-                        }
-                        if (model.getKey().toInt() == renderModelID) {
-                            desiredModel = model as Model
-                        }
-                        model = model.getNext()
-                    }
-
-                }
-            }
-
-            println("--")
-            return desiredModel
-        }
-
     }
 }

@@ -10,6 +10,10 @@ import java.awt.Polygon
 
 class NPC(var npc: Npc) : Actor(npc), Interactable {
 
+    override fun getNamePoint(): Point {
+        val region = getRegionalLocation()
+        return Calculations.worldToScreen(region.x, region.y, npc.getHeight())
+    }
     fun getConvexHull(): Polygon {
         return getConvexHull(
             this.npc,
