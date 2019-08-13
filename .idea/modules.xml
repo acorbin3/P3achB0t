@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.P3achB0t.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.P3achB0t.iml" />
       <module fileurl="file://$PROJECT_DIR$/P3achB0t.iml" filepath="$PROJECT_DIR$/P3achB0t.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.iml" filepath="$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.test.iml" filepath="$PROJECT_DIR$/.idea/modules/P3achB0t.PeachBot.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/P3achB0t.main.iml" filepath="$PROJECT_DIR$/.idea/modules/P3achB0t.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/P3achB0t.test.iml" filepath="$PROJECT_DIR$/.idea/modules/P3achB0t.test.iml" />
     </modules>
   </component>
 </project>
