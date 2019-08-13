@@ -52,7 +52,7 @@ package com.p3achb0t
 
 //How to add custom paints in any class:
 
-//Main.customCanvas?.addPaintListener(object: PaintListener {
+//MainApplet.customCanvas?.addPaintListener(object: PaintListener {
 //    override fun onPaint(g: Graphics) {
 //        g.color = Color.white
 //        g.drawString("HELLO WORLD", 50, 50)
