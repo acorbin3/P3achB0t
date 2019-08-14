@@ -27,7 +27,6 @@ fun playerPaint(g: Graphics) {
                 g.drawPolygon(tile)
                 g.color = Color(0, 0, 0, 50)
                 g.fillPolygon(tile)
-
                 val polygon = getActorTriangles(
                     _player,
                     Client.client.getPlayerAppearance_cachedModels(),
