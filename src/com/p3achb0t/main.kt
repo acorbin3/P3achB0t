@@ -170,12 +170,14 @@ object Main {
                     }
                     val mouseListener = object : MouseMotionListener {
                         override fun mouseMoved(e: MouseEvent?) {
-                            mouseEvent = e
+                            if (e != null && e.x >= 0 && e.y >= 0)
+                                mouseEvent = e
 
                         }
 
                         override fun mouseDragged(e: MouseEvent?) {
-                            mouseEvent = e
+                            if (e != null && e.x >= 0 && e.y >= 0)
+                                mouseEvent = e
                         }
 
                     }
@@ -371,6 +373,8 @@ object Main {
 //                    }
 //
                 TutorialIsland.run()
+
+
 //                }
                 //Delay between 0-50 ms
                 delay((Math.random() * 50).toLong())

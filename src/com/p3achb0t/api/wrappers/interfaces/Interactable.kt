@@ -18,12 +18,16 @@ interface Interactable {
             var point: Point? = null
             //Pick random point in hull
             while (true) {
-                point = Point(
-                    Random.nextInt(poly.bounds.x, poly.bounds.width + poly.bounds.x),
-                    Random.nextInt(poly.bounds.y, poly.bounds.height + poly.bounds.y)
-                )
-                if (poly.contains(point)) {
-                    return point
+                try {
+                    point = Point(
+                        Random.nextInt(poly.bounds.x, poly.bounds.width + poly.bounds.x),
+                        Random.nextInt(poly.bounds.y, poly.bounds.height + poly.bounds.y)
+                    )
+                    if (poly.contains(point)) {
+                        return point
+                    }
+                } catch (e: Exception) {
+                    return Point(-1, -1)
                 }
             }
         }

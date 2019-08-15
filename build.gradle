@@ -12,6 +12,7 @@ plugins {
 }
 sourceSets {
     main.kotlin.srcDirs += 'src/'
+    main.java.srcDirs += "src/"
 }
 application{
     mainClassName = 'com.p3achb0t.Main'

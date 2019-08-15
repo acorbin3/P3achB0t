@@ -1,5 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
+import com.github.joonasvali.naturalmouse.util.FactoryTemplates
 import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Constants
 import kotlinx.coroutines.delay
@@ -14,6 +15,10 @@ class Mouse {
     enum class ClickType {
         Right,
         Left
+    }
+
+    companion object {
+        val gamerMouse = FactoryTemplates.createFastGamerMotionFactory()
     }
     //////
     // Config info on how the mouse would operate
@@ -39,73 +44,73 @@ class Mouse {
                 Point(_x, _y)
             }
         } else {
-            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
+            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Random.nextInt(Constants.GAME_FIXED_HEIGHT))
         }
-        val distance = startPoint?.distance(destPoint)
-        val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
-        val iterations = distance?.div(MIN_DIST_PIXELS)
-        val interval = iterations?.let { timeDurationMS?.div(it) }
-        val currentPoint = startPoint
-        val deltaX = startPoint?.x?.let { iterations?.let { it1 -> destPoint.x.minus(it).div(it1) } }
-        val deltaY = startPoint?.y?.let { iterations?.let { it1 -> destPoint.y.minus(it).div(it1) } }
-        println("Distance: $distance timeinMS: $timeDurationMS iteration: $iterations interval: $interval deltaX:$deltaX deltaY: $deltaY")
-        if (iterations != null) {
-            val startX = startPoint.x
-            val startY = startPoint.y
-            for (i in 1..iterations.toInt() + 1) {
-                val xOffset = deltaX?.times(i)?.let { Math.ceil(it) }
-                val x = xOffset?.let { startX.plus(it) }
-                val yOffset = deltaY?.times(i)?.let { Math.ceil(it) }
-                val y = yOffset?.let { startY.plus(it) }
-                val mouseMove = x?.toInt()?.let { _x ->
-                    //                    println("$x $xOffset $startX    $y $yOffset $startY")
-                    y?.toInt()?.let { _y ->
-                        currentPoint?.x = _x
-                        currentPoint?.y = _y
-                        MouseEvent(
-                            MainApplet.customCanvas,
-                            MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, _x, _y, 0, false
-                        )
-                    }
-                }
-                MainApplet.customCanvas?.dispatchEvent(mouseMove)
-                interval?.toLong()?.let { delay(it) }
-            }
-        }
+        gamerMouse.move(destPoint.x, destPoint.y)
+//        val distance = startPoint?.distance(destPoint)
+//        val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
+//        val iterations = distance?.div(MIN_DIST_PIXELS)
+//        val interval = iterations?.let { timeDurationMS?.div(it) }
+//        val currentPoint = startPoint
+//        val deltaX = startPoint?.x?.let { iterations?.let { it1 -> destPoint.x.minus(it).div(it1) } }
+//        val deltaY = startPoint?.y?.let { iterations?.let { it1 -> destPoint.y.minus(it).div(it1) } }
+//        println("Distance: $distance timeinMS: $timeDurationMS iteration: $iterations interval: $interval deltaX:$deltaX deltaY: $deltaY")
+//        if (iterations != null) {
+//            val startX = startPoint.x
+//            val startY = startPoint.y
+//            for (i in 1..iterations.toInt() + 1) {
+//                val xOffset = deltaX?.times(i)?.let { Math.ceil(it) }
+//                val x = xOffset?.let { startX.plus(it) }
+//                val yOffset = deltaY?.times(i)?.let { Math.ceil(it) }
+//                val y = yOffset?.let { startY.plus(it) }
+//                val mouseMove = x?.toInt()?.let { _x ->
+//                    //                    println("$x $xOffset $startX    $y $yOffset $startY")
+//                    y?.toInt()?.let { _y ->
+//                        currentPoint?.x = _x
+//                        currentPoint?.y = _y
+//                        MouseEvent(
+//                            MainApplet.customCanvas,
+//                            MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, _x, _y, 0, false
+//                        )
+//                    }
+//                }
+//                MainApplet.customCanvas?.dispatchEvent(mouseMove)
+//                interval?.toLong()?.let { delay(it) }
+//            }
+//        }
         if (click) {
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
-            val mousePress = currentPoint?.let {
+            val mousePress =
                 MouseEvent(
                     MainApplet.customCanvas,
                     MouseEvent.MOUSE_PRESSED,
                     System.currentTimeMillis(),
                     clickMask,
-                    it.x,
-                    it.y,
+                    destPoint.x,
+                    destPoint.y,
                     0,
                     clickType == ClickType.Right
                 )
 
-            }
             MainApplet.customCanvas?.dispatchEvent(mousePress)
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
             delay(delayTime.toLong())
 
-            val mouseRelease = currentPoint?.let {
+            val mouseRelease =
                 MouseEvent(
                     MainApplet.customCanvas,
                     MouseEvent.MOUSE_RELEASED,
                     System.currentTimeMillis(),
                     clickMask,
-                    it.x,
-                    it.y,
+                    destPoint.x,
+                    destPoint.y,
                     0,
                     clickType == ClickType.Right
                 )
 
-            }
+
             MainApplet.customCanvas?.dispatchEvent(mouseRelease)
         }
         return true

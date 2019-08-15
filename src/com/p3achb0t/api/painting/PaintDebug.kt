@@ -21,8 +21,9 @@ fun debugPaint(): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
+                g.color = Color.white
                 MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
-                drawDebugText(g)
+//                drawDebugText(g)
 
                 if (Client.client.getGameState() == 30) {
                     if (!Bank.isOpen()) {
