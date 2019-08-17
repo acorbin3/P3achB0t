@@ -55,17 +55,22 @@ class Interact {
             if (action.isNotEmpty()) {
 
                 //Move mouse to the point
-                point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = false) }
-                delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
+                if (MainApplet.mouseEvent?.x == point.x && MainApplet.mouseEvent?.y == point.y) {
+                    //Dont need to move the mouse
+                } else {
+                    point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = false) }
+                    delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
+                }
 
                 // Check to see if we need to right click or not
                 if (Menu.getHoverAction().contains(action)) {
                     // Left click, we are alreay there
-                    point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = true) }
+                    point.let { it1 -> MainApplet.mouse.click(it1) }
                     return true
                 } else {
-
-                    delay((Math.random() * 20).toLong())
+                    //Since this is not avaliable we need to right click
+                    point.let { it1 -> MainApplet.mouse.click(it1, clickType = Mouse.ClickType.Right) }
+                    delay(Random.nextLong(50, 150))
                     // Move to Action String
                     val actionPoint = Menu.getPointForInteraction(action)
                     if (actionPoint == Point(-1, -1)) {

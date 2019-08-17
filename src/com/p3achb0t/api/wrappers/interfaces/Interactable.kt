@@ -5,6 +5,7 @@ import com.p3achb0t.api.Calculations.Companion.midPoint
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
+import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
@@ -41,8 +42,8 @@ interface Interactable {
 
     suspend fun interact(action: String): Boolean {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
+        var desiredPoint = getInteractPoint()
         while (true) {
-            val desiredPoint = getInteractPoint()
             val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
                 MainApplet.mouseEvent?.point?.y?.let { _y ->
                     Point(_x, _y)
@@ -52,15 +53,17 @@ interface Interactable {
             }
             val distance = startPoint?.distance(desiredPoint)
             if (distance != null) {
-                if (distance < 25) {
+                if (distance < 50) {
                     break
                 } else {
                     val midPoint = midPoint(desiredPoint, startPoint)
                     MainApplet.mouse.moveMouse(midPoint, click = false)
+                    delay(Random.nextLong(100, 200))
                 }
             }
+            desiredPoint = getInteractPoint()
         }
-        return Interact.interact(getInteractPoint(), action)
+        return Interact.interact(desiredPoint, action)
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {

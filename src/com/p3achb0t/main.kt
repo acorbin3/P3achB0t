@@ -8,6 +8,7 @@ import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
+import com.p3achb0t.api.painting.PaintDebug
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Client
@@ -194,10 +195,23 @@ object Main {
 
                         override fun keyPressed(e: KeyEvent?) {
 //                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
+                            if (e?.keyCode == 17)
+                                PaintDebug.isCtrlPressed = true
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '1'))
+                                PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '2'))
+                                PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '3'))
+                                PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '4'))
+                                PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+
                         }
 
                         override fun keyReleased(e: KeyEvent?) {
 //                        println("KeyReleased: ${e?.keyChar} Code:${e?.keyCode}")
+                            if (e?.keyCode == 17)
+                                PaintDebug.isCtrlPressed = false
                         }
 
                     }
@@ -228,14 +242,15 @@ object Main {
             while (true) {
                 //Wait till we are logged in
 //                if (Client.client!!.getGameState() == 30) {
-//                    if (false) {
+//                    if (true) {
 //                        try {
 //                            val npcs = NPCs.findNpcs(sortByDist = true)
 //                            if (npcs.size > 0) {
 //                                npcs.forEach {
 //                                    if (!it.isOnScreen()) {
-//                                        println("Turning to: ${it.npc.getComposite().getName()}")
-//                                        Camera.turnTo(it)
+//
+//                                        println("Turning to: ${it.npc.getType().getName()}")
+//                                        it.turnTo()
 //                                    }
 //                                    it.interact("Cancel")
 //                                }
@@ -243,8 +258,8 @@ object Main {
 //                            val players = Player.findPlayers(true)
 //                            players.forEach {
 //                                if (!it.isOnScreen()) {
-//                                    println("Turning to: ${it.player.getName()}")
-//                                    Camera.turnTo(it)
+//                                    println("Turning to: ${it.player.getUsername().getCleanName()}")
+//                                    it.turnTo()
 //                                }
 //                                it.interact("Cancel")
 //                            }
@@ -262,12 +277,13 @@ object Main {
 //                            }
 //                        }
 //                    }
+//                }
 //
 //
 //                    // Cycle between tabs
-////            Tabs.Tab_Types.values().iterator().forEach {
-////                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
-////            }
+//            Tabs.Tab_Types.values().iterator().forEach {
+//                Tabs.Tab_Types.valueOf(it.id)?.let { it1 -> Tabs.openTab(it1) }
+//            }
 //
 ////            // Go between equiptment unequipt & back to inventory to equipt
 ////            Equipment.Companion.Slot.values().iterator().forEach {

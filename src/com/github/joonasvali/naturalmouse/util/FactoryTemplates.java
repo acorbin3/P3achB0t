@@ -82,7 +82,7 @@ public class FactoryTemplates {
         factory.setDeviationProvider(new SinusoidalDeviationProvider(SinusoidalDeviationProvider.DEFAULT_SLOPE_DIVIDER));
         factory.setNoiseProvider(new DefaultNoiseProvider(DefaultNoiseProvider.DEFAULT_NOISINESS_DIVIDER));
         factory.getNature().setReactionTimeVariationMs(100);
-        manager.setMouseMovementBaseTimeMs(250);
+        manager.setMouseMovementBaseTimeMs(100);
 
         DefaultOvershootManager overshootManager = (DefaultOvershootManager) factory.getOvershootManager();
         overshootManager.setOvershoots(4);

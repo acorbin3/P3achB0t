@@ -14,7 +14,8 @@ class Menu {
             val heigth = Client.client.getMenuHeight()
             return Rectangle(mX, mY, width, heigth)
         }
-        fun getPointForInteraction(action: String): Point {
+
+        fun getPointForInteraction(desiredAction: String): Point {
             var point = Point(-1, -1)
             val mCount = Client.client.getMenuOptionsCount()
             val width = Client.client.getMenuWidth()
@@ -30,7 +31,7 @@ class Menu {
                     val option = Utils.cleanColorText(Client.client.getMenuTargetNames()[mCount - i])
                     val menuItem = "$action $option"
 
-                    if (menuItem.toLowerCase().contains(action.toLowerCase())) {
+                    if (menuItem.toLowerCase().contains(desiredAction.toLowerCase())) {
                         val rec = Rectangle(mX - 1, mY + yDiff, width, lineHeight)
                         while (true) {
                             // Just grab first point and move it to on screen.
@@ -41,6 +42,7 @@ class Menu {
                             if (rec.contains(point))
                                 break
                         }
+                        println("Looking at menu item : $menuItem")
                         return point
                     }
 //                    val action = Main.clientData.getMenuActions()[mCount-i] + " " + Main.clientData.getMenuOptions()[mCount-i]

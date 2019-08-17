@@ -572,6 +572,8 @@ class TutorialIsland {
                 if (gates.size > 0) {
                     gates[0].turnTo()
                     gates[0].interact("Open")
+                    Players.getLocal().waitTillIdle()
+                    delay(Random.nextLong(100, 150))
                 }
                 println("Complete: Going to open gate")
             }
@@ -750,6 +752,7 @@ class TutorialIsland {
                             return Players.getLocal().isIdle()
                         }
                     })
+                    delay(Random.nextLong(100, 150))
                     Dialog.continueDialog()
                 }
             }
@@ -1406,6 +1409,8 @@ class TutorialIsland {
                             Camera.turnEast()
                             Camera.setHighPitch()
                             it.interact("Open")
+                            Players.getLocal().waitTillIdle()
+                            delay(Random.nextLong(100, 150))
                         }
                     }
                 }

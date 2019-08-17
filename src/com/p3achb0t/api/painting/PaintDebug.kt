@@ -13,9 +13,20 @@ import java.awt.Point
 import java.awt.Rectangle
 
 
+class PaintDebug {
+    companion object {
+        var isDebugTextOn = false
+        var isPlayerPaintOn = false
+        var isNPCPaintOn = false
+        var isGroundItemsOn = false
+        var isCtrlPressed = false
+    }
+}
+
 fun drawRect(g: Graphics, rect: Rectangle) {
     g.drawRect(rect.x, rect.y, rect.width, rect.height)
 }
+
 
 fun debugPaint(): PaintListener {
     return object : PaintListener {
@@ -23,14 +34,17 @@ fun debugPaint(): PaintListener {
             try {
                 g.color = Color.white
                 MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
-//                drawDebugText(g)
+                if (PaintDebug.isDebugTextOn)
+                    drawDebugText(g)
 
                 if (Client.client.getGameState() == 30) {
                     if (!Bank.isOpen()) {
-
-//                        groundItemsPaint(g)
-                        playerPaint(g)
-                        paintNPCs(g)
+                        if (PaintDebug.isGroundItemsOn)
+                            groundItemsPaint(g)
+                        if (PaintDebug.isPlayerPaintOn)
+                            playerPaint(g)
+                        if (PaintDebug.isNPCPaintOn)
+                            paintNPCs(g)
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
 //                        gameObjectPaint(g)

@@ -2,7 +2,6 @@ package com.p3achb0t.api.user_inputs
 
 import com.github.joonasvali.naturalmouse.util.FactoryTemplates
 import com.p3achb0t.MainApplet
-import com.p3achb0t.api.Constants
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.event.MouseEvent
@@ -39,13 +38,13 @@ class Mouse {
             return false
         }
 
-        val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
-            MainApplet.mouseEvent?.point?.y?.let { _y ->
-                Point(_x, _y)
-            }
-        } else {
-            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Random.nextInt(Constants.GAME_FIXED_HEIGHT))
-        }
+//        val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
+//            MainApplet.mouseEvent?.point?.y?.let { _y ->
+//                Point(_x, _y)
+//            }
+//        } else {
+//            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Random.nextInt(Constants.GAME_FIXED_HEIGHT))
+//        }
         gamerMouse.move(destPoint.x, destPoint.y)
 //        val distance = startPoint?.distance(destPoint)
 //        val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
@@ -79,6 +78,7 @@ class Mouse {
 //            }
 //        }
         if (click) {
+            delay(Random.nextLong(50, 150))
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress =
                 MouseEvent(
