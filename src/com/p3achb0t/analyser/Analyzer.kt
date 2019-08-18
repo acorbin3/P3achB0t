@@ -3,7 +3,6 @@ package com.p3achb0t.analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
-import com.p3achb0t.rsclasses.*
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes.*
@@ -22,7 +21,6 @@ class Analyser{
 
     fun parseJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
-        val analyzers = mutableMapOf<String,RSClasses>()
         while(enumeration.hasMoreElements()){
             val entry = enumeration.nextElement()
             if(entry.name.endsWith(".class")){
@@ -43,36 +41,11 @@ class Analyser{
             }
         }
 
-        analyzeClasses(analyzers)
-
         injectJARWithInterfaces(classes, runeStar)
 
 
     }
 
-    private fun analyzeClasses(analyzers: MutableMap<String, RSClasses>) {
-        // Add analyzers
-        analyzers[Node.deobName] = Node()
-        analyzers[Client.deobName] = Client()
-        analyzers[Canvas.deobName] = Canvas()
-        analyzers[CacheNode.deobName] = CacheNode()
-        analyzers[Renderable.deobName] = Renderable()
-        analyzers[Actor.deobName] = Actor()
-        analyzers[Player.deobName] = Player()
-        analyzers[Npc.deobName] = Npc()
-        analyzers[AnimatedObject.deobName] = AnimatedObject()
-        analyzers[VarpBit.deobName] = VarpBit()
-
-        for (analyzerObj in analyzers) {
-            for (obClass in classes) {
-                val classNode = obClass.value
-                val analyzer = analyzerObj.value
-                if (!analyzer.found) {
-                    analyzer.analyze(classNode, analyzers)
-                }
-            }
-        }
-    }
 
     data class GetterData(
         val fieldDescription: String,
