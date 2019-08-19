@@ -1,0 +1,47 @@
+package com.p3achb0t._runestar_interfaces
+
+interface LocType: DualNode{
+	fun getAmbient(): Int
+	fun getAmbientSoundId(): Int
+	fun getAnimationId(): Int
+	fun getBoolean1(): Boolean
+	fun getBoolean2(): Boolean
+	fun getClipped(): Boolean
+	fun getContrast(): Int
+	fun getHillskew(): Int
+	fun getId(): Int
+	fun getInt1(): Int
+	fun getInt2(): Int
+	fun getInt3(): Int
+	fun getInt4(): Int
+	fun getInt5(): Int
+	fun getInt6(): Int
+	fun getInteractType(): Int
+	fun getIsRotated(): Boolean
+	fun getIsSolid(): Boolean
+	fun getMapIconId(): Int
+	fun getMapSceneId(): Int
+	fun getModelHeight(): Int
+	fun getModelSizeX(): Int
+	fun getModelSizeY(): Int
+	fun getName(): String
+	fun getOcclude(): Boolean
+	fun getOffsetHeight(): Int
+	fun getOffsetX(): Int
+	fun getOffsetY(): Int
+	fun getOp(): Array<String>
+	fun getParams(): IterableNodeHashTable
+	fun getRecol_d(): ShortArray
+	fun getRecol_s(): ShortArray
+	fun getRetex_d(): ShortArray
+	fun getRetex_s(): ShortArray
+	fun getSharelight(): Boolean
+	fun getSizeX(): Int
+	fun getSizeY(): Int
+	fun getTransformVarbit(): Int
+	fun getTransformVarp(): Int
+	fun getTransforms(): IntArray
+	fun get__f(): IntArray
+	fun get__m(): IntArray
+	fun get__ay(): IntArray
+}
