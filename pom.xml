@@ -165,7 +165,12 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
-            <release>11</release>
+            <target>11</target>
+            <source>11</source>
+            <compilerArgs>
+              <arg>--add-exports=java.desktop/sun.awt=ALL-UNNAMED</arg>
+              <arg>--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED</arg>
+            </compilerArgs>
           </configuration>
           <executions>
             <!-- Replacing default-compile as it is treated specially by maven -->
@@ -198,7 +203,7 @@
             </goals>
             <configuration>
               <sourceDirs>
-                <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                <sourceDir>${project.basedir}/src/</sourceDir>
               </sourceDirs>
 
             </configuration>
@@ -215,34 +220,7 @@
           <jvmTarget>11</jvmTarget>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <source>11</source>
-              <target>11</target>
-              <compilerArgs>
-                <arg>--add-exports</arg> <arg>java.desktop/sun.awt=ALL-UNNAMED</arg>
-                <arg>--add-exports</arg> <arg>java.desktop/java.awt.peer=ALL-UNNAMED</arg>
-              </compilerArgs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>testCompile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+
     </plugins>
   </build>
 </project>
