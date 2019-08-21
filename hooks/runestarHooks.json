@@ -30793,11 +30793,11 @@
       },
       {
         "field": "cameraY",
-        "owner": "an",
-        "name": "hj",
+        "owner": "w",
+        "name": "hb",
         "access": 8,
         "descriptor": "I",
-        "decoder": 2040004627
+        "decoder": 1283296175
       },
       {
         "field": "cameraYaw",
@@ -30809,11 +30809,11 @@
       },
       {
         "field": "cameraZ",
-        "owner": "w",
-        "name": "hb",
+        "owner": "an",
+        "name": "hj",
         "access": 8,
         "descriptor": "I",
-        "decoder": 1283296175
+        "decoder": 2040004627
       },
       {
         "field": "canvasHeight",

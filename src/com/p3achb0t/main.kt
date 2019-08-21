@@ -58,8 +58,8 @@ object Main {
     fun main(args: Array<String>) {
 
         val downloader = Downloader()
-        val gamePackWithPath = downloader.getGamepack()
-//        val gamePackWithPath = downloader.getLocalGamepack()
+//        val gamePackWithPath = downloader.getGamepack()
+        val gamePackWithPath = downloader.getLocalGamepack()
         println("Using $gamePackWithPath")
 
         runeStar = RuneStarAnalyzer()
@@ -196,14 +196,23 @@ object Main {
 //                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
                             if (e?.keyCode == 17)
                                 PaintDebug.isCtrlPressed = true
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '1'))
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '1')) {
                                 PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '2'))
+                                println("PaintDebug.isDebugTextOn:${PaintDebug.isDebugTextOn}")
+                            }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '2')) {
                                 PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '3'))
+                                println("PaintDebug.isPlayerPaintOn:${PaintDebug.isPlayerPaintOn}")
+                            }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '3')) {
                                 PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '4'))
+                                println("PaintDebug.isNPCPaintOn:${PaintDebug.isNPCPaintOn}")
+                            }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '4')) {
                                 PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+                                println("PaintDebug.isGroundItemsOn:${PaintDebug.isGroundItemsOn}")
+                            }
+
 
                         }
 
