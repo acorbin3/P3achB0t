@@ -1,16 +1,11 @@
 package com.p3achb0t._runestar_interfaces
 
 interface Tile: Node{
-	fun getBoundaryObject(): BoundaryObject
-	fun getDrawGameObjectEdges(): Int
-	fun getDrawGameObjects(): Boolean
 	fun getDrawPrimary(): Boolean
+    fun getDrawScenery(): Boolean
+    fun getDrawSceneryEdges(): Int
 	fun getDrawSecondary(): Boolean
 	fun getFloorDecoration(): FloorDecoration
-	fun getGameObjectEdgeMasks(): IntArray
-	fun getGameObjects(): Array<GameObject>
-	fun getGameObjectsCount(): Int
-	fun getGameObjectsEdgeMask(): Int
 	fun getLinkedBelowTile(): Tile
 	fun getMinPlane(): Int
 	fun getModel(): TileModel
@@ -18,6 +13,11 @@ interface Tile: Node{
 	fun getOriginalPlane(): Int
 	fun getPaint(): TilePaint
 	fun getPlane(): Int
+    fun getScenery(): Array<Scenery>
+    fun getSceneryCount(): Int
+    fun getSceneryEdgeMask(): Int
+    fun getSceneryEdgeMasks(): IntArray
+    fun getWall(): Wall
 	fun getWallDecoration(): WallDecoration
 	fun getX(): Int
 	fun getY(): Int

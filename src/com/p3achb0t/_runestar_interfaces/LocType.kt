@@ -5,43 +5,43 @@ interface LocType: DualNode{
 	fun getAmbientSoundId(): Int
 	fun getAnimationId(): Int
 	fun getBoolean1(): Boolean
-	fun getBoolean2(): Boolean
 	fun getClipped(): Boolean
 	fun getContrast(): Int
-	fun getHillskew(): Int
+    fun getHillChange(): Int
 	fun getId(): Int
-	fun getInt1(): Int
 	fun getInt2(): Int
 	fun getInt3(): Int
 	fun getInt4(): Int
 	fun getInt5(): Int
 	fun getInt6(): Int
 	fun getInteractType(): Int
+    fun getInteractable(): Int
 	fun getIsRotated(): Boolean
 	fun getIsSolid(): Boolean
+    fun getLength(): Int
+    fun getLowDetailVisible(): Boolean
 	fun getMapIconId(): Int
 	fun getMapSceneId(): Int
-	fun getModelHeight(): Int
-	fun getModelSizeX(): Int
-	fun getModelSizeY(): Int
+    fun getModelTypes(): IntArray
+    fun getModels(): IntArray
+    fun getMulti(): IntArray
+    fun getMultiVar(): Int
+    fun getMultiVarbit(): Int
 	fun getName(): String
 	fun getOcclude(): Boolean
-	fun getOffsetHeight(): Int
 	fun getOffsetX(): Int
 	fun getOffsetY(): Int
+    fun getOffsetZ(): Int
 	fun getOp(): Array<String>
 	fun getParams(): IterableNodeHashTable
 	fun getRecol_d(): ShortArray
 	fun getRecol_s(): ShortArray
+    fun getResizeX(): Int
+    fun getResizeY(): Int
+    fun getResizeZ(): Int
 	fun getRetex_d(): ShortArray
 	fun getRetex_s(): ShortArray
 	fun getSharelight(): Boolean
-	fun getSizeX(): Int
-	fun getSizeY(): Int
-	fun getTransformVarbit(): Int
-	fun getTransformVarp(): Int
-	fun getTransforms(): IntArray
-	fun get__f(): IntArray
-	fun get__m(): IntArray
+    fun getWidth(): Int
 	fun get__ay(): IntArray
 }

@@ -25,9 +25,9 @@ fun gameObjectPaint(g: Graphics) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
-                            if (tile.getGameObjects().isNotEmpty()) {
+                            if (tile.getScenery().isNotEmpty()) {
                                 var count = 0
-                                tile.getGameObjects().iterator().forEach {
+                                tile.getScenery().iterator().forEach {
                                     if (it != null && it.getTag() > 0) {
                                         count += 1
                                         // Print out the polygons for the models
@@ -122,8 +122,8 @@ fun gameObjectPaint(g: Graphics) {
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                             // Display the wall object
-                            if (tile.getBoundaryObject() != null && localPlayer.distanceTo(globalPos) < 5) {
-                                val wall = tile.getBoundaryObject()
+                            if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5) {
+                                val wall = tile.getWall()
 
                                 g.color = Color.GREEN
                                 val id = wall.getTag().shr(17).and(0x7fff).toInt()

@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.MainApplet
-import com.p3achb0t._runestar_interfaces.BoundaryObject
-import com.p3achb0t._runestar_interfaces.GameObject
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t._runestar_interfaces.Scenery
+import com.p3achb0t._runestar_interfaces.Wall
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
@@ -17,13 +17,13 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GameObject(val gameObject: GameObject? = null, val boundaryObject: BoundaryObject? = null) : Locatable,
+class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = null) : Locatable,
     Interactable {
     val id: Int
         get() {
             return when {
-                gameObject != null -> gameObject.getTag().shr(17).and(0x7fff).toInt()
-                boundaryObject != null -> boundaryObject.getTag().shr(17).and(0x7fff).toInt()
+                sceneryObject != null -> sceneryObject.getTag().shr(17).and(0x7fff).toInt()
+                wallObject != null -> wallObject.getTag().shr(17).and(0x7fff).toInt()
                 else -> 0
             }
         }
@@ -37,15 +37,15 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     private val objectPositionInfo: ObjectPositionInfo
         get() {
             return when {
-                gameObject != null -> ObjectPositionInfo(
-                    gameObject.getCenterX(),
-                    gameObject.getCenterY(),
-                    gameObject.getOrientation()
+                sceneryObject != null -> ObjectPositionInfo(
+                    sceneryObject.getCenterX(),
+                    sceneryObject.getCenterY(),
+                    sceneryObject.getOrientation()
                 )
-                boundaryObject != null -> ObjectPositionInfo(
-                    boundaryObject.getX(),
-                    boundaryObject.getY(),
-                    boundaryObject.getOrientationA()
+                wallObject != null -> ObjectPositionInfo(
+                    wallObject.getX(),
+                    wallObject.getY(),
+                    wallObject.getOrientationA()
                 )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
@@ -53,28 +53,28 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     val model: Model?
         get() {
             return when {
-                gameObject != null -> gameObject.getEntity() as Model
-                boundaryObject != null -> boundaryObject.getEntity1() as Model
+                sceneryObject != null -> sceneryObject.getEntity() as Model
+                wallObject != null -> wallObject.getEntity1() as Model
                 else -> null
             }
         }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return Calculations.worldToScreen(region.x, region.y, gameObject?.getHeight() ?: 0)
+        return Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0)
     }
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
-            gameObject != null -> MainApplet.mouse.click(
+            sceneryObject != null -> MainApplet.mouse.click(
                 Calculations.worldToMiniMap(
-                    gameObject.getCenterX(),
-                    gameObject.getCenterY()
+                    sceneryObject.getCenterX(),
+                    sceneryObject.getCenterY()
                 )
             )
-            boundaryObject != null -> MainApplet.mouse.click(
+            wallObject != null -> MainApplet.mouse.click(
                 Calculations.worldToMiniMap(
-                    boundaryObject.getX(),
-                    boundaryObject.getY()
+                    wallObject.getX(),
+                    wallObject.getY()
                 )
             )
             else -> false
@@ -95,15 +95,15 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
 
     override fun getGlobalLocation(): Tile {
         return when {
-            gameObject != null -> Tile(
-                gameObject.getCenterX() / 128 + Client.client.getBaseX(),
-                gameObject.getCenterY() / 128 + Client.client.getBaseY(),
-                gameObject.getPlane()
+            sceneryObject != null -> Tile(
+                sceneryObject.getCenterX() / 128 + Client.client.getBaseX(),
+                sceneryObject.getCenterY() / 128 + Client.client.getBaseY(),
+                sceneryObject.getPlane()
             )
-            boundaryObject != null -> Tile(
-                boundaryObject.getX() / 128 + Client.client.getBaseX(),
-                boundaryObject.getY() / 128 + Client.client.getBaseY(),
-                gameObject?.getPlane() ?: 0
+            wallObject != null -> Tile(
+                wallObject.getX() / 128 + Client.client.getBaseX(),
+                wallObject.getY() / 128 + Client.client.getBaseY(),
+                sceneryObject?.getPlane() ?: 0
             )
             else -> Tile(-1, -1)
         }
@@ -133,8 +133,8 @@ class GameObject(val gameObject: GameObject? = null, val boundaryObject: Boundar
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            gameObject != null -> getConvexHullFromModel(positionInfo, gameObject.getEntity() as Model)
-            boundaryObject != null -> getConvexHullFromModel(positionInfo, boundaryObject.getEntity1() as Model)
+            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model)
+            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model)
             else -> Polygon()
         }
     }

@@ -4,6 +4,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 import java.nio.channels.Channels
+import java.nio.file.Files
+import java.nio.file.Paths
 
 //DONE 3/20/2019 - Get address for specific game we want
 //DONE 3/20/2019 - Check to see if we have the latest gamepack
@@ -13,6 +15,9 @@ class Downloader{
     private var oldschoolPageAddress: String = "http://oldschool83.runescape.com/"
     val gamepackDir = "\\gamepacks\\"
     fun getGamepack():String{
+        if (!Files.exists(Paths.get(".\\gamepacks"))) {
+            Files.createDirectory(Paths.get(".\\gamepacks"))
+        }
         val gamepackName = getLatestGamepackName()
         var gamepackFound = isGamepackDonloadedLocally(gamepackName)
         if(!gamepackFound){

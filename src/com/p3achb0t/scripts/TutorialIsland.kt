@@ -524,10 +524,10 @@ class TutorialIsland {
                     Inventory.open()
                     Inventory.getItem(SHRIMP_ID)?.click()
                     // The fire is an animated object so it thows a NPE when trying to interacte with model.
-                    if (fires[0].gameObject != null) {
+                    if (fires[0].sceneryObject != null) {
                         val point = Calculations.worldToScreen(
-                            fires[0].gameObject!!.getCenterX(),
-                            fires[0].gameObject!!.getCenterY(),
+                            fires[0].sceneryObject!!.getCenterX(),
+                            fires[0].sceneryObject!!.getCenterY(),
                             0
                         )
                         Interact.interact(point, "Use")

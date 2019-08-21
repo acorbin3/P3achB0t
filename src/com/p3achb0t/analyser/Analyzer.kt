@@ -27,13 +27,13 @@ class Analyser{
                 val classReader = ClassReader(jar.getInputStream(entry))
                 val classNode = ClassNode()
                 classReader.accept(classNode, 0)
-                if (classNode.interfaces.size > 0) {
-
-//                    println("${classNode.name} Interfaces")
-                }
-                for (_interface in classNode.interfaces) {
-//                    println("\t $_interface")
-                }
+//                if (classNode.interfaces.size > 0) {
+//
+////                    println("${classNode.name} Interfaces")
+//                }
+//                for (_interface in classNode.interfaces) {
+////                    println("\t $_interface")
+//                }
                 classes[classNode.name] = classNode
 
 
@@ -59,11 +59,13 @@ class Analyser{
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
             //            if (obsClass in classes) {
             val classInterface = "$classPath/${clazzData.`class`}"
-            println("Adding class iterface to $obsClass $classInterface")
-            classes[obsClass]?.interfaces?.add(classInterface)
+            if (!classInterface.contains("Usernamed")) {
+                println("Adding class iterface to $obsClass $classInterface")
+                classes[obsClass]?.interfaces?.add(classInterface)
+            }
             val getterList = ArrayList<GetterData>()
             clazzData.fields.forEach {
-                if (it.owner != "broken") {
+                if (it.owner != "broken" && !it.field.contains("getLocalUser")) {
                     println("\t Adding method ${it.field} descriptor ${it.descriptor}")
                     val getter: GetterData
                     if (isBaseType(it.descriptor)) {
@@ -94,14 +96,13 @@ class Analyser{
                     }
                 }
             }
-            //TODO - commenting out for now. no method injection
             for (method in getterList) {
                 if (method.fieldDescription != "")
                     injectMethod(method, classes, clazzData.`class`, runeStar)
             }
-//            }
         }
-        val out = JarOutputStream(FileOutputStream(File("./injected_jar.jar")))
+        val path = System.getProperty("user.dir")
+        val out = JarOutputStream(FileOutputStream(File("$path/injected_jar.jar")))
         for (classNode in classes.values) {
             val cw = ClassWriter(0)
             classNode.accept(cw)

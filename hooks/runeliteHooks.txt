@@ -11564,7 +11564,7 @@
     "parameters" : [ "pixels", "index", "width", "plane", "x", "y" ],
     "descriptor" : "([IIIIII)V"
   }, {
-    "method" : "getBoundaryObject",
+    "method" : "getWall",
     "owner" : "em",
     "name" : "ag",
     "access" : 1,

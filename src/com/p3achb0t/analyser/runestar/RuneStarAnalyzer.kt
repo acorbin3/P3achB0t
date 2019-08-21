@@ -11,11 +11,11 @@ import java.util.jar.JarFile
 class RuneStarAnalyzer {
     val analyzers = mutableMapOf<String, ClassHook>()
     val classRefObs = mutableMapOf<String, ClassHook>()
-    fun getHooks(): String {
+    fun loadHooks(): String {
         val hookDir = "\\hooks\\"
         val path = System.getProperty("user.dir")
         val hookFileName = "runestarHooks.json"
-        val file = File("$path/$hookDir/$hookFileName")
+        val file = File("../$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
@@ -26,7 +26,7 @@ class RuneStarAnalyzer {
         val folder = "./src/com/p3achb0t/_runestar_interfaces/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
-        return path + hookDir + hookFileName
+        return "../$hookDir/$hookFileName"
     }
 
     private fun genFunction(

@@ -12,8 +12,8 @@ class GameObjects {
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { tile ->
                             if (tile != null) {
-                                if (tile.getGameObjects().isNotEmpty()) {
-                                    tile.getGameObjects().iterator().forEach {
+                                if (tile.getScenery().isNotEmpty()) {
+                                    tile.getScenery().iterator().forEach {
                                         if (it != null && it.getTag() > 0) {
                                             gameObjects.add(GameObject(it))
 
@@ -39,8 +39,8 @@ class GameObjects {
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { colTile ->
                             if (colTile != null) {
-                                if (colTile.getGameObjects().isNotEmpty()) {
-                                    colTile.getGameObjects().iterator().forEach {
+                                if (colTile.getScenery().isNotEmpty()) {
+                                    colTile.getScenery().iterator().forEach {
                                         if (it != null) {
                                             val gmObj = GameObject(it)
                                             if (gmObj.id == id)
@@ -49,9 +49,9 @@ class GameObjects {
                                         }
                                     }
                                 }
-                                if (colTile.getBoundaryObject() != null) {
-                                    val boundaryObject = colTile.getBoundaryObject()
-                                    val gmObj = GameObject(boundaryObject = boundaryObject)
+                                if (colTile.getWall() != null) {
+                                    val boundaryObject = colTile.getWall()
+                                    val gmObj = GameObject(wallObject = boundaryObject)
                                     if (gmObj.id == id)
                                         gameObjects.add(gmObj)
                                 }
@@ -81,8 +81,8 @@ class GameObjects {
                     plane.iterator().forEach { row ->
                         row.iterator().forEach { colTile ->
                             if (colTile != null) {
-                                if (colTile.getGameObjects().isNotEmpty()) {
-                                    colTile.getGameObjects().iterator().forEach {
+                                if (colTile.getScenery().isNotEmpty()) {
+                                    colTile.getScenery().iterator().forEach {
                                         if (it != null) {
                                             val gmObj = GameObject(it)
                                             if (gmObj.name.toLowerCase() == name.toLowerCase())
@@ -91,9 +91,9 @@ class GameObjects {
                                         }
                                     }
                                 }
-                                if (colTile.getBoundaryObject() != null) {
-                                    val boundaryObject = colTile.getBoundaryObject()
-                                    val gmObj = GameObject(boundaryObject = boundaryObject)
+                                if (colTile.getWall() != null) {
+                                    val boundaryObject = colTile.getWall()
+                                    val gmObj = GameObject(wallObject = boundaryObject)
                                     if (gmObj.name.toLowerCase() == name.toLowerCase())
                                         gameObjects.add(gmObj)
                                 }

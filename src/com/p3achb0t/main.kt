@@ -16,15 +16,12 @@ import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.widgetexplorer.WidgetExplorerV3
-import com.p3achb0t.widgetexplorer.createAndShowGUI
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.applet.Applet
 import java.awt.Canvas
 import java.awt.Dimension
-import java.awt.EventQueue
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
@@ -61,13 +58,12 @@ object Main {
     fun main(args: Array<String>) {
 
         val downloader = Downloader()
-//        val gamePackWithPath = downloader.getGamepack()
-        val gamePackWithPath = downloader.getLocalGamepack()
+        val gamePackWithPath = downloader.getGamepack()
+//        val gamePackWithPath = downloader.getLocalGamepack()
         println("Using $gamePackWithPath")
 
-//    RuneLiteAnalyzer().getHooks()
         runeStar = RuneStarAnalyzer()
-        runeStar?.getHooks()
+        runeStar?.loadHooks()
 
 //    dream = DreamBotAnalyzer()
 //
@@ -87,8 +83,11 @@ object Main {
         // Getting parameters
         Parameters(83)
         println("Starting Client")
-        val file = File("./injected_jar.jar")
+        val path = System.getProperty("user.dir")
+        val filePathToInjected = "$path/injected_jar.jar"
+        val file = File(filePathToInjected)
         val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
+        println(file.toURI().toURL())
         MainApplet.classLoader = URLClassLoader(urlArray)
         val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
         val game: Applet = clientClazz as Applet
@@ -397,8 +396,8 @@ object Main {
             }
         }
 
-        EventQueue.invokeLater(::createAndShowGUI)
-        WidgetExplorerV3.createWidgetExplorer()
+//        EventQueue.invokeLater(::createAndShowGUI)
+//        WidgetExplorerV3.createWidgetExplorer()
         LoggingIntoAccount()
 //        class MyApp : App(WidgetExplorer::class)
 //        launch<MyApp>()

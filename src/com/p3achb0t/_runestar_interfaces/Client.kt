@@ -85,7 +85,9 @@ interface Client: GameShell{
 	fun getLocType_archive(): AbstractArchive
 	fun getLocType_cached(): EvictingDualNodeHashTable
 	fun getLocType_cachedModels(): EvictingDualNodeHashTable
+    fun getLocType_cachedUnlitModels(): EvictingDualNodeHashTable
 	fun getLocType_isLowDetail(): Boolean
+    fun getLocType_modelArchive(): AbstractArchive
 	fun getLogin_isUsernameRemembered(): Boolean
 	fun getLogin_loadingPercent(): Int
 	fun getLogin_loadingText(): String
@@ -429,7 +431,6 @@ interface Client: GameShell{
 	fun getFriendSystem(): FriendSystem
 	fun getGameBuild(): Int
 	fun getGameDrawingMode(): Int
-	fun getGameObjects(): Array<GameObject>
 	fun getGameShell(): GameShell
 	fun getGameState(): Int
 	fun getGarbageCollector(): Any
@@ -582,6 +583,7 @@ interface Client: GameShell{
 	fun getRunEnergy(): Int
 	fun getScene(): Scene
 	fun getSceneMinimapSprite(): Sprite
+    fun getScenery(): Array<Scenery>
 	fun getScrollBarSprites(): Array<IndexedSprite>
 	fun getSecureRandom(): Any
 	fun getSecureRandomFuture(): SecureRandomFuture
@@ -1506,8 +1508,6 @@ interface Client: GameShell{
 	fun get__io_e(): AbstractArchive
 	fun get__io_q(): AbstractArchive
 	fun get__io_w(): AbstractArchive
-	fun get__iy_k(): EvictingDualNodeHashTable
-	fun get__iy_e(): AbstractArchive
 	fun get__iy_i(): Array<UnlitModel>
 	fun get__iy_l(): EvictingDualNodeHashTable
 	fun get__iq_c(): Int
