@@ -4,8 +4,8 @@ import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 
 class Tabs {

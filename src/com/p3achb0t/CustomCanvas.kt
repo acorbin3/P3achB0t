@@ -1,6 +1,6 @@
 package com.p3achb0t
 
-import com.p3achb0t.hook_interfaces.Widget
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Canvas
 import java.awt.Color

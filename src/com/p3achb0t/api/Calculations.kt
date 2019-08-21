@@ -7,10 +7,10 @@ import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.tabs.Tabs
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.hook_interfaces.Widget
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle

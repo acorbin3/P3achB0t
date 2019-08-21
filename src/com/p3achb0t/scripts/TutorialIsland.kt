@@ -10,9 +10,9 @@ import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.hook_interfaces.Widget
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 

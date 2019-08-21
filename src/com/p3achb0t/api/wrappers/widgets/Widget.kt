@@ -1,11 +1,11 @@
-package com.p3achb0t.hook_interfaces
+package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.InterfaceParent
 import com.p3achb0t.api.wrappers.Client
 import java.awt.Rectangle
 
-interface Widget : Node {
+interface Widget {
 	data class WidgetIndex(var parentID: String, var childID: String, var raw: Int = 0)
 	companion object {
 
@@ -19,7 +19,11 @@ interface Widget : Node {
 					if (node is InterfaceParent && node.getItf() == containerIndex) {
 						val parent = node.getKey().toInt().shr(16)
 						val child = node.getKey().toInt().and(0xFFFF)
-						return WidgetIndex(parent.toString(), child.toString(), node.getItf())
+						return WidgetIndex(
+							parent.toString(),
+							child.toString(),
+							node.getItf()
+						)
 
 					}
 					var next = node.getNext()
@@ -27,7 +31,11 @@ interface Widget : Node {
 						if (next is InterfaceParent && next.getItf() == containerIndex) {
 							val parent = next.getKey().toInt().shr(16)
 							val child = next.getKey().toInt().and(0xFFFF)
-							return WidgetIndex(parent.toString(), child.toString(), next.getKey().toInt())
+							return WidgetIndex(
+								parent.toString(),
+								child.toString(),
+								next.getKey().toInt()
+							)
 						}
 						next = next.getNext()
 					}
@@ -67,7 +75,10 @@ interface Widget : Node {
 		fun getDrawableRect(widget: Component): Rectangle {
 			val boundsWidth = widget.getWidth()
 			val boundsHeight = widget.getHeight()
-			val rect = Rectangle(getWidgetX(widget), getWidgetY(widget), boundsWidth, boundsHeight)
+			val rect = Rectangle(
+				getWidgetX(widget),
+				getWidgetY(widget), boundsWidth, boundsHeight
+			)
 			return rect
 		}
 
@@ -130,43 +141,4 @@ interface Widget : Node {
 			return items
 		}
 	}
-
-	fun getActionType(): Int
-	fun getActions(): Array<String>
-	fun getBorderThickness(): Int
-	fun getBoundsIndex(): Int
-	fun getChildTextureId(): Int
-	fun getChildren(): Array<Widget>
-	fun getComponentIndex(): Int
-	fun getDisabledMediaId(): Int
-	fun getDisabledMediaType(): Int
-	fun getDynamicValue(): Array<IntArray>
-	fun getEnabledMediaId(): Int
-	fun getEnabledMediaType(): Int
-	fun getHeight(): Int
-	fun getHidden(): Boolean
-	fun getWidget_id(): Int
-	fun getItemId(): Int
-	fun getItemStackSize(): Int
-	fun getLoopCycle(): Int
-	fun getName(): String
-	fun getParent(): Widget
-	fun getParentId(): Int
-	fun getScrollMax(): Int
-	fun getScrollX(): Int
-	fun getScrollY(): Int
-	fun getSelectedAction(): String
-	fun getShadowColor(): Int
-	fun getSlotIds(): IntArray
-	fun getSlotStackSizes(): IntArray
-	fun getSpell(): String
-	fun getSpriteId(): Int
-	fun getText(): String
-	fun getTextColor(): Int
-	fun getTextureId(): Int
-	fun getTooltip(): String
-	fun getType(): Int
-	fun getWidth(): Int
-	fun getX(): Int
-	fun getY(): Int
 }
