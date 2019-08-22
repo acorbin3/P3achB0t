@@ -3,10 +3,12 @@
 
 # Ignore Gradle build output directory
 build
-src/UserDetails.kt
 /.idea/
 lib/
 out/
 deob/
 .idea/
 /target/
+cache/
+src/com/p3achb0t/UserDetails.kt
+app/

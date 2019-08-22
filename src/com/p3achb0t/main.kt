@@ -8,6 +8,7 @@ import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
+import com.p3achb0t.api.Utils
 import com.p3achb0t.api.painting.PaintDebug
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Mouse
@@ -15,7 +16,9 @@ import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
+import com.p3achb0t.loader.Loader
 import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.util.Util
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,6 +33,8 @@ import java.io.File
 import java.lang.Thread.sleep
 import java.net.URL
 import java.net.URLClassLoader
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.jar.JarFile
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -56,10 +61,17 @@ class MainApplet(game: Applet) {
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
+        Util.createAllDirs()
+        if (!Files.exists(Path.of("./cache"))) {
+            Files.createDirectory(Path.of("./cache"))
+        }
+        System.setProperty("user.home", "cache") // set cache next to your client
 
+        val loader = Loader()
+        val gamePackWithPath = loader.run()
         val downloader = Downloader()
 //        val gamePackWithPath = downloader.getGamepack()
-        val gamePackWithPath = downloader.getLocalGamepack()
+        //val gamePackWithPath = downloader.getLocalGamepack()
         println("Using $gamePackWithPath")
 
         runeStar = RuneStarAnalyzer()
@@ -114,9 +126,10 @@ object Main {
             setLocationRelativeTo(null)
             isVisible = true
 
-            val panel = JPanel()
-            add(panel)
-            panel.add(game)
+            //val panel = JPanel()
+            //add(panel)
+            contentPane = game
+            //panel.add(game)
             pack()
         }
         //Attempt to resize but didnt work
@@ -194,32 +207,29 @@ object Main {
 
                         override fun keyPressed(e: KeyEvent?) {
 //                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
-                            if (e?.keyCode == 17)
-                                PaintDebug.isCtrlPressed = true
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '1')) {
-                                PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
-                                println("PaintDebug.isDebugTextOn:${PaintDebug.isDebugTextOn}")
+                            if (e?.isControlDown == true)  {
+                                if (e.keyCode == KeyEvent.VK_1) {
+                                    PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
+                                    println("PaintDebug.isDebugTextOn:${PaintDebug.isDebugTextOn}")
+                                }
+                                if (e.keyCode == KeyEvent.VK_2) {
+                                    PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
+                                    println("PaintDebug.isPlayerPaintOn:${PaintDebug.isPlayerPaintOn}")
+                                }
+                                if (e.keyCode == KeyEvent.VK_3) {
+                                    PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
+                                    println("PaintDebug.isNPCPaintOn:${PaintDebug.isNPCPaintOn}")
+                                }
+                                if (e.keyCode == KeyEvent.VK_4) {
+                                    PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+                                    println("PaintDebug.isGroundItemsOn:${PaintDebug.isGroundItemsOn}")
+                                }
                             }
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '2')) {
-                                PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
-                                println("PaintDebug.isPlayerPaintOn:${PaintDebug.isPlayerPaintOn}")
-                            }
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '3')) {
-                                PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
-                                println("PaintDebug.isNPCPaintOn:${PaintDebug.isNPCPaintOn}")
-                            }
-                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '4')) {
-                                PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
-                                println("PaintDebug.isGroundItemsOn:${PaintDebug.isGroundItemsOn}")
-                            }
-
-
                         }
 
                         override fun keyReleased(e: KeyEvent?) {
 //                        println("KeyReleased: ${e?.keyChar} Code:${e?.keyCode}")
-                            if (e?.keyCode == 17)
-                                PaintDebug.isCtrlPressed = false
+
                         }
 
                     }
@@ -396,7 +406,7 @@ object Main {
 //                        Calculations.initScreenWidgetDimentions()
 //                    }
 //
-                TutorialIsland.run()
+                //TutorialIsland.run()
 
 
 //                }
@@ -407,12 +417,14 @@ object Main {
 
 //        EventQueue.invokeLater(::createAndShowGUI)
 //        WidgetExplorerV3.createWidgetExplorer()
-        LoggingIntoAccount()
+          LoggingIntoAccount()
 //        class MyApp : App(WidgetExplorer::class)
 //        launch<MyApp>()
 
 
 
     }
+
+
 
 }

@@ -12,7 +12,8 @@ import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
 
-data class DebugText(val text: String = "", val color: Color = Color.WHITE)
+data class DebugText(val text: String = "", val color: Color = Color.RED)
+
 fun drawDebugText(g: Graphics) {
 
     val debugText = arrayListOf<DebugText>()

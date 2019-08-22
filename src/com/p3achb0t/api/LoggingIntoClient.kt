@@ -1,6 +1,6 @@
 package com.p3achb0t.api
 
-import UserDetails
+import com.p3achb0t.UserDetails
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Client
@@ -11,6 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Point
+import kotlin.random.Random
 
 class LoggingIntoClient {
     companion object {
@@ -30,7 +31,17 @@ fun LoggingIntoAccount() {
 
                 // When loaded login
                 if (!LoggingIntoClient.loggedIn && Client.client.getGameState() == 10) {
-                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+
+                    // Login username
+
+                    val x = Random.nextInt(146) + 390
+                    val y = Random.nextInt(38) + 273
+                    mouse.moveMouse(Point(x,y), true, Mouse.ClickType.Left)
+                    delay(200)
+                    Keyboard.sendKeys(UserDetails.data.username)
+                    delay(200)
+
+                    mouse.moveMouse(Point(363, 263), true, Mouse.ClickType.Left)
 
                     delay(200)
                     Keyboard.sendKeys(UserDetails.data.password)
@@ -42,9 +53,9 @@ fun LoggingIntoAccount() {
                         delay(100)
                     }
                     delay(1500)
-                    println("Clicking login")
+                    //println("Clicking login")
                     val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
-                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
+                    //println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()
                     LoggingIntoClient.loggedIn = true
@@ -65,7 +76,7 @@ fun LoggingIntoAccount() {
                     println(statck.toString())
                 }
             }
-            delay(50)
+            delay(200)
         }
     }
 }
