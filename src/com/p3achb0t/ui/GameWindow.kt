@@ -10,25 +10,34 @@ import javax.swing.JFrame
 import javax.swing.JTabbedPane
 
 class GameWindow : JFrame() {
-
+    var index = 0
     val tabs = JTabbedPane()
 
-    val tffff = GameTab(1, tabs)
+    val tffff = GameTab(0, tabs)
 
     fun run() {
         System.setProperty("user.home", "cache")
 
         defaultCloseOperation = EXIT_ON_CLOSE
-
+        tabs.preferredSize = Dimension(760,600)
+        preferredSize = Dimension(850, 700)
         size = Dimension(850, 700)
-        jMenuBar = GameMenu()
-
+        jMenuBar = GameMenu(tabs, 0)
         add(tabs)
-        setLocationRelativeTo(null)
         isVisible = true
+
+
+
+        setLocationRelativeTo(null)
+
+
         tabs.addTab("1", tffff)
+        println("before thread")
+
         tffff.g()
         //setup()
+
+
 
     }
 
@@ -44,11 +53,11 @@ class GameWindow : JFrame() {
         }
 
 
-        jMenuBar = GameMenu()
+        //jMenuBar = GameMenu()
         //tabs.addTab("1", GameTab(1, tabs))
         //tabs.addTab("2", GameTab(2, tabs))
         //tabs.addTab("3", GameTab(3, tabs))
-        add(tabs)
+        //add(tabs)
     }
 
 }

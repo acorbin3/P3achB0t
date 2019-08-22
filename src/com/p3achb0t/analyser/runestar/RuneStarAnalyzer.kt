@@ -20,6 +20,7 @@ class RuneStarAnalyzer {
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
         for (clazz in topic) {
+
             analyzers[clazz.`class`] = clazz
             classRefObs[clazz.name] = clazz
         }
@@ -69,7 +70,7 @@ class RuneStarAnalyzer {
                             foundField.descriptor = field.desc
                             foundField.access = field.access
 
-                            println("\t$foundField")
+                            //println("\t$foundField")
                         }
                     }
 
@@ -84,12 +85,12 @@ class RuneStarAnalyzer {
         classRefObs.forEach { className, classObj ->
             classObj.fields.forEach { field ->
                 if (field.owner in classNodeRefs) {
-                    println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?.`class`}) obs name: ${field.name} desc: ${field.descriptor} ")
+                    //println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?.`class`}) obs name: ${field.name} desc: ${field.descriptor} ")
                     classNodeRefs[field.owner]?.fields?.forEach {
                         if (field.name == it.name) {
                             field.descriptor = it.desc
                             field.access = it.access
-                            println("\t Update desc:${it.desc}")
+                            //println("\t Update desc:${it.desc}")
 
                         }
                     }
@@ -97,9 +98,9 @@ class RuneStarAnalyzer {
             }
         }
 
-        //Update the fields to make sure they are unique in the class heirarchy
+        //Update the fields to make sure they are unique in the class hierarchy
         for (clazz in analyzers) {
-            println("Class: ${clazz.value.`class`}")
+            //println("Class: ${clazz.value.`class`}")
             for (field in clazz.value.fields) {
                 val arrayCount = field.descriptor.count { it == '[' }
                 var updatedDescriptor = field.descriptor

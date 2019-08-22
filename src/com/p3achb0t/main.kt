@@ -149,7 +149,7 @@ object Main {
 
         }
         sleep(100)
-
+        /*
         // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
         game.apply {
 
@@ -254,7 +254,24 @@ object Main {
                 }
             }
         }
-        GlobalScope.launch {
+*/
+
+//        EventQueue.invokeLater(::createAndShowGUI)
+//        WidgetExplorerV3.createWidgetExplorer()
+          //LoggingIntoAccount()
+//        class MyApp : App(WidgetExplorer::class)
+//        launch<MyApp>()
+
+
+
+    }
+
+
+
+}
+
+/*
+      GlobalScope.launch {
             // launch a new coroutine in background and continue
 
             while (true) {
@@ -414,17 +431,4 @@ object Main {
                 delay((Math.random() * 50).toLong())
             }
         }
-
-//        EventQueue.invokeLater(::createAndShowGUI)
-//        WidgetExplorerV3.createWidgetExplorer()
-          LoggingIntoAccount()
-//        class MyApp : App(WidgetExplorer::class)
-//        launch<MyApp>()
-
-
-
-    }
-
-
-
-}
+ */

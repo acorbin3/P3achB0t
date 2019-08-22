@@ -5,8 +5,10 @@ import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.MethodInsnNode
 import org.objectweb.asm.tree.MethodNode
 import java.io.File
 import java.io.FileOutputStream
@@ -57,16 +59,24 @@ class Analyser{
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, runeStar: RuneStarAnalyzer?) {
         val classPath = "com/p3achb0t/_runestar_interfaces"
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
+
+
+            if (clazzData.`class`.equals("Canvas")) {
+                injectCanvas(classes[clazzData.name]!!)
+                println("${clazzData.name} : ${clazzData.`super`} ")
+            }
+
+
             //            if (obsClass in classes) {
             val classInterface = "$classPath/${clazzData.`class`}"
             if (!classInterface.contains("Usernamed")) {
-                println("Adding class iterface to $obsClass $classInterface")
+                //println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
             }
             val getterList = ArrayList<GetterData>()
             clazzData.fields.forEach {
                 if (it.owner != "broken" && !it.field.contains("getLocalUser")) {
-                    println("\t Adding method ${it.field} descriptor ${it.descriptor}")
+                    //println("\t Adding method ${it.field} descriptor ${it.descriptor}")
                     val getter: GetterData
                     if (isBaseType(it.descriptor)) {
                         getter = GetterData(it.descriptor, it.field)
@@ -84,19 +94,20 @@ class Analyser{
                     }
                     if (!it.descriptor.contains("java")  ) {
                         getterList.add(getter)
-                        println("\t\t$getter")
+                        //println("\t\t$getter")
                     }
                     else{
                         if(it.descriptor.contains("String")){
                             getterList.add(getter)
-                            println("\t\t$getter")
+                            //println("\t\t$getter")
                         }else {
-                            println("\t\t!@#$# ${it.descriptor}")
+                            //println("\t\t!@#$# ${it.descriptor}")
                         }
                     }
                 }
             }
             for (method in getterList) {
+
                 if (method.fieldDescription != "")
                     injectMethod(method, classes, clazzData.`class`, runeStar)
             }
@@ -131,6 +142,23 @@ class Analyser{
         }
     }
 
+    private fun injectCanvas(classNode: ClassNode) {
+        classNode.superName = "com/p3achb0t/ui/RsCanvas"
+        for (method in classNode.methods) {
+            if (method.name == "<init>") {
+                for (insn in method.instructions) {
+                    if (insn.opcode == Opcodes.INVOKESPECIAL) {
+                        if (insn is MethodInsnNode) {
+                            val mnode = insn as MethodInsnNode
+                            mnode.owner = "com/p3achb0t/ui/RsCanvas"
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun injectMethod(
         getterData: GetterData,
         classes: MutableMap<String, ClassNode>,
@@ -148,7 +176,7 @@ class Analyser{
 
 
         val signature = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.signature
-        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
+        //println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
         val methodNode =
             MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
@@ -161,7 +189,7 @@ class Analyser{
         methodNode.visitFieldInsn(fieldType, fieldOwner, fieldName, fieldDescriptor)
         val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
-            println("Multiplier $multiplier ${field.decoder} ")
+            //println("Multiplier $multiplier ${field.decoder} ")
             if (field.descriptor == "J") {
                 methodNode.visitLdcInsn(multiplier)
                 methodNode.visitInsn(LMUL)
@@ -171,11 +199,11 @@ class Analyser{
             }
         }
 
-        println(
-            "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
-                fieldDescriptor
-            )} Static:$isStatic"
-        )
+        //println(
+        //    "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+        //        fieldDescriptor
+        //    )} Static:$isStatic"
+        //)
         methodNode.visitInsn(getReturnOpcode(returnFieldDescription))
 
         if (multiplier != null) {
@@ -187,7 +215,7 @@ class Analyser{
         if(!returnFieldDescription.contains("null")) {
             methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
-            println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
+            //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }
 
     }

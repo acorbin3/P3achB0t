@@ -85,7 +85,7 @@ class ClientInstance {
             init()
             start()
 
-        }
+        } /*
         sleep(100)
 
         // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
@@ -192,7 +192,7 @@ class ClientInstance {
                     }
                 }
             }
-        }
+        }*/
 
         //LoggingIntoAccount()
 
