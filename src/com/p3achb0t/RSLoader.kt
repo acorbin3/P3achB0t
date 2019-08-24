@@ -5,8 +5,9 @@ import java.applet.AppletContext
 import java.applet.AppletStub
 import java.net.URL
 
-class RSLoader : AppletStub {
-    var params = Parameters.data.PARAMETER_MAP
+class RSLoader(val world: Int) : AppletStub {
+    private val w = Parameters(world)
+    var params = w.PARAMETER_MAP
     override fun getCodeBase(): URL {
         return URL(params["codebase"])
     }

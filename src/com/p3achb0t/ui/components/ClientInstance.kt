@@ -35,11 +35,9 @@ class ClientInstance {
 
 
     init {
-        val loader = Loader() // Should maybe be static and check when the client is launched
+        val loader = Loader()
         val gamePackWithPath = loader.run()
 
-        //runeStar = RuneStarAnalyzer()
-        //runeStar?.loadHooks()
 
         val gamePackJar = JarFile(gamePackWithPath)
         //runeStar?.parseJar(gamePackJar)
@@ -63,7 +61,7 @@ class ClientInstance {
         this.clientClazz = clientClazz
         game.apply {
             preferredSize = Dimension(765, 503)
-            val loader2 = RSLoader()
+            val loader2 = RSLoader(83)
             game.setStub(loader2)
         }
 

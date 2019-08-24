@@ -111,7 +111,7 @@ object Main {
 
         game.apply {
             preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
-            val loader = RSLoader()
+            val loader = RSLoader(83)
             game.setStub(loader)
         }
 
