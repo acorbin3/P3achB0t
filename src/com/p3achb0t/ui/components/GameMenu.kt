@@ -15,11 +15,19 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
     private fun debugMenu() : JMenu {
         val menu = JMenu("Debug")
 
-        val drawing = JMenuItem("Object")
-        drawing.addActionListener { println("sfsdfdsf")}
+        val drawing = JMenuItem("TEST 1")
+        drawing.addActionListener {
+            println("SEND KEYS")
+            val game = TabManager.instance.getInstance(0)
+            game.client.keyboard?.sendKeys("Kasper")
+        }
 
-        val npc = JMenuItem("Object")
-        npc.addActionListener { println("sfsdfdsf")}
+        val npc = JMenuItem("Test 2")
+        npc.addActionListener {
+            println("SEND KEYS 2")
+            val game = TabManager.instance.getInstance(1)
+            game.client.keyboard?.sendKeys("Kasper")
+        }
 
         val player = JMenuItem("Object")
         player.addActionListener { println("sfsdfdsf")}
@@ -42,24 +50,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         val drawing = JMenuItem("Add")
         drawing.addActionListener {
-            val game = GameTab(1,tabs)
 
-            tabs.addTab("Game $index", game)
-            tabs.selectedIndex = ++index
-
-
-
-
-
-
-            Thread({
-                while (!tabs.isPreferredSizeSet) {
-                    println("${tabs.isPreferredSizeSet}")
-                    Thread.sleep(100)
-                }
-                game.g()
-            }).start()
-
+            TabManager.instance.addInstance()
 
         }
 

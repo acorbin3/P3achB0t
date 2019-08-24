@@ -66,7 +66,6 @@ class Analyser{
                 println("${clazzData.name} : ${clazzData.`super`} ")
             }
 
-
             //            if (obsClass in classes) {
             val classInterface = "$classPath/${clazzData.`class`}"
             if (!classInterface.contains("Usernamed")) {

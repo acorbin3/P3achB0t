@@ -1,8 +1,6 @@
 package com.p3achb0t.ui
 
-import com.p3achb0t.ui.components.Constants
-import com.p3achb0t.ui.components.GameMenu
-import com.p3achb0t.ui.components.GameTab
+import com.p3achb0t.ui.components.*
 import com.p3achb0t.util.Util
 import java.awt.Dimension
 import java.nio.file.Paths
@@ -13,29 +11,39 @@ class GameWindow : JFrame() {
     var index = 0
     val tabs = JTabbedPane()
 
-    val tffff = GameTab(0, tabs)
+
+    init {
+
+        title = "RuneScape Bot ALPHA"
+        defaultCloseOperation = EXIT_ON_CLOSE
+        preferredSize = Dimension(765, 503)
+        tabs.preferredSize = Dimension(766,503)
+
+        size = Dimension(770, 503)
+        jMenuBar = GameMenu(tabs, 0)
+        add(TabManager.instance)
+        isVisible = true
+    }
 
     fun run() {
-        System.setProperty("user.home", "cache")
 
-        defaultCloseOperation = EXIT_ON_CLOSE
-        tabs.preferredSize = Dimension(760,600)
-        preferredSize = Dimension(850, 700)
-        size = Dimension(850, 700)
-        jMenuBar = GameMenu(tabs, 0)
-        add(tabs)
-        isVisible = true
+
+
 
 
 
         setLocationRelativeTo(null)
+        TabManager.instance.addInstance()
+        //val g = GamePanel()
+        //tabs.addTab("Game", g)
+        //g.setContext()
 
-
-        tabs.addTab("1", tffff)
+        //tabs.addTab("1", tffff)
         println("before thread")
 
-        tffff.g()
+        //tffff.g()
         //setup()
+
 
 
 
@@ -62,8 +70,15 @@ class GameWindow : JFrame() {
 
 }
 
+// A setup function should not be placed here
+
+fun setup() {
+    System.setProperty("user.home", "cache")
+}
+
 
 fun main() {
+    setup()
     val g = GameWindow()
 
     g.run()

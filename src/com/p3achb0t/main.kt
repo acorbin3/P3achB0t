@@ -105,6 +105,7 @@ object Main {
         val game: Applet = clientClazz as Applet
         MainApplet(game)
 //        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
+
         Client.client = clientClazz as com.p3achb0t._runestar_interfaces.Client
 
 
