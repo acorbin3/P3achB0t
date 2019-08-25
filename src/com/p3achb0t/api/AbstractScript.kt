@@ -6,8 +6,8 @@ import com.p3achb0t.ui.components.TabManager
 import java.awt.Graphics
 
 abstract class AbstractScript {
-    private var ctx: Client
-    val players: Players
+    protected val ctx: Client
+    protected val players: Players
 
     init {
         val c = TabManager.instance.getSelected()

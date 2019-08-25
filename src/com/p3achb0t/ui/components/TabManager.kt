@@ -49,7 +49,16 @@ class TabManager private constructor() : JTabbedPane() {
     }
 
     fun getSelected() : GamePanel {
-        println("[*] $selectedIndex")
+        println("Get selected index: $selectedIndex")
         return clients[selectedIndex]
+    }
+
+    fun getSelectedIndexx(): Int {
+        return selectedIndex
+    }
+
+    fun getSelected2() : GamePanel {
+        println("Get selected index2: $selectedIndex")
+        return clients[index]
     }
 }

@@ -4,6 +4,7 @@ import com.p3achb0t.RSLoader
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Client
+import com.p3achb0t.scripts.TestScript
 import com.p3achb0t.ui.Keyboard
 import com.p3achb0t.ui.RsCanvas
 import com.p3achb0t.util.JarLoader

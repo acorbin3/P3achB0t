@@ -18,26 +18,30 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
     private fun debugMenu() : JMenu {
         val menu = JMenu("Debug")
 
-        val drawing = JMenuItem("TEST 1")
+        val drawing = JMenuItem("TestScript Run")
         drawing.addActionListener {
             println("SEND KEYS")
-            val game = TabManager.instance.getInstance(0)
-            poll = TestScript()
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            game.client.script = TestScript()
+            //poll = TestScript()
 
         }
 
-        val npc = JMenuItem("Test 2")
+        val npc = JMenuItem("PrintScript Run")
         npc.addActionListener {
-            poll = PrintScript()
-
+            //poll = PrintScript()
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            game.client.script = PrintScript()
             //println("SEND KEYS 2")
             //val game = TabManager.instance.getInstance(1)
             //game.client.keyboard?.sendKeys("Kasper")
         }
 
-        val player = JMenuItem("3")
+        val player = JMenuItem("Run Loop")
         player.addActionListener {
-            poll?.loop()
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            game.client.script?.loop()
+            //poll?.loop()
             println("sfsdfdsf")
         }
 
