@@ -13,7 +13,6 @@ class GamePanel : JPanel() {
         preferredSize = Dimension(765,503)
         add(client.getApplet())
         validate()
-
     }
 
 

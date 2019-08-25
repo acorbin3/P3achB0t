@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage
 open class RsCanvas : Canvas() {
 
     private val gameCanvas = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
-    val test = TabManager.instance.getSelected2(this.hashCode())
+    val gamePanel = TabManager.instance.getSelected()
 
 
     override fun getGraphics() : Graphics {
@@ -19,10 +19,11 @@ open class RsCanvas : Canvas() {
         g.color = Color.CYAN
         g.drawString("P3achB0t & Unoplex - BOT Alpha 0.1.0", 50 ,20)
 
-        test.client.script?.draw(g)
-        g.drawString("Script loaded: ${test.client.script}", 50 ,260)
+        gamePanel.client.script?.draw(g)
 
-
+        if (gamePanel.client.name != "") {
+            g.drawString("Script loaded: ${gamePanel.client.name}, author: ${gamePanel.client.author}, category: ${gamePanel.client.category}", 50 ,260)
+        }
 
         super.getGraphics().drawImage(gameCanvas, 0, 0, null)
         return g

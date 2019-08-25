@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent
 import javax.swing.JPanel
 
 
-class NewTab(tabs: TabManager) : JPanel() {
+class NewTab(val tabs: TabManager) : JPanel() {
 
     init {
         layout = FlowLayout(FlowLayout.LEFT, 0, 0)
@@ -23,7 +23,7 @@ class NewTab(tabs: TabManager) : JPanel() {
     }
 
     private fun addLabel() {
-        val label = JLabel("Game ")
+        val label = JLabel("Game ${tabs.tabCount}")
         /** add more space between the label and the button  */
         label.border = EmptyBorder(0, 0, 0, 10)
         add(label)

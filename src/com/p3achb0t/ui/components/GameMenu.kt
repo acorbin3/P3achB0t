@@ -2,6 +2,7 @@ package com.p3achb0t.ui.components
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.scripts.PrintScript
+import com.p3achb0t.scripts.ScriptManager
 import com.p3achb0t.scripts.TestScript
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -20,9 +21,11 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         val drawing = JMenuItem("TestScript Run")
         drawing.addActionListener {
-            println("SEND KEYS")
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client.script = TestScript()
+
+            //val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            //game.client.script = TestScript()
+            ScriptManager.instance.start(TestScript())
+            println("AFTER")
             //poll = TestScript()
 
         }
@@ -45,8 +48,10 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             println("sfsdfdsf")
         }
 
-        val other = JMenuItem("Object")
-        other.addActionListener { println("sfsdfdsf")}
+        val other = JMenuItem("Stop")
+        other.addActionListener {
+            ScriptManager.instance.stop()
+        }
 
         menu.add(drawing)
         menu.add(npc)

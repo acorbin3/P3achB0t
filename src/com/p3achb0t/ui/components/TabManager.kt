@@ -26,7 +26,7 @@ class TabManager private constructor() : JTabbedPane() {
 
         clients.add(g)
         addTab("Game ${tabCount+1}", g)
-        
+
         if (tabCount == 1) {
             selectedIndex = 0
         } else {
@@ -43,7 +43,7 @@ class TabManager private constructor() : JTabbedPane() {
         // setup mouse and keyboard under here <---------------
         val keyboard = Keyboard(g.client.getApplet().getComponent(0))
         g.client.getApplet().addKeyListener(keyboard)
-        g.client.keyboard = keyboard
+        //g.client.keyboard = keyboard
         val mouse = Mouse(g.client.getApplet().getComponent(0))
         g.client.getApplet().addMouseListener(mouse)
 
@@ -76,9 +76,4 @@ class TabManager private constructor() : JTabbedPane() {
         return selectedIndex
     }
 
-    fun getSelected2(hash: Int) : GamePanel {
-        println("Get selected index2: $selectedIndex hash: $hash")
-
-        return clients[selectedIndex]
-    }
 }
