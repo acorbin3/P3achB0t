@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage
 open class RsCanvas : Canvas() {
 
     private val gameCanvas = BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB)
-    val test = TabManager.instance.getSelected2()
+    val test = TabManager.instance.getSelected2(this.hashCode())
 
 
     override fun getGraphics() : Graphics {

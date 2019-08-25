@@ -16,7 +16,7 @@ class Parameters(world: Int){
 
     fun parse(world:Int){
         val urlText = "http://oldschool$world.$PARAMETER_BASE_URL"
-        println("Getting params from $urlText")
+        //println("Getting params from $urlText")
         val connection = URL(urlText).openConnection()
         connection.connect()
         val res = connection.inputStream.bufferedReader().readText()

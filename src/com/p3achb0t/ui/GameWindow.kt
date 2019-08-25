@@ -2,6 +2,7 @@ package com.p3achb0t.ui
 
 import com.p3achb0t.ui.components.*
 import com.p3achb0t.util.Util
+import java.awt.BorderLayout
 import java.awt.Dimension
 import java.nio.file.Paths
 import javax.swing.JFrame
@@ -10,18 +11,25 @@ import javax.swing.JTabbedPane
 class GameWindow : JFrame() {
     var index = 0
     val tabs = JTabbedPane()
+    val layout2 = BorderLayout()
 
 
     init {
 
         title = "RuneScape Bot ALPHA"
+        layout = layout2
         defaultCloseOperation = EXIT_ON_CLOSE
         preferredSize = Dimension(765, 503)
         tabs.preferredSize = Dimension(765,503)
 
-        size = Dimension(765, 584)
+        size = Dimension(765, 600)
         jMenuBar = GameMenu(tabs, 0)
-        add(TabManager.instance)
+        add(Bar(), BorderLayout.PAGE_START)
+        add(TabManager.instance, BorderLayout.CENTER)
+        //add(TabManager.instance)
+
+        add(GameLog(), BorderLayout.PAGE_END)
+
         isVisible = true
     }
 
@@ -39,10 +47,12 @@ class GameWindow : JFrame() {
         //g.setContext()
 
         //tabs.addTab("1", tffff)
-        println("before thread")
+        //println("before thread")
 
         //tffff.g()
         //setup()
+        //remove(layout2.getLayoutComponent(BorderLayout.PAGE_END))
+        //validate()
 
 
 

@@ -68,8 +68,14 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
+        val remove = JMenuItem("Remove")
+        remove.addActionListener {
 
-        //menu.add(player)
+            TabManager.instance.removeInstance()
+
+        }
+
+        menu.add(remove)
         menu.add(drawing)
 
         menu.popupMenu.isLightWeightPopupEnabled = false

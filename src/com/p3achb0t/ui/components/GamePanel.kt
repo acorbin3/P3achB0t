@@ -1,5 +1,6 @@
 package com.p3achb0t.ui.components
 
+import com.p3achb0t.client.ClientInstance
 import java.awt.Dimension
 import javax.swing.JPanel
 
@@ -16,7 +17,7 @@ class GamePanel : JPanel() {
     }
 
 
-    fun setContext() {
+    fun run() {
 
         client.getApplet().init()
         client.getApplet().start()

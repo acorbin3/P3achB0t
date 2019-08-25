@@ -1,10 +1,12 @@
 package com.p3achb0t.scripts
 
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.ScriptManifest
 
 import java.awt.Color
 import java.awt.Graphics
 
+@ScriptManifest("","","")
 class TestScript : AbstractScript() {
 
 

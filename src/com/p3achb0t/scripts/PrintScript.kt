@@ -1,14 +1,16 @@
 package com.p3achb0t.scripts
 
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.ScriptManifest
 import java.awt.Graphics
 
+@ScriptManifest("","","")
 class PrintScript : AbstractScript() {
 
-    val clientt = getClient()
+
 
     override fun loop() {
-        println("${clientt.getLoginState()} <---- Loaded PrintScript")
+        println("${ctx.getLoginState()} <---- Loaded PrintScript")
     }
 
     override fun start() {
