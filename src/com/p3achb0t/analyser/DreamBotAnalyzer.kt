@@ -48,7 +48,7 @@ class DreamBotAnalyzer{
         // Update fields
         var currentClass = ""
         File(this.hookFile).forEachLine {
-            //Class line "@Client identified as: client"
+            //Class line "@Client identified as: applet"
             if(it.contains("@")){
                 val list = it.split(" ")
                 val className = list[0].replace("@","")
@@ -194,7 +194,7 @@ class DreamBotAnalyzer{
         val _package = "com.p3achb0t.$newPackage"
 
 //        createInterfaces(folder, _package, analyzers, classRefObs)
-//        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
+//        createJavaInterfaces("./src/org/bot/applet/wrapper/","org.bot.applet.wrapper",analyzers, classRefObs)
     }
 //TODO - Update when we need to generate super graph
 //    fun getSuperName(classNode: ClassNode):String{

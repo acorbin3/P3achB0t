@@ -136,6 +136,6 @@ class RuneStarAnalyzer {
         val _package = "com.p3achb0t.$newPackage"
 
 //        createInterfaces(folder, _package, analyzers, classRefObs)
-//        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
+//        createJavaInterfaces("./src/org/bot/applet/wrapper/","org.bot.applet.wrapper",analyzers, classRefObs)
     }
 }

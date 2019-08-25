@@ -16,7 +16,6 @@ class GamePanel : JPanel() {
     }
 
 
-
     fun setContext() {
 
         client.getApplet().init()

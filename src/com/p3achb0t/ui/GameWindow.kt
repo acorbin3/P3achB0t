@@ -17,9 +17,9 @@ class GameWindow : JFrame() {
         title = "RuneScape Bot ALPHA"
         defaultCloseOperation = EXIT_ON_CLOSE
         preferredSize = Dimension(765, 503)
-        tabs.preferredSize = Dimension(766,503)
+        tabs.preferredSize = Dimension(765,503)
 
-        size = Dimension(770, 503)
+        size = Dimension(765, 584)
         jMenuBar = GameMenu(tabs, 0)
         add(TabManager.instance)
         isVisible = true
@@ -51,7 +51,7 @@ class GameWindow : JFrame() {
 
     fun setup() {
         Util.createDirIfNotExist(Paths.get(Constants.APPLICATION_CACHE_DIR, Constants.JARS_DIR).toString())
-        // check client revision
+        // check applet revision
         val revision = Util.checkClientRevision(181, 3000)
 
         if (revision) {

@@ -7,6 +7,7 @@ import javax.swing.JTabbedPane
 class TabManager private constructor() : JTabbedPane() {
 
     private val clients = mutableListOf<GamePanel>()
+    var index = 0
 
     init {
         println("This ($this) is a singleton")
@@ -22,32 +23,21 @@ class TabManager private constructor() : JTabbedPane() {
 
         val g = GamePanel()
         clients.add(g)
-        addTab("Game", g)
+        addTab("Game ${tabCount+1}", g)
         g.validate()
         g.setContext()
-        // setup mouse and keyboard under here <---------------
         Thread.sleep(500)
+        // setup mouse and keyboard under here <---------------
         val keyboard = Keyboard(g.client.getApplet().getComponent(0))
         g.client.getApplet().addKeyListener(keyboard)
         g.client.keyboard = keyboard
         val mouse = Mouse(g.client.getApplet().getComponent(0))
         g.client.getApplet().addMouseListener(mouse)
-
-/*
-        Thread({
-            var i = 0
-            while (true) {
-                println("${g.client.getApplet().componentCount}")
-                Thread.sleep(1000)
-                mouse.click(400, 290, true)
-                if (i++ < 5) {
-                    keyboard.sendKeys("Kasp", false)
-                    //mouse.click(100, 100, true)
-                }
+        selectedIndex = index
+        index++
 
 
-            }
-        }).run()*/
+
     }
 
     fun removeInstance(id: Int) { // DO SOME CHECKS
@@ -56,5 +46,10 @@ class TabManager private constructor() : JTabbedPane() {
 
     fun getInstance(id: Int): GamePanel {
         return clients[id]
+    }
+
+    fun getSelected() : GamePanel {
+        println("[*] $selectedIndex")
+        return clients[selectedIndex]
     }
 }

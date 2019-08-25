@@ -20,7 +20,7 @@ interface Locatable {
 
     // In general players, objects, ground items getting x and y are stored in Regional coordinates.
     // For consistancy internal getting locations will be done using global coordnates. To convert Regional to global,
-    // you right shift, and then add the client.baseX and client.baseY
+    // you right shift, and then add the applet.baseX and applet.baseY
 
     //namePoint returns the position at which the name of an item, npc, or actor would have the name displayed
     fun getNamePoint(): Point

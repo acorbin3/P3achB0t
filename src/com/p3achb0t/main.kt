@@ -65,7 +65,7 @@ object Main {
         if (!Files.exists(Path.of("./cache"))) {
             Files.createDirectory(Path.of("./cache"))
         }
-        System.setProperty("user.home", "cache") // set cache next to your client
+        System.setProperty("user.home", "cache") // set cache next to your applet
 
         val loader = Loader()
         val gamePackWithPath = loader.run()
@@ -101,7 +101,7 @@ object Main {
         val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
         println(file.toURI().toURL())
         MainApplet.classLoader = URLClassLoader(urlArray)
-        val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
+        val clientClazz = MainApplet.classLoader?.loadClass("applet")?.newInstance()
         val game: Applet = clientClazz as Applet
         MainApplet(game)
 //        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
@@ -277,7 +277,7 @@ object Main {
 
             while (true) {
                 //Wait till we are logged in
-//                if (Client.client!!.getGameState() == 30) {
+//                if (Client.applet!!.getGameState() == 30) {
 //                    if (true) {
 //                        try {
 //                            val npcs = NPCs.findNpcs(sortByDist = true)

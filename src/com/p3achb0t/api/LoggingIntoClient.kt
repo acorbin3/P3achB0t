@@ -20,7 +20,7 @@ class LoggingIntoClient {
 }
 
 fun LoggingIntoAccount() {
-    //Logging into the client
+    //Logging into the applet
     Thread.sleep(3000)
     GlobalScope.launch {
 
