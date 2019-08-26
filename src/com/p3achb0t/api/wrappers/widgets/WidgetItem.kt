@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers.widgets
 
+import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
@@ -24,6 +25,11 @@ class WidgetItem(
         val x = area.centerX + Random.nextInt(-(area.width / 4)..(area.width / 4))
         val y = area.centerY + Random.nextInt(-(area.height / 4)..(area.height / 4))
         return Point(x.toInt(), y.toInt())
+    }
+
+    override fun isMouseOverObj(): Boolean {
+        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1, MainApplet.mouseEvent?.y ?: -1)
+        return area.contains(mousePoint)
     }
 
     enum class Type {

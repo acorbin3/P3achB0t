@@ -68,7 +68,7 @@ open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
             raw.getX(),
             raw.getY()
         )
-        return Calculations.isOnscreen(tilePoly.bounds)
+        return Calculations.isOnscreen(Client.client,tilePoly.bounds )
     }
 
 

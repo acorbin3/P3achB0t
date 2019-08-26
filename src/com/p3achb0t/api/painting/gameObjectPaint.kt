@@ -51,8 +51,8 @@ fun gameObjectPaint(g: Graphics) {
                                                 planeInt
                                             )
                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                point
-                                            )
+                                                        Client.client,point
+                                                )
                                         ) {
                                             g.color = Color.GREEN
                                             val id = it.getTag().shr(17).and(0x7fff).toInt()

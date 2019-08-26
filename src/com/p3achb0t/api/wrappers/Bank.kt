@@ -69,7 +69,7 @@ class Bank {
         suspend fun close() {
             if (isOpen()) {
                 // Loop over the children to find the button that can close the bank
-                val itemContainer = Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
+                val itemContainer = Widgets.find(Client.client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
                 itemContainer?.getChildren()?.iterator()?.forEach {
                     val actions = it.getOps()
                     if (actions != null) {
@@ -95,7 +95,7 @@ class Bank {
         }
 
         suspend fun depositAll() {
-            val depositAllWidget = WidgetItem(Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY))
+            val depositAllWidget = WidgetItem(Widgets.find(Client.client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY))
             depositAllWidget.click()
             val inventoryCount = Inventory.getCount()
             Utils.waitFor(3, object : Utils.Condition {
@@ -141,7 +141,7 @@ class Bank {
                                     override suspend fun accept(): Boolean {
                                         delay(100)
                                         val chatText =
-                                            Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                            Widgets.find(Client.client, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                                         val text = chatText?.getText()
                                         println(text + " " + chatText?.getIsHidden())
                                         return text?.equals("*") ?: false
@@ -176,7 +176,7 @@ class Bank {
                     Utils.waitFor(3, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
-                            val chatText = Widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                            val chatText = Widgets.find(Client.client, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                             val text = chatText?.getText()
                             println(text + " " + chatText?.getIsHidden())
                             return text?.equals("*") ?: false
@@ -202,12 +202,12 @@ class Bank {
         }
 
         fun getWidget(): Component? {
-            return Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+            return Widgets.find(Client.client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
         }
 
         fun getSize(): Int {
             if (isOpen()) {
-                val widget = Widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+                val widget = Widgets.find(Client.client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
                 if (widget != null && widget.getText() != null && widget.getText().trim().isNotEmpty()) {
                     return widget.getText().trim().toInt()
                 }

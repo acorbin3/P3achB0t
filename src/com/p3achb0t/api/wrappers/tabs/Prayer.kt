@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -67,7 +68,7 @@ class Prayer {
         suspend fun activate(kind: PrayerKind) {
             if (!isOpen()) open()
 
-            val prayer = WidgetItem(Widgets.find(PARENT, kind.widgetID))
+            val prayer = WidgetItem(Widgets.find(Client.client, PARENT, kind.widgetID))
             prayer.interact("Activate")
             //TODO - Check if activated
 
@@ -76,7 +77,7 @@ class Prayer {
         suspend fun disable(kind: PrayerKind) {
             if (!isOpen()) open()
 
-            val prayer = WidgetItem(Widgets.find(PARENT, kind.widgetID))
+            val prayer = WidgetItem(Widgets.find(Client.client, PARENT, kind.widgetID))
             prayer.interact("Deactivate")
             //TODO - Check if Deactivated
         }

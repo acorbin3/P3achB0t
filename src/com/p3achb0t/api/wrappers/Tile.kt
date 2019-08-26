@@ -22,6 +22,10 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
         val regional = getRegionalLocation()
         return getCanvasTileAreaPoly(regional.x, regional.y)
     }
+    override fun isMouseOverObj(): Boolean {
+        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return getCanvasTileAreaPoly(getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint)
+    }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
@@ -45,7 +49,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
 
     override fun isOnScreen(): Boolean {
         val tilePoly = getCanvasTileAreaPoly(getRegionalLocation().x, getRegionalLocation().y)
-        return Calculations.isOnscreen(tilePoly.bounds)
+        return Calculations.isOnscreen(Client.client,tilePoly.bounds )
     }
 
     override fun distanceTo(locatable: Locatable): Int {

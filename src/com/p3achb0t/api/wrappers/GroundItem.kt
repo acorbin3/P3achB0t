@@ -20,7 +20,10 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
         val region = getRegionalLocation()
         return Calculations.worldToScreen(region.x, region.y, Client.client.getPlane())
     }
-
+    override fun isMouseOverObj(): Boolean {
+        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return getConvexHull().contains(mousePoint)
+    }
     override suspend fun clickOnMiniMap(): Boolean {
         return MainApplet.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
     }
@@ -47,7 +50,7 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
 
 
     override fun isOnScreen(): Boolean {
-        return Calculations.isOnscreen(getConvexHull().bounds)
+        return Calculations.isOnscreen(Client.client,getConvexHull().bounds )
     }
 
     suspend fun take() {

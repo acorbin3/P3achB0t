@@ -39,7 +39,7 @@ class Interact {
                         Random.nextInt(ch.bounds.x, ch.bounds.width + ch.bounds.x),
                         Random.nextInt(ch.bounds.y, ch.bounds.height + ch.bounds.y)
                     )
-                    if (ch.contains(point) && Calculations.isOnscreen(point))
+                    if (ch.contains(point) && Calculations.isOnscreen(Client.client,point ))
                         break
                 }
                 point?.let { interact(it, action) }

@@ -16,6 +16,7 @@ import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
 import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -92,7 +93,6 @@ object Main {
         val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
         val game: Applet = clientClazz as Applet
         MainApplet(game)
-//        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
         Client.client = clientClazz as com.p3achb0t._runestar_interfaces.Client
 
 
@@ -406,8 +406,9 @@ object Main {
         }
 
 //        EventQueue.invokeLater(::createAndShowGUI)
-//        WidgetExplorerV3.createWidgetExplorer()
-        LoggingIntoAccount()
+//        EventQueue.invokeLater(::createWidgetExplorer)
+        WidgetExplorerV3(Client.client).createWidgetExplorer()
+        LoggingIntoAccount(Client.client)
 //        class MyApp : App(WidgetExplorer::class)
 //        launch<MyApp>()
 
