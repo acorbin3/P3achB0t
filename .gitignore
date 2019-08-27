@@ -11,5 +11,5 @@ deob/
 /target/
 cache/
 src/com/p3achb0t/UserDetails.kt
-app/
+#app/
 gamepacks/

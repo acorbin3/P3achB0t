@@ -101,7 +101,7 @@ object Main {
         val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
         println(file.toURI().toURL())
         MainApplet.classLoader = URLClassLoader(urlArray)
-        val clientClazz = MainApplet.classLoader?.loadClass("applet")?.newInstance()
+        val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
         val game: Applet = clientClazz as Applet
         MainApplet(game)
 //        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
