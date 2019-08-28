@@ -12,11 +12,11 @@ class Run {
 
         val runEnergy: Int
             get() {
-                return Widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
+                return Widgets.find(Client.client, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
             }
 
         suspend fun clickRunButton() {
-            WidgetItem(Widgets.find(PARENT, CHILD_BUTTON)).click()
+            WidgetItem(Widgets.find(Client.client, PARENT, CHILD_BUTTON)).click()
         }
 
         suspend fun activateRun() {
@@ -31,7 +31,7 @@ class Run {
 
         //1065 is activated, 1064 is not activated
         fun isRunActivated(): Boolean {
-            return Widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
+            return Widgets.find(Client.client, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
         }
     }
 }

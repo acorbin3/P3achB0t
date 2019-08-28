@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
 import java.awt.Point
@@ -31,7 +32,6 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player) : Actor(playe
             return players
         }
     }
-
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return Calculations.worldToScreen(region.x, region.y, player.getHeight())

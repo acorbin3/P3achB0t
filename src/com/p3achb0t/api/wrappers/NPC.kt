@@ -9,6 +9,10 @@ import java.awt.Point
 import java.awt.Polygon
 
 class NPC(var npc: Npc) : Actor(npc), Interactable {
+    override fun isMouseOverObj(): Boolean {
+        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return getConvexHull().contains(mousePoint)
+    }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()

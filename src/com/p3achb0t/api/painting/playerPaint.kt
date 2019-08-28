@@ -50,8 +50,8 @@ fun playerPaint(g: Graphics) {
                     _player.getHeight()
                 )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(
-                        namePoint
-                    )
+                                Client.client,namePoint
+                        )
                 ) {
                     g.color = Color.GREEN
                     g.drawString(

@@ -3,6 +3,7 @@ package com.p3achb0t.api
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t.api.wrappers.Client
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*
@@ -89,9 +90,9 @@ fun getTrianglesFromModel(
                         locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
                     )
                     if (one.x >= 0 && two.x >= 0 && three.x >= 0
-                        && Calculations.isOnscreen(one) && Calculations.isOnscreen(two) && Calculations.isOnscreen(
-                            three
-                        )
+                        && Calculations.isOnscreen(Client.client,one) && Calculations.isOnscreen(Client.client,two ) && Calculations.isOnscreen(Client.client,
+                                    three
+                            )
                     ) {
                         polygonList.add(
                             Polygon(
@@ -182,20 +183,20 @@ fun getConvexHullFromModel(
                     locX + xPoints[indicyX],
                     locY + zPoints[indicyX], 0 - yPoints[indicyX]
                 )
-                if (one.x >= 0 && Calculations.isOnscreen(one)) pointList.add(one)
+                if (one.x >= 0 && Calculations.isOnscreen(Client.client,one )) pointList.add(one)
 
                 val two = Calculations.worldToScreen(
                     locX + xPoints[indicyY],
                     locY + zPoints[indicyY], 0 - yPoints[indicyY]
                 )
-                if (two.x >= 0 && Calculations.isOnscreen(two)) pointList.add(two)
+                if (two.x >= 0 && Calculations.isOnscreen(Client.client,two )) pointList.add(two)
 
 //                println("indicyZ:$indicyZ xPoints.size:/=${xPoints.size}")
                 val three = Calculations.worldToScreen(
                     locX + xPoints[indicyZ],
                     locY + zPoints[indicyZ], 0 - yPoints[indicyZ]
                 )
-                if (three.x >= 0 && Calculations.isOnscreen(three)) pointList.add(three)
+                if (three.x >= 0 && Calculations.isOnscreen(Client.client,three )) pointList.add(three)
             }
         }
     }

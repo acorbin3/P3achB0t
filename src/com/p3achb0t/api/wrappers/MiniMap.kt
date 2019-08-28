@@ -18,7 +18,7 @@ class MiniMap {
         var mapInit = false
 
         fun getWidget(): Component? {
-            return Widgets.find(PARENT, CHILD)
+            return Widgets.find(Client.client, PARENT, CHILD)
         }
 
         fun getMapArea(): Polygon {
@@ -26,7 +26,7 @@ class MiniMap {
                 mapCircle
             } else {
 
-                val rect = WidgetItem(Widgets.find(PARENT, CHILD)).area
+                val rect = WidgetItem(Widgets.find(Client.client, PARENT, CHILD)).area
                 // Before login the widget thinks its a position 0,0 which is incorrect.
                 if (rect.centerX == 0.0) {
                     return Polygon()
@@ -44,7 +44,7 @@ class MiniMap {
                 //Small globe that cuts int the mini map
                 val globeParent = 160
                 val globeChild = 42
-                val rect2 = WidgetItem(Widgets.find(globeParent, globeChild)).area
+                val rect2 = WidgetItem(Widgets.find(Client.client, globeParent, globeChild)).area
                 val globeRadius = 15.0
                 val globeEllipse2D = Ellipse2D.Double(
                     rect2.centerX - globeRadius,

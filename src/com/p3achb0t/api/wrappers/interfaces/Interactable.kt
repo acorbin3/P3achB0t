@@ -8,10 +8,12 @@ import com.p3achb0t.api.wrappers.Interact
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
+import kotlin.math.abs
 import kotlin.random.Random
 
 interface Interactable {
     fun getInteractPoint(): Point
+    fun isMouseOverObj(): Boolean
 
     fun getRandomPoint(poly: Polygon): Point {
 
@@ -51,16 +53,18 @@ interface Interactable {
             } else {
                 Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
             }
-            val distance = startPoint?.distance(desiredPoint)
-            if (distance != null) {
-                if (distance < 50) {
-                    break
-                } else {
-                    val midPoint = midPoint(desiredPoint, startPoint)
-                    MainApplet.mouse.moveMouse(midPoint, click = false)
-                    delay(Random.nextLong(100, 200))
-                }
-            }
+//            val distance = startPoint?.distance(desiredPoint)
+            MainApplet.mouse.moveMouse(desiredPoint, click = false)
+            if(isMouseOverObj()){break}
+//            if (distance != null) {
+//                if (abs(distance) < 100) {
+//                    break
+//                } else {
+//                    val midPoint = midPoint(desiredPoint, startPoint)
+//                    MainApplet.mouse.moveMouse(midPoint, click = false)
+//                    delay(Random.nextLong(100, 200))
+//                }
+//            }
             desiredPoint = getInteractPoint()
         }
         return Interact.interact(desiredPoint, action)

@@ -16,7 +16,7 @@ class ClientMode {
 
             if (modeInit) return modeType
             return try {
-                val resizeModeWidget = Widgets.find(261, 34)
+                val resizeModeWidget = Widgets.find(Client.client, 261, 34)
                 // For tutorial island we might not have any children yet, then it means we are in resize mode
                 if (resizeModeWidget?.getChildren() == null) {
                     modeInit = true

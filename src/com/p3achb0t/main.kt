@@ -8,7 +8,6 @@ import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.api.LoggingIntoAccount
-import com.p3achb0t.api.Utils
 import com.p3achb0t.api.painting.PaintDebug
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Mouse
@@ -16,9 +15,8 @@ import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
-import com.p3achb0t.loader.Loader
 import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.util.Util
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,8 +31,6 @@ import java.io.File
 import java.lang.Thread.sleep
 import java.net.URL
 import java.net.URLClassLoader
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.jar.JarFile
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -61,17 +57,10 @@ class MainApplet(game: Applet) {
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        Util.createAllDirs()
-        if (!Files.exists(Path.of("./cache"))) {
-            Files.createDirectory(Path.of("./cache"))
-        }
-        System.setProperty("user.home", "cache") // set cache next to your applet
 
-        val loader = Loader()
-        val gamePackWithPath = loader.run()
         val downloader = Downloader()
 //        val gamePackWithPath = downloader.getGamepack()
-        //val gamePackWithPath = downloader.getLocalGamepack()
+        val gamePackWithPath = downloader.getLocalGamepack()
         println("Using $gamePackWithPath")
 
         runeStar = RuneStarAnalyzer()
@@ -104,14 +93,12 @@ object Main {
         val clientClazz = MainApplet.classLoader?.loadClass("client")?.newInstance()
         val game: Applet = clientClazz as Applet
         MainApplet(game)
-//        clientData = clientClazz as com.p3achb0t.hook_interfaces.Client
-
         Client.client = clientClazz as com.p3achb0t._runestar_interfaces.Client
 
 
         game.apply {
             preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
-            val loader = RSLoader(83)
+            val loader = RSLoader()
             game.setStub(loader)
         }
 
@@ -127,10 +114,9 @@ object Main {
             setLocationRelativeTo(null)
             isVisible = true
 
-            //val panel = JPanel()
-            //add(panel)
-            contentPane = game
-            //panel.add(game)
+            val panel = JPanel()
+            add(panel)
+            panel.add(game)
             pack()
         }
         //Attempt to resize but didnt work
@@ -150,7 +136,7 @@ object Main {
 
         }
         sleep(100)
-        /*
+
         // This block is used to create a custom Canvas and replace it with the RSCanvas using reflection
         game.apply {
 
@@ -208,29 +194,32 @@ object Main {
 
                         override fun keyPressed(e: KeyEvent?) {
 //                        println("KeyPressed: ${e?.keyChar} Code:${e?.keyCode}")
-                            if (e?.isControlDown == true)  {
-                                if (e.keyCode == KeyEvent.VK_1) {
-                                    PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
-                                    println("PaintDebug.isDebugTextOn:${PaintDebug.isDebugTextOn}")
-                                }
-                                if (e.keyCode == KeyEvent.VK_2) {
-                                    PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
-                                    println("PaintDebug.isPlayerPaintOn:${PaintDebug.isPlayerPaintOn}")
-                                }
-                                if (e.keyCode == KeyEvent.VK_3) {
-                                    PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
-                                    println("PaintDebug.isNPCPaintOn:${PaintDebug.isNPCPaintOn}")
-                                }
-                                if (e.keyCode == KeyEvent.VK_4) {
-                                    PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
-                                    println("PaintDebug.isGroundItemsOn:${PaintDebug.isGroundItemsOn}")
-                                }
+                            if (e?.keyCode == 17)
+                                PaintDebug.isCtrlPressed = true
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '1')) {
+                                PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
+                                println("PaintDebug.isDebugTextOn:${PaintDebug.isDebugTextOn}")
                             }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '2')) {
+                                PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
+                                println("PaintDebug.isPlayerPaintOn:${PaintDebug.isPlayerPaintOn}")
+                            }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '3')) {
+                                PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
+                                println("PaintDebug.isNPCPaintOn:${PaintDebug.isNPCPaintOn}")
+                            }
+                            if (PaintDebug.isCtrlPressed && (e?.keyChar ?: "" == '4')) {
+                                PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+                                println("PaintDebug.isGroundItemsOn:${PaintDebug.isGroundItemsOn}")
+                            }
+
+
                         }
 
                         override fun keyReleased(e: KeyEvent?) {
 //                        println("KeyReleased: ${e?.keyChar} Code:${e?.keyCode}")
-
+                            if (e?.keyCode == 17)
+                                PaintDebug.isCtrlPressed = false
                         }
 
                     }
@@ -255,29 +244,12 @@ object Main {
                 }
             }
         }
-*/
-
-//        EventQueue.invokeLater(::createAndShowGUI)
-//        WidgetExplorerV3.createWidgetExplorer()
-          //LoggingIntoAccount()
-//        class MyApp : App(WidgetExplorer::class)
-//        launch<MyApp>()
-
-
-
-    }
-
-
-
-}
-
-/*
-      GlobalScope.launch {
+        GlobalScope.launch {
             // launch a new coroutine in background and continue
 
             while (true) {
                 //Wait till we are logged in
-//                if (Client.applet!!.getGameState() == 30) {
+//                if (Client.client!!.getGameState() == 30) {
 //                    if (true) {
 //                        try {
 //                            val npcs = NPCs.findNpcs(sortByDist = true)
@@ -424,7 +396,7 @@ object Main {
 //                        Calculations.initScreenWidgetDimentions()
 //                    }
 //
-                //TutorialIsland.run()
+                TutorialIsland.run()
 
 
 //                }
@@ -432,4 +404,16 @@ object Main {
                 delay((Math.random() * 50).toLong())
             }
         }
- */
+
+//        EventQueue.invokeLater(::createAndShowGUI)
+//        EventQueue.invokeLater(::createWidgetExplorer)
+        WidgetExplorerV3(Client.client).createWidgetExplorer()
+        LoggingIntoAccount(Client.client)
+//        class MyApp : App(WidgetExplorer::class)
+//        launch<MyApp>()
+
+
+
+    }
+
+}

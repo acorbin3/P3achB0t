@@ -71,7 +71,6 @@ interface Widget {
 			}
 		}
 
-
 		fun getDrawableRect(widget: Component): Rectangle {
 			val boundsWidth = widget.getWidth()
 			val boundsHeight = widget.getHeight()
@@ -82,7 +81,6 @@ interface Widget {
 			return rect
 		}
 
-
 		fun getWidget(index: WidgetIndex): Component? {
 			var component: Component? = null
 			try {
@@ -91,7 +89,6 @@ interface Widget {
 			}
 			return component
 		}
-
 
 		fun getWidgetX(widget: Component): Int {
 			return if (getParentIndex(widget).parentID.toInt() != -1) {
@@ -140,5 +137,7 @@ interface Widget {
 			}
 			return items
 		}
+
+
 	}
 }

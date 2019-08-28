@@ -57,7 +57,7 @@ fun paintNPCs(g: Graphics) {
                         it.getY(),
                         it.getHeight()
                     )
-                if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(namePoint)) {
+                if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(Client.client,namePoint )) {
                     g.color = Color.GREEN
                     g.drawString(
                         "${it.getType().getName()} ${it.getType().getId()} ${it.getSequence()}",

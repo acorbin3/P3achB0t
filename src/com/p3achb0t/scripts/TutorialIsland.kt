@@ -114,7 +114,7 @@ class TutorialIsland: AbstractScript()  {
             if (!isInititilized) init()
             if (!LoggingIntoClient.loggedIn) return
             jobs.forEach {
-                val chatBox = WidgetItem(Widgets.find(263, 1))
+                val chatBox = WidgetItem(Widgets.find(Client.client, 263, 1))
                 if (it.isValidToRun(chatBox)) {
                     println("Running: ${it.javaClass.name}")
                     it.execute()
@@ -125,22 +125,22 @@ class TutorialIsland: AbstractScript()  {
 
         fun getPercentComplete(): Double {
             // widget for progress 614,18
-            val complete = WidgetItem(Widgets.find(614, 18)).widget?.getWidth()?.toDouble() ?: 0.0
+            val complete = WidgetItem(Widgets.find(Client.client, 614, 18)).widget?.getWidth()?.toDouble() ?: 0.0
             //widget for total 614, 17
-            val total = WidgetItem(Widgets.find(614, 17)).widget?.getWidth()?.toDouble() ?: 0.0
+            val total = WidgetItem(Widgets.find(Client.client, 614, 17)).widget?.getWidth()?.toDouble() ?: 0.0
 
             return (complete / total)
         }
 
         class PickName : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-                return Widgets.isWidgetAvaliable(558, 0)
+                return Widgets.isWidgetAvaliable(Client.client, 558, 0)
             }
 
             override suspend fun execute() {
                 println("Picking name")
                 //Name widget to click into and type a name 558,7
-                val nameEntry = WidgetItem(Widgets.find(558, 7))
+                val nameEntry = WidgetItem(Widgets.find(Client.client, 558, 7))
                 nameEntry.click()
                 delay(Random.nextLong(2200, 5550))
 
@@ -149,23 +149,23 @@ class TutorialIsland: AbstractScript()  {
 
                 // If not a valid name then random name in the follow selections 558,(14,15,16)
                 // Once picked It should say available in 558,12
-                val validName = WidgetItem(Widgets.find(558, 12))
+                val validName = WidgetItem(Widgets.find(Client.client, 558, 12))
                 if (validName.widget?.getText()?.toLowerCase()?.contains("great!")!!) {
                     println("Found Valid name!")
                 } else {
                     val rand = Random.nextInt(14, 16)
-                    val selectRandomName = WidgetItem(Widgets.find(558, rand))
+                    val selectRandomName = WidgetItem(Widgets.find(Client.client, 558, rand))
                     selectRandomName.click()
                     delay(Random.nextLong(2200, 5550))
                 }
                 //Pick set name in 558,18
-                val pickName = WidgetItem(Widgets.find(558, 18))
+                val pickName = WidgetItem(Widgets.find(Client.client, 558, 18))
                 pickName.click()
                 delay(Random.nextLong(2200, 5550))
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        return !Widgets.isWidgetAvaliable(558, 0)
+                        return !Widgets.isWidgetAvaliable(Client.client, 558, 0)
                     }
                 })
                 println("Picking name complete")
@@ -177,7 +177,7 @@ class TutorialIsland: AbstractScript()  {
 
         class SelectCharOutfit : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-                return Widgets.isWidgetAvaliable(269, 0)
+                return Widgets.isWidgetAvaliable(Client.client, 269, 0)
             }
 
             override suspend fun execute() {
@@ -193,20 +193,20 @@ class TutorialIsland: AbstractScript()  {
                         4 -> widgetIndex.childID = arrayListOf(131, 130, 129, 127, 121).random().toString()
                     }
                     for (i in 0..Random.nextInt(5)) {
-                        WidgetItem(Widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt())).click()
+                        WidgetItem(Widgets.find(Client.client, widgetIndex.parentID.toInt(), widgetIndex.childID.toInt())).click()
                         delay(Random.nextLong(250, 650))
                     }
                 }
                 //Randomly pick if you are going to be afemale
                 if (Random.nextBoolean()) {
                     println("Picking Female")
-                    WidgetItem(Widgets.find(269, 139)).click()
+                    WidgetItem(Widgets.find(Client.client, 269, 139)).click()
                     delay(Random.nextLong(250, 650))
                 } else {
                     println("Leaving male")
                 }
                 //select accept
-                WidgetItem(Widgets.find(269, 99)).click()
+                WidgetItem(Widgets.find(Client.client, 269, 99)).click()
                 delay(Random.nextLong(1250, 2650))
                 println("Completed Character outfit")
             }
@@ -260,30 +260,30 @@ class TutorialIsland: AbstractScript()  {
                 Tabs.openTab(Tabs.Tab_Types.Options)
                 delay(Random.nextLong(500, 1500))
                 //Display settings(261,1)child 1
-                WidgetItem(Widgets.find(261, 1)?.getChildren()?.get(1)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 1)?.getChildren()?.get(1)).click()
                 delay(Random.nextLong(500, 1500))
                 //Advanced options(261,35
-                WidgetItem(Widgets.find(261, 35)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 35)).click()
                 delay(Random.nextLong(500, 1500))
                 //Turn off roofs(60,14). Texture Id when on is 762
-                Widgets.waitTillWidgetNotNull(60, 14)
-                val roofToggle = Widgets.find(60, 14)
+                Widgets.waitTillWidgetNotNull(Client.client,60, 14)
+                val roofToggle = Widgets.find(Client.client, 60, 14)
                 if (roofToggle?.getSpriteId2() == 761) {
-                    WidgetItem(Widgets.find(60, 14)).click()
+                    WidgetItem(Widgets.find(Client.client, 60, 14)).click()
                     delay(Random.nextLong(500, 1500))
                 }
                 //Close out of Advanced options widget(60,2) child index 3
-                WidgetItem(Widgets.find(60, 2)?.getChildren()?.get(3)).click()
+                WidgetItem(Widgets.find(Client.client, 60, 2)?.getChildren()?.get(3)).click()
 
                 //Turn off music
                 //Open audio section
-                WidgetItem(Widgets.find(261, 1)?.getChildren()?.get(3)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 1)?.getChildren()?.get(3)).click()
                 delay(Random.nextLong(300, 700))
-                WidgetItem(Widgets.find(261, 45)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 45)).click()
                 delay(Random.nextLong(300, 700))
-                WidgetItem(Widgets.find(261, 51)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 51)).click()
                 delay(Random.nextLong(300, 700))
-                WidgetItem(Widgets.find(261, 57)).click()
+                WidgetItem(Widgets.find(Client.client, 261, 57)).click()
 
             }
 
@@ -343,7 +343,7 @@ class TutorialIsland: AbstractScript()  {
         class MoveToFishingSpot : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val text = "Follow the path to find the next instructor"
-                val chatBox = WidgetItem(Widgets.find(263, 1))
+                val chatBox = WidgetItem(Widgets.find(Client.client, 263, 1))
                 val doorLocation = Tile(3098, 3107)
                 val playerGlobalLoc = Players.getLocal().getGlobalLocation()
 
@@ -361,7 +361,7 @@ class TutorialIsland: AbstractScript()  {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
                 val survivalExpert = NPCs.findNpc(8503)
                 val text = "Follow the path to find the next instructor"
-                val chatBox = WidgetItem(Widgets.find(263, 1))
+                val chatBox = WidgetItem(Widgets.find(Client.client, 263, 1))
                 return chatBox.containsText(text) && survivalExpert.size > 0 && survivalExpert[0].isOnScreen()
             }
 
@@ -962,10 +962,10 @@ class TutorialIsland: AbstractScript()  {
                     delay(Random.nextLong(300, 700))
                     Players.getLocal().waitTillIdle()
                     //Wait for smiting widgets
-                    Widgets.waitTillWidgetNotNull(312, 9)
+                    Widgets.waitTillWidgetNotNull(Client.client,312, 9)
 
                     val oldInventoryCount = Inventory.getCount()
-                    val daggerSmitingPage = WidgetItem(Widgets.find(312, 9)?.getChildren()?.get(2))
+                    val daggerSmitingPage = WidgetItem(Widgets.find(Client.client, 312, 9)?.getChildren()?.get(2))
                     if (daggerSmitingPage.widget != null) {
                         daggerSmitingPage.click()
 
@@ -1065,7 +1065,7 @@ class TutorialIsland: AbstractScript()  {
             override suspend fun execute() {
                 Inventory.getItem(1205)?.click()
                 delay(Random.nextLong(2500, 4000))
-                WidgetItem(Widgets.find(84, 4)).click() // Close out of Equoptment status
+                WidgetItem(Widgets.find(Client.client, 84, 4)).click() // Close out of Equoptment status
             }
 
         }
@@ -1227,6 +1227,13 @@ class TutorialIsland: AbstractScript()  {
                 Inventory.getItem(882)?.click()
                 delay(Random.nextLong(1500, 2500))
 
+                //Move over to a better spot to kill the rats
+                val idealSpot = Tile(3110,9515)
+                if(idealSpot.distanceTo() > 3){
+                    idealSpot.clickOnMiniMap()
+                    Players.getLocal().waitTillIdle()
+                }
+
                 val rats = NPCs.findNpc("Giant rat")
                 if (rats.size > 0) {
                     val randomIndex = (0..2).random()
@@ -1336,14 +1343,14 @@ class TutorialIsland: AbstractScript()  {
 
         private suspend fun closePollWidget() {
             try {
-                var pollWidget = Widgets.find(345, 0)
+                var pollWidget = Widgets.find(Client.client, 345, 0)
                 if (pollWidget != null) {
-                    val pollExitWidget = WidgetItem(Widgets.find(345, 2)?.getChildren()?.get(3))
+                    val pollExitWidget = WidgetItem(Widgets.find(Client.client, 345, 2)?.getChildren()?.get(3))
                     pollExitWidget.click()
                 }
-                pollWidget = Widgets.find(310, 0)
+                pollWidget = Widgets.find(Client.client, 310, 0)
                 if (pollWidget != null) {
-                    val pollExitWidget = WidgetItem(Widgets.find(310, 2)?.getChildren()?.get(3))
+                    val pollExitWidget = WidgetItem(Widgets.find(Client.client, 310, 2)?.getChildren()?.get(3))
                     pollExitWidget.click()
                 }
 
@@ -1585,7 +1592,7 @@ class TutorialIsland: AbstractScript()  {
 
         class MainlandLogout : Job() {
             override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-                val completedWidget = WidgetItem(Widgets.find(193, 2))
+                val completedWidget = WidgetItem(Widgets.find(Client.client, 193, 2))
                 return completedWidget.containsText("Welcome to Lumbridge!")
             }
 

@@ -27,15 +27,15 @@ class Dialog {
         }
 
         fun getDialogContinue(): WidgetItem {
-            var dialog = WidgetItem(Widgets.find(PARENT, CONTINUE))
+            var dialog = WidgetItem(Widgets.find(Client.client, PARENT, CONTINUE))
             if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                dialog = WidgetItem(Widgets.find(PARENT_BACKUP, CONTINUE_BACKUP))
+                dialog = WidgetItem(Widgets.find(Client.client, PARENT_BACKUP, CONTINUE_BACKUP))
                 if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                    dialog = WidgetItem(Widgets.find(PARENT_BACKUP_2, CONTINUE_BACKUP_2))
+                    dialog = WidgetItem(Widgets.find(Client.client, PARENT_BACKUP_2, CONTINUE_BACKUP_2))
                     if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                        dialog = WidgetItem(Widgets.find(PARENT_BACKUP_3, CONTINUE_BACKUP_3))
+                        dialog = WidgetItem(Widgets.find(Client.client, PARENT_BACKUP_3, CONTINUE_BACKUP_3))
                         if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                            dialog = WidgetItem(Widgets.find(PARENT_BACKUP_4, CONTINUE_BACKUP_4))
+                            dialog = WidgetItem(Widgets.find(Client.client, PARENT_BACKUP_4, CONTINUE_BACKUP_4))
                         }
                     }
                 }
@@ -71,7 +71,7 @@ class Dialog {
         }
 
         suspend fun selectionOption(action: String) {
-            var dialog = WidgetItem(Widgets.find(PARENT_DIALOG_OPTIONS, 1))
+            var dialog = WidgetItem(Widgets.find(Client.client, PARENT_DIALOG_OPTIONS, 1))
             // Options are in children but not index zero
             dialog.widget?.getChildren()?.iterator()?.forEach {
                 if (it.getText().contains(action)) {
@@ -82,7 +82,7 @@ class Dialog {
         }
 
         suspend fun selectRandomOption() {
-            val dialog = WidgetItem(Widgets.find(PARENT_DIALOG_OPTIONS, 1))
+            val dialog = WidgetItem(Widgets.find(Client.client, PARENT_DIALOG_OPTIONS, 1))
             val childrenSize = dialog.widget?.getChildren()?.size ?: 0
             if (childrenSize == 0) return
             val randOptionIndex = Random.nextInt(1, childrenSize)

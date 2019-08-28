@@ -1,9 +1,9 @@
 package com.p3achb0t.api
 
-import com.p3achb0t.UserDetails
+import UserDetails
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -11,7 +11,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.Point
-import kotlin.random.Random
 
 class LoggingIntoClient {
     companion object {
@@ -19,8 +18,8 @@ class LoggingIntoClient {
     }
 }
 
-fun LoggingIntoAccount() {
-    //Logging into the applet
+fun LoggingIntoAccount(ctx: Client) {
+    //Logging into the client
     Thread.sleep(3000)
     GlobalScope.launch {
 
@@ -30,18 +29,8 @@ fun LoggingIntoAccount() {
 //                clientData = getClientData()
 
                 // When loaded login
-                if (!LoggingIntoClient.loggedIn && Client.client.getGameState() == 10) {
-
-                    // Login username
-
-                    val x = Random.nextInt(146) + 390
-                    val y = Random.nextInt(38) + 273
-                    mouse.moveMouse(Point(x,y), true, Mouse.ClickType.Left)
-                    delay(200)
-                    Keyboard.sendKeys(UserDetails.data.username)
-                    delay(200)
-
-                    mouse.moveMouse(Point(363, 263), true, Mouse.ClickType.Left)
+                if (!LoggingIntoClient.loggedIn && ctx.getGameState() == 10) {
+                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
                     Keyboard.sendKeys(UserDetails.data.password)
@@ -49,13 +38,13 @@ fun LoggingIntoAccount() {
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
 
-                    while (Client.client.getGameState() != 30) {
+                    while (ctx.getGameState() != 30) {
                         delay(100)
                     }
                     delay(1500)
-                    //println("Clicking login")
-                    val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
-                    //println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
+                    println("Clicking login")
+                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()
                     LoggingIntoClient.loggedIn = true
@@ -76,7 +65,7 @@ fun LoggingIntoAccount() {
                     println(statck.toString())
                 }
             }
-            delay(200)
+            delay(50)
         }
     }
 }

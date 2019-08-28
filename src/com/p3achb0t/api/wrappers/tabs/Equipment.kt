@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -98,7 +99,7 @@ class Equipment {
 
         fun getItemAtSlot(slot: Slot): WidgetItem? {
             return try {
-                val widget = Widgets.find(WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
+                val widget = Widgets.find(Client.client, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
                 val item = Items.getItemInfo(
                     NODE_ID,
                     slot.cacheIndex

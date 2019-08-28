@@ -1,6 +1,7 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.CustomCanvas
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.Client.Companion.client
 import com.p3achb0t.api.wrappers.ClientMode
@@ -115,33 +116,34 @@ class Calculations {
             return Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2)
         }
 
-        fun initScreenWidgetDimentions() {
+        fun initScreenWidgetDimentions(ctx: Client) {
             println("Init screenDimentions")
             // main screen 122,0
             //Mini map 164, 17
             val miniMapWidget = WidgetItem(
-                Widgets.find(
-                    WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
-                    WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
+                Widgets.find(ctx
+                        ,
+                        WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
+                        WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
                 )
             )
             miniMapDimensions = miniMapWidget.area
 
 
             //inventory bar 164,47(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47))
+            val inventoryTop = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47))
             inventoryBarTopDimensions = inventoryTop.area
-            val inventoryBottom = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33))
+            val inventoryBottom = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33))
             inventoryBarBottomDimensions = inventoryBottom.area
             //chatbox 162,0
-            val chatbox = WidgetItem(Widgets.find(WidgetID.CHATBOX_GROUP_ID, 0))
+            val chatbox = WidgetItem(Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, 0))
             chatBoxDimensions = chatbox.area
-            val tabWidget = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65))
+            val tabWidget = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65))
             inventoryDimensions = tabWidget.area
 
-            mainScreen = WidgetItem(Widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0)).area
+            mainScreen = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0)).area
             // Only set to true if login screen is not visible
-            val login = WidgetItem(Widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+            val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
             println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
             if (login.area.x == 0
                 && login.area.y == 0
@@ -160,11 +162,11 @@ class Calculations {
             }
         }
 
-        fun isOnscreen(point: Point): Boolean {
+        fun isOnscreen(ctx: Client, point: Point): Boolean {
             return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.contains(point)
             } else {
-                if (!screenInit) initScreenWidgetDimentions()
+                if (!screenInit) initScreenWidgetDimentions(ctx)
 
                 var isBehindInventory = false
                 // Inventory if visible area:164,65
@@ -180,11 +182,11 @@ class Calculations {
             }
         }
 
-        fun isOnscreen(rectangle: Rectangle): Boolean {
+        fun isOnscreen(ctx: Client, rectangle: Rectangle): Boolean {
             return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.intersects(rectangle)
             } else {
-                if (!screenInit) initScreenWidgetDimentions()
+                if (!screenInit) initScreenWidgetDimentions(ctx)
 
 
                 var isBehindInventory = false

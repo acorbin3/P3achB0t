@@ -50,7 +50,7 @@ class Magic {
             }
             if (!isOpen()) open()
 
-            val spellWidget = WidgetItem(Widgets.find(PARENT, spell.widgetID))
+            val spellWidget = WidgetItem(Widgets.find(Client.client, PARENT, spell.widgetID))
             if (spellWidget.widget != null) {
                 println(spellWidget.getInteractPoint())
 

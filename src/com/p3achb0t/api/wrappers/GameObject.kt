@@ -58,7 +58,10 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
                 else -> null
             }
         }
-
+    override fun isMouseOverObj(): Boolean {
+        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return getConvexHull().contains(mousePoint)
+    }
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0)
@@ -111,7 +114,7 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
 
 
     override fun isOnScreen(): Boolean {
-        return Calculations.isOnscreen(getConvexHull().bounds)
+        return Calculations.isOnscreen(Client.client,getConvexHull().bounds )
     }
 
     fun getTriangles(): ArrayList<Polygon> {
