@@ -12,7 +12,7 @@ class TestScript : AbstractScript() {
     var camera = 0
 
     override suspend fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Running Start")
     }
 
     override suspend fun stop() {

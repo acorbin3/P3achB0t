@@ -8,6 +8,8 @@ import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
 import javax.swing.JTabbedPane
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
     var poll: AbstractScript? = null
@@ -42,10 +44,12 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         val player = JMenuItem("Run Loop")
         player.addActionListener {
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client.script?.loop()
-            //poll?.loop()
-            println("sfsdfdsf")
+            GlobalScope.launch {
+                val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+                game.client.script?.loop()
+                //poll?.loop()
+                println("sfsdfdsf")
+            }
         }
 
         val other = JMenuItem("Stop")

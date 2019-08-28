@@ -77,7 +77,7 @@ object Main {
 
 
         val analyser = Analyser()
-        analyser.parseJar(gamePackJar, runeStar)
+        analyser.createInjectedJar(gamePackJar, runeStar)
 
 //        return
 
@@ -98,7 +98,7 @@ object Main {
 
         game.apply {
             preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
-            val loader = RSLoader()
+            val loader = RSLoader(83)
             game.setStub(loader)
         }
 
@@ -396,7 +396,7 @@ object Main {
 //                        Calculations.initScreenWidgetDimentions()
 //                    }
 //
-                TutorialIsland.run()
+//                TutorialIsland.run()
 
 
 //                }
@@ -407,8 +407,8 @@ object Main {
 
 //        EventQueue.invokeLater(::createAndShowGUI)
 //        EventQueue.invokeLater(::createWidgetExplorer)
-        WidgetExplorerV3(Client.client).createWidgetExplorer()
-        LoggingIntoAccount(Client.client)
+//        WidgetExplorerV3(Client.client).createWidgetExplorer()
+//        LoggingIntoAccount(Client.client)
 //        class MyApp : App(WidgetExplorer::class)
 //        launch<MyApp>()
 
