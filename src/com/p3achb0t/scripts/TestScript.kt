@@ -11,16 +11,16 @@ class TestScript : AbstractScript() {
 
     var camera = 0
 
-    override fun start() {
+    override suspend fun start() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override fun loop() {
+    override suspend fun loop() {
 
         camera = ctx.getCameraY()
         Thread.sleep(2000)

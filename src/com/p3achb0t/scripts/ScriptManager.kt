@@ -3,10 +3,13 @@ package com.p3achb0t.scripts
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.ui.components.TabManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ScriptManager private constructor() {
 
-    var scriptThreads = mutableListOf<Thread>()
+    var scriptThreads = mutableListOf<Job>()
 
     private object Holder { val INSTANCE = ScriptManager() }
 
@@ -20,23 +23,23 @@ class ScriptManager private constructor() {
 
         val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
 
-        var x = script.javaClass.getAnnotation(ScriptManifest::class.java)
+        val x = script.javaClass.getAnnotation(ScriptManifest::class.java)
         if(x!=null){
-            game.client.category = x?.category
-            game.client.name = x?.name
-            game.client.author = x?.author
+            game.client.category = x.category
+            game.client.name = x.name
+            game.client.author = x.author
         }
 
         game.client.script = script
 
-        val thread = Thread({
+        val job = GlobalScope.launch {
+            game.client.script?.start()
             while (true) {
                 game.client.script?.loop()
             }
-        })
+        }
 
-        scriptThreads.add(thread)
-        thread.start()
+        scriptThreads.add(job)
     }
 
 
@@ -48,7 +51,8 @@ class ScriptManager private constructor() {
         game.client.name = ""
         game.client.category = ""
         game.client.author = ""
-        scriptThreads[TabManager.instance.getSelectedIndexx()].stop()
+        //TODO - need to appropriately call the script.stop method
+        scriptThreads[TabManager.instance.getSelectedIndexx()].cancel()
         scriptThreads.removeAt(TabManager.instance.getSelectedIndexx())
 
     }

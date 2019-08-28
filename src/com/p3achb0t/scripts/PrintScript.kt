@@ -9,15 +9,15 @@ class PrintScript : AbstractScript() {
 
 
 
-    override fun loop() {
+    override suspend fun loop() {
         println("${ctx.getLoginState()} <---- Loaded PrintScript")
     }
 
-    override fun start() {
+    override suspend fun start() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

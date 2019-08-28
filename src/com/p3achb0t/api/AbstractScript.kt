@@ -19,11 +19,11 @@ abstract class AbstractScript {
         return ctx
     }
 
-    abstract fun loop()
+    abstract suspend fun loop()
 
-    abstract fun start()
+    abstract suspend fun start()
 
-    abstract fun stop()
+    abstract suspend fun stop()
 
     open fun draw(g: Graphics) {}
 }
