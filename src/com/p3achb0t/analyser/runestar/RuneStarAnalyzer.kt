@@ -15,7 +15,7 @@ class RuneStarAnalyzer {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
         val hookFileName = "runestarHooks.json"
-        val file = File("./$hookDir/$hookFileName")
+        val file = File("../$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
@@ -50,6 +50,8 @@ class RuneStarAnalyzer {
 
     fun parseJar(jar: JarFile) {
         // We are going to look at the Jar and find the Class Nodes so can get more data
+        // to ensure we have unique field names, calss names in the hierarchy structure.
+        // Also add in the "get"'s as part of the interfaces
 
         val classNodeRefs = mutableMapOf<String, ClassNode>()
         val enumeration = jar.entries()

@@ -1,5 +1,7 @@
 package com.p3achb0t.ui.components
 
+import com.p3achb0t.ui.GlobalConfigs
+
 class Constants {
     companion object {
         // URLs
@@ -18,12 +20,13 @@ class Constants {
 
         // Other constants
         val REVISION = 181
+        var INJECTED_JAR_NAME = "gamepack-${REVISION}-injected.jar"
 
         //Icons
         const val RESOURCE_DIR = "resources"
         const val ICONS_DIR = "icons"
 
-        const val ICON_PATH = "./" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
+        const val ICON_PATH = "../" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
 
         const val ICON_MOUSE = "mouse.png"
         const val ICON_PAUSE = "pause.png"

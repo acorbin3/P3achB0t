@@ -117,7 +117,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <kotlin.version>1.3.41</kotlin.version>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-    <main.class>com.p3achb0t.Main</main.class>
+    <main.class>com.p3achb0t.ui.Main</main.class>
   </properties>
 
   <build>

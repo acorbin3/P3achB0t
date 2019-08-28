@@ -3,6 +3,7 @@ package com.p3achb0t.analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.class_generation.cleanType
 import com.p3achb0t.class_generation.isBaseType
+import com.p3achb0t.ui.components.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
@@ -21,7 +22,7 @@ class Analyser{
 
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
 
-    fun parseJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
+    fun createInjectedJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
         while(enumeration.hasMoreElements()){
             val entry = enumeration.nextElement()
@@ -112,7 +113,7 @@ class Analyser{
             }
         }
         val path = System.getProperty("user.dir")
-        val out = JarOutputStream(FileOutputStream(File("$path/injected_jar.jar")))
+        val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
         for (classNode in classes.values) {
             val cw = ClassWriter(0)
             classNode.accept(cw)

@@ -4,7 +4,9 @@ import com.p3achb0t.RSLoader
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.GlobalConfigs
 import com.p3achb0t.ui.Keyboard
+import com.p3achb0t.ui.components.Constants
 import com.p3achb0t.util.JarLoader
 
 import java.applet.Applet
@@ -29,7 +31,7 @@ class ClientInstance {
 
 
     init {
-        val clientClazz = JarLoader.load("./app/gamepack-181-injected.jar","client")
+        val clientClazz = JarLoader.load("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}","client")
         client = clientClazz as Client
         applet = clientClazz as Applet
 
