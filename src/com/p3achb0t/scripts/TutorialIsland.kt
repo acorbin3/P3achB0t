@@ -1,8 +1,6 @@
 package com.p3achb0t.scripts
 
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.LoggingIntoClient
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.*
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.*
@@ -19,8 +17,22 @@ import kotlin.random.Random
 
 private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
+@ScriptManifest("","","")
+class TutorialIsland: AbstractScript()  {
+    override suspend fun loop() {
+        run()
+        //Delay between 0-50 ms
+        delay((Math.random() * 50).toLong())
 
-class TutorialIsland {
+    }
+
+    override suspend fun start() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun stop() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
 
