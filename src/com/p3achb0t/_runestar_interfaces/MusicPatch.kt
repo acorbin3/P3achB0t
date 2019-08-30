@@ -2,11 +2,11 @@ package com.p3achb0t._runestar_interfaces
 
 interface MusicPatch: Node{
 	fun getRawSounds(): Array<RawSound>
-	fun get__b(): ByteArray
 	fun get__k(): ByteArray
-	fun get__p(): ByteArray
-	fun get__l(): Array<MusicPatchNode2>
-	fun get__q(): Int
-	fun get__i(): IntArray
-	fun get__e(): ShortArray
+    fun get__t(): ByteArray
+    fun get__u(): ByteArray
+    fun get__n(): Array<MusicPatchNode2>
+    fun get__s(): Int
+    fun get__q(): IntArray
+    fun get__i(): ShortArray
 }

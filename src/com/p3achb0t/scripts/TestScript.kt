@@ -37,7 +37,7 @@ class TestScript : AbstractScript() {
         g.drawString("Game cycle: ${ctx.getCycle()}", 50,120)
         g.drawString("Game state: ${ctx.getGameState()}", 50,140)
         g.drawString("Login state: ${ctx.getLoginState()}", 50,160)
-        g.drawString("Account status: ${ctx.get__cq_aw()}", 50,180)
+//        g.drawString("Account status: ${ctx.get__cq_aw()}", 50,180)
 
         g.color = Color.GREEN
         g.drawString("$camera", 50, 210)

@@ -24,7 +24,7 @@ class RuneStarAnalyzer {
             analyzers[clazz.`class`] = clazz
             classRefObs[clazz.name] = clazz
         }
-        val folder = "./src/com/p3achb0t/_runestar_interfaces/"
+        val folder = "../src/com/p3achb0t/_runestar_interfaces/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "../$hookDir/$hookFileName"

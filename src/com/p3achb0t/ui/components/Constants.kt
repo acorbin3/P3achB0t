@@ -1,7 +1,5 @@
 package com.p3achb0t.ui.components
 
-import com.p3achb0t.ui.GlobalConfigs
-
 class Constants {
     companion object {
         // URLs
@@ -19,7 +17,7 @@ class Constants {
 
 
         // Other constants
-        val REVISION = 181
+        val REVISION = 182
         var INJECTED_JAR_NAME = "gamepack-${REVISION}-injected.jar"
 
         //Icons

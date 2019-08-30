@@ -4,5 +4,5 @@ interface FriendSystem {
 	fun getFriendsList(): FriendsList
 	fun getIgnoreList(): IgnoreList
 	fun getLoginType(): LoginType
-	fun get__b(): Int
+    fun get__t(): Int
 }
