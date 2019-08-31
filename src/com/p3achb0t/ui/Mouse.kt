@@ -3,9 +3,8 @@ package com.p3achb0t.ui
 import java.awt.Component
 import java.awt.Point
 import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionListener
 import java.awt.event.MouseListener
-
+import java.awt.event.MouseMotionListener
 
 
 class Mouse(private val component: Component) : MouseListener, MouseMotionListener {
@@ -42,7 +41,7 @@ class Mouse(private val component: Component) : MouseListener, MouseMotionListen
         val me = MouseEvent(component,
                 MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x,
                 y, 1, false, if (left) MouseEvent.BUTTON1 else MouseEvent.BUTTON3)
-        for (l in component.getMouseListeners()) {
+        for (l in component.mouseListeners) {
             if (l !is Mouse) {
                 l.mousePressed(me)
             }
@@ -63,7 +62,7 @@ class Mouse(private val component: Component) : MouseListener, MouseMotionListen
             val me = MouseEvent(component,
                     MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), 0, x,
                     y, 0, false, if (left) MouseEvent.BUTTON1 else MouseEvent.BUTTON3)
-            for (l in component.getMouseListeners()) {
+            for (l in component.mouseListeners) {
                 if (l !is Mouse) {
                     l.mouseClicked(me)
                 }
@@ -80,7 +79,7 @@ class Mouse(private val component: Component) : MouseListener, MouseMotionListen
             val me = MouseEvent(component,
                     MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, x,
                     y, 0, false, if (left) MouseEvent.BUTTON1 else MouseEvent.BUTTON3)
-            for (l in component.getMouseListeners()) {
+            for (l in component.mouseListeners) {
                 if (l !is Mouse) {
                     l.mouseReleased(me)
                 }
@@ -102,7 +101,7 @@ class Mouse(private val component: Component) : MouseListener, MouseMotionListen
             val me = MouseEvent(component,
                     MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x,
                     y, 0, false)
-            for (l in component.getMouseMotionListeners()) {
+            for (l in component.mouseMotionListeners) {
                 if (l !is Mouse) {
                     l.mouseMoved(me)
                 }
@@ -114,8 +113,8 @@ class Mouse(private val component: Component) : MouseListener, MouseMotionListen
     }
 
     override fun mouseMoved(e: MouseEvent) {
-        x = e.getX()
-        y = e.getY()
+        x = e.x
+        y = e.y
     }
 
     override fun mouseDragged(e: MouseEvent) {

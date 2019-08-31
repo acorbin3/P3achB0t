@@ -3,8 +3,7 @@ package com.p3achb0t.ui
 import java.awt.Component
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import java.util.HashMap
-
+import java.util.*
 
 
 class Keyboard(private val component: Component) : KeyListener {
@@ -191,12 +190,12 @@ class Keyboard(private val component: Component) : KeyListener {
      * @param e
      */
     fun sendKeyEvent(e: KeyEvent) {
-        for (kl in component.getKeyListeners()) {
+        for (kl in component.keyListeners) {
             if (kl is Keyboard) {
                 continue
             }
-            if (!e.isConsumed()) {
-                when (e.getID()) {
+            if (!e.isConsumed) {
+                when (e.id) {
                     KeyEvent.KEY_PRESSED -> kl.keyPressed(e)
                     KeyEvent.KEY_RELEASED -> kl.keyReleased(e)
                     KeyEvent.KEY_TYPED -> kl.keyTyped(e)

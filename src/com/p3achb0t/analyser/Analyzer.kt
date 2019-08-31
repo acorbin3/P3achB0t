@@ -62,17 +62,17 @@ class Analyser{
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
 
-            if (clazzData.`class`.equals("Canvas")) {
-                injectCanvas(classes[clazzData.name]!!)
-                println("${clazzData.name} : ${clazzData.`super`} ")
-            }
+            //            if (clazzData.`class` == "Canvas") {
+//                injectCanvas(classes[clazzData.name]!!)
+//                println("${clazzData.name} : ${clazzData.`super`} ")
+//            }
 
-            //            if (obsClass in classes) {
             val classInterface = "$classPath/${clazzData.`class`}"
             if (!classInterface.contains("Usernamed")) {
                 //println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
             }
+
             val getterList = ArrayList<GetterData>()
             clazzData.fields.forEach {
                 if (it.owner != "broken" && !it.field.contains("getLocalUser")) {
@@ -108,8 +108,8 @@ class Analyser{
             }
             for (method in getterList) {
 
-                if (method.fieldDescription != "")
-                    injectMethod(method, classes, clazzData.`class`, runeStar)
+//                if (method.fieldDescription != "")
+//                    injectMethod(method, classes, clazzData.`class`, runeStar)
             }
         }
         val path = System.getProperty("user.dir")
@@ -149,7 +149,7 @@ class Analyser{
                 for (insn in method.instructions) {
                     if (insn.opcode == Opcodes.INVOKESPECIAL) {
                         if (insn is MethodInsnNode) {
-                            val mnode = insn as MethodInsnNode
+                            val mnode = insn
                             mnode.owner = "com/p3achb0t/ui/RsCanvas"
                             return
                         }

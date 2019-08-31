@@ -11,7 +11,7 @@ class JarLoader {
             val file = File(path)
             val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
             val classLoader = URLClassLoader(urlArray)
-            return classLoader?.loadClass(main)?.newInstance()
+            return classLoader.loadClass(main)?.newInstance()
         }
     }
 }

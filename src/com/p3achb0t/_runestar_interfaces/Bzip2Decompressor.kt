@@ -1,4 +1,3 @@
 package com.p3achb0t._runestar_interfaces
 
-interface Bzip2Decompressor {
-}
+interface Bzip2Decompressor

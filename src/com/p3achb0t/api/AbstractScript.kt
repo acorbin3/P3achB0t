@@ -11,7 +11,7 @@ abstract class AbstractScript {
 
     init {
         val c = TabManager.instance.getSelected()
-        ctx = c.client.client!!
+        ctx = c.client.client
         players = Players(ctx)
     }
 
