@@ -36,7 +36,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         npc.addActionListener {
             //poll = PrintScript()
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client.script = PrintScript()
+            game.client!!.script = PrintScript()
             //println("SEND KEYS 2")
             //val game = TabManager.instance.getInstance(1)
             //game.client.keyboard?.sendKeys("Kasper")
@@ -46,7 +46,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         player.addActionListener {
             GlobalScope.launch {
                 val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-                game.client.script?.loop()
+                game.client!!.script?.loop()
                 //poll?.loop()
                 println("sfsdfdsf")
             }

@@ -837,36 +837,6 @@
     ]
   },
   {
-    "class": "ClientError",
-    "name": "mv",
-    "super": "java.lang.RuntimeException",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "cause",
-        "owner": "mv",
-        "name": "n",
-        "access": 0,
-        "descriptor": "Ljava/lang/Throwable;"
-      },
-      {
-        "field": "message",
-        "owner": "mv",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/lang/Throwable;Ljava/lang/String;)V"
-      }
-    ]
-  },
-  {
     "class": "SoundCache",
     "name": "dh",
     "super": "java.lang.Object",

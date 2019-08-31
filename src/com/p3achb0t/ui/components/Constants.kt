@@ -24,7 +24,7 @@ class Constants {
         const val RESOURCE_DIR = "resources"
         const val ICONS_DIR = "icons"
 
-        const val ICON_PATH = "../" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
+        const val ICON_PATH = "./" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
 
         const val ICON_MOUSE = "mouse.png"
         const val ICON_PAUSE = "pause.png"
