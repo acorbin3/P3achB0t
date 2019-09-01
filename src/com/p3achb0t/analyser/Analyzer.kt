@@ -101,6 +101,8 @@ class Analyser{
                     injectMethod(method, classes, clazzData.`class`, runeStar)
             }
         }
+
+
         val path = System.getProperty("user.dir")
         val out = JarOutputStream(FileOutputStream(File("$path/injected_jar.jar")))
         for (classNode in classes.values) {

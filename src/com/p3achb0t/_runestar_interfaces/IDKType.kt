@@ -8,5 +8,5 @@ interface IDKType: DualNode{
 	fun getRecol_s(): ShortArray
 	fun getRetex_d(): ShortArray
 	fun getRetex_s(): ShortArray
-	fun get__u(): Boolean
+	fun get__c(): Boolean
 }

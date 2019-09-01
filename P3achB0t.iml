@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4">
-  <component name="AutoImportedSourceRoots">
-    <option name="directories">
-      <list>
-        <option value="C:\Users\C0rbin\IdeaProjects\P3achB0t/src/" />
-      </list>
-    </option>
-  </component>
-</module>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" version="4" />

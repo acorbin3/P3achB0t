@@ -1,5 +1,5 @@
 package com.p3achb0t._runestar_interfaces
 
 interface FontName {
-	fun get__b(): String
+	fun get__t(): String
 }

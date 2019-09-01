@@ -30,7 +30,7 @@ fun playerPaint(g: Graphics) {
                 val polygon = getActorTriangles(
                     _player,
                     Client.client.getPlayerAppearance_cachedModels(),
-                    _player.getAppearance().get__l()
+                    _player.getAppearance().get__n()
                 )
                 g.color = Color.YELLOW
                 polygon.forEach {
@@ -39,7 +39,7 @@ fun playerPaint(g: Graphics) {
                 val ch = getConvexHull(
                     _player,
                     Client.client.getPlayerAppearance_cachedModels(),
-                    _player.getAppearance().get__l()
+                    _player.getAppearance().get__n()
                 )
                 g.color = Color.RED
                 g.drawPolygon(ch)
