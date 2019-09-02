@@ -62,10 +62,10 @@ class Analyser{
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
 
-            //            if (clazzData.`class` == "Canvas") {
-//                injectCanvas(classes[clazzData.name]!!)
-//                println("${clazzData.name} : ${clazzData.`super`} ")
-//            }
+            if (clazzData.`class` == "Canvas") {
+                injectCanvas(classes[clazzData.name]!!)
+                println("${clazzData.name} : ${clazzData.`super`} ")
+            }
 
             val classInterface = "$classPath/${clazzData.`class`}"
             if (!classInterface.contains("Usernamed")) {
@@ -108,8 +108,8 @@ class Analyser{
             }
             for (method in getterList) {
 
-//                if (method.fieldDescription != "")
-//                    injectMethod(method, classes, clazzData.`class`, runeStar)
+                if (method.fieldDescription != "")
+                    injectMethod(method, classes, clazzData.`class`, runeStar)
             }
         }
         val path = System.getProperty("user.dir")

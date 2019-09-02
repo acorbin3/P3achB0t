@@ -39,38 +39,11 @@ class GameWindow : JFrame() {
     }
 
     fun run() {
-
-
-
-
-
-
         setLocationRelativeTo(null)
         TabManager.instance.addInstance()
-        //val g = GamePanel()
-        //tabs.addTab("Game", g)
-        //g.setContext()
-
-        //tabs.addTab("1", tffff)
-        //println("before thread")
-
-        //tffff.g()
-        //setup()
-        //remove(layout2.getLayoutComponent(BorderLayout.PAGE_END))
-        //validate()
-
-
-
-
     }
 
     fun setup() {
-
-        //jMenuBar = GameMenu()
-        //tabs.addTab("1", GameTab(1, tabs))
-        //tabs.addTab("2", GameTab(2, tabs))
-        //tabs.addTab("3", GameTab(3, tabs))
-        //add(tabs)
     }
 
 }

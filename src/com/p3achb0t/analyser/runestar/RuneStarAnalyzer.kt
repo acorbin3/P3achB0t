@@ -7,38 +7,7 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
 import java.util.jar.JarFile
-/*
-  {
-    "class": "ClientError",
-    "name": "mv",
-    "super": "java.lang.RuntimeException",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "cause",
-        "owner": "mv",
-        "name": "n",
-        "access": 0,
-        "descriptor": "Ljava/lang/Throwable;"
-      },
-      {
-        "field": "message",
-        "owner": "mv",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/lang/Throwable;Ljava/lang/String;)V"
-      }
-    ]
-  },
- */
+
 class RuneStarAnalyzer {
     val analyzers = mutableMapOf<String, ClassHook>()
     val classRefObs = mutableMapOf<String, ClassHook>()

@@ -94,7 +94,6 @@ private fun genFunction(
         )
         functionName = "get${field.field.capitalize()}"
     } else {
-        //TODO - update internal fields to include the class
 
         val lField = classRefObs[clazz.value.name]?.fields?.find { it.field == field.field }
         field.field = "${clazz.value.`class`}_${field.field}"

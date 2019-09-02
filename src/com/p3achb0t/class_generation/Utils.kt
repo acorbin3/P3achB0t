@@ -1,6 +1,5 @@
 package com.p3achb0t.class_generation
 
-import com.p3achb0t.analyser.RuneLiteJSONClasses
 import com.p3achb0t.analyser.runestar.ClassHook
 
 
@@ -96,33 +95,6 @@ fun getJavaArrayString(count: Int, type: String): String {
     }
 }
 
-
-fun isFieldNameUnique(
-    clazz: RuneLiteJSONClasses.ClassDefinition?,
-    fieldName: String,
-    classRefObs: MutableMap<String, RuneLiteJSONClasses.ClassDefinition>
-): Int {
-    if (clazz?.fields?.count() == 0) {
-        return 0
-    }
-    var count = 0
-    clazz?.fields?.iterator()?.forEach { field ->
-        //        println("\t ${field.field}")
-        if (field.field == fieldName) {
-            count += 1
-        }
-    }
-
-    val superClass = clazz?._super
-//    println("$count $superClass")
-    if (superClass == "")
-        return count
-    if (superClass in classRefObs) {
-//        println(classRefObs[superClass]?._class)
-        return isFieldNameUnique(classRefObs[superClass], fieldName, classRefObs).let { count.plus(it) }
-    }
-    return count
-}
 
 fun isFieldNameUnique(
     clazz: ClassHook?,

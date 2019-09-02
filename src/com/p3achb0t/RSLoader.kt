@@ -14,7 +14,7 @@ class RSLoader(val world: Int) : AppletStub {
 
     override fun getParameter(name: String?): String {
         //println("Getting $name : ${params[name]}")
-        return params[name]!!
+        return params[name]?: ""
     }
 
     override fun getAppletContext(): AppletContext = null!!
