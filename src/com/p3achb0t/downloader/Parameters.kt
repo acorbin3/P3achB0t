@@ -15,7 +15,8 @@ class Parameters(world: Int){
     }
 
     fun parse(world:Int){
-        val urlText = "http://oldschool$world.$PARAMETER_BASE_URL"
+        //val urlText = "http://oldschool$world.$PARAMETER_BASE_URL"
+        val urlText = "http://oldschool83.runescape.com/jav_config.ws"
         //println("Getting params from $urlText")
         val connection = URL(urlText).openConnection()
         connection.connect()

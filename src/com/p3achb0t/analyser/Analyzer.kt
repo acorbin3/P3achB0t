@@ -213,7 +213,11 @@ class Analyser{
         }
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null")) {
-            methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
+
+                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
+                methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
+
+
         }else{
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }

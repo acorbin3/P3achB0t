@@ -41,11 +41,11 @@ class TabManager private constructor() : JTabbedPane() {
         Thread.sleep(500)
 
         // setup mouse and keyboard under here <---------------
-        val keyboard = Keyboard(g.client.getApplet().getComponent(0))
-        g.client.getApplet().addKeyListener(keyboard)
+        val keyboard = Keyboard(g.client!!.getApplet().getComponent(0))
+        g.client!!.getApplet().addKeyListener(keyboard)
         //g.client.keyboard = keyboard
-        val mouse = Mouse(g.client.getApplet().getComponent(0))
-        g.client.getApplet().addMouseListener(mouse)
+        val mouse = Mouse(g.client!!.getApplet().getComponent(0))
+        g.client!!.getApplet().addMouseListener(mouse)
 
 
 

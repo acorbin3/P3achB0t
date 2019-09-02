@@ -25,17 +25,17 @@ class ScriptManager private constructor() {
 
         val x = script.javaClass.getAnnotation(ScriptManifest::class.java)
         if(x!=null){
-            game.client.category = x.category
-            game.client.name = x.name
-            game.client.author = x.author
+            game.client!!.category = x.category
+            game.client!!.name = x.name
+            game.client!!.author = x.author
         }
 
-        game.client.script = script
+        game.client!!.script = script
 
         val job = GlobalScope.launch {
-            game.client.script?.start()
+            game.client!!.script?.start()
             while (true) {
-                game.client.script?.loop()
+                game.client!!.script?.loop()
             }
         }
 
@@ -47,10 +47,10 @@ class ScriptManager private constructor() {
     fun stop() {
 
         val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-        game.client.script = null
-        game.client.name = ""
-        game.client.category = ""
-        game.client.author = ""
+        game.client!!.script = null
+        game.client!!.name = ""
+        game.client!!.category = ""
+        game.client!!.author = ""
         //TODO - need to appropriately call the script.stop method
         scriptThreads[TabManager.instance.getSelectedIndexx()].cancel()
         scriptThreads.removeAt(TabManager.instance.getSelectedIndexx())

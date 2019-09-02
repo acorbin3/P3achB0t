@@ -7,7 +7,38 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
 import java.util.jar.JarFile
-
+/*
+  {
+    "class": "ClientError",
+    "name": "mv",
+    "super": "java.lang.RuntimeException",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "cause",
+        "owner": "mv",
+        "name": "n",
+        "access": 0,
+        "descriptor": "Ljava/lang/Throwable;"
+      },
+      {
+        "field": "message",
+        "owner": "mv",
+        "name": "u",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/Throwable;Ljava/lang/String;)V"
+      }
+    ]
+  },
+ */
 class RuneStarAnalyzer {
     val analyzers = mutableMapOf<String, ClassHook>()
     val classRefObs = mutableMapOf<String, ClassHook>()
@@ -15,7 +46,7 @@ class RuneStarAnalyzer {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
         val hookFileName = "runestarHooks.json"
-        val file = File("../$hookDir/$hookFileName")
+        val file = File("./$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
@@ -27,7 +58,7 @@ class RuneStarAnalyzer {
         val folder = "../src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
-        return "../$hookDir/$hookFileName"
+        return "./$hookDir/$hookFileName"
     }
 
     private fun genFunction(
