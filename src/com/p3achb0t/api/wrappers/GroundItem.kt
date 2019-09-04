@@ -14,18 +14,18 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0) : Locatable,
-    Interactable {
+class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0, override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client) : Interactable(client),
+    Locatable {
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return Calculations.worldToScreen(region.x, region.y, Client.client.getPlane())
+        return client?.let { Calculations.worldToScreen(region.x, region.y, client?.getPlane(), it) } ?: Point()
     }
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return MainApplet.mouse.click(Calculations.worldToMiniMap(position.x, position.y))
+        return client?.let { Calculations.worldToMiniMap(position.x, position.y, it) }?.let { MainApplet.mouse.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {
@@ -42,35 +42,39 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + Client.client.getBaseX(),
-            position.y / 128 + Client.client.getBaseY(),
+            position.x / 128 + client?.getBaseX()!!,
+            position.y / 128 + client?.getBaseY()!!,
             position.plane
         )
     }
 
 
     override fun isOnScreen(): Boolean {
-        return Calculations.isOnscreen(Client.client,getConvexHull().bounds )
+        return client?.let { Calculations.isOnscreen(it,getConvexHull().bounds ) } ?: false
     }
 
     suspend fun take() {
-        val inventoryCount = Inventory.getCount()
+        val inventoryCount = client?.let { Inventory(it).getCount() }
         if (interact("Take")) {
             Utils.waitFor(2, object : Utils.Condition {
 
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    println("Waiting for inventory to change $inventoryCount == ${Inventory.getCount()}")
-                    return inventoryCount != Inventory.getCount()
+                    println("Waiting for inventory to change $inventoryCount == ${client?.let { Inventory(it).getCount() }}")
+                    return inventoryCount != client?.let { Inventory(it).getCount() }
                 }
             })
         }
     }
 
     fun getTriangles(): ArrayList<Polygon> {
-        val groundItemModels = Client.client.getObjType_cachedModels()
-        val model: Model? = getModel(groundItemModels)
-        return model?.let { getTrianglesFromModel(position, it) } ?: ArrayList()
+        val groundItemModels = client?.getObjType_cachedModels()
+        val model: Model? = groundItemModels?.let { getModel(it) }
+        return if(model != null && client != null) {
+            getTrianglesFromModel(position, model, client)
+        }else{
+            ArrayList()
+        }
     }
 
     private fun getModel(
@@ -97,9 +101,13 @@ class GroundItem(val id: Int, val position: ObjectPositionInfo, val stackSize: I
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = Client.client.getObjType_cachedModels()
-        val model: Model? = getModel(groundItemModels)
-        return model?.let { getConvexHullFromModel(position, it) } ?: Polygon()
+        val groundItemModels = client?.getObjType_cachedModels()
+        val model: Model? = groundItemModels?.let { getModel(it) }
+        return if(model != null && client != null) {
+            getConvexHullFromModel(position, model,client )
+        }else{
+            Polygon()
+        }
     }
 
 }

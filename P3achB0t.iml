@@ -7,6 +7,7 @@
       </list>
     </option>
   </component>
+  <component name="ExternalSystem" externalSystem="Maven" />
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JVM 11" allPlatforms="JVM [11]" useProjectSettings="false">

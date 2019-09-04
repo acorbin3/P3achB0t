@@ -1,5 +1,6 @@
 package com.p3achb0t
 
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.interfaces.PaintListener
 import java.awt.Canvas
@@ -9,7 +10,7 @@ import java.awt.Graphics
 import java.awt.event.ActionListener
 import java.awt.image.BufferedImage
 
-class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
+class CustomCanvas(var oldCanvasHash: Int, val client: Client) : Canvas() {
 
     var counter = 0
 
@@ -41,17 +42,17 @@ class CustomCanvas(var oldCanvasHash: Int) : Canvas() {
             g.color = Color.GREEN
             if (MainApplet.selectedWidget != null) {
                 if (MainApplet.selectedWidget!!.getType() == 2) {
-                    val retcs = Widget.getItemsRects(MainApplet.selectedWidget!!)
+                    val retcs = Widget.getItemsRects(MainApplet.selectedWidget!!,client)
                     retcs.iterator().forEach { rect ->
                         g.drawRect(rect.x, rect.y, rect.width, rect.height)
                     }
                 } else {
-                    val rect = Widget.getDrawableRect(MainApplet.selectedWidget!!)
+                    val rect = Widget.getDrawableRect(MainApplet.selectedWidget!!, client)
                     rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
                     try {
                         g.color = Color.MAGENTA
                         for (child in MainApplet.selectedWidget?.getChildren()!!) {
-                            val rect2 = Widget.getDrawableRect(child)
+                            val rect2 = Widget.getDrawableRect(child,client )
                             g.drawRect(rect2.x, rect2.y, rect2.width, rect2.height)
                         }
                     } catch (e: Exception) {

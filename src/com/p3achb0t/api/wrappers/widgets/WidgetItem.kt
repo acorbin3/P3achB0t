@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
@@ -9,13 +10,14 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 class WidgetItem(
-    var widget: Component? = null,
-    var area: Rectangle = widget?.let { Widget.getDrawableRect(it) } ?: Rectangle(),
-    var id: Int = widget?.getItemId() ?: 0,
-    var stackSize: Int = widget?.getItemQuantity() ?: 0,
-    var index: Int = 0,
-    var type: Type = Type.SHOP
-) : Interactable {
+        var widget: Component? = null,
+        var area: Rectangle = widget?.let { client?.let { it1 -> Widget.getDrawableRect(it, it1) } } ?: Rectangle(),
+        var id: Int = widget?.getItemId() ?: 0,
+        var stackSize: Int = widget?.getItemQuantity() ?: 0,
+        var index: Int = 0,
+        var type: Type = Type.SHOP,
+        client: Client?
+) : Interactable(client) {
     override suspend fun clickOnMiniMap(): Boolean {
         println("Widgets are not a thing to click on minimap")
         return false
@@ -51,12 +53,12 @@ class WidgetItem(
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
                 || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
         if (textContains != null && textContains)
-            return super.interact(action)
+            return super.interact(action )
         else {
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
                 if (it.getText().toLowerCase().contains(action)) {
-                    return WidgetItem(it).interact(action)
+                    return WidgetItem(it, client =client).interact(action)
                 }
             }
             return false

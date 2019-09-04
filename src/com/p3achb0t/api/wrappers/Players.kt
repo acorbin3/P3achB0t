@@ -1,11 +1,7 @@
 package com.p3achb0t.api.wrappers
 
-
-class Players {
-    companion object {
-        fun getLocal(): Player {
-            return Player(Client.client.getLocalPlayer())
-        }
-
+class Players(val client: com.p3achb0t._runestar_interfaces.Client) {
+    fun getLocal(): Player {
+        return Player(client.getLocalPlayer(), client)
     }
 }

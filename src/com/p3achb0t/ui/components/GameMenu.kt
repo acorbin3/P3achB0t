@@ -4,6 +4,7 @@ import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.scripts.PrintScript
 import com.p3achb0t.scripts.ScriptManager
 import com.p3achb0t.scripts.TestScript
+import com.p3achb0t.scripts.TutorialIsland
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -42,6 +43,17 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             //game.client.keyboard?.sendKeys("Kasper")
         }
 
+        val tutorialIslandMenuItem = JMenuItem("Tutorial Island")
+        tutorialIslandMenuItem.addActionListener{
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            game.client!!.script = TutorialIsland()
+            GlobalScope.launch {
+                println("Kicking off the Loop")
+                while(true)
+                    game.client!!.script?.loop()
+            }
+        }
+
         val player = JMenuItem("Run Loop")
         player.addActionListener {
             GlobalScope.launch {
@@ -61,6 +73,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         menu.add(npc)
         menu.add(player)
         menu.add(other)
+        menu.add(tutorialIslandMenuItem)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 

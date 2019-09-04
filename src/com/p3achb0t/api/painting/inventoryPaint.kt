@@ -1,14 +1,15 @@
 package com.p3achb0t.api.painting
 
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import java.awt.Color
 import java.awt.Graphics
 
-fun inventoryPaint(g: Graphics) {
+fun inventoryPaint(g: Graphics, client: Client) {
     try {
         // Look at inventory
-        if (Inventory.isOpen()) {
-            val items = Inventory.getAll()
+        if (Inventory(client).isOpen()) {
+            val items = Inventory(client).getAll()
             if (items.size > 0) {
 
                 items.forEach {

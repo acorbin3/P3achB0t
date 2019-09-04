@@ -1,19 +1,17 @@
 package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.MainApplet
-import com.p3achb0t.api.Calculations.Companion.midPoint
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
-import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
-import kotlin.math.abs
 import kotlin.random.Random
 
-interface Interactable {
-    fun getInteractPoint(): Point
-    fun isMouseOverObj(): Boolean
+abstract class Interactable(val client: Client?) {
+    abstract fun getInteractPoint(): Point
+    abstract fun isMouseOverObj(): Boolean
 
     fun getRandomPoint(poly: Polygon): Point {
 
@@ -42,7 +40,7 @@ interface Interactable {
     }
 
 
-    suspend fun interact(action: String): Boolean {
+    open suspend fun interact(action: String): Boolean {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
@@ -67,7 +65,7 @@ interface Interactable {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return Interact.interact(desiredPoint, action)
+        return if (client != null) Interact(client).interact(desiredPoint, action) else false
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
@@ -86,7 +84,7 @@ interface Interactable {
         )
     }
 
-    suspend fun clickOnMiniMap(): Boolean
+    abstract suspend fun clickOnMiniMap(): Boolean
 
     suspend fun click(): Boolean {
         val point = getInteractPoint()

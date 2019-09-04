@@ -1,14 +1,13 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import kotlinx.coroutines.delay
 
-class Equipment {
+class Equipment(val client: com.p3achb0t._runestar_interfaces.Client) {
 
 
     //Info from each item comes from child widget in index 1
@@ -33,81 +32,81 @@ class Equipment {
             ItemsKeptOnDeath(21),
             CallFollower(23),
         }
+    }
 
-        fun isOpen(): Boolean {
-            return Tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
-        }
+    fun isOpen(): Boolean {
+        return Tabs(client).getOpenTab() == Tabs.Tab_Types.Equiptment
+    }
 
-        suspend fun open(waitForActionToComplete: Boolean = true) {
-            if (isOpen()) return
+    suspend fun open(waitForActionToComplete: Boolean = true) {
+        if (isOpen()) return
 
-            println("Opening Equiptment tab")
-            Tabs.openTab(Tabs.Tab_Types.Equiptment)
-            //Wait for tab to be open
-            if (waitForActionToComplete)
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return Tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
-                    }
-                })
-            if (!isOpen()) open()
-        }
+        println("Opening Equiptment tab")
+        Tabs(client).openTab(Tabs.Tab_Types.Equiptment)
+        //Wait for tab to be open
+        if (waitForActionToComplete)
+            Utils.waitFor(2, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return Tabs(client).getOpenTab() == Tabs.Tab_Types.Equiptment
+                }
+            })
+        if (!isOpen()) open()
+    }
 
-        suspend fun clickButton(slot: Slot, waitForActionToComplete: Boolean = true) {
-            val item = getItemAtSlot(slot)
-            println("Removing item from ${slot.name} ${item?.area}")
-            item?.click()
-            // Wait till item gets removed
-            if (waitForActionToComplete)
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return !isEquipmentSlotEquipted(slot)
-                    }
-                })
-        }
+    suspend fun clickButton(slot: Slot, waitForActionToComplete: Boolean = true) {
+        val item = getItemAtSlot(slot)
+        println("Removing item from ${slot.name} ${item?.area}")
+        item?.click()
+        // Wait till item gets removed
+        if (waitForActionToComplete)
+            Utils.waitFor(2, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return !isEquipmentSlotEquipted(slot)
+                }
+            })
+    }
 
-        suspend fun unEquiptItem(slot: Slot, waitForActionToComplete: Boolean = true) {
-            val item = getItemAtSlot(slot)
-            println("Removing item from ${slot.name} ${item?.area}")
-            item?.interact("Remove")
-            // Wait till item gets removed
-            if (waitForActionToComplete)
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return !isEquipmentSlotEquipted(slot)
-                    }
-                })
+    suspend fun unEquiptItem(slot: Slot, waitForActionToComplete: Boolean = true) {
+        val item = getItemAtSlot(slot)
+        println("Removing item from ${slot.name} ${item?.area}")
+        item?.interact("Remove" )
+        // Wait till item gets removed
+        if (waitForActionToComplete)
+            Utils.waitFor(2, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return !isEquipmentSlotEquipted(slot)
+                }
+            })
 
-        }
+    }
 
-        fun isEquipmentSlotEquipted(slot: Slot): Boolean {
-            try {
-                val item = Items.getItemInfo(
+    fun isEquipmentSlotEquipted(slot: Slot): Boolean {
+        try {
+            val item = Items(client).getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
-                )
-                if (item.id > -1)
-                    return true
-            } catch (e: Exception) {
-                return false
-            }
+            )
+            if (item.id > -1)
+                return true
+        } catch (e: Exception) {
             return false
         }
+        return false
+    }
 
-        fun getItemAtSlot(slot: Slot): WidgetItem? {
-            return try {
-                val widget = Widgets.find(Client.client, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
-                val item = Items.getItemInfo(
+    fun getItemAtSlot(slot: Slot): WidgetItem? {
+        return try {
+            val widget = Widgets.find(client, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
+            val item = Items(client).getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
-                )
-                WidgetItem(widget, id = item.id, stackSize = item.stackSize)
-            } catch (e: Exception) {
-                null
-            }
+            )
+            WidgetItem(widget, id = item.id, stackSize = item.stackSize, client = client)
+        } catch (e: Exception) {
+            null
         }
     }
 }

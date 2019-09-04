@@ -3,7 +3,6 @@ package com.p3achb0t.api
 import com.p3achb0t.CustomCanvas
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
-import com.p3achb0t.api.wrappers.Client.Companion.client
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.api.wrappers.Tile
@@ -49,7 +48,7 @@ class Calculations {
             }
         }
 
-        fun getTileHeight(plane: Int, x: Int, y: Int): Int {
+        fun getTileHeight(client: Client, plane: Int, x: Int, y: Int): Int {
             val x1 = x shr 7
             val y1 = y shr 7
             val x2 = x and 127
@@ -76,13 +75,13 @@ class Calculations {
          * @param modelHeight
          * @return Point : Convert from tile to point on screen
          */
-        fun worldToScreen(regionX: Int, regionY: Int, modelHeight: Int): Point {
+        fun worldToScreen(regionX: Int, regionY: Int, modelHeight: Int, client: Client): Point {
             var x = regionX
             var y = regionY
             if (x < 128 || y < 128 || x > 13056 || y > 13056) {
                 return Point(-1, -1)
             }
-            var z = getTileHeight(client.getPlane(), x, y) - modelHeight
+            var z = getTileHeight(client, client.getPlane(), x, y) - modelHeight
             x -= client.getCameraX()
             z -= client.getCameraZ()
             y -= client.getCameraY()
@@ -116,34 +115,35 @@ class Calculations {
             return Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2)
         }
 
-        fun initScreenWidgetDimentions(ctx: Client) {
+        fun initScreenWidgetDimentions(client: Client) {
             println("Init screenDimentions")
             // main screen 122,0
             //Mini map 164, 17
             val miniMapWidget = WidgetItem(
-                Widgets.find(ctx
-                        ,
-                        WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
-                        WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
-                )
+                    Widgets.find(client
+                            ,
+                            WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
+                            WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
+                    ),
+                    client =client
             )
             miniMapDimensions = miniMapWidget.area
 
 
             //inventory bar 164,47(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47))
+            val inventoryTop = WidgetItem(Widgets.find(client, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47), client =client)
             inventoryBarTopDimensions = inventoryTop.area
-            val inventoryBottom = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33))
+            val inventoryBottom = WidgetItem(Widgets.find(client, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), client =client)
             inventoryBarBottomDimensions = inventoryBottom.area
             //chatbox 162,0
-            val chatbox = WidgetItem(Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, 0))
+            val chatbox = WidgetItem(Widgets.find(client, WidgetID.CHATBOX_GROUP_ID, 0), client =client)
             chatBoxDimensions = chatbox.area
-            val tabWidget = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65))
+            val tabWidget = WidgetItem(Widgets.find(client, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65), client =client)
             inventoryDimensions = tabWidget.area
 
-            mainScreen = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0)).area
+            mainScreen = WidgetItem(Widgets.find(client, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), client =client).area
             // Only set to true if login screen is not visible
-            val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+            val login = WidgetItem(Widgets.find(client, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), client =client)
             println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
             if (login.area.x == 0
                 && login.area.y == 0
@@ -163,14 +163,14 @@ class Calculations {
         }
 
         fun isOnscreen(ctx: Client, point: Point): Boolean {
-            return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
+            return if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.contains(point)
             } else {
                 if (!screenInit) initScreenWidgetDimentions(ctx)
 
                 var isBehindInventory = false
                 // Inventory if visible area:164,65
-                if (Tabs.getOpenTab() != Tabs.Tab_Types.None) {
+                if (Tabs(ctx).getOpenTab() != Tabs.Tab_Types.None) {
                     isBehindInventory = inventoryDimensions.contains(point)
                 }
 
@@ -183,7 +183,7 @@ class Calculations {
         }
 
         fun isOnscreen(ctx: Client, rectangle: Rectangle): Boolean {
-            return if (ClientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
+            return if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.intersects(rectangle)
             } else {
                 if (!screenInit) initScreenWidgetDimentions(ctx)
@@ -191,7 +191,7 @@ class Calculations {
 
                 var isBehindInventory = false
                 // Inventory if visible area:164,65
-                if (Tabs.getOpenTab() != Tabs.Tab_Types.None) {
+                if (Tabs(ctx).getOpenTab() != Tabs.Tab_Types.None) {
                     isBehindInventory = inventoryDimensions.intersects(rectangle)
                 }
 
@@ -206,7 +206,7 @@ class Calculations {
 
 
         // This will convert the regional coordinates to the miniMap
-        fun worldToMiniMap(x: Int, y: Int): Point {
+        fun worldToMiniMap(x: Int, y: Int, client: Client): Point {
 
             // Note: Multiply by tile size before converting to local coordinates to preserve precision
             val tilePX = ((x - client.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
@@ -222,7 +222,7 @@ class Calculations {
             val diffX = tilePX - playerPX
             val diffY = tilePY - playerPY
 
-            val miniMapWidget = MiniMap.getWidget() ?: return Point(-1, -1)
+            val miniMapWidget = MiniMap(client).getWidget() ?: return Point(-1, -1)
 
             val angle = client.getCamAngleY() and 0x7ff
 
@@ -232,14 +232,14 @@ class Calculations {
             val calcCenterX = (sineCalc * diffY + cosCalc * diffX) shr Constants.TRIG_SHIFT
             val calcCenterY = (sineCalc * diffX - cosCalc * diffY) shr Constants.TRIG_SHIFT
 
-            val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget) + miniMapWidget.getWidth() / 2
-            val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget) + miniMapWidget.getHeight() / 2
-            return if (MiniMap.getMapArea().contains(Point(screenX, screenY))) {
+            val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget, client) + miniMapWidget.getWidth() / 2
+            val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget, client) + miniMapWidget.getHeight() / 2
+            return if (MiniMap(client).getMapArea().contains(Point(screenX, screenY))) {
                 Point(screenX - 2, screenY - 1)
             } else Point(-1, -1)
         }
 
-        private fun getHeight(localX: Int, localY: Int, plane: Int): Int {
+        private fun getHeight(localX: Int, localY: Int, plane: Int, client: Client): Int {
             val sceneX = localX shr LOCAL_COORD_BITS
             val sceneY = localY shr LOCAL_COORD_BITS
             if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE) {
@@ -264,7 +264,7 @@ class Calculations {
          * @param size the size of the area (ie. 3x3 AoE evaluates to size 3)
          * @return a polygon representing the tiles in the area
          */
-        fun getCanvasTileAreaPoly(localX: Int, localY: Int, size: Int = 1): Polygon {
+        fun getCanvasTileAreaPoly(client: Client, localX: Int, localY: Int, size: Int = 1): Polygon {
             val plane = client.getPlane()
 
             val swX = localX - size * LOCAL_TILE_SIZE / 2
@@ -289,15 +289,15 @@ class Calculations {
             if (tilePlane > 0)
                 tilePlane -= 1
 
-            val swHeight = getHeight(swX, swY, tilePlane)
-            val nwHeight = getHeight(neX, swY, tilePlane)
-            val neHeight = getHeight(neX, neY, tilePlane)
-            val seHeight = getHeight(swX, neY, tilePlane)
+            val swHeight = getHeight(swX, swY, tilePlane, client)
+            val nwHeight = getHeight(neX, swY, tilePlane, client)
+            val neHeight = getHeight(neX, neY, tilePlane, client)
+            val seHeight = getHeight(swX, neY, tilePlane, client)
 
-            val p1 = worldToScreen(swX, swY, swHeight)
-            val p2 = worldToScreen(neX, swY, nwHeight)
-            val p3 = worldToScreen(neX, neY, neHeight)
-            val p4 = worldToScreen(swX, neY, seHeight)
+            val p1 = worldToScreen(swX, swY, swHeight, client)
+            val p2 = worldToScreen(neX, swY, nwHeight, client)
+            val p3 = worldToScreen(neX, neY, neHeight, client)
+            val p4 = worldToScreen(swX, neY, seHeight, client)
 
             //Return empty poloy if 1 is -1,-1
             if (p1 == Point(-1, -1) || p2 == Point(-1, -1) || p3 == Point(-1, -1) || p4 == Point(-1, -1)) {
@@ -317,7 +317,7 @@ class Calculations {
                 if (poly.intersects(it))
                     polyArea.subtract(Area(it))
             }
-            if (Tabs.getOpenTab() != Tabs.Tab_Types.None && poly.intersects(inventoryDimensions)) {
+            if (Tabs(client).getOpenTab() != Tabs.Tab_Types.None && poly.intersects(inventoryDimensions)) {
                 polyArea.subtract(Area(inventoryDimensions))
             }
             // Convert back to polygon using the path iterator.
@@ -353,8 +353,8 @@ class Calculations {
          * @param a tile
          * @return current distance between player and specific tile
          */
-        fun distanceTo(a: Tile): Int {
-            val loc = com.p3achb0t.api.wrappers.Players.getLocal().getGlobalLocation()
+        fun distanceTo(a: Tile, client: Client): Int {
+            val loc = com.p3achb0t.api.wrappers.Players(client).getLocal().getGlobalLocation()
             return distanceBetween(a.x, a.y, loc.x, loc.y)
         }
 

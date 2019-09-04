@@ -7,7 +7,6 @@ import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.painting.PaintDebug
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Mouse
@@ -15,8 +14,6 @@ import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
-import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -158,7 +155,7 @@ object Main {
                     canvasField?.isAccessible = true
                     val oldCanvas = canvasField?.get(game) as Canvas // Needed to have Applet instead of null
                     game.remove(oldCanvas)
-                    customCanvas = CustomCanvas(oldCanvas.hashCode())
+                    customCanvas = CustomCanvas(oldCanvas.hashCode(),Client.client )
 
                     // Adding mouse, keyboard, and paint listeners
                     for (ml in oldCanvas.mouseListeners) {
@@ -181,7 +178,7 @@ object Main {
                         }
 
                     }
-                    customCanvas?.addPaintListener(debugPaint())
+                    customCanvas?.addPaintListener(debugPaint(client = Client.client))
 
                     customCanvas?.addMouseMotionListener(mouseListener)
                     for (kl in oldCanvas.keyListeners) {
@@ -304,7 +301,7 @@ object Main {
 ////            Inventory.getAll().forEach {
 ////                if(!Inventory.isOpen()) Inventory.open()
 ////                it.hover(true,Mouse.ClickType.Right)
-////                if(Menu.isActionInMenu("Wield")) {
+////                if(Menu(client).isActionInMenu("Wield")) {
 ////                    println("Wielding: ${it.id}")
 ////                    it.interact("Wield")
 ////                    // Wait till item leaves inventory
@@ -319,21 +316,21 @@ object Main {
 //
 //
 //                    //If bank not open, find a banker and open it
-////            if(!Bank.isOpen()){
-////                Bank.open()
+////            if(!Bank(client).isOpen()){
+////                Bank(client).open()
 ////                //TODO -withdraw
-////                Bank.withdraw(995,3)
-////                Bank.deposit(995,3)
-////                Bank.withdraw(995,7)
-////                Bank.depositAll()
-////                Bank.close()
+////                Bank(client).withdraw(995,3)
+////                Bank(client).deposit(995,3)
+////                Bank(client).withdraw(995,7)
+////                Bank(client).depositAll()
+////                Bank(client).close()
 ////            }else{
-////                println("Bank Size: ${Bank.getSize()}")
-////                val items = Bank.getAll()
+////                println("Bank Size: ${Bank(client).getSize()}")
+////                val items = Bank(client).getAll()
 ////                items.forEach {
 ////                    println("${it.widgetID}:${it.stackSize}")
 ////                }
-////                Bank.close()
+////                Bank(client).close()
 ////            }
 //
 //

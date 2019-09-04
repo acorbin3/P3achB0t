@@ -1,10 +1,12 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.MainApplet
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import java.applet.Applet
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -13,23 +15,23 @@ import java.awt.Polygon
 //Tile are stored in global coordinates.
 
 //Default of -1,-1 means the tile is not valid
-class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Interactable {
+class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=null, override var loc_client: Client? = client) : Locatable, Interactable(client) {
     companion object {
         val NIL = Tile(-1, -1, -1)
     }
 
-    fun getPolyBounds(): Polygon {
+    fun getPolyBounds(client: com.p3achb0t._runestar_interfaces.Client): Polygon {
         val regional = getRegionalLocation()
-        return getCanvasTileAreaPoly(regional.x, regional.y)
+        return getCanvasTileAreaPoly(client, regional.x, regional.y)
     }
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
-        return getCanvasTileAreaPoly(getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint)
+        return client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
     }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return Calculations.worldToScreen(region.x, region.y, z)
+        return client?.let { Calculations.worldToScreen(region.x, region.y, z, it) } ?: Point()
     }
     override fun toString(): String {
         return "($x,$y,$z)"
@@ -37,19 +39,19 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
 
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
-        val point = Calculations.worldToMiniMap(regional.x, regional.y)
-        return MainApplet.mouse.click(point)
+        val point = client?.let { Calculations.worldToMiniMap(regional.x, regional.y, it) }
+        return point?.let { MainApplet.mouse.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {
         val regional = getRegionalLocation()
-        val poly = Calculations.getCanvasTileAreaPoly(regional.x, regional.y)
-        return getRandomPoint(poly)
+        val poly = client?.let { getCanvasTileAreaPoly(it, regional.x, regional.y) }
+        return poly?.let { getRandomPoint(it) } ?: Point()
     }
 
     override fun isOnScreen(): Boolean {
-        val tilePoly = getCanvasTileAreaPoly(getRegionalLocation().x, getRegionalLocation().y)
-        return Calculations.isOnscreen(Client.client,tilePoly.bounds )
+        val tilePoly = client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y) }
+        return client?.let { tilePoly?.bounds?.let { it1 -> Calculations.isOnscreen(it, it1) } } ?: false
     }
 
     override fun distanceTo(locatable: Locatable): Int {
@@ -62,7 +64,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0) : Locatable, Intera
 
     // This is distance to local player
     override fun distanceTo(): Int {
-        return Calculations.distanceTo(this)
+        return client?.let { Calculations.distanceTo(this, it) } ?: -1
     }
 
     override fun draw(g: Graphics2D, color: Color) {

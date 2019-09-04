@@ -15,7 +15,7 @@ class Walking {
                 val t = it.getGlobalLocation()
                 println("Clicking on map: for tile: (${t.x},${t.y})")
                 it.clickOnMiniMap()
-//                if(!it.isOnScreen()) Camera.turnAngleTo(it)
+//                if(!it.isOnScreen()) Camera(client).turnAngleTo(it)
 //                it.click()
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {

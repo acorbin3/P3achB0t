@@ -5,15 +5,15 @@ import com.p3achb0t.api.wrappers.Client
 import java.awt.Color
 import java.awt.Graphics
 
-fun rightClickMenuPaint(g: Graphics) {
+fun rightClickMenuPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
     try {
         // Look into menu
-        val mCount = Client.client.getMenuOptionsCount()
-        val heigth = Client.client.getMenuHeight()
-        val width = Client.client.getMenuWidth()
-        val mX = Client.client.getMenuX()
-        val mY = Client.client.getMenuY()
-        val mVisible = Client.client.getIsMiniMenuOpen()
+        val mCount = client.getMenuOptionsCount()
+        val heigth = client.getMenuHeight()
+        val width = client.getMenuWidth()
+        val mX = client.getMenuX()
+        val mY = client.getMenuY()
+        val mVisible = client.getIsMiniMenuOpen()
         if (mVisible) {
             g.color = Color.YELLOW
             g.drawRect(mX, mY, width, heigth)
@@ -24,9 +24,9 @@ fun rightClickMenuPaint(g: Graphics) {
 
                 g.color = Color.BLUE
                 g.drawRect(mX - 1, mY + yDiff, width, lineHeight)
-                var menuAction = Client.client.getMenuActions()[mCount - i]
+                var menuAction = client.getMenuActions()[mCount - i]
                 menuAction = Utils.cleanColorText(menuAction)
-                var menuOption = Client.client.getMenuTargetNames()[mCount - i]
+                var menuOption = client.getMenuTargetNames()[mCount - i]
                 menuOption = Utils.cleanColorText(menuOption)
                 val action = "$menuAction $menuOption"
                 g.color = Color.GREEN

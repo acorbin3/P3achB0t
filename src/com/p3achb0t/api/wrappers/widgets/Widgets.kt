@@ -31,7 +31,7 @@ class Widgets {
             try {
                 for (child in ctx.getInterfaceComponents()[parent]) {
                     if (child != null) {
-                        val tempWidget = WidgetItem(child)
+                        val tempWidget = WidgetItem(child, client =ctx)
                         if (tempWidget.containsText(text)) {
                             return child
                         }
@@ -52,16 +52,16 @@ class Widgets {
         fun isWidgetAvaliable(ctx: Client, parent: Int, child: Int): Boolean {
             return find(ctx, parent, child) != null
         }
-        fun getWidgetDetails(widget: Component,index: Int): String{
+        fun getWidgetDetails(widget: Component, index: Int, client: Client): String{
             var result = "--$index--\n"
             try {
                 val containerID = widget.getId().shr(16)
                 val childID = widget.getId().and(0xFF)
                 result += "Widget ID:" + widget.getId() + "($containerID,$childID)\n"
-                val parentIndex = Widget.getParentIndex(widget)
+                val parentIndex = Widget.getParentIndex(widget,client )
                 result += "raw parent ID: ${widget.getParentId()}\n"
                 result += "parent Index ${parentIndex.parentID}, ${parentIndex.childID} raw:${parentIndex.raw}\n"
-                val chainedParentIndexes = Widget.getChainedParentIndex(widget, ArrayList())
+                val chainedParentIndexes = Widget.getChainedParentIndex(widget, ArrayList(),client )
                 result += "parent Indexes:["
                 chainedParentIndexes.forEach {
                     result += "(${it.parentID},${it.childID}),"
@@ -79,7 +79,7 @@ class Widgets {
                 result += "Item ID:" + widget.getItemId() + "\n"
                 result += "getChildIndex:" + widget.getChildIndex() + "\n"
                 result += "Raw Position: ${widget.getX()},${widget.getY()}\n"
-                result += "Position: ${Widget.getWidgetX(widget)},${Widget.getWidgetY(widget)}\n"
+                result += "Position: ${Widget.getWidgetX(widget, client)},${Widget.getWidgetY(widget, client)}\n"
                 result += "Scroll(x,y) ${widget.getScrollX()},${widget.getScrollY()}\n"
                 result += "Scroll Heigth: ${widget.getScrollHeight()}\n"
                 result += "Scroll Width: ${widget.getScrollWidth()}\n"
@@ -108,25 +108,25 @@ class Widgets {
                 result += "---Internal---\n"
                 result += "Bounds Index: ${widget.getRootIndex()}\n"
                 result += "Bounds x: ["
-                for (i in com.p3achb0t.api.wrappers.Client.client.getRootComponentXs()) {
+                for (i in client.getRootComponentXs()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds y: ["
-                for (i in com.p3achb0t.api.wrappers.Client.client.getRootComponentYs()) {
+                for (i in client.getRootComponentYs()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds Width: ["
-                for (i in com.p3achb0t.api.wrappers.Client.client.getRootComponentWidths()) {
+                for (i in client.getRootComponentWidths()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds Height: ["
-                for (i in com.p3achb0t.api.wrappers.Client.client.getRootComponentHeights()) {
+                for (i in client.getRootComponentHeights()) {
                     result += "$i,"
                 }
                 result += "]\n"
@@ -135,7 +135,7 @@ class Widgets {
 //            result += "Children: ${widget.getChildren().size}"
                 var i = 0
                 widget.getChildren().iterator().forEach {
-                    result += getWidgetDetails(it, i)
+                    result += getWidgetDetails(it, i,client )
                     i += 1
                 }
 //                if (widget.getChildren().isNotEmpty()) {

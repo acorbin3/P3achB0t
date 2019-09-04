@@ -84,7 +84,7 @@ public class WidgetExplorerV3 {
                         Component[][] components = ctx.getInterfaceComponents();
                         Component widget = components[parentID][childID];
                         MainApplet.Data.setSelectedWidget(widget);
-                        String result = Widgets.Companion.getWidgetDetails(widget, 0);
+                        String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);
                         textArea1.setCaretPosition(0);
@@ -115,7 +115,7 @@ public class WidgetExplorerV3 {
             if (components[parentID] != null) {
                 for (Integer childID = 0; childID < components[parentID].length; childID++) {
                     if (components[parentID][childID] != null) {
-                        String result = Widgets.Companion.getWidgetDetails(components[parentID][childID], 0);
+                        String result = Widgets.Companion.getWidgetDetails(components[parentID][childID], 0, ctx);
                         if (result.toLowerCase().contains(searchText.toLowerCase())) {
                             if (currentParentNode == null) {
                                 currentParentNode = new DefaultMutableTreeNode(parentID);
@@ -167,8 +167,8 @@ public class WidgetExplorerV3 {
         textField1.setColumns(0);
         widgetExplorerPanel.add(textField1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(130, -1), 0, false));
-        tree1 = new JTree(treeModel);
+        widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(120, -1), 0, false));
+        tree1 = new JTree();
         tree1.setMaximumSize(new Dimension(100, 74));
         scrollPane1.setViewportView(tree1);
         final JScrollPane scrollPane2 = new JScrollPane();

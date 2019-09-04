@@ -5,6 +5,6 @@ import com.p3achb0t.api.wrappers.Player
 
 class Players(val client: Client) {
     fun getLocal(): Player {
-        return Player(client.getLocalPlayer())
+        return Player(client.getLocalPlayer(), client)
     }
 }

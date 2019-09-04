@@ -1,16 +1,17 @@
 package com.p3achb0t.api
 
 import com.p3achb0t._runestar_interfaces.Actor
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t.api.wrappers.Client
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
 data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
-fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long): ArrayList<Polygon> {
+
+fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, client: Client): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
 
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
@@ -24,7 +25,7 @@ fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID:
                     if (actor != null) {
                         val positionInfo =
                             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygonList = getTrianglesFromModel(positionInfo, model)
+                        polygonList = getTrianglesFromModel(positionInfo, model,client )
                     }
                     break
                 }
@@ -35,16 +36,18 @@ fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID:
     return polygonList
 }
 
-fun getTrianglesFromModel(actor: Actor, model: Model): ArrayList<Polygon> {
+fun getTrianglesFromModel(actor: Actor, model: Model, client: Client): ArrayList<Polygon> {
     return getTrianglesFromModel(
-        ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-        model
+            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
+            model,client
+
     )
 }
 
 fun getTrianglesFromModel(
-    positionInfo: ObjectPositionInfo,
-    model: Model
+        positionInfo: ObjectPositionInfo,
+        model: Model,
+        client: Client
 ): ArrayList<Polygon> {
     val polygonList = ArrayList<Polygon>()
     val locX = positionInfo.x
@@ -78,19 +81,19 @@ fun getTrianglesFromModel(
 //                println("i:$i  indicyX:$indicyX indicyY:$indicyY indicyZ:$indicyZ xPoints.size:${xPoints.size} yPoints.size:${yPoints.size} zPoints.size:${zPoints.size} ")
                 if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
                     val one = Calculations.worldToScreen(
-                        locX + xPoints[indiciesX[i]],
-                        locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]]
+                            locX + xPoints[indiciesX[i]],
+                            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]],client
                     )
                     val two = Calculations.worldToScreen(
-                        locX + xPoints[indiciesY[i]],
-                        locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]]
+                            locX + xPoints[indiciesY[i]],
+                            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]],client
                     )
                     val three = Calculations.worldToScreen(
-                        locX + xPoints[indiciesZ[i]],
-                        locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]]
+                            locX + xPoints[indiciesZ[i]],
+                            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]],client
                     )
                     if (one.x >= 0 && two.x >= 0 && three.x >= 0
-                        && Calculations.isOnscreen(Client.client,one) && Calculations.isOnscreen(Client.client,two ) && Calculations.isOnscreen(Client.client,
+                        && Calculations.isOnscreen(client,one) && Calculations.isOnscreen(client,two ) && Calculations.isOnscreen(client,
                                     three
                             )
                     ) {
@@ -114,7 +117,7 @@ fun getTrianglesFromModel(
     return polygonList
 }
 
-fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long): Polygon {
+fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, client: Client): Polygon {
     var polygon = Polygon()
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
@@ -127,7 +130,7 @@ fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Lon
                     if (actor != null) {
                         val positionInfo =
                             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygon = getConvexHullFromModel(positionInfo, model)
+                        polygon = getConvexHullFromModel(positionInfo, model, client)
                     }
                     break
                 }
@@ -139,16 +142,18 @@ fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Lon
     return polygon
 }
 
-fun getConvexHullFromModel(actor: Actor, model: Model): Polygon {
+fun getConvexHullFromModel(actor: Actor, model: Model, client: Client): Polygon {
     return getConvexHullFromModel(
-        ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-        model
+            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
+            model,client
+
     )
 }
 
 fun getConvexHullFromModel(
-    positionInfo: ObjectPositionInfo,
-    model: Model
+        positionInfo: ObjectPositionInfo,
+        model: Model,
+        client: com.p3achb0t._runestar_interfaces.Client
 ): Polygon {
     val pointList = ArrayList<Point>()
     val locX = positionInfo.x
@@ -180,23 +185,23 @@ fun getConvexHullFromModel(
             val indicyZ = indiciesZ[i]
             if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
                 val one = Calculations.worldToScreen(
-                    locX + xPoints[indicyX],
-                    locY + zPoints[indicyX], 0 - yPoints[indicyX]
+                        locX + xPoints[indicyX],
+                        locY + zPoints[indicyX], 0 - yPoints[indicyX],client
                 )
-                if (one.x >= 0 && Calculations.isOnscreen(Client.client,one )) pointList.add(one)
+                if (one.x >= 0 && Calculations.isOnscreen(client,one )) pointList.add(one)
 
                 val two = Calculations.worldToScreen(
-                    locX + xPoints[indicyY],
-                    locY + zPoints[indicyY], 0 - yPoints[indicyY]
+                        locX + xPoints[indicyY],
+                        locY + zPoints[indicyY], 0 - yPoints[indicyY],client
                 )
-                if (two.x >= 0 && Calculations.isOnscreen(Client.client,two )) pointList.add(two)
+                if (two.x >= 0 && Calculations.isOnscreen(client,two )) pointList.add(two)
 
 //                println("indicyZ:$indicyZ xPoints.size:/=${xPoints.size}")
                 val three = Calculations.worldToScreen(
-                    locX + xPoints[indicyZ],
-                    locY + zPoints[indicyZ], 0 - yPoints[indicyZ]
+                        locX + xPoints[indicyZ],
+                        locY + zPoints[indicyZ], 0 - yPoints[indicyZ],client
                 )
-                if (three.x >= 0 && Calculations.isOnscreen(Client.client,three )) pointList.add(three)
+                if (three.x >= 0 && Calculations.isOnscreen(client,three )) pointList.add(three)
             }
         }
     }

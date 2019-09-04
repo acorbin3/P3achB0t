@@ -14,14 +14,14 @@ import com.p3achb0t.api.wrappers.Tile
 import java.awt.Color
 import java.awt.Graphics
 
-fun gameObjectPaint(g: Graphics) {
+fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphics) {
     if (false) {
-        val sceneData = Client.client.getObjType_cachedModels()
-        val region = Client.client.getScene()
-        val localPlayer = Players.getLocal()
+        val sceneData = client.getObjType_cachedModels()
+        val region = client.getScene()
+        val localPlayer = Players(client).getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
-            if (planeInt == Client.client.getPlane()) {
+            if (planeInt == client.getPlane()) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
@@ -33,25 +33,27 @@ fun gameObjectPaint(g: Graphics) {
                                         // Print out the polygons for the models
                                         if (false) {
                                             val tilePolygon =
-                                                Calculations.getCanvasTileAreaPoly(
-                                                    it.getCenterX(),
-                                                    it.getCenterY()
+                                                Calculations.getCanvasTileAreaPoly(client,
+                                                        it.getCenterX(),
+                                                        it.getCenterY()
                                                 )
                                             g.color = Color.ORANGE
                                             g.drawPolygon(tilePolygon)
                                         }
 
-                                        val go = GameObject(it)
+                                        val go = GameObject(it, client =client)
                                         val globalPos = go.getGlobalLocation()
 
                                         val point =
                                             Calculations.worldToScreen(
-                                                it.getCenterX(),
-                                                it.getCenterY(),
-                                                planeInt
+                                                    it.getCenterX(),
+                                                    it.getCenterY(),
+                                                    planeInt,
+                                                    client
+
                                             )
                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                        Client.client,point
+                                                        client,point
                                                 )
                                         ) {
                                             g.color = Color.GREEN
@@ -62,9 +64,11 @@ fun gameObjectPaint(g: Graphics) {
                                                 getObjectComposite(sceneData, id)
                                             val point2 =
                                                 Calculations.worldToScreen(
-                                                    it.getCenterX(),
-                                                    it.getCenterY(),
-                                                    it.getEntity().getHeight()
+                                                        it.getCenterX(),
+                                                        it.getCenterY(),
+                                                        it.getEntity().getHeight(),
+                                                        client
+
                                                 )
 
 
@@ -92,16 +96,20 @@ fun gameObjectPaint(g: Graphics) {
 
                                                 val modelTriangles =
                                                     getTrianglesFromModel(
-                                                        positionInfo,
-                                                        model
+                                                            positionInfo,
+                                                            model,
+                                                            client
+
                                                     )
                                                 g.color = Color.RED
                                                 modelTriangles.forEach {
                                                     g.drawPolygon(it)
                                                 }
                                                 val hull = getConvexHullFromModel(
-                                                    positionInfo,
-                                                    model
+                                                        positionInfo,
+                                                        model,
+                                                        client
+
                                                 )
                                                 g.color = Color.CYAN
                                                 g.drawPolygon(hull)
@@ -116,8 +124,8 @@ fun gameObjectPaint(g: Graphics) {
 
                             val globalPos =
                                 Tile(
-                                    tile.getX() + Client.client.getBaseX(),
-                                    tile.getY() + Client.client.getBaseY()
+                                    tile.getX() + client.getBaseX(),
+                                    tile.getY() + client.getBaseY()
                                 )
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
@@ -132,9 +140,11 @@ fun gameObjectPaint(g: Graphics) {
                                     getObjectComposite(sceneData, id)
                                 val point2 =
                                     Calculations.worldToScreen(
-                                        wall.getX(),
-                                        wall.getY(),
-                                        wall.getEntity1().getHeight()
+                                            wall.getX(),
+                                            wall.getY(),
+                                            wall.getEntity1().getHeight(),
+                                            client
+
                                     )
 
 
@@ -158,16 +168,20 @@ fun gameObjectPaint(g: Graphics) {
 
                                     val modelTriangles =
                                         getTrianglesFromModel(
-                                            positionInfo,
-                                            model
+                                                positionInfo,
+                                                model,
+                                                client
+
                                         )
                                     g.color = Color.RED
                                     modelTriangles.forEach {
                                         g.drawPolygon(it)
                                     }
                                     val hull = getConvexHullFromModel(
-                                        positionInfo,
-                                        model
+                                            positionInfo,
+                                            model,
+                                            client
+
                                     )
                                     g.color = Color.CYAN
                                     g.drawPolygon(hull)

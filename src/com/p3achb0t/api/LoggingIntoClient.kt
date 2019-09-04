@@ -43,7 +43,7 @@ fun LoggingIntoAccount(ctx: Client) {
                     }
                     delay(1500)
                     println("Clicking login")
-                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), client =ctx)
                     println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()

@@ -4,7 +4,6 @@ import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Menu
 import com.p3achb0t.api.wrappers.tabs.Tabs
@@ -14,49 +13,51 @@ import java.awt.Graphics
 
 data class DebugText(val text: String = "", val color: Color = Color.RED)
 
-fun drawDebugText(g: Graphics) {
+fun drawDebugText(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
 
     val debugText = arrayListOf<DebugText>()
     if (true) {
         g.color = Color.white
         debugText.add(DebugText("Mouse x:${MainApplet.mouseEvent?.x} y:${MainApplet.mouseEvent?.y}"))
-        debugText.add(DebugText("clientData.gameCycle :${Client.client.getCycle()}"))
-        debugText.add(DebugText("Game State:: ${Client.client.getGameState()}"))
-        debugText.add(DebugText("clientData.loginState :${Client.client.getLoginState()}"))
-//        debugText.add(DebugText("Account status :${Client.client.get__cq_aw()}"))
-        debugText.add(DebugText("Camera: x:${Camera.x} y:${Camera.y} z:${Camera.z} pitch:${Camera.pitch} yaw: ${Camera.yaw} angle: ${Camera.angle}"))
-        debugText.add(DebugText("OpenTab: ${Tabs.getOpenTab()?.name}"))
-        debugText.add(DebugText("Bank Status: ${Bank.isOpen()}"))
+        debugText.add(DebugText("clientData.gameCycle :${client.getCycle()}"))
+        debugText.add(DebugText("Game State:: ${client.getGameState()}"))
+        debugText.add(DebugText("clientData.loginState :${client.getLoginState()}"))
+//        debugText.add(DebugText("Account status :${client.get__cq_aw()}"))
+        debugText.add(DebugText("Camera: x:${Camera(client).x} y:${Camera(client).y} z:${Camera(client).z} pitch:${Camera(client).pitch} yaw: ${Camera(client).yaw} angle: ${Camera(client).angle}"))
+        debugText.add(DebugText("OpenTab: ${Tabs(client).getOpenTab()?.name}"))
+        debugText.add(DebugText("Bank Status: ${Bank(client).isOpen()}"))
 
 
 
         try {
-            debugText.add(DebugText("Spell: ${Client.client.getSelectedSpellName()}"))
-            debugText.add(DebugText("Animation: ${Client.client.getLocalPlayer().getSequence()}"))
-            debugText.add(DebugText("Mode: ${ClientMode.getMode().name}"))
+            debugText.add(DebugText("Spell: ${client.getSelectedSpellName()}"))
+            debugText.add(DebugText("Animation: ${client.getLocalPlayer().getSequence()}"))
+            debugText.add(DebugText("Mode: ${ClientMode(client).getMode().name}"))
             debugText.add(
                 DebugText(
-                    "LocalPlayer Position: (${Client.client.getLocalPlayer().getX() / 128},${Client.client.getLocalPlayer().getY() / 128})" +
-                            " RAW: (${Client.client.getLocalPlayer().getX()},${Client.client.getLocalPlayer().getY()}"
+                    "LocalPlayer Position: (${client.getLocalPlayer().getX() / 128},${client.getLocalPlayer().getY() / 128})" +
+                            " RAW: (${client.getLocalPlayer().getX()},${client.getLocalPlayer().getY()}"
                 )
             )
-            debugText.add(DebugText("Base(x,y): (${Client.client.getBaseX()},${Client.client.getBaseY()})"))
+            debugText.add(DebugText("Base(x,y): (${client.getBaseX()},${client.getBaseY()})"))
 
             val miniMapPlayer = Calculations.worldToMiniMap(
-                Client.client.getLocalPlayer().getX(),
-                Client.client.getLocalPlayer().getY()
+                    client.getLocalPlayer().getX(),
+                    client.getLocalPlayer().getY(),
+                    client
+
             )
             debugText.add(
                 DebugText(
                     "localPlayer minimap: (x,y) (${miniMapPlayer.x},${miniMapPlayer.y})" +
-                            "Including base(${Client.client.getLocalPlayer().getX() / 128 + Client.client.getBaseX()}," +
-                            "${Client.client.getLocalPlayer().getY() / 128 + Client.client.getBaseY()})  " +
-                            "mapAngle: ${Client.client.getCamAngleY()}"
+                            "Including base(${client.getLocalPlayer().getX() / 128 + client.getBaseX()}," +
+                            "${client.getLocalPlayer().getY() / 128 + client.getBaseY()})  " +
+                            "mapAngle: ${client.getCamAngleY()}"
                 )
             )
-            debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete() * 100)}"))
-            debugText.add(DebugText("Zoom: ${Client.client.getViewportZoom()}"))
-            debugText.add(DebugText(Menu.getHoverAction()))
+            debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(client) * 100)}"))
+            debugText.add(DebugText("Zoom: ${client.getViewportZoom()}"))
+            debugText.add(DebugText(Menu(client).getHoverAction()))
 //            debugText.add(DebugText())
 
 
