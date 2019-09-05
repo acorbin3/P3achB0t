@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers.widgets
 import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
 import java.awt.Rectangle
@@ -11,13 +12,13 @@ import kotlin.random.nextInt
 
 class WidgetItem(
         var widget: Component? = null,
-        var area: Rectangle = widget?.let { client?.let { it1 -> Widget.getDrawableRect(it, it1) } } ?: Rectangle(),
+        var area: Rectangle = widget?.let { client.let { it1 -> Widget.getDrawableRect(it, it1) } } ?: Rectangle(),
         var id: Int = widget?.getItemId() ?: 0,
         var stackSize: Int = widget?.getItemQuantity() ?: 0,
         var index: Int = 0,
         var type: Type = Type.SHOP,
-        client: Client?
-) : Interactable(client) {
+        client: Client, mouse: Mouse?=null
+) : Interactable(client, mouse!!) {
     override suspend fun clickOnMiniMap(): Boolean {
         println("Widgets are not a thing to click on minimap")
         return false
@@ -30,7 +31,7 @@ class WidgetItem(
     }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1, MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse.mouseEvent?.x ?: -1, mouse.mouseEvent?.y ?: -1)
         return area.contains(mousePoint)
     }
 
@@ -58,7 +59,7 @@ class WidgetItem(
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
                 if (it.getText().toLowerCase().contains(action)) {
-                    return WidgetItem(it, client =client).interact(action)
+                    return WidgetItem(it, client = client, mouse = mouse).interact(action)
                 }
             }
             return false

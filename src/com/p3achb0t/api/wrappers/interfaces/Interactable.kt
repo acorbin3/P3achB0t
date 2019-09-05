@@ -9,7 +9,7 @@ import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
 
-abstract class Interactable(val client: Client?) {
+abstract class Interactable(val client: Client, val mouse: Mouse) {
     abstract fun getInteractPoint(): Point
     abstract fun isMouseOverObj(): Boolean
 
@@ -52,7 +52,7 @@ abstract class Interactable(val client: Client?) {
                 Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
             }
 //            val distance = startPoint?.distance(desiredPoint)
-            MainApplet.mouse.moveMouse(desiredPoint, click = false)
+            mouse.moveMouse(desiredPoint, click = false)
             if(isMouseOverObj()){break}
 //            if (distance != null) {
 //                if (abs(distance) < 100) {
@@ -69,7 +69,7 @@ abstract class Interactable(val client: Client?) {
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
-        MainApplet.mouse.moveMouse(
+        mouse.moveMouse(
             getInteractPoint(),
             click = click,
             clickType = clickType
@@ -77,7 +77,7 @@ abstract class Interactable(val client: Client?) {
     }
 
     suspend fun click(left: Boolean): Boolean {
-        return MainApplet.mouse.moveMouse(
+        return mouse.moveMouse(
             getInteractPoint(),
             click = true,
             clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
@@ -91,7 +91,7 @@ abstract class Interactable(val client: Client?) {
         return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
             false
         } else {
-            MainApplet.mouse.moveMouse(getInteractPoint(), click = true)
+            mouse.moveMouse(getInteractPoint(), click = true)
         }
     }
 }

@@ -1,9 +1,10 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 
-class Run(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Run(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
     companion object {
         val PARENT = 160
         val CHILD_BUTTON = 22
@@ -17,7 +18,7 @@ class Run(val client: com.p3achb0t._runestar_interfaces.Client) {
         }
 
     suspend fun clickRunButton() {
-        WidgetItem(Widgets.find(client, PARENT, CHILD_BUTTON), client =client).click()
+        WidgetItem(Widgets.find(client, PARENT, CHILD_BUTTON), client =client, mouse=mouse).click()
     }
 
     suspend fun activateRun() {

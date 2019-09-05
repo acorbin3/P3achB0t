@@ -2,6 +2,7 @@ package com.p3achb0t.api.painting
 
 import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
 import com.p3achb0t.api.wrappers.MiniMap
@@ -27,12 +28,12 @@ fun drawRect(g: Graphics, rect: Rectangle) {
 }
 
 
-fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client): PaintListener {
+fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
                 g.color = Color.white
-                MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                mouse.mouseEvent?.x?.let { mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                 if (PaintDebug.isDebugTextOn)
                     drawDebugText(g, client)
 

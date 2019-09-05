@@ -4,6 +4,7 @@ import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -14,18 +15,24 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0, override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client) : Interactable(client),
+class GroundItem(
+        client: com.p3achb0t._runestar_interfaces.Client,
+        val id: Int,
+        val position: ObjectPositionInfo,
+        val stackSize: Int = 0,
+        override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client, mouse: Mouse
+) : Interactable(client, mouse),
     Locatable {
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client?.let { Calculations.worldToScreen(region.x, region.y, client?.getPlane(), it) } ?: Point()
+        return client.let { Calculations.worldToScreen(region.x, region.y, client.getPlane(), it) }
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return client?.let { Calculations.worldToMiniMap(position.x, position.y, it) }?.let { MainApplet.mouse.click(it) } ?: false
+        return client.let { Calculations.worldToMiniMap(position.x, position.y, it) }.let { mouse.click(it) }
     }
 
     override fun getInteractPoint(): Point {
@@ -42,8 +49,8 @@ class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, 
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + client?.getBaseX()!!,
-            position.y / 128 + client?.getBaseY()!!,
+            position.x / 128 + client.getBaseX(),
+            position.y / 128 + client.getBaseY(),
             position.plane
         )
     }
@@ -101,8 +108,8 @@ class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, 
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = client?.getObjType_cachedModels()
-        val model: Model? = groundItemModels?.let { getModel(it) }
+        val groundItemModels = client.getObjType_cachedModels()
+        val model: Model? = getModel(groundItemModels)
         return if(model != null && client != null) {
             getConvexHullFromModel(position, model,client )
         }else{

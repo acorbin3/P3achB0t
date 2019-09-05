@@ -10,7 +10,7 @@ import java.awt.Rectangle
 import kotlin.random.Random
 
 // This class is used to interact with points on a screen and menu Items such as players, objects, NPCs
-class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Interact(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
     suspend fun interact(rectangle: Rectangle) {
         interact(rectangle, "")
     }
@@ -56,21 +56,22 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
         if (action.isNotEmpty()) {
 
             //Move mouse to the point
-            if (MainApplet.mouseEvent?.x == point.x && MainApplet.mouseEvent?.y == point.y) {
+
+            if (mouse.mouseEvent?.x == point.x && mouse.mouseEvent?.y == point.y) {
                 //Dont need to move the mouse
             } else {
-                point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = false) }
+                point.let { it1 -> mouse.moveMouse(it1, click = false) }
                 delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
             }
 
             // Check to see if we need to right click or not
             if (Menu(client).getHoverAction().contains(action)) {
                 // Left click, we are alreay there
-                point.let { it1 -> MainApplet.mouse.click(it1) }
+                point.let { it1 -> mouse.click(it1) }
                 return true
             } else {
                 //Since this is not avaliable we need to right click
-                point.let { it1 -> MainApplet.mouse.click(it1, clickType = Mouse.ClickType.Right) }
+                point.let { it1 -> mouse.click(it1, clickType = Mouse.ClickType.Right) }
                 delay(Random.nextLong(50, 150))
                 // Move to Action String
                 val actionPoint = Menu(client).getPointForInteraction(action)
@@ -83,7 +84,7 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                         val newPoint = Point(x, y)
                         // Move mouse out side of menue
                         if (!menuRect.bounds.contains(newPoint)) {
-                            MainApplet.mouse.moveMouse(newPoint)
+                            mouse.moveMouse(newPoint)
                             break
                         }
                     }
@@ -93,7 +94,7 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                     interact(point, action, retryCount + 1)
                 }
                 println("Clicking $action")
-                var res = MainApplet.mouse.moveMouse(actionPoint, click = true)
+                var res = mouse.moveMouse(actionPoint, click = true)
                 println("Res: $res")
                 delay((Math.random() * 200 + 100).toLong())
                 if (res) return true
@@ -103,7 +104,7 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                     count += 1
                     if (count == 5) {
                         val cancelPoint = Menu(client).getPointForInteraction(action)
-                        res = MainApplet.mouse.moveMouse(cancelPoint, click = true)
+                        res = mouse.moveMouse(cancelPoint, click = true)
                         print("Failed, retrying")
                     }
                 }
@@ -111,7 +112,7 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
             }
         } else {
             point.let { it1 ->
-                return MainApplet.mouse.moveMouse(
+                return mouse.moveMouse(
                         it1,
                         click = true,
                         clickType = Mouse.ClickType.Left

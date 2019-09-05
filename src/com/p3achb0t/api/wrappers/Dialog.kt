@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -7,7 +8,7 @@ import com.p3achb0t.api.wrappers.widgets.Widgets
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-class Dialog(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Dialog(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
     companion object {
         private const val PARENT = WidgetID.DIALOG_NPC_GROUP_ID
         private const val CONTINUE = WidgetID.DialogNPC.CONTINUE
@@ -61,7 +62,7 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client) {
             //NEed to find children
             dialog.widget?.getChildren()?.iterator()?.forEach {
                 if (WidgetItem(it, client = client).containsText("continue")) {
-                    WidgetItem(it, client = client).click()
+                    WidgetItem(it, client = client, mouse = mouse).click()
                     delay(Random.nextLong(100, 200))
                 }
             }
@@ -76,7 +77,7 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client) {
         // Options are in children but not index zero
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
-                WidgetItem(it, client = client).click()
+                WidgetItem(it, client = client, mouse = mouse).click()
                 delay(Random.nextLong(1500, 2500))
             }
         }
@@ -87,6 +88,6 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client) {
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0
         if (childrenSize == 0) return
         val randOptionIndex = Random.nextInt(1, childrenSize)
-        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), client = client).click()
+        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), client = client, mouse = mouse).click()
     }
 }

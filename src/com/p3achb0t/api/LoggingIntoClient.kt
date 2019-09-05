@@ -18,12 +18,11 @@ class LoggingIntoClient {
     }
 }
 
-fun LoggingIntoAccount(ctx: Client) {
+fun LoggingIntoAccount(ctx: Client, mouse: Mouse, keyboard: Keyboard) {
     //Logging into the client
     Thread.sleep(3000)
     GlobalScope.launch {
 
-        val mouse = Mouse()
         repeat(1000) {
             try {
 //                clientData = getClientData()
@@ -33,7 +32,7 @@ fun LoggingIntoAccount(ctx: Client) {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
-                    Keyboard.sendKeys(UserDetails.data.password)
+                    keyboard.sendKeys(UserDetails.data.password)
                     delay(200)
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)

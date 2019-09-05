@@ -5,8 +5,9 @@ import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t._runestar_interfaces.ObjStack
 import com.p3achb0t._runestar_interfaces.ObjectNode
 import com.p3achb0t.api.ObjectPositionInfo
+import com.p3achb0t.api.user_inputs.Mouse
 
-class GroundItems(val client: com.p3achb0t._runestar_interfaces.Client)  {
+class GroundItems(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse? = null)  {
     fun getAllItems(): ArrayList<GroundItem> {
         val itemList = ArrayList<GroundItem>()
         val groundItems = client.getObjStacks()
@@ -45,7 +46,7 @@ class GroundItems(val client: com.p3achb0t._runestar_interfaces.Client)  {
                                                     GroundItem(
                                                             client,
                                                             id,
-                                                            ObjectPositionInfo(x, y, plane = iP)
+                                                            ObjectPositionInfo(x, y, plane = iP), mouse = mouse!!
                                                     )
                                                 )
                                                 next = next.getNext()

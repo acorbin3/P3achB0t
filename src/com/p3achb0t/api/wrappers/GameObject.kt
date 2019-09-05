@@ -10,6 +10,7 @@ import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.painting.getObjectComposite
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Color
@@ -18,8 +19,14 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = null, client: com.p3achb0t._runestar_interfaces.Client, override var loc_client: Client? = client) : Locatable,
-    Interactable(client) {
+class GameObject(
+        val sceneryObject: Scenery? = null,
+        val wallObject: Wall? = null,
+        client: com.p3achb0t._runestar_interfaces.Client,
+        override var loc_client: Client? = client,
+        mouse: Mouse
+) : Locatable,
+    Interactable(client, mouse) {
     val id: Int
         get() {
             return when {
@@ -30,9 +37,8 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
         }
     val name: String
         get() {
-            val sceneData = client?.getLocType_cached()
-            val objectComposite =
-                    sceneData?.let { getObjectComposite(it, id) }
+            val sceneData = client.getLocType_cached()
+            val objectComposite = getObjectComposite(sceneData, id)
             return objectComposite?.getName().toString()
         }
     private val objectPositionInfo: ObjectPositionInfo
@@ -60,34 +66,28 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
             }
         }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client?.let { Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, it) } ?: Point()
+        return  Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, client)
     }
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
-            sceneryObject != null -> MainApplet.mouse.click(
-                    client?.let {
-                        Calculations.worldToMiniMap(
-                                sceneryObject.getCenterX(),
-                                sceneryObject.getCenterY(),
-                                it
-
-                        )
-                    } ?: Point()
+            sceneryObject != null -> mouse.click(
+                    Calculations.worldToMiniMap(
+                            sceneryObject.getCenterX(),
+                            sceneryObject.getCenterY(),
+                            client
+                    )
             )
-            wallObject != null -> MainApplet.mouse.click(
-                    client?.let {
-                        Calculations.worldToMiniMap(
-                                wallObject.getX(),
-                                wallObject.getY(),
-                                it
-
-                        )
-                    } ?: Point()
+            wallObject != null -> mouse.click(
+                    Calculations.worldToMiniMap(
+                            wallObject.getX(),
+                            wallObject.getY(),
+                            client
+                    )
             )
             else -> false
         }

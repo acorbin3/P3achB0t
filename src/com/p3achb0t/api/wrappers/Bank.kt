@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Keyboard
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -11,7 +12,7 @@ import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
 
-class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: Keyboard? = null, val mouse: Mouse? = null) {
     //DONE - open bank
     //DONE - deposit all items
     //TODO - deposit all items from a list
@@ -51,7 +52,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
 
         //First look for bankers, if that doesnt work then look for bank objects
         if (!isOpen()) {
-            val bankers = NPCs(client).findNpc("Banker")
+            val bankers = NPCs(client,mouse!!).findNpc("Banker")
             if (bankers.size > 0) {
                 bankers[0].interact("Use" )
                 Utils.waitFor(3, object : Utils.Condition {
@@ -148,7 +149,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
                                 }
                             })
                             delay(Random.nextLong(100, 350))
-                            Keyboard.sendKeys(count.toString(), sendReturn = true)
+                            keyboard?.sendKeys(count.toString(), sendReturn = true)
                         }
 
                         Utils.waitFor(3, object : Utils.Condition {
@@ -184,7 +185,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
                 })
                 delay(Random.nextLong(100, 350))
 
-                Keyboard.sendKeys(count.toString(), sendReturn = true)
+                keyboard?.sendKeys(count.toString(), sendReturn = true)
             }
             // wait till item get into the bank
             Utils.waitFor(3, object : Utils.Condition {

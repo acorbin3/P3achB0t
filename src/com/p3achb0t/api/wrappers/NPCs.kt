@@ -1,9 +1,10 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.user_inputs.Mouse
 import kotlin.math.abs
 import kotlin.math.max
 
-class NPCs(val client: com.p3achb0t._runestar_interfaces.Client) {
+class NPCs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
     fun findNpc(npcName: String, sortByDist: Boolean = true): ArrayList<NPC> {
         val foundNPCs = ArrayList<NPC>()
         try {
@@ -37,7 +38,7 @@ class NPCs(val client: com.p3achb0t._runestar_interfaces.Client) {
         val npcs = ArrayList<NPC>()
         client.getNpcs().forEach {
             if (it != null) {
-                npcs.add(NPC(it,client ))
+                npcs.add(NPC(it,client,mouse ))
             }
         }
         if (sortByDist) {

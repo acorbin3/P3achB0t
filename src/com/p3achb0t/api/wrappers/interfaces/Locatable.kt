@@ -4,6 +4,7 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
@@ -14,6 +15,7 @@ import kotlin.random.Random
 
 interface Locatable {
     var loc_client: com.p3achb0t._runestar_interfaces.Client?
+    var loc_keyboard: Keyboard?
     abstract fun draw(g: Graphics2D)
     abstract fun draw(g: Graphics2D, color: Color)
 
@@ -63,7 +65,7 @@ interface Locatable {
     }
 
     suspend fun turnTo() {
-        Camera(loc_client!!).turnTo(this)
+        Camera(loc_client!!,keyboard = loc_keyboard!!).turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     abstract fun isOnScreen(): Boolean

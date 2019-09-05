@@ -4,6 +4,7 @@ import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import kotlinx.coroutines.delay
@@ -13,7 +14,13 @@ import java.awt.Point
 import kotlin.random.Random
 
 
-open class Actor(var raw: Actor, client: Client, override var loc_client: Client? = client) : Locatable , Interactable(client){
+open class Actor(
+        var raw: Actor,
+        client: Client,
+        mouse: Mouse,
+        override var loc_client: Client? = client
+
+) : Locatable , Interactable(client, mouse){
 
     override fun getInteractPoint(): Point {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -1,7 +1,7 @@
 package com.p3achb0t.ui.components
 
-import com.p3achb0t.ui.Keyboard
-import com.p3achb0t.ui.Mouse
+import com.p3achb0t.api.user_inputs.Keyboard
+import com.p3achb0t.api.user_inputs.Mouse
 import javax.swing.JComponent
 import javax.swing.JTabbedPane
 
@@ -41,11 +41,11 @@ class TabManager private constructor() : JTabbedPane() {
         Thread.sleep(500)
 
         // setup mouse and keyboard under here <---------------
-        val keyboard = Keyboard(g.client!!.getApplet().getComponent(0))
-        g.client!!.getApplet().addKeyListener(keyboard)
+        g.keyboard = Keyboard(g.client.getApplet().getComponent(0))
+        g.client.getApplet().addKeyListener(g.keyboard)
         //g.client.keyboard = keyboard
-        val mouse = Mouse(g.client!!.getApplet().getComponent(0))
-        g.client!!.getApplet().addMouseListener(mouse)
+        g.mouse = Mouse(g.client.getApplet().getComponent(0))
+        g.client.getApplet().addMouseListener(g.mouse)
 
 
 

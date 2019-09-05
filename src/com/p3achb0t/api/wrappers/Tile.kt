@@ -4,6 +4,7 @@ import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.applet.Applet
@@ -15,7 +16,14 @@ import java.awt.Polygon
 //Tile are stored in global coordinates.
 
 //Default of -1,-1 means the tile is not valid
-class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=null, override var loc_client: Client? = client) : Locatable, Interactable(client) {
+class Tile(
+        val x: Int = -1,
+        val y: Int = -1,
+        val z: Int = 0,
+        client: Client?=null,
+        override var loc_client: Client? = client,
+        mouse: Mouse?=null
+) : Locatable, Interactable(client!!, mouse!!) {
     companion object {
         val NIL = Tile(-1, -1, -1)
     }
@@ -25,7 +33,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=nul
         return getCanvasTileAreaPoly(client, regional.x, regional.y)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
         return client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
     }
 
@@ -39,8 +47,8 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=nul
 
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
-        val point = client?.let { Calculations.worldToMiniMap(regional.x, regional.y, it) }
-        return point?.let { MainApplet.mouse.click(it) } ?: false
+        val point = client.let { Calculations.worldToMiniMap(regional.x, regional.y, it) }
+        return point?.let { mouse.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {

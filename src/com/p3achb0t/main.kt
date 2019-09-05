@@ -1,7 +1,6 @@
 package com.p3achb0t
 
 import com.p3achb0t.MainApplet.Data.customCanvas
-import com.p3achb0t.MainApplet.Data.mouseEvent
 import com.p3achb0t.MainApplet.Data.runeStar
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.GameShell
@@ -45,9 +44,6 @@ class MainApplet(game: Applet) {
         var classLoader: URLClassLoader? = null
         var selectedWidget: Component? = null
         var customCanvas: CustomCanvas? = null
-        var mouseEvent: MouseEvent? = null
-        val mouse = Mouse()
-
     }
 }
 
@@ -167,14 +163,10 @@ object Main {
                     }
                     val mouseListener = object : MouseMotionListener {
                         override fun mouseMoved(e: MouseEvent?) {
-                            if (e != null && e.x >= 0 && e.y >= 0)
-                                mouseEvent = e
 
                         }
 
                         override fun mouseDragged(e: MouseEvent?) {
-                            if (e != null && e.x >= 0 && e.y >= 0)
-                                mouseEvent = e
                         }
 
                     }

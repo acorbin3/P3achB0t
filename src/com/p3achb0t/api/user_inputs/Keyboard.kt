@@ -3,77 +3,89 @@ package com.p3achb0t.api.user_inputs
 import com.p3achb0t.MainApplet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import java.awt.Component
 import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 
-class Keyboard {
-    companion object {
-        fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
-            for (c in keys.toCharArray()) {
-                val keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
-                if (KeyEvent.CHAR_UNDEFINED.toInt() == keyCode) {
-                    throw RuntimeException(
+class Keyboard(val component: Component): KeyListener {
+    override fun keyTyped(e: KeyEvent?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun keyPressed(e: KeyEvent?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
+        for (c in keys.toCharArray()) {
+            val keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
+            if (KeyEvent.CHAR_UNDEFINED.toInt() == keyCode) {
+                throw RuntimeException(
                         "Key code not found for character '$c'"
-                    )
-                }
+                )
+            }
 //        println(c)
-                val down = KeyEvent(
-                    MainApplet.customCanvas,
+            val down = KeyEvent(
+                    component,
                     KeyEvent.KEY_PRESSED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(down)
-                delay(20)
-                val typeed = KeyEvent(
-                    MainApplet.customCanvas,
+            )
+            component?.dispatchEvent(down)
+            delay(20)
+            val typeed = KeyEvent(
+                    component,
                     KeyEvent.KEY_TYPED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(typeed)
-                delay(20)
-                val up = KeyEvent(
-                    MainApplet.customCanvas,
+            )
+            component?.dispatchEvent(typeed)
+            delay(20)
+            val up = KeyEvent(
+                    component,
                     KeyEvent.KEY_RELEASED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(up)
-                delay(20)
-            }
-
-            if (sendReturn) {
-                pressDownKey(KeyEvent.VK_ENTER)
-                delay(20)
-                release(KeyEvent.VK_ENTER)
-
-            }
+            )
+            component?.dispatchEvent(up)
+            delay(20)
         }
 
-        fun pressDownKey(keyCode: Int) {
-            val down = KeyEvent(
-                MainApplet.customCanvas,
+        if (sendReturn) {
+            pressDownKey(KeyEvent.VK_ENTER)
+            delay(20)
+            release(KeyEvent.VK_ENTER)
+
+        }
+    }
+
+    fun pressDownKey(keyCode: Int) {
+        val down = KeyEvent(
+                component,
                 KeyEvent.KEY_PRESSED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
-            )
-            MainApplet.customCanvas?.dispatchEvent(down)
-        }
+        )
+        component?.dispatchEvent(down)
+    }
 
-        fun release(keyCode: Int) {
-            val up = KeyEvent(
-                MainApplet.customCanvas,
+    fun release(keyCode: Int) {
+        val up = KeyEvent(
+                component,
                 KeyEvent.KEY_RELEASED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
-            )
-            MainApplet.customCanvas?.dispatchEvent(up)
-        }
+        )
+        component?.dispatchEvent(up)
     }
 }
 

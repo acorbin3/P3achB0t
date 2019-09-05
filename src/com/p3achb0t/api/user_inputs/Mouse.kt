@@ -1,24 +1,26 @@
 package com.p3achb0t.api.user_inputs
 
 import com.github.joonasvali.naturalmouse.util.FactoryTemplates
-import com.p3achb0t.MainApplet
 import kotlinx.coroutines.delay
+import java.awt.Component
 import java.awt.Point
 import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
+import java.awt.event.MouseMotionListener
 import kotlin.random.Random
 
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
-class Mouse {
+class Mouse(val component: Component): MouseListener, MouseMotionListener {
+
     enum class ClickType {
         Right,
         Left
     }
 
-    companion object {
-        val gamerMouse = FactoryTemplates.createFastGamerMotionFactory()
-    }
+    val gamerMouse = FactoryTemplates.createFastGamerMotionFactory()
+    var mouseEvent: MouseEvent? = null
     //////
     // Config info on how the mouse would operate
 
@@ -68,12 +70,12 @@ class Mouse {
 //                        currentPoint?.x = _x
 //                        currentPoint?.y = _y
 //                        MouseEvent(
-//                            MainApplet.customCanvas,
+//                            component,
 //                            MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, _x, _y, 0, false
 //                        )
 //                    }
 //                }
-//                MainApplet.customCanvas?.dispatchEvent(mouseMove)
+//                component?.dispatchEvent(mouseMove)
 //                interval?.toLong()?.let { delay(it) }
 //            }
 //        }
@@ -82,7 +84,7 @@ class Mouse {
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress =
                 MouseEvent(
-                    MainApplet.customCanvas,
+                        component,
                     MouseEvent.MOUSE_PRESSED,
                     System.currentTimeMillis(),
                     clickMask,
@@ -92,7 +94,7 @@ class Mouse {
                     clickType == ClickType.Right
                 )
 
-            MainApplet.customCanvas?.dispatchEvent(mousePress)
+            component?.dispatchEvent(mousePress)
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
@@ -100,7 +102,7 @@ class Mouse {
 
             val mouseRelease =
                 MouseEvent(
-                    MainApplet.customCanvas,
+                    component,
                     MouseEvent.MOUSE_RELEASED,
                     System.currentTimeMillis(),
                     clickMask,
@@ -111,8 +113,32 @@ class Mouse {
                 )
 
 
-            MainApplet.customCanvas?.dispatchEvent(mouseRelease)
+            component?.dispatchEvent(mouseRelease)
         }
         return true
+    }
+    override fun mouseReleased(e: MouseEvent?) {
+    }
+
+    override fun mouseEntered(e: MouseEvent?) {
+    }
+
+    override fun mouseClicked(e: MouseEvent?) {
+    }
+
+    override fun mouseExited(e: MouseEvent?) {
+    }
+
+    override fun mousePressed(e: MouseEvent?) {
+    }
+
+    override fun mouseMoved(e: MouseEvent?) {
+        if (e != null && e.x >= 0 && e.y >= 0)
+            mouseEvent = e
+    }
+
+    override fun mouseDragged(e: MouseEvent?) {
+        if (e != null && e.x >= 0 && e.y >= 0)
+            mouseEvent = e
     }
 }

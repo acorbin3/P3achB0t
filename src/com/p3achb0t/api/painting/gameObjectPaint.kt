@@ -7,10 +7,12 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
+import java.applet.Applet
 import java.awt.Color
 import java.awt.Graphics
 
@@ -18,7 +20,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
     if (false) {
         val sceneData = client.getObjType_cachedModels()
         val region = client.getScene()
-        val localPlayer = Players(client).getLocal()
+        val localPlayer = Players(client,Mouse(Applet())).getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
             if (planeInt == client.getPlane()) {
@@ -41,7 +43,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                             g.drawPolygon(tilePolygon)
                                         }
 
-                                        val go = GameObject(it, client =client)
+                                        val go = GameObject(it, client =client, mouse = Mouse(Applet()))
                                         val globalPos = go.getGlobalLocation()
 
                                         val point =

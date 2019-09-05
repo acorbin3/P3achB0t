@@ -20,7 +20,6 @@ class ClientInstance {
     var category = ""
     var name = ""
     var author = ""
-    val mouse = Mouse()
     var state: ClientState = ClientState.STOPPED
     private var applet: Applet
     var client: Client
