@@ -46,12 +46,11 @@ public class DefaultSystemCalls implements SystemCalls {
     @Override
     public void setMousePosition(int x, int y) {
 
-        System.out.println("Creating mouse move at " + x + " " + y);
         MouseEvent mouseMove = new MouseEvent(
                 this.ctx.getClientInstance().getApplet().getComponent(0),
                 MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
         );
-        System.out.println("Dispatching the event");
+        this.ctx.getMouse().setMouseEvent(mouseMove);
         this.ctx.getClientInstance().getApplet().getComponent(0).dispatchEvent(mouseMove);
 
     }

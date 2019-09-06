@@ -19,7 +19,7 @@ public class DefaultMouseInfoAccessor implements MouseInfoAccessor {
     @Override
     public Point getMousePosition() {
 
-        if (this.ctx.getMouse() != null) {
+        if (this.ctx.getMouse() != null && this.ctx.getMouse().getMouseEvent() != null) {
             return new Point(this.ctx.getMouse().getMouseEvent().getX(), this.ctx.getMouse().getMouseEvent().getY());
         } else {
             Random rand = new Random();

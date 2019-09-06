@@ -11,7 +11,7 @@ import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
 
-data class DebugText(val text: String = "", val color: Color = Color.RED)
+data class DebugText(val text: String = "", val color: Color = Color.white)
 
 fun drawDebugText(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse) {
 

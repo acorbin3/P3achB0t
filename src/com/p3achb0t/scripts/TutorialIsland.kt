@@ -150,10 +150,10 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             println("Picking name")
             //Name widget to click into and type a name 558,7
-            val nameEntry = WidgetItem(Widgets.find(client, 558, 7), client = client)
+            val nameEntry = WidgetItem(Widgets.find(client, 558, 7), client = client, mouse = ctx.mouse)
             nameEntry.click()
             delay(Random.nextLong(2200, 5550))
-
+            println("Sending keys")
             keyboard.sendKeys(names.random(), sendReturn = true)
             delay(Random.nextLong(2200, 5550))
 
