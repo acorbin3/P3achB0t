@@ -2,7 +2,9 @@ package com.github.joonasvali.naturalmouse.api;
 
 import com.github.joonasvali.naturalmouse.support.DefaultMouseMotionNature;
 import com.github.joonasvali.naturalmouse.support.MouseMotionNature;
+import com.p3achb0t.api.user_inputs.Mouse;
 
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Random;
  * The default instance is available via getDefault(), but can create new instance via constructor.
  */
 public class MouseMotionFactory {
-    private static final MouseMotionFactory defaultFactory = new MouseMotionFactory();
+    private static  MouseMotionFactory defaultFactory = null;
     private MouseMotionNature nature;
     private Random random = new Random();
 
@@ -18,8 +20,9 @@ public class MouseMotionFactory {
         this.nature = nature;
     }
 
-    public MouseMotionFactory() {
-        this(new DefaultMouseMotionNature());
+    public MouseMotionFactory(Mouse mouse) {
+        this(new DefaultMouseMotionNature(mouse));
+        defaultFactory = new MouseMotionFactory(mouse);
     }
 
     /**

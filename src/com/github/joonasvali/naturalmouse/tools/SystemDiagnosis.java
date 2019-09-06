@@ -19,7 +19,7 @@ public class SystemDiagnosis {
     public static void validateMouseMovement() {
         try {
             Robot robot = new Robot();
-            validateMouseMovement(new DefaultSystemCalls(robot), new DefaultMouseInfoAccessor());
+            validateMouseMovement(new DefaultSystemCalls(robot), new DefaultMouseInfoAccessor(null));
         } catch (AWTException e) {
             throw new RuntimeException(e);
         }

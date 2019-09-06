@@ -1,6 +1,9 @@
 package com.github.joonasvali.naturalmouse.support;
 
+import com.p3achb0t.api.user_inputs.Mouse;
+
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import static com.github.joonasvali.naturalmouse.support.DefaultNoiseProvider.DEFAULT_NOISINESS_DIVIDER;
@@ -14,7 +17,7 @@ public class DefaultMouseMotionNature extends MouseMotionNature {
     public static final int REACTION_TIME_BASE_MS = 20;
     public static final int REACTION_TIME_VARIATION_MS = 120;
 
-    public DefaultMouseMotionNature() {
+    public DefaultMouseMotionNature(Mouse mouse) {
         try {
             setSystemCalls(new DefaultSystemCalls(new Robot()));
         } catch (AWTException e) {
@@ -27,7 +30,7 @@ public class DefaultMouseMotionNature extends MouseMotionNature {
         setOvershootManager(new DefaultOvershootManager(new Random()));
         setEffectFadeSteps(EFFECT_FADE_STEPS);
         setMinSteps(MIN_STEPS);
-        setMouseInfo(new DefaultMouseInfoAccessor());
+        setMouseInfo(new DefaultMouseInfoAccessor(mouse));
         setReactionTimeBaseMs(REACTION_TIME_BASE_MS);
         setReactionTimeVariationMs(REACTION_TIME_VARIATION_MS);
         setTimeToStepsDivider(TIME_TO_STEPS_DIVIDER);

@@ -38,6 +38,7 @@ public class NativeCallMouseInfoAccessor implements MouseInfoAccessor {
 
     @Override
     public Point getMousePosition() {
-        return new Point(Objects.requireNonNull(MainApplet.Data.getMouseEvent()).getX(), MainApplet.Data.getMouseEvent().getY());
+        //TODO - This is where i replaced the old mouse position. Not sure if we care about using this one though since the class is not used
+        return new Point(0, 0);
     }
 }

@@ -3,6 +3,7 @@ package com.github.joonasvali.naturalmouse.support;
 import com.github.joonasvali.naturalmouse.api.MouseInfoAccessor;
 import com.github.joonasvali.naturalmouse.api.SystemCalls;
 import com.p3achb0t.MainApplet;
+import com.p3achb0t.api.user_inputs.Mouse;
 
 import java.awt.*;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class ScreenAdjustedNature extends DefaultMouseMotionNature {
     private final Dimension screenSize;
 
     public ScreenAdjustedNature(int x, int y, int x2, int y2) {
+
         this(new Dimension(x2 - x, y2 - y), new Point(x, y));
         if (y2 <= y || x2 <= x) {
             throw new IllegalArgumentException("Invalid range " + x + " " + y + " " + x2 + " " + y2);
@@ -23,6 +25,7 @@ public class ScreenAdjustedNature extends DefaultMouseMotionNature {
     }
 
     public ScreenAdjustedNature(Dimension screenSize, Point mouseOffset) {
+        super(null);
         this.screenSize = screenSize;
         this.offset = mouseOffset;
     }
@@ -51,7 +54,8 @@ public class ScreenAdjustedNature extends DefaultMouseMotionNature {
         public Point getMousePosition() {
             Point realPointer = underlying.getMousePosition();
             p.setLocation(realPointer.x - offset.x, realPointer.y - offset.y);
-            return new Point(Objects.requireNonNull(MainApplet.Data.getMouseEvent()).getX(), MainApplet.Data.getMouseEvent().getY());
+            //TODO - This is where i replaced the old mouse position. Not sure if we care about using this one though since the class is not used
+            return new Point(0, 0);
         }
     }
 
