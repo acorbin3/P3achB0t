@@ -10,7 +10,7 @@ class PrintScript : AbstractScript() {
 
 
     override suspend fun loop() {
-        println("${ctx.getLoginState()} <---- Loaded PrintScript")
+        println("${client.getLoginState()} <---- Loaded PrintScript")
     }
 
     override suspend fun start() {

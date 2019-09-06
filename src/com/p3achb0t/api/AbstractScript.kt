@@ -6,11 +6,13 @@ import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.GroundItems
 import com.p3achb0t.api.wrappers.NPCs
+import com.p3achb0t.ui.Context
 import com.p3achb0t.ui.components.TabManager
 import java.awt.Graphics
 
 abstract class AbstractScript {
-    protected val ctx: Client
+    protected val client: Client
+    protected val ctx: Context
     protected val players: Players
     protected val groundItems: GroundItems
     protected val npcs: NPCs
@@ -19,16 +21,13 @@ abstract class AbstractScript {
 
     init {
         val c = TabManager.instance.getSelected()
-        ctx = c.client!!.client!!
-        players = Players(ctx,c.mouse)
-        groundItems = GroundItems(ctx,c.mouse)
-        npcs = NPCs(ctx,c.mouse)
+        client = c.client!!.client!!
+        players = Players(client,c.mouse)
+        groundItems = GroundItems(client,c.mouse)
+        npcs = NPCs(client,c.mouse)
         mouse = c.mouse
         keyboard = c.keyboard
-    }
-
-    fun getClient(): Client {
-        return ctx
+        ctx = c.ctx
     }
 
     abstract suspend fun loop()
