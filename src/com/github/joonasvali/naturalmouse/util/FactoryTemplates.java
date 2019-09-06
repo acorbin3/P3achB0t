@@ -3,7 +3,7 @@ package com.github.joonasvali.naturalmouse.util;
 import com.github.joonasvali.naturalmouse.api.MouseMotionFactory;
 import com.github.joonasvali.naturalmouse.api.SpeedManager;
 import com.github.joonasvali.naturalmouse.support.*;
-import com.p3achb0t.api.user_inputs.Mouse;
+import com.p3achb0t.ui.Context;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +17,8 @@ public class FactoryTemplates {
      *
      * @return the factory
      */
-    public static MouseMotionFactory createGrannyMotionFactory(Mouse mouse) {
-        MouseMotionFactory factory = new MouseMotionFactory(mouse);
+    public static MouseMotionFactory createGrannyMotionFactory(Context ctx) {
+        MouseMotionFactory factory = new MouseMotionFactory(ctx);
         List<Flow> flows = new ArrayList<>();
         flows.add(new Flow(FlowTemplates.jaggedFlow()));
         flows.add(new Flow(FlowTemplates.random()));
@@ -50,8 +50,8 @@ public class FactoryTemplates {
      * @param motionTimeMsPer100Pixels approximate time a movement takes per 100 pixels of travelling
      * @return the factory
      */
-    public static MouseMotionFactory createDemoRobotMotionFactory(long motionTimeMsPer100Pixels, Mouse mouse) {
-        MouseMotionFactory factory = new MouseMotionFactory(mouse);
+    public static MouseMotionFactory createDemoRobotMotionFactory(long motionTimeMsPer100Pixels, Context ctx) {
+        MouseMotionFactory factory = new MouseMotionFactory(ctx);
         final Flow flow = new Flow(FlowTemplates.constantSpeed());
         double timePerPixel = motionTimeMsPer100Pixels / 100d;
         SpeedManager manager = distance -> new Pair<>(flow, (long) (timePerPixel * distance));
@@ -71,8 +71,8 @@ public class FactoryTemplates {
      *
      * @return the factory
      */
-    public static MouseMotionFactory createFastGamerMotionFactory(Mouse mouse) {
-        MouseMotionFactory factory = new MouseMotionFactory(mouse);
+    public static MouseMotionFactory createFastGamerMotionFactory(Context ctx) {
+        MouseMotionFactory factory = new MouseMotionFactory(ctx);
         List<Flow> flows = new ArrayList<>(Arrays.asList(
                 new Flow(FlowTemplates.variatingFlow()),
                 new Flow(FlowTemplates.slowStartupFlow()),
@@ -98,8 +98,8 @@ public class FactoryTemplates {
      *
      * @return the factory
      */
-    public static MouseMotionFactory createAverageComputerUserMotionFactory(Mouse mouse) {
-        MouseMotionFactory factory = new MouseMotionFactory(mouse);
+    public static MouseMotionFactory createAverageComputerUserMotionFactory(Context ctx) {
+        MouseMotionFactory factory = new MouseMotionFactory(ctx);
         List<Flow> flows = new ArrayList<>(Arrays.asList(
                 new Flow(FlowTemplates.constantSpeed()),
                 new Flow(FlowTemplates.variatingFlow()),

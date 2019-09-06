@@ -28,14 +28,14 @@ class GroundItem(
     Locatable {
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client.let { Calculations.worldToScreen(region.x, region.y, client.getPlane(), it) }
+        return client.let { client?.getPlane()?.let { it1 -> it?.let { it2 -> Calculations.worldToScreen(region.x, region.y, it1, it2) } } } ?: Point(0,0)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return client.let { Calculations.worldToMiniMap(position.x, position.y, it) }.let { mouse.click(it) }
+        return client.let { it?.let { it1 -> Calculations.worldToMiniMap(position.x, position.y, it1) } }.let { it?.let { it1 -> mouse?.click(it1) } } ?: false
     }
 
     override fun getInteractPoint(): Point {
@@ -52,7 +52,7 @@ class GroundItem(
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + client.getBaseX(),
+            position.x / 128 + client?.getBaseX()!!,
             position.y / 128 + client.getBaseY(),
             position.plane
         )
@@ -111,7 +111,7 @@ class GroundItem(
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = client.getObjType_cachedModels()
+        val groundItemModels = client!!.getObjType_cachedModels()
         val model: Model? = getModel(groundItemModels)
         return if(model != null && client != null) {
             getConvexHullFromModel(position, model,client )

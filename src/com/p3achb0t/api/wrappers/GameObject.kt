@@ -24,7 +24,7 @@ class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
         client: Client,
-        mouse: Mouse,
+        mouse: Mouse? = null,
         override var loc_client: Client? = client,
         override var loc_keyboard: Keyboard? = null
 ) : Locatable,
@@ -39,8 +39,8 @@ class GameObject(
         }
     val name: String
         get() {
-            val sceneData = client.getLocType_cached()
-            val objectComposite = getObjectComposite(sceneData, id)
+            val sceneData = client?.getLocType_cached()
+            val objectComposite = sceneData?.let { getObjectComposite(it, id) }
             return objectComposite?.getName().toString()
         }
     private val objectPositionInfo: ObjectPositionInfo
@@ -68,29 +68,33 @@ class GameObject(
             }
         }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return  Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, client)
+        return client?.let { Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, it) } ?: Point(0,0)
     }
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
-            sceneryObject != null -> mouse.click(
-                    Calculations.worldToMiniMap(
-                            sceneryObject.getCenterX(),
-                            sceneryObject.getCenterY(),
-                            client
-                    )
-            )
-            wallObject != null -> mouse.click(
-                    Calculations.worldToMiniMap(
-                            wallObject.getX(),
-                            wallObject.getY(),
-                            client
-                    )
-            )
+            sceneryObject != null -> mouse?.click(
+                    client?.let {
+                        Calculations.worldToMiniMap(
+                                sceneryObject.getCenterX(),
+                                sceneryObject.getCenterY(),
+                                it
+                        )
+                    } ?: Point(0,0)
+            )?: false
+            wallObject != null -> mouse?.click(
+                    client?.let {
+                        Calculations.worldToMiniMap(
+                                wallObject.getX(),
+                                wallObject.getY(),
+                                it
+                        )
+                    }?: Point(0,0)
+            )?: false
             else -> false
         }
     }

@@ -25,7 +25,7 @@ class Tile(
         mouse: Mouse?=null,
         override var loc_client: Client? = client,
         override var loc_keyboard: Keyboard? = null
-) : Locatable, Interactable(client!!, mouse!!) {
+) : Locatable, Interactable(client, mouse) {
     companion object {
         val NIL = Tile(-1, -1, -1)
     }
@@ -35,7 +35,7 @@ class Tile(
         return getCanvasTileAreaPoly(client, regional.x, regional.y)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
         return client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
     }
 
@@ -49,8 +49,8 @@ class Tile(
 
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
-        val point = client.let { Calculations.worldToMiniMap(regional.x, regional.y, it) }
-        return point?.let { mouse.click(it) } ?: false
+        val point = client.let { it?.let { it1 -> Calculations.worldToMiniMap(regional.x, regional.y, it1) } }
+        return point?.let { mouse?.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {

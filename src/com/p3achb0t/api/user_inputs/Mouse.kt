@@ -1,6 +1,7 @@
 package com.p3achb0t.api.user_inputs
 
 import com.github.joonasvali.naturalmouse.util.FactoryTemplates
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 import java.awt.Component
 import java.awt.Point
@@ -12,7 +13,7 @@ import kotlin.random.Random
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
-class Mouse(val component: Component): MouseListener, MouseMotionListener {
+class Mouse(val component: Component, var ctx: Context?): MouseListener, MouseMotionListener {
 
     enum class ClickType {
         Right,
@@ -21,7 +22,7 @@ class Mouse(val component: Component): MouseListener, MouseMotionListener {
 
 
     var mouseEvent: MouseEvent? = null
-    val gamerMouse = FactoryTemplates.createFastGamerMotionFactory(this)
+    val gamerMouse = FactoryTemplates.createFastGamerMotionFactory(ctx)
     //////
     // Config info on how the mouse would operate
 

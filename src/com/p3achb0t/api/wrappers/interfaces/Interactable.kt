@@ -9,7 +9,7 @@ import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
 
-abstract class Interactable(val client: Client, val mouse: Mouse) {
+abstract class Interactable(val client: Client?, val mouse: Mouse?) {
     abstract fun getInteractPoint(): Point
     abstract fun isMouseOverObj(): Boolean
 
@@ -44,7 +44,7 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
-            val startPoint = if (mouse.mouseEvent != null) mouse.mouseEvent?.point?.x?.let { _x ->
+            val startPoint = if (mouse?.mouseEvent != null) mouse.mouseEvent?.point?.x?.let { _x ->
                 mouse.mouseEvent?.point?.y?.let { _y ->
                     Point(_x, _y)
                 }
@@ -52,7 +52,7 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
                 Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
             }
 //            val distance = startPoint?.distance(desiredPoint)
-            mouse.moveMouse(desiredPoint, click = false)
+            mouse?.moveMouse(desiredPoint, click = false)
             if(isMouseOverObj()){break}
 //            if (distance != null) {
 //                if (abs(distance) < 100) {
@@ -65,11 +65,11 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return if (client != null) Interact(client,mouse).interact(desiredPoint, action) else false
+        return if (client != null) mouse?.let { Interact(client, it).interact(desiredPoint, action) } ?: false else false
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
-        mouse.moveMouse(
+        mouse?.moveMouse(
             getInteractPoint(),
             click = click,
             clickType = clickType
@@ -78,11 +78,11 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
     }
 
     suspend fun click(left: Boolean): Boolean {
-        return mouse.moveMouse(
+        return mouse?.moveMouse(
             getInteractPoint(),
             click = true,
             clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
-        )
+        )?: false
     }
 
     abstract suspend fun clickOnMiniMap(): Boolean
@@ -92,7 +92,7 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
         return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
             false
         } else {
-            mouse.moveMouse(getInteractPoint(), click = true)
+            mouse?.moveMouse(getInteractPoint(), click = true) ?: false
         }
     }
 }

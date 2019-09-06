@@ -18,7 +18,7 @@ import kotlin.random.Random
 open class Actor(
         var raw: Actor,
         client: Client,
-        mouse: Mouse,
+        mouse: Mouse?,
         override var loc_client: Client? = client,
         override var loc_keyboard: Keyboard? = null
 

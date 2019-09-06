@@ -2,6 +2,7 @@ package com.p3achb0t.ui.components
 
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.Context
 import javax.swing.JComponent
 import javax.swing.JTabbedPane
 
@@ -43,14 +44,14 @@ class TabManager private constructor() : JTabbedPane() {
         // setup mouse and keyboard under here <---------------
         g.keyboard = Keyboard(g.client.getApplet().getComponent(0))
         g.client.getApplet().addKeyListener(g.keyboard)
-        //g.client.keyboard = keyboard
-        g.mouse = Mouse(g.client.getApplet().getComponent(0))
+        g.mouse = Mouse(g.client.getApplet().getComponent(0),g.ctx)
         g.client.getApplet().addMouseListener(g.mouse)
 
+        g.ctx = Context(g.client.client,g.mouse,g.keyboard,g.client)
         // setting up context which will be used in the scripts
         g.ctx.mouse = g.mouse
         g.ctx.keyboard = g.keyboard
-        g.ctx.client = g.client.client
+        g.mouse.ctx = g.ctx
 
 
 

@@ -18,7 +18,7 @@ class WidgetItem(
         var index: Int = 0,
         var type: Type = Type.SHOP,
         client: Client, mouse: Mouse?=null
-) : Interactable(client, mouse!!) {
+) : Interactable(client, mouse) {
     override suspend fun clickOnMiniMap(): Boolean {
         println("Widgets are not a thing to click on minimap")
         return false
@@ -31,7 +31,7 @@ class WidgetItem(
     }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse.mouseEvent?.x ?: -1, mouse.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1, mouse?.mouseEvent?.y ?: -1)
         return area.contains(mousePoint)
     }
 
@@ -59,7 +59,7 @@ class WidgetItem(
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
                 if (it.getText().toLowerCase().contains(action)) {
-                    return WidgetItem(it, client = client, mouse = mouse).interact(action)
+                    return WidgetItem(it, client = client!!, mouse = mouse).interact(action)
                 }
             }
             return false

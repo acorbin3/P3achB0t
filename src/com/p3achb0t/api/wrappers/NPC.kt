@@ -9,20 +9,22 @@ import java.awt.Polygon
 
 class NPC(var npc: Npc, client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse) : Actor(npc, client, mouse) {
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse.mouseEvent?.x ?: -1,mouse.mouseEvent?.y ?: -1)
+        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client.let { Calculations.worldToScreen(region.x, region.y, npc.getHeight(), it) } ?: Point(-1,-1)
+        return client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), it1) } } ?: Point(-1,-1)
     }
     fun getConvexHull(): Polygon {
-        return  getConvexHull(
+        return client?.let {
+            getConvexHull(
                     this.npc,
-                    client.getNPCType_cachedModels(),
-                    this.npc.getType().getKey(),client
+                    it.getNPCType_cachedModels(),
+                    this.npc.getType().getKey(),it
             )
+        } ?: Polygon()
 
     }
 
@@ -33,9 +35,9 @@ class NPC(var npc: Npc, client: com.p3achb0t._runestar_interfaces.Client, mouse:
 
     override suspend fun clickOnMiniMap(): Boolean {
         return client.let {
-            Calculations.worldToMiniMap(npc.getX(), npc.getY(), client)
+            it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), it1) }
         }.let {
-            mouse.click(it)
+            it?.let { it1 -> mouse?.click(it1) }
         } ?: false
     }
 

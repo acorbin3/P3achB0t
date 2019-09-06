@@ -2,16 +2,16 @@ package com.github.joonasvali.naturalmouse.support;
 
 import com.github.joonasvali.naturalmouse.api.SystemCalls;
 import com.p3achb0t.MainApplet;
+import com.p3achb0t.ui.Context;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
 public class DefaultSystemCalls implements SystemCalls {
-    private final Robot robot;
-
-    public DefaultSystemCalls(Robot robot) {
-        this.robot = robot;
+    Context ctx;
+    public DefaultSystemCalls(Context ctx) {
+        this.ctx = ctx;
     }
 
     @Override
@@ -46,10 +46,13 @@ public class DefaultSystemCalls implements SystemCalls {
     @Override
     public void setMousePosition(int x, int y) {
 
+        System.out.println("Creating mouse move at " + x + " " + y);
         MouseEvent mouseMove = new MouseEvent(
-                Objects.requireNonNull(MainApplet.Data.getCustomCanvas()),
+                this.ctx.getClientInstance().getApplet().getComponent(0),
                 MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
         );
-        MainApplet.Data.getCustomCanvas().dispatchEvent(mouseMove);
+        System.out.println("Dispatching the event");
+        this.ctx.getClientInstance().getApplet().getComponent(0).dispatchEvent(mouseMove);
+
     }
 }

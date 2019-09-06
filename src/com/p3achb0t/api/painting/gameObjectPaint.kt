@@ -20,7 +20,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
     if (false) {
         val sceneData = client.getObjType_cachedModels()
         val region = client.getScene()
-        val localPlayer = Players(client,Mouse(Applet())).getLocal()
+        val localPlayer = Players(client).getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
             if (planeInt == client.getPlane()) {
@@ -43,7 +43,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                             g.drawPolygon(tilePolygon)
                                         }
 
-                                        val go = GameObject(it, client =client, mouse = Mouse(Applet()))
+                                        val go = GameObject(it, client =client)
                                         val globalPos = go.getGlobalLocation()
 
                                         val point =

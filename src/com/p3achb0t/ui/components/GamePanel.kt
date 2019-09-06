@@ -14,14 +14,16 @@ class GamePanel : JPanel() {
     lateinit var mouse: Mouse
     lateinit var keyboard: Keyboard
 
-     init {
+    init {
         //isFocusable = true
-        setSize(765,503)
+        setSize(765, 503)
         //preferredSize = Dimension(765,503)
         validate()
 
         client = ClientInstance()
+        ctx = Context(client.client,Mouse(client.getApplet(),null),Keyboard(client.getApplet()),client)
         add(client.getApplet())
+//        ctx = Context(client.client,mouse,keyboard,client)
 
     }
 
