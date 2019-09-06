@@ -4,6 +4,7 @@ import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -18,7 +19,8 @@ open class Actor(
         var raw: Actor,
         client: Client,
         mouse: Mouse,
-        override var loc_client: Client? = client
+        override var loc_client: Client? = client,
+        override var loc_keyboard: Keyboard? = null
 
 ) : Locatable , Interactable(client, mouse){
 

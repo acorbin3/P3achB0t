@@ -9,7 +9,7 @@ import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 
-class Tabs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
+class Tabs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse? = null) {
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
@@ -118,7 +118,7 @@ class Tabs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mous
             val widget = client.getInterfaceComponents()[parentID][childID]
             if (!widget.getIsHidden()) {
                 val interactRect = Widget.getDrawableRect(widget,client)
-                Interact(client, mouse).interact(interactRect)
+                Interact(client, mouse!!).interact(interactRect)
                 Utils.waitFor(2, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)

@@ -10,6 +10,7 @@ import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.painting.getObjectComposite
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -22,9 +23,10 @@ import java.util.*
 class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
-        client: com.p3achb0t._runestar_interfaces.Client,
+        client: Client,
+        mouse: Mouse,
         override var loc_client: Client? = client,
-        mouse: Mouse
+        override var loc_keyboard: Keyboard? = null
 ) : Locatable,
     Interactable(client, mouse) {
     val id: Int

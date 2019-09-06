@@ -47,6 +47,11 @@ class TabManager private constructor() : JTabbedPane() {
         g.mouse = Mouse(g.client.getApplet().getComponent(0))
         g.client.getApplet().addMouseListener(g.mouse)
 
+        // setting up context which will be used in the scripts
+        g.ctx.mouse = g.mouse
+        g.ctx.keyboard = g.keyboard
+        g.ctx.client = g.client.client
+
 
 
     }

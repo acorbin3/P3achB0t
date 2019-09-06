@@ -170,7 +170,7 @@ object Main {
                         }
 
                     }
-                    customCanvas?.addPaintListener(debugPaint(client = Client.client))
+//                    customCanvas?.addPaintListener(debugPaint(client = Client.client, mouse = Mouse))
 
                     customCanvas?.addMouseMotionListener(mouseListener)
                     for (kl in oldCanvas.keyListeners) {

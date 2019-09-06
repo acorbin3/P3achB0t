@@ -19,8 +19,9 @@ class Mouse(val component: Component): MouseListener, MouseMotionListener {
         Left
     }
 
-    val gamerMouse = FactoryTemplates.createFastGamerMotionFactory()
+
     var mouseEvent: MouseEvent? = null
+    val gamerMouse = FactoryTemplates.createFastGamerMotionFactory(this)
     //////
     // Config info on how the mouse would operate
 

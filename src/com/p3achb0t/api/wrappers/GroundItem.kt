@@ -4,6 +4,7 @@ import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -20,7 +21,9 @@ class GroundItem(
         val id: Int,
         val position: ObjectPositionInfo,
         val stackSize: Int = 0,
-        override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client, mouse: Mouse
+        mouse: Mouse,
+        override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client,
+        override var loc_keyboard: Keyboard? = null
 ) : Interactable(client, mouse),
     Locatable {
     override fun getNamePoint(): Point {

@@ -35,7 +35,7 @@ fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse): 
                 g.color = Color.white
                 mouse.mouseEvent?.x?.let { mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                 if (PaintDebug.isDebugTextOn)
-                    drawDebugText(g, client)
+                    drawDebugText(g, client, mouse)
 
                 if (client.getGameState() == 30) {
                     if (!Bank(client).isOpen()) {
@@ -74,7 +74,7 @@ fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse): 
                         println("Error: Minimap " + e.message)
                     }
                     // Paint continue
-                    val dialog = Dialog(client).getDialogContinue()
+                    val dialog = Dialog(client,mouse).getDialogContinue()
                     if (dialog.widget != null) {
                         g.color = Color.ORANGE
                         drawRect(g, dialog.area)

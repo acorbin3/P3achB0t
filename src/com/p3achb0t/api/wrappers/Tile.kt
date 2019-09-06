@@ -4,6 +4,7 @@ import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -21,8 +22,9 @@ class Tile(
         val y: Int = -1,
         val z: Int = 0,
         client: Client?=null,
+        mouse: Mouse?=null,
         override var loc_client: Client? = client,
-        mouse: Mouse?=null
+        override var loc_keyboard: Keyboard? = null
 ) : Locatable, Interactable(client!!, mouse!!) {
     companion object {
         val NIL = Tile(-1, -1, -1)

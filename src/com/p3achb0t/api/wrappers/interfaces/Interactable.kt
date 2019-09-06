@@ -44,8 +44,8 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
-            val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
-                MainApplet.mouseEvent?.point?.y?.let { _y ->
+            val startPoint = if (mouse.mouseEvent != null) mouse.mouseEvent?.point?.x?.let { _x ->
+                mouse.mouseEvent?.point?.y?.let { _y ->
                     Point(_x, _y)
                 }
             } else {
@@ -65,7 +65,7 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return if (client != null) Interact(client).interact(desiredPoint, action) else false
+        return if (client != null) Interact(client,mouse).interact(desiredPoint, action) else false
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
@@ -73,6 +73,7 @@ abstract class Interactable(val client: Client, val mouse: Mouse) {
             getInteractPoint(),
             click = click,
             clickType = clickType
+
         )
     }
 

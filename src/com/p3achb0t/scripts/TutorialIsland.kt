@@ -253,7 +253,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Options)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Options)
             delay(Random.nextLong(1250, 1650))
         }
 
@@ -266,7 +266,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Options)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Options)
             delay(Random.nextLong(500, 1500))
             //Display settings(261,1)child 1
             WidgetItem(Widgets.find(client, 261, 1)?.getChildren()?.get(1), client = client).click()
@@ -391,7 +391,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Inventory)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Inventory)
         }
 
     }
@@ -406,7 +406,7 @@ class TutorialIsland: AbstractScript()  {
             catchShrimp(client, mouse)
 
             if (Tabs(client).isTabFlashing(Tabs.Tab_Types.Skills)) {
-                Tabs(client).openTab(Tabs.Tab_Types.Skills)
+                Tabs(client, mouse).openTab(Tabs.Tab_Types.Skills)
             }
         }
         companion object {
@@ -434,7 +434,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Skills)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Skills)
         }
     }
 
@@ -796,7 +796,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.QuestList)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.QuestList)
         }
 
     }
@@ -1064,7 +1064,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Equiptment)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Equiptment)
         }
 
     }
@@ -1131,7 +1131,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Combat)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Combat)
         }
 
     }
@@ -1441,7 +1441,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.AccountManagement)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.AccountManagement)
         }
 
     }
@@ -1499,7 +1499,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Prayer)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Prayer)
         }
 
     }
@@ -1510,7 +1510,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.FriendsList)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.FriendsList)
         }
 
     }
@@ -1569,7 +1569,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Tabs(client).openTab(Tabs.Tab_Types.Magic)
+            Tabs(client, mouse).openTab(Tabs.Tab_Types.Magic)
         }
 
     }
