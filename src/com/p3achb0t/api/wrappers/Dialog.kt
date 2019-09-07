@@ -1,14 +1,14 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-class Dialog(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
+class Dialog(val ctx: Context) {
     companion object {
         private const val PARENT = WidgetID.DIALOG_NPC_GROUP_ID
         private const val CONTINUE = WidgetID.DialogNPC.CONTINUE
@@ -29,15 +29,15 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mo
     }
 
     fun getDialogContinue(): WidgetItem {
-        var dialog = WidgetItem(Widgets.find(client, PARENT, CONTINUE), client = client)
+        var dialog = WidgetItem(Widgets.find(ctx, PARENT, CONTINUE), ctx = ctx)
         if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-            dialog = WidgetItem(Widgets.find(client, PARENT_BACKUP, CONTINUE_BACKUP), client = client)
+            dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP, CONTINUE_BACKUP), ctx = ctx)
             if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                dialog = WidgetItem(Widgets.find(client, PARENT_BACKUP_2, CONTINUE_BACKUP_2), client = client)
+                dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_2, CONTINUE_BACKUP_2), ctx = ctx)
                 if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                    dialog = WidgetItem(Widgets.find(client, PARENT_BACKUP_3, CONTINUE_BACKUP_3), client = client)
+                    dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_3, CONTINUE_BACKUP_3), ctx = ctx)
                     if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                        dialog = WidgetItem(Widgets.find(client, PARENT_BACKUP_4, CONTINUE_BACKUP_4), client = client)
+                        dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_4, CONTINUE_BACKUP_4), ctx = ctx)
                     }
                 }
             }
@@ -61,8 +61,8 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mo
         } else if (dialog.containsText("continue")) {
             //NEed to find children
             dialog.widget?.getChildren()?.iterator()?.forEach {
-                if (WidgetItem(it, client = client).containsText("continue")) {
-                    WidgetItem(it, client = client, mouse = mouse).click()
+                if (WidgetItem(it, ctx = ctx).containsText("continue")) {
+                    WidgetItem(it, ctx = ctx).click()
                     delay(Random.nextLong(100, 200))
                 }
             }
@@ -73,21 +73,21 @@ class Dialog(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mo
     }
 
     suspend fun selectionOption(action: String) {
-        val dialog = WidgetItem(Widgets.find(client, PARENT_DIALOG_OPTIONS, 1), client = client)
+        val dialog = WidgetItem(Widgets.find(ctx, PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         // Options are in children but not index zero
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
-                WidgetItem(it, client = client, mouse = mouse).click()
+                WidgetItem(it, ctx = ctx).click()
                 delay(Random.nextLong(1500, 2500))
             }
         }
     }
 
     suspend fun selectRandomOption() {
-        val dialog = WidgetItem(Widgets.find(client, PARENT_DIALOG_OPTIONS, 1), client = client)
+        val dialog = WidgetItem(Widgets.find(ctx, PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0
         if (childrenSize == 0) return
         val randOptionIndex = Random.nextInt(1, childrenSize)
-        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), client = client, mouse = mouse).click()
+        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), ctx =ctx).click()
     }
 }

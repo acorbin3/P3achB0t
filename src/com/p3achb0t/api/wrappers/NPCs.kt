@@ -1,10 +1,10 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.Context
 import kotlin.math.abs
 import kotlin.math.max
 
-class NPCs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
+class NPCs(val ctx: Context) {
     fun findNpc(npcName: String, sortByDist: Boolean = true): ArrayList<NPC> {
         val foundNPCs = ArrayList<NPC>()
         try {
@@ -36,15 +36,15 @@ class NPCs(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mous
     // This function will return a list of NPCs with closes distance to you
     fun findNpcs(sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
-        client.getNpcs().forEach {
+        ctx.client.getNpcs().forEach {
             if (it != null) {
-                npcs.add(NPC(it,client,mouse ))
+                npcs.add(NPC(it,ctx ))
             }
         }
         if (sortByDist) {
             npcs.sortBy {
                 // Sort closest to player
-                val localPlayer = client.getLocalPlayer()
+                val localPlayer = ctx.client.getLocalPlayer()
                 max(
                     abs(localPlayer.getX() - it.npc.getX()),
                     abs(localPlayer.getY() - it.npc.getY())

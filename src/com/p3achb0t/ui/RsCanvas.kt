@@ -4,11 +4,6 @@ import com.p3achb0t.api.painting.drawDebugText
 import com.p3achb0t.ui.components.TabManager
 import java.awt.*
 import java.awt.image.BufferedImage
-import javax.swing.text.html.CSS.Attribute.FONT_SIZE
-import java.awt.Font.PLAIN
-import java.awt.AWTEventMulticaster.getListeners
-
-
 
 
 open class RsCanvas : Canvas() {
@@ -27,9 +22,10 @@ open class RsCanvas : Canvas() {
         g.color = Color.CYAN
         g.drawString("P3achB0t & Unoplex - BOT Alpha 0.1.0", 50 ,20)
         g.color = Color.white
-        gamePanel.mouse.mouseEvent?.x?.let { gamePanel.mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+
+        gamePanel.ctx.mouse.mouseEvent?.x?.let { gamePanel.ctx.mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
         g.color = Color.white
-        drawDebugText(g, gamePanel.client.client, gamePanel.mouse)
+        drawDebugText(g, gamePanel.ctx)
         gamePanel.client.script?.draw(g)
 
         if (gamePanel.client.name != "") {

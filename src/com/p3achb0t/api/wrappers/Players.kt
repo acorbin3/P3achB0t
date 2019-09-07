@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.Context
 
-class Players(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse?= null) {
+class Players(val ctx: Context) {
     fun getLocal(): Player {
-        return Player(client.getLocalPlayer(), client, mouse)
+        return Player(ctx.client.getLocalPlayer(), ctx)
     }
 }

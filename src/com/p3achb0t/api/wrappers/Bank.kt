@@ -2,17 +2,16 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
 
-class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: Keyboard? = null, val mouse: Mouse? = null) {
+class Bank(val ctx: Context) {
     //DONE - open bank
     //DONE - deposit all items
     //TODO - deposit all items from a list
@@ -52,7 +51,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
 
         //First look for bankers, if that doesnt work then look for bank objects
         if (!isOpen()) {
-            val bankers = NPCs(client,mouse!!).findNpc("Banker")
+            val bankers = NPCs(ctx).findNpc("Banker")
             if (bankers.size > 0) {
                 bankers[0].interact("Use" )
                 Utils.waitFor(3, object : Utils.Condition {
@@ -70,7 +69,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
     suspend fun close() {
         if (isOpen()) {
             // Loop over the children to find the button that can close the bank
-            val itemContainer = Widgets.find(client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
+            val itemContainer = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
             itemContainer?.getChildren()?.iterator()?.forEach {
                 val actions = it.getOps()
                 if (actions != null) {
@@ -78,7 +77,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
                         if (action != null) {
                             if (action == "Close") {
                                 println("Closing bank")
-                                WidgetItem(it, client =client).click()
+                                WidgetItem(it, ctx = ctx).click()
                                 //Wait till bank is closed
                                 Utils.waitFor(3, object : Utils.Condition {
                                     override suspend fun accept(): Boolean {
@@ -96,19 +95,19 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
     }
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(Widgets.find(client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), client =client)
+        val depositAllWidget = WidgetItem(Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
         depositAllWidget.click()
-        val inventoryCount = Inventory(client).getCount()
+        val inventoryCount = Inventory(ctx).getCount()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return inventoryCount != Inventory(client).getCount()
+                return inventoryCount != Inventory(ctx).getCount()
             }
         })
     }
 
     fun itemVisible(itemRect: Rectangle): Boolean {
-        return WidgetItem(getWidget(), client =client).area.intersects(itemRect)
+        return WidgetItem(getWidget(), ctx = ctx).area.intersects(itemRect)
     }
 
 
@@ -142,14 +141,14 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
                                 override suspend fun accept(): Boolean {
                                     delay(100)
                                     val chatText =
-                                            Widgets.find(client, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                            Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                                     val text = chatText?.getText()
                                     println(text + " " + chatText?.getIsHidden())
                                     return text?.equals("*") ?: false
                                 }
                             })
                             delay(Random.nextLong(100, 350))
-                            keyboard?.sendKeys(count.toString(), sendReturn = true)
+                            ctx.keyboard?.sendKeys(count.toString(), sendReturn = true)
                         }
 
                         Utils.waitFor(3, object : Utils.Condition {
@@ -170,14 +169,14 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
         if (isOpen()) {
             val itemCount = getItemCount(id)
             if (count in listOf(1, 5, 10)) {
-                Inventory(client).getItem(id)?.interact("Deposit-$count" )
+                Inventory(ctx).getItem(id)?.interact("Deposit-$count" )
             } else {
-                Inventory(client).getItem(id)?.interact("Deposit-X")
+                Inventory(ctx).getItem(id)?.interact("Deposit-X")
                 //Wait till the * shows up in the chat box
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        val chatText = Widgets.find(client, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                        val chatText = Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                         val text = chatText?.getText()
                         println(text + " " + chatText?.getIsHidden())
                         return text?.equals("*") ?: false
@@ -185,7 +184,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
                 })
                 delay(Random.nextLong(100, 350))
 
-                keyboard?.sendKeys(count.toString(), sendReturn = true)
+                ctx.keyboard?.sendKeys(count.toString(), sendReturn = true)
             }
             // wait till item get into the bank
             Utils.waitFor(3, object : Utils.Condition {
@@ -203,12 +202,12 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
     }
 
     fun getWidget(): Component? {
-        return Widgets.find(client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+        return Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
     }
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = Widgets.find(client, WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+            val widget = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
             if (widget != null && widget.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
@@ -232,7 +231,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client, val keyboard: K
                                 id = it.getItemId(),
                                 stackSize = it.getItemQuantity(),
                                 type = WidgetItem.Type.BANK,
-                                client =client
+                                ctx = ctx
                         )
                 )
             }

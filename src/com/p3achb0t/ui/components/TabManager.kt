@@ -1,5 +1,6 @@
 package com.p3achb0t.ui.components
 
+import com.github.joonasvali.naturalmouse.util.FactoryTemplates
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.ui.Context
@@ -44,14 +45,11 @@ class TabManager private constructor() : JTabbedPane() {
         // setup mouse and keyboard under here <---------------
         g.keyboard = Keyboard(g.client.getApplet().getComponent(0))
         g.client.getApplet().addKeyListener(g.keyboard)
-        g.mouse = Mouse(g.client.getApplet().getComponent(0),g.ctx)
+        g.mouse = Mouse(g.client.getApplet().getComponent(0), FactoryTemplates.createFastGamerMotionFactory(g.ctx))
         g.client.getApplet().addMouseListener(g.mouse)
 
         g.ctx = Context(g.client.client,g.mouse,g.keyboard,g.client)
         // setting up context which will be used in the scripts
-        g.ctx.mouse = g.mouse
-        g.ctx.keyboard = g.keyboard
-        g.mouse.ctx = g.ctx
 
 
 

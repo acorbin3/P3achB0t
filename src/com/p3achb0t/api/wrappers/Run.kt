@@ -1,10 +1,10 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 
-class Run(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
+class Run(val ctx: Context) {
     companion object {
         val PARENT = 160
         val CHILD_BUTTON = 22
@@ -14,11 +14,11 @@ class Run(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse
 
     val runEnergy: Int
         get() {
-            return Widgets.find(client, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
+            return Widgets.find(ctx, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
         }
 
     suspend fun clickRunButton() {
-        WidgetItem(Widgets.find(client, PARENT, CHILD_BUTTON), client =client, mouse=mouse).click()
+        WidgetItem(Widgets.find(ctx, PARENT, CHILD_BUTTON), ctx = ctx).click()
     }
 
     suspend fun activateRun() {
@@ -33,6 +33,6 @@ class Run(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse
 
     //1065 is activated, 1064 is not activated
     fun isRunActivated(): Boolean {
-        return Widgets.find(client, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
+        return Widgets.find(ctx, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
     }
 }

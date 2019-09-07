@@ -1,12 +1,11 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
 import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.interfaces.PaintListener
+import com.p3achb0t.ui.Context
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -28,31 +27,31 @@ fun drawRect(g: Graphics, rect: Rectangle) {
 }
 
 
-fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse): PaintListener {
+fun debugPaint(ctx: Context): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
                 g.color = Color.white
-                mouse.mouseEvent?.x?.let { mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                ctx.mouse.mouseEvent?.x?.let { ctx.mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
                 if (PaintDebug.isDebugTextOn)
-                    drawDebugText(g, client, mouse)
+                    drawDebugText(g, ctx)
 
-                if (client.getGameState() == 30) {
-                    if (!Bank(client).isOpen()) {
+                if (ctx.client.getGameState() == 30) {
+                    if (!Bank(ctx).isOpen()) {
                         if (PaintDebug.isGroundItemsOn)
-                            groundItemsPaint(g,client )
+                            groundItemsPaint(g,ctx )
                         if (PaintDebug.isPlayerPaintOn)
-                            playerPaint(g, client)
+                            playerPaint(g, ctx)
                         if (PaintDebug.isNPCPaintOn)
-                            paintNPCs(g,client )
+                            paintNPCs(g,ctx )
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
 //                        gameObjectPaint(g)
 
                     }
 
-                    if (Bank(client).isOpen()) {
-                        val items = Bank(client).getAll()
+                    if (Bank(ctx).isOpen()) {
+                        val items = Bank(ctx).getAll()
                         items.forEach {
                             g.color = Color.ORANGE
                             g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
@@ -61,28 +60,28 @@ fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse): 
                     }
 
 
-                    rightClickMenuPaint(g, client)
-                    inventoryPaint(g, client)
-                    equipmentPaint(g, client)
+                    rightClickMenuPaint(g, ctx)
+                    inventoryPaint(g, ctx)
+                    equipmentPaint(g, ctx)
 
                     // Paint minimap circle
                     try {
-                        val circle = MiniMap(client).getMapArea()
+                        val circle = MiniMap(ctx).getMapArea()
                         g.color = Color.RED
                         g.drawPolygon(circle)
                     } catch (e: Exception) {
                         println("Error: Minimap " + e.message)
                     }
                     // Paint continue
-                    val dialog = Dialog(client,mouse).getDialogContinue()
+                    val dialog = Dialog(ctx).getDialogContinue()
                     if (dialog.widget != null) {
                         g.color = Color.ORANGE
                         drawRect(g, dialog.area)
                     }
 
                     // Paint on minimap
-                    val local = client.getLocalPlayer()
-                    val point = worldToMiniMap(local.getX(), local.getY(), client)
+                    val local = ctx.client.getLocalPlayer()
+                    val point = worldToMiniMap(local.getX(), local.getY(), ctx)
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
                         g.fillRect(point.x, point.y, 4, 4)

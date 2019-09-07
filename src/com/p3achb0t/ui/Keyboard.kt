@@ -8,12 +8,15 @@ import java.util.*
 
 class Keyboard(private val component: Component) : KeyListener {
     override fun keyTyped(p0: KeyEvent?) {
+        println("Typed")
     }
 
     override fun keyPressed(p0: KeyEvent?) {
+        println("Pressed")
     }
 
     override fun keyReleased(p0: KeyEvent?) {
+        println("Released")
     }
 
     private var pressTime: Long = 0

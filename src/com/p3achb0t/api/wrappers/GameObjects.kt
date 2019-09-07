@@ -1,13 +1,13 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.Context
 
 
-class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mouse: Mouse) {
+class GameObjects(val ctx: Context) {
     val gameObjects: ArrayList<GameObject>
         get() {
             val gameObjects = ArrayList<GameObject>()
-            val region = client.getScene()
+            val region = ctx.client.getScene()
 
             region.getTiles().iterator().forEach { plane ->
                 plane.iterator().forEach { row ->
@@ -16,7 +16,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
                             if (tile.getScenery().isNotEmpty()) {
                                 tile.getScenery().iterator().forEach {
                                     if (it != null && it.getTag() > 0) {
-                                        gameObjects.add(GameObject(it, client = client, mouse = mouse))
+                                        gameObjects.add(GameObject(it, ctx = ctx))
 
                                     }
                                 }
@@ -31,7 +31,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
 
     fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
-        val region = client.getScene()
+        val region = ctx.client.getScene()
 
         //Default tile we will iterate over the region
         if (tile.x == -1 && tile.y == -1) {
@@ -43,7 +43,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
                             if (colTile.getScenery().isNotEmpty()) {
                                 colTile.getScenery().iterator().forEach {
                                     if (it != null) {
-                                        val gmObj = GameObject(it, client = client, mouse = mouse)
+                                        val gmObj = GameObject(it, ctx = ctx)
                                         if (gmObj.id == id)
                                             gameObjects.add(gmObj)
 
@@ -52,7 +52,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
                             }
                             if (colTile.getWall() != null) {
                                 val boundaryObject = colTile.getWall()
-                                val gmObj = GameObject(wallObject = boundaryObject, client = client, mouse = mouse)
+                                val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
                                 if (gmObj.id == id)
                                     gameObjects.add(gmObj)
                             }
@@ -65,7 +65,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
 
         }
         if (sortByDistance) {
-            val local = Players(client,mouse).getLocal()
+            val local = Players(ctx).getLocal()
             gameObjects.sortBy { it.distanceTo(local) }
         }
         return gameObjects
@@ -73,7 +73,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
 
     fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
-        val region = client.getScene()
+        val region = ctx.client.getScene()
 
         //Default tile we will iterate over the region
         if (tile.x == -1 && tile.y == -1) {
@@ -85,7 +85,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
                             if (colTile.getScenery().isNotEmpty()) {
                                 colTile.getScenery().iterator().forEach {
                                     if (it != null) {
-                                        val gmObj = GameObject(it, client = client, mouse = mouse)
+                                        val gmObj = GameObject(it, ctx = ctx)
                                         if (gmObj.name.toLowerCase() == name.toLowerCase())
                                             gameObjects.add(gmObj)
 
@@ -94,7 +94,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
                             }
                             if (colTile.getWall() != null) {
                                 val boundaryObject = colTile.getWall()
-                                val gmObj = GameObject(wallObject = boundaryObject, client = client, mouse = mouse)
+                                val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
                                 if (gmObj.name.toLowerCase() == name.toLowerCase())
                                     gameObjects.add(gmObj)
                             }
@@ -107,7 +107,7 @@ class GameObjects(val client: com.p3achb0t._runestar_interfaces.Client, val mous
 
         }
         if (sortByDistance) {
-            val local = Players(client,mouse).getLocal()
+            val local = Players(ctx).getLocal()
             gameObjects.sortBy { it.distanceTo(local) }
         }
         return gameObjects

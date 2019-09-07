@@ -3,25 +3,25 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.ui.Context
 import java.awt.Point
 import java.awt.Polygon
 
-class NPC(var npc: Npc, client: com.p3achb0t._runestar_interfaces.Client, mouse: Mouse) : Actor(npc, client, mouse) {
+class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.mouseEvent?.x ?: -1,ctx?.mouse?.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), it1) } } ?: Point(-1,-1)
+        return ctx?.client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), ctx!!) } } ?: Point(-1,-1)
     }
     fun getConvexHull(): Polygon {
-        return client?.let {
+        return ctx?.let {
             getConvexHull(
                     this.npc,
-                    it.getNPCType_cachedModels(),
+                    it.client.getNPCType_cachedModels(),
                     this.npc.getType().getKey(),it
             )
         } ?: Polygon()
@@ -34,10 +34,10 @@ class NPC(var npc: Npc, client: com.p3achb0t._runestar_interfaces.Client, mouse:
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
-        return client.let {
-            it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), it1) }
+        return ctx?.client.let {
+            it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), ctx!!) }
         }.let {
-            it?.let { it1 -> mouse?.click(it1) }
+            it?.let { it1 -> ctx?.mouse?.click(it1) }
         } ?: false
     }
 

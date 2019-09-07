@@ -1,7 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
@@ -11,9 +9,9 @@ import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.painting.getObjectComposite
 import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.ui.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -23,12 +21,10 @@ import java.util.*
 class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
-        client: Client,
-        mouse: Mouse? = null,
-        override var loc_client: Client? = client,
-        override var loc_keyboard: Keyboard? = null
+        ctx: Context? = null,
+        override var loc_ctx: Context? = ctx
 ) : Locatable,
-    Interactable(client, mouse) {
+    Interactable(ctx) {
     val id: Int
         get() {
             return when {
@@ -39,7 +35,7 @@ class GameObject(
         }
     val name: String
         get() {
-            val sceneData = client?.getLocType_cached()
+            val sceneData = ctx?.client?.getLocType_cached()
             val objectComposite = sceneData?.let { getObjectComposite(it, id) }
             return objectComposite?.getName().toString()
         }
@@ -68,17 +64,17 @@ class GameObject(
             }
         }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(mouse?.mouseEvent?.x ?: -1,mouse?.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.mouseEvent?.x ?: -1,ctx?.mouse?.mouseEvent?.y ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client?.let { Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, it) } ?: Point(0,0)
+        return ctx?.let { Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, it) } ?: Point(0,0)
     }
     override suspend fun clickOnMiniMap(): Boolean {
         return when {
-            sceneryObject != null -> mouse?.click(
-                    client?.let {
+            sceneryObject != null -> ctx?.mouse?.click(
+                    ctx?.let {
                         Calculations.worldToMiniMap(
                                 sceneryObject.getCenterX(),
                                 sceneryObject.getCenterY(),
@@ -86,8 +82,8 @@ class GameObject(
                         )
                     } ?: Point(0,0)
             )?: false
-            wallObject != null -> mouse?.click(
-                    client?.let {
+            wallObject != null -> ctx?.mouse?.click(
+                    ctx?.let {
                         Calculations.worldToMiniMap(
                                 wallObject.getX(),
                                 wallObject.getY(),
@@ -112,19 +108,21 @@ class GameObject(
     }
 
     override fun getGlobalLocation(): Tile {
-        if (client != null) {
+        if (ctx?.client != null) {
             return when {
                 sceneryObject != null -> Tile(
-                        sceneryObject.getCenterX() / 128 + client.getBaseX(),
-                        sceneryObject.getCenterY() / 128 + client.getBaseY(),
-                        sceneryObject.getPlane()
+                        sceneryObject.getCenterX() / 128 + ctx?.client.getBaseX(),
+                        sceneryObject.getCenterY() / 128 + ctx?.client.getBaseY(),
+                        sceneryObject.getPlane(),ctx
+
                 )
                 wallObject != null -> Tile(
-                        wallObject.getX() / 128 + client.getBaseX(),
-                        wallObject.getY() / 128 + client.getBaseY(),
-                        sceneryObject?.getPlane() ?: 0
+                        wallObject.getX() / 128 + ctx?.client.getBaseX(),
+                        wallObject.getY() / 128 + ctx?.client.getBaseY(),
+                        sceneryObject?.getPlane() ?: 0,ctx
+
                 )
-                else -> Tile(-1, -1)
+                else -> Tile(-1, -1, ctx = ctx)
             }
         }else{
             return Tile()
@@ -133,7 +131,7 @@ class GameObject(
 
 
     override fun isOnScreen(): Boolean {
-        return client?.let { Calculations.isOnscreen(it,getConvexHull().bounds ) } ?: false
+        return ctx?.let { Calculations.isOnscreen(it,getConvexHull().bounds ) } ?: false
     }
 
     fun getTriangles(): ArrayList<Polygon> {
@@ -143,7 +141,7 @@ class GameObject(
                 objectPositionInfo
 
             val modelTriangles =
-                getTrianglesFromModel(positionInfo, model!!,client!! )
+                getTrianglesFromModel(positionInfo, model!!,ctx!! )
 
             modelTriangles
         } else {
@@ -155,8 +153,8 @@ class GameObject(
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model,client!! )
-            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model,client!! )
+            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model,ctx!! )
+            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model,ctx!!)
             else -> Polygon()
         }
     }

@@ -38,31 +38,31 @@ class CustomCanvas(var oldCanvasHash: Int, val client: Client) : Canvas() {
         g.color = Color.GREEN
 
         paintListener.forEach { it.onPaint(g) }
-        try {
-            g.color = Color.GREEN
-            if (MainApplet.selectedWidget != null) {
-                if (MainApplet.selectedWidget!!.getType() == 2) {
-                    val retcs = Widget.getItemsRects(MainApplet.selectedWidget!!,client)
-                    retcs.iterator().forEach { rect ->
-                        g.drawRect(rect.x, rect.y, rect.width, rect.height)
-                    }
-                } else {
-                    val rect = Widget.getDrawableRect(MainApplet.selectedWidget!!, client)
-                    rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
-                    try {
-                        g.color = Color.MAGENTA
-                        for (child in MainApplet.selectedWidget?.getChildren()!!) {
-                            val rect2 = Widget.getDrawableRect(child,client )
-                            g.drawRect(rect2.x, rect2.y, rect2.width, rect2.height)
-                        }
-                    } catch (e: Exception) {
-                    }
-                }
-            }
-
-            super.getGraphics().drawImage(image, 0, 0, null)
-        } catch (e: Exception) {
-        }
+//        try {
+//            g.color = Color.GREEN
+//            if (MainApplet.selectedWidget != null) {
+//                if (MainApplet.selectedWidget!!.getType() == 2) {
+//                    val retcs = Widget.getItemsRects(MainApplet.selectedWidget!!,ctx)
+//                    retcs.iterator().forEach { rect ->
+//                        g.drawRect(rect.x, rect.y, rect.width, rect.height)
+//                    }
+//                } else {
+//                    val rect = Widget.getDrawableRect(MainApplet.selectedWidget!!, ctx)
+//                    rect.let { g.drawRect(rect.x, rect.y, rect.width, rect.height) }
+//                    try {
+//                        g.color = Color.MAGENTA
+//                        for (child in MainApplet.selectedWidget?.getChildren()!!) {
+////                            val rect2 = Widget.getDrawableRect(child,ctx )
+////                            g.drawRect(rect2.x, rect2.y, rect2.width, rect2.height)
+//                        }
+//                    } catch (e: Exception) {
+//                    }
+//                }
+//            }
+//
+//            super.getGraphics().drawImage(image, 0, 0, null)
+//        } catch (e: Exception) {
+//        }
 
         counter += 1
 

@@ -1,5 +1,6 @@
 package com.p3achb0t.ui.components
 
+import com.github.joonasvali.naturalmouse.util.FactoryTemplates
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.client.ClientInstance
@@ -21,7 +22,10 @@ class GamePanel : JPanel() {
         validate()
 
         client = ClientInstance()
-        ctx = Context(client.client,Mouse(client.getApplet(),null),Keyboard(client.getApplet()),client)
+        ctx = Context(client.client,
+                Mouse(client.getApplet()),
+                Keyboard(client.getApplet()),
+                client)
         add(client.getApplet())
 //        ctx = Context(client.client,mouse,keyboard,client)
 

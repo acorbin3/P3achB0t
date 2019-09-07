@@ -2,10 +2,12 @@ package com.github.joonasvali.naturalmouse.support;
 
 import com.github.joonasvali.naturalmouse.api.SystemCalls;
 import com.p3achb0t.MainApplet;
+import com.p3achb0t.api.user_inputs.Mouse;
 import com.p3achb0t.ui.Context;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Objects;
 
 public class DefaultSystemCalls implements SystemCalls {
@@ -50,7 +52,13 @@ public class DefaultSystemCalls implements SystemCalls {
                 this.ctx.getClientInstance().getApplet().getComponent(0),
                 MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
         );
-        this.ctx.getMouse().setMouseEvent(mouseMove);
+//        this.ctx.getMouse().setMouseEvent(mouseMove);
+        MouseListener[] ml = this.ctx.getClientInstance().getApplet().getComponent(0).getMouseListeners();
+        for (MouseListener mouseListener : ml) {
+            if (mouseListener.getClass() == Mouse.class) {
+                mouseListener.mouseClicked(mouseMove);
+            }
+        }
         this.ctx.getClientInstance().getApplet().getComponent(0).dispatchEvent(mouseMove);
 
     }

@@ -9,15 +9,15 @@ import java.awt.event.KeyListener
 
 class Keyboard(val component: Component): KeyListener {
     override fun keyTyped(e: KeyEvent?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Typed")
     }
 
     override fun keyPressed(e: KeyEvent?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Pressed")
     }
 
     override fun keyReleased(e: KeyEvent?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Released")
     }
 
     fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {

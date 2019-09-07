@@ -20,7 +20,7 @@ class Area {
     constructor(t1: Tile, t2: Tile) {
         Area(
             Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z),
-            Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z),
+            Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z ),
             Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z),
             Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z)
         )

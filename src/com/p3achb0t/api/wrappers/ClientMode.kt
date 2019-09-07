@@ -1,8 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 
-class ClientMode(val client: com.p3achb0t._runestar_interfaces.Client) {
+class ClientMode(val ctx: Context) {
     companion object {
         enum class ModeType {
             ResizeMode,
@@ -18,7 +19,7 @@ class ClientMode(val client: com.p3achb0t._runestar_interfaces.Client) {
 
         if (modeInit) return modeType
         return try {
-            val resizeModeWidget = Widgets.find(client, 261, 34)
+            val resizeModeWidget = Widgets.find(ctx, 261, 34)
             // For tutorial island we might not have any children yet, then it means we are in resize mode
             if (resizeModeWidget?.getChildren() == null) {
                 modeInit = true

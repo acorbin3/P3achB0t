@@ -22,9 +22,9 @@ abstract class AbstractScript {
     init {
         val c = TabManager.instance.getSelected()
         client = c.client!!.client!!
-        players = Players(client,c.mouse)
-        groundItems = GroundItems(client,c.mouse)
-        npcs = NPCs(client,c.mouse)
+        players = Players(c.ctx)
+        groundItems = GroundItems(c.ctx)
+        npcs = NPCs(c.ctx)
         mouse = c.mouse
         keyboard = c.keyboard
         ctx = c.ctx

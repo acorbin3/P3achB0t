@@ -4,9 +4,10 @@ import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import com.p3achb0t.ui.Context
 import java.awt.Rectangle
 
-class Inventory(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Inventory(val ctx: Context? = null) {
 
     companion object {
         private const val PARENT_ID = WidgetID.INVENTORY_GROUP_ID
@@ -15,26 +16,26 @@ class Inventory(val client: com.p3achb0t._runestar_interfaces.Client) {
 
     suspend fun open() {
 
-        if (!isOpen()) Tabs(client).openTab(Tabs.Tab_Types.Inventory)
+        if (!isOpen()) Tabs(ctx!!).openTab(Tabs.Tab_Types.Inventory)
         if (!isOpen()) open()
     }
 
     fun isOpen(): Boolean {
-        return Tabs(client).getOpenTab() == Tabs.Tab_Types.Inventory
+        return Tabs(ctx!!).getOpenTab() == Tabs.Tab_Types.Inventory
     }
 
     fun getAll(): ArrayList<WidgetItem> {
         val items = ArrayList<WidgetItem>()
         val inventory = getWidget()
         // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
-        if (inventory != null && Widget.getDrawableRect(inventory, client).x > 0) {
+        if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
             val ids = inventory.getItemIds()
             val stacks = inventory.getItemQuantities()
 
             val columns = inventory.getWidth()
             val rows = inventory.getHeight()
-            val baseX = Widget.getWidgetX(inventory,client)
-            val baseY = Widget.getWidgetY(inventory,client )
+            val baseX = Widget.getWidgetX(inventory,ctx)
+            val baseY = Widget.getWidgetY(inventory,ctx )
             for (i in 0 until (columns * rows)) {
                 if (ids[i] > 0 && stacks[i] > 0) {
                     val row = i / columns
@@ -49,7 +50,7 @@ class Inventory(val client: com.p3achb0t._runestar_interfaces.Client) {
                                     id = ids[i] - 1,
                                     stackSize = stacks[i],
                                     type = WidgetItem.Type.INVENTORY,
-                                    client =client
+                                    ctx = ctx
                             )
                     )
                 }
@@ -73,7 +74,7 @@ class Inventory(val client: com.p3achb0t._runestar_interfaces.Client) {
     fun getWidget(): Component? {
         var widget: Component? = null
         try {
-            widget = client.getInterfaceComponents()[PARENT_ID][CHILD_ID]
+            widget = ctx?.client!!.getInterfaceComponents()[PARENT_ID][CHILD_ID]
         } catch (e: Exception) {
         }
         return widget

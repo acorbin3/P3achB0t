@@ -1,11 +1,10 @@
 package com.p3achb0t.api.newApi
 
-import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Player
+import com.p3achb0t.ui.Context
 
-class Players(val client: Client, val mouse: Mouse) {
+class Players(val ctx: Context) {
     fun getLocal(): Player {
-        return Player(client.getLocalPlayer(), client, mouse)
+        return Player(ctx.client.getLocalPlayer(), ctx)
     }
 }
