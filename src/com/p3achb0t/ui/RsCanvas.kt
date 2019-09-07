@@ -1,6 +1,7 @@
 package com.p3achb0t.ui
 
 import com.p3achb0t.api.painting.drawDebugText
+import com.p3achb0t.api.painting.paintNPCs
 import com.p3achb0t.ui.components.TabManager
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -26,6 +27,7 @@ open class RsCanvas : Canvas() {
         gamePanel.ctx.mouse.mouseEvent?.x?.let { gamePanel.ctx.mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
         g.color = Color.white
         drawDebugText(g, gamePanel.ctx)
+        paintNPCs(g,gamePanel.ctx)
         gamePanel.client.script?.draw(g)
 
         if (gamePanel.client.name != "") {

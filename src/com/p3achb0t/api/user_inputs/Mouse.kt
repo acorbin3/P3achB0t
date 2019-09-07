@@ -4,6 +4,7 @@ import com.github.joonasvali.naturalmouse.api.MouseMotionFactory
 import com.github.joonasvali.naturalmouse.util.FactoryTemplates
 import com.p3achb0t.api.Constants
 import com.p3achb0t.ui.Context
+import com.p3achb0t.ui.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Component
 import java.awt.Point
@@ -78,8 +79,12 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                         )
                     }
                 }
-
-                component.dispatchEvent(mouseMove)
+                for (l in component.mouseMotionListeners) {
+                    if (l !is com.p3achb0t.api.user_inputs.Mouse) {
+                        l.mouseMoved(mouseMove)
+                    }
+                }
+//                component.dispatchEvent(mouseMove)
                 mouseEvent = mouseMove
                 interval?.toLong()?.let { delay(it) }
             }
@@ -98,8 +103,13 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                     0,
                     clickType == ClickType.Right
                 )
-
-            component.dispatchEvent(mousePress)
+            for (l in component.mouseListeners) {
+                if (l !is com.p3achb0t.api.user_inputs.Mouse) {
+                    l.mousePressed(mousePress)
+                    break
+                }
+            }
+//            component.dispatchEvent(mousePress)
             mouseEvent = mousePress
 
             // Create a random number 30-70 to delay between clicks
@@ -118,8 +128,13 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                     clickType == ClickType.Right
                 )
 
-
-            component.dispatchEvent(mouseRelease)
+            for (l in component.mouseListeners) {
+                if (l !is com.p3achb0t.api.user_inputs.Mouse) {
+                    l.mouseReleased(mouseRelease)
+                    break
+                }
+            }
+//            component.dispatchEvent(mouseRelease)
             mouseEvent = mouseRelease
         }
         return true
