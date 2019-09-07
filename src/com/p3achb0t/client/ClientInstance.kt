@@ -21,7 +21,7 @@ class ClientInstance {
     var name = ""
     var author = ""
     var state: ClientState = ClientState.STOPPED
-    private var applet: Applet
+    var applet: Applet
     var client: Client
     var script: AbstractScript? = null
 
@@ -53,14 +53,11 @@ class ClientInstance {
         //applet.preferredSize = Dimension(765, 503)
     }
 
-    fun getApplet() : Applet {
-        return applet
-    }
-
     fun run() {
         applet.init()
 
         applet.setSize(765, 503)
+        applet.start()
         //appletStub.setActive(true)
     }
 }

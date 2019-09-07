@@ -78,8 +78,9 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                         )
                     }
                 }
-                mouseEvent = mouseMove
+
                 component.dispatchEvent(mouseMove)
+                mouseEvent = mouseMove
                 interval?.toLong()?.let { delay(it) }
             }
         }
@@ -89,9 +90,9 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
             val mousePress =
                 MouseEvent(
                         component,
-                    MouseEvent.MOUSE_PRESSED,
+                    MouseEvent.MOUSE_CLICKED,
                     System.currentTimeMillis(),
-                    clickMask,
+                    0,
                     destPoint.x,
                     destPoint.y,
                     0,
@@ -99,6 +100,7 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                 )
 
             component.dispatchEvent(mousePress)
+            mouseEvent = mousePress
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
@@ -118,6 +120,7 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
 
 
             component.dispatchEvent(mouseRelease)
+            mouseEvent = mouseRelease
         }
         return true
     }

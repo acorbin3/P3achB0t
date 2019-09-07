@@ -40,19 +40,17 @@ class TabManager private constructor() : JTabbedPane() {
         validate() // very important
         g.run()
 
-        Thread.sleep(500)
-
+        Thread.sleep(1000)
         // setup mouse and keyboard under here <---------------
-        g.keyboard = Keyboard(g.client.getApplet().getComponent(0))
-        g.client.getApplet().addKeyListener(g.keyboard)
-        g.mouse = Mouse(g.client.getApplet().getComponent(0), FactoryTemplates.createFastGamerMotionFactory(g.ctx))
-        g.client.getApplet().addMouseListener(g.mouse)
+        g.client.applet.apply {
+            g.keyboard = Keyboard(this.getComponent(0))
+            this.addKeyListener(g.keyboard)
+            g.mouse = Mouse(this.getComponent(0), FactoryTemplates.createFastGamerMotionFactory(g.ctx))
+            this.addMouseListener(g.mouse)
+        }
 
         g.ctx = Context(g.client.client,g.mouse,g.keyboard,g.client)
         // setting up context which will be used in the scripts
-
-
-
     }
 
     fun removeInstance(id: Int) { // DO SOME CHECKS

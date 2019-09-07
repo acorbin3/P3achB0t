@@ -13,6 +13,7 @@ import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import com.p3achb0t.ui.Context
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -32,6 +33,7 @@ class TutorialIsland: AbstractScript()  {
 
     override suspend fun start() {
         println("Running Start")
+        println("Running Start2")
     }
 
     override suspend fun stop() {
@@ -215,7 +217,7 @@ class TutorialIsland: AbstractScript()  {
                 println("Leaving male")
             }
             //select accept
-            WidgetItem(Widgets.find(ctx, 269, 99), ctx = ctx).click()
+            WidgetItem(Widgets.find(ctx, 269, "Accept"), ctx = ctx).click()
             delay(Random.nextLong(1250, 2650))
             println("Completed Character outfit")
         }

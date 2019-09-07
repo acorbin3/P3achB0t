@@ -36,7 +36,7 @@ class Keyboard(val component: Component): KeyListener {
                     0,
                     0, c
             )
-            component?.dispatchEvent(down)
+            component.dispatchEvent(down)
             delay(20)
             val typeed = KeyEvent(
                     component,
@@ -45,7 +45,7 @@ class Keyboard(val component: Component): KeyListener {
                     0,
                     0, c
             )
-            component?.dispatchEvent(typeed)
+            component.dispatchEvent(typeed)
             delay(20)
             val up = KeyEvent(
                     component,
@@ -54,7 +54,7 @@ class Keyboard(val component: Component): KeyListener {
                     0,
                     0, c
             )
-            component?.dispatchEvent(up)
+            component.dispatchEvent(up)
             delay(20)
         }
 
@@ -74,7 +74,7 @@ class Keyboard(val component: Component): KeyListener {
                 0,
                 keyCode, keyCode.toChar()
         )
-        component?.dispatchEvent(down)
+        component.dispatchEvent(down)
     }
 
     fun release(keyCode: Int) {
@@ -85,7 +85,7 @@ class Keyboard(val component: Component): KeyListener {
                 0,
                 keyCode, keyCode.toChar()
         )
-        component?.dispatchEvent(up)
+        component.dispatchEvent(up)
     }
 }
 

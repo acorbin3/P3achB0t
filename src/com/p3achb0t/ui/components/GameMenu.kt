@@ -5,6 +5,7 @@ import com.p3achb0t.scripts.PrintScript
 import com.p3achb0t.scripts.ScriptManager
 import com.p3achb0t.scripts.TestScript
 import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -37,7 +38,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         npc.addActionListener {
             //poll = PrintScript()
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client!!.script = PrintScript()
+            game.client.script = PrintScript()
             //println("SEND KEYS 2")
             //val game = TabManager.instance.getInstance(1)
             //game.client.keyboard?.sendKeys("Kasper")
@@ -46,11 +47,19 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val tutorialIslandMenuItem = JMenuItem("Tutorial Island")
         tutorialIslandMenuItem.addActionListener{
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client!!.script = TutorialIsland()
+            game.client.script = TutorialIsland()
             GlobalScope.launch {
                 println("Kicking off the Loop")
                 while(true)
-                    game.client!!.script?.loop()
+                    game.client.script?.loop()
+            }
+        }
+
+        val widgetExplorerMenuItem = JMenuItem("Widget Explorer")
+        widgetExplorerMenuItem.addActionListener{
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            GlobalScope.launch {
+                WidgetExplorerV3.createWidgetExplorer(game.ctx)
             }
         }
 
@@ -58,7 +67,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         player.addActionListener {
             GlobalScope.launch {
                 val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-                game.client!!.script?.loop()
+                game.client.script?.loop()
                 //poll?.loop()
                 println("sfsdfdsf")
             }
@@ -74,6 +83,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         menu.add(player)
         menu.add(other)
         menu.add(tutorialIslandMenuItem)
+        menu.add(widgetExplorerMenuItem)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 

@@ -23,10 +23,10 @@ class GamePanel : JPanel() {
 
         client = ClientInstance()
         ctx = Context(client.client,
-                Mouse(client.getApplet()),
-                Keyboard(client.getApplet()),
+                Mouse(client.applet),
+                Keyboard(client.applet),
                 client)
-        add(client.getApplet())
+        add(client.applet)
 //        ctx = Context(client.client,mouse,keyboard,client)
 
     }

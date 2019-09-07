@@ -38,7 +38,7 @@ public class WidgetExplorerV3 {
                 System.out.println("Refresh!");
                 node.removeAllChildren();
                 textField1.setText("");
-                Component[][] components = ctx.getClient().getInterfaceComponents();
+                Component[][] components = WidgetExplorerV3.this.ctx.getClient().getInterfaceComponents();
                 DefaultMutableTreeNode currentParentNode = null;
                 for (Integer parentID = 0; parentID < components.length; parentID++) {
                     if (components[parentID] != null) {
@@ -63,7 +63,7 @@ public class WidgetExplorerV3 {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Search!");
-                doSearch(ctx);
+                doSearch(WidgetExplorerV3.this.ctx);
             }
         });
         tree1.addTreeSelectionListener(new TreeSelectionListener() {
@@ -79,10 +79,10 @@ public class WidgetExplorerV3 {
                     if (index.split(",").length > 2) {
                         Integer parentID = Integer.parseInt(index.split(",")[1]);
                         Integer childID = Integer.parseInt(index.split(",")[2]);
-                        Component[][] components = ctx.getClient().getInterfaceComponents();
+                        Component[][] components = WidgetExplorerV3.this.ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
                         MainApplet.Data.setSelectedWidget(widget);
-                        String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
+                        String result = Widgets.Companion.getWidgetDetails(widget, 0, WidgetExplorerV3.this.ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);
                         textArea1.setCaretPosition(0);
@@ -97,7 +97,7 @@ public class WidgetExplorerV3 {
         textField1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doSearch(ctx);
+                doSearch(WidgetExplorerV3.this.ctx);
             }
         });
     }
@@ -132,10 +132,10 @@ public class WidgetExplorerV3 {
         treeModel.reload();
     }
 
-    public void createWidgetExplorer() {
+    static public void createWidgetExplorer(Context ctx) {
         JFrame frame = new JFrame("WidgetExplorerV3");
-        frame.setContentPane(new WidgetExplorerV3(this.ctx).widgetExplorerPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(new WidgetExplorerV3(ctx).widgetExplorerPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
@@ -166,7 +166,7 @@ public class WidgetExplorerV3 {
         widgetExplorerPanel.add(textField1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(120, -1), 0, false));
-        tree1 = new JTree();
+        tree1 = new JTree(treeModel);
         tree1.setMaximumSize(new Dimension(100, 74));
         scrollPane1.setViewportView(tree1);
         final JScrollPane scrollPane2 = new JScrollPane();
