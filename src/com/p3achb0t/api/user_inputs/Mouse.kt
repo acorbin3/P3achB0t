@@ -106,7 +106,6 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
             for (l in component.mouseListeners) {
                 if (l !is com.p3achb0t.api.user_inputs.Mouse) {
                     l.mousePressed(mousePress)
-                    break
                 }
             }
 //            component.dispatchEvent(mousePress)
@@ -131,7 +130,6 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
             for (l in component.mouseListeners) {
                 if (l !is com.p3achb0t.api.user_inputs.Mouse) {
                     l.mouseReleased(mouseRelease)
-                    break
                 }
             }
 //            component.dispatchEvent(mouseRelease)

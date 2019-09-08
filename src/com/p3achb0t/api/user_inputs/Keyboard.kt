@@ -108,7 +108,6 @@ class Keyboard(val component: Component): KeyListener {
             }
             if (!down.isConsumed) {
                 kl.keyPressed(down)
-                break
             }
         }
 //        component.dispatchEvent(down)
@@ -128,7 +127,6 @@ class Keyboard(val component: Component): KeyListener {
             }
             if (!up.isConsumed) {
                 kl.keyReleased(up)
-                break
             }
         }
 //        component.dispatchEvent(up)
