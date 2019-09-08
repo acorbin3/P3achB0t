@@ -1,6 +1,5 @@
 package com.p3achb0t.api
 
-import com.p3achb0t.CustomCanvas
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.MiniMap
@@ -11,6 +10,7 @@ import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import com.p3achb0t.ui.Context
+import com.p3achb0t.ui.RsCanvas
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
@@ -96,17 +96,17 @@ class Calculations {
 
             var _angle = (y * sinCurveX + x * cosCurveX) shr 16
 
-            y = y * cosCurveX - x * sinCurveX shr 16
+            y = ((y * cosCurveX) - (x * sinCurveX)) shr 16
             x = _angle
 
-            _angle = z * cosCurveY - y * sinCurveY shr 16
-            y = z * sinCurveY + y * cosCurveY shr 16
+            _angle = (z * cosCurveY - y * sinCurveY) shr 16
+            y = (z * sinCurveY + y * cosCurveY) shr 16
             z = _angle
 
 
             return if (y >= 50) {
-                val screenX = x * ctx.client.getViewportZoom() / y + CustomCanvas.dimension.width / 2
-                val screenY = z * ctx.client.getViewportZoom() / y + CustomCanvas.dimension.height / 2
+                val screenX = x * ctx.client.getViewportZoom() / y +  ctx.clientInstance.applet.size.width / 2
+                val screenY = z * ctx.client.getViewportZoom() / y + ctx.clientInstance.applet.size.height / 2
                 Point(screenX, screenY)
             } else Point(-1, -1)
         }
