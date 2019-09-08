@@ -793,7 +793,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenQuestList(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            val text = "Click on the flashing icon to the left of your Inventory(client)."
+            val text = "Click on the flashing icon to the left of your inventory"
             return dialogWidget.containsText(text)
         }
 
@@ -1073,7 +1073,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenEquipmentStats(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("This is your worn Inventory(client).")
+            return dialogWidget.containsText("This is your worn inventory")
         }
 
         override suspend fun execute() {
@@ -1308,6 +1308,16 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
+            //Sometimes we find out selfs still in the caves, lets exit it
+            val caveTile = Tile(3110,9526, ctx = ctx)
+            if(caveTile.distanceTo() < 10){
+                val ladder = GameObjects(ctx).find("Ladder", sortByDistance = true)
+                if (ladder.size > 0) {
+                    ladder[0].interact("Climb")
+                    Players(ctx).getLocal().waitTillIdle()
+                }
+            }
+
             val tileNearBank = Tile(3122, 3123, ctx = ctx)
             if (tileNearBank.distanceTo() > 5) {
                 tileNearBank.clickOnMiniMap()
