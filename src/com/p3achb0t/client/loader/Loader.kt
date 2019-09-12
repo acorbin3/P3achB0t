@@ -1,7 +1,7 @@
-package com.p3achb0t.loader
+package com.p3achb0t.client.loader
 
-import com.p3achb0t.ui.components.Constants
-import com.p3achb0t.util.Util
+import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.util.Util
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL

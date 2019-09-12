@@ -1,0 +1,23 @@
+package com.p3achb0t.injection.Replace
+
+import com.p3achb0t.interfaces.ScriptManager
+import java.awt.*
+import java.awt.image.BufferedImage
+
+
+open class RsCanvas(val manager: ScriptManager) : Canvas() {
+
+    private val gameCanvas: BufferedImage = BufferedImage(800,600, BufferedImage.TYPE_INT_RGB)
+
+    override fun getGraphics() : Graphics {
+        val g = gameCanvas.createGraphics()
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        manager.script.draw(g)
+
+        g.color = Color.CYAN
+        g.drawString("P3achB0t & Unoplex - BOT Alpha 0.1.0", 30 ,20)
+        super.getGraphics().drawImage(gameCanvas, 0, 0, null)
+        return g
+    }
+}

@@ -1,6 +1,6 @@
-package com.p3achb0t.util
+package com.p3achb0t.client.util
 
-import com.p3achb0t.ui.components.Constants
+import com.p3achb0t.client.configs.Constants
 import java.io.File
 import java.net.Socket
 import java.nio.file.Files

@@ -1,5 +1,6 @@
-package com.p3achb0t.ui.components
+package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.scripts.ScriptManager
 import com.p3achb0t.scripts.TestScript
 import java.awt.*

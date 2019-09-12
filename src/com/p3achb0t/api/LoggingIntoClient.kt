@@ -2,8 +2,8 @@ package com.p3achb0t.api
 
 import com.p3achb0t.UserDetails
 import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
+//import com.p3achb0t.api.user_inputs.Keyboard
+//import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -19,6 +19,7 @@ class LoggingIntoClient {
 }
 
 fun LoggingIntoAccount(ctx: Client) {
+    /*
     //Logging into the client
     Thread.sleep(3000)
     GlobalScope.launch {
@@ -67,5 +68,5 @@ fun LoggingIntoAccount(ctx: Client) {
             }
             delay(50)
         }
-    }
+    }*/
 }

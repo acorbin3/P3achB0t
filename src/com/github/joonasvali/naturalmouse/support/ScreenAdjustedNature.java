@@ -2,7 +2,7 @@ package com.github.joonasvali.naturalmouse.support;
 
 import com.github.joonasvali.naturalmouse.api.MouseInfoAccessor;
 import com.github.joonasvali.naturalmouse.api.SystemCalls;
-import com.p3achb0t.MainApplet;
+//import com.p3achb0t.MainApplet;
 
 import java.awt.*;
 import java.util.Objects;
@@ -51,7 +51,7 @@ public class ScreenAdjustedNature extends DefaultMouseMotionNature {
         public Point getMousePosition() {
             Point realPointer = underlying.getMousePosition();
             p.setLocation(realPointer.x - offset.x, realPointer.y - offset.y);
-            return new Point(Objects.requireNonNull(MainApplet.Data.getMouseEvent()).getX(), MainApplet.Data.getMouseEvent().getY());
+            return new Point(23,45);//new Point(Objects.requireNonNull(MainApplet.Data.getMouseEvent()).getX(), MainApplet.Data.getMouseEvent().getY());
         }
     }
 

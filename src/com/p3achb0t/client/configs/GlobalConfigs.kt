@@ -1,4 +1,4 @@
-package com.p3achb0t.ui
+package com.p3achb0t.client.configs
 
 class GlobalConfigs {
 

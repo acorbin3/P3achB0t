@@ -1,16 +1,15 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.class_generation.cleanType
-import com.p3achb0t.class_generation.isBaseType
-import com.p3achb0t.ui.components.Constants
+import com.p3achb0t.injection.class_generation.cleanType
+import com.p3achb0t.injection.class_generation.isBaseType
+import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.interfaces.ScriptManager
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Opcodes.*
-import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.MethodInsnNode
-import org.objectweb.asm.tree.MethodNode
+import org.objectweb.asm.tree.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.jar.JarEntry
@@ -61,8 +60,16 @@ class Analyser{
         val classPath = "com/p3achb0t/_runestar_interfaces"
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
+            if(clazzData.`class` == "Client") {
+                //classes[obsClass]?.int
+                injectField(classes[clazzData.name]!!)
+                injectInterface(classes[clazzData.name]!!)
+                injectCustomClient(classes[clazzData.name]!!)
+                println("INJECTED")
+            }
 
             if (clazzData.`class` == "Canvas") {
+
                 injectCanvas(classes[clazzData.name]!!)
                 println("${clazzData.name} : ${clazzData.`super`} ")
             }
@@ -143,20 +150,72 @@ class Analyser{
     }
 
     private fun injectCanvas(classNode: ClassNode) {
-        classNode.superName = "com/p3achb0t/ui/RsCanvas"
+        classNode.superName = "com/p3achb0t/injection/Replace/RsCanvas"
         for (method in classNode.methods) {
             if (method.name == "<init>") {
-                for (insn in method.instructions) {
+                val i: InsnList = method.instructions
+                for (insn in i) {
                     if (insn.opcode == Opcodes.INVOKESPECIAL) {
                         if (insn is MethodInsnNode) {
                             val mnode = insn
-                            mnode.owner = "com/p3achb0t/ui/RsCanvas"
+                            mnode.owner = "com/p3achb0t/injection/Replace/RsCanvas"
+                            mnode.desc = "(Lcom/p3achb0t/interfaces/ScriptManager;)V"
+                            val ins = InsnList()
+                            ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                            i.insert(insn.previous, ins)
+                            method.maxStack += 3
                             return
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun injectField(classNode: ClassNode) {
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/interfaces/ScriptManager;",null , null)
+        classNode.fields.add(node)
+        //classNode.fields.add()
+    }
+
+    private fun injectInterface(classNode: ClassNode) {
+        classNode.interfaces.add("com/p3achb0t/interfaces/IScriptManager");
+    }
+
+    private fun injectCustomClient(classNode: ClassNode) {
+
+
+        for (method in classNode.methods) {
+            if (method.name == "<init>") {
+                val i: InsnList = method.instructions
+                val ins = InsnList()
+                ins.add(TypeInsnNode(NEW, "com/p3achb0t/interfaces/ScriptManager"))
+                ins.add(InsnNode(DUP))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "()V"))
+                ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                //ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                i.insert(ins)
+                method.maxStack += 3
+            }
+        }
+
+        val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/interfaces/ScriptManager;", null, null)
+        val lli = getter.instructions
+        lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+        lli.add(InsnNode(ARETURN))
+        getter.maxStack = 2
+        getter.maxLocals = 2
+    /*
+        val setter = MethodNode(ACC_PUBLIC, "setScriptHook", "(Lcom/p3achb0t/interfaces/Script;)V", null, null)
+        val il = setter.instructions
+        il.add(VarInsnNode(ALOAD, 1))
+        il.add(FieldInsnNode(PUTSTATIC, "client", "script","Lcom/p3achb0t/interfaces/Script;"))
+        il.add(InsnNode(RETURN))
+        setter.maxStack = 2
+        setter.maxLocals = 2
+
+        classNode.methods.add(ACC_PUBLIC, setter)*/
+        classNode.methods.add(ACC_PUBLIC, getter)
     }
 
     private fun injectMethod(
@@ -213,11 +272,8 @@ class Analyser{
         }
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null")) {
-
                 println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
                 methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
-
-
         }else{
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }

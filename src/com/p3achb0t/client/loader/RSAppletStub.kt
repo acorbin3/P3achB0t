@@ -5,12 +5,8 @@ import java.net.MalformedURLException
 import java.net.URL
 
 class RSAppletStub(private val parameters: Map<String, String>) : AppletStub {
-    private val appletContext: RSAppletContext
+    private val appletContext: RSAppletContext = RSAppletContext()
     private var active = false
-
-    init {
-        appletContext = RSAppletContext()
-    }
 
     override fun isActive(): Boolean {
         // Lets everything know that it is alive
@@ -29,7 +25,6 @@ class RSAppletStub(private val parameters: Map<String, String>) : AppletStub {
         } catch (e: MalformedURLException) {
             throw IllegalArgumentException("Invalid Document Base URL")
         }
-
     }
 
     override fun getCodeBase(): URL {

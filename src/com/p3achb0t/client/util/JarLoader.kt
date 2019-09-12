@@ -1,4 +1,4 @@
-package com.p3achb0t.util
+package com.p3achb0t.client.util
 
 import java.io.File
 import java.net.URL

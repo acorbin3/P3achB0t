@@ -8,9 +8,13 @@ import java.net.URL
 import java.util.ArrayList
 import java.util.HashMap
 
-class ConfigReader @JvmOverloads constructor(private val url: String = "http://oldschool.runescape.com/jav_config.ws") {
+class ConfigReader @JvmOverloads constructor(val world: Int) {
+
+
 
     private fun readConfig(): Array<String> {
+
+        val url = "http://oldschool" + world +".runescape.com/jav_config.ws"
         // Create the stream and reader so we can dispose of it nicely in the finally
         // Yes I could have used the new try with resources but #yolo
         var inputStream: InputStream? = null

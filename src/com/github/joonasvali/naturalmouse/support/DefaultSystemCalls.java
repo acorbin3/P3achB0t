@@ -1,7 +1,7 @@
 package com.github.joonasvali.naturalmouse.support;
 
 import com.github.joonasvali.naturalmouse.api.SystemCalls;
-import com.p3achb0t.MainApplet;
+//import com.p3achb0t.MainApplet;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -46,10 +46,10 @@ public class DefaultSystemCalls implements SystemCalls {
     @Override
     public void setMousePosition(int x, int y) {
 
-        MouseEvent mouseMove = new MouseEvent(
+       /* MouseEvent mouseMove = new MouseEvent(
                 Objects.requireNonNull(MainApplet.Data.getCustomCanvas()),
                 MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false
         );
-        MainApplet.Data.getCustomCanvas().dispatchEvent(mouseMove);
+        MainApplet.Data.getCustomCanvas().dispatchEvent(mouseMove);*/
     }
 }

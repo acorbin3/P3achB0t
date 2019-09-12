@@ -1,10 +1,9 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.MainApplet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.awt.event.KeyEvent
-
+/*
 class Keyboard {
     companion object {
         fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
@@ -78,3 +77,4 @@ class Keyboard {
 }
 
 
+*/

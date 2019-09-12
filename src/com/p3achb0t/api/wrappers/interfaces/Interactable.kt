@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.MainApplet
+//import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Constants
-import com.p3achb0t.api.user_inputs.Mouse
+//import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
 import java.awt.Point
 import java.awt.Polygon
@@ -40,7 +40,7 @@ abstract class Interactable(val client: Client?) {
     }
 
 
-    open suspend fun interact(action: String): Boolean {
+    open suspend fun interact(action: String): Boolean {/*
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
@@ -65,33 +65,35 @@ abstract class Interactable(val client: Client?) {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return if (client != null) Interact(client).interact(desiredPoint, action) else false
+        return if (client != null) Interact(client).interact(desiredPoint, action) else false*/
+        return true
     }
-
+    /*
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
         MainApplet.mouse.moveMouse(
             getInteractPoint(),
             click = click,
             clickType = clickType
         )
-    }
+    }*/
 
     suspend fun click(left: Boolean): Boolean {
-        return MainApplet.mouse.moveMouse(
+        return true /*MainApplet.mouse.moveMouse(
             getInteractPoint(),
             click = true,
             clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
-        )
+        )*/
     }
 
     abstract suspend fun clickOnMiniMap(): Boolean
 
     suspend fun click(): Boolean {
+        return true /*
         val point = getInteractPoint()
         return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
             false
         } else {
             MainApplet.mouse.moveMouse(getInteractPoint(), click = true)
-        }
+        }*/
     }
 }

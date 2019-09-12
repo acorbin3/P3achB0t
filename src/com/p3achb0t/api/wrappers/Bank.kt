@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.user_inputs.Keyboard
+//import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -148,7 +148,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
                                 }
                             })
                             delay(Random.nextLong(100, 350))
-                            Keyboard.sendKeys(count.toString(), sendReturn = true)
+                            //Keyboard.sendKeys(count.toString(), sendReturn = true)
                         }
 
                         Utils.waitFor(3, object : Utils.Condition {
@@ -184,7 +184,7 @@ class Bank(val client: com.p3achb0t._runestar_interfaces.Client) {
                 })
                 delay(Random.nextLong(100, 350))
 
-                Keyboard.sendKeys(count.toString(), sendReturn = true)
+                //Keyboard.sendKeys(count.toString(), sendReturn = true)
             }
             // wait till item get into the bank
             Utils.waitFor(3, object : Utils.Condition {

@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
@@ -60,15 +59,15 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
             }
         }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
-        return getConvexHull().contains(mousePoint)
+        //val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return true //getConvexHull().contains(mousePoint)
     }
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return client?.let { Calculations.worldToScreen(region.x, region.y, sceneryObject?.getHeight() ?: 0, it) } ?: Point()
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return when {
+        return true/*when {
             sceneryObject != null -> MainApplet.mouse.click(
                     client?.let {
                         Calculations.worldToMiniMap(
@@ -90,7 +89,7 @@ class GameObject(val sceneryObject: Scenery? = null, val wallObject: Wall? = nul
                     } ?: Point()
             )
             else -> false
-        }
+        }*/
     }
 
     override fun getInteractPoint(): Point {

@@ -1,7 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
 import com.github.joonasvali.naturalmouse.util.FactoryTemplates
-import com.p3achb0t.MainApplet
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.event.MouseEvent
@@ -9,7 +8,7 @@ import kotlin.random.Random
 
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
-
+/*
 class Mouse {
     enum class ClickType {
         Right,
@@ -115,4 +114,4 @@ class Mouse {
         }
         return true
     }
-}
+}*/

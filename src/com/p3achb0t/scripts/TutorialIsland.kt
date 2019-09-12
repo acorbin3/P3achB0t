@@ -3,7 +3,7 @@ package com.p3achb0t.scripts
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.*
 import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.user_inputs.Keyboard
+//import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -151,7 +151,7 @@ class TutorialIsland: AbstractScript()  {
             nameEntry.click()
             delay(Random.nextLong(2200, 5550))
             
-            Keyboard.sendKeys(names.random(), sendReturn = true)
+            //Keyboard.sendKeys(names.random(), sendReturn = true)
             delay(Random.nextLong(2200, 5550))
 
             // If not a valid name then random name in the follow selections 558,(14,15,16)

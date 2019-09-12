@@ -72,7 +72,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
     fun setPitch(pitch: Int): Boolean {
 //            if (!Game.isLoggedIn())
 //                return false
-
+/*
         var _pitch = this.pitch
         println("Pitch update: $_pitch -> $pitch")
         if (_pitch == pitch || Math.abs(_pitch - pitch) <= 5) {
@@ -102,7 +102,8 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
             println("Finished moving camera Down")
         }
 
-        return Math.abs(_pitch - pitch) <= 5
+        return Math.abs(_pitch - pitch) <= 5*/
+        return true
     }
 
     /**
@@ -130,7 +131,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
         if (diff > 5) {
             // Figure out where we are
             println("Starting to swing camera Left or right")
-            Keyboard.pressDownKey(dir)
+            //Keyboard.pressDownKey(dir)
             for (i in 0..99) {
 
                 if (turnLeft) {
@@ -147,7 +148,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
 
                 sleep(100, 200)
             }
-            Keyboard.release(dir)
+            //Keyboard.release(dir)
             println("Finished moving camera Left or right")
         }
         return getDiff(this.angle, angle) <= 5

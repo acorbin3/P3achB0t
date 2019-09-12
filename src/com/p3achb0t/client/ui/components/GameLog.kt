@@ -1,4 +1,4 @@
-package com.p3achb0t.ui.components
+package com.p3achb0t.client.ui.components
 
 import javax.swing.JButton
 

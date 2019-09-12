@@ -2,7 +2,7 @@ package com.p3achb0t.scripts
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.ui.components.TabManager
+import com.p3achb0t.client.ui.components.TabManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

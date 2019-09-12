@@ -1,4 +1,6 @@
-package com.p3achb0t.ui.components
+package com.p3achb0t.client.configs
+
+import java.awt.Dimension
 
 class Constants {
     companion object {
@@ -18,13 +20,15 @@ class Constants {
 
         // Other constants
         val REVISION = 182
-        var INJECTED_JAR_NAME = "gamepack-${REVISION}-injected.jar"
+        var INJECTED_JAR_NAME = "gamepack-$REVISION-injected.jar"
+
+        val GAMESIZE = Dimension(800,600)
 
         //Icons
         const val RESOURCE_DIR = "resources"
         const val ICONS_DIR = "icons"
 
-        const val ICON_PATH = "../" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
+        const val ICON_PATH = "./" + RESOURCE_DIR + "/" + ICONS_DIR + "/"
 
         const val ICON_MOUSE = "mouse.png"
         const val ICON_PAUSE = "pause.png"

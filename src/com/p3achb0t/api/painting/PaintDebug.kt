@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
+
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
@@ -26,7 +26,7 @@ fun drawRect(g: Graphics, rect: Rectangle) {
     g.drawRect(rect.x, rect.y, rect.width, rect.height)
 }
 
-
+/*
 fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
@@ -92,4 +92,4 @@ fun debugPaint(client: com.p3achb0t._runestar_interfaces.Client): PaintListener 
             }
         }
     }
-}
+}*/

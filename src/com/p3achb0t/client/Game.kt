@@ -2,56 +2,53 @@ package com.p3achb0t.client
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.RSAppletStub
-import com.p3achb0t.ui.components.Constants
-import com.p3achb0t.util.JarLoader
+import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.util.JarLoader
+import com.p3achb0t.interfaces.IScriptManager
+import com.p3achb0t.interfaces.PrintScript
+import com.p3achb0t.interfaces.ScriptHook
+import com.p3achb0t.interfaces.ScriptManager
 
 import java.applet.Applet
+import java.awt.Dimension
 
 enum class ClientState {
     RUNNING, PAUSED, STOPPED
 }
 
-class ClientInstance {
+class Game {
 
     //var keyboard = Keyboard()
     var category = ""
     var name = ""
     var author = ""
-    val mouse = Mouse()
+    val mouse = null
     var state: ClientState = ClientState.STOPPED
     private var applet: Applet
     var client: Client
     var script: AbstractScript? = null
+    var scriptHook: IScriptManager
 
-
-
+    /**
+     * Constructor
+     */
     init {
-        val configReader = ConfigReader()
+        val configReader = ConfigReader(80)
         val map = configReader.read()
 
-
-        println("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")
+        //println("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")
         val clientClazz = JarLoader.load("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}","client")
         client = clientClazz as Client
         applet = clientClazz as Applet
+        scriptHook = clientClazz as IScriptManager
 
         val appletStub = RSAppletStub(map)
-        // Use our setter to set the Applet in the AppletContext
-        appletStub.getAppletContext().setApplet(applet)
-        // Set the AppletStub of the Applet
+        appletStub.appletContext.setApplet(applet)
         applet.setStub(appletStub)
-        // Turn the key and start the Applet up
-        //applet.setSize(765, 503)
-        //applet.init()
-
-
-        appletStub.setActive(true)
-
-        //applet.setStub(RSLoader(83))
-        //applet.preferredSize = Dimension(765, 503)
+        appletStub.appletResize(800,600);
+        //appletStub.isActive = true
     }
 
     fun getApplet() : Applet {
@@ -59,9 +56,10 @@ class ClientInstance {
     }
 
     fun run() {
+        applet.preferredSize = Dimension(800,600)
+        applet.setSize(800,600)// = Dimension(800,600)
+        applet.validate()
         applet.init()
 
-        applet.setSize(765, 503)
-        //appletStub.setActive(true)
     }
 }

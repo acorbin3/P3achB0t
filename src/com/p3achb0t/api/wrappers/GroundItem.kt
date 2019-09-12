@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
@@ -21,11 +20,11 @@ class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, 
         return client?.let { Calculations.worldToScreen(region.x, region.y, client?.getPlane(), it) } ?: Point()
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
-        return getConvexHull().contains(mousePoint)
+        //val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        return true //getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return client?.let { Calculations.worldToMiniMap(position.x, position.y, it) }?.let { MainApplet.mouse.click(it) } ?: false
+        return true//client?.let { Calculations.worldToMiniMap(position.x, position.y, it) }?.let { MainApplet.mouse.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {

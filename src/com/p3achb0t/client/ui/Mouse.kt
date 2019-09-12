@@ -1,4 +1,4 @@
-package com.p3achb0t.ui
+package com.p3achb0t.client.ui
 
 import java.awt.Component
 import java.awt.Point

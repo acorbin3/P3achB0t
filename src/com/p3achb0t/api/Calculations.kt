@@ -1,6 +1,6 @@
 package com.p3achb0t.api
 
-import com.p3achb0t.CustomCanvas
+//import com.p3achb0t.CustomCanvas
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
@@ -105,8 +105,8 @@ class Calculations {
 
 
             return if (y >= 50) {
-                val screenX = x * client.getViewportZoom() / y + CustomCanvas.dimension.width / 2
-                val screenY = z * client.getViewportZoom() / y + CustomCanvas.dimension.height / 2
+                val screenX = x * client.getViewportZoom() / y + 800/*CustomCanvas.dimension.width*/ / 2
+                val screenY = z * client.getViewportZoom() / y + 600 /*CustomCanvas.dimension.height*/ / 2
                 Point(screenX, screenY)
             } else Point(-1, -1)
         }

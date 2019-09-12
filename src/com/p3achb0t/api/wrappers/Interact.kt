@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
+//import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.user_inputs.Mouse
+//import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
@@ -49,6 +49,8 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
 
 
     suspend fun interact(point: Point, action: String, retryCount: Int = 0): Boolean {
+        return true
+        /*
         println("Action: $action ${point.x},${point.y}")
         if (point == Point(-1, -1)) {
             return false
@@ -117,6 +119,6 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                         clickType = Mouse.ClickType.Left
                 )
             }
-        }
+        }*/
     }
 }

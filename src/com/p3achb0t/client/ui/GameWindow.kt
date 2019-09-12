@@ -1,10 +1,11 @@
-package com.p3achb0t.ui
+package com.p3achb0t.client.ui
 
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.loader.Loader
-import com.p3achb0t.ui.components.*
-import com.p3achb0t.util.Util
+import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.loader.Loader
+import com.p3achb0t.client.ui.components.*
+import com.p3achb0t.client.util.Util
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.io.File
@@ -16,24 +17,25 @@ import javax.swing.JTabbedPane
 class GameWindow : JFrame() {
     var index = 0
     val tabs = JTabbedPane()
-    val layout2 = BorderLayout()
+    //val layout2 = BorderLayout()
 
 
     init {
 
         title = "RuneScape Bot ALPHA"
-        layout = layout2
+        //layout = layout2
         defaultCloseOperation = EXIT_ON_CLOSE
-        preferredSize = Dimension(765, 503)
-        tabs.preferredSize = Dimension(765,503)
+        //preferredSize = Dimension(765, 503)
+        tabs.preferredSize = Dimension(800,600)
 
-        size = Dimension(765, 600)
+        size = Dimension(800, 800)
         jMenuBar = GameMenu(tabs, 0)
         add(Bar(), BorderLayout.PAGE_START)
-        add(TabManager.instance, BorderLayout.CENTER)
+        add(TabManager.instance)
+        //add(TabManager.instance, BorderLayout.CENTER)
         //add(TabManager.instance)
 
-        add(GameLog(), BorderLayout.PAGE_END)
+        //add(GameLog(), BorderLayout.PAGE_END)
 
         isVisible = true
     }
@@ -72,14 +74,5 @@ fun setup() {
         runeStar.loadHooks()
         runeStar.parseJar(gamePackJar)
         Analyser().createInjectedJar(gamePackJar, runeStar)
-    }
-}
-object Main {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        setup()
-        val g = GameWindow()
-
-        g.run()
     }
 }

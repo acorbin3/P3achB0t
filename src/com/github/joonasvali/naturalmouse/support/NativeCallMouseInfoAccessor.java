@@ -1,7 +1,7 @@
 package com.github.joonasvali.naturalmouse.support;
 
 import com.github.joonasvali.naturalmouse.api.MouseInfoAccessor;
-import com.p3achb0t.MainApplet;
+//import com.p3achb0t.MainApplet;
 import sun.awt.SunToolkit;
 
 import java.awt.*;
@@ -38,6 +38,6 @@ public class NativeCallMouseInfoAccessor implements MouseInfoAccessor {
 
     @Override
     public Point getMousePosition() {
-        return new Point(Objects.requireNonNull(MainApplet.Data.getMouseEvent()).getX(), MainApplet.Data.getMouseEvent().getY());
+        return new Point(34,34/*Objects.requireNonNull(/*MainApplet.Data.getMouseEvent()).getX()*//*MainApplet.Data.getMouseEvent().getY()*/);
     }
 }

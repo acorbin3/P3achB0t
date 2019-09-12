@@ -1,4 +1,4 @@
-package com.p3achb0t.class_generation
+package com.p3achb0t.injection.class_generation
 
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.FieldHook

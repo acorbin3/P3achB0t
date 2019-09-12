@@ -1,6 +1,6 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
+
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Bank
@@ -18,7 +18,7 @@ fun drawDebugText(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client)
     val debugText = arrayListOf<DebugText>()
     if (true) {
         g.color = Color.white
-        debugText.add(DebugText("Mouse x:${MainApplet.mouseEvent?.x} y:${MainApplet.mouseEvent?.y}"))
+        //debugText.add(DebugText("Mouse x:${MainApplet.mouseEvent?.x} y:${MainApplet.mouseEvent?.y}"))
         debugText.add(DebugText("clientData.gameCycle :${client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${client.getLoginState()}"))

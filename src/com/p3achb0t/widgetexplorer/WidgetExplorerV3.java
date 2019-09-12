@@ -2,7 +2,7 @@ package com.p3achb0t.widgetexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.p3achb0t.MainApplet;
+//import com.p3achb0t.MainApplet;
 import com.p3achb0t._runestar_interfaces.Client;
 import com.p3achb0t._runestar_interfaces.Component;
 import com.p3achb0t.api.wrappers.widgets.Widget;
@@ -83,7 +83,7 @@ public class WidgetExplorerV3 {
                         Integer childID = Integer.parseInt(index.split(",")[2]);
                         Component[][] components = ctx.getInterfaceComponents();
                         Component widget = components[parentID][childID];
-                        MainApplet.Data.setSelectedWidget(widget);
+                        //MainApplet.Data.setSelectedWidget(widget);
                         String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);

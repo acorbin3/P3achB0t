@@ -1,4 +1,4 @@
-package com.p3achb0t.ui.components
+package com.p3achb0t.client.ui.components
 
 import java.awt.Color
 import java.awt.Dimension
@@ -60,11 +60,12 @@ class CustomButton(val tabs: TabManager, text: String) : JButton(), MouseListene
     override fun mouseClicked(e: MouseEvent) {
         val index = tabs.selectedIndex
 
+        tabs.clients.removeAt(index)
 
         if (index != -1) {
             tabs.removeTabAt(index)
         }
-        tabs.clients.removeAt(index)
+
     }
 
     override fun mousePressed(e: MouseEvent) {}

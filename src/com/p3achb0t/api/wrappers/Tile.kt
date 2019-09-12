@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
+//import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
@@ -25,8 +25,8 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=nul
         return getCanvasTileAreaPoly(client, regional.x, regional.y)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
-        return client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
+        /*val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)*/
+        return true //client?.let { getCanvasTileAreaPoly(it, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
     }
 
     override fun getNamePoint(): Point {
@@ -40,7 +40,7 @@ class Tile(val x: Int = -1, val y: Int = -1, val z: Int = 0, client: Client?=nul
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
         val point = client?.let { Calculations.worldToMiniMap(regional.x, regional.y, it) }
-        return point?.let { MainApplet.mouse.click(it) } ?: false
+        return true //point?.let { MainApplet.mouse.click(it) } ?: false
     }
 
     override fun getInteractPoint(): Point {
