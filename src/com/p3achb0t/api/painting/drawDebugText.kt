@@ -7,7 +7,7 @@ import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Menu
 import com.p3achb0t.api.wrappers.tabs.Tabs
-import com.p3achb0t.scripts.TutorialIsland
+//import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
 
@@ -55,7 +55,7 @@ fun drawDebugText(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client)
                             "mapAngle: ${client.getCamAngleY()}"
                 )
             )
-            debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(client) * 100)}"))
+            //debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(client) * 100)}"))
             debugText.add(DebugText("Zoom: ${client.getViewportZoom()}"))
             debugText.add(DebugText(Menu(client).getHoverAction()))
 //            debugText.add(DebugText())

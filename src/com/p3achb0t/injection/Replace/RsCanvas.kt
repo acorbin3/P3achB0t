@@ -9,11 +9,20 @@ open class RsCanvas(val manager: ScriptManager) : Canvas() {
 
     private val gameCanvas: BufferedImage = BufferedImage(800,600, BufferedImage.TYPE_INT_RGB)
 
+    init {
+        super.setFocusable(true)
+    }
+
     override fun getGraphics() : Graphics {
+
         val g = gameCanvas.createGraphics()
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         manager.script.draw(g)
+        manager.debug.draw(g)
+        if (manager.shouldRun) {
+            manager.gb.draw(g)
+        }
 
         g.color = Color.CYAN
         g.drawString("P3achB0t & Unoplex - BOT Alpha 0.1.0", 30 ,20)

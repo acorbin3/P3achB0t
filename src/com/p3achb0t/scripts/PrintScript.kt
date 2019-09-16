@@ -1,11 +1,12 @@
 package com.p3achb0t.scripts
-
+/*
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.ScriptManifest
 import java.awt.Graphics
 
 @ScriptManifest("","","")
-class PrintScript : AbstractScript() {
+class PrintScript(ctx: Client) : AbstractScript(ctx) {
 
 
 
@@ -25,3 +26,5 @@ class PrintScript : AbstractScript() {
 
     }
 }
+
+ */

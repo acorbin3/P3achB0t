@@ -61,12 +61,14 @@ class Analyser{
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
             if(clazzData.`class` == "Client") {
-                //classes[obsClass]?.int
                 injectField(classes[clazzData.name]!!)
-                injectInterface(classes[clazzData.name]!!)
+                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/interfaces/IScriptManager")
                 injectCustomClient(classes[clazzData.name]!!)
-                println("INJECTED")
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getKeyboard", "()Lcom/p3achb0t/client/interfaces/io/Keyboard;", "ar", "c", "Lar;")
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bk", "l", "Lbk;")
             }
+
+
 
             if (clazzData.`class` == "Canvas") {
 
@@ -117,6 +119,34 @@ class Analyser{
 
                 if (method.fieldDescription != "")
                     injectMethod(method, classes, clazzData.`class`, runeStar)
+            }
+
+            if (clazzData.`class` == "KeyHandler") {
+                AsmUtil.setSuper(classes[clazzData.name]!!,"java/lang/Object","com/p3achb0t/client/interfaces/io/Keyboard")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyPressed", "_keyPressed");
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyReleased", "_keyReleased");
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyTyped", "_keyTyped");
+            }
+
+            if (clazzData.`class` == "MouseHandler") {
+                // add in MouseHandler
+                // <getter fieldDesc="I" fieldName="s" fieldOwner="bu" methodDesc="I" methodName="getY" multiplier="476322543"/>
+                // <getter fieldDesc="I" fieldName="b" fieldOwner="bu" methodDesc="I" methodName="getX" multiplier="805078735"/>
+                // {"field":"MouseHandler_x","owner":"bk","name":"h","access":9,"descriptor":"I","decoder":-1689480427},
+                // {"field":"MouseHandler_x0","owner":"bk","name":"v","access":73,"descriptor":"I","decoder":1059127459},
+                // {"field":"MouseHandler_y","owner":"bk","name":"x","access":9,"descriptor":"I","decoder":-455222981},
+                // {"field":"MouseHandler_y0","owner":"bk","name":"d","access":73,"descriptor":"I","decoder":-871019493},
+                AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/interfaces/io/Mouse")
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getX", "()I", "bk", "h", "I", -1689480427)
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getY", "()I", "bk", "x", "I",-455222981)
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseClicked", "_mouseClicked")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseDragged", "_mouseDragged")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseEntered", "_mouseEntered")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseExited", "_mouseExited")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseMoved", "_mouseMoved")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mousePressed", "_mousePressed")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseReleased", "_mouseReleased")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseWheelMoved", "_mouseWheelMoved")
             }
         }
         val path = System.getProperty("user.dir")
@@ -184,37 +214,34 @@ class Analyser{
 
     private fun injectCustomClient(classNode: ClassNode) {
 
-
         for (method in classNode.methods) {
             if (method.name == "<init>") {
                 val i: InsnList = method.instructions
+                val last = i.last
+
                 val ins = InsnList()
+                ins.add(VarInsnNode(Opcodes.ALOAD, 0))
                 ins.add(TypeInsnNode(NEW, "com/p3achb0t/interfaces/ScriptManager"))
                 ins.add(InsnNode(DUP))
-                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "()V"))
+                ins.add(VarInsnNode(Opcodes.ALOAD, 0))
+                //ins.add(VarInsnNode(Opcodes.ALOAD, 0))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "(Lcom/p3achb0t/_runestar_interfaces/Client;)V"))
+
                 ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                 //ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
-                i.insert(ins)
-                method.maxStack += 3
+                i.insert(last.previous, ins)
+                method.maxStack += 6
             }
         }
 
         val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/interfaces/ScriptManager;", null, null)
         val lli = getter.instructions
+        lli.add(VarInsnNode(Opcodes.ALOAD, 0)) // maybe
         lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
         lli.add(InsnNode(ARETURN))
         getter.maxStack = 2
         getter.maxLocals = 2
-    /*
-        val setter = MethodNode(ACC_PUBLIC, "setScriptHook", "(Lcom/p3achb0t/interfaces/Script;)V", null, null)
-        val il = setter.instructions
-        il.add(VarInsnNode(ALOAD, 1))
-        il.add(FieldInsnNode(PUTSTATIC, "client", "script","Lcom/p3achb0t/interfaces/Script;"))
-        il.add(InsnNode(RETURN))
-        setter.maxStack = 2
-        setter.maxLocals = 2
 
-        classNode.methods.add(ACC_PUBLIC, setter)*/
         classNode.methods.add(ACC_PUBLIC, getter)
     }
 

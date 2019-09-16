@@ -35,20 +35,9 @@ class TabManager private constructor() : JTabbedPane() {
         } else {
             selectedIndex = tabCount-1
         }
-
+        gameTab.revalidate()
         setTabComponentAt(selectedIndex, NewTab(this))
-        gameTab.validate()
-
-        gameTab.run()
-
-        Thread.sleep(500)
-
-        // setup mouse and keyboard under here <---------------
-        val keyboard = Keyboard(gameTab.client!!.getApplet().getComponent(0))
-        gameTab.client!!.getApplet().addKeyListener(keyboard)
-        //g.client.keyboard = keyboard
-        val mouse = Mouse(gameTab.client!!.getApplet().getComponent(0))
-        gameTab.client!!.getApplet().addMouseListener(mouse)
+        //gameTab.revalidate()
 
 
 
@@ -71,9 +60,6 @@ class TabManager private constructor() : JTabbedPane() {
             selectedIndex = 0
         else
             selectedIndex--
-
-
-
 
     }
 

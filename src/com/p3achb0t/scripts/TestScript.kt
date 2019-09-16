@@ -1,5 +1,6 @@
 package com.p3achb0t.scripts
-
+/*
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.ScriptManifest
 
@@ -7,7 +8,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Test","TestScript","Unoplex")
-class TestScript : AbstractScript() {
+class TestScript(ctx: Client) : AbstractScript(ctx) {
 
     var camera = 0
 
@@ -49,3 +50,5 @@ class TestScript : AbstractScript() {
 
     }
 }
+
+ */

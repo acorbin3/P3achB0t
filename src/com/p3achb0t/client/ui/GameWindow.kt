@@ -17,32 +17,30 @@ import javax.swing.JTabbedPane
 class GameWindow : JFrame() {
     var index = 0
     val tabs = JTabbedPane()
-    //val layout2 = BorderLayout()
 
 
     init {
 
         title = "RuneScape Bot ALPHA"
-        //layout = layout2
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
         tabs.preferredSize = Dimension(800,600)
 
         size = Dimension(800, 800)
         jMenuBar = GameMenu(tabs, 0)
-        add(Bar(), BorderLayout.PAGE_START)
         add(TabManager.instance)
-        //add(TabManager.instance, BorderLayout.CENTER)
-        //add(TabManager.instance)
+        setLocationRelativeTo(null)
 
-        //add(GameLog(), BorderLayout.PAGE_END)
-
+        validate()
         isVisible = true
+        TabManager.instance.addInstance()
+
+
+
     }
 
     fun run() {
-        setLocationRelativeTo(null)
-        TabManager.instance.addInstance()
+
     }
 
     fun setup() {

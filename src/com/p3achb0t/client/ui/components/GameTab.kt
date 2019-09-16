@@ -11,16 +11,12 @@ class GameTab : JPanel() {
 
      init {
          background = Color.BLACK
-         client = Game()
+         client = Game(80)
          size = Dimension(800,600)
-         validate()
+         //validate()
          add(client?.getApplet())
+         revalidate()
     }
 
-
-    fun run() {
-        validate()
-        client?.run()
-    }
 
 }

@@ -18,24 +18,17 @@ enum class ClientState {
     RUNNING, PAUSED, STOPPED
 }
 
-class Game {
+class Game(world: Int) {
 
-    //var keyboard = Keyboard()
-    var category = ""
-    var name = ""
-    var author = ""
-    val mouse = null
-    var state: ClientState = ClientState.STOPPED
     private var applet: Applet
     var client: Client
-    var script: AbstractScript? = null
     var scriptHook: IScriptManager
 
     /**
      * Constructor
      */
     init {
-        val configReader = ConfigReader(80)
+        val configReader = ConfigReader(world)
         val map = configReader.read()
 
         //println("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")
@@ -49,17 +42,20 @@ class Game {
         applet.setStub(appletStub)
         appletStub.appletResize(800,600);
         //appletStub.isActive = true
+        applet.preferredSize = Dimension(800,600)
+        applet.setSize(800,600)// = Dimension(800,600)
+        applet.validate()
+        applet.init()
+        applet.validate()
+
+
     }
 
     fun getApplet() : Applet {
         return applet
     }
 
-    fun run() {
-        applet.preferredSize = Dimension(800,600)
-        applet.setSize(800,600)// = Dimension(800,600)
-        applet.validate()
-        applet.init()
+    fun setScript() {
 
     }
 }

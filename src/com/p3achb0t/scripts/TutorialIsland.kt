@@ -1,5 +1,5 @@
 package com.p3achb0t.scripts
-
+/*
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.*
 import com.p3achb0t.api.user_inputs.Camera
@@ -19,7 +19,7 @@ import kotlin.random.Random
 private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
-class TutorialIsland: AbstractScript()  {
+class TutorialIsland(ctx: Client) : AbstractScript(ctx)  {
     override suspend fun loop() {
 
         
@@ -1662,3 +1662,5 @@ class TutorialIsland: AbstractScript()  {
     }
    
 }
+
+ */

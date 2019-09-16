@@ -1,8 +1,17 @@
 package com.p3achb0t.interfaces
 
-class ScriptManager : ScriptHook {
+import com.p3achb0t._runestar_interfaces.Client
+import com.p3achb0t.api.AbstractScript
 
+class ScriptManager(val client: Client) : ScriptHook {
+    val dd = client as IScriptManager
+    var shouldRun = false
     var script: Script = NullScript()
+    val debug: Script = PrintScript(client, dd)
+    var gb : AbstractScript = com.p3achb0t.scripts.NullScript()
+
+
+
     var thread = Thread { println("${Thread.currentThread()} has run.") }
 
     override fun getScriptHook(): Script {
@@ -10,12 +19,21 @@ class ScriptManager : ScriptHook {
     }
 
     override fun setScriptHook(s: Script) {
+
         script = s
     }
 
+    fun setScriptHookAbs(s: AbstractScript) {
+        s.initialize(client)
+        gb = s
+
+    }
+
     fun start() {
-        thread = createThread()
-        thread.start()
+        gb.start()
+        shouldRun = true
+        //thread = createThread()
+        //thread.start()
     }
 
     fun suspend() {
@@ -65,4 +83,12 @@ class ScriptManager : ScriptHook {
 
         display_game();
     }
+
+    val x = script.javaClass.getAnnotation(ScriptManifest::class.java)
+        if(x!=null){
+            game.client!!.category = x.category
+            game.client!!.name = x.name
+            game.client!!.author = x.author
+        }
+
  */

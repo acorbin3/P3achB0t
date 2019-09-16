@@ -1,14 +1,7 @@
 package com.p3achb0t.api.painting
 
 
-import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
-import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.Dialog
-import com.p3achb0t.api.wrappers.MiniMap
-import com.p3achb0t.interfaces.PaintListener
-import java.awt.Color
 import java.awt.Graphics
-import java.awt.Point
 import java.awt.Rectangle
 
 

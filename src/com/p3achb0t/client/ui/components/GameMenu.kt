@@ -19,68 +19,16 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
     private fun debugMenu() : JMenu {
         val menu = JMenu("Debug")
 
-        val drawing = JMenuItem("TestScript Run")
-        drawing.addActionListener {
 
-            //val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            //game.client.script = TestScript()
-            ScriptManager.instance.start(TestScript())
-            println("AFTER")
-            //poll = TestScript()
-
-        }
-
-        val npc = JMenuItem("PrintScript Run")
-        npc.addActionListener {
-            //poll = PrintScript()
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client!!.script = PrintScript()
-            //println("SEND KEYS 2")
-            //val game = TabManager.instance.getInstance(1)
-            //game.client.keyboard?.sendKeys("Kasper")
-        }
-
-        val tutorialIslandMenuItem = JMenuItem("Tutorial Island")
-        tutorialIslandMenuItem.addActionListener{
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client!!.script = TutorialIsland()
-            GlobalScope.launch {
-                println("Kicking off the Loop")
-                while(true)
-                    game.client!!.script?.loop()
-            }
-        }
-
-        val player = JMenuItem("GoblinKiller")
-        player.addActionListener {
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            game.client!!.script = GoblinKiller()
-            GlobalScope.launch {
-                println("Kicking off the Loop")
-                while(true)
-                    game.client!!.script?.loop()
-            }
-        }
-
-        val other = JMenuItem("Stop")
-        other.addActionListener {
-            ScriptManager.instance.stop()
-        }
-
-        val injection = JMenuItem("Set INJECT")
+        val injection = JMenuItem("Run Goblin script")
         injection.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
             val manager = game.client?.scriptHook?.getManager()
-            manager?.setScriptHook(com.p3achb0t.interfaces.PrintScript())
+            manager?.setScriptHookAbs(GoblinKiller())
         }
 
 
-        menu.add(drawing)
-        menu.add(npc)
-        menu.add(player)
-        menu.add(other)
-        menu.add(tutorialIslandMenuItem)
         menu.add(injection)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
@@ -141,12 +89,41 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
+        val keyboardEnable = JMenuItem("Toggle Keyboard")
+        keyboardEnable.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client?.scriptHook?.getKeyboard()
+            manager?.inputBlocked(!manager.inputBlocked())
+            println(manager?.inputBlocked())
+
+        }
+
+        val mouseDisable= JMenuItem("Toggle Mouse")
+        mouseDisable.addActionListener {
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client?.scriptHook?.getMouse()
+            manager?.inputBlocked(!manager.inputBlocked())
+            //println("${manager?.x}, ${manager?.y}")
+        }
+
+        val getMouseCoords = JMenuItem("Mouse POS")
+        getMouseCoords.addActionListener {
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client?.scriptHook?.getMouse()
+            //manager?.inputBlocked(!manager.inputBlocked())
+            println("${manager?.getX()}, ${manager?.getY()}")
+        }
+
         menu.add(remove)
         menu.add(drawing)
         menu.add(start)
         menu.add(stop)
         menu.add(suspend)
         menu.add(resume)
+        menu.add(keyboardEnable)
+        menu.add(mouseDisable)
+        menu.add(getMouseCoords)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 
