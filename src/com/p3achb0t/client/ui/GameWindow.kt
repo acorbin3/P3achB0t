@@ -25,7 +25,7 @@ class GameWindow : JFrame() {
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
         tabs.preferredSize = Dimension(800,600)
-
+        focusTraversalKeysEnabled = true
         size = Dimension(800, 800)
         jMenuBar = GameMenu(tabs, 0)
         add(TabManager.instance)

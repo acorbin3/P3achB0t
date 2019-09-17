@@ -1,19 +1,22 @@
 package com.p3achb0t.client.ui.components
 
+import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.scripts.*
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
 import javax.swing.JTabbedPane
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
     var poll: AbstractScript? = null
+    var manager: Manager
     init {
+        focusTraversalKeysEnabled = true
         add(debugMenu())
         add(addClientMenu())
+        manager = Manager()
     }
 
     private fun debugMenu() : JMenu {
@@ -24,12 +27,42 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         injection.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getManager()
+            val manager = game.client?.manager?.getManager()
             manager?.setScriptHookAbs(GoblinKiller())
+
         }
 
+        val mouse = JMenuItem("Move Mouse")
+        mouse.addActionListener {
 
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(game.client?.client, game.client?.applet)
+            factory.move(400,400)
+            factory.move(50,50)
+
+        }
+
+        val test = JMenuItem("Test")
+        test.addActionListener {
+
+
+            manager.addBot()
+
+        }
+
+        val test2 = JMenuItem("Test 2")
+        test2.addActionListener {
+
+            manager.changeWindow()
+
+        }
+
+        menu.add(mouse)
         menu.add(injection)
+        menu.add(test)
+        menu.add(test2)
+
+
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 
@@ -57,7 +90,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         start.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getManager()
+            val manager = game.client?.manager?.getManager()
             manager?.start()
 
         }
@@ -66,8 +99,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         stop.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getManager()
-            manager?.stop()
+            val manager = game.client.manager.getManager()
+            manager.stop()
 
         }
 
@@ -75,7 +108,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         resume.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getManager()
+            val manager = game.client?.manager?.getManager()
             manager?.resume()
 
         }
@@ -84,7 +117,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         suspend.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getManager()
+            val manager = game.client?.manager?.getManager()
             manager?.suspend()
 
         }
@@ -93,7 +126,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         keyboardEnable.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getKeyboard()
+            val manager = game.client?.manager?.getKeyboard()
             manager?.inputBlocked(!manager.inputBlocked())
             println(manager?.inputBlocked())
 
@@ -102,7 +135,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val mouseDisable= JMenuItem("Toggle Mouse")
         mouseDisable.addActionListener {
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getMouse()
+            val manager = game.client?.manager?.getMouse()
             manager?.inputBlocked(!manager.inputBlocked())
             //println("${manager?.x}, ${manager?.y}")
         }
@@ -110,7 +143,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val getMouseCoords = JMenuItem("Mouse POS")
         getMouseCoords.addActionListener {
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.scriptHook?.getMouse()
+            val manager = game.client?.manager?.getMouse()
             //manager?.inputBlocked(!manager.inputBlocked())
             println("${manager?.getX()}, ${manager?.getY()}")
         }

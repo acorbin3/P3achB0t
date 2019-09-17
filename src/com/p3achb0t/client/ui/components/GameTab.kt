@@ -1,20 +1,21 @@
 package com.p3achb0t.client.ui.components
 
-import com.p3achb0t.client.Game
+import com.p3achb0t.client.Bot
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.JPanel
 
 class GameTab : JPanel() {
 
-    var client: Game? = null
+    val client: Bot
 
      init {
+         focusTraversalKeysEnabled = true
          background = Color.BLACK
-         client = Game(80)
+         client = Bot(80)
          size = Dimension(800,600)
          //validate()
-         add(client?.getApplet())
+         add(client.applet)
          revalidate()
     }
 

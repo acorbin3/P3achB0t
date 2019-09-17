@@ -1,5 +1,7 @@
 package com.p3achb0t.scripts
 
+import com.naturalmouse.api.MouseMotionFactory
+import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Calculations
@@ -25,6 +27,7 @@ class GoblinKiller : AbstractScript() {
     }
 
     override fun draw(g: Graphics) {
+
         g.drawString("$state", 300, 300)
         val playerss = ctx.getPlayers()
         /*val f  = npcs.findNpcs(sortByDist = true)

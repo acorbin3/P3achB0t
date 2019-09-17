@@ -15,6 +15,7 @@ import javax.swing.JPanel
 class NewTab(val tabs: TabManager) : JPanel() {
 
     init {
+        focusTraversalKeysEnabled = true
         layout = FlowLayout(FlowLayout.LEFT, 0, 0)
         border = EmptyBorder(5, 2, 2, 2)
         isOpaque = false

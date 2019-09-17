@@ -242,6 +242,8 @@ class Analyser{
         getter.maxStack = 2
         getter.maxLocals = 2
 
+
+
         classNode.methods.add(ACC_PUBLIC, getter)
     }
 

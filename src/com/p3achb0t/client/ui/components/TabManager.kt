@@ -11,6 +11,7 @@ class TabManager private constructor() : JTabbedPane() {
     val clients = mutableListOf<GameTab>()
 
     init {
+        focusTraversalKeysEnabled = true
         size = Dimension(900,800)
         println("This ($this) is a singleton")
         validate()
@@ -52,7 +53,7 @@ class TabManager private constructor() : JTabbedPane() {
         thread(start = true) {
             println("running from thread(): ${Thread.currentThread()}")
             //clients.get(s).client!!.setApplet()
-            clients.get(s).client!!.getApplet().destroy()
+            clients.get(s).client!!.applet.destroy()
             remove(s)
             clients.removeAt(s)
         }
