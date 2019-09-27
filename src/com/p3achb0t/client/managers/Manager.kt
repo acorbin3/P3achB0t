@@ -1,32 +1,72 @@
 package com.p3achb0t.client.managers
 
 import com.p3achb0t.client.Bot
+import com.p3achb0t.client.managers.accounts.AccountManager
+import com.p3achb0t.client.managers.tabs.TabManager
 import com.test.SingleWindow
-import com.test.SingleWindow2
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Manager {
 
-    val bots = mutableListOf<Bot>()
-    var bot: Bot? = null
-    var newWindow: SingleWindow? = null
-    fun addBot() {
-        bot = Bot(80)
-        bots.add(bot!!)
-        println("len ${bots.size}")
-        newWindow = SingleWindow(bot!!)
+    val accountManager = AccountManager()
+    val tabManager = TabManager(this)
+    val bots = mutableMapOf<String, Bot>()
+
+    init {
 
     }
+
+    fun addBot() {
+        val uuid = UUID.randomUUID().toString()
+        bots[uuid] = Bot(80)
+        tabManager.display(uuid, bots[uuid]!!)
+
+    }
+
+    fun getBots(): List<Bot> {
+        return ArrayList(bots.values)
+    }
+
+    fun printBots() {
+        for (bot in bots.keys) {
+            println("Bot id: $bot")
+        }
+    }
+
+
+
+    fun removeBot() {
+
+    }
+
+    fun startScript() {
+
+    }
+
+    fun detach() {
+
+    }
+
+    fun attach() {
+
+    }
+
+    // Test
+    val bots_old = mutableListOf<Bot>()
+    var bot_old: Bot? = null
+    var newWindow_old: SingleWindow? = null
 
     fun changeWindow() {
-        newWindow?.destroy()
+        newWindow_old?.destroy()
     }
 
-
-    fun addGameTab() {
-
-    }
-
-    fun removeGameTab() {
+    fun addBot_old() {
+        UUID.randomUUID().toString()
+        bot_old = Bot(80)
+        bots_old.add(bot_old!!)
+        println("len ${bots_old.size}")
+        newWindow_old = SingleWindow(bot_old!!)
 
     }
 

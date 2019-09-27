@@ -17,9 +17,12 @@ class Constants {
         const val JARS_DIR = "gamepack"
         const val SCRIPTS_DIR = "scripts"
 
+        const val ACCOUNTS_DIR = "user"
+        const val ACCOUNTS_FILE = "accounts.json"
+
 
         // Other constants
-        val REVISION = 182
+        val REVISION = 184
         var INJECTED_JAR_NAME = "gamepack-$REVISION-injected.jar"
 
         val GAMESIZE = Dimension(800,600)

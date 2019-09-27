@@ -9,7 +9,7 @@ class SingleWindow2(val bot: Bot) {
     val frame: JFrame
     init {
         frame = JFrame()
-
+        frame.isFocusable = true
         frame.size = Dimension(765, 510)
         frame.setLocationRelativeTo(null)
         frame.isVisible = true

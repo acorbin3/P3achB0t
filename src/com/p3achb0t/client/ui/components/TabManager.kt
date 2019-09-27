@@ -1,7 +1,5 @@
 package com.p3achb0t.client.ui.components
 
-import com.p3achb0t.client.ui.Keyboard
-import com.p3achb0t.client.ui.Mouse
 import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
@@ -53,7 +51,7 @@ class TabManager private constructor() : JTabbedPane() {
         thread(start = true) {
             println("running from thread(): ${Thread.currentThread()}")
             //clients.get(s).client!!.setApplet()
-            clients.get(s).client!!.applet.destroy()
+            clients.get(s).client!!.applet?.destroy()
             remove(s)
             clients.removeAt(s)
         }

@@ -62,16 +62,18 @@ class Analyser{
 
             if(clazzData.`class` == "Client") {
                 injectField(classes[clazzData.name]!!)
+                injectFieldProxy(classes[clazzData.name]!!)
                 AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/interfaces/IScriptManager")
                 injectCustomClient(classes[clazzData.name]!!)
-                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getKeyboard", "()Lcom/p3achb0t/client/interfaces/io/Keyboard;", "ar", "c", "Lar;")
-                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bk", "l", "Lbk;")
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getKeyboard", "()Lcom/p3achb0t/client/interfaces/io/Keyboard;", "ah", "z", "Lah;") // KeyHandler_instance
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bd", "u", "Lbd;") // MouseHandler_instance
             }
 
-
+            if(clazzData.`class` == "TaskHandler") {
+                injectSocket(classes[clazzData.name]!!)
+            }
 
             if (clazzData.`class` == "Canvas") {
-
                 injectCanvas(classes[clazzData.name]!!)
                 println("${clazzData.name} : ${clazzData.`super`} ")
             }
@@ -129,16 +131,9 @@ class Analyser{
             }
 
             if (clazzData.`class` == "MouseHandler") {
-                // add in MouseHandler
-                // <getter fieldDesc="I" fieldName="s" fieldOwner="bu" methodDesc="I" methodName="getY" multiplier="476322543"/>
-                // <getter fieldDesc="I" fieldName="b" fieldOwner="bu" methodDesc="I" methodName="getX" multiplier="805078735"/>
-                // {"field":"MouseHandler_x","owner":"bk","name":"h","access":9,"descriptor":"I","decoder":-1689480427},
-                // {"field":"MouseHandler_x0","owner":"bk","name":"v","access":73,"descriptor":"I","decoder":1059127459},
-                // {"field":"MouseHandler_y","owner":"bk","name":"x","access":9,"descriptor":"I","decoder":-455222981},
-                // {"field":"MouseHandler_y0","owner":"bk","name":"d","access":73,"descriptor":"I","decoder":-871019493},
                 AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/interfaces/io/Mouse")
-                AsmUtil.addMethod(classes[clazzData.name]!!, "getX", "()I", "bk", "h", "I", -1689480427)
-                AsmUtil.addMethod(classes[clazzData.name]!!, "getY", "()I", "bk", "x", "I",-455222981)
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getX", "()I", "bd", "b", "I", -180428827) // MouseHandler_x
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getY", "()I", "bd", "o", "I",97221829) // MouseHandler_y
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseClicked", "_mouseClicked")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseDragged", "_mouseDragged")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseEntered", "_mouseEntered")
@@ -158,6 +153,15 @@ class Analyser{
             out.write(cw.toByteArray())
             out.closeEntry()
         }
+        out.putNextEntry(JarEntry("ProxySocket.class"))
+        out.write(putClasses("/home/kasper/Runescape/P3achB0t/src/ProxySocket.class"))
+        out.closeEntry()
+
+        out.putNextEntry(JarEntry("ProxyConnection.class"))
+        out.write(putClasses("/home/kasper/Runescape/P3achB0t/src/ProxyConnection.class"))
+
+        out.closeEntry()
+
         out.flush()
         out.close()
     }
@@ -202,10 +206,20 @@ class Analyser{
         }
     }
 
+    private fun putClasses(name: String): ByteArray {
+        val file = File(name)
+        return file.readBytes()
+    }
+
     private fun injectField(classNode: ClassNode) {
         val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/interfaces/ScriptManager;",null , null)
         classNode.fields.add(node)
         //classNode.fields.add()
+    }
+
+    private fun injectFieldProxy(classNode: ClassNode) {
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "proxy", "LProxyConnection;",null , null)
+        classNode.fields.add(node)
     }
 
     private fun injectInterface(classNode: ClassNode) {
@@ -216,21 +230,27 @@ class Analyser{
 
         for (method in classNode.methods) {
             if (method.name == "<init>") {
+                method.desc = "(Ljava/lang/String;)V"
                 val i: InsnList = method.instructions
                 val last = i.last
 
                 val ins = InsnList()
-                ins.add(VarInsnNode(Opcodes.ALOAD, 0))
                 ins.add(TypeInsnNode(NEW, "com/p3achb0t/interfaces/ScriptManager"))
                 ins.add(InsnNode(DUP))
-                ins.add(VarInsnNode(Opcodes.ALOAD, 0))
-                //ins.add(VarInsnNode(Opcodes.ALOAD, 0))
+                ins.add(VarInsnNode(ALOAD, 0))
                 ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "(Lcom/p3achb0t/_runestar_interfaces/Client;)V"))
-
                 ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-                //ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+
+                ins.add(TypeInsnNode(NEW, "ProxyConnection"))
+                ins.add(InsnNode(DUP))
+                ins.add(VarInsnNode(ALOAD, 1))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "ProxyConnection", "<init>", "(Ljava/lang/String;)V"))
+
+                ins.add(FieldInsnNode(PUTSTATIC, "client", "proxy", "LProxyConnection;"))
+
                 i.insert(last.previous, ins)
                 method.maxStack += 6
+                method.maxLocals += 1
             }
         }
 
@@ -242,9 +262,38 @@ class Analyser{
         getter.maxStack = 2
         getter.maxLocals = 2
 
-
-
         classNode.methods.add(ACC_PUBLIC, getter)
+    }
+
+    private fun injectSocket(classNode: ClassNode) {
+        for (method in classNode.methods) {
+            if (method.name == "run") {
+
+                val i: InsnList = method.instructions
+
+                for (insn in i) {
+                    if (insn.opcode == NEW) {
+                        if (insn is TypeInsnNode) {
+                            if (insn.desc == "java/net/Socket") {
+                                insn.desc = "ProxySocket"
+                            }
+                        }
+                    }
+                    if (insn is MethodInsnNode) {
+                        val mnode = insn
+                        if (mnode.owner == "java/net/Socket" && insn.opcode == INVOKESPECIAL) {
+                            mnode.owner = "ProxySocket"
+                            println("#####################################################3")
+                            //mnode.desc = "(Ljava/net/InetAddress;ILcom/p3achb0t/injection/Replace/ProxySocket;)V"
+                            //val ins = InsnList()
+                            //ins.add(FieldInsnNode(GETSTATIC, "client", "proxy","Lcom/p3achb0t/injection/Replace/ProxySocket;"))
+                            //i.insert(insn.previous, ins)
+                            //method.maxStack += 3
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun injectMethod(

@@ -2,7 +2,9 @@ package com.p3achb0t.client.util
 
 import com.p3achb0t.client.configs.Constants
 import java.io.File
+import java.io.InputStream
 import java.net.Socket
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -33,6 +35,14 @@ class Util {
         fun createAllDirs() {
             createDirIfNotExist(Path.of(Constants.USER_DIR, Constants.APPLICATION_CACHE_DIR, Constants.JARS_DIR).toString())
             createDirIfNotExist("cache")
+        }
+
+        fun readConfig(path: String) : String {
+            val file = File(path)
+            val ins: InputStream = file.inputStream()
+            val content = ins.readBytes().toString(Charset.defaultCharset())
+            return content
+
         }
     }
 

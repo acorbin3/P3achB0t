@@ -7,14 +7,13 @@ import java.awt.image.BufferedImage
 
 open class RsCanvas(val manager: ScriptManager) : Canvas() {
 
-    private val gameCanvas: BufferedImage = BufferedImage(800,600, BufferedImage.TYPE_INT_RGB)
+    private val gameCanvas: BufferedImage = BufferedImage(manager.x, manager.y, BufferedImage.TYPE_INT_RGB)
 
     init {
         super.setFocusable(true)
     }
 
     override fun getGraphics() : Graphics {
-
         val g = gameCanvas.createGraphics()
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

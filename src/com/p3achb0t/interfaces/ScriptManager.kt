@@ -10,6 +10,9 @@ class ScriptManager(val client: Client) : ScriptHook {
     val debug: Script = PrintScript(client, dd)
     var gb : AbstractScript = com.p3achb0t.scripts.NullScript()
 
+    var x = 800
+    var y = 600
+
 
 
     var thread = Thread { println("${Thread.currentThread()} has run.") }

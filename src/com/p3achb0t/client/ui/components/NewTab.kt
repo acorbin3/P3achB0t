@@ -36,6 +36,7 @@ class NewTab(val tabs: TabManager) : JPanel() {
 class CustomButton(val tabs: TabManager, text: String) : JButton(), MouseListener {
     init {
         val size = 15
+        focusTraversalKeysEnabled = true
         setText(text)
         /** set size for button close  */
         preferredSize = Dimension(size, size)

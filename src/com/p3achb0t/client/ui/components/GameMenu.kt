@@ -1,8 +1,8 @@
 package com.p3achb0t.client.ui.components
 
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
-import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.managers.Manager
+import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.*
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -10,13 +10,27 @@ import javax.swing.JMenuItem
 import javax.swing.JTabbedPane
 
 class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
-    var poll: AbstractScript? = null
+
     var manager: Manager
     init {
         focusTraversalKeysEnabled = true
+        add(accountMenu())
         add(debugMenu())
         add(addClientMenu())
         manager = Manager()
+    }
+
+    private fun accountMenu() : JMenu {
+        val menu = JMenu("Account")
+
+        val accountManager = JMenuItem("Manage Accounts")
+        accountManager.addActionListener {
+            AccountUI(AccountManager())
+        }
+
+        menu.add(accountManager)
+
+        return menu
     }
 
     private fun debugMenu() : JMenu {
@@ -46,7 +60,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         test.addActionListener {
 
 
-            manager.addBot()
+            manager.addBot_old()
 
         }
 
@@ -57,10 +71,21 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
+        val test3 = JMenuItem("Test 3")
+        test3.addActionListener {
+
+            //manager.changeWindow()
+            val f = TabManager.instance.getSelected()
+            //f.requestFocus()
+            f.client.applet?.repaint()
+            //f.client.applet.focusTraversalKeysEnabled = true
+        }
+
         menu.add(mouse)
         menu.add(injection)
         menu.add(test)
         menu.add(test2)
+        menu.add(test3)
 
 
 

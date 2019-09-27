@@ -11,7 +11,11 @@ class JarLoader {
             val file = File(path)
             val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
             val classLoader = URLClassLoader(urlArray)
-            return classLoader.loadClass(main)?.newInstance()
+            val cArg = arrayOfNulls<Class<*>>(1) //Our constructor has 3 arguments
+
+            cArg[0] = String::class.java //Second argument is of *object* type String
+            val s = "none" // SOCKS5;185.244.192.119:7670 or none
+            return classLoader.loadClass(main)?.getDeclaredConstructor(*cArg)?.newInstance(s)
         }
     }
 }
