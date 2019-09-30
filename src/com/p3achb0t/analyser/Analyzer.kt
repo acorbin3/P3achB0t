@@ -239,7 +239,7 @@ class Analyser{
                 ins.add(TypeInsnNode(NEW, "com/p3achb0t/interfaces/ScriptManager"))
                 ins.add(InsnNode(DUP))
                 ins.add(VarInsnNode(ALOAD, 0))
-                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "(Lcom/p3achb0t/_runestar_interfaces/Client;)V"))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "(Ljava/lang/Object;)V"))
                 ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
 
                 ins.add(TypeInsnNode(NEW, "ProxyConnection"))

@@ -51,10 +51,10 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val mouse = JMenuItem("Move Mouse")
         mouse.addActionListener {
 
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(game.client?.client, game.client?.applet)
-            factory.move(400,400)
-            factory.move(50,50)
+            //val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            //val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(game.client?.client, game.client?.applet)
+            //factory.move(400,400)
+            //factory.move(50,50)
 
         }
 

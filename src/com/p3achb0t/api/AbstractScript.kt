@@ -9,6 +9,7 @@ import com.p3achb0t.api.wrappers.NPCs
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.client.ui.components.GameTab
 import com.p3achb0t.interfaces.IScriptManager
+import java.applet.Applet
 import java.awt.Graphics
 
 abstract class AbstractScript {
@@ -19,15 +20,14 @@ abstract class AbstractScript {
     protected lateinit var npcs: NPCs
     protected lateinit var mouse: Mouse
     protected lateinit var keyboard: Keyboard
-    protected lateinit var gameTab: GameTab
 
-    fun initialize(client: Client, gameTab: GameTab) {
+    fun initialize(client: Any) {
         val script = client as IScriptManager
-
-        val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(gameTab.client.client, gameTab.client.applet)
-        mouse = Mouse(gameTab.client.applet, factory, script.getMouse())
-        keyboard = Keyboard(gameTab.client.applet, script.getKeyboard())
-        ctx = Context(client, mouse, keyboard, gameTab)
+        val applet = client as Applet
+        val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(client)
+        mouse = Mouse(applet.getComponent(0),factory,script.getMouse())
+        //keyboard = Keyboard(client)
+        //ctx = Context(client, mouse, keyboard, gameTab)
         players = Players(ctx)
         groundItems = GroundItems(ctx)
         npcs = NPCs(ctx)

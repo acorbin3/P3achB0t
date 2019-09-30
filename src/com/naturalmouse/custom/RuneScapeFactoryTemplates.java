@@ -143,7 +143,9 @@ public class RuneScapeFactoryTemplates {
      *
      * @return the factory
      */
-    public static MouseMotionFactory createAverageComputerUserMotionFactory(Client client, Applet applet) {
+    public static MouseMotionFactory createAverageComputerUserMotionFactory(Object obj) {
+        Client client = (Client) obj;
+        Applet applet = (Applet)obj;
         return createAverageComputerUserMotionFactory(new RuneScapeMouseMotionNature(client, applet));
     }
     /**

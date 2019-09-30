@@ -3,13 +3,14 @@ package com.p3achb0t.interfaces
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.ui.components.GameTab
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
-class ScriptManager(val client: Client) : ScriptHook {
+class ScriptManager(val client: Any) : ScriptHook {
     val dd = client as IScriptManager
     val o = client
     var shouldRun = false
     var script: Script = NullScript()
-    val debug: Script = PrintScript(client, dd)
+    val debug: Script = PrintScript(client as Client, dd)
     var gb : AbstractScript = com.p3achb0t.scripts.NullScript()
 
     var x = 800
@@ -29,7 +30,7 @@ class ScriptManager(val client: Client) : ScriptHook {
     }
 
     fun setScriptHookAbs(s: AbstractScript) {
-        //s.initialize(client, gameTab)
+        s.initialize(client)
         gb = s
 
     }

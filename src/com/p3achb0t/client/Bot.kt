@@ -17,7 +17,7 @@ enum class ClientState {
 
 class Bot(world: Int) {
 
-    var o: JvmType.Object
+    lateinit var o: Any
     var applet: Applet
     var client: Client
     var manager: IScriptManager
@@ -31,7 +31,9 @@ class Bot(world: Int) {
 
         //println("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")
         val clientClazz = JarLoader.load("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}","client")
-        o = clientClazz as JvmType.Object
+        if (clientClazz != null) {
+            o = clientClazz
+        }
         client = clientClazz as Client
         applet = clientClazz as Applet
         manager = clientClazz as IScriptManager
