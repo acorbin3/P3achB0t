@@ -5,11 +5,12 @@ import com.p3achb0t.api.Calculations.Companion.convertAreaToPolygon
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.api.Context
 import java.awt.Polygon
 import java.awt.geom.*
 import java.awt.geom.Area
 
-class MiniMap(val client: com.p3achb0t._runestar_interfaces.Client) {
+class MiniMap(val ctx: Context) {
 
     companion object {
         private val PARENT = WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID
@@ -20,7 +21,7 @@ class MiniMap(val client: com.p3achb0t._runestar_interfaces.Client) {
     var mapInit = false
 
     fun getWidget(): Component? {
-        return Widgets.find(client, PARENT, CHILD)
+        return Widgets.find(ctx, PARENT, CHILD)
     }
 
     fun getMapArea(): Polygon {
@@ -28,7 +29,7 @@ class MiniMap(val client: com.p3achb0t._runestar_interfaces.Client) {
             mapCircle
         } else {
 
-            val rect = WidgetItem(Widgets.find(client, PARENT, CHILD), client =client).area
+            val rect = WidgetItem(Widgets.find(ctx, PARENT, CHILD), ctx = ctx).area
             // Before login the widget thinks its a position 0,0 which is incorrect.
             if (rect.centerX == 0.0) {
                 return Polygon()
@@ -46,7 +47,7 @@ class MiniMap(val client: com.p3achb0t._runestar_interfaces.Client) {
             //Small globe that cuts int the mini map
             val globeParent = 160
             val globeChild = 42
-            val rect2 = WidgetItem(Widgets.find(client, globeParent, globeChild), client =client).area
+            val rect2 = WidgetItem(Widgets.find(ctx, globeParent, globeChild), ctx = ctx).area
             val globeRadius = 15.0
             val globeEllipse2D = Ellipse2D.Double(
                     rect2.centerX - globeRadius,

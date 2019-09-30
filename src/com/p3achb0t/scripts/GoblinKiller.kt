@@ -13,24 +13,24 @@ class GoblinKiller : AbstractScript() {
     var state = 0
 
     //var playerss = ctx.getPlayers() GIVES an error
-    override fun loop() {
+    override suspend fun loop() {
 
         Thread.sleep(500)
 
     }
 
-    override fun start() {
-        state = ctx.getGameState() // this works
+    override suspend fun start() {
+        state = ctx.client.getGameState() // this works
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun draw(g: Graphics) {
 
         g.drawString("$state", 300, 300)
-        val playerss = ctx.getPlayers()
+        val playerss = ctx.client.getPlayers()
         /*val f  = npcs.findNpcs(sortByDist = true)
         if (f.size > 0) {
             val npc = f[0].npc

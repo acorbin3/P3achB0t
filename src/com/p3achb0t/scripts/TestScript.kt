@@ -23,7 +23,7 @@ class TestScript(ctx: Client) : AbstractScript(ctx) {
 
     override suspend fun loop() {
 
-        camera = ctx.getCameraY()
+        camera = client.getCameraY()
         Thread.sleep(2000)
     }
 
@@ -35,15 +35,15 @@ class TestScript(ctx: Client) : AbstractScript(ctx) {
     fun clientInfo(g: Graphics) {
         g.color = Color.RED
 
-        g.drawString("Game cycle: ${ctx.getCycle()}", 50,120)
-        g.drawString("Game state: ${ctx.getGameState()}", 50,140)
-        g.drawString("Login state: ${ctx.getLoginState()}", 50,160)
+        g.drawString("Game cycle: ${client.getCycle()}", 50,120)
+        g.drawString("Game state: ${client.getGameState()}", 50,140)
+        g.drawString("Login state: ${client.getLoginState()}", 50,160)
 //        g.drawString("Account status: ${ctx.get__cq_aw()}", 50,180)
 
         g.color = Color.GREEN
         g.drawString("$camera", 50, 210)
 
-        if (ctx.getGameState() == 30) {
+        if (client.getGameState() == 30) {
             g.color = Color.LIGHT_GRAY
             g.fillRect(8,460,504,14)
         }

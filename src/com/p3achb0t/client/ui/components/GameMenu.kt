@@ -4,6 +4,8 @@ import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -115,8 +117,10 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         start.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getManager()
-            manager?.start()
+            val manager = game.client.manager.getManager()
+            GlobalScope.launch {
+                manager.start()
+            }
 
         }
 

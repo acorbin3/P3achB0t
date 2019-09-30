@@ -2,9 +2,9 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.client.ui.components.GameTab
 
-class ScriptManager(val client: Client) : ScriptHook {
-
+class ScriptManager(val client: Client, val gameTab: GameTab) : ScriptHook {
     val dd = client as IScriptManager
     var shouldRun = false
     var script: Script = NullScript()
@@ -13,6 +13,8 @@ class ScriptManager(val client: Client) : ScriptHook {
 
     var x = 800
     var y = 600
+
+
 
     var thread = Thread { println("${Thread.currentThread()} has run.") }
 
@@ -26,12 +28,12 @@ class ScriptManager(val client: Client) : ScriptHook {
     }
 
     fun setScriptHookAbs(s: AbstractScript) {
-        s.initialize(client)
+        s.initialize(client, gameTab)
         gb = s
 
     }
 
-    fun start() {
+    suspend fun start() {
         gb.start()
         shouldRun = true
         //thread = createThread()

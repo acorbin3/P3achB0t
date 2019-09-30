@@ -1,7 +1,6 @@
 package com.p3achb0t.api
 
 import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import java.awt.Point
@@ -11,7 +10,7 @@ import java.util.*
 data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
 
-fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, client: Client): ArrayList<Polygon> {
+fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, ctx: Context): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
 
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
@@ -25,7 +24,7 @@ fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID:
                     if (actor != null) {
                         val positionInfo =
                             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygonList = getTrianglesFromModel(positionInfo, model,client )
+                        polygonList = getTrianglesFromModel(positionInfo, model, ctx)
                     }
                     break
                 }
@@ -36,10 +35,10 @@ fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID:
     return polygonList
 }
 
-fun getTrianglesFromModel(actor: Actor, model: Model, client: Client): ArrayList<Polygon> {
+fun getTrianglesFromModel(actor: Actor, model: Model, ctx: Context): ArrayList<Polygon> {
     return getTrianglesFromModel(
             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-            model,client
+            model, ctx
 
     )
 }
@@ -47,7 +46,7 @@ fun getTrianglesFromModel(actor: Actor, model: Model, client: Client): ArrayList
 fun getTrianglesFromModel(
         positionInfo: ObjectPositionInfo,
         model: Model,
-        client: Client
+        ctx: Context
 ): ArrayList<Polygon> {
     val polygonList = ArrayList<Polygon>()
     val locX = positionInfo.x
@@ -82,18 +81,18 @@ fun getTrianglesFromModel(
                 if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
                     val one = Calculations.worldToScreen(
                             locX + xPoints[indiciesX[i]],
-                            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]],client
+                            locY + zPoints[indiciesX[i]], 0 - yPoints[indiciesX[i]], ctx
                     )
                     val two = Calculations.worldToScreen(
                             locX + xPoints[indiciesY[i]],
-                            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]],client
+                            locY + zPoints[indiciesY[i]], 0 - yPoints[indiciesY[i]], ctx
                     )
                     val three = Calculations.worldToScreen(
                             locX + xPoints[indiciesZ[i]],
-                            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]],client
+                            locY + zPoints[indiciesZ[i]], 0 - yPoints[indiciesZ[i]], ctx
                     )
                     if (one.x >= 0 && two.x >= 0 && three.x >= 0
-                        && Calculations.isOnscreen(client,one) && Calculations.isOnscreen(client,two ) && Calculations.isOnscreen(client,
+                        && Calculations.isOnscreen(ctx,one) && Calculations.isOnscreen(ctx,two ) && Calculations.isOnscreen(ctx,
                                     three
                             )
                     ) {
@@ -117,7 +116,7 @@ fun getTrianglesFromModel(
     return polygonList
 }
 
-fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, client: Client): Polygon {
+fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, ctx: Context): Polygon {
     var polygon = Polygon()
     models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
         if (bucketItem != null) {
@@ -130,7 +129,7 @@ fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Lon
                     if (actor != null) {
                         val positionInfo =
                             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygon = getConvexHullFromModel(positionInfo, model, client)
+                        polygon = getConvexHullFromModel(positionInfo, model, ctx)
                     }
                     break
                 }
@@ -142,10 +141,10 @@ fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Lon
     return polygon
 }
 
-fun getConvexHullFromModel(actor: Actor, model: Model, client: Client): Polygon {
+fun getConvexHullFromModel(actor: Actor, model: Model, ctx: Context): Polygon {
     return getConvexHullFromModel(
             ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-            model,client
+            model, ctx
 
     )
 }
@@ -153,7 +152,7 @@ fun getConvexHullFromModel(actor: Actor, model: Model, client: Client): Polygon 
 fun getConvexHullFromModel(
         positionInfo: ObjectPositionInfo,
         model: Model,
-        client: com.p3achb0t._runestar_interfaces.Client
+        ctx: Context
 ): Polygon {
     val pointList = ArrayList<Point>()
     val locX = positionInfo.x
@@ -186,22 +185,22 @@ fun getConvexHullFromModel(
             if (indicyX < xPoints.size && indicyY < xPoints.size && indicyZ < xPoints.size && indicyX >= 0 && indicyY >= 0 && indicyZ >= 0) {
                 val one = Calculations.worldToScreen(
                         locX + xPoints[indicyX],
-                        locY + zPoints[indicyX], 0 - yPoints[indicyX],client
+                        locY + zPoints[indicyX], 0 - yPoints[indicyX], ctx
                 )
-                if (one.x >= 0 && Calculations.isOnscreen(client,one )) pointList.add(one)
+                if (one.x >= 0 && Calculations.isOnscreen(ctx,one )) pointList.add(one)
 
                 val two = Calculations.worldToScreen(
                         locX + xPoints[indicyY],
-                        locY + zPoints[indicyY], 0 - yPoints[indicyY],client
+                        locY + zPoints[indicyY], 0 - yPoints[indicyY], ctx
                 )
-                if (two.x >= 0 && Calculations.isOnscreen(client,two )) pointList.add(two)
+                if (two.x >= 0 && Calculations.isOnscreen(ctx,two )) pointList.add(two)
 
 //                println("indicyZ:$indicyZ xPoints.size:/=${xPoints.size}")
                 val three = Calculations.worldToScreen(
                         locX + xPoints[indicyZ],
-                        locY + zPoints[indicyZ], 0 - yPoints[indicyZ],client
+                        locY + zPoints[indicyZ], 0 - yPoints[indicyZ], ctx
                 )
-                if (three.x >= 0 && Calculations.isOnscreen(client,three )) pointList.add(three)
+                if (three.x >= 0 && Calculations.isOnscreen(ctx,three )) pointList.add(three)
             }
         }
     }

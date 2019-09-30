@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-//import com.p3achb0t.MainApplet
 import com.p3achb0t.api.Calculations
-//import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
@@ -10,7 +10,7 @@ import java.awt.Rectangle
 import kotlin.random.Random
 
 // This class is used to interact with points on a screen and menu Items such as players, objects, NPCs
-class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Interact(val ctx: Context) {
     suspend fun interact(rectangle: Rectangle) {
         interact(rectangle, "")
     }
@@ -40,7 +40,7 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                         Random.nextInt(ch.bounds.x, ch.bounds.width + ch.bounds.x),
                         Random.nextInt(ch.bounds.y, ch.bounds.height + ch.bounds.y)
                 )
-                if (ch.contains(point) && Calculations.isOnscreen(client, point))
+                if (ch.contains(point) && Calculations.isOnscreen(ctx, point))
                     break
             }
             point?.let { interact(it, action) }
@@ -49,43 +49,42 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
 
 
     suspend fun interact(point: Point, action: String, retryCount: Int = 0): Boolean {
-        return true
-        /*
         println("Action: $action ${point.x},${point.y}")
         if (point == Point(-1, -1)) {
             return false
         }
         if (action.isNotEmpty()) {
 
-            //Move mouse to the point
-            if (MainApplet.mouseEvent?.x == point.x && MainApplet.mouseEvent?.y == point.y) {
-                //Dont need to move the mouse
+            //Move ctx.mouse to the point
+
+            if (ctx.mouse.ioMouse.getX() == point.x && ctx.mouse.ioMouse.getY() == point.y) {
+                //Dont need to move the ctx.mouse
             } else {
-                point.let { it1 -> MainApplet.mouse.moveMouse(it1, click = false) }
+                point.let { it1 -> ctx.mouse.moveMouse(it1, click = false) }
                 delay(Random.nextLong(50, 150)) // Delay just to make sure we pick up the correct menu option
             }
 
             // Check to see if we need to right click or not
-            if (Menu(client).getHoverAction().contains(action)) {
+            if (Menu(ctx.client).getHoverAction().contains(action)) {
                 // Left click, we are alreay there
-                point.let { it1 -> MainApplet.mouse.click(it1) }
+                point.let { it1 -> ctx.mouse.click(it1) }
                 return true
             } else {
                 //Since this is not avaliable we need to right click
-                point.let { it1 -> MainApplet.mouse.click(it1, clickType = Mouse.ClickType.Right) }
+                point.let { it1 -> ctx.mouse.click(it1, clickType = Mouse.ClickType.Right) }
                 delay(Random.nextLong(50, 150))
                 // Move to Action String
-                val actionPoint = Menu(client).getPointForInteraction(action)
+                val actionPoint = Menu(ctx.client).getPointForInteraction(action)
                 if (actionPoint == Point(-1, -1)) {
                     //Get large box, pick random point thats outside of the menue rect
-                    val menuRect = Menu(client).getRect()
+                    val menuRect = Menu(ctx.client).getRect()
                     while (true) {
                         val x = Random.nextInt(point.x - menuRect.width, point.x + menuRect.width)
                         val y = Random.nextInt(point.y - menuRect.height, point.y + menuRect.height)
                         val newPoint = Point(x, y)
-                        // Move mouse out side of menue
+                        // Move ctx.mouse out side of menue
                         if (!menuRect.bounds.contains(newPoint)) {
-                            MainApplet.mouse.moveMouse(newPoint)
+                            ctx.mouse.moveMouse(newPoint)
                             break
                         }
                     }
@@ -95,17 +94,17 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
                     interact(point, action, retryCount + 1)
                 }
                 println("Clicking $action")
-                var res = MainApplet.mouse.moveMouse(actionPoint, click = true)
+                var res = ctx.mouse.moveMouse(actionPoint, click = true)
                 println("Res: $res")
                 delay((Math.random() * 200 + 100).toLong())
                 if (res) return true
                 var count = 0
-                while (client.getIsMiniMenuOpen()) {
+                while (ctx.client.getIsMiniMenuOpen()) {
                     delay((Math.random() * 50).toLong())
                     count += 1
                     if (count == 5) {
-                        val cancelPoint = Menu(client).getPointForInteraction(action)
-                        res = MainApplet.mouse.moveMouse(cancelPoint, click = true)
+                        val cancelPoint = Menu(ctx.client).getPointForInteraction(action)
+                        res = ctx.mouse.moveMouse(cancelPoint, click = true)
                         print("Failed, retrying")
                     }
                 }
@@ -113,12 +112,12 @@ class Interact(val client: com.p3achb0t._runestar_interfaces.Client) {
             }
         } else {
             point.let { it1 ->
-                return MainApplet.mouse.moveMouse(
+                return ctx.mouse.moveMouse(
                         it1,
                         click = true,
                         clickType = Mouse.ClickType.Left
                 )
             }
-        }*/
+        }
     }
 }

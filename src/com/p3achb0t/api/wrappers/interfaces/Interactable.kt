@@ -1,15 +1,13 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-//import com.p3achb0t.MainApplet
-import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t.api.Constants
-//import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
+import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
 
-abstract class Interactable(val client: Client?) {
+abstract class Interactable(val ctx: Context?) {
     abstract fun getInteractPoint(): Point
     abstract fun isMouseOverObj(): Boolean
 
@@ -40,19 +38,13 @@ abstract class Interactable(val client: Client?) {
     }
 
 
-    open suspend fun interact(action: String): Boolean {/*
+    open suspend fun interact(action: String): Boolean {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
-            val startPoint = if (MainApplet.mouseEvent != null) MainApplet.mouseEvent?.point?.x?.let { _x ->
-                MainApplet.mouseEvent?.point?.y?.let { _y ->
-                    Point(_x, _y)
-                }
-            } else {
-                Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Constants.GAME_FIXED_HEIGHT)
-            }
+            val startPoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
 //            val distance = startPoint?.distance(desiredPoint)
-            MainApplet.mouse.moveMouse(desiredPoint, click = false)
+            ctx?.mouse?.moveMouse(desiredPoint, click = false)
             if(isMouseOverObj()){break}
 //            if (distance != null) {
 //                if (abs(distance) < 100) {
@@ -65,35 +57,34 @@ abstract class Interactable(val client: Client?) {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return if (client != null) Interact(client).interact(desiredPoint, action) else false*/
-        return true
+        return if (ctx?.client != null) ctx?.mouse?.let { Interact(ctx).interact(desiredPoint, action) } ?: false else false
     }
-    /*
+
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {
-        MainApplet.mouse.moveMouse(
+        ctx?.mouse?.moveMouse(
             getInteractPoint(),
             click = click,
             clickType = clickType
+
         )
-    }*/
+    }
 
     suspend fun click(left: Boolean): Boolean {
-        return true /*MainApplet.mouse.moveMouse(
+        return ctx?.mouse?.moveMouse(
             getInteractPoint(),
             click = true,
             clickType = if (left) Mouse.ClickType.Left else Mouse.ClickType.Right
-        )*/
+        )?: false
     }
 
     abstract suspend fun clickOnMiniMap(): Boolean
 
     suspend fun click(): Boolean {
-        return true /*
         val point = getInteractPoint()
         return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
             false
         } else {
-            MainApplet.mouse.moveMouse(getInteractPoint(), click = true)
-        }*/
+            ctx?.mouse?.moveMouse(getInteractPoint(), click = true) ?: false
+        }
     }
 }

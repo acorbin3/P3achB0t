@@ -1,14 +1,14 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
-class Tabs(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Tabs(val ctx: Context) {
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
@@ -28,8 +28,8 @@ class Tabs(val client: com.p3achb0t._runestar_interfaces.Client) {
         Magic(54, 56);
 
         companion object {
-            fun valueOf(id: Int, client: com.p3achb0t._runestar_interfaces.Client): Tab_Types? = values().find {
-                if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode)
+            fun valueOf(id: Int, ctx: Context): Tab_Types? = values().find {
+                if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode)
                     it.id == id
                 else
                     it.resizeID == id
@@ -55,12 +55,12 @@ class Tabs(val client: com.p3achb0t._runestar_interfaces.Client) {
         if (tab != null && tab == Tab_Types.None) return
 
         val parentID =
-                if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+                if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
         val childID =
-                if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
+                if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
         if (childID != null) {
-            val widget = client.getInterfaceComponents()[parentID][childID]
-            WidgetItem(widget, client=client).click()
+            val widget = ctx.client.getInterfaceComponents()[parentID][childID]
+            WidgetItem(widget, ctx = ctx).click()
         }
     }
 
@@ -82,22 +82,22 @@ class Tabs(val client: com.p3achb0t._runestar_interfaces.Client) {
                 Tab_Types.None
         try {
             val top =
-                    if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) TOP_ROW else RESIZE_TOP_ROW
+                    if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) TOP_ROW else RESIZE_TOP_ROW
             val bottom =
-                    if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) BOTTOM_ROW else RESIZE_BOTTOM_ROW
+                    if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) BOTTOM_ROW else RESIZE_BOTTOM_ROW
             val parentID =
-                    if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+                    if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
             for (childID in top) {
-                val widget = client.getInterfaceComponents()[parentID][childID]
+                val widget = ctx.client.getInterfaceComponents()[parentID][childID]
                 if (widget.getSpriteId2() > 0) {
-                    tab = Tab_Types.valueOf(childID,client)
+                    tab = Tab_Types.valueOf(childID,ctx)
                 }
 
             }
             for (childID in bottom) {
-                val widget = client.getInterfaceComponents()[parentID][childID]
+                val widget = ctx.client.getInterfaceComponents()[parentID][childID]
                 if (widget.getSpriteId2() > 0) {
-                    tab = Tab_Types.valueOf(childID, client)
+                    tab = Tab_Types.valueOf(childID, ctx)
                 }
 
             }
@@ -111,13 +111,13 @@ class Tabs(val client: com.p3achb0t._runestar_interfaces.Client) {
             if (getOpenTab() == tab) return
             println("Opening Tab: ${tab.name}")
             val parentID =
-                    if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
+                    if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
             val childID =
-                    if (ClientMode(client).getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
-            val widget = client.getInterfaceComponents()[parentID][childID]
+                    if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
+            val widget = ctx.client.getInterfaceComponents()[parentID][childID]
             if (!widget.getIsHidden()) {
-                val interactRect = Widget.getDrawableRect(widget,client)
-                Interact(client).interact(interactRect)
+                val interactRect = Widget.getDrawableRect(widget,ctx)
+                Interact(ctx).interact(interactRect)
                 Utils.waitFor(2, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)

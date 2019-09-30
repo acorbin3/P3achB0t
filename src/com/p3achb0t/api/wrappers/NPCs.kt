@@ -1,10 +1,10 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Npc
+import com.p3achb0t.api.Context
 import kotlin.math.abs
 import kotlin.math.max
 
-class NPCs(val client: com.p3achb0t._runestar_interfaces.Client)  {
+class NPCs(val ctx: Context) {
     fun findNpc(npcName: String, sortByDist: Boolean = true): ArrayList<NPC> {
         val foundNPCs = ArrayList<NPC>()
         try {
@@ -36,45 +36,21 @@ class NPCs(val client: com.p3achb0t._runestar_interfaces.Client)  {
     // This function will return a list of NPCs with closes distance to you
     fun findNpcs(sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
-        client.getNpcs().forEach {
+        ctx.client.getNpcs().forEach {
             if (it != null) {
-                npcs.add(NPC(it,client ))
+                npcs.add(NPC(it,ctx ))
             }
         }
         if (sortByDist) {
             npcs.sortBy {
                 // Sort closest to player
-                val localPlayer = client.getLocalPlayer()
+                val localPlayer = ctx.client.getLocalPlayer()
                 max(
                     abs(localPlayer.getX() - it.npc.getX()),
                     abs(localPlayer.getY() - it.npc.getY())
                 )
             }
         }
-        return npcs
-    }
-
-    fun findNpcs(x: List<Int>, sortByDist: Boolean = false) : ArrayList<NPC> {
-        val npcs = ArrayList<NPC>()
-        client.getNpcs().forEach {
-            for (item in x) {
-                if (it.getType().getId() == item) {
-                    npcs.add(NPC(it, client))
-                }
-            }
-        }
-
-        if (sortByDist) {
-            npcs.sortBy {
-                // Sort closest to player
-                val localPlayer = client.getLocalPlayer()
-                max(
-                        abs(localPlayer.getX() - it.npc.getX()),
-                        abs(localPlayer.getY() - it.npc.getY())
-                )
-            }
-        }
-
         return npcs
     }
 }

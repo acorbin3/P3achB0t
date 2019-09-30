@@ -7,21 +7,21 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
-fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphics) {
+fun gameObjectPaint(g: Graphics, ctx: Context) {
     if (false) {
-        val sceneData = client.getObjType_cachedModels()
-        val region = client.getScene()
-        val localPlayer = Players(client).getLocal()
+        val sceneData = ctx.client.getObjType_cachedModels()
+        val region = ctx.client.getScene()
+        val localPlayer = Players(ctx).getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
-            if (planeInt == client.getPlane()) {
+            if (planeInt == ctx.client.getPlane()) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
@@ -33,7 +33,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                         // Print out the polygons for the models
                                         if (false) {
                                             val tilePolygon =
-                                                Calculations.getCanvasTileAreaPoly(client,
+                                                Calculations.getCanvasTileAreaPoly(ctx,
                                                         it.getCenterX(),
                                                         it.getCenterY()
                                                 )
@@ -41,7 +41,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                             g.drawPolygon(tilePolygon)
                                         }
 
-                                        val go = GameObject(it, client =client)
+                                        val go = GameObject(it, ctx = ctx)
                                         val globalPos = go.getGlobalLocation()
 
                                         val point =
@@ -49,11 +49,11 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                                     it.getCenterX(),
                                                     it.getCenterY(),
                                                     planeInt,
-                                                    client
+                                                    ctx
 
                                             )
                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                        client,point
+                                                        ctx,point
                                                 )
                                         ) {
                                             g.color = Color.GREEN
@@ -67,7 +67,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                                         it.getCenterX(),
                                                         it.getCenterY(),
                                                         it.getEntity().getHeight(),
-                                                        client
+                                                        ctx
 
                                                 )
 
@@ -98,7 +98,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                                     getTrianglesFromModel(
                                                             positionInfo,
                                                             model,
-                                                            client
+                                                            ctx
 
                                                     )
                                                 g.color = Color.RED
@@ -108,7 +108,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                                 val hull = getConvexHullFromModel(
                                                         positionInfo,
                                                         model,
-                                                        client
+                                                        ctx
 
                                                 )
                                                 g.color = Color.CYAN
@@ -124,8 +124,9 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
 
                             val globalPos =
                                 Tile(
-                                    tile.getX() + client.getBaseX(),
-                                    tile.getY() + client.getBaseY()
+                                        tile.getX() + ctx.client.getBaseX(),
+                                        tile.getY() + ctx.client.getBaseY(),
+                                        ctx = ctx
                                 )
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
@@ -143,7 +144,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                             wall.getX(),
                                             wall.getY(),
                                             wall.getEntity1().getHeight(),
-                                            client
+                                            ctx
 
                                     )
 
@@ -170,7 +171,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                         getTrianglesFromModel(
                                                 positionInfo,
                                                 model,
-                                                client
+                                                ctx
 
                                         )
                                     g.color = Color.RED
@@ -180,7 +181,7 @@ fun gameObjectPaint(client: com.p3achb0t._runestar_interfaces.Client, g: Graphic
                                     val hull = getConvexHullFromModel(
                                             positionInfo,
                                             model,
-                                            client
+                                            ctx
 
                                     )
                                     g.color = Color.CYAN

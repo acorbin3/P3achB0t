@@ -5,9 +5,10 @@ import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
-class Equipment(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Equipment(val ctx: Context) {
 
 
     //Info from each item comes from child widget in index 1
@@ -35,20 +36,20 @@ class Equipment(val client: com.p3achb0t._runestar_interfaces.Client) {
     }
 
     fun isOpen(): Boolean {
-        return Tabs(client).getOpenTab() == Tabs.Tab_Types.Equiptment
+        return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Equiptment
     }
 
     suspend fun open(waitForActionToComplete: Boolean = true) {
         if (isOpen()) return
 
         println("Opening Equiptment tab")
-        Tabs(client).openTab(Tabs.Tab_Types.Equiptment)
+        Tabs(ctx).openTab(Tabs.Tab_Types.Equiptment)
         //Wait for tab to be open
         if (waitForActionToComplete)
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    return Tabs(client).getOpenTab() == Tabs.Tab_Types.Equiptment
+                    return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Equiptment
                 }
             })
         if (!isOpen()) open()
@@ -85,7 +86,7 @@ class Equipment(val client: com.p3achb0t._runestar_interfaces.Client) {
 
     fun isEquipmentSlotEquipted(slot: Slot): Boolean {
         try {
-            val item = Items(client).getItemInfo(
+            val item = Items(ctx.client).getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
             )
@@ -99,12 +100,12 @@ class Equipment(val client: com.p3achb0t._runestar_interfaces.Client) {
 
     fun getItemAtSlot(slot: Slot): WidgetItem? {
         return try {
-            val widget = Widgets.find(client, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
-            val item = Items(client).getItemInfo(
+            val widget = Widgets.find(ctx, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
+            val item = Items(ctx.client).getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
             )
-            WidgetItem(widget, id = item.id, stackSize = item.stackSize, client = client)
+            WidgetItem(widget, id = item.id, stackSize = item.stackSize, ctx = ctx)
         } catch (e: Exception) {
             null
         }
