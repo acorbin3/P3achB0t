@@ -5,13 +5,14 @@ import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t._runestar_interfaces.ObjStack
 import com.p3achb0t._runestar_interfaces.ObjectNode
 import com.p3achb0t.api.ObjectPositionInfo
+import com.p3achb0t.ui.Context
 
-class GroundItems(val client: com.p3achb0t._runestar_interfaces.Client)  {
+class GroundItems(val ctx: Context)  {
     fun getAllItems(): ArrayList<GroundItem> {
         val itemList = ArrayList<GroundItem>()
-        val groundItems = client.getObjStacks()
-        val groundItemModels = client.getObjType_cachedModels()
-        val tiles = client.getScene().getTiles()
+        val groundItems = ctx.client.getObjStacks()
+        val groundItemModels = ctx.client.getObjType_cachedModels()
+        val tiles = ctx.client.getScene().getTiles()
         for ((iP, plane) in groundItems.withIndex()) {
             for ((iX, x) in plane.iterator().withIndex()) {
                 for ((iY, itemPile) in x.iterator().withIndex()) {
@@ -43,7 +44,7 @@ class GroundItems(val client: com.p3achb0t._runestar_interfaces.Client)  {
 
                                                 itemList.add(
                                                     GroundItem(
-                                                            client,
+                                                            ctx,
                                                             id,
                                                             ObjectPositionInfo(x, y, plane = iP)
                                                     )

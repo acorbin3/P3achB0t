@@ -1,10 +1,10 @@
 package com.p3achb0t.api.newApi
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.wrappers.Player
+import com.p3achb0t.ui.Context
 
-class Players(val client: Client) {
+class Players(val ctx: Context) {
     fun getLocal(): Player {
-        return Player(client.getLocalPlayer(), client)
+        return Player(ctx.client.getLocalPlayer(), ctx)
     }
 }

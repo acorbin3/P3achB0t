@@ -1,13 +1,13 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 
-class Prayer(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Prayer(val ctx: Context) {
     //TODO - Quick prayers
     //TODO - Checking if prayer is on
     // resource: how to get settings: https://github.com/07kit/07kit/blob/023c00545b9d104a9b1bda278dd5fdbf85a891f3/src/main/java/com/kit/api/impl/game/SettingsImpl.java
@@ -50,17 +50,17 @@ class Prayer(val client: com.p3achb0t._runestar_interfaces.Client) {
     }
 
     fun isOpen(): Boolean {
-        return Tabs(client).getOpenTab() == Tabs.Tab_Types.Prayer
+        return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Prayer
     }
 
     suspend fun open(waitForActionToComplete: Boolean = true) {
-        Tabs(client).openTab(Tabs.Tab_Types.Prayer)
+        Tabs(ctx).openTab(Tabs.Tab_Types.Prayer)
         //Wait for tab to be open
         if (waitForActionToComplete)
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    return Tabs(client).getOpenTab() == Tabs.Tab_Types.Prayer
+                    return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Prayer
                 }
             })
         if (!isOpen()) open()
@@ -69,7 +69,7 @@ class Prayer(val client: com.p3achb0t._runestar_interfaces.Client) {
     suspend fun activate(kind: PrayerKind) {
         if (!isOpen()) open()
 
-        val prayer = WidgetItem(Widgets.find(client, PARENT, kind.widgetID), client =client)
+        val prayer = WidgetItem(Widgets.find(ctx, PARENT, kind.widgetID), ctx = ctx)
         prayer.interact("Activate" )
         //TODO - Check if activated
 
@@ -78,7 +78,7 @@ class Prayer(val client: com.p3achb0t._runestar_interfaces.Client) {
     suspend fun disable(kind: PrayerKind) {
         if (!isOpen()) open()
 
-        val prayer = WidgetItem(Widgets.find(client, PARENT, kind.widgetID), client =client)
+        val prayer = WidgetItem(Widgets.find(ctx, PARENT, kind.widgetID), ctx = ctx)
         prayer.interact("Deactivate")
         //TODO - Check if Deactivated
     }

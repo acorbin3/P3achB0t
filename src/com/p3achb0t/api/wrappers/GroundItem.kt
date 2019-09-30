@@ -6,6 +6,7 @@ import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.tabs.Inventory
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -13,18 +14,24 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, val position: ObjectPositionInfo, val stackSize: Int = 0, override var loc_client: com.p3achb0t._runestar_interfaces.Client? = client) : Interactable(client),
+class GroundItem(
+        ctx: Context,
+        val id: Int,
+        val position: ObjectPositionInfo,
+        val stackSize: Int = 0,
+        override var loc_ctx: Context? = ctx
+) : Interactable(ctx),
     Locatable {
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client?.let { Calculations.worldToScreen(region.x, region.y, client?.getPlane(), it) } ?: Point()
+        return ctx.let { ctx?.client?.getPlane()?.let { it1 -> it?.let { it2 -> Calculations.worldToScreen(region.x, region.y, it1, it2) } } } ?: Point(0,0)
     }
     override fun isMouseOverObj(): Boolean {
-        //val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
-        return true //getConvexHull().contains(mousePoint)
+        val mousePoint = Point(ctx?.mouse?.mouseEvent?.x ?: -1,ctx?.mouse?.mouseEvent?.y ?: -1)
+        return getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {
-        return true//client?.let { Calculations.worldToMiniMap(position.x, position.y, it) }?.let { MainApplet.mouse.click(it) } ?: false
+        return ctx.let { it?.let { it1 -> Calculations.worldToMiniMap(position.x, position.y, it1) } }.let { it?.let { it1 -> ctx?.mouse?.click(it1) } } ?: false
     }
 
     override fun getInteractPoint(): Point {
@@ -41,36 +48,37 @@ class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, 
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-            position.x / 128 + client?.getBaseX()!!,
-            position.y / 128 + client?.getBaseY()!!,
-            position.plane
+                position.x / 128 + ctx?.client?.getBaseX()!!,
+                position.y / 128 + ctx?.client.getBaseY(),
+                position.plane,ctx
+
         )
     }
 
 
     override fun isOnScreen(): Boolean {
-        return client?.let { Calculations.isOnscreen(it,getConvexHull().bounds ) } ?: false
+        return ctx?.let { Calculations.isOnscreen(it,getConvexHull().bounds ) } ?: false
     }
 
     suspend fun take() {
-        val inventoryCount = client?.let { Inventory(it).getCount() }
+        val inventoryCount = ctx?.client?.let { Inventory(ctx).getCount() }
         if (interact("Take")) {
             Utils.waitFor(2, object : Utils.Condition {
 
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    println("Waiting for inventory to change $inventoryCount == ${client?.let { Inventory(it).getCount() }}")
-                    return inventoryCount != client?.let { Inventory(it).getCount() }
+                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { Inventory(ctx).getCount() }}")
+                    return inventoryCount != ctx?.client?.let { Inventory(ctx).getCount() }
                 }
             })
         }
     }
 
     fun getTriangles(): ArrayList<Polygon> {
-        val groundItemModels = client?.getObjType_cachedModels()
+        val groundItemModels = ctx?.client?.getObjType_cachedModels()
         val model: Model? = groundItemModels?.let { getModel(it) }
-        return if(model != null && client != null) {
-            getTrianglesFromModel(position, model, client)
+        return if(model != null && ctx?.client != null) {
+            getTrianglesFromModel(position, model, ctx)
         }else{
             ArrayList()
         }
@@ -100,10 +108,10 @@ class GroundItem(client: com.p3achb0t._runestar_interfaces.Client, val id: Int, 
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = client?.getObjType_cachedModels()
-        val model: Model? = groundItemModels?.let { getModel(it) }
-        return if(model != null && client != null) {
-            getConvexHullFromModel(position, model,client )
+        val groundItemModels = ctx?.client!!.getObjType_cachedModels()
+        val model: Model? = getModel(groundItemModels)
+        return if(model != null && ctx?.client != null) {
+            getConvexHullFromModel(position, model,ctx )
         }else{
             Polygon()
         }

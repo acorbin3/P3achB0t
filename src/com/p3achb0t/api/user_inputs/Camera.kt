@@ -8,7 +8,7 @@ import kotlin.math.atan2
 import kotlin.random.Random
 
 
-class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Camera(val client: com.p3achb0t._runestar_interfaces.Client,val keyboard: Keyboard? = null) {
     val x: Int get() = client.getCameraX()
     val y: Int get() = client.getCameraY()
     val z: Int get() = client.getCameraZ()
@@ -72,38 +72,37 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
     fun setPitch(pitch: Int): Boolean {
 //            if (!Game.isLoggedIn())
 //                return false
-/*
+
         var _pitch = this.pitch
         println("Pitch update: $_pitch -> $pitch")
         if (_pitch == pitch || Math.abs(_pitch - pitch) <= 5) {
             return true
         } else if (_pitch < pitch) {
             println("Starting to move camera UP")
-            Keyboard.pressDownKey(KeyEvent.VK_UP)
+            keyboard?.pressDownKey(KeyEvent.VK_UP)
             val t = com.p3achb0t.api.Timer(5000)
 
             while (_pitch < pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
                 sleep(59, 100)
             }
-            Keyboard.release(KeyEvent.VK_UP)
+            keyboard?.release(KeyEvent.VK_UP)
             println("Finished moving camera Up")
 
         } else if (_pitch > pitch) {
             println("Starting to move camera Down")
-            Keyboard.pressDownKey(KeyEvent.VK_DOWN)
+            keyboard?.pressDownKey(KeyEvent.VK_DOWN)
             val t = com.p3achb0t.api.Timer(5000)
 
             while (_pitch > pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
                 sleep(59, 100)
             }
-            Keyboard.release(KeyEvent.VK_DOWN)
+            keyboard?.release(KeyEvent.VK_DOWN)
             println("Finished moving camera Down")
         }
 
-        return Math.abs(_pitch - pitch) <= 5*/
-        return true
+        return Math.abs(_pitch - pitch) <= 5
     }
 
     /**
@@ -131,7 +130,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
         if (diff > 5) {
             // Figure out where we are
             println("Starting to swing camera Left or right")
-            //Keyboard.pressDownKey(dir)
+            keyboard?.pressDownKey(dir)
             for (i in 0..99) {
 
                 if (turnLeft) {
@@ -148,7 +147,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client) {
 
                 sleep(100, 200)
             }
-            //Keyboard.release(dir)
+            keyboard?.release(dir)
             println("Finished moving camera Left or right")
         }
         return getDiff(this.angle, angle) <= 5

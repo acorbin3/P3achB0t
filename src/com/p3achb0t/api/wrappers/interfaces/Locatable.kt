@@ -4,8 +4,10 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
+import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -13,7 +15,7 @@ import java.awt.Point
 import kotlin.random.Random
 
 interface Locatable {
-    var loc_client: com.p3achb0t._runestar_interfaces.Client?
+    var loc_ctx: Context?
     abstract fun draw(g: Graphics2D)
     abstract fun draw(g: Graphics2D, color: Color)
 
@@ -30,11 +32,11 @@ interface Locatable {
     // This function will remove the base and shift over by 7
     fun getLocalLocation(): Tile {
         val tile = getGlobalLocation()
-        return if(loc_client != null) {
-            val x = (tile.x - loc_client!!.getBaseX())
-            val y = (tile.y - loc_client!!.getBaseY())
+        return if(loc_ctx != null) {
+            val x = (tile.x - loc_ctx!!.client.getBaseX())
+            val y = (tile.y - loc_ctx!!.client.getBaseY())
 
-            Tile(x, y, tile.z)
+            Tile(x, y, tile.z, loc_ctx)
         }else{
             Tile()
         }
@@ -43,11 +45,11 @@ interface Locatable {
 
     fun getRegionalLocation(): Tile {
         val tile = getGlobalLocation()
-        return if(loc_client != null) {
-            val x = ((tile.x - loc_client!!.getBaseX()) shl Constants.REGION_SHIFT)
-            val y = ((tile.y - loc_client!!.getBaseY()) shl Constants.REGION_SHIFT)
+        return if(loc_ctx != null) {
+            val x = ((tile.x - loc_ctx!!.client.getBaseX()) shl Constants.REGION_SHIFT)
+            val y = ((tile.y - loc_ctx!!.client.getBaseY()) shl Constants.REGION_SHIFT)
 
-            Tile(x, y, tile.z)
+            Tile(x, y, tile.z, loc_ctx)
         }else{
             Tile()
         }
@@ -57,19 +59,19 @@ interface Locatable {
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return Players(loc_client!!).getLocal().isIdle() || distanceTo() < desired
+                return Players(loc_ctx!!).getLocal().isIdle() || distanceTo() < desired
             }
         })
     }
 
     suspend fun turnTo() {
-        Camera(loc_client!!).turnTo(this)
+        Camera(loc_ctx!!.client,keyboard = loc_ctx!!.keyboard).turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     abstract fun isOnScreen(): Boolean
 
     fun distanceTo(): Int {
-        return loc_client?.let { Calculations.distanceTo(getGlobalLocation(), it) } ?: -1
+        return loc_ctx?.let { Calculations.distanceTo(getGlobalLocation(), it) } ?: -1
     }
 
     fun distanceTo(locatable: Locatable): Int {

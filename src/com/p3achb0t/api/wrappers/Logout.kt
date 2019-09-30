@@ -3,19 +3,20 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
+import com.p3achb0t.ui.Context
 
-class Logout(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Logout(val ctx: Context) {
     suspend fun logout() {
         val logoutX = WidgetItem(
                 Widgets.find(
-                        client,
+                        ctx,
                         WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
                         WidgetID.ResizableViewportBottomLine.LOGOUT_BUTTON_OVERLAY
                 ),
-                client =client
+                ctx = ctx
         )
         logoutX.click()
-        val logoutButton = WidgetItem(Widgets.find(client, WidgetID.LOGOUT_PANEL_ID, 12), client =client)
+        val logoutButton = WidgetItem(Widgets.find(ctx, WidgetID.LOGOUT_PANEL_ID, 12), ctx = ctx)
         logoutButton.click()
     }
 }

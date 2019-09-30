@@ -3,14 +3,15 @@ package com.p3achb0t.api.painting
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.ui.Context
 import java.awt.Color
 import java.awt.Graphics
 
-fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
+fun playerPaint(g: Graphics, ctx: Context) {
     try {
         ///////Player paint//////////
         g.color = Color.GREEN
-        val players = client.getPlayers()
+        val players = ctx.client.getPlayers()
         var count = 0
         players.iterator().forEach { _player ->
             if (_player != null && _player.getCombatLevel() > 0) {
@@ -19,7 +20,7 @@ fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
 
 
                 val tile = Calculations.getCanvasTileAreaPoly(
-                        client,
+                        ctx,
                         _player.getX(),
                         _player.getY()
                 )
@@ -29,8 +30,8 @@ fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
                 g.fillPolygon(tile)
                 val polygon = getActorTriangles(
                         _player,
-                        client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__n(),client
+                        ctx.client.getPlayerAppearance_cachedModels(),
+                        _player.getAppearance().get__n(), ctx
 
                 )
                 g.color = Color.YELLOW
@@ -39,8 +40,8 @@ fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
                 }
                 val ch = getConvexHull(
                         _player,
-                        client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__n(),client
+                        ctx.client.getPlayerAppearance_cachedModels(),
+                        _player.getAppearance().get__n(), ctx
 
                 )
                 g.color = Color.RED
@@ -49,11 +50,11 @@ fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
                 val namePoint = Calculations.worldToScreen(
                         _player.getX(),
                         _player.getY(),
-                        _player.getHeight(),client
+                        _player.getHeight(), ctx
 
                 )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(
-                                client,namePoint
+                                ctx,namePoint
                         )
                 ) {
                     g.color = Color.GREEN
@@ -66,7 +67,7 @@ fun playerPaint(g: Graphics, client: com.p3achb0t._runestar_interfaces.Client) {
 
                 g.color = Color.GREEN
                 val mapPoint =
-                    Calculations.worldToMiniMap(_player.getX(), _player.getY(), client)
+                    Calculations.worldToMiniMap(_player.getX(), _player.getY(), ctx)
                 g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
             }
         }

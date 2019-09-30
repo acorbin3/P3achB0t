@@ -15,7 +15,7 @@ class RuneStarAnalyzer {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
         val hookFileName = "runestarHooks.json"
-        val file = File("./$hookDir/$hookFileName")
+        val file = File("../$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)

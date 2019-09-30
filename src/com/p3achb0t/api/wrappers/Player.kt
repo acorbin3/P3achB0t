@@ -2,38 +2,38 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.ui.Context
 import java.awt.Point
 import kotlin.math.abs
 import kotlin.math.max
 
 
-class Player(var player: com.p3achb0t._runestar_interfaces.Player, client: com.p3achb0t._runestar_interfaces.Client) : Actor(player,client ) {
+class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context) : Actor(player, ctx) {
     // This function will return a list of NPCs with closes distance to you
     fun findPlayers(sortByDist: Boolean = false): ArrayList<Player> {
         val players = ArrayList<Player>()
-        client?.getPlayers()?.forEach {
+        ctx?.client?.getPlayers()?.forEach {
             if (it != null) {
-                players.add(Player(it,client ))
+                players.add(Player(it,ctx ))
             }
         }
 
         if (sortByDist) {
             players.sortBy {
                 // Sort closest to player
-                val localPlayer = client?.getLocalPlayer()
-                localPlayer?.getY()?.minus(it.player.getY())?.let { it1 -> abs(it1) }?.let { it2 ->
-                    max(
-                            localPlayer?.getX()?.minus(it.player.getX())?.let { it1 -> abs(it1) },
-                            it2
-                    )
-                }
+                val localPlayer = ctx?.client!!.getLocalPlayer()
+                max(
+                        abs(localPlayer.getX() - it.player.getX()),
+                        abs(localPlayer.getY() - it.player.getY())
+                )
             }
         }
         return players
     }
+
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return client?.let { Calculations.worldToScreen(region.x, region.y, player.getHeight(), it) } ?: Point()
+        return Calculations.worldToScreen(region.x, region.y, player.getHeight(), ctx!!)
     }
 
     override suspend fun interact(action: String): Boolean {
@@ -45,19 +45,13 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, client: com.p
         //
         try {
             println("${this.player.getUsername()}: Getting Hull!")
-            val ch = client?.getLocType_cachedModels()?.let {
-                getConvexHull(
-                        this.player,
-                        it,
-                        this.player.getAppearance().getNpcTransformId().toLong(),
-                        client
-
-                        )
-            }
+            val ch = getConvexHull(
+                    this.player,
+                    ctx?.client!!.getLocType_cachedModels(),
+                    this.player.getAppearance().getNpcTransformId().toLong(),
+                    ctx!!)
             //Checking to see if this is on screen
-            client?.let { ch?.let { it1 -> Interact(it).interact(it1, action) } }
-            return true
-
+            Interact(ctx).interact(ch, action)
         } catch (e: Exception) {
         }
         return false

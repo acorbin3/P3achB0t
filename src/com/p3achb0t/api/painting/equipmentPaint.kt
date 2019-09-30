@@ -2,17 +2,18 @@ package com.p3achb0t.api.painting
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.wrappers.tabs.Equipment
+import com.p3achb0t.ui.Context
 import java.awt.Color
 import java.awt.Graphics
 
-fun equipmentPaint(g: Graphics, client: Client) {
+fun equipmentPaint(g: Graphics, ctx: Context) {
     try {
         //Look at equipment
-        if (Equipment(client).isOpen()) {
+        if (Equipment(ctx).isOpen()) {
 
             Equipment.Companion.Slot.values().iterator().forEach { slot ->
 
-                val widget = Equipment(client).getItemAtSlot(slot)
+                val widget = Equipment(ctx).getItemAtSlot(slot)
                 if (widget != null) {
                     g.color = Color.PINK
                     g.drawRect(widget.area.x, widget.area.y, widget.area.width, widget.area.height)

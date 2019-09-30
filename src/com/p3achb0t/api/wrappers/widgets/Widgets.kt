@@ -1,16 +1,16 @@
 package com.p3achb0t.api.wrappers.widgets
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
+import com.p3achb0t.ui.Context
 import kotlinx.coroutines.delay
 
 class Widgets {
     companion object {
-        fun find(ctx: Client, parent: Int, child: Int): Component? {
+        fun find(ctx: Context, parent: Int, child: Int): Component? {
             var widget: Component? = null
             try {
-                widget = ctx.getInterfaceComponents()[parent][child]
+                widget = ctx.client.getInterfaceComponents()[parent][child]
 
             } catch (e: Exception) {
                 return null
@@ -18,7 +18,7 @@ class Widgets {
             return widget
         }
 
-        suspend fun waitTillWidgetNotNull(ctx: Client,parent: Int, child: Int) {
+        suspend fun waitTillWidgetNotNull(ctx: Context,parent: Int, child: Int) {
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
@@ -27,11 +27,11 @@ class Widgets {
             })
         }
 
-        fun find(ctx: Client, parent: Int, text: String): Component? {
+        fun find(ctx: Context, parent: Int, text: String): Component? {
             try {
-                for (child in ctx.getInterfaceComponents()[parent]) {
+                for (child in ctx.client.getInterfaceComponents()[parent]) {
                     if (child != null) {
-                        val tempWidget = WidgetItem(child, client =ctx)
+                        val tempWidget = WidgetItem(child, ctx = ctx)
                         if (tempWidget.containsText(text)) {
                             return child
                         }
@@ -49,19 +49,19 @@ class Widgets {
 
         }
 
-        fun isWidgetAvaliable(ctx: Client, parent: Int, child: Int): Boolean {
+        fun isWidgetAvaliable(ctx: Context, parent: Int, child: Int): Boolean {
             return find(ctx, parent, child) != null
         }
-        fun getWidgetDetails(widget: Component, index: Int, client: Client): String{
+        fun getWidgetDetails(widget: Component, index: Int, ctx: Context): String{
             var result = "--$index--\n"
             try {
                 val containerID = widget.getId().shr(16)
                 val childID = widget.getId().and(0xFF)
                 result += "Widget ID:" + widget.getId() + "($containerID,$childID)\n"
-                val parentIndex = Widget.getParentIndex(widget,client )
+                val parentIndex = Widget.getParentIndex(widget, ctx)
                 result += "raw parent ID: ${widget.getParentId()}\n"
                 result += "parent Index ${parentIndex.parentID}, ${parentIndex.childID} raw:${parentIndex.raw}\n"
-                val chainedParentIndexes = Widget.getChainedParentIndex(widget, ArrayList(),client )
+                val chainedParentIndexes = Widget.getChainedParentIndex(widget, ArrayList(), ctx)
                 result += "parent Indexes:["
                 chainedParentIndexes.forEach {
                     result += "(${it.parentID},${it.childID}),"
@@ -79,7 +79,7 @@ class Widgets {
                 result += "Item ID:" + widget.getItemId() + "\n"
                 result += "getChildIndex:" + widget.getChildIndex() + "\n"
                 result += "Raw Position: ${widget.getX()},${widget.getY()}\n"
-                result += "Position: ${Widget.getWidgetX(widget, client)},${Widget.getWidgetY(widget, client)}\n"
+                result += "Position: ${Widget.getWidgetX(widget, ctx)},${Widget.getWidgetY(widget, ctx)}\n"
                 result += "Scroll(x,y) ${widget.getScrollX()},${widget.getScrollY()}\n"
                 result += "Scroll Heigth: ${widget.getScrollHeight()}\n"
                 result += "Scroll Width: ${widget.getScrollWidth()}\n"
@@ -108,25 +108,25 @@ class Widgets {
                 result += "---Internal---\n"
                 result += "Bounds Index: ${widget.getRootIndex()}\n"
                 result += "Bounds x: ["
-                for (i in client.getRootComponentXs()) {
+                for (i in ctx.client.getRootComponentXs()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds y: ["
-                for (i in client.getRootComponentYs()) {
+                for (i in ctx.client.getRootComponentYs()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds Width: ["
-                for (i in client.getRootComponentWidths()) {
+                for (i in ctx.client.getRootComponentWidths()) {
                     result += "$i,"
                 }
                 result += "]\n"
 
                 result += "Bounds Height: ["
-                for (i in client.getRootComponentHeights()) {
+                for (i in ctx.client.getRootComponentHeights()) {
                     result += "$i,"
                 }
                 result += "]\n"
@@ -135,7 +135,7 @@ class Widgets {
 //            result += "Children: ${widget.getChildren().size}"
                 var i = 0
                 widget.getChildren().iterator().forEach {
-                    result += getWidgetDetails(it, i,client )
+                    result += getWidgetDetails(it, i, ctx)
                     i += 1
                 }
 //                if (widget.getChildren().isNotEmpty()) {
