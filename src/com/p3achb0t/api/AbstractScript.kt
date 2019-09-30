@@ -2,11 +2,11 @@ package com.p3achb0t.api
 
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t.api.newApi.Players
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.GroundItems
 import com.p3achb0t.api.wrappers.NPCs
+import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.client.ui.components.GameTab
 import com.p3achb0t.interfaces.IScriptManager
 import java.awt.Graphics
