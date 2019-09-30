@@ -63,14 +63,8 @@ class ProxySocket extends Socket {
     private void socks5_connect() throws IOException {
         DataOutputStream out = new DataOutputStream(getOutputStream());
         DataInputStream in  = new DataInputStream(getInputStream());
-        */
-/*  field 2 options
-            0x00: No authentication
-            0x01: GSSAPI[15]
-            0x02: Username/password[16]
-            0x03–0x7F: methods assigned by IANA[17]
-            0x80–0xFE: methods reserved for private use
-        *//*
+
+
 
 
         // write version
@@ -125,8 +119,56 @@ class ProxySocket extends Socket {
         System.out.println(Byte.toString(ip1) + "."+Byte.toString(ip2) + "."+Byte.toString(ip3) + "."+Byte.toString(ip4) + ":" +Short.toString(portt));
     }
 
+    @Override
+    public int getPort() {
+        if (super.getInetAddress().equals(proxyInetAddress)) {
+            return defaultPort;
+        }
+        return super.getPort();
+    }
 
+    @Override
+    public InetAddress getInetAddress() {
+        if (super.getInetAddress().equals(proxyInetAddress)) {
+            return defaultAddress;
+        }
+        return super.getInetAddress();
+    }
+
+    @Override
+    public SocketAddress getRemoteSocketAddress() {
+        if (super.getInetAddress().equals(proxyInetAddress)) {
+            return proxyAddress;
+        }
+        return super.getRemoteSocketAddress();
+    }
+
+    @Override
+    public SocketChannel getChannel() {
+        if (super.getInetAddress().equals(proxyInetAddress)) {
+            return null;
+        }
+        return super.getChannel();
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+    }
+}
 */
+
+
+/*  field 2 options
+    0x00: No authentication
+    0x01: GSSAPI[15]
+    0x02: Username/password[16]
+    0x03–0x7F: methods assigned by IANA[17]
+    0x80–0xFE: methods reserved for private use
+*/
+
+
+
 /*
     private void socks5_connect() throws IOException {
         DataOutputStream out = new DataOutputStream(getOutputStream());
@@ -204,43 +246,4 @@ class ProxySocket extends Socket {
         in.readFully(b);
         in.readShort(); // the returned port #, ignored
     }
-*//*
-
-    @Override
-    public int getPort() {
-        if (super.getInetAddress().equals(proxyInetAddress)) {
-            return defaultPort;
-        }
-        return super.getPort();
-    }
-
-    @Override
-    public InetAddress getInetAddress() {
-        if (super.getInetAddress().equals(proxyInetAddress)) {
-            return defaultAddress;
-        }
-        return super.getInetAddress();
-    }
-
-    @Override
-    public SocketAddress getRemoteSocketAddress() {
-        if (super.getInetAddress().equals(proxyInetAddress)) {
-            return proxyAddress;
-        }
-        return super.getRemoteSocketAddress();
-    }
-
-    @Override
-    public SocketChannel getChannel() {
-        if (super.getInetAddress().equals(proxyInetAddress)) {
-            return null;
-        }
-        return super.getChannel();
-    }
-
-    @Override
-    public void close() throws IOException {
-        super.close();
-    }
-}
 */

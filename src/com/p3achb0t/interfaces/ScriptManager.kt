@@ -4,6 +4,7 @@ import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 
 class ScriptManager(val client: Client) : ScriptHook {
+
     val dd = client as IScriptManager
     var shouldRun = false
     var script: Script = NullScript()
@@ -12,8 +13,6 @@ class ScriptManager(val client: Client) : ScriptHook {
 
     var x = 800
     var y = 600
-
-
 
     var thread = Thread { println("${Thread.currentThread()} has run.") }
 

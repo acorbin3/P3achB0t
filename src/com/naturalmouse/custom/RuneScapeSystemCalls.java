@@ -2,7 +2,6 @@ package com.naturalmouse.custom;
 
 import com.naturalmouse.api.SystemCalls;
 import com.p3achb0t._runestar_interfaces.Client;
-import com.p3achb0t.client.interfaces.io.Mouse;
 import com.p3achb0t.interfaces.IScriptManager;
 
 import java.applet.Applet;

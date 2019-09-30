@@ -24,7 +24,7 @@ open class RsCanvas(val manager: ScriptManager) : Canvas() {
         }
 
         g.color = Color.CYAN
-        g.drawString("P3achB0t & Unoplex - BOT Alpha 0.1.0", 30 ,20)
+        g.drawString("P3achB0t & Løhde - BOT Alpha 0.1.0", 30 ,20)
         super.getGraphics().drawImage(gameCanvas, 0, 0, null)
         return g
     }

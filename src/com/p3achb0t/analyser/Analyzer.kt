@@ -4,6 +4,7 @@ import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.injection.class_generation.cleanType
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
 import com.p3achb0t.interfaces.ScriptManager
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
@@ -154,11 +155,11 @@ class Analyser{
             out.closeEntry()
         }
         out.putNextEntry(JarEntry("ProxySocket.class"))
-        out.write(putClasses("/home/kasper/Runescape/P3achB0t/src/ProxySocket.class"))
+        out.write(putClasses("$USER_DIR/src/ProxySocket.class"))
         out.closeEntry()
 
         out.putNextEntry(JarEntry("ProxyConnection.class"))
-        out.write(putClasses("/home/kasper/Runescape/P3achB0t/src/ProxyConnection.class"))
+        out.write(putClasses("$USER_DIR/src/ProxyConnection.class"))
 
         out.closeEntry()
 

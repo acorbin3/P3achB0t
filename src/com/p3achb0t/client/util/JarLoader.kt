@@ -19,3 +19,10 @@ class JarLoader {
         }
     }
 }
+
+
+/*
+GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
+    LDC "."
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+ */

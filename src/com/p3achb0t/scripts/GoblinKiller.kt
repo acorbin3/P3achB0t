@@ -11,6 +11,7 @@ import java.awt.Graphics
 @ScriptManifest("Test","TestScript","Unoplex")
 class GoblinKiller : AbstractScript() {
     var state = 0
+
     //var playerss = ctx.getPlayers() GIVES an error
     override fun loop() {
 

@@ -32,7 +32,6 @@ class Bot(world: Int) {
         client = clientClazz as Client
         applet = clientClazz as Applet
         manager = clientClazz as IScriptManager
-
         val appletStub = RSAppletStub(map)
         appletStub.appletContext.setApplet(applet)
         applet.setStub(appletStub)
