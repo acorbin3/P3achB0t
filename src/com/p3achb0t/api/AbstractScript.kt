@@ -9,7 +9,6 @@ import com.p3achb0t.api.wrappers.GroundItems
 import com.p3achb0t.api.wrappers.NPCs
 import com.p3achb0t.client.ui.components.GameTab
 import com.p3achb0t.interfaces.IScriptManager
-import com.p3achb0t.ui.Context
 import java.awt.Graphics
 
 abstract class AbstractScript {

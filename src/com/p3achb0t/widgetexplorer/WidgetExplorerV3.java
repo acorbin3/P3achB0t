@@ -5,7 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.p3achb0t._runestar_interfaces.Client;
 import com.p3achb0t._runestar_interfaces.Component;
 import com.p3achb0t.api.wrappers.widgets.Widgets;
-import com.p3achb0t.ui.Context;
+import com.p3achb0t.api.Context;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

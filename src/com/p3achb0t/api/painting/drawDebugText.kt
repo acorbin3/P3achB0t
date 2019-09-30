@@ -7,7 +7,7 @@ import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Menu
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 

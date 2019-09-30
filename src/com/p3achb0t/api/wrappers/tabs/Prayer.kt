@@ -4,7 +4,7 @@ import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Prayer(val ctx: Context) {

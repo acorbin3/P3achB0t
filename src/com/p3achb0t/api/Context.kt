@@ -1,4 +1,4 @@
-package com.p3achb0t.ui
+package com.p3achb0t.api
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Component

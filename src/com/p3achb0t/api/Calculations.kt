@@ -9,7 +9,6 @@ import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle

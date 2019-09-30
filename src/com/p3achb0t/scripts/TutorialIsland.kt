@@ -12,8 +12,7 @@ import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
-import com.p3achb0t.widgetexplorer.WidgetExplorerV3
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 

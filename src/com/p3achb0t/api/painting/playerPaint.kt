@@ -3,7 +3,7 @@ package com.p3achb0t.api.painting
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 

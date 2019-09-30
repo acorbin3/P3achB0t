@@ -10,7 +10,7 @@ import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 

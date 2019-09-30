@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Utils
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Widgets {
@@ -18,7 +18,7 @@ class Widgets {
             return widget
         }
 
-        suspend fun waitTillWidgetNotNull(ctx: Context,parent: Int, child: Int) {
+        suspend fun waitTillWidgetNotNull(ctx: Context, parent: Int, child: Int) {
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)

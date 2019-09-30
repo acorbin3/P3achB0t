@@ -5,7 +5,7 @@ import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Equipment(val ctx: Context) {

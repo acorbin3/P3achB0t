@@ -5,7 +5,7 @@ import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Tabs(val ctx: Context) {

@@ -5,7 +5,7 @@ import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t._runestar_interfaces.ObjStack
 import com.p3achb0t._runestar_interfaces.ObjectNode
 import com.p3achb0t.api.ObjectPositionInfo
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 
 class GroundItems(val ctx: Context)  {
     fun getAllItems(): ArrayList<GroundItem> {

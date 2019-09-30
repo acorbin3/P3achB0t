@@ -1,8 +1,7 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.wrappers.tabs.Equipment
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 

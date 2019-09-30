@@ -4,7 +4,7 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point

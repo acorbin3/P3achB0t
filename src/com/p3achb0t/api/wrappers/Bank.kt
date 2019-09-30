@@ -6,7 +6,7 @@ import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random

@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.InterfaceParent
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Rectangle
 
 interface Widget {

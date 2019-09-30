@@ -3,7 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 

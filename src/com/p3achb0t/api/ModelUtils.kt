@@ -3,7 +3,6 @@ package com.p3achb0t.api
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t.ui.Context
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*

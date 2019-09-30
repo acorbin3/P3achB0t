@@ -4,7 +4,7 @@ import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Rectangle
 
 class Inventory(val ctx: Context? = null) {

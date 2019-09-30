@@ -6,7 +6,7 @@ import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D

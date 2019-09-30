@@ -1,7 +1,7 @@
 package com.p3achb0t.api.newApi
 
 import com.p3achb0t.api.wrappers.Player
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 
 class Players(val ctx: Context) {
     fun getLocal(): Player {

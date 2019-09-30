@@ -10,7 +10,7 @@ import com.p3achb0t.api.getTrianglesFromModel
 import com.p3achb0t.api.painting.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point

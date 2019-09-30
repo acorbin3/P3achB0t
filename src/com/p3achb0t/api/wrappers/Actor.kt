@@ -3,10 +3,9 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D

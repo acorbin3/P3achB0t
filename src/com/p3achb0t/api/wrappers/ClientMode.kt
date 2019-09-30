@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.ui.Context
+import com.p3achb0t.api.Context
 
 class ClientMode(val ctx: Context) {
     companion object {
