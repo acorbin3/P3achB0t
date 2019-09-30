@@ -4,7 +4,7 @@ import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.Dialog
 import com.p3achb0t.api.wrappers.MiniMap
-import com.p3achb0t.interfaces.PaintListener
+//import com.p3achb0t.interfaces.PaintListener
 import com.p3achb0t.ui.Context
 import java.awt.Color
 import java.awt.Graphics
@@ -26,13 +26,13 @@ fun drawRect(g: Graphics, rect: Rectangle) {
     g.drawRect(rect.x, rect.y, rect.width, rect.height)
 }
 
-
+/*
 fun debugPaint(ctx: Context): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
                 g.color = Color.white
-                ctx.mouse.mouseEvent?.x?.let { ctx.mouse.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                g.drawRect(ctx.mouse.ioMouse.getX(), ctx.mouse.ioMouse.getY(), 5, 5)
                 if (PaintDebug.isDebugTextOn)
                     drawDebugText(g, ctx)
 
@@ -92,4 +92,7 @@ fun debugPaint(ctx: Context): PaintListener {
             }
         }
     }
+
 }
+
+ */

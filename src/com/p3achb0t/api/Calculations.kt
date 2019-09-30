@@ -10,7 +10,6 @@ import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import com.p3achb0t.ui.Context
-import com.p3achb0t.ui.RsCanvas
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
@@ -105,8 +104,9 @@ class Calculations {
 
 
             return if (y >= 50) {
-                val screenX = x * ctx.client.getViewportZoom() / y +  ctx.clientInstance.applet.size.width / 2
-                val screenY = z * ctx.client.getViewportZoom() / y + ctx.clientInstance.applet.size.height / 2
+
+                val screenX = x * ctx.client.getViewportZoom() / y + ctx.gameTab.client.applet.size.width / 2
+                val screenY = z * ctx.client.getViewportZoom() / y + ctx.gameTab.client.applet.size.height / 2
                 Point(screenX, screenY)
             } else Point(-1, -1)
         }

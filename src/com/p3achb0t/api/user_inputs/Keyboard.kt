@@ -1,14 +1,12 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.MainApplet
-import com.p3achb0t.ui.Keyboard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.awt.Component
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class Keyboard(val component: Component): KeyListener {
+class Keyboard(val component: Component, val keyboard: com.p3achb0t.client.interfaces.io.Keyboard) : KeyListener {
     override fun keyTyped(e: KeyEvent?) {
         println("Typed")
     }
@@ -37,16 +35,7 @@ class Keyboard(val component: Component): KeyListener {
                     0,
                     0, c
             )
-            for (kl in component.keyListeners) {
-                if (kl is Keyboard) {
-                    continue
-                }
-                if (!down.isConsumed) {
-                    kl.keyPressed(down)
-                    break
-                }
-            }
-//            component.dispatchEvent(down)
+            keyboard.sendEvent(down)
             delay(20)
             val typeed = KeyEvent(
                     component,
@@ -73,16 +62,7 @@ class Keyboard(val component: Component): KeyListener {
                     0,
                     0, c
             )
-            for (kl in component.keyListeners) {
-                if (kl is Keyboard) {
-                    continue
-                }
-                if (!down.isConsumed) {
-                    kl.keyReleased(up)
-                    break
-                }
-            }
-//            component.dispatchEvent(up)
+            keyboard.sendEvent(up)
             delay(20)
         }
 
@@ -102,15 +82,7 @@ class Keyboard(val component: Component): KeyListener {
                 0,
                 keyCode, keyCode.toChar()
         )
-        for (kl in component.keyListeners) {
-            if (kl is Keyboard) {
-                continue
-            }
-            if (!down.isConsumed) {
-                kl.keyPressed(down)
-            }
-        }
-//        component.dispatchEvent(down)
+        keyboard.sendEvent(down)
     }
 
     fun release(keyCode: Int) {
@@ -121,15 +93,7 @@ class Keyboard(val component: Component): KeyListener {
                 0,
                 keyCode, keyCode.toChar()
         )
-        for (kl in component.keyListeners) {
-            if (kl is Keyboard) {
-                continue
-            }
-            if (!up.isConsumed) {
-                kl.keyReleased(up)
-            }
-        }
-//        component.dispatchEvent(up)
+        keyboard.sendEvent(up)
     }
 }
 

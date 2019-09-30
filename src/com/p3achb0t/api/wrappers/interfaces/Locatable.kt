@@ -4,7 +4,6 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.ui.Context
@@ -65,7 +64,7 @@ interface Locatable {
     }
 
     suspend fun turnTo() {
-        Camera(loc_ctx!!.client,keyboard = loc_ctx!!.keyboard).turnTo(this)
+        Camera(loc_ctx!!.client, ioKeyboard = loc_ctx!!.keyboard).turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     abstract fun isOnScreen(): Boolean

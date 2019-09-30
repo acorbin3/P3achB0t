@@ -1,22 +1,17 @@
 package com.p3achb0t.api.user_inputs
 
-import com.github.joonasvali.naturalmouse.api.MouseMotionFactory
-import com.github.joonasvali.naturalmouse.util.FactoryTemplates
-import com.p3achb0t.api.Constants
-import com.p3achb0t.ui.Context
-import com.p3achb0t.ui.Mouse
+import com.naturalmouse.api.MouseMotionFactory
+import com.p3achb0t.client.interfaces.io.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Component
 import java.awt.Point
 import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
-import java.awt.event.MouseMotionListener
 import kotlin.random.Random
 
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
-class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory?=null): MouseListener, MouseMotionListener {
+class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory? = null, val ioMouse: Mouse) {
 
     enum class ClickType {
         Right,
@@ -24,7 +19,6 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
     }
 
 
-    var mouseEvent: MouseEvent? = null
     //////
     // Config info on how the mouse would operate
 
@@ -44,13 +38,7 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
             return false
         }
 
-        val startPoint = if (mouseEvent != null) mouseEvent?.point?.x?.let { _x ->
-            mouseEvent?.point?.y?.let { _y ->
-                Point(_x, _y)
-            }
-        } else {
-            Point(Random.nextInt(Constants.GAME_FIXED_WIDTH), Random.nextInt(Constants.GAME_FIXED_HEIGHT))
-        }
+        val startPoint = Point(ioMouse.getX(), ioMouse.getY())
 //        mouseMotionFactory?.move(destPoint.x, destPoint.y)
         val distance = startPoint?.distance(destPoint)
         val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
@@ -79,13 +67,7 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                         )
                     }
                 }
-                for (l in component.mouseMotionListeners) {
-                    if (l !is com.p3achb0t.api.user_inputs.Mouse) {
-                        l.mouseMoved(mouseMove)
-                    }
-                }
-//                component.dispatchEvent(mouseMove)
-                mouseEvent = mouseMove
+                ioMouse.sendEvent(mouseMove)
                 interval?.toLong()?.let { delay(it) }
             }
         }
@@ -103,13 +85,7 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                     0,
                     clickType == ClickType.Right
                 )
-            for (l in component.mouseListeners) {
-                if (l !is com.p3achb0t.api.user_inputs.Mouse) {
-                    l.mousePressed(mousePress)
-                }
-            }
-//            component.dispatchEvent(mousePress)
-            mouseEvent = mousePress
+            ioMouse.sendEvent(mousePress)
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
@@ -126,41 +102,8 @@ class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory
                     0,
                     clickType == ClickType.Right
                 )
-
-            for (l in component.mouseListeners) {
-                if (l !is com.p3achb0t.api.user_inputs.Mouse) {
-                    l.mouseReleased(mouseRelease)
-                }
-            }
-//            component.dispatchEvent(mouseRelease)
-            mouseEvent = mouseRelease
+            ioMouse.sendEvent(mouseRelease)
         }
         return true
-    }
-    override fun mouseReleased(e: MouseEvent?) {
-    }
-
-    override fun mouseEntered(e: MouseEvent?) {
-    }
-
-    override fun mouseClicked(e: MouseEvent?) {
-    }
-
-    override fun mouseExited(e: MouseEvent?) {
-    }
-
-    override fun mousePressed(e: MouseEvent?) {
-    }
-
-    override fun mouseMoved(e: MouseEvent?) {
-        println("Mousemoved: ${e?.x},${e?.y}")
-        if (e != null && e.x >= 0 && e.y >= 0)
-            mouseEvent = e
-    }
-
-    override fun mouseDragged(e: MouseEvent?) {
-        println("Mousemoved: ${e?.x},${e?.y}")
-        if (e != null && e.x >= 0 && e.y >= 0)
-            mouseEvent = e
     }
 }

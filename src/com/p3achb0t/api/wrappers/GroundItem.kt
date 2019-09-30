@@ -27,7 +27,7 @@ class GroundItem(
         return ctx.let { ctx?.client?.getPlane()?.let { it1 -> it?.let { it2 -> Calculations.worldToScreen(region.x, region.y, it1, it2) } } } ?: Point(0,0)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx?.mouse?.mouseEvent?.x ?: -1,ctx?.mouse?.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override suspend fun clickOnMiniMap(): Boolean {

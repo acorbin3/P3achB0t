@@ -2,7 +2,6 @@ package com.p3achb0t.widgetexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.p3achb0t.MainApplet;
 import com.p3achb0t._runestar_interfaces.Client;
 import com.p3achb0t._runestar_interfaces.Component;
 import com.p3achb0t.api.wrappers.widgets.Widgets;
@@ -81,7 +80,7 @@ public class WidgetExplorerV3 {
                         Integer childID = Integer.parseInt(index.split(",")[2]);
                         Component[][] components = WidgetExplorerV3.this.ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
-                        MainApplet.Data.setSelectedWidget(widget);
+                        ctx.setSelectedWidget(widget);
                         String result = Widgets.Companion.getWidgetDetails(widget, 0, WidgetExplorerV3.this.ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);
@@ -166,7 +165,7 @@ public class WidgetExplorerV3 {
         widgetExplorerPanel.add(textField1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(120, -1), 0, false));
-        tree1 = new JTree(treeModel);
+        tree1 = new JTree();
         tree1.setMaximumSize(new Dimension(100, 74));
         scrollPane1.setViewportView(tree1);
         final JScrollPane scrollPane2 = new JScrollPane();

@@ -2,7 +2,6 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
-import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.ui.Context
@@ -30,7 +29,7 @@ class Tile(
         return getCanvasTileAreaPoly(ctx, regional.x, regional.y)
     }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx?.mouse?.mouseEvent?.x ?: -1,ctx?.mouse?.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
         return ctx?.client?.let { getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
     }
 
