@@ -4,12 +4,21 @@ import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.client.ui.components.GameTab
+import java.applet.Applet
 
-class Context(
-        var client: Client,
-        var mouse: Mouse,
-        var keyboard: Keyboard,
-        var gameTab: GameTab,
-        var selectedWidget: Component? = null
-)
+class Context(val obj: Any) {
+
+    val client: Client
+    val mouse: Mouse
+    val keyboard: Keyboard
+    val applet: Applet
+    var selectedWidget: Component? = null
+
+    init {
+        client = obj as Client
+        mouse = Mouse(obj)
+        keyboard = Keyboard(obj)
+        applet = obj as Applet
+    }
+}
+

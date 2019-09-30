@@ -104,8 +104,8 @@ class Calculations {
 
             return if (y >= 50) {
 
-                val screenX = x * ctx.client.getViewportZoom() / y + ctx.gameTab.client.applet.size.width / 2
-                val screenY = z * ctx.client.getViewportZoom() / y + ctx.gameTab.client.applet.size.height / 2
+                val screenX = x * ctx.client.getViewportZoom() / y + ctx.applet.size.width / 2
+                val screenY = z * ctx.client.getViewportZoom() / y + ctx.applet.size.height / 2
                 Point(screenX, screenY)
             } else Point(-1, -1)
         }

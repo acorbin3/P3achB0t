@@ -2,8 +2,6 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.client.ui.components.GameTab
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class ScriptManager(val client: Any) : ScriptHook {
     val dd = client as IScriptManager

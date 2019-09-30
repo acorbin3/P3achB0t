@@ -1,8 +1,11 @@
 package com.p3achb0t.api.user_inputs
 
 import com.naturalmouse.api.MouseMotionFactory
+import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.client.interfaces.io.Mouse
+import com.p3achb0t.interfaces.IScriptManager
 import kotlinx.coroutines.delay
+import java.applet.Applet
 import java.awt.Component
 import java.awt.Point
 import java.awt.event.MouseEvent
@@ -11,7 +14,11 @@ import kotlin.random.Random
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
-class Mouse(val component: Component, var mouseMotionFactory: MouseMotionFactory? = null, val ioMouse: Mouse) {
+class Mouse(obj: Any) {
+
+    val component: Component = (obj as Applet).getComponent(0)
+    val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
+    val ioMouse: Mouse = (obj as IScriptManager).getMouse()
 
     enum class ClickType {
         Right,

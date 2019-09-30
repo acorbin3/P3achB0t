@@ -1,12 +1,17 @@
 package com.p3achb0t.api.user_inputs
 
+import com.p3achb0t.interfaces.IScriptManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import java.applet.Applet
 import java.awt.Component
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class Keyboard(val component: Component, val keyboard: com.p3achb0t.client.interfaces.io.Keyboard) : KeyListener {
+class Keyboard(val obj: Any) : KeyListener {
+    val component: Component = (obj as Applet).getComponent(0)
+    val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as IScriptManager).getKeyboard()
+
     override fun keyTyped(e: KeyEvent?) {
         println("Typed")
     }

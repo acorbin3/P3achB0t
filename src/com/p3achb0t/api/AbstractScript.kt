@@ -22,12 +22,7 @@ abstract class AbstractScript {
     protected lateinit var keyboard: Keyboard
 
     fun initialize(client: Any) {
-        val script = client as IScriptManager
-        val applet = client as Applet
-        val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(client)
-        mouse = Mouse(applet.getComponent(0),factory,script.getMouse())
-        //keyboard = Keyboard(client)
-        //ctx = Context(client, mouse, keyboard, gameTab)
+        ctx = Context(client)
         players = Players(ctx)
         groundItems = GroundItems(ctx)
         npcs = NPCs(ctx)
