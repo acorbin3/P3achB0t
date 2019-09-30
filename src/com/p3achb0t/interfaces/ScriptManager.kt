@@ -4,8 +4,9 @@ import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.ui.components.GameTab
 
-class ScriptManager(val client: Client, val gameTab: GameTab) : ScriptHook {
+class ScriptManager(val client: Client) : ScriptHook {
     val dd = client as IScriptManager
+    val o = client
     var shouldRun = false
     var script: Script = NullScript()
     val debug: Script = PrintScript(client, dd)
@@ -28,7 +29,7 @@ class ScriptManager(val client: Client, val gameTab: GameTab) : ScriptHook {
     }
 
     fun setScriptHookAbs(s: AbstractScript) {
-        s.initialize(client, gameTab)
+        //s.initialize(client, gameTab)
         gb = s
 
     }
