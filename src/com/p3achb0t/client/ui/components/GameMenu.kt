@@ -1,9 +1,11 @@
 package com.p3achb0t.client.ui.components
 
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
+import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.*
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.swing.JMenu
@@ -56,6 +58,13 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             manager.setScriptHookAbs(TutorialIsland())
 
         }
+        val widgetExplorer = JMenuItem("Open Widget Explorer")
+        widgetExplorer.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            WidgetExplorerV3.createWidgetExplorer(Context(game.client.manager))
+        }
+
 
         val mouse = JMenuItem("Move Mouse")
         mouse.addActionListener {
@@ -95,6 +104,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         menu.add(mouse)
         menu.add(injection)
         menu.add(tutorialIsland)
+        menu.add(widgetExplorer)
         menu.add(test)
         menu.add(test2)
         menu.add(test3)

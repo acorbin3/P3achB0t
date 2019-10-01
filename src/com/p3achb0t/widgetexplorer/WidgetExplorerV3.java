@@ -37,7 +37,7 @@ public class WidgetExplorerV3 {
                 System.out.println("Refresh!");
                 node.removeAllChildren();
                 textField1.setText("");
-                Component[][] components = WidgetExplorerV3.this.ctx.getClient().getInterfaceComponents();
+                Component[][] components = ctx.getClient().getInterfaceComponents();
                 DefaultMutableTreeNode currentParentNode = null;
                 for (Integer parentID = 0; parentID < components.length; parentID++) {
                     if (components[parentID] != null) {
@@ -78,10 +78,10 @@ public class WidgetExplorerV3 {
                     if (index.split(",").length > 2) {
                         Integer parentID = Integer.parseInt(index.split(",")[1]);
                         Integer childID = Integer.parseInt(index.split(",")[2]);
-                        Component[][] components = WidgetExplorerV3.this.ctx.getClient().getInterfaceComponents();
+                        Component[][] components = ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
                         ctx.setSelectedWidget(widget);
-                        String result = Widgets.Companion.getWidgetDetails(widget, 0, WidgetExplorerV3.this.ctx);
+                        String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);
                         textArea1.setCaretPosition(0);
@@ -96,7 +96,7 @@ public class WidgetExplorerV3 {
         textField1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                doSearch(WidgetExplorerV3.this.ctx);
+                doSearch(ctx);
             }
         });
     }
@@ -133,10 +133,13 @@ public class WidgetExplorerV3 {
 
     static public void createWidgetExplorer(Context ctx) {
         JFrame frame = new JFrame("WidgetExplorerV3");
-        frame.setContentPane(new WidgetExplorerV3(ctx).widgetExplorerPanel);
+        WidgetExplorerV3 widgetExplorerV3 = new WidgetExplorerV3(ctx);
+        widgetExplorerV3.tree1.setModel(widgetExplorerV3.treeModel);
+        frame.setContentPane(widgetExplorerV3.widgetExplorerPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
 
     }
 
