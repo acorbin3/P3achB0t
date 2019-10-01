@@ -24,7 +24,6 @@ public class WidgetExplorerV3 {
     JPanel widgetExplorerPanel;
     private JButton refreshButton;
     private Client client;
-    private Context ctx;
 
     private DefaultMutableTreeNode node = new DefaultMutableTreeNode("Widgets");
     private DefaultTreeModel treeModel = new DefaultTreeModel(node);
@@ -62,7 +61,7 @@ public class WidgetExplorerV3 {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Search!");
-                doSearch(WidgetExplorerV3.this.ctx);
+                doSearch(ctx);
             }
         });
         tree1.addTreeSelectionListener(new TreeSelectionListener() {
