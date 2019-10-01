@@ -1,13 +1,50 @@
+import com.p3achb0t.client.ui.GameWindow
+import com.p3achb0t.client.ui.setup
+
+
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        setup()
+        val g = GameWindow()
+
+        g.run()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 package com.p3achb0t
 
 import com.p3achb0t.MainApplet.Data.customCanvas
-import com.p3achb0t.MainApplet.Data.mouseEvent
 import com.p3achb0t.MainApplet.Data.runeStar
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.GameShell
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.painting.PaintDebug
 import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.user_inputs.Mouse
@@ -15,8 +52,6 @@ import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.client.MenuBar
 import com.p3achb0t.downloader.Downloader
 import com.p3achb0t.downloader.Parameters
-import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,9 +83,6 @@ class MainApplet(game: Applet) {
         var classLoader: URLClassLoader? = null
         var selectedWidget: Component? = null
         var customCanvas: CustomCanvas? = null
-        var mouseEvent: MouseEvent? = null
-        val mouse = Mouse()
-
     }
 }
 
@@ -77,7 +109,7 @@ object Main {
 
 
         val analyser = Analyser()
-        analyser.parseJar(gamePackJar, runeStar)
+        analyser.createInjectedJar(gamePackJar, runeStar)
 
 //        return
 
@@ -98,7 +130,7 @@ object Main {
 
         game.apply {
             preferredSize = Dimension(CustomCanvas.dimension.width, CustomCanvas.dimension.height)
-            val loader = RSLoader()
+            val loader = RSLoader(83)
             game.setStub(loader)
         }
 
@@ -158,7 +190,7 @@ object Main {
                     canvasField?.isAccessible = true
                     val oldCanvas = canvasField?.get(game) as Canvas // Needed to have Applet instead of null
                     game.remove(oldCanvas)
-                    customCanvas = CustomCanvas(oldCanvas.hashCode())
+                    customCanvas = CustomCanvas(oldCanvas.hashCode(),Client.client )
 
                     // Adding mouse, keyboard, and paint listeners
                     for (ml in oldCanvas.mouseListeners) {
@@ -170,18 +202,14 @@ object Main {
                     }
                     val mouseListener = object : MouseMotionListener {
                         override fun mouseMoved(e: MouseEvent?) {
-                            if (e != null && e.x >= 0 && e.y >= 0)
-                                mouseEvent = e
 
                         }
 
                         override fun mouseDragged(e: MouseEvent?) {
-                            if (e != null && e.x >= 0 && e.y >= 0)
-                                mouseEvent = e
                         }
 
                     }
-                    customCanvas?.addPaintListener(debugPaint())
+//                    customCanvas?.addPaintListener(debugPaint(client = Client.client, mouse = Mouse))
 
                     customCanvas?.addMouseMotionListener(mouseListener)
                     for (kl in oldCanvas.keyListeners) {
@@ -304,7 +332,7 @@ object Main {
 ////            Inventory.getAll().forEach {
 ////                if(!Inventory.isOpen()) Inventory.open()
 ////                it.hover(true,Mouse.ClickType.Right)
-////                if(Menu.isActionInMenu("Wield")) {
+////                if(Menu(client).isActionInMenu("Wield")) {
 ////                    println("Wielding: ${it.id}")
 ////                    it.interact("Wield")
 ////                    // Wait till item leaves inventory
@@ -319,21 +347,21 @@ object Main {
 //
 //
 //                    //If bank not open, find a banker and open it
-////            if(!Bank.isOpen()){
-////                Bank.open()
+////            if(!Bank(client).isOpen()){
+////                Bank(client).open()
 ////                //TODO -withdraw
-////                Bank.withdraw(995,3)
-////                Bank.deposit(995,3)
-////                Bank.withdraw(995,7)
-////                Bank.depositAll()
-////                Bank.close()
+////                Bank(client).withdraw(995,3)
+////                Bank(client).deposit(995,3)
+////                Bank(client).withdraw(995,7)
+////                Bank(client).depositAll()
+////                Bank(client).close()
 ////            }else{
-////                println("Bank Size: ${Bank.getSize()}")
-////                val items = Bank.getAll()
+////                println("Bank Size: ${Bank(client).getSize()}")
+////                val items = Bank(client).getAll()
 ////                items.forEach {
 ////                    println("${it.widgetID}:${it.stackSize}")
 ////                }
-////                Bank.close()
+////                Bank(client).close()
 ////            }
 //
 //
@@ -396,7 +424,7 @@ object Main {
 //                        Calculations.initScreenWidgetDimentions()
 //                    }
 //
-                TutorialIsland.run()
+//                TutorialIsland.run()
 
 
 //                }
@@ -407,8 +435,8 @@ object Main {
 
 //        EventQueue.invokeLater(::createAndShowGUI)
 //        EventQueue.invokeLater(::createWidgetExplorer)
-        WidgetExplorerV3(Client.client).createWidgetExplorer()
-        LoggingIntoAccount(Client.client)
+//        WidgetExplorerV3(Client.client).createWidgetExplorer()
+//        LoggingIntoAccount(Client.client)
 //        class MyApp : App(WidgetExplorer::class)
 //        launch<MyApp>()
 
@@ -417,3 +445,5 @@ object Main {
     }
 
 }
+
+ */

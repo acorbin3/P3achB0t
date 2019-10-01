@@ -1,29 +1,31 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.api.wrappers.interfaces.Interactable
+import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 
-class NPC(var npc: Npc) : Actor(npc), Interactable {
+class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1,MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
         return getConvexHull().contains(mousePoint)
     }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return Calculations.worldToScreen(region.x, region.y, npc.getHeight())
+        return ctx?.client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), ctx!!) } } ?: Point(-1,-1)
     }
     fun getConvexHull(): Polygon {
-        return getConvexHull(
-            this.npc,
-            Client.client.getNPCType_cachedModels(),
-            this.npc.getType().getKey().toLong()
-        )
+        return ctx?.let {
+            getConvexHull(
+                    this.npc,
+                    it.client.getNPCType_cachedModels(),
+                    this.npc.getType().getKey(),it
+            )
+        } ?: Polygon()
+
     }
 
 
@@ -32,7 +34,11 @@ class NPC(var npc: Npc) : Actor(npc), Interactable {
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
-        return MainApplet.mouse.click(Calculations.worldToMiniMap(npc.getX(), npc.getY()))
+        return ctx?.client.let {
+            it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), ctx!!) }
+        }.let {
+            it?.let { it1 -> ctx?.mouse?.click(it1) }
+        } ?: false
     }
 
     suspend fun talkTo(): Boolean {

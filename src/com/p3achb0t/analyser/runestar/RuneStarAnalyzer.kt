@@ -1,8 +1,8 @@
 package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
-import com.p3achb0t.class_generation.isBaseType
-import com.p3achb0t.class_generation.isFieldNameUnique
+import com.p3achb0t.injection.class_generation.isBaseType
+import com.p3achb0t.injection.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -12,21 +12,22 @@ class RuneStarAnalyzer {
     val analyzers = mutableMapOf<String, ClassHook>()
     val classRefObs = mutableMapOf<String, ClassHook>()
     fun loadHooks(): String {
-        val hookDir = "\\hooks\\"
+        val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
         val hookFileName = "runestarHooks.json"
-        val file = File("../$hookDir/$hookFileName")
+        val file = File("./$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
         for (clazz in topic) {
+
             analyzers[clazz.`class`] = clazz
             classRefObs[clazz.name] = clazz
         }
         val folder = "../src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
-        return "../$hookDir/$hookFileName"
+        return "./$hookDir/$hookFileName"
     }
 
     private fun genFunction(
@@ -49,6 +50,8 @@ class RuneStarAnalyzer {
 
     fun parseJar(jar: JarFile) {
         // We are going to look at the Jar and find the Class Nodes so can get more data
+        // to ensure we have unique field names, calss names in the hierarchy structure.
+        // Also add in the "get"'s as part of the interfaces
 
         val classNodeRefs = mutableMapOf<String, ClassNode>()
         val enumeration = jar.entries()
@@ -69,7 +72,7 @@ class RuneStarAnalyzer {
                             foundField.descriptor = field.desc
                             foundField.access = field.access
 
-                            println("\t$foundField")
+                            //println("\t$foundField")
                         }
                     }
 
@@ -84,12 +87,12 @@ class RuneStarAnalyzer {
         classRefObs.forEach { className, classObj ->
             classObj.fields.forEach { field ->
                 if (field.owner in classNodeRefs) {
-                    println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?.`class`}) obs name: ${field.name} desc: ${field.descriptor} ")
+                    //println("Looking for ${field.field} in ${field.owner}(${classRefObs[field.owner]?.`class`}) obs name: ${field.name} desc: ${field.descriptor} ")
                     classNodeRefs[field.owner]?.fields?.forEach {
                         if (field.name == it.name) {
                             field.descriptor = it.desc
                             field.access = it.access
-                            println("\t Update desc:${it.desc}")
+                            //println("\t Update desc:${it.desc}")
 
                         }
                     }
@@ -97,9 +100,9 @@ class RuneStarAnalyzer {
             }
         }
 
-        //Update the fields to make sure they are unique in the class heirarchy
+        //Update the fields to make sure they are unique in the class hierarchy
         for (clazz in analyzers) {
-            println("Class: ${clazz.value.`class`}")
+            //println("Class: ${clazz.value.`class`}")
             for (field in clazz.value.fields) {
                 val arrayCount = field.descriptor.count { it == '[' }
                 var updatedDescriptor = field.descriptor
@@ -131,10 +134,10 @@ class RuneStarAnalyzer {
         }
 
         val newPackage = "hook_interfaces"
-        val folder = "./\\src/com/p3achb0t/$newPackage/"
+        val folder = "./src/com/p3achb0t/$newPackage/"
         val _package = "com.p3achb0t.$newPackage"
 
 //        createInterfaces(folder, _package, analyzers, classRefObs)
-//        createJavaInterfaces("./src/org/bot/client/wrapper/","org.bot.client.wrapper",analyzers, classRefObs)
+//        createJavaInterfaces("./src/org/bot/applet/wrapper/","org.bot.applet.wrapper",analyzers, classRefObs)
     }
 }

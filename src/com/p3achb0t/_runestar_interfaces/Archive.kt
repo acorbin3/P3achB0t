@@ -7,7 +7,7 @@ interface Archive: AbstractArchive{
 	fun getIndexVersion(): Int
 	fun getMasterDisk(): ArchiveDisk
 	fun getValidGroups(): BooleanArray
-	fun get__av(): Boolean
-	fun get__aj(): Int
-	fun get__o(): Boolean
+    fun get__av(): Boolean
+    fun get__aj(): Int
+    fun get__o(): Boolean
 }

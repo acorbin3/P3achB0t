@@ -1,5 +1,5 @@
 package com.p3achb0t._runestar_interfaces
 
 interface PcmStreamMixerListener: Node{
-	fun get__s(): Int
+    fun get__s(): Int
 }

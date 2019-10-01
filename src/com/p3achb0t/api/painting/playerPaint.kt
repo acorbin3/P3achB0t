@@ -3,15 +3,15 @@ package com.p3achb0t.api.painting
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.api.wrappers.Client
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
-fun playerPaint(g: Graphics) {
+fun playerPaint(g: Graphics, ctx: Context) {
     try {
         ///////Player paint//////////
         g.color = Color.GREEN
-        val players = Client.client.getPlayers()
+        val players = ctx.client.getPlayers()
         var count = 0
         players.iterator().forEach { _player ->
             if (_player != null && _player.getCombatLevel() > 0) {
@@ -20,37 +20,41 @@ fun playerPaint(g: Graphics) {
 
 
                 val tile = Calculations.getCanvasTileAreaPoly(
-                    _player.getX(),
-                    _player.getY()
+                        ctx,
+                        _player.getX(),
+                        _player.getY()
                 )
                 g.color = Color.CYAN
                 g.drawPolygon(tile)
                 g.color = Color(0, 0, 0, 50)
                 g.fillPolygon(tile)
                 val polygon = getActorTriangles(
-                    _player,
-                    Client.client.getPlayerAppearance_cachedModels(),
-                    _player.getAppearance().get__n()
+                        _player,
+                        ctx.client.getPlayerAppearance_cachedModels(),
+                        _player.getAppearance().get__n(), ctx
+
                 )
                 g.color = Color.YELLOW
                 polygon.forEach {
                     g.drawPolygon(it)
                 }
                 val ch = getConvexHull(
-                    _player,
-                    Client.client.getPlayerAppearance_cachedModels(),
-                    _player.getAppearance().get__n()
+                        _player,
+                        ctx.client.getPlayerAppearance_cachedModels(),
+                        _player.getAppearance().get__n(), ctx
+
                 )
                 g.color = Color.RED
                 g.drawPolygon(ch)
 
                 val namePoint = Calculations.worldToScreen(
-                    _player.getX(),
-                    _player.getY(),
-                    _player.getHeight()
+                        _player.getX(),
+                        _player.getY(),
+                        _player.getHeight(), ctx
+
                 )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(
-                                Client.client,namePoint
+                                ctx,namePoint
                         )
                 ) {
                     g.color = Color.GREEN
@@ -63,7 +67,7 @@ fun playerPaint(g: Graphics) {
 
                 g.color = Color.GREEN
                 val mapPoint =
-                    Calculations.worldToMiniMap(_player.getX(), _player.getY())
+                    Calculations.worldToMiniMap(_player.getX(), _player.getY(), ctx)
                 g.fillRect(mapPoint.x, mapPoint.y, 4, 4)
             }
         }

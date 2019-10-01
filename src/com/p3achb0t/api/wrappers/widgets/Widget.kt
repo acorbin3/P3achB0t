@@ -2,19 +2,19 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t._runestar_interfaces.InterfaceParent
-import com.p3achb0t.api.wrappers.Client
+import com.p3achb0t.api.Context
 import java.awt.Rectangle
 
 interface Widget {
 	data class WidgetIndex(var parentID: String, var childID: String, var raw: Int = 0)
 	companion object {
 
-		fun getParentIndex(widget: Component): WidgetIndex {
+		fun getParentIndex(widget: Component, ctx: Context): WidgetIndex {
 			val parentIndex = widget.getParentId().shr(16)
 			val childIndex = widget.getParentId().and(0xFFFF)
 			if (parentIndex == -1) {
 				val containerIndex = widget.getId().shr(16)
-				val hTable = Client.client.getInterfaceParents()
+				val hTable = ctx.client.getInterfaceParents()
 				for (node in hTable.getBuckets()) {
 					if (node is InterfaceParent && node.getItf() == containerIndex) {
 						val parent = node.getKey().toInt().shr(16)
@@ -44,13 +44,13 @@ interface Widget {
 			return WidgetIndex(parentIndex.toString(), childIndex.toString())
 		}
 
-		fun getChainedParentIndex(widget: Component, parentList: ArrayList<WidgetIndex>): ArrayList<WidgetIndex> {
-			val parentIndex = getParentIndex(widget)
+		fun getChainedParentIndex(widget: Component, parentList: ArrayList<WidgetIndex>, ctx: Context): ArrayList<WidgetIndex> {
+			val parentIndex = getParentIndex(widget, ctx)
 			return if (parentIndex.parentID.toInt() != -1) {
 				parentList.add(parentIndex)
-				val parent = getWidget(parentIndex)
+				val parent = getWidget(parentIndex, ctx)
 				if (parent != null) {
-					getChainedParentIndex(parent, parentList)
+					getChainedParentIndex(parent, parentList, ctx)
 				} else {
 					parentList
 				}
@@ -59,74 +59,74 @@ interface Widget {
 			}
 		}
 
-		private fun getBoundInfo(widget: Component): Rectangle {
+		private fun getBoundInfo(widget: Component, ctx: Context): Rectangle {
 			return if (widget.getRootIndex() >= 0) {
-				val widgetX = Client.client.getRootComponentXs()[widget.getRootIndex()]
-				val widgetY = Client.client.getRootComponentYs()[widget.getRootIndex()]
-				val widgetHeight = Client.client.getRootComponentHeights()[widget.getRootIndex()]
-				val widgetWidth = Client.client.getRootComponentWidths()[widget.getRootIndex()]
+				val widgetX = ctx.client.getRootComponentXs()[widget.getRootIndex()]
+				val widgetY = ctx.client.getRootComponentYs()[widget.getRootIndex()]
+				val widgetHeight = ctx.client.getRootComponentHeights()[widget.getRootIndex()]
+				val widgetWidth = ctx.client.getRootComponentWidths()[widget.getRootIndex()]
 				Rectangle(widgetX, widgetY, widgetWidth, widgetHeight)
 			} else {
 				Rectangle(0, 0, 0, 0)
 			}
 		}
 
-		fun getDrawableRect(widget: Component): Rectangle {
+		fun getDrawableRect(widget: Component, ctx: Context): Rectangle {
 			val boundsWidth = widget.getWidth()
 			val boundsHeight = widget.getHeight()
 			val rect = Rectangle(
-				getWidgetX(widget),
-				getWidgetY(widget), boundsWidth, boundsHeight
+				getWidgetX(widget, ctx),
+				getWidgetY(widget, ctx), boundsWidth, boundsHeight
 			)
 			return rect
 		}
 
-		fun getWidget(index: WidgetIndex): Component? {
+		fun getWidget(index: WidgetIndex, ctx: Context): Component? {
 			var component: Component? = null
 			try {
-				component = Client.client.getInterfaceComponents()[index.parentID.toInt()][index.childID.toInt()]
+				component = ctx.client.getInterfaceComponents()[index.parentID.toInt()][index.childID.toInt()]
 			} catch (e: Exception) {
 			}
 			return component
 		}
 
-		fun getWidgetX(widget: Component): Int {
-			return if (getParentIndex(widget).parentID.toInt() != -1) {
-				val parentIndex = getParentIndex(widget)
-				val parentWidget = getWidget(parentIndex)
+		fun getWidgetX(widget: Component, ctx: Context): Int {
+			return if (getParentIndex(widget, ctx).parentID.toInt() != -1) {
+				val parentIndex = getParentIndex(widget, ctx)
+				val parentWidget = getWidget(parentIndex, ctx)
 				if (parentWidget != null) {
-					(getWidgetX(parentWidget) + widget.getX() - parentWidget.getScrollX())
+					(getWidgetX(parentWidget, ctx) + widget.getX() - parentWidget.getScrollX())
 				} else {
 					widget.getX()
 				}
 			} else {
 
-				getBoundInfo(widget).x
+				getBoundInfo(widget, ctx).x
 			}
 		}
 
-		fun getWidgetY(widget: Component): Int {
+		fun getWidgetY(widget: Component, ctx: Context): Int {
 
-			return if (getParentIndex(widget).parentID.toInt() != -1) {
-				val parentIndex = getParentIndex(widget)
-				val parentWidget = getWidget(parentIndex)
+			return if (getParentIndex(widget, ctx).parentID.toInt() != -1) {
+				val parentIndex = getParentIndex(widget, ctx)
+				val parentWidget = getWidget(parentIndex, ctx)
 				if (parentWidget != null) {
-					(getWidgetY(parentWidget) + widget.getY() - parentWidget.getScrollY())
+					(getWidgetY(parentWidget, ctx) + widget.getY() - parentWidget.getScrollY())
 				} else {
 					widget.getY()
 				}
 			} else {
 
-				getBoundInfo(widget).y
+				getBoundInfo(widget, ctx).y
 			}
 		}
 
-		fun getItemsRects(widget: Component): MutableList<Rectangle> {
+		fun getItemsRects(widget: Component, ctx: Context): MutableList<Rectangle> {
 			val items = mutableListOf<Rectangle>()
 			val columns = widget.getWidth()
 			val rows = widget.getHeight()
-			val baseX = getWidgetX(widget)
-			val baseY = getWidgetY(widget)
+			val baseX = getWidgetX(widget, ctx)
+			val baseY = getWidgetY(widget, ctx)
 
 			for (i in 0 until (columns * rows)) {
 				val row = i / columns

@@ -2,6 +2,6 @@ package com.p3achb0t._runestar_interfaces
 
 interface IterableDualNodeQueueIterator {
 	fun getQueue(): IterableDualNodeQueue
-	fun get__i(): DualNode
-	fun get__j(): DualNode
+    fun get__i(): DualNode
+    fun get__j(): DualNode
 }

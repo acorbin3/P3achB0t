@@ -12,11 +12,11 @@ import java.nio.file.Paths
 //DONE 3/20/2019 - Download game pack
 
 class Downloader{
-    private var oldschoolPageAddress: String = "http://oldschool80.runescape.com/"
-    val gamepackDir = "\\gamepacks\\"
+    private var oldschoolPageAddress: String = "http://oldschool83.runescape.com/"
+    val gamepackDir = "/gamepacks/"
     fun getGamepack():String{
-        if (!Files.exists(Paths.get(".\\gamepacks"))) {
-            Files.createDirectory(Paths.get(".\\gamepacks"))
+        if (!Files.exists(Paths.get("./gamepacks"))) {
+            Files.createDirectory(Paths.get("./gamepacks"))
         }
         val gamepackName = getLatestGamepackName()
         var gamepackFound = isGamepackDonloadedLocally(gamepackName)

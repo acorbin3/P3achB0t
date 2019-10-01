@@ -1,7 +1,6 @@
 package com.p3achb0t.api
 
-import UserDetails
-import com.p3achb0t._runestar_interfaces.Client
+import com.p3achb0t.UserDetails
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
@@ -18,32 +17,31 @@ class LoggingIntoClient {
     }
 }
 
-fun LoggingIntoAccount(ctx: Client) {
+fun LoggingIntoAccount(ctx: Context, mouse: Mouse, keyboard: Keyboard) {
     //Logging into the client
     Thread.sleep(3000)
     GlobalScope.launch {
 
-        val mouse = Mouse()
         repeat(1000) {
             try {
 //                clientData = getClientData()
 
                 // When loaded login
-                if (!LoggingIntoClient.loggedIn && ctx.getGameState() == 10) {
+                if (!LoggingIntoClient.loggedIn && ctx.client.getGameState() == 10) {
                     mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
                     delay(200)
-                    Keyboard.sendKeys(UserDetails.data.password)
+                    keyboard.sendKeys(UserDetails.data.password)
                     delay(200)
 
                     mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
 
-                    while (ctx.getGameState() != 30) {
+                    while (ctx.client.getGameState() != 30) {
                         delay(100)
                     }
                     delay(1500)
                     println("Clicking login")
-                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85))
+                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
                     println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()

@@ -1,8 +1,11 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -10,11 +13,28 @@ import java.awt.Point
 import kotlin.random.Random
 
 
-open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
+open class Actor(
+        var raw: Actor,
+        ctx: Context,
+        override var loc_ctx: Context? = ctx
+
+) : Locatable , Interactable(ctx) {
+
+    override fun getInteractPoint(): Point {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun isMouseOverObj(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun clickOnMiniMap(): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return Calculations.worldToScreen(region.x, region.y, raw.getHeight())
+        return if(ctx?.client != null)Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx) else Point(-1,-1)
     }
 
     fun isIdle(): Boolean {
@@ -27,7 +47,7 @@ open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return Players.getLocal().isIdle()
+                return if(ctx?.client != null) Players(ctx).getLocal().isIdle() else return false
             }
         })
     }
@@ -64,11 +84,15 @@ open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
 //        return 0
 //    }
     override fun isOnScreen(): Boolean {
-        val tilePoly = Calculations.getCanvasTileAreaPoly(
-            raw.getX(),
-            raw.getY()
+
+        val tilePoly = ctx?.let {
+            Calculations.getCanvasTileAreaPoly(
+                    it,
+                raw.getX(),
+                raw.getY()
         )
-        return Calculations.isOnscreen(Client.client,tilePoly.bounds )
+        }
+        return ctx?.let { tilePoly?.bounds?.let { it1 -> Calculations.isOnscreen(it, it1) } } ?: false
     }
 
 
@@ -81,11 +105,14 @@ open class Actor(var raw: com.p3achb0t._runestar_interfaces.Actor) : Locatable {
     }
 
     override fun getGlobalLocation(): Tile {
-        return Tile(
-            (raw.getX() shr 7) + Client.client.getBaseX(),
-            (raw.getY() shr 7) + Client.client.getBaseY(),
-            Client.client.getPlane()
+        return if(ctx!!.client != null) Tile(
+                (raw.getX() shr 7) + ctx.client.getBaseX(),
+                (raw.getY() shr 7) + ctx.client.getBaseY(),
+                ctx.client.getPlane(),ctx
+
         )
+        else
+            Tile(0, 0, 0, ctx)
     }
 
 }

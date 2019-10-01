@@ -1,15 +1,7 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.MainApplet
-import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
-import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.Client
-import com.p3achb0t.api.wrappers.Dialog
-import com.p3achb0t.api.wrappers.MiniMap
-import com.p3achb0t.interfaces.PaintListener
-import java.awt.Color
+//import com.p3achb0t.interfaces.PaintListener
 import java.awt.Graphics
-import java.awt.Point
 import java.awt.Rectangle
 
 
@@ -27,32 +19,32 @@ fun drawRect(g: Graphics, rect: Rectangle) {
     g.drawRect(rect.x, rect.y, rect.width, rect.height)
 }
 
-
-fun debugPaint(): PaintListener {
+/*
+fun debugPaint(ctx: Context): PaintListener {
     return object : PaintListener {
         override fun onPaint(g: Graphics) {
             try {
                 g.color = Color.white
-                MainApplet.mouseEvent?.x?.let { MainApplet.mouseEvent?.y?.let { it1 -> g.drawRect(it, it1, 5, 5) } }
+                g.drawRect(ctx.mouse.ioMouse.getX(), ctx.mouse.ioMouse.getY(), 5, 5)
                 if (PaintDebug.isDebugTextOn)
-                    drawDebugText(g)
+                    drawDebugText(g, ctx)
 
-                if (Client.client.getGameState() == 30) {
-                    if (!Bank.isOpen()) {
+                if (ctx.client.getGameState() == 30) {
+                    if (!Bank(ctx).isOpen()) {
                         if (PaintDebug.isGroundItemsOn)
-                            groundItemsPaint(g)
+                            groundItemsPaint(g,ctx )
                         if (PaintDebug.isPlayerPaintOn)
-                            playerPaint(g)
+                            playerPaint(g, ctx)
                         if (PaintDebug.isNPCPaintOn)
-                            paintNPCs(g)
+                            paintNPCs(g,ctx )
                         widgetBlockingPaint(g)
                         ///////Object paint//////////
 //                        gameObjectPaint(g)
 
                     }
 
-                    if (Bank.isOpen()) {
-                        val items = Bank.getAll()
+                    if (Bank(ctx).isOpen()) {
+                        val items = Bank(ctx).getAll()
                         items.forEach {
                             g.color = Color.ORANGE
                             g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
@@ -61,28 +53,28 @@ fun debugPaint(): PaintListener {
                     }
 
 
-                    rightClickMenuPaint(g)
-                    inventoryPaint(g)
-                    equipmentPaint(g)
+                    rightClickMenuPaint(g, ctx)
+                    inventoryPaint(g, ctx)
+                    equipmentPaint(g, ctx)
 
                     // Paint minimap circle
                     try {
-                        val circle = MiniMap.getMapArea()
+                        val circle = MiniMap(ctx).getMapArea()
                         g.color = Color.RED
                         g.drawPolygon(circle)
                     } catch (e: Exception) {
                         println("Error: Minimap " + e.message)
                     }
                     // Paint continue
-                    val dialog = Dialog.getDialogContinue()
+                    val dialog = Dialog(ctx).getDialogContinue()
                     if (dialog.widget != null) {
                         g.color = Color.ORANGE
                         drawRect(g, dialog.area)
                     }
 
                     // Paint on minimap
-                    val local = Client.client.getLocalPlayer()
-                    val point = worldToMiniMap(local.getX(), local.getY())
+                    val local = ctx.client.getLocalPlayer()
+                    val point = worldToMiniMap(local.getX(), local.getY(), ctx)
                     if (point != Point(-1, -1)) {
                         g.color = Color.red
                         g.fillRect(point.x, point.y, 4, 4)
@@ -93,4 +85,7 @@ fun debugPaint(): PaintListener {
             }
         }
     }
+
 }
+
+ */

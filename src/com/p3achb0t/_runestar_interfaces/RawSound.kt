@@ -5,5 +5,5 @@ interface RawSound: AbstractSound{
 	fun getSampleRate(): Int
 	fun getSamples(): ByteArray
 	fun getStart(): Int
-	fun get__u(): Boolean
+    fun get__u(): Boolean
 }

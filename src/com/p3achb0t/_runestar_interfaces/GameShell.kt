@@ -17,7 +17,7 @@ interface GameShell {
 	fun getMouseWheelHandler(): MouseWheelHandler
 	fun getStopTimeMs(): Long
 	fun get__ao(): Boolean
-	fun get__ai(): Int
-	fun get__am(): Int
-	fun get__at(): Boolean
+    fun get__ai(): Int
+    fun get__am(): Int
+    fun get__at(): Boolean
 }
