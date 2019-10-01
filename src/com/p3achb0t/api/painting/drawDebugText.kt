@@ -23,7 +23,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
 //        debugText.add(DebugText("Account status :${ctx.client.get__cq_aw()}"))
-        debugText.add(DebugText("Camera: x:${Camera(ctx.client).x} y:${Camera(ctx.client).y} z:${Camera(ctx.client).z} pitch:${Camera(ctx.client).pitch} yaw: ${Camera(ctx.client).yaw} angle: ${Camera(ctx.client).angle}"))
+        debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
         debugText.add(DebugText("OpenTab: ${Tabs(ctx).getOpenTab()?.name}"))
         debugText.add(DebugText("Bank Status: ${Bank(ctx).isOpen()}"))
 
