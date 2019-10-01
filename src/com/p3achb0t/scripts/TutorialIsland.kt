@@ -59,6 +59,7 @@ class TutorialIsland: AbstractScript()  {
         jobs.add(ClickSkillsTab(ctx))
         jobs.add(TalkToSurvivalGuideAfterSkillsTab(ctx))
         jobs.add(ChopTree(ctx))
+        jobs.add(ContinueFromChopTree(ctx))
         jobs.add(LightLog(ctx))
         jobs.add(CookShrimp(ctx))
         jobs.add(OpenGateAfterFishing(ctx))
@@ -108,6 +109,7 @@ class TutorialIsland: AbstractScript()  {
         jobs.add(SelectWindStrikeAndAttackChicken(ctx))
         jobs.add(ExitTutIsland(ctx))
         jobs.add(MainlandLogout(ctx))
+        jobs.add(ContinueDialog(ctx))
         isInititilized = true
     }
 
@@ -136,6 +138,17 @@ class TutorialIsland: AbstractScript()  {
         }
     }
 
+
+    class ContinueDialog(val ctx: Context) : Job(ctx.client) {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+            val text = "Click here to continue"
+            return dialogWidget.containsText(text)
+        }
+
+        override suspend fun execute() {
+            Dialog(ctx).continueDialog()
+        }
+    }
 
     class PickName(val ctx: Context)  : Job(ctx.client) {
 
@@ -250,7 +263,9 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenOptions(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return Tabs(ctx).isTabFlashing(Tabs.Tab_Types.Options)
+            val chatBox = WidgetItem(Widgets.find(ctx, 263, 1), ctx = ctx)
+            val text = "Options menu"
+            return chatBox.containsText(text)
         }
 
         override suspend fun execute() {
@@ -388,7 +403,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenInvetory(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("To view the item you've been given, you'll")
+            return dialogWidget.containsText("click on the flashing backpack icon")
         }
 
         override suspend fun execute() {
@@ -441,7 +456,7 @@ class TutorialIsland: AbstractScript()  {
 
     class TalkToSurvivalGuideAfterSkillsTab(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            val text = "this menu you can view your skills."
+            val text = "this menu you can view your skills"
             return dialogWidget.containsText(text)
         }
 
@@ -494,6 +509,17 @@ class TutorialIsland: AbstractScript()  {
     }
 
 
+    class ContinueFromChopTree(val ctx: Context) : Job(ctx.client) {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+            val text = "You manage to cut some logs"
+            return dialogWidget.containsText(text)
+        }
+
+        override suspend fun execute() {
+            Dialog(ctx).continueDialog()
+        }
+
+    }
 
     class LightLog(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
@@ -572,6 +598,7 @@ class TutorialIsland: AbstractScript()  {
                         return Players(ctx).getLocal().isIdle()
                     }
                 })
+                delay(100)
                 Dialog(ctx).continueDialog()
             }
         }
@@ -737,6 +764,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
+            //TODO - Sometimes this gets disabled. Maybe we need to add a delay?
             Run(ctx).activateRun()
         }
 
@@ -849,6 +877,7 @@ class TutorialIsland: AbstractScript()  {
             return dialogWidget.containsText(text)
         }
 
+        //TODO - Sometimes this job gets stuck. Look into why. I think the continueDialog might run into an infinate loop
         override suspend fun execute() {
             val walkingPath = arrayListOf(Tile(3079, 9512, ctx = ctx), Tile(3081, 9504, ctx = ctx))
             Walking.walkPath(walkingPath)
@@ -1022,6 +1051,7 @@ class TutorialIsland: AbstractScript()  {
                 Camera(client, keyboard).setHighPitch()
                 Camera(client, keyboard).turnEast()
                 gate[0].interact("Open")
+                //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 Players(ctx).getLocal().waitTillIdle()
             }
 
