@@ -45,7 +45,8 @@ class Mouse(obj: Any) {
             return false
         }
 
-        val startPoint = Point(ioMouse.getX(), ioMouse.getY())
+//        val startPoint = Point(ioMouse.getX(), ioMouse.getY())
+        print("Mouse Moving: $destPoint")
         mouseMotionFactory?.move(destPoint.x, destPoint.y)
 //        val distance = startPoint?.distance(destPoint)
 //        val timeDurationMS = distance?.div(RATE_PIXELS_PER_SEC)?.times(1000).let { it?.let { it1 -> Math.floor(it1) } }
@@ -79,12 +80,13 @@ class Mouse(obj: Any) {
 //            }
 //        }
         if (click) {
+            println("Pressing mouse down")
             delay(Random.nextLong(50, 150))
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress =
                 MouseEvent(
                         component,
-                    MouseEvent.MOUSE_CLICKED,
+                        MouseEvent.MOUSE_PRESSED,
                     System.currentTimeMillis(),
                     0,
                     destPoint.x,
@@ -92,12 +94,13 @@ class Mouse(obj: Any) {
                     0,
                     clickType == ClickType.Right
                 )
+
             ioMouse.sendEvent(mousePress)
 
             // Create a random number 30-70 to delay between clicks
             val delayTime = Math.floor(Math.random() * 40 + 30)
             delay(delayTime.toLong())
-
+            println("Releasing mouse")
             val mouseRelease =
                 MouseEvent(
                     component,

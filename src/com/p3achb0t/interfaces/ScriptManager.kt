@@ -2,6 +2,8 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ScriptManager(val client: Any) : ScriptHook {
     val dd = client as IScriptManager
@@ -36,6 +38,9 @@ class ScriptManager(val client: Any) : ScriptHook {
     suspend fun start() {
         gb.start()
         shouldRun = true
+        GlobalScope.launch {
+            gb.loop()
+        }
         //thread = createThread()
         //thread.start()
     }

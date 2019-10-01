@@ -48,6 +48,15 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
+        val tutorialIsland = JMenuItem("Run Tutorial Island")
+        tutorialIsland.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.manager.getManager()
+            manager.setScriptHookAbs(TutorialIsland())
+
+        }
+
         val mouse = JMenuItem("Move Mouse")
         mouse.addActionListener {
 
@@ -85,6 +94,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         menu.add(mouse)
         menu.add(injection)
+        menu.add(tutorialIsland)
         menu.add(test)
         menu.add(test2)
         menu.add(test3)

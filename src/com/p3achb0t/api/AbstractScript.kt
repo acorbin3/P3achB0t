@@ -23,6 +23,8 @@ abstract class AbstractScript {
 
     fun initialize(client: Any) {
         ctx = Context(client)
+        keyboard = ctx.keyboard
+        mouse = ctx.mouse
         players = Players(ctx)
         groundItems = GroundItems(ctx)
         npcs = NPCs(ctx)
