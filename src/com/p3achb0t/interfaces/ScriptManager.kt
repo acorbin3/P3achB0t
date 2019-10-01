@@ -39,7 +39,9 @@ class ScriptManager(val client: Any) : ScriptHook {
         gb.start()
         shouldRun = true
         GlobalScope.launch {
-            gb.loop()
+            while (true) {
+                gb.loop()
+            }
         }
         //thread = createThread()
         //thread.start()
