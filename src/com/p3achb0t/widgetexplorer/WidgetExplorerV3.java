@@ -2,11 +2,10 @@ package com.p3achb0t.widgetexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.p3achb0t.MainApplet;
 import com.p3achb0t._runestar_interfaces.Client;
 import com.p3achb0t._runestar_interfaces.Component;
-import com.p3achb0t.api.wrappers.widgets.Widget;
 import com.p3achb0t.api.wrappers.widgets.Widgets;
+import com.p3achb0t.api.Context;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -16,9 +15,6 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WidgetExplorerV3 {
     private JTextField textField1;
@@ -27,20 +23,20 @@ public class WidgetExplorerV3 {
     private JEditorPane textArea1;
     JPanel widgetExplorerPanel;
     private JButton refreshButton;
-    private Client ctx;
+    private Client client;
 
     private DefaultMutableTreeNode node = new DefaultMutableTreeNode("Widgets");
     private DefaultTreeModel treeModel = new DefaultTreeModel(node);
 
-    public WidgetExplorerV3(Client ctx) {
-        this.ctx = ctx;
+    public WidgetExplorerV3(Context ctx) {
+        this.client = ctx.getClient();
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Refresh!");
                 node.removeAllChildren();
                 textField1.setText("");
-                Component[][] components = ctx.getInterfaceComponents();
+                Component[][] components = ctx.getClient().getInterfaceComponents();
                 DefaultMutableTreeNode currentParentNode = null;
                 for (Integer parentID = 0; parentID < components.length; parentID++) {
                     if (components[parentID] != null) {
@@ -81,10 +77,10 @@ public class WidgetExplorerV3 {
                     if (index.split(",").length > 2) {
                         Integer parentID = Integer.parseInt(index.split(",")[1]);
                         Integer childID = Integer.parseInt(index.split(",")[2]);
-                        Component[][] components = ctx.getInterfaceComponents();
+                        Component[][] components = ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
-                        MainApplet.Data.setSelectedWidget(widget);
-                        String result = Widgets.Companion.getWidgetDetails(widget, 0);
+                        ctx.setSelectedWidget(widget);
+                        String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
                         textArea1.removeAll();
                         textArea1.setText(result);
                         textArea1.setCaretPosition(0);
@@ -104,18 +100,18 @@ public class WidgetExplorerV3 {
         });
     }
 
-    private void doSearch(Client ctx) {
+    private void doSearch(Context ctx) {
         node.removeAllChildren();
         String searchText = textField1.getText();
         //TODO - get all text, from widgets
         //TODO - loop over all widgets, if a child matches then add that to the node list
-        Component[][] components = ctx.getInterfaceComponents();
+        Component[][] components = ctx.getClient().getInterfaceComponents();
         DefaultMutableTreeNode currentParentNode = null;
         for (Integer parentID = 0; parentID < components.length; parentID++) {
             if (components[parentID] != null) {
                 for (Integer childID = 0; childID < components[parentID].length; childID++) {
                     if (components[parentID][childID] != null) {
-                        String result = Widgets.Companion.getWidgetDetails(components[parentID][childID], 0);
+                        String result = Widgets.Companion.getWidgetDetails(components[parentID][childID], 0, ctx);
                         if (result.toLowerCase().contains(searchText.toLowerCase())) {
                             if (currentParentNode == null) {
                                 currentParentNode = new DefaultMutableTreeNode(parentID);
@@ -134,12 +130,15 @@ public class WidgetExplorerV3 {
         treeModel.reload();
     }
 
-    public void createWidgetExplorer() {
+    static public void createWidgetExplorer(Context ctx) {
         JFrame frame = new JFrame("WidgetExplorerV3");
-        frame.setContentPane(new WidgetExplorerV3(ctx).widgetExplorerPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        WidgetExplorerV3 widgetExplorerV3 = new WidgetExplorerV3(ctx);
+        widgetExplorerV3.tree1.setModel(widgetExplorerV3.treeModel);
+        frame.setContentPane(widgetExplorerV3.widgetExplorerPanel);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
 
     }
 
@@ -167,8 +166,8 @@ public class WidgetExplorerV3 {
         textField1.setColumns(0);
         widgetExplorerPanel.add(textField1, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(130, -1), 0, false));
-        tree1 = new JTree(treeModel);
+        widgetExplorerPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, new Dimension(120, -1), 0, false));
+        tree1 = new JTree();
         tree1.setMaximumSize(new Dimension(100, 74));
         scrollPane1.setViewportView(tree1);
         final JScrollPane scrollPane2 = new JScrollPane();

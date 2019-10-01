@@ -7,21 +7,21 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
-import com.p3achb0t.api.wrappers.Client
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
-fun gameObjectPaint(g: Graphics) {
+fun gameObjectPaint(g: Graphics, ctx: Context) {
     if (false) {
-        val sceneData = Client.client.getObjType_cachedModels()
-        val region = Client.client.getScene()
-        val localPlayer = Players.getLocal()
+        val sceneData = ctx.client.getObjType_cachedModels()
+        val region = ctx.client.getScene()
+        val localPlayer = Players(ctx).getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
-            if (planeInt == Client.client.getPlane()) {
+            if (planeInt == ctx.client.getPlane()) {
                 plane.iterator().forEach { row ->
                     row.iterator().forEach { tile ->
                         if (tile != null) {
@@ -33,25 +33,27 @@ fun gameObjectPaint(g: Graphics) {
                                         // Print out the polygons for the models
                                         if (false) {
                                             val tilePolygon =
-                                                Calculations.getCanvasTileAreaPoly(
-                                                    it.getCenterX(),
-                                                    it.getCenterY()
+                                                Calculations.getCanvasTileAreaPoly(ctx,
+                                                        it.getCenterX(),
+                                                        it.getCenterY()
                                                 )
                                             g.color = Color.ORANGE
                                             g.drawPolygon(tilePolygon)
                                         }
 
-                                        val go = GameObject(it)
+                                        val go = GameObject(it, ctx = ctx)
                                         val globalPos = go.getGlobalLocation()
 
                                         val point =
                                             Calculations.worldToScreen(
-                                                it.getCenterX(),
-                                                it.getCenterY(),
-                                                planeInt
+                                                    it.getCenterX(),
+                                                    it.getCenterY(),
+                                                    planeInt,
+                                                    ctx
+
                                             )
                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                        Client.client,point
+                                                        ctx,point
                                                 )
                                         ) {
                                             g.color = Color.GREEN
@@ -62,9 +64,11 @@ fun gameObjectPaint(g: Graphics) {
                                                 getObjectComposite(sceneData, id)
                                             val point2 =
                                                 Calculations.worldToScreen(
-                                                    it.getCenterX(),
-                                                    it.getCenterY(),
-                                                    it.getEntity().getHeight()
+                                                        it.getCenterX(),
+                                                        it.getCenterY(),
+                                                        it.getEntity().getHeight(),
+                                                        ctx
+
                                                 )
 
 
@@ -92,16 +96,20 @@ fun gameObjectPaint(g: Graphics) {
 
                                                 val modelTriangles =
                                                     getTrianglesFromModel(
-                                                        positionInfo,
-                                                        model
+                                                            positionInfo,
+                                                            model,
+                                                            ctx
+
                                                     )
                                                 g.color = Color.RED
                                                 modelTriangles.forEach {
                                                     g.drawPolygon(it)
                                                 }
                                                 val hull = getConvexHullFromModel(
-                                                    positionInfo,
-                                                    model
+                                                        positionInfo,
+                                                        model,
+                                                        ctx
+
                                                 )
                                                 g.color = Color.CYAN
                                                 g.drawPolygon(hull)
@@ -116,8 +124,9 @@ fun gameObjectPaint(g: Graphics) {
 
                             val globalPos =
                                 Tile(
-                                    tile.getX() + Client.client.getBaseX(),
-                                    tile.getY() + Client.client.getBaseY()
+                                        tile.getX() + ctx.client.getBaseX(),
+                                        tile.getY() + ctx.client.getBaseY(),
+                                        ctx = ctx
                                 )
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
@@ -132,9 +141,11 @@ fun gameObjectPaint(g: Graphics) {
                                     getObjectComposite(sceneData, id)
                                 val point2 =
                                     Calculations.worldToScreen(
-                                        wall.getX(),
-                                        wall.getY(),
-                                        wall.getEntity1().getHeight()
+                                            wall.getX(),
+                                            wall.getY(),
+                                            wall.getEntity1().getHeight(),
+                                            ctx
+
                                     )
 
 
@@ -158,16 +169,20 @@ fun gameObjectPaint(g: Graphics) {
 
                                     val modelTriangles =
                                         getTrianglesFromModel(
-                                            positionInfo,
-                                            model
+                                                positionInfo,
+                                                model,
+                                                ctx
+
                                         )
                                     g.color = Color.RED
                                     modelTriangles.forEach {
                                         g.drawPolygon(it)
                                     }
                                     val hull = getConvexHullFromModel(
-                                        positionInfo,
-                                        model
+                                            positionInfo,
+                                            model,
+                                            ctx
+
                                     )
                                     g.color = Color.CYAN
                                     g.drawPolygon(hull)

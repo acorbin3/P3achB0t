@@ -1,10 +1,10 @@
 package com.p3achb0t._runestar_interfaces
 
 interface Isaac {
-	fun get__b(): Int
-	fun get__c(): Int
-	fun get__i(): Int
-	fun get__p(): Int
-	fun get__k(): IntArray
-	fun get__l(): IntArray
+    fun get__k(): Int
+    fun get__q(): Int
+    fun get__t(): Int
+    fun get__x(): Int
+    fun get__n(): IntArray
+    fun get__u(): IntArray
 }

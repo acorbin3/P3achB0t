@@ -1,13 +1,16 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.class_generation.cleanType
-import com.p3achb0t.class_generation.isBaseType
+import com.p3achb0t.injection.class_generation.cleanType
+import com.p3achb0t.injection.class_generation.isBaseType
+import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.interfaces.ScriptManager
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Opcodes.*
-import org.objectweb.asm.tree.ClassNode
-import org.objectweb.asm.tree.MethodNode
+import org.objectweb.asm.tree.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.jar.JarEntry
@@ -19,7 +22,7 @@ class Analyser{
 
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
 
-    fun parseJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
+    fun createInjectedJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
         while(enumeration.hasMoreElements()){
             val entry = enumeration.nextElement()
@@ -57,16 +60,35 @@ class Analyser{
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, runeStar: RuneStarAnalyzer?) {
         val classPath = "com/p3achb0t/_runestar_interfaces"
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
-            //            if (obsClass in classes) {
+
+            if(clazzData.`class` == "Client") {
+                injectField(classes[clazzData.name]!!)
+                injectFieldProxy(classes[clazzData.name]!!)
+                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/interfaces/IScriptManager")
+                injectCustomClient(classes[clazzData.name]!!)
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getKeyboard", "()Lcom/p3achb0t/client/interfaces/io/Keyboard;", "ah", "z", "Lah;") // KeyHandler_instance
+                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bd", "u", "Lbd;") // MouseHandler_instance
+            }
+
+            if(clazzData.`class` == "TaskHandler") {
+                injectSocket(classes[clazzData.name]!!)
+            }
+
+            if (clazzData.`class` == "Canvas") {
+                injectCanvas(classes[clazzData.name]!!)
+                println("${clazzData.name} : ${clazzData.`super`} ")
+            }
+
             val classInterface = "$classPath/${clazzData.`class`}"
             if (!classInterface.contains("Usernamed")) {
-                println("Adding class iterface to $obsClass $classInterface")
+                //println("Adding class iterface to $obsClass $classInterface")
                 classes[obsClass]?.interfaces?.add(classInterface)
             }
+
             val getterList = ArrayList<GetterData>()
             clazzData.fields.forEach {
                 if (it.owner != "broken" && !it.field.contains("getLocalUser")) {
-                    println("\t Adding method ${it.field} descriptor ${it.descriptor}")
+                    //println("\t Adding method ${it.field} descriptor ${it.descriptor}")
                     val getter: GetterData
                     if (isBaseType(it.descriptor)) {
                         getter = GetterData(it.descriptor, it.field)
@@ -84,25 +106,47 @@ class Analyser{
                     }
                     if (!it.descriptor.contains("java")  ) {
                         getterList.add(getter)
-                        println("\t\t$getter")
+                        //println("\t\t$getter")
                     }
                     else{
                         if(it.descriptor.contains("String")){
                             getterList.add(getter)
-                            println("\t\t$getter")
+                            //println("\t\t$getter")
                         }else {
-                            println("\t\t!@#$# ${it.descriptor}")
+                            //println("\t\t!@#$# ${it.descriptor}")
                         }
                     }
                 }
             }
             for (method in getterList) {
+
                 if (method.fieldDescription != "")
                     injectMethod(method, classes, clazzData.`class`, runeStar)
             }
+
+            if (clazzData.`class` == "KeyHandler") {
+                AsmUtil.setSuper(classes[clazzData.name]!!,"java/lang/Object","com/p3achb0t/client/interfaces/io/Keyboard")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyPressed", "_keyPressed");
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyReleased", "_keyReleased");
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "keyTyped", "_keyTyped");
+            }
+
+            if (clazzData.`class` == "MouseHandler") {
+                AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/interfaces/io/Mouse")
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getX", "()I", "bd", "b", "I", -180428827) // MouseHandler_x
+                AsmUtil.addMethod(classes[clazzData.name]!!, "getY", "()I", "bd", "o", "I",97221829) // MouseHandler_y
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseClicked", "_mouseClicked")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseDragged", "_mouseDragged")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseEntered", "_mouseEntered")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseExited", "_mouseExited")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseMoved", "_mouseMoved")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mousePressed", "_mousePressed")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseReleased", "_mouseReleased")
+                AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseWheelMoved", "_mouseWheelMoved")
+            }
         }
         val path = System.getProperty("user.dir")
-        val out = JarOutputStream(FileOutputStream(File("$path/injected_jar.jar")))
+        val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
         for (classNode in classes.values) {
             val cw = ClassWriter(0)
             classNode.accept(cw)
@@ -110,6 +154,15 @@ class Analyser{
             out.write(cw.toByteArray())
             out.closeEntry()
         }
+        out.putNextEntry(JarEntry("ProxySocket.class"))
+        out.write(putClasses("$USER_DIR/src/ProxySocket.class"))
+        out.closeEntry()
+
+        out.putNextEntry(JarEntry("ProxyConnection.class"))
+        out.write(putClasses("$USER_DIR/src/ProxyConnection.class"))
+
+        out.closeEntry()
+
         out.flush()
         out.close()
     }
@@ -131,6 +184,119 @@ class Analyser{
         }
     }
 
+    private fun injectCanvas(classNode: ClassNode) {
+        classNode.superName = "com/p3achb0t/injection/Replace/RsCanvas"
+        for (method in classNode.methods) {
+            if (method.name == "<init>") {
+                val i: InsnList = method.instructions
+                for (insn in i) {
+                    if (insn.opcode == Opcodes.INVOKESPECIAL) {
+                        if (insn is MethodInsnNode) {
+                            val mnode = insn
+                            mnode.owner = "com/p3achb0t/injection/Replace/RsCanvas"
+                            mnode.desc = "(Lcom/p3achb0t/interfaces/ScriptManager;)V"
+                            val ins = InsnList()
+                            ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                            i.insert(insn.previous, ins)
+                            method.maxStack += 3
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun putClasses(name: String): ByteArray {
+        val file = File(name)
+        return file.readBytes()
+    }
+
+    private fun injectField(classNode: ClassNode) {
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/interfaces/ScriptManager;",null , null)
+        classNode.fields.add(node)
+        //classNode.fields.add()
+    }
+
+    private fun injectFieldProxy(classNode: ClassNode) {
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "proxy", "LProxyConnection;",null , null)
+        classNode.fields.add(node)
+    }
+
+    private fun injectInterface(classNode: ClassNode) {
+        classNode.interfaces.add("com/p3achb0t/interfaces/IScriptManager");
+    }
+
+    private fun injectCustomClient(classNode: ClassNode) {
+
+        for (method in classNode.methods) {
+            if (method.name == "<init>") {
+                method.desc = "(Ljava/lang/String;)V"
+                val i: InsnList = method.instructions
+                val last = i.last
+
+                val ins = InsnList()
+                ins.add(TypeInsnNode(NEW, "com/p3achb0t/interfaces/ScriptManager"))
+                ins.add(InsnNode(DUP))
+                ins.add(VarInsnNode(ALOAD, 0))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/interfaces/ScriptManager", "<init>", "(Ljava/lang/Object;)V"))
+                ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+
+                ins.add(TypeInsnNode(NEW, "ProxyConnection"))
+                ins.add(InsnNode(DUP))
+                ins.add(VarInsnNode(ALOAD, 1))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "ProxyConnection", "<init>", "(Ljava/lang/String;)V"))
+
+                ins.add(FieldInsnNode(PUTSTATIC, "client", "proxy", "LProxyConnection;"))
+
+                i.insert(last.previous, ins)
+                method.maxStack += 6
+                method.maxLocals += 1
+            }
+        }
+
+        val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/interfaces/ScriptManager;", null, null)
+        val lli = getter.instructions
+        lli.add(VarInsnNode(Opcodes.ALOAD, 0)) // maybe
+        lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+        lli.add(InsnNode(ARETURN))
+        getter.maxStack = 2
+        getter.maxLocals = 2
+
+        classNode.methods.add(ACC_PUBLIC, getter)
+    }
+
+    private fun injectSocket(classNode: ClassNode) {
+        for (method in classNode.methods) {
+            if (method.name == "run") {
+
+                val i: InsnList = method.instructions
+
+                for (insn in i) {
+                    if (insn.opcode == NEW) {
+                        if (insn is TypeInsnNode) {
+                            if (insn.desc == "java/net/Socket") {
+                                insn.desc = "ProxySocket"
+                            }
+                        }
+                    }
+                    if (insn is MethodInsnNode) {
+                        val mnode = insn
+                        if (mnode.owner == "java/net/Socket" && insn.opcode == INVOKESPECIAL) {
+                            mnode.owner = "ProxySocket"
+                            println("#####################################################3")
+                            //mnode.desc = "(Ljava/net/InetAddress;ILcom/p3achb0t/injection/Replace/ProxySocket;)V"
+                            //val ins = InsnList()
+                            //ins.add(FieldInsnNode(GETSTATIC, "client", "proxy","Lcom/p3achb0t/injection/Replace/ProxySocket;"))
+                            //i.insert(insn.previous, ins)
+                            //method.maxStack += 3
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun injectMethod(
         getterData: GetterData,
         classes: MutableMap<String, ClassNode>,
@@ -148,7 +314,7 @@ class Analyser{
 
 
         val signature = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.signature
-        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
+        //println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
         val methodNode =
             MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
@@ -161,7 +327,7 @@ class Analyser{
         methodNode.visitFieldInsn(fieldType, fieldOwner, fieldName, fieldDescriptor)
         val multiplier = field?.decoder
         if (multiplier != null && multiplier != 0L) {
-            println("Multiplier $multiplier ${field.decoder} ")
+            //println("Multiplier $multiplier ${field.decoder} ")
             if (field.descriptor == "J") {
                 methodNode.visitLdcInsn(multiplier)
                 methodNode.visitInsn(LMUL)
@@ -171,11 +337,11 @@ class Analyser{
             }
         }
 
-        println(
-            "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
-                fieldDescriptor
-            )} Static:$isStatic"
-        )
+        //println(
+        //    "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+        //        fieldDescriptor
+        //    )} Static:$isStatic"
+        //)
         methodNode.visitInsn(getReturnOpcode(returnFieldDescription))
 
         if (multiplier != null) {
@@ -185,9 +351,10 @@ class Analyser{
         }
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null")) {
-            methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
+                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
+                methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
-            println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
+            //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }
 
     }

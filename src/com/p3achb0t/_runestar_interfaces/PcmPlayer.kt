@@ -8,13 +8,13 @@ interface PcmPlayer {
 	fun getSamples(): IntArray
 	fun getStream0(): PcmStream
 	fun getTimeMs(): Long
-	fun get__z(): Boolean
-	fun get__ar(): Array<PcmStream>
-	fun get__ax(): Array<PcmStream>
-	fun get__ag(): Int
-	fun get__n(): Int
-	fun get__o(): Int
-	fun get__t(): Int
-	fun get__y(): Int
-	fun get__s(): Long
+    fun get__o(): Boolean
+    fun get__an(): Array<PcmStream>
+    fun get__at(): Array<PcmStream>
+    fun get__a(): Int
+    fun get__aj(): Int
+    fun get__b(): Int
+    fun get__h(): Int
+    fun get__l(): Int
+    fun get__m(): Long
 }

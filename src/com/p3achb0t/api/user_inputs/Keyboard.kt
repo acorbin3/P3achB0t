@@ -1,79 +1,104 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.MainApplet
+import com.p3achb0t.interfaces.IScriptManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import java.applet.Applet
+import java.awt.Component
 import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 
-class Keyboard {
-    companion object {
-        fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
-            for (c in keys.toCharArray()) {
-                val keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
-                if (KeyEvent.CHAR_UNDEFINED.toInt() == keyCode) {
-                    throw RuntimeException(
+class Keyboard(val obj: Any) : KeyListener {
+    val component: Component = (obj as Applet).getComponent(0)
+    val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as IScriptManager).getKeyboard()
+
+    override fun keyTyped(e: KeyEvent?) {
+        println("Typed")
+    }
+
+    override fun keyPressed(e: KeyEvent?) {
+        println("Pressed")
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
+        println("Released")
+    }
+
+    fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
+        for (c in keys.toCharArray()) {
+            val keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
+            if (KeyEvent.CHAR_UNDEFINED.toInt() == keyCode) {
+                throw RuntimeException(
                         "Key code not found for character '$c'"
-                    )
-                }
+                )
+            }
 //        println(c)
-                val down = KeyEvent(
-                    MainApplet.customCanvas,
+            val down = KeyEvent(
+                    component,
                     KeyEvent.KEY_PRESSED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(down)
-                delay(20)
-                val typeed = KeyEvent(
-                    MainApplet.customCanvas,
+            )
+            keyboard.sendEvent(down)
+            delay(20)
+            val typeed = KeyEvent(
+                    component,
                     KeyEvent.KEY_TYPED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(typeed)
-                delay(20)
-                val up = KeyEvent(
-                    MainApplet.customCanvas,
+            )
+            for (kl in component.keyListeners) {
+                if (kl is Keyboard) {
+                    continue
+                }
+                if (!down.isConsumed) {
+                    kl.keyTyped(typeed)
+                    break
+                }
+            }
+//            component.dispatchEvent(typeed)
+            delay(20)
+            val up = KeyEvent(
+                    component,
                     KeyEvent.KEY_RELEASED,
                     System.currentTimeMillis(),
                     0,
                     0, c
-                )
-                MainApplet.customCanvas?.dispatchEvent(up)
-                delay(20)
-            }
-
-            if (sendReturn) {
-                pressDownKey(KeyEvent.VK_ENTER)
-                delay(20)
-                release(KeyEvent.VK_ENTER)
-
-            }
+            )
+            keyboard.sendEvent(up)
+            delay(20)
         }
 
-        fun pressDownKey(keyCode: Int) {
-            val down = KeyEvent(
-                MainApplet.customCanvas,
+        if (sendReturn) {
+            pressDownKey(KeyEvent.VK_ENTER)
+            delay(20)
+            release(KeyEvent.VK_ENTER)
+
+        }
+    }
+
+    fun pressDownKey(keyCode: Int) {
+        val down = KeyEvent(
+                component,
                 KeyEvent.KEY_PRESSED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
-            )
-            MainApplet.customCanvas?.dispatchEvent(down)
-        }
+        )
+        keyboard.sendEvent(down)
+    }
 
-        fun release(keyCode: Int) {
-            val up = KeyEvent(
-                MainApplet.customCanvas,
+    fun release(keyCode: Int) {
+        val up = KeyEvent(
+                component,
                 KeyEvent.KEY_RELEASED,
                 System.currentTimeMillis(),
                 0,
                 keyCode, keyCode.toChar()
-            )
-            MainApplet.customCanvas?.dispatchEvent(up)
-        }
+        )
+        keyboard.sendEvent(up)
     }
 }
 

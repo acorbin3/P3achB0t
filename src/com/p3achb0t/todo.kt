@@ -1,10 +1,10 @@
 package com.p3achb0t
 
 //Log
-// 4/26/2019 - Got mouse movement with mouse press, Got client state data, trying to loginto client, counlt get keypress to work yet
+// 4/26/2019 - Got mouse movement with mouse press, Got applet state data, trying to loginto applet, counlt get keypress to work yet
 // 4/27/2019 - Created a mouse movement utiltity that actually draws a line between points. Got Keypresses to work!
 // 5/05/2019  - Figure out I needed to get the super class declared fields to collect all the info on the NPC!
-//TODO - Only download new gamepacks if the client has updated
+//TODO - Only download new gamepacks if the applet has updated
 
 // - List of TODO's that we are trying to accomplish
 //      DONE 3/21/2019 - Install ASM lib
@@ -42,13 +42,13 @@ package com.p3achb0t
 //  DONE 6/??/2019 - Add in injection hooks
 
 
-//  DONE 3/31/2019 - Add reflection into the client
-//  DONE 4/9/2019 - Displaying some debug values of the varables in the client
+//  DONE 3/31/2019 - Add reflection into the applet
+//  DONE 4/9/2019 - Displaying some debug values of the varables in the applet
 
 //  DONE 4/4/2019 - Paint - write text
 //  Enhancement - Paint - Draw lines
 //  Enhancement - Paint - Draw images
-//  DONE! - Paint - Highlight things within the client
+//  DONE! - Paint - Highlight things within the applet
 
 //How to add custom paints in any class:
 

@@ -1,21 +1,23 @@
 package com.p3achb0t.api.wrappers.widgets
 
-import com.p3achb0t.MainApplet
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.wrappers.interfaces.Interactable
+import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
 import kotlin.random.nextInt
 
 class WidgetItem(
-    var widget: Component? = null,
-    var area: Rectangle = widget?.let { Widget.getDrawableRect(it) } ?: Rectangle(),
-    var id: Int = widget?.getItemId() ?: 0,
-    var stackSize: Int = widget?.getItemQuantity() ?: 0,
-    var index: Int = 0,
-    var type: Type = Type.SHOP
-) : Interactable {
+        var widget: Component? = null,
+        var area: Rectangle = widget?.let { ctx?.let { it1 -> Widget.getDrawableRect(it, it1) } }
+                ?: Rectangle(),
+        var id: Int = widget?.getItemId() ?: 0,
+        var stackSize: Int = widget?.getItemQuantity() ?: 0,
+        var index: Int = 0,
+        var type: Type = Type.SHOP,
+        ctx: Context? = null
+) : Interactable(ctx) {
     override suspend fun clickOnMiniMap(): Boolean {
         println("Widgets are not a thing to click on minimap")
         return false
@@ -28,7 +30,7 @@ class WidgetItem(
     }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(MainApplet.mouseEvent?.x ?: -1, MainApplet.mouseEvent?.y ?: -1)
+        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
         return area.contains(mousePoint)
     }
 
@@ -51,12 +53,12 @@ class WidgetItem(
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
                 || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
         if (textContains != null && textContains)
-            return super.interact(action)
+            return super.interact(action )
         else {
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
                 if (it.getText().toLowerCase().contains(action)) {
-                    return WidgetItem(it).interact(action)
+                    return WidgetItem(it, ctx = ctx).interact(action)
                 }
             }
             return false

@@ -13,10 +13,10 @@ import java.nio.file.Paths
 
 class Downloader{
     private var oldschoolPageAddress: String = "http://oldschool83.runescape.com/"
-    val gamepackDir = "\\gamepacks\\"
+    val gamepackDir = "/gamepacks/"
     fun getGamepack():String{
-        if (!Files.exists(Paths.get(".\\gamepacks"))) {
-            Files.createDirectory(Paths.get(".\\gamepacks"))
+        if (!Files.exists(Paths.get("./gamepacks"))) {
+            Files.createDirectory(Paths.get("./gamepacks"))
         }
         val gamepackName = getLatestGamepackName()
         var gamepackFound = isGamepackDonloadedLocally(gamepackName)

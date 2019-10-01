@@ -7,8 +7,8 @@ interface Texture: Node{
 	fun getInt1(): Int
 	fun getIsLoaded(): Boolean
 	fun getPixels(): IntArray
-	fun get__l(): Boolean
-	fun get__c(): IntArray
-	fun get__f(): IntArray
-	fun get__i(): IntArray
+    fun get__n(): Boolean
+    fun get__d(): IntArray
+    fun get__q(): IntArray
+    fun get__x(): IntArray
 }

@@ -55,10 +55,10 @@ object Constants {
     val TILE_FLAG_BRIDGE = 2
 
     /**
-     * The number of milliseconds in a client tick.
+     * The number of milliseconds in a applet tick.
      *
      *
-     * This is the length of a single frame when the client is running at
+     * This is the length of a single frame when the applet is running at
      * the maximum framerate of 50 fps.
      */
     val CLIENT_TICK_LENGTH = 20
