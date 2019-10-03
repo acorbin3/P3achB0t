@@ -1,10 +1,11 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.Timer
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -47,7 +48,9 @@ class Dialog(val ctx: Context) {
     }
 
     suspend fun continueDialog(sleep: Boolean = true) {
-        while (getDialogContinue().containsText("continue")) {
+        var time = 30000 //30 seconds
+        var t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
+        while (getDialogContinue().containsText("continue") && t.isRunning()) {
             doConversation(sleep)
         }
     }

@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.*
+import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -10,8 +10,10 @@ import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
+import org.apache.commons.lang.time.StopWatch
+import java.awt.Color
+import java.awt.Graphics
 import kotlin.random.Random
 
 
@@ -19,9 +21,9 @@ private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
+    val stopwatch = StopWatch()
     override suspend fun loop() {
 
-        
         run()
         //Delay between 0-50 ms
         delay((Math.random() * 50).toLong())
@@ -29,12 +31,27 @@ class TutorialIsland: AbstractScript()  {
     }
 
     override suspend fun start() {
+        try {
+            stopwatch.start()
+        } catch (e: Exception) {
+        }
         println("Running Start")
         println("Running Start2")
+        LoggingIntoAccount(ctx)
+        while (ctx.client.getGameState() != 30) {
+            delay(100)
+        }
     }
 
     override suspend fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun draw(g: Graphics) {
+        debugPaint(ctx, g)
+        g.color = Color.WHITE
+        g.drawString("Current Runtime: $stopwatch", 10, 450)
+        super.draw(g)
     }
 
 
@@ -202,7 +219,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            val randomNumberOfChanges = Random.nextInt(4, 35)
+            val randomNumberOfChanges = Random.nextInt(3, 10)
             println("Making $randomNumberOfChanges of changes")
             for (i in 0..randomNumberOfChanges) {
                 val column = Random.nextInt(1, 5)
@@ -213,7 +230,7 @@ class TutorialIsland: AbstractScript()  {
                     3 -> widgetIndex.childID = arrayListOf(125, 124, 123, 122, 105).random().toString()
                     4 -> widgetIndex.childID = arrayListOf(131, 130, 129, 127, 121).random().toString()
                 }
-                for (i in 0..Random.nextInt(5)) {
+                for (j in 0..Random.nextInt(5)) {
                     WidgetItem(Widgets.find(ctx, widgetIndex.parentID.toInt(), widgetIndex.childID.toInt()), ctx = ctx).click()
                     delay(Random.nextLong(250, 650))
                 }
@@ -348,7 +365,7 @@ class TutorialIsland: AbstractScript()  {
             val doorLocation = Tile(3098, 3107, ctx = ctx)
             gameObjects.forEach {
                 if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
-                    if (!it.isOnScreen()) it.turnTo()
+                    it.turnTo()
                     it.interact("Open")
                     //Wait till here Tile(3098,3107)
                     Utils.waitFor(4, object : Utils.Condition {
@@ -527,11 +544,11 @@ class TutorialIsland: AbstractScript()  {
 
         override suspend fun execute() {
             // Use tinderbox(590) with logs(2511)
-            lightFire(client, ctx)
+            lightFire(ctx)
         }
 
         companion object{
-            suspend fun lightFire(client: Client, ctx: Context) {
+            suspend fun lightFire(ctx: Context) {
                 Inventory(ctx).open()
                 Inventory(ctx).getItem(590)?.click()
                 Inventory(ctx).getItem(LOGS_ID_2511)?.click()
@@ -569,7 +586,7 @@ class TutorialIsland: AbstractScript()  {
             //If no fire && have logs, light a fire
             fires = GameObjects(ctx).find( 26185, sortByDistance = true)
             if (fires.size == 0 && Inventory(ctx).getCount(LOGS_ID_2511) > 0) {
-                LightLog.lightFire(client, ctx)
+                LightLog.lightFire(ctx)
             }
 
             // Check if there is a fire cook the shrimp
@@ -577,7 +594,7 @@ class TutorialIsland: AbstractScript()  {
             if (fires.size > 0) {
                 Inventory(ctx).open()
                 Inventory(ctx).getItem(SHRIMP_ID)?.click()
-                // The fire is an animated object so it thows a NPE when trying to interacte with model.
+                // The fire is an animated object so it thows a NPE when trying to interact with model.
                 if (fires[0].sceneryObject != null) {
                     val point = Calculations.worldToScreen(
                             fires[0].sceneryObject!!.getCenterX(),
@@ -1203,7 +1220,7 @@ class TutorialIsland: AbstractScript()  {
 
     class MeleeKillRat(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("It's time to slay some rats!")
+            return dialogWidget.containsText("It's time to slay some rats!") || dialogWidget.containsText("attack the rat")
         }
 
         override suspend fun execute() {
@@ -1296,6 +1313,7 @@ class TutorialIsland: AbstractScript()  {
                 rats[randomIndex].interact("Attack")
                 delay(Random.nextLong(1000, 1500))
                 Players(ctx).getLocal().waitTillIdle()
+
             }
         }
 

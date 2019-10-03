@@ -1,7 +1,6 @@
 package com.p3achb0t.api
 
 import com.p3achb0t.UserDetails
-import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -17,24 +16,23 @@ class LoggingIntoClient {
     }
 }
 
-fun LoggingIntoAccount(ctx: Context, mouse: Mouse, keyboard: Keyboard) {
+fun LoggingIntoAccount(ctx: Context) {
     //Logging into the client
-    Thread.sleep(3000)
+    Thread.sleep(2000)
     GlobalScope.launch {
 
         repeat(1000) {
             try {
-//                clientData = getClientData()
 
                 // When loaded login
                 if (!LoggingIntoClient.loggedIn && ctx.client.getGameState() == 10) {
-                    mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
 
-                    delay(200)
-                    keyboard.sendKeys(UserDetails.data.password)
-                    delay(200)
+                    delay(2000)
+                    ctx.keyboard.sendKeys(UserDetails.data.password)
+                    delay(500)
 
-                    mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
 
                     while (ctx.client.getGameState() != 30) {
                         delay(100)
