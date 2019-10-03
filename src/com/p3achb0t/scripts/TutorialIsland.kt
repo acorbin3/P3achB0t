@@ -779,8 +779,8 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            //TODO - Sometimes this gets disabled. Maybe we need to add a delay?
             Run(ctx).activateRun()
+            delay(Random.nextLong(1500, 2500))
         }
 
     }
@@ -987,6 +987,7 @@ class TutorialIsland: AbstractScript()  {
             val furnace = GameObjects(ctx).find("Furnace")[0]
             if (!furnace.isOnScreen()) furnace.turnTo()
             furnace.click()
+            //TODO- somtime we keep clicking here and it can mess us up
         }
 
     }
