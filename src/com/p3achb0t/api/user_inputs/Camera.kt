@@ -1,5 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
@@ -8,12 +9,12 @@ import kotlin.math.atan2
 import kotlin.random.Random
 
 
-class Camera(val client: com.p3achb0t._runestar_interfaces.Client, val ioKeyboard: Keyboard? = null) {
-    val x: Int get() = client.getCameraX()
-    val y: Int get() = client.getCameraY()
-    val z: Int get() = client.getCameraZ()
-    val yaw: Int get() = client.getCameraYaw()
-    val pitch: Int get() = ((client.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
+class Camera(val ctx: Context) {
+    val x: Int get() = ctx.client.getCameraX()
+    val y: Int get() = ctx.client.getCameraY()
+    val z: Int get() = ctx.client.getCameraZ()
+    val yaw: Int get() = ctx.client.getCameraYaw()
+    val pitch: Int get() = ((ctx.client.getCameraPitch() - 128).toDouble() / 255.0 * 100).toInt() // Convert pitch, 0-100
     val angle: Int get() = abs(((this.yaw / 5.68).toInt()) - 360)
 
     /**
@@ -23,7 +24,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client, val ioKeyboar
      * @return Integer 0-360
      */
     fun getAngleTo(locatable: Locatable): Int {
-        val local = client.getLocalPlayer()
+        val local = ctx.client.getLocalPlayer()
 
         var degree = 360 - Math.toDegrees(
                 atan2(
@@ -79,26 +80,26 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client, val ioKeyboar
             return true
         } else if (_pitch < pitch) {
             println("Starting to move camera UP")
-            ioKeyboard?.pressDownKey(KeyEvent.VK_UP)
+            ctx.keyboard.pressDownKey(KeyEvent.VK_UP)
             val t = com.p3achb0t.api.Timer(5000)
 
             while (_pitch < pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
                 sleep(59, 100)
             }
-            ioKeyboard?.release(KeyEvent.VK_UP)
+            ctx.keyboard.release(KeyEvent.VK_UP)
             println("Finished moving camera Up")
 
         } else if (_pitch > pitch) {
             println("Starting to move camera Down")
-            ioKeyboard?.pressDownKey(KeyEvent.VK_DOWN)
+            ctx.keyboard.pressDownKey(KeyEvent.VK_DOWN)
             val t = com.p3achb0t.api.Timer(5000)
 
             while (_pitch > pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
                 sleep(59, 100)
             }
-            ioKeyboard?.release(KeyEvent.VK_DOWN)
+            ctx.keyboard.release(KeyEvent.VK_DOWN)
             println("Finished moving camera Down")
         }
 
@@ -130,7 +131,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client, val ioKeyboar
         if (diff > 5) {
             // Figure out where we are
             println("Starting to swing camera Left or right")
-            ioKeyboard?.pressDownKey(dir)
+            ctx.keyboard.pressDownKey(dir)
             for (i in 0..99) {
 
                 if (turnLeft) {
@@ -147,7 +148,7 @@ class Camera(val client: com.p3achb0t._runestar_interfaces.Client, val ioKeyboar
 
                 sleep(100, 200)
             }
-            ioKeyboard?.release(dir)
+            ctx.keyboard.release(dir)
             println("Finished moving camera Left or right")
         }
         return getDiff(this.angle, angle) <= 5

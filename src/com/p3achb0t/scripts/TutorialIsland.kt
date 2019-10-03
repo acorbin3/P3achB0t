@@ -2,8 +2,6 @@ package com.p3achb0t.scripts
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.*
-import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -66,44 +64,44 @@ class TutorialIsland: AbstractScript()  {
         jobs.add(MoveToKitchen(ctx))
         jobs.add(TalkToMasterChef(ctx))
         jobs.add(MakeDough(ctx))
-        jobs.add(MakeBread(ctx, keyboard))
-        jobs.add(ExitKitchen(ctx, keyboard))
+        jobs.add(MakeBread(ctx))
+        jobs.add(ExitKitchen(ctx))
         jobs.add(TurnOnRun(ctx))
-        jobs.add(MoveToNextBuilding(ctx, keyboard))
-        jobs.add(TalkToQuestGuide(ctx, keyboard))
+        jobs.add(MoveToNextBuilding(ctx))
+        jobs.add(TalkToQuestGuide(ctx))
         jobs.add(OpenQuestList(ctx))
-        jobs.add(TalkToQuestGuide2ndTime(ctx, keyboard))
-        jobs.add(GoDownToTheCaves(ctx, keyboard))
-        jobs.add(WalkAndTalkToSmitingAndMiningGuide(ctx, keyboard))
-        jobs.add(MineTin(ctx, keyboard))
-        jobs.add(MineCopper(ctx, keyboard))
+        jobs.add(TalkToQuestGuide2ndTime(ctx))
+        jobs.add(GoDownToTheCaves(ctx))
+        jobs.add(WalkAndTalkToSmitingAndMiningGuide(ctx))
+        jobs.add(MineTin(ctx))
+        jobs.add(MineCopper(ctx))
         jobs.add(SmeltBronze(ctx))
         jobs.add(TalkToMiningGuideAboutSmiting(ctx))
         jobs.add(MakeBronzeDagger(ctx))
-        jobs.add(AfterSmithingMovetoGate(ctx, keyboard))
-        jobs.add(TalkToCombatInstructor(ctx, keyboard))
+        jobs.add(AfterSmithingMovetoGate(ctx))
+        jobs.add(TalkToCombatInstructor(ctx))
         jobs.add(OpenEquipment(ctx))
         jobs.add(OpenEquipmentStats(ctx))
         jobs.add(EquipBronzeDagger(ctx))
-        jobs.add(SpeakWithCombatAfterBronzeDaggerEquipt(ctx, keyboard))
+        jobs.add(SpeakWithCombatAfterBronzeDaggerEquipt(ctx))
         jobs.add(EquipLongSwordAndShield(ctx))
         jobs.add(OpenCombatTab(ctx))
-        jobs.add(GoIntoRatCage(ctx, keyboard))
-        jobs.add(MeleeKillRat(ctx, keyboard))
-        jobs.add(GoTalkToCombatInstructorFor2ndTime(ctx, keyboard))
+        jobs.add(GoIntoRatCage(ctx))
+        jobs.add(MeleeKillRat(ctx))
+        jobs.add(GoTalkToCombatInstructorFor2ndTime(ctx))
         jobs.add(KillRatWithBow(ctx))
-        jobs.add(ExitCaves(ctx, keyboard))
+        jobs.add(ExitCaves(ctx))
         jobs.add(UseBank(ctx))
         jobs.add(CloseBankAndDoPollBooth(ctx))
         jobs.add(DoPollBooth(ctx))
         jobs.add(ClosePollAndMoveOutOfBank(ctx))
-        jobs.add(TalkToAccountManager(ctx, keyboard))
+        jobs.add(TalkToAccountManager(ctx))
         jobs.add(OpenAccountManager(ctx))
-        jobs.add(ExitAccountManagerRoom(ctx, keyboard))
-        jobs.add(MoveToChapelAndTalkToBrotherBrace(ctx, keyboard))
+        jobs.add(ExitAccountManagerRoom(ctx))
+        jobs.add(MoveToChapelAndTalkToBrotherBrace(ctx))
         jobs.add(OpenPrayerTab(ctx))
         jobs.add(OpenFriendsTab(ctx))
-        jobs.add(ExitChapleHouse(ctx, keyboard))
+        jobs.add(ExitChapleHouse(ctx))
         jobs.add(GoToWizardHouseAndSpeakWithWizard(ctx))
         jobs.add(OpenMagicTab(ctx))
         jobs.add(SelectWindStrikeAndAttackChicken(ctx))
@@ -698,7 +696,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class MakeBread(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MakeBread(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Now you have made the dough,"
             return dialogWidget.containsText(text)
@@ -709,7 +707,7 @@ class TutorialIsland: AbstractScript()  {
             //Range is 9736
             Inventory(ctx).open()
             val range = GameObjects(ctx).find(9736)[0]
-            Camera(client, keyboard).turnTo(range)
+            ctx.camera.turnTo(range)
             //TODO - Need to improve ineract when menu is full
             range.interact("Cook Range")
             // Wait till bread in inventory
@@ -726,7 +724,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class ExitKitchen(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class ExitKitchen(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "You've baked your first loaf of bread"
             return dialogWidget.containsText(text)
@@ -746,7 +744,7 @@ class TutorialIsland: AbstractScript()  {
                 })
             }
 
-            Camera(client, keyboard).turnWest()
+            ctx.camera.turnWest()
 
             //DOOR 9710
             val door = GameObjects(ctx).find(9710)
@@ -770,7 +768,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class MoveToNextBuilding(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MoveToNextBuilding(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Follow the path to the next guide"
             return dialogWidget.containsText(text) && getPercentComplete(ctx) == .296875
@@ -783,8 +781,8 @@ class TutorialIsland: AbstractScript()  {
             )
             Walking.walkPath(walkingPath)
             //Open Door(9716)
-            Camera(client, keyboard).setHighPitch()
-            Camera(client, keyboard).turnSouth()
+            ctx.camera.setHighPitch()
+            ctx.camera.turnSouth()
             val doors = GameObjects(ctx).find("Door", sortByDistance = true)
             if (doors.size > 0) {
                 doors[0].interact("Open Door")
@@ -795,7 +793,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class TalkToQuestGuide(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class TalkToQuestGuide(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "It's time to learn about quests!"
             return dialogWidget.containsText(text)
@@ -804,7 +802,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             val questGuide = NPCs(ctx).findNpc("Quest Guide")
             if (questGuide.size > 0) {
-                if (!questGuide[0].isOnScreen()) Camera(client, keyboard).turnTo(questGuide[0])
+                if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -830,7 +828,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class TalkToQuestGuide2ndTime(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class TalkToQuestGuide2ndTime(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "This is your quest journal."
             return dialogWidget.containsText(text)
@@ -839,7 +837,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             val questGuide = NPCs(ctx).findNpc("Quest Guide")
             if (questGuide.size > 0) {
-                if (!questGuide[0].isOnScreen()) Camera(client, keyboard).turnTo(questGuide[0])
+                if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -852,18 +850,18 @@ class TutorialIsland: AbstractScript()  {
         }
     }
 
-    class GoDownToTheCaves(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class GoDownToTheCaves(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "It's time to enter some caves"
             return dialogWidget.containsText(text)
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             // Go down ladder
             val ladder = GameObjects(ctx).find("Ladder")
             if (ladder.size > 0) {
-                Camera(client, keyboard).turnTo(ladder[0])
+                ctx.camera.turnTo(ladder[0])
                 ladder[0].interact("Climb-down Ladder")
                 delay(Random.nextLong(3500, 6400))
             }
@@ -871,7 +869,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class WalkAndTalkToSmitingAndMiningGuide(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class WalkAndTalkToSmitingAndMiningGuide(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Next let's get you a weapon,"
             return dialogWidget.containsText(text)
@@ -883,7 +881,7 @@ class TutorialIsland: AbstractScript()  {
             Walking.walkPath(walkingPath)
             val miningGuide = NPCs(ctx).findNpc("Mining Instructor")
             if (miningGuide.size > 0) {
-                Camera(client, keyboard).setHighPitch()
+                ctx.camera.setHighPitch()
                 if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
                 miningGuide[0].talkTo()
                 delay(Random.nextLong(1250, 3650))
@@ -913,7 +911,7 @@ class TutorialIsland: AbstractScript()  {
         }
     }
 
-    class MineTin(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MineTin(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "It's quite simple really. To mine a rock, all you need"
             return dialogWidget.containsText(text)
@@ -926,14 +924,14 @@ class TutorialIsland: AbstractScript()  {
             val miningspot = Tile(3076, 9505, 0, ctx)
             miningspot.clickOnMiniMap()
             Players(ctx).getLocal().waitTillIdle()
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             MineRock.mineRock(ctx)
         }
     }
 
 
 
-    class MineCopper(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MineCopper(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Now that you have some tin ore"
             return dialogWidget.containsText(text)
@@ -945,7 +943,7 @@ class TutorialIsland: AbstractScript()  {
                 miningspot.clickOnMiniMap()
                 delay(Random.nextLong(3500, 5500))
             }
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             MineRock.mineRock(ctx)
         }
 
@@ -1038,7 +1036,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class AfterSmithingMovetoGate(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class AfterSmithingMovetoGate(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("Congratulations, you've made your first weapon")
         }
@@ -1048,8 +1046,8 @@ class TutorialIsland: AbstractScript()  {
             Walking.walkPath(walkingPath)
             val gate = GameObjects(ctx).find("Gate", sortByDistance = true)
             if (gate.size > 0) {
-                Camera(client, keyboard).setHighPitch()
-                Camera(client, keyboard).turnEast()
+                ctx.camera.setHighPitch()
+                ctx.camera.turnEast()
                 gate[0].interact("Open")
                 //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 Players(ctx).getLocal().waitTillIdle()
@@ -1059,13 +1057,13 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class TalkToCombatInstructor(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class TalkToCombatInstructor(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("In this area you will find out about melee and ranged combat.")
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             // Move to combat insturctor
             val tileNearCombatInstructor = Tile(3107, 9509, ctx = ctx)
             if (tileNearCombatInstructor.distanceTo() > 5) {
@@ -1126,13 +1124,13 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class SpeakWithCombatAfterBronzeDaggerEquipt(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class SpeakWithCombatAfterBronzeDaggerEquipt(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You're now holding your dagger")
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             //Talk with combat instructor
             val combatInstructor = NPCs(ctx).findNpc("Combat Instructor")
             combatInstructor[0].talkTo()
@@ -1167,13 +1165,13 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class GoIntoRatCage(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class GoIntoRatCage(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("This is your combat interface. From here,")
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             //Walk over to tile
             val tileNearGate = Tile(3111, 9519, ctx = ctx)
             if (tileNearGate.distanceTo() > 5) {
@@ -1189,7 +1187,7 @@ class TutorialIsland: AbstractScript()  {
             //Enter cage
             val gates = GameObjects(ctx).find("Gate", sortByDistance = true)
             if (gates.size > 0) {
-                Camera(client, keyboard).turnWest()
+                ctx.camera.turnWest()
                 gates[0].interact("Open")
                 Utils.waitFor(2, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -1203,13 +1201,13 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class MeleeKillRat(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MeleeKillRat(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("It's time to slay some rats!")
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             val rats = NPCs(ctx).findNpc("Giant rat")
             if (rats.size > 0) {
                 val randomIndex = (0..5).random()
@@ -1226,7 +1224,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
 
-    class GoTalkToCombatInstructorFor2ndTime(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class GoTalkToCombatInstructorFor2ndTime(val ctx: Context) : Job(ctx.client) {
         val ratCageArea = Area(
                 Tile(3109, 9521, ctx = ctx), Tile(3110, 9519, ctx = ctx),
                 Tile(3110, 9518, ctx = ctx), Tile(3109, 9516, ctx = ctx), Tile(3109, 9515, ctx = ctx),
@@ -1243,8 +1241,8 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
-            Camera(client, keyboard).turnEast()
+            ctx.camera.setHighPitch()
+            ctx.camera.turnEast()
             // Check to see if we are still in the rat cage
             if (ratCageArea.containsOrIntersects(Players(ctx).getLocal().getGlobalLocation())) {
                 val gates = GameObjects(ctx).find("Gate", sortByDistance = true)
@@ -1303,13 +1301,13 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class ExitCaves(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class ExitCaves(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You have completed the tasks here")
         }
 
         override suspend fun execute() {
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             val tileNearLadder = Tile(3110, 9526, ctx = ctx)
             if (tileNearLadder.distanceTo() > 3) {
                 tileNearLadder.clickOnMiniMap()
@@ -1458,7 +1456,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class TalkToAccountManager(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class TalkToAccountManager(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("The guide here will tell you all about your account.") ||
                     dialogWidget.containsText("This is your Account Management menu")
@@ -1467,7 +1465,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             val accountManager = NPCs(ctx).findNpc("Account Guide")
             if (accountManager.isNotEmpty()) {
-                Camera(client, keyboard).setHighPitch()
+                ctx.camera.setHighPitch()
                 accountManager[0].talkTo()
                 delay(Random.nextLong(2500, 4500))
                 Dialog(ctx).continueDialog()
@@ -1487,7 +1485,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class ExitAccountManagerRoom(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class ExitAccountManagerRoom(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("Continue through the next door.")
         }
@@ -1497,8 +1495,8 @@ class TutorialIsland: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3130 && it.getGlobalLocation().y == 3124) {
-                        Camera(client, keyboard).turnEast()
-                        Camera(client, keyboard).setHighPitch()
+                        ctx.camera.turnEast()
+                        ctx.camera.setHighPitch()
                         it.interact("Open")
                         Players(ctx).getLocal().waitTillIdle()
                         delay(Random.nextLong(100, 150))
@@ -1509,7 +1507,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class MoveToChapelAndTalkToBrotherBrace(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class MoveToChapelAndTalkToBrotherBrace(val ctx: Context ) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("Follow the path to the chapel")
                     || dialogWidget.containsText("Talk with Brother Brace")
@@ -1521,7 +1519,7 @@ class TutorialIsland: AbstractScript()  {
             val pathToChapel = arrayListOf(Tile(3132, 3115, ctx = ctx), Tile(3130, 3107, ctx = ctx), Tile(3124, 3106, ctx = ctx))
             if ((brotherBrace.isNotEmpty() && brotherBrace[0].distanceTo() > 13) || brotherBrace.isEmpty())
                 Walking.walkPath(pathToChapel)
-            Camera(client, keyboard).setHighPitch()
+            ctx.camera.setHighPitch()
             brotherBrace = NPCs(ctx).findNpc("Brother Brace")
             if (brotherBrace.size > 0) {
                 if (!brotherBrace[0].isOnScreen())
@@ -1556,7 +1554,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class ExitChapleHouse(val ctx: Context, val keyboard: Keyboard) : Job(ctx.client) {
+    class ExitChapleHouse(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You're almost finished on tutorial island")
         }
@@ -1566,8 +1564,8 @@ class TutorialIsland: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3122 && it.getGlobalLocation().y == 3102) {
-                        Camera(client, keyboard).turnSouth()
-                        Camera(client, keyboard).setHighPitch()
+                        ctx.camera.turnSouth()
+                        ctx.camera.setHighPitch()
                         it.interact("Open")
                         delay(Random.nextLong(1500, 2500))
                         Players(ctx).getLocal().waitTillIdle()

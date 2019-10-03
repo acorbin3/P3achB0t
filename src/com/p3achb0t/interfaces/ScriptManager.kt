@@ -36,6 +36,7 @@ class ScriptManager(val client: Any) : ScriptHook {
     }
 
     suspend fun start() {
+        dd.getMouse().inputBlocked(true)
         gb.start()
         shouldRun = true
         GlobalScope.launch {

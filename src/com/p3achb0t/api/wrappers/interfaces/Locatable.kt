@@ -64,7 +64,7 @@ interface Locatable {
     }
 
     suspend fun turnTo() {
-        Camera(loc_ctx!!.client, ioKeyboard = loc_ctx!!.keyboard).turnTo(this)
+        Camera(loc_ctx!!).turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     abstract fun isOnScreen(): Boolean
