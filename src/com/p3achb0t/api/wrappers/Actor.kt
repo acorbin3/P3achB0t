@@ -20,6 +20,23 @@ open class Actor(
 
 ) : Locatable , Interactable(ctx) {
 
+    val x: Int
+        get() {
+            return raw.getX()
+        }
+    val y: Int
+        get() {
+            return raw.getY()
+        }
+    val npcCycle: Int
+        get() {
+            return raw.getNpcCycle()
+        }
+    val overheadText: String
+        get() {
+            return raw.getOverheadText()
+        }
+
     override fun getInteractPoint(): Point {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
