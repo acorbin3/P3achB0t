@@ -55,7 +55,7 @@ class Mouse(obj: Any) {
                         component,
                         MouseEvent.MOUSE_PRESSED,
                     System.currentTimeMillis(),
-                    0,
+                        clickMask,
                     destPoint.x,
                     destPoint.y,
                     0,
