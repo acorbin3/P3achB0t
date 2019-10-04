@@ -4,7 +4,6 @@ import com.p3achb0t.UserDetails
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,7 +38,7 @@ fun LoggingIntoAccount(ctx: Context) {
                     }
                     delay(1500)
                     println("Clicking login")
-                    val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
+                    val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
                     println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
 
                     login.click()

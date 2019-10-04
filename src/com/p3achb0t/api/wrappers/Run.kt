@@ -1,8 +1,7 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 
 class Run(val ctx: Context) {
     companion object {
@@ -14,11 +13,11 @@ class Run(val ctx: Context) {
 
     val runEnergy: Int
         get() {
-            return Widgets.find(ctx, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
+            return ctx.widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getText()?.toInt() ?: 0
         }
 
     suspend fun clickRunButton() {
-        WidgetItem(Widgets.find(ctx, PARENT, CHILD_BUTTON), ctx = ctx).click()
+        WidgetItem(ctx.widgets.find(PARENT, CHILD_BUTTON), ctx = ctx).click()
     }
 
     suspend fun activateRun() {
@@ -33,6 +32,6 @@ class Run(val ctx: Context) {
 
     //1065 is activated, 1064 is not activated
     fun isRunActivated(): Boolean {
-        return Widgets.find(ctx, PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
+        return ctx.widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
     }
 }

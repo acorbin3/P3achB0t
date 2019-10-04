@@ -2,13 +2,11 @@ package com.p3achb0t.api
 
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
 import com.p3achb0t.api.wrappers.ClientMode
-import com.p3achb0t.api.wrappers.MiniMap
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.awt.Point
 import java.awt.Polygon
 import java.awt.Rectangle
@@ -119,8 +117,7 @@ class Calculations {
             // main screen 122,0
             //Mini map 164, 17
             val miniMapWidget = WidgetItem(
-                    Widgets.find(ctx
-                            ,
+                    ctx.widgets.find(
                             WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID,
                             WidgetID.Viewport.MINIMAP_RESIZABLE_WIDGET
                     ),
@@ -130,19 +127,19 @@ class Calculations {
 
 
             //inventory bar 164,47(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47), ctx = ctx)
+            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47), ctx = ctx)
             inventoryBarTopDimensions = inventoryTop.area
-            val inventoryBottom = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), ctx = ctx)
+            val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), ctx = ctx)
             inventoryBarBottomDimensions = inventoryBottom.area
             //chatbox 162,0
-            val chatbox = WidgetItem(Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, 0), ctx = ctx)
+            val chatbox = WidgetItem(ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, 0), ctx = ctx)
             chatBoxDimensions = chatbox.area
-            val tabWidget = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65), ctx = ctx)
+            val tabWidget = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65), ctx = ctx)
             inventoryDimensions = tabWidget.area
 
-            mainScreen = WidgetItem(Widgets.find(ctx, WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), ctx = ctx).area
+            mainScreen = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), ctx = ctx).area
             // Only set to true if login screen is not visible
-            val login = WidgetItem(Widgets.find(ctx, WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
+            val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
             println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
             if (login.area.x == 0
                 && login.area.y == 0
@@ -162,14 +159,14 @@ class Calculations {
         }
 
         fun isOnscreen(ctx: Context, point: Point): Boolean {
-            return if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) {
+            return if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.contains(point)
             } else {
                 if (!screenInit) initScreenWidgetDimentions(ctx)
 
                 var isBehindInventory = false
                 // Inventory if visible area:164,65
-                if (Tabs(ctx).getOpenTab() != Tabs.Tab_Types.None) {
+                if (ctx.tabs.getOpenTab() != Tabs.Tab_Types.None) {
                     isBehindInventory = inventoryDimensions.contains(point)
                 }
 
@@ -182,7 +179,7 @@ class Calculations {
         }
 
         fun isOnscreen(ctx: Context, rectangle: Rectangle): Boolean {
-            return if (ClientMode(ctx).getMode() == ClientMode.Companion.ModeType.FixedMode) {
+            return if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) {
                 GAMESCREEN.intersects(rectangle)
             } else {
                 if (!screenInit) initScreenWidgetDimentions(ctx)
@@ -190,7 +187,7 @@ class Calculations {
 
                 var isBehindInventory = false
                 // Inventory if visible area:164,65
-                if (Tabs(ctx).getOpenTab() != Tabs.Tab_Types.None) {
+                if (ctx.tabs.getOpenTab() != Tabs.Tab_Types.None) {
                     isBehindInventory = inventoryDimensions.intersects(rectangle)
                 }
 
@@ -221,7 +218,7 @@ class Calculations {
             val diffX = tilePX - playerPX
             val diffY = tilePY - playerPY
 
-            val miniMapWidget = MiniMap(ctx).getWidget() ?: return Point(-1, -1)
+            val miniMapWidget = ctx.miniMap.getWidget() ?: return Point(-1, -1)
 
             val angle = ctx.client.getCamAngleY() and 0x7ff
 
@@ -233,7 +230,7 @@ class Calculations {
 
             val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget, ctx) + miniMapWidget.getWidth() / 2
             val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget, ctx) + miniMapWidget.getHeight() / 2
-            return if (MiniMap(ctx).getMapArea().contains(Point(screenX, screenY))) {
+            return if (ctx.miniMap.getMapArea().contains(Point(screenX, screenY))) {
                 Point(screenX - 2, screenY - 1)
             } else Point(-1, -1)
         }
@@ -316,7 +313,7 @@ class Calculations {
                 if (poly.intersects(it))
                     polyArea.subtract(Area(it))
             }
-            if (Tabs(ctx).getOpenTab() != Tabs.Tab_Types.None && poly.intersects(inventoryDimensions)) {
+            if (ctx.tabs.getOpenTab() != Tabs.Tab_Types.None && poly.intersects(inventoryDimensions)) {
                 polyArea.subtract(Area(inventoryDimensions))
             }
             // Convert back to polygon using the path iterator.
@@ -353,7 +350,7 @@ class Calculations {
          * @return current distance between player and specific tile
          */
         fun distanceTo(a: Tile, ctx: Context): Int {
-            val loc = com.p3achb0t.api.wrappers.Players(ctx).getLocal().getGlobalLocation()
+            val loc = ctx.players.getLocal().getGlobalLocation()
             return distanceBetween(a.x, a.y, loc.x, loc.y)
         }
 

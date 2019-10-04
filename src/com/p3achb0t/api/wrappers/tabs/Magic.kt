@@ -1,10 +1,9 @@
 package com.p3achb0t.api.wrappers.tabs
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Magic(val ctx: Context) {
@@ -19,17 +18,17 @@ class Magic(val ctx: Context) {
 
 
     fun isOpen(): Boolean {
-        return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Magic
+        return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Magic
     }
 
     suspend fun open(waitForActionToComplete: Boolean = true) {
-        Tabs(ctx).openTab(Tabs.Tab_Types.Magic)
+        ctx.tabs.openTab(Tabs.Tab_Types.Magic)
         //Wait for tab to be open
         if (waitForActionToComplete)
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Magic
+                    return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Magic
                 }
             })
         if (!isOpen()) open()
@@ -52,7 +51,7 @@ class Magic(val ctx: Context) {
         }
         if (!isOpen()) open()
 
-        val spellWidget = WidgetItem(Widgets.find(ctx, PARENT, spell.widgetID), ctx = ctx)
+        val spellWidget = WidgetItem(ctx.widgets.find(PARENT, spell.widgetID), ctx = ctx)
         if (spellWidget.widget != null) {
             println(spellWidget.getInteractPoint())
 

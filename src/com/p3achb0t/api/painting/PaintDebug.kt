@@ -4,8 +4,6 @@ package com.p3achb0t.api.painting
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.Dialog
-import com.p3achb0t.api.wrappers.MiniMap
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -64,14 +62,14 @@ fun debugPaint(ctx: Context, g: Graphics) {
 
             // Paint minimap circle
             try {
-                val circle = MiniMap(ctx).getMapArea()
+                val circle = ctx.miniMap.getMapArea()
                 g.color = Color.RED
                 g.drawPolygon(circle)
             } catch (e: Exception) {
                 println("Error: Minimap " + e.message)
             }
             // Paint continue
-            val dialog = Dialog(ctx).getDialogContinue()
+            val dialog = ctx.dialog.getDialogContinue()
             if (dialog.widget != null) {
                 g.color = Color.ORANGE
                 drawRect(g, dialog.area)

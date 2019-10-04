@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
@@ -57,6 +57,7 @@ class Interact(val ctx: Context) {
 
             //Move ctx.mouse to the point
 
+            print("Moving mouse to object")
             if (ctx.mouse.ioMouse.getX() == point.x && ctx.mouse.ioMouse.getY() == point.y) {
                 //Dont need to move the ctx.mouse
             } else {
@@ -65,19 +66,21 @@ class Interact(val ctx: Context) {
             }
 
             // Check to see if we need to right click or not
-            if (Menu(ctx.client).getHoverAction().contains(action)) {
+            if (ctx.menu.getHoverAction().contains(action)) {
                 // Left click, we are alreay there
                 point.let { it1 -> ctx.mouse.click(it1) }
                 return true
             } else {
+                println("Trying to right click")
                 //Since this is not avaliable we need to right click
                 point.let { it1 -> ctx.mouse.click(it1, clickType = Mouse.ClickType.Right) }
                 delay(Random.nextLong(50, 150))
                 // Move to Action String
-                val actionPoint = Menu(ctx.client).getPointForInteraction(action)
+                val actionPoint = ctx.menu.getPointForInteraction(action)
+                println("Action point: $actionPoint")
                 if (actionPoint == Point(-1, -1)) {
                     //Get large box, pick random point thats outside of the menue rect
-                    val menuRect = Menu(ctx.client).getRect()
+                    val menuRect = ctx.menu.getRect()
                     while (true) {
                         val x = Random.nextInt(point.x - menuRect.width, point.x + menuRect.width)
                         val y = Random.nextInt(point.y - menuRect.height, point.y + menuRect.height)
@@ -103,7 +106,7 @@ class Interact(val ctx: Context) {
                     delay((Math.random() * 50).toLong())
                     count += 1
                     if (count == 5) {
-                        val cancelPoint = Menu(ctx.client).getPointForInteraction(action)
+                        val cancelPoint = ctx.menu.getPointForInteraction(action)
                         res = ctx.mouse.moveMouse(cancelPoint, click = true)
                         print("Failed, retrying")
                     }

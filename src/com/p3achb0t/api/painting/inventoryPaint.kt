@@ -1,6 +1,5 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
@@ -8,8 +7,8 @@ import java.awt.Graphics
 fun inventoryPaint(g: Graphics, ctx: Context) {
     try {
         // Look at inventory
-        if (Inventory(ctx).isOpen()) {
-            val items = Inventory(ctx).getAll()
+        if (ctx.inventory.isOpen()) {
+            val items = ctx.inventory.getAll()
             if (items.size > 0) {
 
                 items.forEach {

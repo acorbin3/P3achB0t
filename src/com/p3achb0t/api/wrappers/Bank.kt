@@ -1,12 +1,10 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -51,7 +49,7 @@ class Bank(val ctx: Context) {
 
         //First look for bankers, if that doesnt work then look for bank objects
         if (!isOpen()) {
-            val bankers = NPCs(ctx).findNpc("Banker")
+            val bankers = ctx.npcs.findNpc("Banker")
             if (bankers.size > 0) {
                 bankers[0].interact("Use" )
                 Utils.waitFor(3, object : Utils.Condition {
@@ -69,7 +67,7 @@ class Bank(val ctx: Context) {
     suspend fun close() {
         if (isOpen()) {
             // Loop over the children to find the button that can close the bank
-            val itemContainer = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
+            val itemContainer = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
             itemContainer?.getChildren()?.iterator()?.forEach {
                 val actions = it.getOps()
                 if (actions != null) {
@@ -95,13 +93,13 @@ class Bank(val ctx: Context) {
     }
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
+        val depositAllWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
         depositAllWidget.click()
-        val inventoryCount = Inventory(ctx).getCount()
+        val inventoryCount = ctx.inventory.getCount()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return inventoryCount != Inventory(ctx).getCount()
+                return inventoryCount != ctx.inventory.getCount()
             }
         })
     }
@@ -141,7 +139,7 @@ class Bank(val ctx: Context) {
                                 override suspend fun accept(): Boolean {
                                     delay(100)
                                     val chatText =
-                                            Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                                     val text = chatText?.getText()
                                     println(text + " " + chatText?.getIsHidden())
                                     return text?.equals("*") ?: false
@@ -169,14 +167,14 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             val itemCount = getItemCount(id)
             if (count in listOf(1, 5, 10)) {
-                Inventory(ctx).getItem(id)?.interact("Deposit-$count" )
+                ctx.inventory.getItem(id)?.interact("Deposit-$count")
             } else {
-                Inventory(ctx).getItem(id)?.interact("Deposit-X")
+                ctx.inventory.getItem(id)?.interact("Deposit-X")
                 //Wait till the * shows up in the chat box
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        val chatText = Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                        val chatText = ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                         val text = chatText?.getText()
                         println(text + " " + chatText?.getIsHidden())
                         return text?.equals("*") ?: false
@@ -202,12 +200,12 @@ class Bank(val ctx: Context) {
     }
 
     fun getWidget(): Component? {
-        return Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+        return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
     }
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+            val widget = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
             if (widget != null && widget.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
