@@ -57,7 +57,6 @@ class Interact(val ctx: Context) {
 
             //Move ctx.mouse to the point
 
-            print("Moving mouse to object")
             if (ctx.mouse.ioMouse.getX() == point.x && ctx.mouse.ioMouse.getY() == point.y) {
                 //Dont need to move the ctx.mouse
             } else {
@@ -71,7 +70,6 @@ class Interact(val ctx: Context) {
                 point.let { it1 -> ctx.mouse.click(it1) }
                 return true
             } else {
-                println("Trying to right click")
                 //Since this is not avaliable we need to right click
                 point.let { it1 -> ctx.mouse.click(it1, clickType = Mouse.ClickType.Right) }
                 delay(Random.nextLong(50, 150))

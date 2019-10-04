@@ -51,16 +51,16 @@ class Mouse(obj: Any) {
             delay(Random.nextLong(50, 150))
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress =
-                MouseEvent(
-                        component,
-                        MouseEvent.MOUSE_PRESSED,
-                    System.currentTimeMillis(),
-                        clickMask,
-                    destPoint.x,
-                    destPoint.y,
-                    0,
-                    clickType == ClickType.Right
-                )
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_PRESSED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+                            0,
+                            clickType == ClickType.Right
+                    )
 
             ioMouse.sendEvent(mousePress)
 
@@ -68,16 +68,16 @@ class Mouse(obj: Any) {
             val delayTime = Math.floor(Math.random() * 40 + 30)
             delay(delayTime.toLong())
             val mouseRelease =
-                MouseEvent(
-                    component,
-                    MouseEvent.MOUSE_RELEASED,
-                    System.currentTimeMillis(),
-                    clickMask,
-                    destPoint.x,
-                    destPoint.y,
-                    0,
-                    clickType == ClickType.Right
-                )
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_RELEASED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+                            0,
+                            clickType == ClickType.Right
+                    )
             ioMouse.sendEvent(mouseRelease)
         }
         return true
