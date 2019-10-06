@@ -1,3 +1,5 @@
+package com.p3achb0t
+
 import com.p3achb0t.client.ui.GameWindow
 import com.p3achb0t.client.ui.setup
 

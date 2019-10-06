@@ -130,6 +130,14 @@
 
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/com/p3achb0t/_runestar_interfaces</directory>
+      </resource>
+      <resource>
+        <directory>hooks/</directory>
+      </resource>
+    </resources>
     <sourceDirectory>src</sourceDirectory>
     <pluginManagement>
       <plugins>
@@ -229,6 +237,20 @@
       <!--          </execution>-->
       <!--        </executions>-->
       <!--      </plugin>-->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.p3achb0t.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -241,7 +263,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>${main.class}</mainClass>
+                  <mainClass>com.p3achb0t.Main</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>
@@ -251,6 +273,28 @@
           </execution>
         </executions>
       </plugin>
+      <!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-assembly-plugin</artifactId>-->
+      <!--        <version>2.6</version>-->
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <id>make-assembly</id>-->
+      <!--            <phase>package</phase>-->
+      <!--            <goals> <goal>single</goal> </goals>-->
+      <!--            <configuration>-->
+      <!--              <archive>-->
+      <!--                <manifest>-->
+      <!--                  <mainClass>${main.class}</mainClass>-->
+      <!--                </manifest>-->
+      <!--              </archive>-->
+      <!--              <descriptorRefs>-->
+      <!--                <descriptorRef>jar-with-dependencies</descriptorRef>-->
+      <!--              </descriptorRefs>-->
+      <!--            </configuration>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--      </plugin>-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>ideauidesigner-maven-plugin</artifactId>
@@ -281,7 +325,7 @@
             <classpath/>
             <argument>${main.class}</argument>
           </arguments>
-          <workingDirectory>./</workingDirectory>
+          <workingDirectory></workingDirectory>
         </configuration>
       </plugin>
     </plugins>
