@@ -2,10 +2,9 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Calculations.Companion.convertAreaToPolygon
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import java.awt.Polygon
 import java.awt.geom.*
 import java.awt.geom.Area
@@ -21,7 +20,7 @@ class MiniMap(val ctx: Context) {
     var mapInit = false
 
     fun getWidget(): Component? {
-        return Widgets.find(ctx, PARENT, CHILD)
+        return ctx.widgets.find(PARENT, CHILD)
     }
 
     fun getMapArea(): Polygon {
@@ -29,7 +28,7 @@ class MiniMap(val ctx: Context) {
             mapCircle
         } else {
 
-            val rect = WidgetItem(Widgets.find(ctx, PARENT, CHILD), ctx = ctx).area
+            val rect = WidgetItem(ctx.widgets.find(PARENT, CHILD), ctx = ctx).area
             // Before login the widget thinks its a position 0,0 which is incorrect.
             if (rect.centerX == 0.0) {
                 return Polygon()
@@ -47,7 +46,7 @@ class MiniMap(val ctx: Context) {
             //Small globe that cuts int the mini map
             val globeParent = 160
             val globeChild = 42
-            val rect2 = WidgetItem(Widgets.find(ctx, globeParent, globeChild), ctx = ctx).area
+            val rect2 = WidgetItem(ctx.widgets.find(globeParent, globeChild), ctx = ctx).area
             val globeRadius = 15.0
             val globeEllipse2D = Ellipse2D.Double(
                     rect2.centerX - globeRadius,

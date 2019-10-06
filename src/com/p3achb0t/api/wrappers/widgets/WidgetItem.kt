@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
-import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -53,7 +53,7 @@ class WidgetItem(
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
                 || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
         if (textContains != null && textContains)
-            return super.interact(action )
+            return super.interact(action)
         else {
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
@@ -61,7 +61,7 @@ class WidgetItem(
                     return WidgetItem(it, ctx = ctx).interact(action)
                 }
             }
-            return false
+            return super.interact(action)
         }
     }
 

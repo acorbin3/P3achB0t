@@ -149,6 +149,8 @@ class Analyser{
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseWheelMoved", "_mouseWheelMoved")
             }
         }
+
+
         val path = System.getProperty("user.dir")
         val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
         for (classNode in classes.values) {

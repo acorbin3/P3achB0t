@@ -1,13 +1,12 @@
 package com.p3achb0t.api.painting
 
-import com.p3achb0t.api.wrappers.GroundItems
 import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
 fun groundItemsPaint(g: Graphics, ctx: Context) {
     try {
-        val groundItems = GroundItems(ctx).getAllItems()
+        val groundItems = ctx.groundItems.getAllItems()
 
         groundItems.forEach {
 

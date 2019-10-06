@@ -3,14 +3,9 @@ package com.p3achb0t.api.painting
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.LocType
 import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.ObjectPositionInfo
-import com.p3achb0t.api.getConvexHullFromModel
-import com.p3achb0t.api.getTrianglesFromModel
+import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.GameObject
-import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
@@ -18,7 +13,7 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
     if (false) {
         val sceneData = ctx.client.getObjType_cachedModels()
         val region = ctx.client.getScene()
-        val localPlayer = Players(ctx).getLocal()
+        val localPlayer = ctx.players.getLocal()
         var planeInt = 0
         region.getTiles().iterator().forEach { plane ->
             if (planeInt == ctx.client.getPlane()) {

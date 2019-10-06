@@ -5,8 +5,6 @@ import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.wrappers.tabs.Inventory
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -61,14 +59,14 @@ class GroundItem(
     }
 
     suspend fun take() {
-        val inventoryCount = ctx?.client?.let { Inventory(ctx).getCount() }
+        val inventoryCount = ctx?.client?.let { ctx.inventory.getCount() }
         if (interact("Take")) {
             Utils.waitFor(2, object : Utils.Condition {
 
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { Inventory(ctx).getCount() }}")
-                    return inventoryCount != ctx?.client?.let { Inventory(ctx).getCount() }
+                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { ctx.inventory.getCount() }}")
+                    return inventoryCount != ctx?.client?.let { ctx.inventory.getCount() }
                 }
             })
         }

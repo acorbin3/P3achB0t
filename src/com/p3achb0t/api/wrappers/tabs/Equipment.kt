@@ -1,11 +1,9 @@
 package com.p3achb0t.api.wrappers.tabs
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.Items
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 
 class Equipment(val ctx: Context) {
@@ -36,20 +34,20 @@ class Equipment(val ctx: Context) {
     }
 
     fun isOpen(): Boolean {
-        return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Equiptment
+        return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
     }
 
     suspend fun open(waitForActionToComplete: Boolean = true) {
         if (isOpen()) return
 
         println("Opening Equiptment tab")
-        Tabs(ctx).openTab(Tabs.Tab_Types.Equiptment)
+        ctx.tabs.openTab(Tabs.Tab_Types.Equiptment)
         //Wait for tab to be open
         if (waitForActionToComplete)
             Utils.waitFor(2, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    return Tabs(ctx).getOpenTab() == Tabs.Tab_Types.Equiptment
+                    return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
                 }
             })
         if (!isOpen()) open()
@@ -86,7 +84,7 @@ class Equipment(val ctx: Context) {
 
     fun isEquipmentSlotEquipted(slot: Slot): Boolean {
         try {
-            val item = Items(ctx.client).getItemInfo(
+            val item = ctx.items.getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
             )
@@ -100,8 +98,8 @@ class Equipment(val ctx: Context) {
 
     fun getItemAtSlot(slot: Slot): WidgetItem? {
         return try {
-            val widget = Widgets.find(ctx, WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
-            val item = Items(ctx.client).getItemInfo(
+            val widget = ctx.widgets.find(WidgetID.EQUIPMENT_GROUP_ID, slot.widgetID)
+            val item = ctx.items.getItemInfo(
                     NODE_ID,
                     slot.cacheIndex
             )
