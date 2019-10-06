@@ -42,7 +42,7 @@ abstract class Interactable(val ctx: Context?) {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         while (true) {
-            val startPoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
+            val startPoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
 //            val distance = startPoint?.distance(desiredPoint)
             ctx?.mouse?.moveMouse(desiredPoint, click = false)
             if(isMouseOverObj()){break}

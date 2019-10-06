@@ -13,17 +13,17 @@ class GoblinKiller : AbstractScript() {
     var state = 0
 
     //var playerss = ctx.getPlayers() GIVES an error
-    override suspend fun loop() {
+    override fun loop() {
 
         Thread.sleep(500)
 
     }
 
-    override suspend fun start() {
+    override fun start() {
         state = ctx.client.getGameState() // this works
     }
 
-    override suspend fun stop() {
+    override fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

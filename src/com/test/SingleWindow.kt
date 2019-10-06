@@ -13,7 +13,7 @@ class SingleWindow(val bot: Bot) {
         frame.size = Dimension(800, 800)
         frame.setLocationRelativeTo(null)
         frame.isVisible = true
-        frame.add(bot.applet)
+        frame.add(bot.getApplet())
     }
 
     fun destroy() {

@@ -8,7 +8,9 @@ import javax.swing.JFrame
 class BotWindow : JFrame(){
 
     val manager = Manager()
+
     init {
+        System.setProperty("user.home", "cache")
         title = "RuneScape Bot ALPHA"
         defaultCloseOperation = EXIT_ON_CLOSE
         setLocationRelativeTo(null)

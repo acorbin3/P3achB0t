@@ -18,7 +18,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
     val debugText = arrayListOf<DebugText>()
     if (true) {
         g.color = Color.white
-        debugText.add(DebugText("Mouse x:${ctx.mouse.ioMouse.getX()} y:${ctx.mouse.ioMouse.getY()}"))
+        debugText.add(DebugText("Mouse x:${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))

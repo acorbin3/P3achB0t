@@ -5,27 +5,27 @@ import com.p3achb0t.client.managers.tabs.TabManager
 import java.awt.Dimension
 import javax.swing.JFrame
 
-class StandaloneWindow(val bot: Bot, val tabManager: TabManager): JFrame("Bot") {
-    val frame: JFrame
+class StandaloneWindow(val bot: Bot, val tabManager: TabManager): JFrame(bot.id) {
+    //val frame: JFrame
     init {
-        frame = JFrame()
-        frame.isFocusable = true
-        frame.focusTraversalKeysEnabled = true
-        frame.size = Dimension(800, 600)
-        frame.setLocationRelativeTo(null)
-        frame.isVisible = true
-        frame.revalidate()
+        //frame = JFrame()
+        isFocusable = true
+        focusTraversalKeysEnabled = true
+        size = Dimension(800, 600)
+        setLocationRelativeTo(null)
+        isVisible = true
+        revalidate()
 
     }
 
     fun start() {
-        frame.add(bot.applet)
+        add(bot.getApplet())
     }
 
     fun attach() {
         tabManager.attach(bot)
-        frame.isVisible = false
+        isVisible = false
         Thread.sleep(1000)
-        frame.dispose()
+        dispose()
     }
 }

@@ -53,4 +53,8 @@ class NPCs(val ctx: Context) {
         }
         return npcs
     }
+
+    fun getNearestNPC() : NPC {
+        return findNpcs(true)[0]
+    }
 }

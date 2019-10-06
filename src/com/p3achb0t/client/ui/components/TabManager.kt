@@ -51,7 +51,7 @@ class TabManager private constructor() : JTabbedPane() {
         thread(start = true) {
             println("running from thread(): ${Thread.currentThread()}")
             //clients.get(s).client!!.setApplet()
-            clients.get(s).client!!.applet?.destroy()
+            clients.get(s).client!!.getApplet()?.destroy()
             remove(s)
             clients.removeAt(s)
         }

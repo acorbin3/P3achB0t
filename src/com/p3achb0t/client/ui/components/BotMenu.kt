@@ -34,13 +34,12 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val test1 = JMenuItem("Detach bot")
         test1.addActionListener {
-            val selectedBot = manager.tabManager.getSelectedTabBot()
-            manager.tabManager.detach(selectedBot.bot)
+            manager.tabManager.detach()
         }
 
         val test2 = JMenuItem("Remove")
         test2.addActionListener {
-            manager.tabManager.destroy("sdertegr")
+            //manager.tabManager.destroy("sdertegr")
             //println("$count")
         }
 
@@ -54,10 +53,16 @@ class BotMenu(val manager: Manager): JMenuBar()  {
             manager.printBots()
         }
 
+        val test5 = JMenuItem("Repaint")
+        test5.addActionListener {
+            manager.tabManager.getSelectedTabBot().bot.getApplet().repaint()
+        }
+
         menu.add(test1)
         menu.add(test2)
         menu.add(test3)
         menu.add(test4)
+        menu.add(test5)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         return menu

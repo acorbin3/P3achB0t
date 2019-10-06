@@ -11,26 +11,21 @@ class Manager {
 
     val accountManager = AccountManager()
     val tabManager = TabManager(this)
-    val bots = mutableMapOf<String, Bot>()
+    val bots = mutableListOf<Bot>()
 
     init {
 
     }
 
     fun addBot() {
-        val uuid = UUID.randomUUID().toString()
-        bots[uuid] = Bot(80)
-        tabManager.display(uuid, bots[uuid]!!)
-
-    }
-
-    fun getBots(): List<Bot> {
-        return ArrayList(bots.values)
+        val bot = Bot(80)
+        bots.add(bot)
+        tabManager.display(bot)
     }
 
     fun printBots() {
-        for (bot in bots.keys) {
-            println("Bot id: $bot")
+        for (bot in bots) {
+            println("Bot id: ${bot.id}")
         }
     }
 
@@ -44,13 +39,6 @@ class Manager {
 
     }
 
-    fun detach() {
-
-    }
-
-    fun attach() {
-
-    }
 
     // Test
     val bots_old = mutableListOf<Bot>()

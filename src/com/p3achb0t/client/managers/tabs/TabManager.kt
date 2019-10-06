@@ -3,41 +3,71 @@ package com.p3achb0t.client.managers.tabs
 import com.p3achb0t.client.Bot
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.test.StandaloneWindow
-import com.test.SingleWindow2
 import javax.swing.JTabbedPane
+import javax.swing.event.ChangeEvent
+import javax.swing.event.ChangeListener
+
 
 class TabManager(val manager: Manager) : JTabbedPane() {
 
-    private val displaying = mutableListOf<String>()
+    private var counter = 0
+    private val bots = mutableMapOf<Int, Bot>()
 
     init {
         validate()
+        // needs fixing hack!!!!!
+        val changeListener: ChangeListener = object : ChangeListener {
+            override fun stateChanged(changeEvent: ChangeEvent) {
+                val sourceTabbedPane = changeEvent.source as JTabbedPane
+                val botPane = sourceTabbedPane.selectedComponent as BotPane
+                botPane.bot.getApplet().repaint()
+            }
+        }
+        addChangeListener(changeListener)
     }
 
-    fun display(session: String, bot: Bot) {
-        displaying.add(session)
-        add("Bot 1", BotPane(bot))
+    fun create() {
+        val bot = Bot(80)
+        bots[counter] = bot
+        add("$counter", BotPane(bot))
+        counter++
     }
 
-    fun attach(bot: Bot) {
-        add(BotPane(bot))
+    fun destroy(id: Int) {
+        val botPane = lookupBotPane(id)
+        println(botPane.bot.id)
+        Thread {
+            botPane.destroy()
+            remove(botPane)
+            bots.remove(id)
+        }.start()
     }
 
-    fun detach(bot: Bot) {
-        val botPane = this.selectedComponent as BotPane
-        val window = StandaloneWindow(bot,this)
-        Thread.sleep(50) // working but needs some more testing...
-        window.start()
-        remove(botPane)
+    fun getBots() {
+        for (i in bots.keys) {
+            println("Bot: $i")
+        }
     }
 
-    fun destroy(session: String) {
-        displaying.remove(session)
-        setEnabledAt(selectedIndex, false)
-        val botPane = this.selectedComponent as BotPane
-        botPane.destroy()
-        remove(botPane)
+    private fun lookupBotPane(id: Int) : BotPane {
+        val index = indexOfTab("$id")
+        return getComponentAt(index) as BotPane
     }
+
+    fun lookupBot(id: Int) : Bot {
+        val index = indexOfTab("$id")
+        return (getComponentAt(index) as BotPane).bot
+    }
+
+
+
+
+
+
+
+
+
+
 
     fun getSelectedTabIndex() : Int {
         return selectedIndex
@@ -58,6 +88,21 @@ class TabManager(val manager: Manager) : JTabbedPane() {
         f.destroy()
         return selectedIndex
     }
+    fun display(bot: Bot) {
 
+        add("Bot", BotPane(bot))
+    }
+
+    fun attach(bot: Bot) {
+        add(BotPane(bot))
+    }
+
+    fun detach() {
+        val botPane = this.selectedComponent as BotPane
+        val window = StandaloneWindow(botPane.bot,this)
+        Thread.sleep(50) // working but needs some more testing...
+        window.start()
+        remove(botPane)
+    }
 
 }

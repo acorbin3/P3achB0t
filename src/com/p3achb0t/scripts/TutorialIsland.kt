@@ -19,21 +19,22 @@ private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
-    override suspend fun loop() {
+
+    override  fun loop() {
 
         
-        run()
+        //run()
         //Delay between 0-50 ms
-        delay((Math.random() * 50).toLong())
+       // delay((Math.random() * 50).toLong())
 
     }
 
-    override suspend fun start() {
+    override  fun start() {
         println("Running Start")
         println("Running Start2")
     }
 
-    override suspend fun stop() {
+    override fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
