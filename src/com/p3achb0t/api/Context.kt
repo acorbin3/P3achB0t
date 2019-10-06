@@ -59,7 +59,6 @@ class Context(val obj: Any) {
         prayer = Prayer(this)
         tabs = Tabs(this)
         widgets = Widgets(this)
-
     }
 }
 

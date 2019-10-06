@@ -107,7 +107,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             //manager.changeWindow()
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
             val manager = game.client.getScriptManager()
-            manager.setScript(MouseIntercept())
+            //manager.setScript(MouseIntercept())
             //f.client.applet.focusTraversalKeysEnabled = true
         }
 
