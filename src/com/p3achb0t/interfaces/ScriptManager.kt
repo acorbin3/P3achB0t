@@ -1,10 +1,11 @@
 package com.p3achb0t.interfaces
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 
@@ -21,6 +22,9 @@ class ScriptManager(val client: Any) {
     var captureScreen = false
     var captureScreenFrame = 1000
     private var isRunning = false
+    private var paused = false
+    lateinit var thread: Job
+
 
     fun setScript(s: AbstractScript) {
         s.initialize(client)
@@ -31,31 +35,45 @@ class ScriptManager(val client: Any) {
         return script
     }
 
-    fun loop() {
+    suspend fun loop() {
         if (isRunning) {
             script.loop()
         }
     }
 
 
-    fun start() {
-        //mouse.inputBlocked(true)
+    suspend fun start() = runBlocking {
+        mouse.inputBlocked(true)
         isRunning = true
+        thread = launch {
+            while (true) {
+                while (paused) {
+                    delay(100)
+                }
+                loop()
+            }
+        }
+
+
         script.start()
 
     }
 
     fun pause() {
         isRunning = false
+        paused = true
+
     }
 
     fun resume() {
         isRunning = true
+        paused = false
     }
 
-    fun stop() {
+    suspend fun stop() {
         isRunning = false
         script.stop()
+        thread.cancel()
 
     }
 

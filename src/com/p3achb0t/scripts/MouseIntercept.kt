@@ -5,15 +5,15 @@ import com.p3achb0t.api.Calculations
 import java.awt.Graphics
 
 class MouseIntercept : AbstractScript() {
-    override fun loop() {
+    override suspend fun loop() {
 
     }
 
-    override fun start() {
+    override suspend fun start() {
 
     }
 
-    override fun stop() {
+    override suspend fun stop() {
 
     }
 

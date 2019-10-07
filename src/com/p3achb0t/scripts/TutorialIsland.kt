@@ -21,7 +21,7 @@ private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
-    override fun loop() {
+    override suspend fun loop() {
 
         //run()
         //Delay between 0-50 ms
@@ -29,7 +29,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    override fun start() {
+    override suspend fun start() {
         try {
             stopwatch.start()
         } catch (e: Exception) {
@@ -42,7 +42,7 @@ class TutorialIsland: AbstractScript()  {
         }
     }
 
-    override fun stop() {
+    override suspend fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
