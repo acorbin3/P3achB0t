@@ -19,7 +19,7 @@ class GoblinKiller : AbstractScript() {
         state = ctx.client.getGameState() // this works
     }
 
-    override suspend fun stop() {
+    override fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

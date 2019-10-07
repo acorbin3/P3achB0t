@@ -11,7 +11,7 @@ class NullScript : AbstractScript() {
         println("Started")
     }
 
-    override suspend fun stop() {
+    override fun stop() {
         println()
         println("Stopped")
     }

@@ -23,9 +23,9 @@ class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
     override suspend fun loop() {
 
-        //run()
+        run()
         //Delay between 0-50 ms
-        //delay((Math.random() * 50).toLong())
+        delay((Math.random() * 50).toLong())
 
     }
 
@@ -37,19 +37,21 @@ class TutorialIsland: AbstractScript()  {
         println("Running Start")
         println("Running Start2")
         LoggingIntoAccount(ctx)
+        //Lets wait till the client is logged in
         while (ctx.client.getGameState() != 30) {
-            //delay(100)
+            delay(100)
         }
     }
 
-    override suspend fun stop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun stop() {
+        println("Stopping tutorial island script")
     }
 
     override fun draw(g: Graphics) {
         debugPaint(ctx, g)
         g.color = Color.WHITE
         g.drawString("Current Runtime: $stopwatch", 10, 450)
+
         super.draw(g)
     }
 

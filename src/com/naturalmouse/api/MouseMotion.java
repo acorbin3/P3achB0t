@@ -9,8 +9,8 @@ import com.naturalmouse.util.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayDeque;
 import java.awt.*;
+import java.util.ArrayDeque;
 import java.util.Random;
 
 /**
@@ -45,6 +45,7 @@ public class MouseMotion {
    * @param random the random used for unpredictability
    */
   public MouseMotion(MouseMotionNature nature, Random random, int xDest, int yDest) {
+
     this.deviationProvider = nature.getDeviationProvider();
     this.noiseProvider = nature.getNoiseProvider();
     this.systemCalls = nature.getSystemCalls();
@@ -80,7 +81,7 @@ public class MouseMotion {
    */
   public void move(MouseMotionObserver observer) throws InterruptedException {
     updateMouseInfo();
-    log.info("Starting to move mouse to ({}, {}), current position: ({}, {})", xDest, yDest, mousePosition.x, mousePosition.y);
+//    log.info("Starting to move mouse to ({}, {}), current position: ({}, {})", xDest, yDest, mousePosition.x, mousePosition.y);
 
     MovementFactory movementFactory = new MovementFactory(xDest, yDest, speedManager, overshootManager, screenSize);
     ArrayDeque<Movement> movements = movementFactory.createMovements(mousePosition);
@@ -91,14 +92,14 @@ public class MouseMotion {
         // Then just re-attempt from mouse new position. (There are known JDK bugs, that can cause sending the cursor
         // to wrong pixel)
         updateMouseInfo();
-        log.warn("Re-populating movement array. Did not end up on target pixel.");
+//        log.warn("Re-populating movement array. Did not end up on target pixel.");
         movements = movementFactory.createMovements(mousePosition);
       }
 
       Movement movement = movements.removeFirst();
       if (!movements.isEmpty()) {
-        log.debug("Using overshoots ({} out of {}), aiming at ({}, {})",
-            overshoots - movements.size() + 1, overshoots, movement.destX, movement.destY);
+//        log.debug("Using overshoots ({} out of {}), aiming at ({}, {})",
+//            overshoots - movements.size() + 1, overshoots, movement.destX, movement.destY);
       }
 
       double distance = movement.distance;
@@ -106,7 +107,7 @@ public class MouseMotion {
       Flow flow = movement.flow;
       double xDistance = movement.xDistance;
       double yDistance = movement.yDistance;
-      log.debug("Movement arc length computed to {} and time predicted to {} ms", distance, mouseMovementMs);
+//      log.debug("Movement arc length computed to {} and time predicted to {} ms", distance, mouseMovementMs);
 
       /* Number of steps is calculated from the movement time and limited by minimal amount of steps
          (should have at least MIN_STEPS) and distance (shouldn't have more steps than pixels travelled) */
@@ -143,7 +144,7 @@ public class MouseMotion {
         completedYDistance += yStepSize;
         double completedDistance = Math.hypot(completedXDistance, completedYDistance);
         double completion = Math.min(1, completedDistance / distance);
-        log.trace("Step: x: {} y: {} tc: {} c: {}", xStepSize, yStepSize, timeCompletion, completion);
+//        log.trace("Step: x: {} y: {} tc: {} c: {}", xStepSize, yStepSize, timeCompletion, completion);
 
         DoublePoint noise = noiseProvider.getNoise(random, xStepSize, yStepSize);
         DoublePoint deviation = deviationProvider.getDeviation(distance, completion);
@@ -153,8 +154,8 @@ public class MouseMotion {
         simulatedMouseX += xStepSize;
         simulatedMouseY += yStepSize;
 
-        log.trace("EffectFadeMultiplier: {}", effectFadeMultiplier);
-        log.trace("SimulatedMouse: [{}, {}]", simulatedMouseX, simulatedMouseY);
+//        log.trace("EffectFadeMultiplier: {}", effectFadeMultiplier);
+//        log.trace("SimulatedMouse: [{}, {}]", simulatedMouseX, simulatedMouseY);
 
         long endTime = startTime + stepTime * (i + 1);
         int mousePosX = MathUtil.roundTowards(
@@ -191,10 +192,10 @@ public class MouseMotion {
         // It's possible that mouse is manually moved or for some other reason.
         // Let's start next step from pre-calculated location to prevent errors from accumulating.
         // But print warning as this is not expected behavior.
-        log.warn("Mouse off from step endpoint (adjustment was done) " +
-            "x: (" + mousePosition.x + " -> " + movement.destX + ") " +
-            "y: (" + mousePosition.y + " -> " + movement.destY + ") "
-        );
+//        log.warn("Mouse off from step endpoint (adjustment was done) " +
+//            "x: (" + mousePosition.x + " -> " + movement.destX + ") " +
+//            "y: (" + mousePosition.y + " -> " + movement.destY + ") "
+//        );
         systemCalls.setMousePosition(movement.destX, movement.destY);
         // Let's wait a bit before getting mouse info.
         sleepAround(SLEEP_AFTER_ADJUSTMENT_MS, 0);
@@ -205,9 +206,9 @@ public class MouseMotion {
         // We are dealing with overshoot, let's sleep a bit to simulate human reaction time.
         sleepAround(reactionTimeBaseMs, reactionTimeVariationMs);
       }
-      log.debug("Steps completed, mouse at " + mousePosition.x + " " + mousePosition.y);
+//      log.debug("Steps completed, mouse at " + mousePosition.x + " " + mousePosition.y);
     }
-    log.info("Mouse movement to ({}, {}) completed", xDest, yDest);
+//    log.info("Mouse movement to ({}, {}) completed", xDest, yDest);
   }
 
   private int limitByScreenWidth(int value) {
@@ -222,7 +223,7 @@ public class MouseMotion {
     long sleepTime = (long) (sleepMin + random.nextDouble() * randomPart);
     if (log.isTraceEnabled() && sleepTime > 0) {
       updateMouseInfo();
-      log.trace("Sleeping at ({}, {}) for {} ms", mousePosition.x, mousePosition.y, sleepTime);
+//      log.trace("Sleeping at ({}, {}) for {} ms", mousePosition.x, mousePosition.y, sleepTime);
     }
     systemCalls.sleep(sleepTime);
   }

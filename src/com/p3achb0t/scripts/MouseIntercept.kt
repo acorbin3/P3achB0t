@@ -13,7 +13,7 @@ class MouseIntercept : AbstractScript() {
 
     }
 
-    override suspend fun stop() {
+    override fun stop() {
 
     }
 

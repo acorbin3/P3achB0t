@@ -22,7 +22,7 @@ class Walking {
                         delay(100)
                         val curDist = it.distanceTo()
                         if (distance != curDist) {
-                            println("Distance: $curDist")
+                            print("Distance: $curDist ")
                             distance = curDist
                         }
                         return curDist < 4

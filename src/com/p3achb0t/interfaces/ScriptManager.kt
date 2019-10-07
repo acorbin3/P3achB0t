@@ -2,10 +2,10 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 
@@ -37,15 +37,23 @@ class ScriptManager(val client: Any) {
 
     suspend fun loop() {
         if (isRunning) {
-            script.loop()
+            try {
+                script.loop()
+            } catch (e: Error) {
+                for (el in e.stackTrace) {
+                    println(el.toString())
+                }
+            }
         }
     }
 
 
-    suspend fun start() = runBlocking {
-        mouse.inputBlocked(true)
+    fun start() {
+//        mouse.inputBlocked(true)
         isRunning = true
-        thread = launch {
+        //This the script thread.
+        thread = GlobalScope.launch {
+            script.start()
             while (true) {
                 while (paused) {
                     delay(100)
@@ -55,7 +63,7 @@ class ScriptManager(val client: Any) {
         }
 
 
-        script.start()
+
 
     }
 
@@ -70,7 +78,7 @@ class ScriptManager(val client: Any) {
         paused = false
     }
 
-    suspend fun stop() {
+    fun stop() {
         isRunning = false
         script.stop()
         thread.cancel()

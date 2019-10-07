@@ -14,7 +14,7 @@ abstract class AbstractScript {
 
     abstract suspend fun start()
 
-    abstract suspend fun stop()
+    abstract fun stop()
 
     open fun draw(g: Graphics) {}
 }
