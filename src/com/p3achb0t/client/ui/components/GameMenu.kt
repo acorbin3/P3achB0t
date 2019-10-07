@@ -60,7 +60,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         widgetExplorer.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            WidgetExplorerV3.createWidgetExplorer(Context(game.client))
+            WidgetExplorerV3.createWidgetExplorer(Context(game.client.getClient()))
         }
 
 
