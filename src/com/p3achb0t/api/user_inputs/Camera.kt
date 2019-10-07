@@ -38,6 +38,10 @@ class Camera(val ctx: Context) {
         return degree.toInt()
     }
 
+    fun swingTo(locatable: Locatable) {
+        turnAngleTo(locatable)
+    }
+
     fun turnTo(locatable: Locatable) {
         turnPitchTo(locatable)
         turnAngleTo(locatable)

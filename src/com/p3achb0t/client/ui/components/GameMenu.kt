@@ -1,9 +1,11 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.GoblinKiller
 import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -57,8 +59,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val widgetExplorer = JMenuItem("Open Widget Explorer")
         widgetExplorer.addActionListener {
 
-            //val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            //WidgetExplorerV3.createWidgetExplorer(Context(game.client.manager))
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            WidgetExplorerV3.createWidgetExplorer(Context(game.client))
         }
 
 

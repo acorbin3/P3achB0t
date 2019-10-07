@@ -21,6 +21,7 @@ private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
+    var currentJob = ""
     override suspend fun loop() {
 
         run()
@@ -51,7 +52,7 @@ class TutorialIsland: AbstractScript()  {
         debugPaint(ctx, g)
         g.color = Color.WHITE
         g.drawString("Current Runtime: $stopwatch", 10, 450)
-
+        g.drawString(currentJob, 10, 460)
         super.draw(g)
     }
 
@@ -136,6 +137,7 @@ class TutorialIsland: AbstractScript()  {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             if (it.isValidToRun(chatBox)) {
                 println("Running: ${it.javaClass.name}")
+                currentJob = it.javaClass.name
                 it.execute()
                 println("Completed: ${it.javaClass.name}")
             }
@@ -281,7 +283,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val text = "Options menu"
-            return chatBox.containsText(text)
+            return chatBox.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Options
         }
 
         override suspend fun execute() {
@@ -419,7 +421,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenInvetory(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("click on the flashing backpack icon")
+            return dialogWidget.containsText("click on the flashing backpack icon") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Inventory
         }
 
         override suspend fun execute() {
@@ -462,7 +464,7 @@ class TutorialIsland: AbstractScript()  {
     class ClickSkillsTab(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "on the flashing bar graph icon near the inventory"
-            return dialogWidget.containsText(text)
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Skills
         }
 
         override suspend fun execute() {
@@ -726,7 +728,6 @@ class TutorialIsland: AbstractScript()  {
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
             ctx.camera.turnTo(range)
-            //TODO - Need to improve ineract when menu is full
             range.interact("Cook Range")
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
@@ -837,7 +838,7 @@ class TutorialIsland: AbstractScript()  {
     class OpenQuestList(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Click on the flashing icon to the left of your inventory"
-            return dialogWidget.containsText(text)
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.QuestList
         }
 
         override suspend fun execute() {
@@ -988,6 +989,8 @@ class TutorialIsland: AbstractScript()  {
             val furnace = ctx.gameObjects.find("Furnace")[0]
             if (!furnace.isOnScreen()) furnace.turnTo()
             furnace.click()
+            delay(100)
+            ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
         }
 
@@ -1068,6 +1071,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx.camera.setHighPitch()
                 ctx.camera.turnEast()
                 gate[0].interact("Open")
+                delay(100)
                 //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 ctx.players.getLocal().waitTillIdle()
             }
@@ -1108,7 +1112,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenEquipment(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You now have access to a new")
+            return dialogWidget.containsText("You now have access to a new") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Equiptment
         }
 
         override suspend fun execute() {
@@ -1175,7 +1179,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenCombatTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing crossed")
+            return dialogWidget.containsText("Click on the flashing crossed") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Combat
         }
 
         override suspend fun execute() {
@@ -1496,7 +1500,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenAccountManager(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open your Account Management")
+            return dialogWidget.containsText("Click on the flashing icon to open your Account Management") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.AccountManagement
         }
 
         override suspend fun execute() {
@@ -1554,7 +1558,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenPrayerTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.")
+            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Prayer
         }
 
         override suspend fun execute() {
@@ -1565,7 +1569,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenFriendsTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face")
+            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.FriendsList
         }
 
         override suspend fun execute() {
@@ -1624,7 +1628,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenMagicTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Open up the magic interface")
+            return dialogWidget.containsText("Open up the magic interface") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Magic
         }
 
         override suspend fun execute() {
@@ -1644,7 +1648,8 @@ class TutorialIsland: AbstractScript()  {
             val chickens = ctx.npcs.findNpc("Chicken")
             if (chickens.isNotEmpty()) {
                 val randChick = Random.nextInt(0, chickens.size - 1)
-                chickens[randChick].turnTo()
+                chickens[randChick].swingTo()
+                ctx.camera.setHighPitch()
                 chickens[randChick].interact("Cast")
                 Utils.waitFor(7, object : Utils.Condition {
                     override suspend fun accept(): Boolean {

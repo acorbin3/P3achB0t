@@ -94,7 +94,12 @@ class Interact(val ctx: Context) {
                     //Reinteracte with menu
                     interact(point, action, retryCount + 1)
                 }
+                if (actionPoint == Point(-1, -1)) {
+                    print("Could not find $action in menue")
+                    return false
+                }
                 println("Clicking $action")
+
                 var res = ctx.mouse.moveMouse(actionPoint, click = true)
                 println("Res: $res")
                 delay((Math.random() * 200 + 100).toLong())

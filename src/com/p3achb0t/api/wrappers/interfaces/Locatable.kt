@@ -62,6 +62,11 @@ interface Locatable {
         })
     }
 
+    suspend fun swingTo() {
+        loc_ctx?.camera?.swingTo(this)
+        delay(Random.nextLong(100, 200))
+    }
+
     suspend fun turnTo() {
         loc_ctx?.camera?.turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
