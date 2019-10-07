@@ -5,6 +5,9 @@ import java.awt.event.*
 
 abstract class Mouse : MouseListener, MouseMotionListener, MouseWheelListener {
     private var inputBlocked = false
+    var isPressed = false
+
+
 
     fun inputBlocked(value: Boolean) {
         inputBlocked = value
@@ -41,12 +44,14 @@ abstract class Mouse : MouseListener, MouseMotionListener, MouseWheelListener {
     }
 
     override fun mousePressed(e: MouseEvent) {
+        isPressed = true
         if (!inputBlocked)
             _mousePressed(e)
         e.consume()
     }
 
     override fun mouseReleased(e: MouseEvent) {
+        isPressed = false
         if (!inputBlocked)
             _mouseReleased(e)
         e.consume()

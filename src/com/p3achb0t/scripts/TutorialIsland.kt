@@ -21,15 +21,15 @@ private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
-    override suspend fun loop() {
+    override fun loop() {
 
-        run()
+        //run()
         //Delay between 0-50 ms
-        delay((Math.random() * 50).toLong())
+        //delay((Math.random() * 50).toLong())
 
     }
 
-    override suspend fun start() {
+    override fun start() {
         try {
             stopwatch.start()
         } catch (e: Exception) {
@@ -38,11 +38,11 @@ class TutorialIsland: AbstractScript()  {
         println("Running Start2")
         LoggingIntoAccount(ctx)
         while (ctx.client.getGameState() != 30) {
-            delay(100)
+            //delay(100)
         }
     }
 
-    override suspend fun stop() {
+    override fun stop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

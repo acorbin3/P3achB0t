@@ -30,7 +30,7 @@ class WidgetItem(
     }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
+        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
         return area.contains(mousePoint)
     }
 

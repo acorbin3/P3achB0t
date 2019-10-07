@@ -1,10 +1,13 @@
 package com.p3achb0t.client.test
 
 import com.p3achb0t.client.Bot
+import com.p3achb0t.client.managers.Manager
 import java.awt.Dimension
 import javax.swing.*
 
 class ManagerUX : JFrame() {
+
+    var tabBotWindow: BotWindow? = null
 
     init {
         title = "Bot Manager"
@@ -28,6 +31,18 @@ class ManagerUX : JFrame() {
 
     private fun overview() : JPanel{
         val pane = JPanel()
+        val addBot = JButton("add bot")
+
+        addBot.addActionListener {
+            if (tabBotWindow == null) {
+                tabBotWindow = BotWindow()
+            }
+            tabBotWindow?.manager?.addBot()
+        }
+
+        pane.add(addBot)
+
+
 
         return pane
     }
@@ -44,6 +59,7 @@ class ManagerUX : JFrame() {
 
 
 fun main() {
+    System.setProperty("user.home", "cache")
     val manager = ManagerUX()
 
 }

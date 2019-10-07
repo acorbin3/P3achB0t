@@ -70,13 +70,17 @@ class Analyser{
                 AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bd", "u", "Lbd;") // MouseHandler_instance
             }
 
+            if (clazzData.`class` == "GameShell") {
+                injectGameLoop(classes[clazzData.name]!!)
+            }
+
             if(clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
             }
 
             if (clazzData.`class` == "Canvas") {
                 injectCanvas(classes[clazzData.name]!!)
-                println("${clazzData.name} : ${clazzData.`super`} ")
+                //println("${clazzData.name} : ${clazzData.`super`} ")
             }
 
             val classInterface = "$classPath/${clazzData.`class`}"
@@ -209,6 +213,45 @@ class Analyser{
         }
     }
 
+    private fun injectGameLoop(classNode: ClassNode) {
+        for (method in classNode.methods) {
+            if (method.name != "run") {
+                continue
+            }
+
+            val insn = method.instructions.iterator()
+            while (insn.hasNext()) {
+                val i = insn.next()
+                if (i.opcode == GETFIELD) {
+                    val field = i as FieldInsnNode
+                    if (field.desc == "Ljava/awt/Canvas;") {
+                        println("---> ${field.desc}")
+                        while (insn.hasNext()) {
+                            val j = insn.next()
+                            if (j.opcode == GOTO) {
+                                val prev = j.previous
+                                val il = InsnList()
+                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "loop", "()V"))
+                                //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
+                                //il.add(LdcInsnNode("."));
+                                //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V"))
+                                method.instructions.insert(prev, il)
+                                method.maxStack += 1
+                                println("found")
+                                break
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
+
     private fun putClasses(name: String): ByteArray {
         val file = File(name)
         return file.readBytes()
@@ -286,7 +329,7 @@ class Analyser{
                         val mnode = insn
                         if (mnode.owner == "java/net/Socket" && insn.opcode == INVOKESPECIAL) {
                             mnode.owner = "ProxySocket"
-                            println("#####################################################3")
+                            //println("#####################################################3")
                             //mnode.desc = "(Ljava/net/InetAddress;ILcom/p3achb0t/injection/Replace/ProxySocket;)V"
                             //val ins = InsnList()
                             //ins.add(FieldInsnNode(GETSTATIC, "client", "proxy","Lcom/p3achb0t/injection/Replace/ProxySocket;"))
@@ -353,7 +396,7 @@ class Analyser{
         }
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null")) {
-                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
+                //println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
                 methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")

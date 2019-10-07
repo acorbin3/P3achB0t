@@ -28,7 +28,7 @@ fun drawRect(g: Graphics, rect: Rectangle) {
 fun debugPaint(ctx: Context, g: Graphics) {
     try {
         g.color = Color.white
-        g.drawRect(ctx.mouse.ioMouse.getX(), ctx.mouse.ioMouse.getY(), 5, 5)
+        g.drawRect(ctx!!.mouse.getX(), ctx.mouse.getY(), 5, 5)
         if (PaintDebug.isDebugTextOn)
             drawDebugText(g, ctx)
 

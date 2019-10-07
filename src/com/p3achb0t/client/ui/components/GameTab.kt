@@ -15,7 +15,7 @@ class GameTab : JPanel() {
          client = Bot(80)
          size = Dimension(800,600)
          //validate()
-         add(client.applet)
+         add(client.getApplet())
          revalidate()
     }
 

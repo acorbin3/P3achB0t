@@ -16,9 +16,18 @@ import kotlin.random.Random
 
 class Mouse(obj: Any) {
 
-    val component: Component = (obj as Applet).getComponent(0)
-    val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
-    val ioMouse: Mouse = (obj as IScriptManager).getMouse()
+    private val component: Component = (obj as Applet).getComponent(0)
+    private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
+    private val ioMouse: Mouse = (obj as IScriptManager).getMouse()
+
+    fun getX() : Int {
+        return ioMouse.getX()
+    }
+
+
+    fun getY() : Int {
+        return ioMouse.getY()
+    }
 
     enum class ClickType {
         Right,

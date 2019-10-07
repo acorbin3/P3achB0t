@@ -57,7 +57,7 @@ class Interact(val ctx: Context) {
 
             //Move ctx.mouse to the point
 
-            if (ctx.mouse.ioMouse.getX() == point.x && ctx.mouse.ioMouse.getY() == point.y) {
+            if (ctx.mouse.getX() == point.x && ctx.mouse.getY() == point.y) {
                 //Dont need to move the ctx.mouse
             } else {
                 point.let { it1 -> ctx.mouse.moveMouse(it1, click = false) }
