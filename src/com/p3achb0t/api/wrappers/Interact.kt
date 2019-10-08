@@ -90,7 +90,7 @@ class Interact(val ctx: Context) {
                         }
                     }
                     //Give up after 2 trys
-                    if (retryCount == 2) return false
+                    if (retryCount == 1) return false
                     //Reinteracte with menu
                     interact(point, action, retryCount + 1)
                 }

@@ -50,7 +50,7 @@ class TutorialIsland: AbstractScript()  {
 
     override fun draw(g: Graphics) {
         debugPaint(ctx, g)
-        g.color = Color.WHITE
+        g.color = Color.black
         g.drawString("Current Runtime: $stopwatch", 10, 450)
         g.drawString(currentJob, 10, 460)
         super.draw(g)
@@ -914,7 +914,6 @@ class TutorialIsland: AbstractScript()  {
             return dialogWidget.containsText(text)
         }
 
-        //TODO - Sometimes this job gets stuck. Look into why. I think the continueDialog might run into an infinate loop
         override suspend fun execute() {
             val walkingPath = arrayListOf(Tile(3079, 9512, ctx = ctx), Tile(3081, 9504, ctx = ctx))
             Walking.walkPath(walkingPath)

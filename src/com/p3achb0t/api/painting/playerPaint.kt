@@ -1,9 +1,9 @@
 package com.p3achb0t.api.painting
 
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics
 
@@ -31,7 +31,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 val polygon = getActorTriangles(
                         _player,
                         ctx.client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__n(), ctx
+                        _player.getAppearance().get__p(), ctx
 
                 )
                 g.color = Color.YELLOW
@@ -41,7 +41,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 val ch = getConvexHull(
                         _player,
                         ctx.client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__n(), ctx
+                        _player.getAppearance().get__p(), ctx
 
                 )
                 g.color = Color.RED

@@ -63,6 +63,9 @@ open class Actor(
         delay(Random.nextLong(100, 400))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
+                //Need to make sure we are idle for at least 200ms
+                if (ctx!!.players.getLocal().isIdle())
+                    delay(100)
                 delay(100)
                 return if (ctx?.client != null) ctx.players.getLocal().isIdle() else return false
             }
