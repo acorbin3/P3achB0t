@@ -4,7 +4,7 @@ import java.awt.Graphics
 
 abstract class AbstractScript {
 
-    protected lateinit var ctx: Context
+    lateinit var ctx: Context
 
     fun initialize(client: Any) {
         ctx = Context(client)
