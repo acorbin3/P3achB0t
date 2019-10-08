@@ -244,7 +244,7 @@ class TutorialIsland: AbstractScript()  {
             val randomNumberOfChanges = Random.nextInt(3, 10)
             println("Making $randomNumberOfChanges of changes")
             for (i in 0..randomNumberOfChanges) {
-                val column = Random.nextInt(1, 15)
+                val column = Random.nextInt(1, 4)//DO NOT CHANGE THIS
                 val widgetIndex = Widget.WidgetIndex("269", "0")
                 when (column) {
                     1 -> widgetIndex.childID = (106..112).random().toString()
