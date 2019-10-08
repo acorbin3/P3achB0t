@@ -171,8 +171,27 @@ class TutorialIsland: AbstractScript()  {
     class PickName(val ctx: Context)  : Job(ctx.client) {
 
         val names = arrayListOf(
-                "PapaBadass", "randomBJ", "kamalchettiar", "all_negative_", "s0meguy",
-                "shouldidivorce", "kisskross", "ccnelson", "w4rf19ht3r", "lili999", "qwerqtwfnhnqufh"
+                "rpg", "fonic", "dancingnancie", "raven321", "georgemagoo", "Darkshadow46236", "stevay1", "ThisLittlePiggy", "joanp62", "tiddler",
+                "amit007", "appuru_guru", "hygmnv", "geric03", "marvelmyles", "prairiemama", "blackman_w_hepatitis", "reaper654", "markupman", "Pixelsilk",
+                "wealthy-wise-guy", "TimmahC", "korthj", "DrWyckoff", "nurta", "rezonq3", "ghostinc", "bizwerk", "Simonvjara", "ImSprunging",
+                "Vongole", "fuchila", "wakjek", "njr831", "terryinsullivan", "lightyears", "Hanebambel", "internetentrophy", "zachman123", "DocAtmo",
+                "Snlcoa", "anon11", "preeminence", "HotShotCity", "oznur45", "gg77bird", "Scarf", "neyse1986", "China_Baby", "ANDRESARS",
+                "scaldin", "I-_-_-I", "eyeowedubbyaaye", "ksny68", "pairoducks", "etx", "croryf", "Wolfshawk", "HMMcKamikaze", "createjoy",
+                "SSCAR348", "Humourless", "Vettexl", "babettem", "foschieviola", "fl1ntlock", "dlvanhorn", "HappyRabbit", "jy24", "juanow",
+                "Johnnyduck", "darlingt", "esteban9556", "minja", "hkrl", "errantmonk", "ibesek", "Ayoubi", "PopsiclePete", "dawnbroke",
+                "exa24", "batgirlwriting", "Definitive-arts", "felechialoates", "globalzero", "Berk888", "cclorance", "bdic132", "heav85", "hetathia",
+                "Kalibek", "D1ABoLiK", "liquidgraph", "kcwolf1985", "twat-in-a-hat", "huganic", "31122008PASQUALE", "EcstaticForSure", "ProfessorX", "stavisbay",
+                "te88star", "largo87", "360photo", "cooldick017", "Rich-the-Lionheart", "missbutler", "reemixx", "gcgirl", "lookatmeimposting", "rjfrisina",
+                "bigtoe1340", "Johhnnywright", "linkylou", "darrylbooth", "OjibwayMigisi", "skyjet27", "bootsnwrnglrs", "GoalSetting1", "l33p", "princessunicorn",
+                "willadean", "vickey_habib", "Tatterhood", "dmazzoni", "mattmck22", "Jermx", "_walker_", "pima54", "limpa", "moomooo1",
+                "Matchu23", "donald236", "wilshire123", "reasonwatch", "rockluck", "texashealthpro", "los200", "ongkal", "voetip", "yodi",
+                "ahmedkabir", "Doshaza", "tuun537", "c1791y", "uncle_max", "spinysdisease22", "fiebon46", "iidbb76", "x1897e", "datasync",
+                "tnei10", "jiuberto", "oko75", "thelist", "ttxkk75", "reaper0033", "hengun", "dda45", "overshard", "Lanatio",
+                "Mondonguito", "temporary_insanity", "qqkqq54", "qyqy221", "mac256", "nest69", "melapolis", "osieh2", "sunl86", "ozhoom",
+                "ttthekkking", "ikoblik", "many23", "y7933k", "helios1111", "_lowell", "sirfink", "princess729", "elcaminocarwash", "FlipCa",
+                "kone62", "sulochani", "blcv12", "ShawnB", "Konig", "cyberadventurer", "RKash1960", "applebeesfan1984", "ahmadkabir", "mathforthewin",
+                "mrg00ddude", "bea_gabrielle", "kools", "Rationalwoman", "scienceisgod", "andrewtr89", "hafizx", "landiss77", "Cuba5259", "fafb",
+                "dfgdg", "ldvt", "ahmadkelby", "undercommoner", "spookybill", "guruatmoneyassistant", "codemonk", "johnkelly00", "reesan", "hollywooddental"
         )
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return ctx.widgets.isWidgetAvaliable(558, 0)
@@ -233,6 +252,7 @@ class TutorialIsland: AbstractScript()  {
                     3 -> widgetIndex.childID = arrayListOf(125, 124, 123, 122, 105).random().toString()
                     4 -> widgetIndex.childID = arrayListOf(131, 130, 129, 127, 121).random().toString()
                 }
+                println("Clicking widget (${widgetIndex.parentID},${widgetIndex.childID})")
                 for (j in 0..Random.nextInt(5)) {
                     WidgetItem(ctx.widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt()), ctx = ctx).click()
                     delay(Random.nextLong(250, 650))
