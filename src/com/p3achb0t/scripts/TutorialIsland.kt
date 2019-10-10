@@ -577,12 +577,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx.inventory.getItem(LOGS_ID_2511)?.click()
                 delay(Random.nextLong(2500, 4500))
                 //Wait till hes not doing anything which should mean fire has been made
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
             }
         }
     }
@@ -630,12 +625,7 @@ class TutorialIsland: AbstractScript()  {
                 }
 
                 //Wait till idle
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 delay(100)
                 ctx.dialog.continueDialog()
             }
@@ -699,6 +689,7 @@ class TutorialIsland: AbstractScript()  {
             val gameObjects = ctx.gameObjects.find(9709, sortByDistance = true)
             if (gameObjects.size > 0) {
                 gameObjects[0].interact("Open")
+                ctx.players.getLocal().waitTillIdle()
             }
         }
     }
@@ -789,6 +780,7 @@ class TutorialIsland: AbstractScript()  {
             val door = ctx.gameObjects.find(9710)
             if (door.size > 0) {
                 door[0].interact("Open Door")
+                ctx.players.getLocal().waitTillIdle()
             }
         }
 
@@ -825,6 +817,7 @@ class TutorialIsland: AbstractScript()  {
             val doors = ctx.gameObjects.find("Door", sortByDistance = true)
             if (doors.size > 0) {
                 doors[0].interact("Open Door")
+                ctx.players.getLocal().waitTillIdle()
             }
 
 
@@ -843,12 +836,7 @@ class TutorialIsland: AbstractScript()  {
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
-                Utils.waitFor(3, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 delay(Random.nextLong(100, 150))
                 ctx.dialog.continueDialog()
             }
@@ -867,6 +855,8 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
+    //TODO - Add a node if some how we make our way upstairs to go back down
+
     class TalkToQuestGuide2ndTime(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "This is your quest journal."
@@ -878,12 +868,7 @@ class TutorialIsland: AbstractScript()  {
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
-                Utils.waitFor(3, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
         }
@@ -902,7 +887,8 @@ class TutorialIsland: AbstractScript()  {
             if (ladder.size > 0) {
                 ctx.camera.turnTo(ladder[0])
                 ladder[0].interact("Climb-down Ladder")
-                delay(Random.nextLong(3500, 6400))
+                ctx.players.getLocal().waitTillIdle()
+//                delay(Random.nextLong(3500, 6400))
             }
         }
 
@@ -937,6 +923,7 @@ class TutorialIsland: AbstractScript()  {
                 if (rocks.size > 0) {
                     val oldInventoryCount = ctx.inventory.getCount()
                     rocks[0].interact("Mine")
+                    ctx.players.getLocal().waitTillIdle()
                     Utils.waitFor(8, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -987,6 +974,8 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
+    //TODO - There has been a case where the furnance is clicked on after the bar is been made & the dialog blocks
+    // continuing into the next node
     class SmeltBronze(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You now have some tin ore and some copper ore.")
@@ -1231,12 +1220,7 @@ class TutorialIsland: AbstractScript()  {
             if (gates.size > 0) {
                 ctx.camera.turnWest()
                 gates[0].interact("Open")
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
             }
 
         }
@@ -1253,13 +1237,10 @@ class TutorialIsland: AbstractScript()  {
             val rats = ctx.npcs.findNpc("Giant rat")
             if (rats.size > 0) {
                 val randomIndex = (0..5).random()
-                rats[randomIndex].interact("Attack")
-                Utils.waitFor(20, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                if (ctx.players.getLocal().isIdle()) {
+                    rats[randomIndex].interact("Attack")
+                }
+                ctx.players.getLocal().waitTillIdle()
             }
         }
 
@@ -1335,8 +1316,9 @@ class TutorialIsland: AbstractScript()  {
             if (rats.size > 0) {
                 val randomIndex = (0..2).random()
                 rats[randomIndex].turnTo()
-                rats[randomIndex].interact("Attack")
-                delay(Random.nextLong(1000, 1500))
+                if (ctx.players.getLocal().isIdle()) {
+                    rats[randomIndex].interact("Attack")
+                }
                 ctx.players.getLocal().waitTillIdle()
 
             }
@@ -1670,7 +1652,7 @@ class TutorialIsland: AbstractScript()  {
                 chickens[randChick].swingTo()
                 ctx.camera.setHighPitch()
                 chickens[randChick].interact("Cast")
-                Utils.waitFor(7, object : Utils.Condition {
+                Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
                         return ctx.players.getLocal().isIdle() && chickens[randChick].isIdle()
