@@ -2,11 +2,9 @@ package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Constants
-import com.p3achb0t.api.Utils
-import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.wrappers.Players
-import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -58,13 +56,19 @@ interface Locatable {
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return Players(loc_ctx!!).getLocal().isIdle() || distanceTo() < desired
+                return loc_ctx?.players?.getLocal()?.isIdle()!! || distanceTo() < desired
+
             }
         })
     }
 
+    suspend fun swingTo() {
+        loc_ctx?.camera?.swingTo(this)
+        delay(Random.nextLong(100, 200))
+    }
+
     suspend fun turnTo() {
-        Camera(loc_ctx!!).turnTo(this)
+        loc_ctx?.camera?.turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
     abstract fun isOnScreen(): Boolean

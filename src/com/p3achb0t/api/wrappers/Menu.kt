@@ -44,7 +44,7 @@ class Menu(val client: com.p3achb0t._runestar_interfaces.Client) {
                     println("Looking at menu item : $menuItem")
                     return point
                 }
-//                    val action = Main.clientData.getMenuActions()[mCount-i] + " " + Main.clientData.getMenuOptions()[mCount-i]
+//                    val action = com.p3achb0t.Main.clientData.getMenuActions()[mCount-i] + " " + com.p3achb0t.Main.clientData.getMenuOptions()[mCount-i]
                 yDiff += lineHeight
             }
         } else {

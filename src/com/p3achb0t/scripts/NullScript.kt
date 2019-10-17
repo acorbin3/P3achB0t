@@ -3,11 +3,11 @@ package com.p3achb0t.scripts
 import com.p3achb0t.api.AbstractScript
 
 class NullScript : AbstractScript() {
-    override fun loop() {
+    override suspend fun loop() {
         print("*")
     }
 
-    override fun start() {
+    override suspend fun start() {
         println("Started")
     }
 

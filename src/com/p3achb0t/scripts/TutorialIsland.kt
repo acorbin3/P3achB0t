@@ -21,15 +21,16 @@ private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches")
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
-    override fun loop() {
+    var currentJob = ""
+    override suspend fun loop() {
 
-        //run()
+        run()
         //Delay between 0-50 ms
-        //delay((Math.random() * 50).toLong())
+        delay((Math.random() * 50).toLong())
 
     }
 
-    override fun start() {
+    override suspend fun start() {
         try {
             stopwatch.start()
         } catch (e: Exception) {
@@ -37,19 +38,21 @@ class TutorialIsland: AbstractScript()  {
         println("Running Start")
         println("Running Start2")
         LoggingIntoAccount(ctx)
+        //Lets wait till the client is logged in
         while (ctx.client.getGameState() != 30) {
-            //delay(100)
+            delay(100)
         }
     }
 
     override fun stop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("Stopping tutorial island script")
     }
 
     override fun draw(g: Graphics) {
         debugPaint(ctx, g)
-        g.color = Color.WHITE
+        g.color = Color.black
         g.drawString("Current Runtime: $stopwatch", 10, 450)
+        g.drawString(currentJob, 10, 460)
         super.draw(g)
     }
 
@@ -134,6 +137,7 @@ class TutorialIsland: AbstractScript()  {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             if (it.isValidToRun(chatBox)) {
                 println("Running: ${it.javaClass.name}")
+                currentJob = it.javaClass.name
                 it.execute()
                 println("Completed: ${it.javaClass.name}")
             }
@@ -167,8 +171,27 @@ class TutorialIsland: AbstractScript()  {
     class PickName(val ctx: Context)  : Job(ctx.client) {
 
         val names = arrayListOf(
-                "PapaBadass", "randomBJ", "kamalchettiar", "all_negative_", "s0meguy",
-                "shouldidivorce", "kisskross", "ccnelson", "w4rf19ht3r", "lili999", "qwerqtwfnhnqufh"
+                "rpg", "fonic", "dancingnancie", "raven321", "georgemagoo", "Darkshadow46236", "stevay1", "ThisLittlePiggy", "joanp62", "tiddler",
+                "amit007", "appuru_guru", "hygmnv", "geric03", "marvelmyles", "prairiemama", "blackman_w_hepatitis", "reaper654", "markupman", "Pixelsilk",
+                "wealthy-wise-guy", "TimmahC", "korthj", "DrWyckoff", "nurta", "rezonq3", "ghostinc", "bizwerk", "Simonvjara", "ImSprunging",
+                "Vongole", "fuchila", "wakjek", "njr831", "terryinsullivan", "lightyears", "Hanebambel", "internetentrophy", "zachman123", "DocAtmo",
+                "Snlcoa", "anon11", "preeminence", "HotShotCity", "oznur45", "gg77bird", "Scarf", "neyse1986", "China_Baby", "ANDRESARS",
+                "scaldin", "I-_-_-I", "eyeowedubbyaaye", "ksny68", "pairoducks", "etx", "croryf", "Wolfshawk", "HMMcKamikaze", "createjoy",
+                "SSCAR348", "Humourless", "Vettexl", "babettem", "foschieviola", "fl1ntlock", "dlvanhorn", "HappyRabbit", "jy24", "juanow",
+                "Johnnyduck", "darlingt", "esteban9556", "minja", "hkrl", "errantmonk", "ibesek", "Ayoubi", "PopsiclePete", "dawnbroke",
+                "exa24", "batgirlwriting", "Definitive-arts", "felechialoates", "globalzero", "Berk888", "cclorance", "bdic132", "heav85", "hetathia",
+                "Kalibek", "D1ABoLiK", "liquidgraph", "kcwolf1985", "twat-in-a-hat", "huganic", "31122008PASQUALE", "EcstaticForSure", "ProfessorX", "stavisbay",
+                "te88star", "largo87", "360photo", "cooldick017", "Rich-the-Lionheart", "missbutler", "reemixx", "gcgirl", "lookatmeimposting", "rjfrisina",
+                "bigtoe1340", "Johhnnywright", "linkylou", "darrylbooth", "OjibwayMigisi", "skyjet27", "bootsnwrnglrs", "GoalSetting1", "l33p", "princessunicorn",
+                "willadean", "vickey_habib", "Tatterhood", "dmazzoni", "mattmck22", "Jermx", "_walker_", "pima54", "limpa", "moomooo1",
+                "Matchu23", "donald236", "wilshire123", "reasonwatch", "rockluck", "texashealthpro", "los200", "ongkal", "voetip", "yodi",
+                "ahmedkabir", "Doshaza", "tuun537", "c1791y", "uncle_max", "spinysdisease22", "fiebon46", "iidbb76", "x1897e", "datasync",
+                "tnei10", "jiuberto", "oko75", "thelist", "ttxkk75", "reaper0033", "hengun", "dda45", "overshard", "Lanatio",
+                "Mondonguito", "temporary_insanity", "qqkqq54", "qyqy221", "mac256", "nest69", "melapolis", "osieh2", "sunl86", "ozhoom",
+                "ttthekkking", "ikoblik", "many23", "y7933k", "helios1111", "_lowell", "sirfink", "princess729", "elcaminocarwash", "FlipCa",
+                "kone62", "sulochani", "blcv12", "ShawnB", "Konig", "cyberadventurer", "RKash1960", "applebeesfan1984", "ahmadkabir", "mathforthewin",
+                "mrg00ddude", "bea_gabrielle", "kools", "Rationalwoman", "scienceisgod", "andrewtr89", "hafizx", "landiss77", "Cuba5259", "fafb",
+                "dfgdg", "ldvt", "ahmadkelby", "undercommoner", "spookybill", "guruatmoneyassistant", "codemonk", "johnkelly00", "reesan", "hollywooddental"
         )
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return ctx.widgets.isWidgetAvaliable(558, 0)
@@ -221,7 +244,7 @@ class TutorialIsland: AbstractScript()  {
             val randomNumberOfChanges = Random.nextInt(3, 10)
             println("Making $randomNumberOfChanges of changes")
             for (i in 0..randomNumberOfChanges) {
-                val column = Random.nextInt(1, 15)
+                val column = Random.nextInt(1, 4)//DO NOT CHANGE THIS
                 val widgetIndex = Widget.WidgetIndex("269", "0")
                 when (column) {
                     1 -> widgetIndex.childID = (106..112).random().toString()
@@ -229,6 +252,7 @@ class TutorialIsland: AbstractScript()  {
                     3 -> widgetIndex.childID = arrayListOf(125, 124, 123, 122, 105).random().toString()
                     4 -> widgetIndex.childID = arrayListOf(131, 130, 129, 127, 121).random().toString()
                 }
+                println("Clicking widget (${widgetIndex.parentID},${widgetIndex.childID})")
                 for (j in 0..Random.nextInt(5)) {
                     WidgetItem(ctx.widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt()), ctx = ctx).click()
                     delay(Random.nextLong(250, 650))
@@ -279,7 +303,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val text = "Options menu"
-            return chatBox.containsText(text)
+            return chatBox.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Options
         }
 
         override suspend fun execute() {
@@ -417,7 +441,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenInvetory(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("click on the flashing backpack icon")
+            return dialogWidget.containsText("click on the flashing backpack icon") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Inventory
         }
 
         override suspend fun execute() {
@@ -460,7 +484,7 @@ class TutorialIsland: AbstractScript()  {
     class ClickSkillsTab(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "on the flashing bar graph icon near the inventory"
-            return dialogWidget.containsText(text)
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Skills
         }
 
         override suspend fun execute() {
@@ -553,12 +577,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx.inventory.getItem(LOGS_ID_2511)?.click()
                 delay(Random.nextLong(2500, 4500))
                 //Wait till hes not doing anything which should mean fire has been made
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
             }
         }
     }
@@ -606,12 +625,7 @@ class TutorialIsland: AbstractScript()  {
                 }
 
                 //Wait till idle
-                Utils.waitFor(4, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 delay(100)
                 ctx.dialog.continueDialog()
             }
@@ -675,6 +689,7 @@ class TutorialIsland: AbstractScript()  {
             val gameObjects = ctx.gameObjects.find(9709, sortByDistance = true)
             if (gameObjects.size > 0) {
                 gameObjects[0].interact("Open")
+                ctx.players.getLocal().waitTillIdle()
             }
         }
     }
@@ -724,7 +739,6 @@ class TutorialIsland: AbstractScript()  {
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
             ctx.camera.turnTo(range)
-            //TODO - Need to improve ineract when menu is full
             range.interact("Cook Range")
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
@@ -766,6 +780,7 @@ class TutorialIsland: AbstractScript()  {
             val door = ctx.gameObjects.find(9710)
             if (door.size > 0) {
                 door[0].interact("Open Door")
+                ctx.players.getLocal().waitTillIdle()
             }
         }
 
@@ -802,6 +817,7 @@ class TutorialIsland: AbstractScript()  {
             val doors = ctx.gameObjects.find("Door", sortByDistance = true)
             if (doors.size > 0) {
                 doors[0].interact("Open Door")
+                ctx.players.getLocal().waitTillIdle()
             }
 
 
@@ -820,12 +836,7 @@ class TutorialIsland: AbstractScript()  {
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
-                Utils.waitFor(3, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 delay(Random.nextLong(100, 150))
                 ctx.dialog.continueDialog()
             }
@@ -835,7 +846,7 @@ class TutorialIsland: AbstractScript()  {
     class OpenQuestList(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Click on the flashing icon to the left of your inventory"
-            return dialogWidget.containsText(text)
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.QuestList
         }
 
         override suspend fun execute() {
@@ -843,6 +854,8 @@ class TutorialIsland: AbstractScript()  {
         }
 
     }
+
+    //TODO - Add a node if some how we make our way upstairs to go back down
 
     class TalkToQuestGuide2ndTime(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
@@ -855,12 +868,7 @@ class TutorialIsland: AbstractScript()  {
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
                 questGuide[0].interact("Talk-to Quest Guide")
-                Utils.waitFor(3, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
         }
@@ -879,7 +887,8 @@ class TutorialIsland: AbstractScript()  {
             if (ladder.size > 0) {
                 ctx.camera.turnTo(ladder[0])
                 ladder[0].interact("Climb-down Ladder")
-                delay(Random.nextLong(3500, 6400))
+                ctx.players.getLocal().waitTillIdle()
+//                delay(Random.nextLong(3500, 6400))
             }
         }
 
@@ -891,7 +900,6 @@ class TutorialIsland: AbstractScript()  {
             return dialogWidget.containsText(text)
         }
 
-        //TODO - Sometimes this job gets stuck. Look into why. I think the continueDialog might run into an infinate loop
         override suspend fun execute() {
             val walkingPath = arrayListOf(Tile(3079, 9512, ctx = ctx), Tile(3081, 9504, ctx = ctx))
             Walking.walkPath(walkingPath)
@@ -915,6 +923,7 @@ class TutorialIsland: AbstractScript()  {
                 if (rocks.size > 0) {
                     val oldInventoryCount = ctx.inventory.getCount()
                     rocks[0].interact("Mine")
+                    ctx.players.getLocal().waitTillIdle()
                     Utils.waitFor(8, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -965,6 +974,8 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
+    //TODO - There has been a case where the furnance is clicked on after the bar is been made & the dialog blocks
+    // continuing into the next node
     class SmeltBronze(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You now have some tin ore and some copper ore.")
@@ -986,6 +997,8 @@ class TutorialIsland: AbstractScript()  {
             val furnace = ctx.gameObjects.find("Furnace")[0]
             if (!furnace.isOnScreen()) furnace.turnTo()
             furnace.click()
+            delay(100)
+            ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
         }
 
@@ -1066,6 +1079,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx.camera.setHighPitch()
                 ctx.camera.turnEast()
                 gate[0].interact("Open")
+                delay(100)
                 //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 ctx.players.getLocal().waitTillIdle()
             }
@@ -1106,7 +1120,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenEquipment(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You now have access to a new")
+            return dialogWidget.containsText("You now have access to a new") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Equiptment
         }
 
         override suspend fun execute() {
@@ -1173,7 +1187,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenCombatTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing crossed")
+            return dialogWidget.containsText("Click on the flashing crossed") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Combat
         }
 
         override suspend fun execute() {
@@ -1206,12 +1220,7 @@ class TutorialIsland: AbstractScript()  {
             if (gates.size > 0) {
                 ctx.camera.turnWest()
                 gates[0].interact("Open")
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                ctx.players.getLocal().waitTillIdle()
             }
 
         }
@@ -1228,13 +1237,10 @@ class TutorialIsland: AbstractScript()  {
             val rats = ctx.npcs.findNpc("Giant rat")
             if (rats.size > 0) {
                 val randomIndex = (0..5).random()
-                rats[randomIndex].interact("Attack")
-                Utils.waitFor(20, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.players.getLocal().isIdle()
-                    }
-                })
+                if (ctx.players.getLocal().isIdle()) {
+                    rats[randomIndex].interact("Attack")
+                }
+                ctx.players.getLocal().waitTillIdle()
             }
         }
 
@@ -1310,8 +1316,9 @@ class TutorialIsland: AbstractScript()  {
             if (rats.size > 0) {
                 val randomIndex = (0..2).random()
                 rats[randomIndex].turnTo()
-                rats[randomIndex].interact("Attack")
-                delay(Random.nextLong(1000, 1500))
+                if (ctx.players.getLocal().isIdle()) {
+                    rats[randomIndex].interact("Attack")
+                }
                 ctx.players.getLocal().waitTillIdle()
 
             }
@@ -1494,7 +1501,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenAccountManager(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open your Account Management")
+            return dialogWidget.containsText("Click on the flashing icon to open your Account Management") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.AccountManagement
         }
 
         override suspend fun execute() {
@@ -1552,7 +1559,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenPrayerTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.")
+            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Prayer
         }
 
         override suspend fun execute() {
@@ -1563,7 +1570,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenFriendsTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face")
+            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.FriendsList
         }
 
         override suspend fun execute() {
@@ -1622,7 +1629,7 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenMagicTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Open up the magic interface")
+            return dialogWidget.containsText("Open up the magic interface") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Magic
         }
 
         override suspend fun execute() {
@@ -1642,9 +1649,10 @@ class TutorialIsland: AbstractScript()  {
             val chickens = ctx.npcs.findNpc("Chicken")
             if (chickens.isNotEmpty()) {
                 val randChick = Random.nextInt(0, chickens.size - 1)
-                chickens[randChick].turnTo()
+                chickens[randChick].swingTo()
+                ctx.camera.setHighPitch()
                 chickens[randChick].interact("Cast")
-                Utils.waitFor(7, object : Utils.Condition {
+                Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
                         return ctx.players.getLocal().isIdle() && chickens[randChick].isIdle()

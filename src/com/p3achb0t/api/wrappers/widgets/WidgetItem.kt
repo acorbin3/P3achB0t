@@ -68,10 +68,6 @@ class WidgetItem(
 
 }
 
-//This class is used to create a widget explorer to find widgets
-// To lanch the widget explorer you just
-// 1. Create an app object/class:// class MyApp : App(WidgetExplorer::class)
-// 2. Then need to call: //    launch<MyApp>(args)
 fun getStrippedWidgetDetails(widget: Component, includeChildren: Boolean = true): String {
     var result = ""
     try {

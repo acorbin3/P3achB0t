@@ -1,9 +1,13 @@
 package com.p3achb0t.api.painting
 
 //import com.p3achb0t.interfaces.PaintListener
+import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.painting.PaintDebug.Companion.selectedWidget
+import com.p3achb0t.api.painting.PaintDebug.Companion.selectedWidgetItem
 import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -17,6 +21,8 @@ class PaintDebug {
         var isNPCPaintOn = false
         var isGroundItemsOn = false
         var isCtrlPressed = false
+        var selectedWidget: Component? = null
+        var selectedWidgetItem: WidgetItem? = null
     }
 }
 
@@ -29,6 +35,15 @@ fun debugPaint(ctx: Context, g: Graphics) {
     try {
         g.color = Color.white
         g.drawRect(ctx!!.mouse.getX(), ctx.mouse.getY(), 5, 5)
+
+        if (selectedWidget?.getId() != ctx.selectedWidget?.getId()) {
+            println("Widget Switched to ${ctx.selectedWidget?.getId()}")
+            selectedWidget = ctx.selectedWidget
+            selectedWidgetItem = WidgetItem(selectedWidget, ctx = ctx)
+        }
+        if (selectedWidgetItem != null) {
+            selectedWidgetItem?.area?.let { g.drawRect(it.x, it.y, it.width, it.height) }
+        }
         if (PaintDebug.isDebugTextOn)
             drawDebugText(g, ctx)
 
