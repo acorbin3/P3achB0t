@@ -20,7 +20,12 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val accountManager = JMenuItem("Add BOT")
         accountManager.addActionListener {
-            manager.addBot()
+            manager.tabManager.create()
+        }
+
+        val refreshScript = JMenuItem("Refresh Scripts")
+        refreshScript.addActionListener {
+            manager.scriptManager.setScript(0,"nameofSCRIPT")
         }
 
         menu.add(accountManager)

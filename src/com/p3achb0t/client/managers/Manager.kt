@@ -3,6 +3,7 @@ package com.p3achb0t.client.managers
 import com.p3achb0t.client.Bot
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.client.managers.tabs.TabManager
+import com.p3achb0t.interfaces.ScriptManager
 import com.test.SingleWindow
 import java.util.*
 import kotlin.collections.ArrayList
@@ -11,6 +12,7 @@ class Manager {
 
     val accountManager = AccountManager()
     val tabManager = TabManager(this)
+    val scriptManager = com.p3achb0t.client.managers.scripts.ScriptManager(this)
     val bots = mutableListOf<Bot>()
 
     init {

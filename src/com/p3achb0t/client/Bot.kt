@@ -8,6 +8,7 @@ import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.interfaces.io.Keyboard
 import com.p3achb0t.client.interfaces.io.Mouse
 import com.p3achb0t.client.managers.scripts.LoadDebugScripts
+import com.p3achb0t.client.managers.scripts.LoadScripts
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.interfaces.IScriptManager
 import com.p3achb0t.interfaces.ScriptManager
@@ -23,6 +24,7 @@ enum class ClientState {
 
 class Bot(world: Int) {
     val ll = LoadDebugScripts()
+    val loadScripts = LoadScripts()
     val id = UUID.randomUUID().toString()
     private lateinit var o: Any
     private val applet: Applet
@@ -75,8 +77,8 @@ class Bot(world: Int) {
         return client
     }
 
-    fun setScript(script: AbstractScript) {
-        manager.getManager().setScript(script)
+    fun setScript(name: AbstractScript) {
+        manager.getManager().setScript(name)
     }
 
     fun getScript() : AbstractScript {

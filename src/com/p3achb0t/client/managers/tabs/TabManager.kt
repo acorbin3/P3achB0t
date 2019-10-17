@@ -3,6 +3,8 @@ package com.p3achb0t.client.managers.tabs
 import com.p3achb0t.client.Bot
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.test.StandaloneWindow
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 import javax.swing.JTabbedPane
 import javax.swing.event.ChangeEvent
 import javax.swing.event.ChangeListener
@@ -11,7 +13,7 @@ import javax.swing.event.ChangeListener
 class TabManager(val manager: Manager) : JTabbedPane() {
 
     private var counter = 0
-    private val bots = mutableMapOf<Int, Bot>()
+    private val bots = ConcurrentHashMap<Int, Bot>()
 
     init {
         validate()
@@ -40,6 +42,20 @@ class TabManager(val manager: Manager) : JTabbedPane() {
             botPane.destroy()
             remove(botPane)
             bots.remove(id)
+        }.start()
+    }
+
+    fun destroy(id: ByteArray) {
+
+        Thread {
+            for (i in id) {
+                val botPane = lookupBotPane(i.toInt())
+                println(botPane.bot.id)
+                botPane.destroy()
+                remove(botPane)
+                bots.remove(i.toInt())
+            }
+
         }.start()
     }
 

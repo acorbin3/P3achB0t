@@ -4,9 +4,11 @@ import com.p3achb0t.client.managers.Manager
 
 class ScriptManager(val manager: Manager) {
 
-    fun setScript(id: Int) {
+    val loadScripts = LoadScripts()
+
+    fun setScript(id: Int, name: String) {
         val bot = manager.tabManager.lookupBot(id)
-        //bot.setScript()
+        bot.setScript(loadScripts.getScript(name))
     }
 
     fun getScript(id: Int) {
@@ -32,6 +34,10 @@ class ScriptManager(val manager: Manager) {
     fun resume(id: Int) {
         val bot = manager.tabManager.lookupBot(id)
         bot.resumeScript()
+    }
+
+    fun refreshScripts() {
+        loadScripts.refresh()
     }
 
 }

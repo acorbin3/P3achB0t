@@ -1,25 +1,17 @@
 package com.p3achb0t.server.packets
 
-class AddBot(val bot: Byte = 1.toByte()) : Packet() {
+class RemoveBot(val bots : Collection<Byte>) : Packet() {
     override fun config(): Byte {
         return 0x0
     }
 
     override fun type(): Byte {
-        return 0x06
+        return 0x07
     }
 
     override fun payload(): Collection<Byte> {
         val payload = mutableListOf<Byte>()
-        payload.add(bot)
+        payload.addAll(bots)
         return payload
-    }
-}
-
-fun main() {
-    val ping = AddBot(4)
-
-    for(i in ping.build()) {
-        print("${i.toUByte()} ")
     }
 }

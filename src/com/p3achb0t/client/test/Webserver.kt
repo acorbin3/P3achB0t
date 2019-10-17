@@ -110,5 +110,18 @@ fun main(args: Array<String>) {
             tabBotWindow.manager.tabManager.lookupBot(id).removeDebugScript(name)
             ctx.status(200)
         }
+
+        get("/bot/:id/script/:name") { ctx ->
+            val id = ctx.pathParam("id").toInt()
+            val name = ctx.pathParam("name")
+            tabBotWindow.manager.scriptManager.setScript(id,name)
+            ctx.status(200)
+        }
+
+        get("/bot/refresh") { ctx ->
+
+            tabBotWindow.manager.scriptManager.refreshScripts()
+            ctx.status(200)
+        }
     }
 }

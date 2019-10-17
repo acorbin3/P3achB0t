@@ -17,6 +17,7 @@ class Constants {
         const val JARS_DIR = "gamepack"
         const val SCRIPTS_DIR = "scripts"
         const val SCRIPTS_DEBUG_DIR = "debug"
+        const val SCRIPTS_ABSTRACT_DIR = "user"
 
         const val ACCOUNTS_DIR = "user"
         const val ACCOUNTS_FILE = "accounts.json"

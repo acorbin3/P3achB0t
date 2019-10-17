@@ -70,9 +70,9 @@ class Analyser{
                 AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bd", "u", "Lbd;") // MouseHandler_instance
             }
 
-            if (clazzData.`class` == "GameShell") {
+            /*if (clazzData.`class` == "GameShell") {
                 injectGameLoop(classes[clazzData.name]!!)
-            }
+            }*/
 
             if(clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
