@@ -41,6 +41,7 @@ data class FieldHook(
         }
 
     val encoderNarrowed: Number? get() = decoderNarrowed?.let { invert(it) }
+    val toString get()  = "Field:$field\tOwner:$owner\tname:$name\taccess:$access\tdescriptor:$descriptor\tdecoder:$decoder"
 }
 
 data class MethodHook(
