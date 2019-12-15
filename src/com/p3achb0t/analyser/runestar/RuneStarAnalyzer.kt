@@ -1,6 +1,7 @@
 package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
+import com.p3achb0t.injection.class_generation.createRunestarInterfaces
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.injection.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
@@ -14,7 +15,7 @@ class RuneStarAnalyzer {
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
-        val hookFileName = "runestarHooks.json"
+        val hookFileName = "hooks_186.json"
         val file = File("./$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
@@ -24,7 +25,7 @@ class RuneStarAnalyzer {
             analyzers[clazz.`class`] = clazz
             classRefObs[clazz.name] = clazz
         }
-        val folder = "../src/com/p3achb0t/_runestar_interfaces2/"
+        val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "./$hookDir/$hookFileName"
