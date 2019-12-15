@@ -52,12 +52,14 @@ class LoadScripts {
         val files = File(path).listFiles()
         //If this pathname does not denote a directory, then listFiles() returns null.
 
-        for (file in files!!) {
-            if (file.isFile && file.name.contains(".jar")) {
-                println(file.name)
-                val dscript = load(file.name) ?: continue
-                scripts[file.name] = dscript
+        if(files != null) {
+            for (file in files) {
+                if (file.isFile && file.name.contains(".jar")) {
+                    println(file.name)
+                    val dscript = load(file.name) ?: continue
+                    scripts[file.name] = dscript
 
+                }
             }
         }
     }

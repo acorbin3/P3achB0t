@@ -5,7 +5,6 @@ import com.p3achb0t.injection.class_generation.cleanType
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
-import com.p3achb0t.interfaces.ScriptManager
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
@@ -62,17 +61,38 @@ class Analyser{
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
             if(clazzData.`class` == "Client") {
-                injectField(classes[clazzData.name]!!)
+                injectScriptManagerField(classes[clazzData.name]!!)
                 injectFieldProxy(classes[clazzData.name]!!)
                 AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/interfaces/IScriptManager")
                 injectCustomClient(classes[clazzData.name]!!)
-                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getKeyboard", "()Lcom/p3achb0t/client/interfaces/io/Keyboard;", "ah", "z", "Lah;") // KeyHandler_instance
-                AsmUtil.addStaticMethod(classes[clazzData.name]!!, "getMouse", "()Lcom/p3achb0t/client/interfaces/io/Mouse;", "bd", "u", "Lbd;") // MouseHandler_instance
-            }
+                clazzData.fields.forEach{
+                    if(it.field .contains("MouseHandler_instance")){
+                        println("Found field MouseHandler_instance ${it.toString}")
+                        AsmUtil.addStaticMethod(
+                                classes[clazzData.name]!!,
+                                "getMouse",
+                                "()Lcom/p3achb0t/client/interfaces/io/Mouse;",
+                                it.owner,
+                                it.name,
+                                "L${it.owner};"
+                        ) // MouseHandler_instance
 
-            /*if (clazzData.`class` == "GameShell") {
-                injectGameLoop(classes[clazzData.name]!!)
-            }*/
+                    }
+                    else if(it.field.contains("KeyHandler_instance")){
+                        println("Found field KeyHandler_instance ${it.toString}")
+                        AsmUtil.addStaticMethod(
+                                classes[clazzData.name]!!,
+                                "getKeyboard",
+                                "()Lcom/p3achb0t/client/interfaces/io/Keyboard;",
+                                it.owner,
+                                it.name,
+                                "L${it.owner};"
+                        ) // KeyHandler_instance
+                    }
+                }
+
+
+            }
 
             if(clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
@@ -137,8 +157,6 @@ class Analyser{
 
             if (clazzData.`class` == "MouseHandler") {
                 AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/interfaces/io/Mouse")
-                AsmUtil.addMethod(classes[clazzData.name]!!, "getX", "()I", "bd", "b", "I", -180428827) // MouseHandler_x
-                AsmUtil.addMethod(classes[clazzData.name]!!, "getY", "()I", "bd", "o", "I",97221829) // MouseHandler_y
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseClicked", "_mouseClicked")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseDragged", "_mouseDragged")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseEntered", "_mouseEntered")
@@ -147,6 +165,39 @@ class Analyser{
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mousePressed", "_mousePressed")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseReleased", "_mouseReleased")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseWheelMoved", "_mouseWheelMoved")
+
+                // Find the correct fields for getX and getY within the Client and inject them into our MouseHandler class
+                runeStar.classRefObs.forEach { obsClass1, clazzData1 ->
+                    if(clazzData1.`class` == "Client") {
+                        clazzData1.fields.forEach {
+                            if (it.field.contains("MouseHandler_x") && !it.field.contains("MouseHandler_x0")) {
+                                println("Found field MouseHandler_x ${it.toString}")
+                                AsmUtil.addMethod(
+                                        classes[clazzData.name]!!,
+                                        "getX",
+                                        "()I",
+                                        it.owner,
+                                        it.name,
+                                        "I",
+                                        it.decoder!!.toInt()
+                                ) // MouseHandler_x
+                            } else if (it.field.contains("MouseHandler_y") && !it.field.contains("MouseHandler_y0")) {
+                                println("Found field MouseHandler_y ${it.toString}")
+                                AsmUtil.addMethod(
+                                        classes[clazzData.name]!!,
+                                        "getY",
+                                        "()I",
+                                        it.owner,
+                                        it.name,
+                                        "I",
+                                        it.decoder!!.toInt()
+                                ) // MouseHandler_y
+                            }
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -160,6 +211,7 @@ class Analyser{
             out.write(cw.toByteArray())
             out.closeEntry()
         }
+
         out.putNextEntry(JarEntry("ProxySocket.class"))
         out.write(putClasses("$USER_DIR/src/ProxySocket.class"))
         out.closeEntry()
@@ -257,7 +309,7 @@ class Analyser{
         return file.readBytes()
     }
 
-    private fun injectField(classNode: ClassNode) {
+    private fun injectScriptManagerField(classNode: ClassNode) {
         val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/interfaces/ScriptManager;",null , null)
         classNode.fields.add(node)
         //classNode.fields.add()
