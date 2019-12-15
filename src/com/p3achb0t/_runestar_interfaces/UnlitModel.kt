@@ -1,39 +1,39 @@
 package com.p3achb0t._runestar_interfaces
 
-interface UnlitModel: Entity{
-	fun getFaceAlphas(): ByteArray
-	fun getFaceColors(): ShortArray
-	fun getFaceCount(): Int
-	fun getFaceLabelsAlpha(): Array<IntArray>
-	fun getFaceNormals(): Array<FaceNormal>
-	fun getFaceTextures(): ShortArray
-	fun getIndices1(): IntArray
-	fun getIndices2(): IntArray
-	fun getIndices3(): IntArray
-	fun getIsBoundsCalculated(): Boolean
-	fun getVertexLabels(): Array<IntArray>
-	fun getVerticesCount(): Int
-	fun getVerticesX(): IntArray
-	fun getVerticesY(): IntArray
-	fun getVerticesZ(): IntArray
-    fun get__p(): Byte
-	fun get__c(): ByteArray
-    fun get__d(): ByteArray
-	fun get__g(): ByteArray
+interface UnlitModel : Entity {
+    fun getFaceAlphas(): ByteArray
+    fun getFaceColors(): ShortArray
+    fun getFaceCount(): Int
+    fun getFaceLabelsAlpha(): Array<IntArray>
+    fun getFaceNormals(): Array<FaceNormal>
+    fun getFaceTextures(): ShortArray
+    fun getIndices1(): IntArray
+    fun getIndices2(): IntArray
+    fun getIndices3(): IntArray
+    fun getIsBoundsCalculated(): Boolean
+    fun getVertexLabels(): Array<IntArray>
+    fun getVerticesCount(): Int
+    fun getVerticesX(): IntArray
+    fun getVerticesY(): IntArray
+    fun getVerticesZ(): IntArray
+    fun get__n(): Byte
+    fun get__c(): ByteArray
+    fun get__i(): ByteArray
+    fun get__w(): ByteArray
     fun get__x(): ByteArray
-    fun get__av(): Array<VertexNormal>
-    fun get__o(): Array<VertexNormal>
-    fun get__aj(): Int
-    fun get__an(): Int
-    fun get__as(): Int
-    fun get__at(): Int
-	fun get__az(): Int
-    fun get__b(): Int
-    fun get__l(): IntArray
-    fun get__w(): IntArray
-	fun get__a(): ShortArray
-    fun get__e(): ShortArray
-    fun get__z(): ShortArray
-    fun get__ai(): Short
+    fun get__af(): Array<VertexNormal>
+    fun get__j(): Array<VertexNormal>
+    fun get__aa(): Int
+    fun get__ag(): Int
+    fun get__ak(): Int
+    fun get__ao(): Int
+    fun get__aw(): Int
+    fun get__r(): Int
+    fun get__m(): IntArray
+    fun get__t(): IntArray
+    fun get__a(): ShortArray
+    fun get__d(): ShortArray
+    fun get__s(): ShortArray
+    fun get__ad(): Short
     fun get__am(): Short
 }

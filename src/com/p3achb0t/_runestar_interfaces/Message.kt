@@ -1,13 +1,13 @@
 package com.p3achb0t._runestar_interfaces
 
-interface Message: DualNode{
-	fun getCount(): Int
-	fun getCycle(): Int
-	fun getIsFromFriend0(): TriBool
-	fun getIsFromIgnored0(): TriBool
-	fun getPrefix(): String
-	fun getSender(): String
-	fun getSenderUsername(): Username
-	fun getText(): String
-	fun getType(): Int
+interface Message : DualNode {
+    fun getCount(): Int
+    fun getCycle(): Int
+    fun getIsFromFriend0(): TriBool
+    fun getIsFromIgnored0(): TriBool
+    fun getPrefix(): String
+    fun getSender(): String
+    fun getSenderUsername(): Username
+    fun getText(): String
+    fun getType(): Int
 }

@@ -1,7 +1,7 @@
 package com.p3achb0t._runestar_interfaces
 
 interface DesktopPlatformInfoProvider {
-	fun get__k(): Int
-    fun get__n(): Int
-    fun get__u(): Int
+    fun get__g(): Int
+    fun get__p(): Int
+    fun get__z(): Int
 }

@@ -1,57 +1,57 @@
 package com.p3achb0t._runestar_interfaces
 
 interface WorldMap {
-	fun getCacheLoader(): WorldMapArchiveLoader
-	fun getCurrentMapArea0(): WorldMapArea
-	fun getElementsDisabled(): Boolean
-	fun getEnabledCategories(): Any
-	fun getEnabledElements(): Any
-	fun getFlashingElements(): Any
-	fun getFont(): Font
-	fun getFonts(): Any
-	fun getIconIterator(): Any
-	fun getMainMapArea(): WorldMapArea
-	fun getMapAreas(): Any
-	fun getMapSceneSprites(): Array<IndexedSprite>
-	fun getMouseCoord(): Coord
-	fun getPerpetualFlash0(): Boolean
-	fun getSprite(): Sprite
-	fun getWorldMapManager(): WorldMapManager
-	fun getZoom(): Float
-	fun getZoomTarget(): Float
-    fun get__z(): WorldMapArea
-    fun get__aq(): Boolean
-    fun get__q(): AbstractArchive
-    fun get__t(): AbstractArchive
-    fun get__x(): AbstractArchive
-	fun get__aa(): Int
-	fun get__ac(): Int
-    fun get__af(): Int
+    fun getCacheLoader(): WorldMapArchiveLoader
+    fun getCurrentMapArea0(): WorldMapArea
+    fun getElementsDisabled(): Boolean
+    fun getEnabledCategories(): Any
+    fun getEnabledElements(): Any
+    fun getFlashingElements(): Any
+    fun getFont(): Font
+    fun getFonts(): Any
+    fun getIconIterator(): Any
+    fun getMainMapArea(): WorldMapArea
+    fun getMapAreas(): Any
+    fun getMapSceneSprites(): Array<IndexedSprite>
+    fun getMouseCoord(): Coord
+    fun getPerpetualFlash0(): Boolean
+    fun getSprite(): Sprite
+    fun getWorldMapManager(): WorldMapManager
+    fun getZoom(): Float
+    fun getZoomTarget(): Float
+    fun get__d(): WorldMapArea
+    fun get__ap(): Boolean
+    fun get__h(): AbstractArchive
+    fun get__w(): AbstractArchive
+    fun get__y(): AbstractArchive
+    fun get__ab(): Int
+    fun get__ac(): Int
+    fun get__ad(): Int
+    fun get__ae(): Int
+    fun get__ag(): Int
     fun get__ai(): Int
-	fun get__aj(): Int
-    fun get__ak(): Int
+    fun get__aj(): Int
     fun get__am(): Int
-	fun get__an(): Int
-	fun get__ao(): Int
-	fun get__ap(): Int
-	fun get__ar(): Int
-    fun get__au(): Int
-    fun get__ax(): Int
+    fun get__ao(): Int
+    fun get__aq(): Int
+    fun get__ar(): Int
+    fun get__av(): Int
+    fun get__aw(): Int
     fun get__az(): Int
+    fun get__ba(): Int
+    fun get__bf(): Int
     fun get__bi(): Int
-    fun get__bk(): Int
-    fun get__bq(): Int
-	fun get__bs(): Int
+    fun get__br(): Int
     fun get__by(): Int
-    fun get__h(): Int
     fun get__l(): Int
     fun get__m(): Int
+    fun get__q(): Int
     fun get__v(): Int
-    fun get__ab(): Any
-    fun get__aw(): Any
-    fun get__bz(): Any
+    fun get__as(): Any
+    fun get__au(): Any
     fun get__bn(): Any
-    fun get__ag(): Long
-    fun get__bo(): IntArray
-    fun get__bv(): Boolean
+    fun get__bu(): Any
+    fun get__at(): Long
+    fun get__bx(): IntArray
+    fun get__bm(): Boolean
 }

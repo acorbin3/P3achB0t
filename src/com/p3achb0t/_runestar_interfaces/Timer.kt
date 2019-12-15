@@ -1,14 +1,14 @@
 package com.p3achb0t._runestar_interfaces
 
 interface Timer {
-    fun get__d(): Int
-    fun get__q(): Int
-    fun get__t(): Int
-    fun get__x(): Int
-    fun get__j(): Long
-	fun get__k(): Long
-    fun get__n(): Long
-    fun get__s(): Long
+    fun get__h(): Int
+    fun get__i(): Int
+    fun get__w(): Int
+    fun get__y(): Int
+    fun get__f(): Long
+    fun get__g(): Long
+    fun get__p(): Long
     fun get__u(): Long
-    fun get__i(): Boolean
+    fun get__z(): Long
+    fun get__b(): Boolean
 }

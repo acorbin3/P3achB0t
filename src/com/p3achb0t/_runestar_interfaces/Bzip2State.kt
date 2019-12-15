@@ -1,42 +1,42 @@
 package com.p3achb0t._runestar_interfaces
 
 interface Bzip2State {
-    fun get__am(): BooleanArray
-	fun get__av(): BooleanArray
-    fun get__y(): Byte
-    fun get__af(): ByteArray
+    fun get__ad(): BooleanArray
+    fun get__af(): BooleanArray
+    fun get__e(): Byte
     fun get__ai(): ByteArray
-    fun get__aj(): ByteArray
-    fun get__an(): ByteArray
-    fun get__d(): ByteArray
-    fun get__t(): ByteArray
-    fun get__at(): Array<ByteArray>
-	fun get__a(): Int
-    fun get__ar(): Int
-    fun get__b(): Int
-	fun get__c(): Int
-    fun get__e(): Int
-    fun get__f(): Int
-	fun get__g(): Int
-	fun get__h(): Int
-    fun get__o(): Int
-    fun get__p(): Int
-    fun get__q(): Int
-    fun get__r(): Int
-    fun get__w(): Int
-	fun get__x(): Int
-	fun get__z(): Int
-    fun get__ac(): IntArray
-    fun get__az(): IntArray
-    fun get__l(): IntArray
-    fun get__v(): IntArray
-    fun get__ak(): Array<IntArray>
-	fun get__ao(): Array<IntArray>
-    fun get__as(): Array<IntArray>
-    fun get__i(): Int
+    fun get__am(): ByteArray
+    fun get__ao(): ByteArray
+    fun get__aw(): ByteArray
+    fun get__h(): ByteArray
+    fun get__i(): ByteArray
+    fun get__ak(): Array<ByteArray>
+    fun get__a(): Int
+    fun get__aq(): Int
+    fun get__c(): Int
+    fun get__d(): Int
     fun get__j(): Int
-	fun get__k(): Int
+    fun get__k(): Int
     fun get__n(): Int
+    fun get__o(): Int
+    fun get__r(): Int
     fun get__s(): Int
+    fun get__t(): Int
+    fun get__v(): Int
+    fun get__w(): Int
+    fun get__x(): Int
+    fun get__y(): Int
+    fun get__ag(): IntArray
+    fun get__av(): IntArray
+    fun get__m(): IntArray
+    fun get__q(): IntArray
+    fun get__aa(): Array<IntArray>
+    fun get__ab(): Array<IntArray>
+    fun get__ar(): Array<IntArray>
+    fun get__b(): Int
+    fun get__f(): Int
+    fun get__g(): Int
+    fun get__p(): Int
     fun get__u(): Int
+    fun get__z(): Int
 }
