@@ -6,6 +6,7 @@ class WidgetID {
         const val FAIRY_RING_GROUP_ID = 398
         const val LOGOUT_PANEL_ID = 182
         const val BANK_GROUP_ID = 12
+        const val BANK_PIN_ID = 213
         const val BANK_INVENTORY_GROUP_ID = 15
         const val GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467
         const val GRAND_EXCHANGE_GROUP_ID = 465
@@ -108,6 +109,10 @@ class WidgetID {
         const val SEED_BOX_GROUP_ID = 128
         const val ITEMS_KEPT_ON_DEATH_GROUP_ID = 4
 
+    }
+
+    internal object BankPinKeys{
+        val KEYS = arrayOf("16","18","20","22","24","26", "28","30","32","34")
     }
 
     internal object WorldMap {

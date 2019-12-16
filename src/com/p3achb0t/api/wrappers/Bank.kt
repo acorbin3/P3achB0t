@@ -105,7 +105,7 @@ class Bank(val ctx: Context) {
     }
 
     fun itemVisible(itemRect: Rectangle): Boolean {
-        return WidgetItem(getWidget(), ctx = ctx).area.intersects(itemRect)
+        return WidgetItem(getBankWidget(), ctx = ctx).area.intersects(itemRect)
     }
 
 
@@ -196,10 +196,10 @@ class Bank(val ctx: Context) {
     }
 
     fun isOpen(): Boolean {
-        return getWidget() != null
+        return getBankWidget() != null
     }
 
-    fun getWidget(): Component? {
+    fun getBankWidget(): Component? {
         return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
     }
 
@@ -215,7 +215,7 @@ class Bank(val ctx: Context) {
 
     fun getAll(): ArrayList<WidgetItem> {
         val itemWidgets = ArrayList<WidgetItem>()
-        val bank = getWidget()
+        val bank = getBankWidget()
         var itemCount = 0
         val maxItemCount = getSize()
         bank?.getChildren()?.iterator()?.forEach {
@@ -238,5 +238,13 @@ class Bank(val ctx: Context) {
         }
 
         return itemWidgets
+    }
+
+    fun solveBankPin(pin: Int){
+        //Check to see if widget 213 is open
+        //Pin
+        //Look for number in the follow subchild widgets text
+        //:(213,16)(1)
+        //child : 16,18,20,22,24,26, 28,30,32,34
     }
 }
