@@ -1,9 +1,9 @@
 package com.p3achb0t.client.ui.components
 
-import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.GoblinKiller
+import com.p3achb0t.scripts.TestBankPin
 import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
@@ -48,14 +48,28 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
-        val tutorialIsland = JMenuItem("Run Tutorial Island")
-        tutorialIsland.addActionListener {
+
+        val menuItem = JMenuItem("Run Tutorial Island")
+        menuItem.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
             val manager = game.client.getScriptManager()
             manager.setScript(TutorialIsland())
 
         }
+        menu.add(menuItem)
+
+        val menuItem2 = JMenuItem("Bank Pin test")
+        menuItem2.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setScript(TestBankPin())
+
+        }
+        menu.add(menuItem2)
+
+
         val widgetExplorer = JMenuItem("Open Widget Explorer")
         widgetExplorer.addActionListener {
 
@@ -112,7 +126,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         menu.add(mouse)
         menu.add(injection)
-        menu.add(tutorialIsland)
         menu.add(widgetExplorer)
         menu.add(test)
         menu.add(test2)

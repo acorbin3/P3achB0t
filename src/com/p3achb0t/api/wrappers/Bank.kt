@@ -55,12 +55,17 @@ class Bank(val ctx: Context) {
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        return isOpen()
+                        return isOpen() || isPinPanelOpen()
                     }
                 })
             }
         }
         //TODO - interact with bank booths is player is not here
+
+
+        if(isPinPanelOpen()){
+            solveBankPin("1122")//TODO - try to figure out where to get the pin from the account
+        }
 
     }
 
@@ -199,6 +204,14 @@ class Bank(val ctx: Context) {
         return getBankWidget() != null
     }
 
+    fun isPinPanelOpen(): Boolean{
+        return getPinPanelWidget() != null
+    }
+
+    fun getPinPanelWidget(): Component?{
+        return ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID,0)
+    }
+
     fun getBankWidget(): Component? {
         return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
     }
@@ -240,11 +253,38 @@ class Bank(val ctx: Context) {
         return itemWidgets
     }
 
-    fun solveBankPin(pin: Int){
+    suspend fun solveBankPin(pin: String){
         //Check to see if widget 213 is open
         //Pin
         //Look for number in the follow subchild widgets text
         //:(213,16)(1)
         //child : 16,18,20,22,24,26, 28,30,32,34
+
+
+        for(digit in pin){
+            println("Digit: $digit")
+            for(keyChildID in WidgetID.BankPinKeys.KEYS){
+                println("Looking at (${WidgetID.BANK_PIN_PANEL_ID},$keyChildID)")
+                val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, keyChildID.toInt())
+                if(bankPinKeyWidget != null){
+                    val children = bankPinKeyWidget.getChildren()
+                    //Info should be in first index
+                    var i = 0
+                    var keepSearching = true
+                    children.iterator().forEach {
+                        println("\tText:\"${children[i].getText()}\" == $digit")
+                        if(children[i].getText() == digit.toString() && keepSearching){
+                            println("Found a match!")
+                            WidgetItem(children[1],ctx = ctx).click()
+                            delay(Random.nextLong(1000, 2000))
+                            keepSearching = false
+                        }
+                        i += 1
+                    }
+                }
+            }
+        }
+
+
     }
 }
