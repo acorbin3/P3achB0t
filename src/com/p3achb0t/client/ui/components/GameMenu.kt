@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.GoblinKiller
@@ -59,7 +60,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         widgetExplorer.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().getScript().ctx)
+            //widget exporer should always be the first in the list of debug scripts
+            WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
         }
 
 

@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.scripts.WidgetExplorerDebug
 import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
@@ -37,6 +38,9 @@ class TabManager private constructor() : JTabbedPane() {
         gameTab.revalidate()
         setTabComponentAt(selectedIndex, NewTab(this))
         //gameTab.revalidate()
+
+        //Here is a place to add some debug script since the client has been loaded
+        gameTab.client.addDebugScript(WidgetExplorerDebug.scriptName)
 
 
 

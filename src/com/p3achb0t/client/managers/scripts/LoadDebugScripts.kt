@@ -5,6 +5,7 @@ import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DEBUG_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.scripts.WidgetExplorerDebug
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -19,18 +20,18 @@ class LoadDebugScripts {
     private val path = "$USER_DIR/$APPLICATION_CACHE_DIR/$SCRIPTS_DIR/$SCRIPTS_DEBUG_DIR"
 
     init {
-
         println(path)
-
+        //Add the WidgetExplorer debug script first
+        debugScripts[WidgetExplorerDebug.scriptName] = WidgetExplorerDebug()
         loadAll()
-
-
-
     }
 
 
     fun getScript(name: String) : DebugScript {
-        return debugScripts["$name.jar"]!!
+        return if("$name.jar" in debugScripts)
+            debugScripts["$name.jar"]!!
+        else
+            debugScripts["$name"]!!
     }
 
     fun load(fileName: String): DebugScript? {

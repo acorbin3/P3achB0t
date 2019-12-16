@@ -14,7 +14,7 @@ class ScriptManager(val client: Any) {
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
     private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
-    private val debugScripts = mutableListOf<DebugScript>()
+    val debugScripts = mutableListOf<DebugScript>()
 
     var x = 800
     var y = 600
@@ -61,10 +61,6 @@ class ScriptManager(val client: Any) {
                 loop()
             }
         }
-
-
-
-
     }
 
     fun pause() {

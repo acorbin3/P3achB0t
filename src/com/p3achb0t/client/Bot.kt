@@ -12,18 +12,18 @@ import com.p3achb0t.client.managers.scripts.LoadScripts
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.interfaces.IScriptManager
 import com.p3achb0t.interfaces.ScriptManager
+import com.p3achb0t.scripts.WidgetExplorerDebug
 
 import java.applet.Applet
 import java.awt.Dimension
 import java.util.*
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 enum class ClientState {
     RUNNING, PAUSED, STOPPED
 }
 
 class Bot(world: Int) {
-    val ll = LoadDebugScripts()
+    val loadedDebugScripts = LoadDebugScripts()
     val loadScripts = LoadScripts()
     val id = UUID.randomUUID().toString()
     private lateinit var o: Any
@@ -54,7 +54,6 @@ class Bot(world: Int) {
         applet.validate()
         applet.init()
         applet.validate()
-
     }
 
     fun getScriptManager() : ScriptManager {
@@ -102,12 +101,12 @@ class Bot(world: Int) {
     }
 
     fun addDebugScript(name: String) {
-        val debugScript = ll.getScript(name)
+        val debugScript = loadedDebugScripts.getScript(name)
         manager.getManager().addDebugPaint(debugScript)
     }
 
     fun removeDebugScript(name: String) {
-        val debugScript = ll.getScript(name)
+        val debugScript = loadedDebugScripts.getScript(name)
         manager.getManager().removeDebugPaint(debugScript)
     }
 }
