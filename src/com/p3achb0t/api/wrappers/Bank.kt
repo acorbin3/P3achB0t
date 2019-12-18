@@ -253,38 +253,84 @@ class Bank(val ctx: Context) {
         return itemWidgets
     }
 
+    fun stillSolvingPin(): Boolean{
+        val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
+        val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
+        val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
+        val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+
+        return digit1 == "?" || digit2 == "?" || digit3 == "?" || digit4 == "?"
+    }
+
     suspend fun solveBankPin(pin: String){
         //Check to see if widget 213 is open
         //Pin
         //Look for number in the follow subchild widgets text
         //:(213,16)(1)
         //child : 16,18,20,22,24,26, 28,30,32,34
+        //children in the follow can help identify with key we need to press: 3,4,5,6
 
 
-        for(digit in pin){
-            println("Digit: $digit")
-            for(keyChildID in WidgetID.BankPinKeys.KEYS){
-                println("Looking at (${WidgetID.BANK_PIN_PANEL_ID},$keyChildID)")
-                val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, keyChildID.toInt())
-                if(bankPinKeyWidget != null){
-                    val children = bankPinKeyWidget.getChildren()
-                    //Info should be in first index
-                    var i = 0
-                    var keepSearching = true
-                    children.iterator().forEach {
-                        println("\tText:\"${children[i].getText()}\" == $digit")
-                        if(children[i].getText() == digit.toString() && keepSearching){
-                            println("Found a match!")
-                            WidgetItem(children[1],ctx = ctx).click()
-                            delay(Random.nextLong(1000, 2000))
-                            keepSearching = false
-                        }
-                        i += 1
+        while(stillSolvingPin()){
+            try {
+                //Which one to look for
+                val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
+                val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
+                val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
+                val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+                val firstKey = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+                when {
+                    digit1 == "?" -> {
+                        findAndPressKey(pin[0])
+                    }
+                    digit2 == "?" -> {
+                        findAndPressKey(pin[1])
+                    }
+                    digit3 == "?" -> {
+                        findAndPressKey(pin[2])
+                    }
+                    digit4 == "?" -> {
+                        findAndPressKey(pin[4])
                     }
                 }
+                //Wait for widget to change
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        val firstKeyUpdated = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+                        delay(100)
+                        return firstKeyUpdated.getX() == firstKey.getX() && firstKeyUpdated.getY() == firstKey.getY()
+                    }
+                })
+            }catch (e:Exception){
+                //Some cases where we might need to catch errors if the component was not found
             }
         }
 
+    }
 
+    private suspend fun findAndPressKey(digit: Char) {
+        for (keyChildID in WidgetID.BankPinKeys.KEYS) {
+            println("Looking at (${WidgetID.BANK_PIN_PANEL_ID},$keyChildID)")
+            val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, keyChildID)
+            if (bankPinKeyWidget != null) {
+                val children = bankPinKeyWidget.getChildren()
+                //Info should be in first index
+                var i = 0
+                var keepSearching = true
+                children.iterator().forEach {
+                    println("\tText:\"${children[i].getText()}\" == $digit")
+                    if (children[i].getText() == digit.toString() && keepSearching) {
+                        println("Found a match!")
+                        WidgetItem(children[1], ctx = ctx).click()
+                        delay(Random.nextLong(250, 500))
+                        //Used to move the mouse around a little bit
+                        WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0)).hover()
+                        keepSearching = false
+                        //Move mouse off the keys
+                    }
+                    i += 1
+                }
+            }
+        }
     }
 }
