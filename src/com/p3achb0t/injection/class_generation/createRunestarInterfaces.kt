@@ -23,8 +23,15 @@ fun createRunestarInterfaces(
             out.println("package " + _package)
             out.println("")
             if (!clazz.value.`super`.contains("java/lang/Object") && clazz.value.`super` in classRefObs) {
-                out.println("interface ${clazz.value.`class`}: ${classRefObs[clazz.value.`super`]?.`class`}{")
-            } else {
+                if(clazz.value.fields.isEmpty())
+                    out.println("interface ${clazz.value.`class`} : ${classRefObs[clazz.value.`super`]?.`class`}")
+                else
+                    out.println("interface ${clazz.value.`class`} : ${classRefObs[clazz.value.`super`]?.`class`} {")
+            }
+            else if(clazz.value.fields.isEmpty()){
+                out.println("interface ${clazz.value.`class`}")
+            }
+            else {
                 out.println("interface ${clazz.value.`class`} {")
             }
             for (field in clazz.value.fields) {
@@ -57,7 +64,7 @@ fun createRunestarInterfaces(
                             genFunction(field, clazz, classRefObs, out, arrayCount, returnType)
                         } else {
                             out.println(
-                                "\tfun get${field.field.capitalize()}(): ${getArrayString(
+                                "    fun get${field.field.capitalize()}(): ${getArrayString(
                                     arrayCount,
                                     returnType
                                 )}"
@@ -65,11 +72,11 @@ fun createRunestarInterfaces(
                         }
                     } else {
 
-                        out.println("\tfun get" + field.field.capitalize() + "(): Any")
+                        out.println("    fun get" + field.field.capitalize() + "(): Any")
                     }
                 }
             }
-            out.println("}")
+            if(clazz.value.fields.isNotEmpty()){ out.println("}")}
         }
     }
 }
@@ -87,7 +94,7 @@ private fun genFunction(
     val fieldCount = isFieldNameUnique(classRefObs[clazz.value.`super`], field.field, classRefObs)
     if (fieldCount == 0) {
         out.println(
-            "\tfun get${field.field.capitalize()}(): ${getArrayString(
+            "    fun get${field.field.capitalize()}(): ${getArrayString(
                 arrayCount,
                 returnType
             )}"
@@ -99,7 +106,7 @@ private fun genFunction(
         field.field = "${clazz.value.`class`}_${field.field}"
         lField?.field = field.field
         out.println(
-            "\tfun get${field.field.capitalize()}(): ${getArrayString(
+            "    fun get${field.field.capitalize()}(): ${getArrayString(
                 arrayCount,
                 returnType
             )}"

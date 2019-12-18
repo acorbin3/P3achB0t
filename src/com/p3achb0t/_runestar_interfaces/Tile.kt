@@ -21,7 +21,7 @@ interface Tile : Node {
     fun getWallDecoration(): WallDecoration
     fun getX(): Int
     fun getY(): Int
-    fun get__m(): Int
-    fun get__s(): Int
-    fun get__t(): Int
+    fun get__h(): Int
+    fun get__u(): Int
+    fun get__z(): Int
 }

@@ -15,7 +15,7 @@ class RuneStarAnalyzer {
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
-        val hookFileName = "hooks_186.json"
+        val hookFileName = "hooks_187.json"
         val file = File("./$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here

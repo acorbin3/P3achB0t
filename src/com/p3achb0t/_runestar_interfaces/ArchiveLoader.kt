@@ -2,6 +2,6 @@ package com.p3achb0t._runestar_interfaces
 
 interface ArchiveLoader {
     fun getArchive(): Archive
-    fun get__g(): Int
-    fun get__b(): Int
+    fun get__w(): Int
+    fun get__y(): Int
 }

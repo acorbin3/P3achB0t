@@ -1,5 +1,5 @@
 package com.p3achb0t._runestar_interfaces
 
 interface UserComparator4 {
-    fun get__u(): Boolean
+    fun get__f(): Boolean
 }

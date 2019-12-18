@@ -12,5 +12,5 @@ interface ClientScriptEvent : Node {
     fun getOpIndex(): Int
     fun getOpbase(): String
     fun getType0(): Int
-    fun get__k(): Int
+    fun get__c(): Int
 }
