@@ -447,8 +447,8 @@ class Analyser{
             methodNode.visitMaxs(3, 1)
         }
         methodNode.visitEnd()
-        if(!returnFieldDescription.contains("null")) {
-                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
+        if(!returnFieldDescription.contains("null") && runeStar?.analyzers?.get(analyserClass)?.name in classes) {
+//                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
                 methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
