@@ -20,8 +20,8 @@ class RuneStarAnalyzer {
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
         //RuneStar has the Y and Z flipped from how our client works. Need to update the field name
-        val yTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0]
-        val zTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0]
+        val yTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0].copy()
+        val zTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0].copy()
 
         //Update by swapping names of the field
         topic.iterator().forEach {
@@ -35,7 +35,7 @@ class RuneStarAnalyzer {
 
                     }
                     if(fieldHook.field == "cameraZ"){
-                        println("Updating CameraZ from ${fieldHook.name}->${yTemp.name}")
+                        println("Updating CameraZ from ${fieldHook.name}->${yTemp}")
                         fieldHook.name = yTemp.name
                         fieldHook.owner = yTemp.owner
                         fieldHook.decoder = yTemp.decoder
@@ -44,8 +44,8 @@ class RuneStarAnalyzer {
             }
         }
 
-        println("cameraZ = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0].name}")
-        println("cameraY = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0].name}")
+        println("cameraZ = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0]}")
+        println("cameraY = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0]}")
 
         for (clazz in topic) {
 
