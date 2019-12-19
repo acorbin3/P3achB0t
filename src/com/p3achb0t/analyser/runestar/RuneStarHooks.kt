@@ -6,7 +6,7 @@ data class ClassHook(
     var `super`: String,
     var access: Int,
     val interfaces: List<String>,
-    val fields: List<FieldHook>,
+    var fields: List<FieldHook>,
     val methods: List<MethodHook>,
     val constructors: List<ConstructorHook>
 ) {
@@ -17,12 +17,12 @@ data class ClassHook(
 }
 
 data class FieldHook(
-    var field: String,
-    val owner: String,
-    val name: String,
+    var field: String, // deobfuscated name
+    var owner: String,
+    var name: String,
     var access: Int,
     var descriptor: String,
-    val decoder: Long?
+    var decoder: Long?
 ) {
     val getterMethod get() = "get${field.capitalize()}"
 
@@ -33,7 +33,7 @@ data class FieldHook(
             null -> null
             else -> {
                 when (descriptor) {
-                    "I" -> decoder.toInt()
+                    "I" -> decoder!!.toInt()
                     "J" -> decoder
                     else -> error(this)
                 }

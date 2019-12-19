@@ -411,7 +411,7 @@ class Analyser{
 
 
         val signature = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.signature
-        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
+//        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
         val methodNode =
             MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
@@ -434,11 +434,11 @@ class Analyser{
             }
         }
 
-        println(
-            "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
-                fieldDescriptor
-            )} Static:$isStatic"
-        )
+//        println(
+//            "class:$fieldOwner normalName:$normalizedFieldName obsName:$fieldName type:$fieldDescriptor returnFieldDescription:$returnFieldDescription $fieldType $signature return: ${getReturnOpcode(
+//                fieldDescriptor
+//            )} Static:$isStatic"
+//        )
         methodNode.visitInsn(getReturnOpcode(returnFieldDescription))
 
         if (multiplier != null) {
