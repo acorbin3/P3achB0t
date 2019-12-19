@@ -5,6 +5,7 @@ import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.widgets.Widget
+import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 
@@ -12,20 +13,20 @@ class Tabs(val ctx: Context) {
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
-        ClanChat(31, 35),
+        ClanChat(31, WidgetID.ResizableViewport.CLAN_CHAT_ICON),
         AccountManagement(32, 36),
-        FriendsList(33, 37),
+        FriendsList(33, WidgetID.ResizableViewport.FRIENDS_TAB),
         Logout(34),
-        Options(35, 38),
-        Emotes(36, 39),
-        Music(37, 40),
-        Combat(48, 50),
-        Skills(49, 51),
-        QuestList(50, 52),
-        Inventory(51, 53),
-        Equiptment(52, 54),
-        Prayer(53, 55),
-        Magic(54, 56);
+        Options(35, WidgetID.ResizableViewport.OPTIONS_TAB),
+        Emotes(36, WidgetID.ResizableViewport.EMOTES_TAB),
+        Music(37, WidgetID.ResizableViewport.MAGIC_TAB),
+        Combat(48, WidgetID.ResizableViewport.COMBAT_TAB),
+        Skills(49, WidgetID.ResizableViewport.STATS_TAB),
+        QuestList(50, WidgetID.ResizableViewport.QUESTS_TAB),
+        Inventory(51, WidgetID.ResizableViewport.INVENTORY_TAB),
+        Equiptment(52, WidgetID.ResizableViewport.EQUIPMENT_TAB),
+        Prayer(53, WidgetID.ResizableViewport.PRAYER_TAB),
+        Magic(54, WidgetID.ResizableViewport.MAGIC_TAB);
 
         companion object {
             fun valueOf(id: Int, ctx: Context): Tab_Types? = values().find {
@@ -38,13 +39,13 @@ class Tabs(val ctx: Context) {
     }
 
     companion object {
-        const val PARENT_ID = 548
-        const val RESIZE_PARENT_ID = 164
-        private val TOP_ROW = 48..54
-        private val BOTTOM_ROW = 31..37
+        const val PARENT_ID = WidgetID.FIXED_VIEWPORT_GROUP_ID
+        const val RESIZE_PARENT_ID = WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID
+        private val TOP_ROW = 51..57
+        private val BOTTOM_ROW = 36..37
 
-        private val RESIZE_TOP_ROW = 50..56
-        private val RESIZE_BOTTOM_ROW = 35..40
+        private val RESIZE_TOP_ROW = 51..64
+        private val RESIZE_BOTTOM_ROW = 35..47
     }
 
 
