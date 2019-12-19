@@ -13,8 +13,8 @@ class Tabs(val ctx: Context) {
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
-        ClanChat(31, WidgetID.ResizableViewport.CLAN_CHAT_ICON),
-        AccountManagement(32, 36),
+        ClanChat(31, WidgetID.ResizableViewport.CLAN_CHAT_TAB),
+        AccountManagement(32, WidgetID.ResizableViewport.ACCOUNT_MANAGEMENT_TAB),
         FriendsList(33, WidgetID.ResizableViewport.FRIENDS_TAB),
         Logout(34),
         Options(35, WidgetID.ResizableViewport.OPTIONS_TAB),
@@ -44,8 +44,8 @@ class Tabs(val ctx: Context) {
         private val TOP_ROW = 51..57
         private val BOTTOM_ROW = 36..37
 
-        private val RESIZE_TOP_ROW = 51..64
-        private val RESIZE_BOTTOM_ROW = 35..47
+        private val RESIZE_TOP_ROW = WidgetID.ResizableViewport.COMBAT_TAB..WidgetID.ResizableViewport.MAGIC_TAB
+        private val RESIZE_BOTTOM_ROW = WidgetID.ResizableViewport.CLAN_CHAT_TAB..WidgetID.ResizableViewport.MUSIC_TAB
     }
 
 
@@ -78,8 +78,8 @@ class Tabs(val ctx: Context) {
         return noneCount > 3 && tabOpenCount > 3
     }
 
-    fun getOpenTab(): Tab_Types? {
-        var tab: Tab_Types? =
+    fun getOpenTab(): Tab_Types {
+        var tab: Tab_Types =
                 Tab_Types.None
         try {
             val top =
@@ -91,14 +91,14 @@ class Tabs(val ctx: Context) {
             for (childID in top) {
                 val widget = ctx.client.getInterfaceComponents()[parentID][childID]
                 if (widget.getSpriteId2() > 0) {
-                    tab = Tab_Types.valueOf(childID,ctx)
+                    tab = Tab_Types.valueOf(childID,ctx)!!
                 }
 
             }
             for (childID in bottom) {
                 val widget = ctx.client.getInterfaceComponents()[parentID][childID]
                 if (widget.getSpriteId2() > 0) {
-                    tab = Tab_Types.valueOf(childID, ctx)
+                    tab = Tab_Types.valueOf(childID, ctx)!!
                 }
 
             }
