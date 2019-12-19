@@ -12,7 +12,6 @@ class NPCs(val ctx: Context) {
             npcs.forEach {
                 print(it.npc.getType().getName() + "==?" + npcName)
                 if (it.npc.getType().getName().contains(npcName)) {
-                    println("Found banker")
                     foundNPCs.add(it)
                 }
             }
@@ -40,7 +39,6 @@ class NPCs(val ctx: Context) {
         val npcs = ArrayList<NPC>()
         ctx.client.getNpcs().forEach {
             if (it != null) {
-                print(it.getType().getName() + " ")
                 npcs.add(NPC(it,ctx ))
             }
         }
