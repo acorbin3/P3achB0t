@@ -3,6 +3,7 @@ package com.p3achb0t.scripts
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import java.awt.Color
 import java.awt.Graphics
 
 class WidgetExplorerDebug : DebugScript() {
@@ -17,6 +18,7 @@ class WidgetExplorerDebug : DebugScript() {
     var selectedWidgetItem: WidgetItem? = null
 
     override fun draw(g: Graphics) {
+        g.color = Color.YELLOW
         if (selectedWidget?.getId() != ctx.selectedWidget?.getId()) {
             println("Widget Switched to ${ctx.selectedWidget?.getId()}")
             selectedWidget = ctx.selectedWidget
