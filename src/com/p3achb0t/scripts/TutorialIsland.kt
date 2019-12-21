@@ -68,7 +68,7 @@ class TutorialIsland: AbstractScript()  {
         jobs.add(OpenOptions(ctx))
         jobs.add(FinalChatWithGielinor(ctx))
         jobs.add(OpenDoorFromFirstBuilding(ctx))
-        jobs.add(turnOffRoofsAndSound(ctx))
+        jobs.add(TurnOffRoofsAndSound(ctx))
         jobs.add(MoveToFishingSpot(ctx))
         jobs.add(TalkToSurvivalExpertFirstTime(ctx))
         jobs.add(OpenInvetory(ctx))
@@ -303,7 +303,7 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val text = "Options menu"
-            return chatBox.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Options
+            return chatBox.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Options
         }
 
         override suspend fun execute() {
@@ -313,7 +313,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    class turnOffRoofsAndSound(val ctx: Context)  : Job(ctx.client) {
+    class TurnOffRoofsAndSound(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return ctx.players.getLocal().getGlobalLocation().x == 3098
                     && ctx.players.getLocal().getGlobalLocation().y == 3107
@@ -441,11 +441,12 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenInvetory(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("click on the flashing backpack icon") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Inventory
+            return dialogWidget.containsText("click on the flashing backpack icon") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Inventory
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Inventory)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -461,6 +462,7 @@ class TutorialIsland: AbstractScript()  {
 
             if (ctx.tabs.isTabFlashing(Tabs.Tab_Types.Skills)) {
                 ctx.tabs.openTab(Tabs.Tab_Types.Skills)
+                delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
             }
         }
         companion object {
@@ -484,11 +486,12 @@ class TutorialIsland: AbstractScript()  {
     class ClickSkillsTab(val ctx: Context)  : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "on the flashing bar graph icon near the inventory"
-            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Skills
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Skills
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Skills)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
     }
 
@@ -846,11 +849,12 @@ class TutorialIsland: AbstractScript()  {
     class OpenQuestList(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             val text = "Click on the flashing icon to the left of your inventory"
-            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.QuestList
+            return dialogWidget.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.QuestList
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.QuestList)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -1120,11 +1124,12 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenEquipment(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You now have access to a new") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Equiptment
+            return dialogWidget.containsText("You now have access to a new") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Equiptment
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Equiptment)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -1187,11 +1192,12 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenCombatTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing crossed") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Combat
+            return dialogWidget.containsText("Click on the flashing crossed") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Combat
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Combat)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -1326,6 +1332,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
+
     class ExitCaves(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You have completed the tasks here")
@@ -1349,6 +1356,13 @@ class TutorialIsland: AbstractScript()  {
             if (ladder.size > 0) {
                 ladder[0].interact("Climb")
                 ctx.players.getLocal().waitTillIdle()
+                //We are expecting to be really far from the ladder so lets wait till then
+                Utils.waitFor(4, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return ladder[0].distanceTo() > 20
+                    }
+                })
             }
         }
 
@@ -1360,6 +1374,7 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
+            //TODO - sometimes we lick on the ladder once we are out of the caves and that brings us back down. Need to check
             //Sometimes we find out selfs still in the caves, lets exit it
             val caveTile = Tile(3110,9526, ctx = ctx)
             if(caveTile.distanceTo() < 10){
@@ -1408,7 +1423,8 @@ class TutorialIsland: AbstractScript()  {
             suspend fun openPollBooth(ctx: Context) {
                 val pollBooth = ctx.gameObjects.find(26815)
                 pollBooth[0].turnTo()
-                val pollTile = Tile(3119, 3121, ctx.client.getPlane(), ctx)
+
+                val pollTile = Tile(3119, 3121, ctx.players.getLocal().player.getPlane(), ctx)
                 if (pollTile.distanceTo() > 3)
                     Tile(3120, 3121, ctx.client.getPlane(), ctx).clickOnMiniMap()
 
@@ -1501,11 +1517,12 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenAccountManager(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open your Account Management") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.AccountManagement
+            return dialogWidget.containsText("Click on the flashing icon to open your Account Management") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.AccountManagement
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.AccountManagement)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -1559,22 +1576,24 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenPrayerTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Prayer
+            return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Prayer
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Prayer)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
 
     class OpenFriendsTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.FriendsList
+            return dialogWidget.containsText("You should now see another new icon. Click on the flashing face") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.FriendsList
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.FriendsList)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
@@ -1629,11 +1648,12 @@ class TutorialIsland: AbstractScript()  {
 
     class OpenMagicTab(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return dialogWidget.containsText("Open up the magic interface") && ctx.tabs.getOpenTab()!! != Tabs.Tab_Types.Magic
+            return dialogWidget.containsText("Open up the magic interface") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Magic
         }
 
         override suspend fun execute() {
             ctx.tabs.openTab(Tabs.Tab_Types.Magic)
+            delay(Random.nextLong(1000, 2000)) // Adding delay Because flashing tab returns right away causing the system to close the tab
         }
 
     }
