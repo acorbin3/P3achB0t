@@ -57,14 +57,16 @@ class Dialog(val ctx: Context) {
     private suspend fun doConversation(sleep: Boolean) {
         val dialog = getDialogContinue()
         if (dialog.containsText("continue", false)) {
-            dialog.click()
+//            dialog.click()
+            ctx.keyboard.sendKeys(" ")
             delay(Random.nextLong(100, 200))
 
         } else if (dialog.containsText("continue")) {
             //NEed to find children
             dialog.widget?.getChildren()?.iterator()?.forEach {
                 if (WidgetItem(it, ctx = ctx).containsText("continue")) {
-                    WidgetItem(it, ctx = ctx).click()
+//                    WidgetItem(it, ctx = ctx).click()
+                    ctx.keyboard.sendKeys(" ")
                     delay(Random.nextLong(100, 200))
                 }
             }

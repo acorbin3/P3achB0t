@@ -92,6 +92,7 @@ class Interact(val ctx: Context) {
                     //Give up after 2 trys
                     if (retryCount == 1) return false
                     //Reinteracte with menu
+                    println("Retrying interaction -> $action")
                     interact(point, action, retryCount + 1)
                 }
                 if (actionPoint == Point(-1, -1)) {
