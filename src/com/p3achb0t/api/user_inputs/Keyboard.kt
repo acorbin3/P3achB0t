@@ -26,28 +26,45 @@ class Keyboard(val obj: Any) : KeyListener {
 
     fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
         for (c in keys.toCharArray()) {
-            val keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
+            var keyCode = KeyEvent.getExtendedKeyCodeForChar(c.toInt())
             if (KeyEvent.CHAR_UNDEFINED.toInt() == keyCode) {
                 throw RuntimeException(
                         "Key code not found for character '$c'"
                 )
             }
-//        println(c)
+
+            if(c in 'a'..'z' || c in 'A'..'Z'){
+                keyCode = 0
+            }
+
+            KeyEvent.VK_SPACE
+        println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
+            c.directionality.value
             val down = KeyEvent(
                     component,
                     KeyEvent.KEY_PRESSED,
                     System.currentTimeMillis(),
                     0,
-                    0, c
+                    keyCode,
+                    c,
+                    KeyEvent.KEY_LOCATION_STANDARD
             )
-            keyboard.sendEvent(down)
+
+            for (kl in component.keyListeners) {
+                if (kl is Keyboard) {
+                    continue
+                }
+                kl.keyPressed(down)
+            }
             delay(20)
             val typeed = KeyEvent(
                     component,
                     KeyEvent.KEY_TYPED,
                     System.currentTimeMillis(),
                     0,
-                    0, c
+                    0,
+                    c,
+                    KeyEvent.KEY_LOCATION_UNKNOWN
             )
             for (kl in component.keyListeners) {
                 if (kl is Keyboard) {
@@ -65,9 +82,16 @@ class Keyboard(val obj: Any) : KeyListener {
                     KeyEvent.KEY_RELEASED,
                     System.currentTimeMillis(),
                     0,
-                    0, c
+                    keyCode,
+                    c,
+                    KeyEvent.KEY_LOCATION_STANDARD
             )
-            keyboard.sendEvent(up)
+            for (kl in component.keyListeners) {
+                if (kl is Keyboard) {
+                    continue
+                }
+                kl.keyReleased(up)
+            }
             delay(20)
         }
 
