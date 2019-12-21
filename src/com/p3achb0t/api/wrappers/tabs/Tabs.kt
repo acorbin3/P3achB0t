@@ -19,7 +19,7 @@ class Tabs(val ctx: Context) {
         Logout(34),
         Options(35, WidgetID.ResizableViewport.OPTIONS_TAB),
         Emotes(36, WidgetID.ResizableViewport.EMOTES_TAB),
-        Music(37, WidgetID.ResizableViewport.MAGIC_TAB),
+        Music(37, WidgetID.ResizableViewport.MUSIC_TAB),
         Combat(48, WidgetID.ResizableViewport.COMBAT_TAB),
         Skills(49, WidgetID.ResizableViewport.STATS_TAB),
         QuestList(50, WidgetID.ResizableViewport.QUESTS_TAB),
@@ -110,7 +110,6 @@ class Tabs(val ctx: Context) {
     suspend fun openTab(tab: Tab_Types) {
         try {
             if (getOpenTab() == tab) return
-            println("Opening Tab: ${tab.name}")
             val parentID =
                     if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
             val childID =

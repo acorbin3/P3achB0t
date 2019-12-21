@@ -321,8 +321,8 @@ class WidgetID {
 
     internal object ResizableViewport {
         const val CLAN_CHAT_TAB = 36
-        const val FRIENDS_TAB = 38
         const val ACCOUNT_MANAGEMENT_TAB = 37
+        const val FRIENDS_TAB = 38
         const val IGNORES_TAB = 37
         const val LOGOUT_TAB = 39
         const val OPTIONS_TAB = 39
