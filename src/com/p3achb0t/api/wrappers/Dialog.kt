@@ -46,9 +46,9 @@ class Dialog(val ctx: Context) {
         return dialog
     }
 
-    suspend fun continueDialog(sleep: Boolean = true) {
-        var time = 30000 //30 seconds
-        var t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
+    suspend fun continueDialog(sleep: Boolean = false) {
+        val time = 30000 //30 seconds
+        val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (getDialogContinue().containsText("continue") && t.isRunning()) {
             doConversation(sleep)
         }

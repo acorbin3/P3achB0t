@@ -25,7 +25,7 @@ fun LoggingIntoAccount(ctx: Context) {
 
                 // When loaded login
                 if (!LoggingIntoClient.loggedIn && ctx.client.getGameState() == 10) {
-                    ctx.mouse.moveMouse(Point(430, 280), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(531, 280), true, Mouse.ClickType.Left)
 
                     delay(2000)
                     ctx.keyboard.sendKeys(UserDetails.data.password)
