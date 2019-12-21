@@ -39,7 +39,6 @@ class Keyboard(val obj: Any) : KeyListener {
 
             KeyEvent.VK_SPACE
         println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
-            c.directionality.value
             val down = KeyEvent(
                     component,
                     KeyEvent.KEY_PRESSED,
@@ -49,13 +48,8 @@ class Keyboard(val obj: Any) : KeyListener {
                     c,
                     KeyEvent.KEY_LOCATION_STANDARD
             )
+            keyboard.sendEvent(down)
 
-            for (kl in component.keyListeners) {
-                if (kl is Keyboard) {
-                    continue
-                }
-                kl.keyPressed(down)
-            }
             delay(20)
             val typeed = KeyEvent(
                     component,
@@ -66,17 +60,9 @@ class Keyboard(val obj: Any) : KeyListener {
                     c,
                     KeyEvent.KEY_LOCATION_UNKNOWN
             )
-            for (kl in component.keyListeners) {
-                if (kl is Keyboard) {
-                    continue
-                }
-                if (!down.isConsumed) {
-                    kl.keyTyped(typeed)
-                    break
-                }
-            }
-//            component.dispatchEvent(typeed)
+            keyboard.sendEvent(typeed)
             delay(20)
+
             val up = KeyEvent(
                     component,
                     KeyEvent.KEY_RELEASED,
@@ -86,12 +72,7 @@ class Keyboard(val obj: Any) : KeyListener {
                     c,
                     KeyEvent.KEY_LOCATION_STANDARD
             )
-            for (kl in component.keyListeners) {
-                if (kl is Keyboard) {
-                    continue
-                }
-                kl.keyReleased(up)
-            }
+            keyboard.sendEvent(up)
             delay(20)
         }
 
