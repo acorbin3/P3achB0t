@@ -18,6 +18,7 @@ class Mouse(obj: Any) {
 
     private val component: Component = (obj as Applet).getComponent(0)
     private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
+    private val mouseHopping: MouseHop = MouseHop(obj as IScriptManager,obj as Applet)
     private val ioMouse: Mouse = (obj as IScriptManager).getMouse()
 
     fun getX() : Int {
@@ -54,7 +55,8 @@ class Mouse(obj: Any) {
             return false
         }
 
-        mouseMotionFactory.move(destPoint.x, destPoint.y)
+//        mouseMotionFactory.move(destPoint.x, destPoint.y)
+        mouseHopping.move(destPoint)
 
         if (click) {
             delay(Random.nextLong(50, 150))
