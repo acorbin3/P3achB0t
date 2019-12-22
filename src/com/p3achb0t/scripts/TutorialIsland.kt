@@ -283,7 +283,8 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             println("Time to interact with Gielinor Guide")
             val gielinorGuide = ctx.npcs.findNpc("Gielinor Guide")[0]
-            gielinorGuide.interact("Talk-to")
+            if(!ctx.dialog.isContinueAvailable())
+                gielinorGuide.interact("Talk-to")
             Utils.waitFor(5, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
@@ -361,7 +362,8 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             println("Time to interact with Gielinor Guide")
             val gielinorGuide = ctx.npcs.findNpc("Gielinor Guide")[0]
-            gielinorGuide.interact("Talk-to")
+            if(!ctx.dialog.isContinueAvailable())
+                gielinorGuide.interact("Talk-to")
             Utils.waitFor(5, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
@@ -430,7 +432,9 @@ class TutorialIsland: AbstractScript()  {
 
         override suspend fun execute() {
             val survivalExpert = ctx.npcs.findNpc(8503)
-            survivalExpert[0].talkTo()
+            if (!survivalExpert[0].isOnScreen()) survivalExpert[0].turnTo()
+            if(!ctx.dialog.isContinueAvailable())
+                survivalExpert[0].talkTo()
             // WAit till the continue is avaliable
             ctx.players.getLocal().waitTillIdle()
 
@@ -503,7 +507,8 @@ class TutorialIsland: AbstractScript()  {
 
         override suspend fun execute() {
             val survivalExpert = ctx.npcs.findNpc(8503)
-            survivalExpert[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable())
+                survivalExpert[0].talkTo()
             // WAit till the continue is avaliable
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
@@ -704,7 +709,8 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            ctx.npcs.findNpc(3305)[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable())
+                ctx.npcs.findNpc(3305)[0].talkTo()
 
             delay(Random.nextLong(3000, 5000))
 
@@ -838,7 +844,8 @@ class TutorialIsland: AbstractScript()  {
             val questGuide = ctx.npcs.findNpc("Quest Guide")
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
-                questGuide[0].interact("Talk-to Quest Guide")
+                if(!ctx.dialog.isContinueAvailable())
+                    questGuide[0].interact("Talk-to Quest Guide")
                 ctx.players.getLocal().waitTillIdle()
                 delay(Random.nextLong(100, 150))
                 ctx.dialog.continueDialog()
@@ -871,7 +878,8 @@ class TutorialIsland: AbstractScript()  {
             val questGuide = ctx.npcs.findNpc("Quest Guide")
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
-                questGuide[0].interact("Talk-to Quest Guide")
+                if(!ctx.dialog.isContinueAvailable())
+                    questGuide[0].interact("Talk-to Quest Guide")
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
@@ -911,7 +919,8 @@ class TutorialIsland: AbstractScript()  {
             if (miningGuide.size > 0) {
                 ctx.camera.setHighPitch()
                 if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
-                miningGuide[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    miningGuide[0].talkTo()
                 delay(Random.nextLong(1250, 3650))
                 ctx.dialog.continueDialog()
 
@@ -1021,7 +1030,8 @@ class TutorialIsland: AbstractScript()  {
                 if (Tile(3081, 9504, ctx = ctx).distanceTo() > 4) {
                     Tile(3081, 9504, ctx = ctx).clickOnMiniMap()
                 }
-                miningGuide[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    miningGuide[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
 
@@ -1114,7 +1124,8 @@ class TutorialIsland: AbstractScript()  {
 
             //Talk with combat instructor
             val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
-            combatInstructor[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable())
+                combatInstructor[0].talkTo()
             ctx.players.getLocal().waitTillIdle()
             ctx.dialog.continueDialog()
 
@@ -1169,7 +1180,8 @@ class TutorialIsland: AbstractScript()  {
             ctx.camera.setHighPitch()
             //Talk with combat instructor
             val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
-            combatInstructor[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable())
+                combatInstructor[0].talkTo()
             ctx.dialog.continueDialog()
 
         }
@@ -1292,7 +1304,8 @@ class TutorialIsland: AbstractScript()  {
                     combatInstructor[0].waitTillNearObject()
                 }
 
-                combatInstructor[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    combatInstructor[0].talkTo()
                 ctx.dialog.continueDialog()
             }
         }
@@ -1507,7 +1520,8 @@ class TutorialIsland: AbstractScript()  {
             val accountManager = ctx.npcs.findNpc("Account Guide")
             if (accountManager.isNotEmpty()) {
                 ctx.camera.setHighPitch()
-                accountManager[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    accountManager[0].talkTo()
                 delay(Random.nextLong(2500, 4500))
                 ctx.dialog.continueDialog()
             }
@@ -1566,7 +1580,8 @@ class TutorialIsland: AbstractScript()  {
             if (brotherBrace.size > 0) {
                 if (!brotherBrace[0].isOnScreen())
                     brotherBrace[0].turnTo()
-                brotherBrace[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    brotherBrace[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
@@ -1636,8 +1651,9 @@ class TutorialIsland: AbstractScript()  {
             }
             val magicInstructor = ctx.npcs.findNpc("Magic Instructor")
             if (magicInstructor.isNotEmpty()) {
-                magicInstructor[0].turnTo()
-                magicInstructor[0].talkTo()
+                if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    magicInstructor[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
 
@@ -1693,7 +1709,8 @@ class TutorialIsland: AbstractScript()  {
             val magicInstructor = ctx.npcs.findNpc("Magic Instructor")
             if (magicInstructor.isNotEmpty()) {
                 if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
-                magicInstructor[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable())
+                    magicInstructor[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
                 ctx.dialog.selectionOption("Yes")
