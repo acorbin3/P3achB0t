@@ -28,6 +28,10 @@ class Dialog(val ctx: Context) {
         return getDialogContinue().widget != null
     }
 
+    fun isContinueAvailable(): Boolean{
+        return getDialogContinue().containsText("continue") || getDialogContinue().containsText("Please wait")
+    }
+
     fun getDialogContinue(): WidgetItem {
         var dialog = WidgetItem(ctx.widgets.find(PARENT, CONTINUE), ctx = ctx)
         if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
@@ -49,7 +53,7 @@ class Dialog(val ctx: Context) {
     suspend fun continueDialog(sleep: Boolean = true) {
         val time = 30000 //30 seconds
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
-        while (getDialogContinue().containsText("continue") && t.isRunning()) {
+        while (isContinueAvailable() && t.isRunning()) {
             doConversation(sleep)
         }
     }
@@ -73,7 +77,7 @@ class Dialog(val ctx: Context) {
         }
         //TODO - add a smart sleep based on the number of words in the continue dialog
         if (sleep)//&& getDialogContinue().containsText("continue"))
-            delay(Random.nextLong(200, 300))
+            delay(Random.nextLong(350, 550))
     }
 
     suspend fun selectionOption(action: String) {
