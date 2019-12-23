@@ -581,6 +581,31 @@ class TutorialIsland: AbstractScript()  {
         companion object{
             suspend fun lightFire(ctx: Context) {
                 ctx.inventory.open()
+                //Check to see if we are standing on a fire, if so just use it to cook the shrimp.
+                var fires = ctx.gameObjects.find(26185, sortByDistance = true)
+                // Check if there is a fire cook the shrimp
+                fires = ctx.gameObjects.find(26185, sortByDistance = true)
+                if (fires.size > 0) {
+                    ctx.inventory.open()
+                    ctx.inventory.getItem(SHRIMP_ID)?.click()
+                    // The fire is an animated object so it thows a NPE when trying to interact with model.
+                    if (fires[0].sceneryObject != null) {
+                        val point = Calculations.worldToScreen(
+                                fires[0].sceneryObject!!.getCenterX(),
+                                fires[0].sceneryObject!!.getCenterY(),
+                                0,
+                                ctx
+
+                        )
+                        Interact(ctx).interact(point, "Use Raw shrimps -> Fire")
+                    }
+
+                    //Wait till idle
+                    ctx.players.getLocal().waitTillIdle()
+                    delay(100)
+                    ctx.dialog.continueDialog()
+                }
+
                 ctx.inventory.getItem(590)?.click()
                 ctx.inventory.getItem(LOGS_ID_2511)?.click()
                 delay(Random.nextLong(2500, 4500))
