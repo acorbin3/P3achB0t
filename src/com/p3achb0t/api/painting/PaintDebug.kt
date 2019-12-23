@@ -4,6 +4,7 @@ package com.p3achb0t.api.painting
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Calculations.Companion.worldToMiniMap
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.painting.PaintDebug.Companion.isGameObjectsOn
 import com.p3achb0t.api.painting.PaintDebug.Companion.selectedWidget
 import com.p3achb0t.api.painting.PaintDebug.Companion.selectedWidgetItem
 import com.p3achb0t.api.wrappers.Bank
@@ -16,13 +17,14 @@ import java.awt.Rectangle
 
 class PaintDebug {
     companion object {
-        var isDebugTextOn = false
+        var isDebugTextOn = true
         var isPlayerPaintOn = false
         var isNPCPaintOn = false
         var isGroundItemsOn = false
         var isCtrlPressed = false
         var selectedWidget: Component? = null
         var selectedWidgetItem: WidgetItem? = null
+        val isGameObjectsOn = false
     }
 }
 
@@ -33,6 +35,8 @@ fun drawRect(g: Graphics, rect: Rectangle) {
 
 fun debugPaint(ctx: Context, g: Graphics) {
     try {
+
+
         g.color = Color.white
         g.drawRect(ctx!!.mouse.getX(), ctx.mouse.getY(), 5, 5)
 
@@ -48,6 +52,9 @@ fun debugPaint(ctx: Context, g: Graphics) {
             drawDebugText(g, ctx)
 
         if (ctx.client.getGameState() == 30) {
+            if(isGameObjectsOn)
+                gameObjectPaint(g,ctx)
+
             if (!Bank(ctx).isOpen()) {
                 if (PaintDebug.isGroundItemsOn)
                     groundItemsPaint(g, ctx)
@@ -97,6 +104,8 @@ fun debugPaint(ctx: Context, g: Graphics) {
                 g.color = Color.red
                 g.fillRect(point.x, point.y, 4, 4)
             }
+
+
         }
 
 

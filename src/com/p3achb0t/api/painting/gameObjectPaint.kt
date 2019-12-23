@@ -10,7 +10,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 fun gameObjectPaint(g: Graphics, ctx: Context) {
-    if (false) {
+    if (true) {
         val sceneData = ctx.client.getObjType_cachedModels()
         val region = ctx.client.getScene()
         val localPlayer = ctx.players.getLocal()
