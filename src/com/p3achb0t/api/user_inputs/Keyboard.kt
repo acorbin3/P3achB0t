@@ -8,21 +8,9 @@ import java.awt.Component
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
-class Keyboard(val obj: Any) : KeyListener {
+class Keyboard(val obj: Any)  {
     val component: Component = (obj as Applet).getComponent(0)
     val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as IScriptManager).getKeyboard()
-
-    override fun keyTyped(e: KeyEvent?) {
-        println("Typed")
-    }
-
-    override fun keyPressed(e: KeyEvent?) {
-        println("Pressed")
-    }
-
-    override fun keyReleased(e: KeyEvent?) {
-        println("Released")
-    }
 
     fun sendKeys(keys: String, sendReturn: Boolean = false) = runBlocking {
         for (c in keys.toCharArray()) {

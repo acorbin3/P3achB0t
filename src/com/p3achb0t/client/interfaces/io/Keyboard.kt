@@ -1,5 +1,6 @@
 package com.p3achb0t.client.interfaces.io
 
+import com.p3achb0t.scripts.PaintDebug
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
@@ -38,7 +39,7 @@ open abstract class Keyboard : KeyListener {
     }
 
     override fun keyTyped(e: KeyEvent) {
-        //println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
+//        println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
         if (!inputBlocked) {
             _keyTyped(e)
         }
@@ -46,7 +47,26 @@ open abstract class Keyboard : KeyListener {
     }
 
     override fun keyPressed(e: KeyEvent) {
-        //println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
+//        println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
+        if(e.isControlDown && e.keyChar.isDigit()){
+            when (e.keyChar) {
+                '1' -> {
+                    PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
+                }
+                '2' -> {
+                    PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
+                }
+                '3' -> {
+                    PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
+                }
+                '4' -> {
+                    PaintDebug.isGameObjectOn = !PaintDebug.isGameObjectOn
+                }
+                '5' -> {
+                    PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+                }
+            }
+        }
         if (!inputBlocked) {
             _keyPressed(e)
         }
@@ -54,7 +74,7 @@ open abstract class Keyboard : KeyListener {
     }
 
     override fun keyReleased(e: KeyEvent) {
-        //println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
+//        println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
         if (!inputBlocked) {
             _keyReleased(e)
         }

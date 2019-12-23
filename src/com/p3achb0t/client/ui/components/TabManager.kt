@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.scripts.PaintDebug
 import com.p3achb0t.scripts.WidgetExplorerDebug
 import java.awt.Dimension
 import javax.swing.JTabbedPane
@@ -41,6 +42,7 @@ class TabManager private constructor() : JTabbedPane() {
 
         //Here is a place to add some debug script since the client has been loaded
         gameTab.client.addDebugScript(WidgetExplorerDebug.scriptName)
+        gameTab.client.addDebugScript(PaintDebug.scriptName)
 
 
 

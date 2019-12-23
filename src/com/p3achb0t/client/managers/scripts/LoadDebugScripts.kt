@@ -5,6 +5,7 @@ import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DEBUG_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.scripts.PaintDebug
 import com.p3achb0t.scripts.WidgetExplorerDebug
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
@@ -23,6 +24,7 @@ class LoadDebugScripts {
         println(path)
         //Add the WidgetExplorer debug script first
         debugScripts[WidgetExplorerDebug.scriptName] = WidgetExplorerDebug()
+        debugScripts[PaintDebug.scriptName] = PaintDebug()
         loadAll()
     }
 
