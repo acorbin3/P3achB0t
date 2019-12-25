@@ -16,6 +16,9 @@ class PaintDebug: DebugScript() {
         var isGroundItemsOn = false
         var isGameObjectOn = false
         val scriptName = "PaintDebug"
+        fun drawRect(g: Graphics, rect: Rectangle) {
+            g.drawRect(rect.x, rect.y, rect.width, rect.height)
+        }
     }
     fun drawRect(g: Graphics, rect: Rectangle) {
         g.drawRect(rect.x, rect.y, rect.width, rect.height)
