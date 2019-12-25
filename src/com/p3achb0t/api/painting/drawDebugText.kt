@@ -21,6 +21,8 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
         debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
         debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
+        debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
+
 
 
 

@@ -52,7 +52,9 @@ data class MethodHook(
     val parameters: List<String>?,
     val descriptor: String,
     val finalArgument: Int?
-)
+){
+    val toString get()  = "method:$method\tOwner:$owner\tname:$name\taccess:$access\tdescriptor:$descriptor\tparameters:${parameters.toString()}"
+}
 
 data class ConstructorHook(
     val access: Int,

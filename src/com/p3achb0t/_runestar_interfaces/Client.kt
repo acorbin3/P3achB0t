@@ -617,6 +617,7 @@ interface Client : GameShell {
     fun getUseBufferedSocket(): Boolean
     fun getUserHomeDirectory(): String
     fun getVarcs(): Varcs
+    fun getVarbit(id: Int): Int
     fun getViewportComponent(): Component
     fun getViewportDrawCount(): Int
     fun getViewportHeight(): Int
