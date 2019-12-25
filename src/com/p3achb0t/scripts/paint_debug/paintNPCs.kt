@@ -1,4 +1,4 @@
-package com.p3achb0t.api.painting
+package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations

@@ -1,8 +1,7 @@
-package com.p3achb0t.scripts
+package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.DebugScript
-import com.p3achb0t.api.painting.*
 import com.p3achb0t.api.wrappers.Bank
 import java.awt.Color
 import java.awt.Graphics
@@ -33,7 +32,7 @@ class PaintDebug: DebugScript() {
 
             if (ctx.client.getGameState() == 30) {
                 if(isGameObjectOn)
-                    gameObjectPaint(g,ctx)
+                    gameObjectPaint(g, ctx)
 
                 if (!Bank(ctx).isOpen()) {
                     if (isGroundItemsOn)

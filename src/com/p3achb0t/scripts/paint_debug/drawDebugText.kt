@@ -1,4 +1,4 @@
-package com.p3achb0t.api.painting
+package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Context
@@ -31,10 +31,10 @@ fun drawDebugText(g: Graphics, ctx: Context) {
             debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
             debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
             debugText.add(
-                DebugText(
-                    "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
-                            " RAW: (${ctx.client.getLocalPlayer().getX()},${ctx.client.getLocalPlayer().getY()}"
-                )
+                    DebugText(
+                            "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
+                                    " RAW: (${ctx.client.getLocalPlayer().getX()},${ctx.client.getLocalPlayer().getY()}"
+                    )
             )
             debugText.add(DebugText("Base(x,y): (${ctx.client.getBaseX()},${ctx.client.getBaseY()})"))
 
@@ -45,12 +45,12 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
             )
             debugText.add(
-                DebugText(
-                    "localPlayer minimap: (x,y) (${miniMapPlayer.x},${miniMapPlayer.y})" +
-                            "Including base(${ctx.client.getLocalPlayer().getX() / 128 + ctx.client.getBaseX()}," +
-                            "${ctx.client.getLocalPlayer().getY() / 128 + ctx.client.getBaseY()})  " +
-                            "mapAngle: ${ctx.client.getCamAngleY()}"
-                )
+                    DebugText(
+                            "localPlayer minimap: (x,y) (${miniMapPlayer.x},${miniMapPlayer.y})" +
+                                    "Including base(${ctx.client.getLocalPlayer().getX() / 128 + ctx.client.getBaseX()}," +
+                                    "${ctx.client.getLocalPlayer().getY() / 128 + ctx.client.getBaseY()})  " +
+                                    "mapAngle: ${ctx.client.getCamAngleY()}"
+                    )
             )
             debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
             debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))

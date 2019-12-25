@@ -1,4 +1,4 @@
-package com.p3achb0t.api.painting
+package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.LocType
@@ -56,7 +56,7 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                             val rawID = it.getTag().shr(14).and(0x7fff)
                                             //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                             val objectComposite =
-                                                getObjectComposite(sceneData, id)
+                                                    getObjectComposite(sceneData, id)
                                             val point2 =
                                                 Calculations.worldToScreen(
                                                         it.getCenterX(),
@@ -133,7 +133,7 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                 val id = wall.getTag().shr(17).and(0x7fff).toInt()
                                 //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                 val objectComposite =
-                                    getObjectComposite(sceneData, id)
+                                        getObjectComposite(sceneData, id)
                                 val point2 =
                                     Calculations.worldToScreen(
                                             wall.getX(),

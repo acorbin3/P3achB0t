@@ -7,7 +7,7 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
-import com.p3achb0t.api.painting.getObjectComposite
+import com.p3achb0t.scripts.paint_debug.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.Context

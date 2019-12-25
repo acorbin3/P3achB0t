@@ -1,6 +1,6 @@
 package com.p3achb0t.client.ui.components
 
-import com.p3achb0t.scripts.PaintDebug
+import com.p3achb0t.scripts.paint_debug.PaintDebug
 import com.p3achb0t.scripts.WidgetExplorerDebug
 import java.awt.Dimension
 import javax.swing.JTabbedPane
