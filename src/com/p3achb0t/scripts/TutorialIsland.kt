@@ -1,7 +1,6 @@
 package com.p3achb0t.scripts
 
 import com.p3achb0t.api.*
-import com.p3achb0t.api.painting.debugPaint
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -49,7 +48,6 @@ class TutorialIsland: AbstractScript()  {
     }
 
     override fun draw(g: Graphics) {
-        debugPaint(ctx, g)
         g.color = Color.black
         g.drawString("Current Runtime: $stopwatch", 10, 450)
         g.drawString(currentJob, 10, 460)
@@ -61,7 +59,8 @@ class TutorialIsland: AbstractScript()  {
     var isInititilized = false
     val jobs = ArrayList<Job>()
     fun init() {
-        
+
+        jobs.add(ICantReachThatDialog(ctx))
         jobs.add(PickName(ctx))
         jobs.add(SelectCharOutfit(ctx))
         jobs.add(ChatWithGielinorGuide(ctx))
@@ -166,6 +165,17 @@ class TutorialIsland: AbstractScript()  {
         override suspend fun execute() {
             ctx.dialog.continueDialog()
         }
+    }
+
+    class ICantReachThatDialog(val ctx: Context): Job(ctx.client){
+        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+            return WidgetItem(ctx.widgets.find(162,44),ctx=ctx).containsText("I can't reach that!")
+        }
+
+        override suspend fun execute() {
+            WidgetItem(ctx.widgets.find(162,45), ctx=ctx).click()
+        }
+
     }
 
     class PickName(val ctx: Context)  : Job(ctx.client) {
