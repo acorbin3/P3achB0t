@@ -170,7 +170,6 @@ class Analyser{
 
             //Inject varBit
             if(clazzData.`class` == "Client") {
-//            val methodName
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
                 println("MethodHook: $methodHook")
                 val ownerClassNode = classes[methodHook?.owner]
@@ -186,8 +185,6 @@ class Analyser{
                 varBitMethodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
-//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.visitEnd()
-//                varBitMethodNode.accept(classes[runeStar.analyzers.get(clazzData.`class`)?.name])
             }
 
 //            println("Methods:~~~~~~")
