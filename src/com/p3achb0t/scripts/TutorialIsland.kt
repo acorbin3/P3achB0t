@@ -180,7 +180,7 @@ class TutorialIsland: AbstractScript()  {
 
     class PickName(val ctx: Context)  : Job(ctx.client) {
 
-        val names = arrayListOf(
+        private val names = arrayListOf(
                 "rpg", "fonic", "dancingnancie", "raven321", "georgemagoo", "Darkshadow46236", "stevay1", "ThisLittlePiggy", "joanp62", "tiddler",
                 "amit007", "appuru_guru", "hygmnv", "geric03", "marvelmyles", "prairiemama", "blackman_w_hepatitis", "reaper654", "markupman", "Pixelsilk",
                 "wealthy-wise-guy", "TimmahC", "korthj", "DrWyckoff", "nurta", "rezonq3", "ghostinc", "bizwerk", "Simonvjara", "ImSprunging",
@@ -592,9 +592,8 @@ class TutorialIsland: AbstractScript()  {
             suspend fun lightFire(ctx: Context) {
                 ctx.inventory.open()
                 //Check to see if we are standing on a fire, if so just use it to cook the shrimp.
-                var fires = ctx.gameObjects.find(26185, sortByDistance = true)
                 // Check if there is a fire cook the shrimp
-                fires = ctx.gameObjects.find(26185, sortByDistance = true)
+                val fires = ctx.gameObjects.find(26185, sortByDistance = true)
                 if (fires.size > 0) {
                     ctx.inventory.open()
                     ctx.inventory.getItem(SHRIMP_ID)?.click()
@@ -1301,7 +1300,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class GoTalkToCombatInstructorFor2ndTime(val ctx: Context) : Job(ctx.client) {
-        val ratCageArea = Area(
+        private val ratCageArea = Area(
                 Tile(3109, 9521, ctx = ctx), Tile(3110, 9519, ctx = ctx),
                 Tile(3110, 9518, ctx = ctx), Tile(3109, 9516, ctx = ctx), Tile(3109, 9515, ctx = ctx),
                 Tile(3108, 9514, ctx = ctx), Tile(3107, 9514, ctx = ctx), Tile(3106, 9513, ctx = ctx),
@@ -1557,7 +1556,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx.camera.setHighPitch()
                 if(!ctx.dialog.isContinueAvailable())
                     accountManager[0].talkTo()
-                delay(Random.nextLong(2500, 4500))
+//                delay(Random.nextLong(2500, 4500))
                 ctx.dialog.continueDialog()
             }
         }
@@ -1710,11 +1709,25 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class SelectWindStrikeAndAttackChicken(val ctx: Context) : Job(ctx.client) {
+
+        private val mageHutArea = Area(
+                Tile(3138, 3091, ctx = ctx), Tile(3141, 3091, ctx = ctx),
+                Tile(3142, 3090, ctx = ctx), Tile(3143, 3089, ctx = ctx), Tile(3143, 3084, ctx = ctx),
+                Tile(3140, 3084, ctx = ctx), Tile(3140, 3089, ctx = ctx), Tile(3139, 3090, ctx = ctx),
+                ctx = ctx
+        )
+
         override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
             return dialogWidget.containsText("You now have some runes.")
         }
 
         override suspend fun execute() {
+            //Make sure we are near the chicken cage
+            val rightInFrontOfTheGate = Tile(3140, 3091,0,ctx=ctx)
+            if(rightInFrontOfTheGate.distanceTo() > 2  && !mageHutArea.isPlayerInArea()){
+                rightInFrontOfTheGate.clickOnMiniMap()
+                ctx.players.getLocal().waitTillIdle()
+            }
             ctx.magic.cast(Magic.Companion.Spells.Wind_Strike)
             //Attack chicken
             val chickens = ctx.npcs.findNpc("Chicken")
