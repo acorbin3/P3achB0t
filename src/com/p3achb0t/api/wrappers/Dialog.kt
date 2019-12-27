@@ -51,7 +51,7 @@ class Dialog(val ctx: Context) {
     }
 
     suspend fun continueDialog(sleep: Boolean = true) {
-        val time = 30000 //30 seconds
+        val time = 20 //20 seconds
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
             doConversation(sleep)
@@ -74,6 +74,10 @@ class Dialog(val ctx: Context) {
                     delay(Random.nextLong(100, 200))
                 }
             }
+        }
+        else if(isContinueAvailable()){
+            ctx.keyboard.sendKeys(" ")
+            delay(Random.nextLong(100, 200))
         }
         //TODO - add a smart sleep based on the number of words in the continue dialog
         if (sleep)//&& getDialogContinue().containsText("continue"))
