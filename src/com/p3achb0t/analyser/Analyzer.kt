@@ -172,8 +172,6 @@ class Analyser{
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
                 println("MethodHook: $methodHook")
-                val ownerClassNode = classes[methodHook?.owner]
-                val mn = ownerClassNode?.methods?.find { it.name == methodHook?.name }!!
                 val varBitMethodNode = MethodNode(ACC_PUBLIC, "getVarbit", "(I)I", null, null)
 
                 varBitMethodNode.visitVarInsn(ILOAD, 1)
@@ -181,7 +179,6 @@ class Analyser{
                 varBitMethodNode.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
 
                 varBitMethodNode.visitInsn(Opcodes.IRETURN)
-                varBitMethodNode.visitMaxs(3, 3)
                 varBitMethodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
@@ -248,7 +245,7 @@ class Analyser{
         val path = System.getProperty("user.dir")
         val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
         for (classNode in classes.values) {
-            val cw = ClassWriter(0)
+            val cw = ClassWriter(ClassWriter.COMPUTE_MAXS)
             classNode.accept(cw)
             out.putNextEntry(JarEntry(classNode.name + ".class"))
             out.write(cw.toByteArray())
