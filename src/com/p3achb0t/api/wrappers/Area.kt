@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Point
 import java.awt.Polygon
@@ -16,8 +17,10 @@ class Area {
     var tiles = arrayListOf<Tile>()
     var polygon = Polygon()
     var plane = 0
+    var ctx: Context?
 
-    constructor(t1: Tile, t2: Tile) {
+    constructor(t1: Tile, t2: Tile, ctx: Context?) {
+        this.ctx = ctx
         Area(
             Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z),
             Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z ),
@@ -26,8 +29,9 @@ class Area {
         )
     }
 
-    constructor(vararg tiles: Tile) {
+    constructor(vararg tiles: Tile, ctx: Context?=null) {
         this.plane = tiles[0].z
+        this.ctx = ctx
         //Create a polygon from the files
         for (tile in tiles) {
             polygon.addPoint(tile.x + 1, tile.y + 1)
@@ -117,6 +121,10 @@ class Area {
             area /= 2.0
             return abs(area)
         }
+    }
+
+    fun isPlayerInArea(): Boolean{
+        return ctx?.players?.getLocal()?.getGlobalLocation()?.let { this.containsOrIntersects(it) } ?: false
     }
 
     fun contains(vararg locatables: Locatable): Boolean {
