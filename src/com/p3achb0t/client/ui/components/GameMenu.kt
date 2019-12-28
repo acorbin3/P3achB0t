@@ -1,10 +1,12 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.GoblinKiller
 import com.p3achb0t.scripts.TestBankPin
 import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -78,6 +80,16 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
         }
 
+        val varbitExplorer = JMenuItem("Open Varbit Explorer")
+        varbitExplorer.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+
+            VarBitExplorer(Context(game.client.getScriptManager().client))
+        }
+
+
+
 
         val mouse = JMenuItem("Move Mouse")
         mouse.addActionListener {
@@ -127,6 +139,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         menu.add(mouse)
         menu.add(injection)
         menu.add(widgetExplorer)
+        menu.add(varbitExplorer)
         menu.add(test)
         menu.add(test2)
         menu.add(test3)
