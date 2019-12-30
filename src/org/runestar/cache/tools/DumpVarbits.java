@@ -14,7 +14,7 @@ public class DumpVarbits {
         var lines = new ArrayList<String>();
         lines.add("id\tstartBit\tendBit\tbaseVar");
 
-        try (var disk = DiskCache.open(Path.of("cache"))) {
+        try (var disk = DiskCache.open(Path.of(".cache"))) {
             MemCache cache = MemCache.of(disk);
             for (var file : cache.archive(VarBitType.ARCHIVE).group(VarBitType.GROUP).files()) {
                 var varbit = new VarBitType();
