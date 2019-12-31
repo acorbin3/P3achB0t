@@ -1,18 +1,18 @@
 package com.p3achb0t._runestar_interfaces
 
 interface PacketWriter {
-	fun getBit(): PacketBit
-	fun getBitNodes(): IterableNodeDeque
-	fun getIsaac(): Isaac
-	fun getPacket(): Packet
-	fun getServerPacket0(): ServerProt
-	fun getServerPacket0Length(): Int
-	fun getSocket0(): AbstractSocket
-    fun get__x(): Boolean
-    fun get__c(): ServerProt
-	fun get__r(): ServerProt
-    fun get__y(): ServerProt
+    fun getBit(): PacketBit
+    fun getBitNodes(): IterableNodeDeque
+    fun getIsaac(): Isaac
+    fun getPacket(): Packet
+    fun getServerPacket0(): ServerProt
+    fun getServerPacket0Length(): Int
+    fun getSocket0(): AbstractSocket
+    fun get__a(): Boolean
+    fun get__k(): ServerProt
+    fun get__o(): ServerProt
+    fun get__v(): ServerProt
+    fun get__c(): Int
     fun get__d(): Int
-	fun get__f(): Int
-    fun get__i(): Int
+    fun get__y(): Int
 }

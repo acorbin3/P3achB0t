@@ -7,7 +7,7 @@ import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.getConvexHullFromModel
 import com.p3achb0t.api.getTrianglesFromModel
-import com.p3achb0t.api.painting.getObjectComposite
+import com.p3achb0t.scripts.paint_debug.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.Context
@@ -63,7 +63,7 @@ class GameObject(
             }
         }
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
+        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
         return getConvexHull().contains(mousePoint)
     }
     override fun getNamePoint(): Point {

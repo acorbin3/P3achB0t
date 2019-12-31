@@ -65,7 +65,7 @@ class GameObjects(val ctx: Context) {
 
         }
         if (sortByDistance) {
-            val local = Players(ctx).getLocal()
+            val local = ctx.players.getLocal()
             gameObjects.sortBy { it.distanceTo(local) }
         }
         return gameObjects
@@ -107,7 +107,7 @@ class GameObjects(val ctx: Context) {
 
         }
         if (sortByDistance) {
-            val local = Players(ctx).getLocal()
+            val local = ctx.players.getLocal()
             gameObjects.sortBy { it.distanceTo(local) }
         }
         return gameObjects

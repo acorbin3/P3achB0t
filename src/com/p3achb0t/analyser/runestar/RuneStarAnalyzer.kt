@@ -14,17 +14,46 @@ class RuneStarAnalyzer {
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
-        val hookFileName = "runestarHooks.json"
+        val hookFileName = "hooks_187.json"
         val file = File("./$hookDir/$hookFileName")
 
         val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
+        //RuneStar has the Y and Z flipped from how our client works. Need to update the field name
+        val yTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0].copy()
+        val zTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0].copy()
+
+        //Update by swapping names of the field
+        topic.iterator().forEach {
+            if(it.`class` == "Client"){
+                it.fields.iterator().forEach { fieldHook ->
+                    if(fieldHook.field == "cameraY"){
+                        println("Updating CameraY from ${fieldHook.name}->$zTemp")
+                        fieldHook.name = zTemp.name
+                        fieldHook.owner = zTemp.owner
+                        fieldHook.decoder = zTemp.decoder
+
+                    }
+                    if(fieldHook.field == "cameraZ"){
+                        println("Updating CameraZ from ${fieldHook.name}->${yTemp}")
+                        fieldHook.name = yTemp.name
+                        fieldHook.owner = yTemp.owner
+                        fieldHook.decoder = yTemp.decoder
+                    }
+                }
+            }
+        }
+
+        println("cameraZ = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0]}")
+        println("cameraY = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0]}")
+
         for (clazz in topic) {
 
             analyzers[clazz.`class`] = clazz
             classRefObs[clazz.name] = clazz
         }
-        val folder = "../src/com/p3achb0t/_runestar_interfaces2/"
+
+        val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "./$hookDir/$hookFileName"
@@ -136,6 +165,8 @@ class RuneStarAnalyzer {
         val newPackage = "hook_interfaces"
         val folder = "./src/com/p3achb0t/$newPackage/"
         val _package = "com.p3achb0t.$newPackage"
+
+
 
 //        createInterfaces(folder, _package, analyzers, classRefObs)
 //        createJavaInterfaces("./src/org/bot/applet/wrapper/","org.bot.applet.wrapper",analyzers, classRefObs)

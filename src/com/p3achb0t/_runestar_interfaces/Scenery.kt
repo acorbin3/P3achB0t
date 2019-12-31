@@ -14,5 +14,5 @@ interface Scenery {
     fun getStartX(): Int
     fun getStartY(): Int
     fun getTag(): Long
-    fun get__f(): Int
+    fun get__c(): Int
 }

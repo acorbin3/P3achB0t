@@ -9,7 +9,7 @@ out/
 deob/
 .idea/
 /target/
-cache/
+/cache/
 src/com/p3achb0t/UserDetails.kt
 #app/
 gamepacks/

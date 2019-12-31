@@ -4,7 +4,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.p3achb0t._runestar_interfaces.Client;
 import com.p3achb0t._runestar_interfaces.Component;
-import com.p3achb0t.api.wrappers.widgets.Widgets;
 import com.p3achb0t.api.Context;
 
 import javax.swing.*;
@@ -80,7 +79,7 @@ public class WidgetExplorerV3 {
                         Component[][] components = ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
                         ctx.setSelectedWidget(widget);
-                        String result = Widgets.Companion.getWidgetDetails(widget, 0, ctx);
+                        String result = ctx.getWidgets().getWidgetDetails(widget, 0);
                         textArea1.removeAll();
                         textArea1.setText(result);
                         textArea1.setCaretPosition(0);
@@ -111,7 +110,7 @@ public class WidgetExplorerV3 {
             if (components[parentID] != null) {
                 for (Integer childID = 0; childID < components[parentID].length; childID++) {
                     if (components[parentID][childID] != null) {
-                        String result = Widgets.Companion.getWidgetDetails(components[parentID][childID], 0, ctx);
+                        String result = ctx.getWidgets().getWidgetDetails(components[parentID][childID], 0);
                         if (result.toLowerCase().contains(searchText.toLowerCase())) {
                             if (currentParentNode == null) {
                                 currentParentNode = new DefaultMutableTreeNode(parentID);

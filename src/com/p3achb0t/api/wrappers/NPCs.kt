@@ -10,7 +10,7 @@ class NPCs(val ctx: Context) {
         try {
             val npcs = findNpcs(sortByDist = sortByDist)
             npcs.forEach {
-                if (it.npc.getType().getName() == npcName) {
+                if (it.npc.getType().getName().contains(npcName)) {
                     foundNPCs.add(it)
                 }
             }
@@ -52,5 +52,9 @@ class NPCs(val ctx: Context) {
             }
         }
         return npcs
+    }
+
+    fun getNearestNPC() : NPC {
+        return findNpcs(true)[0]
     }
 }

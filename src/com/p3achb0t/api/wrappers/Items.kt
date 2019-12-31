@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Inventory
 
-
+// This class is used to find the inventory items
 class Items(val client: com.p3achb0t._runestar_interfaces.Client) {
     data class Item(val id: Int, val stackSize: Int)
 

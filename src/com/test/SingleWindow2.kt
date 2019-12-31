@@ -18,7 +18,7 @@ class SingleWindow2(val bot: Bot) {
     }
 
     fun start() : Boolean {
-        frame.add(bot.applet)
+        frame.add(bot.getApplet())
         frame.revalidate()
         return true
     }

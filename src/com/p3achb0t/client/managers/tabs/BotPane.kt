@@ -11,7 +11,7 @@ class BotPane(val bot: Bot): JPanel() {
         focusTraversalKeysEnabled = true
         background = Color.BLACK
         revalidate()
-        add(bot.applet)
+        add(bot.getApplet())
         revalidate()
     }
 
@@ -20,14 +20,16 @@ class BotPane(val bot: Bot): JPanel() {
     }
 
     fun destroy() {
-        bot.applet.destroy()
+        bot.getApplet().destroy()
     }
 
     fun resizeView(x: Int, y: Int) {
-        bot.applet.preferredSize = Dimension(900, 800)
-        bot.applet.revalidate()
-        bot.manager.getManager().x=x
-        bot.manager.getManager().y=y
-        bot.applet.repaint()
+        bot.getApplet().preferredSize = Dimension(x, y)
+        //bot.applet.revalidate()
+        val scriptManager = bot.getScriptManager()
+        scriptManager.x = x
+        scriptManager.y = y
+        bot.getApplet().revalidate()
+        bot.getApplet().repaint()
     }
 }

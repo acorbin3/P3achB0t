@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
-import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -30,7 +30,7 @@ class WidgetItem(
     }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
+        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
         return area.contains(mousePoint)
     }
 
@@ -53,7 +53,7 @@ class WidgetItem(
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
                 || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)
         if (textContains != null && textContains)
-            return super.interact(action )
+            return super.interact(action)
         else {
             // Need to look at children
             this.widget?.getChildren()?.iterator()?.forEach {
@@ -61,17 +61,13 @@ class WidgetItem(
                     return WidgetItem(it, ctx = ctx).interact(action)
                 }
             }
-            return false
+            return super.interact(action)
         }
     }
 
 
 }
 
-//This class is used to create a widget explorer to find widgets
-// To lanch the widget explorer you just
-// 1. Create an app object/class:// class MyApp : App(WidgetExplorer::class)
-// 2. Then need to call: //    launch<MyApp>(args)
 fun getStrippedWidgetDetails(widget: Component, includeChildren: Boolean = true): String {
     var result = ""
     try {

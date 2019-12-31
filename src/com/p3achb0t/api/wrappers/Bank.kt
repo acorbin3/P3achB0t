@@ -1,12 +1,10 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
-import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -51,42 +49,45 @@ class Bank(val ctx: Context) {
 
         //First look for bankers, if that doesnt work then look for bank objects
         if (!isOpen()) {
-            val bankers = NPCs(ctx).findNpc("Banker")
+            val bankers = ctx.npcs.findNpc("Banker")
             if (bankers.size > 0) {
                 bankers[0].interact("Use" )
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        return isOpen()
+                        return isOpen() || isPinPanelOpen()
                     }
                 })
+            }else{
+                println("Didnt find any bankers")
             }
         }
         //TODO - interact with bank booths is player is not here
+
+
+        if(isPinPanelOpen()){
+            solveBankPin("1122")//TODO - try to figure out where to get the pin from the account
+        }
 
     }
 
     suspend fun close() {
         if (isOpen()) {
             // Loop over the children to find the button that can close the bank
-            val itemContainer = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
+            val itemContainer = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.INVENTORY_ITEM_CONTAINER)
             itemContainer?.getChildren()?.iterator()?.forEach {
                 val actions = it.getOps()
-                if (actions != null) {
-                    actions.iterator().forEach { action ->
-                        if (action != null) {
-                            if (action == "Close") {
-                                println("Closing bank")
-                                WidgetItem(it, ctx = ctx).click()
-                                //Wait till bank is closed
-                                Utils.waitFor(3, object : Utils.Condition {
-                                    override suspend fun accept(): Boolean {
-                                        delay(100)
-                                        return !isOpen()
-                                    }
-                                })
+                actions?.iterator()?.forEach { action ->
+                    if (action == "Close") {
+                        println("Closing bank")
+                        WidgetItem(it, ctx = ctx).click()
+                        //Wait till bank is closed
+                        Utils.waitFor(3, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                delay(100)
+                                return !isOpen()
                             }
-                        }
+                        })
                     }
                 }
 
@@ -95,19 +96,19 @@ class Bank(val ctx: Context) {
     }
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
+        val depositAllWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
         depositAllWidget.click()
-        val inventoryCount = Inventory(ctx).getCount()
+        val inventoryCount = ctx.inventory.getCount()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return inventoryCount != Inventory(ctx).getCount()
+                return inventoryCount != ctx.inventory.getCount()
             }
         })
     }
 
     fun itemVisible(itemRect: Rectangle): Boolean {
-        return WidgetItem(getWidget(), ctx = ctx).area.intersects(itemRect)
+        return WidgetItem(getBankWidget(), ctx = ctx).area.intersects(itemRect)
     }
 
 
@@ -141,7 +142,7 @@ class Bank(val ctx: Context) {
                                 override suspend fun accept(): Boolean {
                                     delay(100)
                                     val chatText =
-                                            Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                                     val text = chatText?.getText()
                                     println(text + " " + chatText?.getIsHidden())
                                     return text?.equals("*") ?: false
@@ -169,14 +170,14 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             val itemCount = getItemCount(id)
             if (count in listOf(1, 5, 10)) {
-                Inventory(ctx).getItem(id)?.interact("Deposit-$count" )
+                ctx.inventory.getItem(id)?.interact("Deposit-$count")
             } else {
-                Inventory(ctx).getItem(id)?.interact("Deposit-X")
+                ctx.inventory.getItem(id)?.interact("Deposit-X")
                 //Wait till the * shows up in the chat box
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
-                        val chatText = Widgets.find(ctx, WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                        val chatText = ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                         val text = chatText?.getText()
                         println(text + " " + chatText?.getIsHidden())
                         return text?.equals("*") ?: false
@@ -198,17 +199,25 @@ class Bank(val ctx: Context) {
     }
 
     fun isOpen(): Boolean {
-        return getWidget() != null
+        return getBankWidget() != null
     }
 
-    fun getWidget(): Component? {
-        return Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+    fun isPinPanelOpen(): Boolean{
+        return getPinPanelWidget() != null
+    }
+
+    fun getPinPanelWidget(): Component?{
+        return ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID,0)
+    }
+
+    fun getBankWidget(): Component? {
+        return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
     }
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = Widgets.find(ctx, WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
-            if (widget != null && widget.getText() != null && widget.getText().trim().isNotEmpty()) {
+            val widget = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+            if (widget?.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
         }
@@ -217,7 +226,7 @@ class Bank(val ctx: Context) {
 
     fun getAll(): ArrayList<WidgetItem> {
         val itemWidgets = ArrayList<WidgetItem>()
-        val bank = getWidget()
+        val bank = getBankWidget()
         var itemCount = 0
         val maxItemCount = getSize()
         bank?.getChildren()?.iterator()?.forEach {
@@ -240,5 +249,88 @@ class Bank(val ctx: Context) {
         }
 
         return itemWidgets
+    }
+
+    private fun stillSolvingPin(): Boolean{
+        val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
+        val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
+        val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
+        val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+
+        return digit1 == "?" || digit2 == "?" || digit3 == "?" || digit4 == "?"
+    }
+
+    private suspend fun solveBankPin(pin: String){
+        //Check to see if widget 213 is open
+        //Pin
+        //Look for number in the follow subchild widgets text
+        //:(213,16)(1)
+        //child : 16,18,20,22,24,26, 28,30,32,34
+        //children in the follow can help identify with key we need to press: 3,4,5,6
+
+
+        while(stillSolvingPin()){
+            try {
+                //Which one to look for
+                val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
+                val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
+                val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
+                val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+
+                when {
+                    digit1 == "?" -> {
+                        println("Solving digit 1")
+                        findAndPressKey(pin[0])
+                    }
+                    digit2 == "?" -> {
+                        println("Solving digit 2")
+                        findAndPressKey(pin[1])
+                    }
+                    digit3 == "?" -> {
+                        println("Solving digit 3")
+                        findAndPressKey(pin[2])
+                    }
+                    digit4 == "?" -> {
+                        println("Solving digit 4")
+                        findAndPressKey(pin[3])
+                    }
+                }
+            }catch (e:Exception){
+                //Some cases where we might need to catch errors if the component was not found
+            }
+        }
+
+    }
+
+    private suspend fun findAndPressKey(digit: Char) {
+        var keepSearching = true
+        val firstKey = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+
+        for (keyChildID in WidgetID.BankPinKeys.KEYS) {
+            val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, keyChildID)
+            if (bankPinKeyWidget != null) {
+                val children = bankPinKeyWidget.getChildren()
+                //Info should be in first index
+                children.iterator().forEach {
+                    if (it.getText() == digit.toString() && keepSearching) {
+                        WidgetItem(it, ctx = ctx).click()
+                        //Wait for widget to change
+                        Utils.waitFor(2, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                val firstKeyUpdated = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+                                delay(100)
+                                return firstKeyUpdated.getX() == firstKey.getX() && firstKeyUpdated.getY() == firstKey.getY()
+                            }
+                        })
+                        keepSearching = false
+                        //Move mouse off the keys
+                    }
+                }
+            }
+        }
+        if(keepSearching){
+            //Used to move the mouse around a little bit
+            WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0),ctx=ctx).hover()
+        }
     }
 }

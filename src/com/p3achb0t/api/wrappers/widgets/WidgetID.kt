@@ -6,6 +6,7 @@ class WidgetID {
         const val FAIRY_RING_GROUP_ID = 398
         const val LOGOUT_PANEL_ID = 182
         const val BANK_GROUP_ID = 12
+        const val BANK_PIN_PANEL_ID = 213
         const val BANK_INVENTORY_GROUP_ID = 15
         const val GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467
         const val GRAND_EXCHANGE_GROUP_ID = 465
@@ -108,6 +109,10 @@ class WidgetID {
         const val SEED_BOX_GROUP_ID = 128
         const val ITEMS_KEPT_ON_DEATH_GROUP_ID = 4
 
+    }
+
+    internal object BankPinKeys{
+        val KEYS = arrayOf(16, 18, 20,22,24,26, 28,30,32,34)
     }
 
     internal object WorldMap {
@@ -267,69 +272,70 @@ class WidgetID {
     }
 
     internal object Viewport {
-        const val MINIMAP_RESIZABLE_WIDGET = 17
-        const val MINIMAP_RESIZABLE_CLICKBOX = 18
-        const val MINIMAP_RESIZABLE_DRAW_AREA = 25
-        const val MINIMAP_RESIZABLE_DECORATIONS = 27
-        const val MINIMAP_RESIZABLE_ORB_HOLDER = 28
-        const val MINIMAP_RESIZABLE_LOGOUT_BUTTON = 30
+        const val MINIMAP_RESIZABLE_WIDGET = 18
+        const val MINIMAP_RESIZABLE_CLICKBOX = 19
+        const val MINIMAP_RESIZABLE_DRAW_AREA = 26
+        const val MINIMAP_RESIZABLE_DECORATIONS = 28
+        const val MINIMAP_RESIZABLE_ORB_HOLDER = 29
+        const val MINIMAP_RESIZABLE_LOGOUT_BUTTON = 31
         const val FIXED_VIEWPORT = 17
-        const val RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 12
-        const val RESIZABLE_VIEWPORT_BOTTOM_LINE = 12
+        const val RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 13
     }
 
     internal object FixedViewport {
         const val MINIMAP = 3
         const val MINIMAP_DRAW_AREA = 8
-        const val CLAN_CHAT_TAB = 31
-        const val FRIENDS_TAB = 33
-        const val IGNORES_TAB = 32
-        const val LOGOUT_TAB = 34
-        const val OPTIONS_TAB = 35
-        const val EMOTES_TAB = 36
-        const val MUSIC_TAB = 37
-        const val CLAN_CHAT_ICON = 38
-        const val FRIENDS_ICON = 40
-        const val IGNORES_ICON = 39
-        const val LOGOUT_ICON = 41
-        const val OPTIONS_ICON = 42
-        const val EMOTES_ICON = 43
-        const val MUSIC_ICON = 44
-        const val COMBAT_TAB = 48
-        const val STATS_TAB = 49
-        const val QUESTS_TAB = 50
-        const val INVENTORY_TAB = 51
-        const val EQUIPMENT_TAB = 52
-        const val PRAYER_TAB = 53
-        const val MAGIC_TAB = 54
-        const val COMBAT_ICON = 55
-        const val STATS_ICON = 56
-        const val QUESTS_ICON = 57
-        const val INVENTORY_ICON = 58
-        const val EQUIPMENT_ICON = 59
-        const val PRAYER_ICON = 60
-        const val MAGIC_ICON = 61
-        const val ROOT_INTERFACE_CONTAINER = 62
-        const val BANK_CONTAINER = 64
-        const val INTERFACE_CONTAINER = 65
-        const val INVENTORY_CONTAINER = 69
+        const val CLAN_CHAT_TAB = 32
+        const val FRIENDS_TAB = 34
+        const val IGNORES_TAB = 33
+        const val LOGOUT_TAB = 35
+        const val OPTIONS_TAB = 36
+        const val EMOTES_TAB = 37
+        const val MUSIC_TAB = 38
+        const val CLAN_CHAT_ICON = 39
+        const val FRIENDS_ICON = 41
+        const val IGNORES_ICON = 40
+        const val LOGOUT_ICON = 42
+        const val OPTIONS_ICON = 43
+        const val EMOTES_ICON = 44
+        const val MUSIC_ICON = 45
+        const val COMBAT_TAB = 49
+        const val STATS_TAB = 50
+        const val QUESTS_TAB = 51
+        const val INVENTORY_TAB = 52
+        const val EQUIPMENT_TAB = 53
+        const val PRAYER_TAB = 54
+        const val MAGIC_TAB = 55
+        const val COMBAT_ICON = 56
+        const val STATS_ICON = 57
+        const val QUESTS_ICON = 58
+        const val INVENTORY_ICON = 59
+        const val EQUIPMENT_ICON = 60
+        const val PRAYER_ICON = 61
+        const val MAGIC_ICON = 62
+        const val ROOT_INTERFACE_CONTAINER = 63
+        const val BANK_CONTAINER = 65
+        const val INTERFACE_CONTAINER = 66
+        const val INVENTORY_CONTAINER = 70
     }
 
     internal object ResizableViewport {
-        const val CLAN_CHAT_TAB = 35
-        const val FRIENDS_TAB = 37
-        const val IGNORES_TAB = 36
-        const val LOGOUT_TAB = 38
+        const val CLAN_CHAT_TAB = 36
+        const val ACCOUNT_MANAGEMENT_TAB = 37
+        const val FRIENDS_TAB = 38
+        const val IGNORES_TAB = 37
+        const val LOGOUT_TAB = 39
         const val OPTIONS_TAB = 39
         const val EMOTES_TAB = 40
         const val MUSIC_TAB = 41
         const val CLAN_CHAT_ICON = 42
+        const val ACCOUNT_MANAGEMENT_ICON = 43
         const val FRIENDS_ICON = 44
-        const val IGNORES_ICON = 43
-        const val LOGOUT_ICON = 45
-        const val OPTIONS_ICON = 46
-        const val EMOTES_ICON = 47
-        const val MUSIC_ICON = 48
+        const val IGNORES_ICON = 44
+        const val LOGOUT_ICON = 46
+        const val OPTIONS_ICON = 45
+        const val EMOTES_ICON = 46
+        const val MUSIC_ICON = 47
         const val COMBAT_TAB = 51
         const val STATS_TAB = 52
         const val QUESTS_TAB = 53
@@ -345,39 +351,39 @@ class WidgetID {
         const val PRAYER_ICON = 63
         const val MAGIC_ICON = 64
         const val INTERFACE_CONTAINER = 65
-        const val INVENTORY_CONTAINER = 71
+        const val INVENTORY_CONTAINER = 72
     }
 
     internal object ResizableViewportBottomLine {
-        const val LOGOUT_BUTTON_OVERLAY = 29
+        const val LOGOUT_BUTTON_OVERLAY = 30
         const val CMB_TAB = 50
-        const val CMB_ICON = 57
+        const val CMB_ICON = 58
         const val SKILLS_TAB = 51
-        const val SKILLS_ICON = 58
+        const val SKILLS_ICON = 59
         const val QUESTS_TAB = 52
-        const val QUESTS_ICON = 59
-        const val INVENTORY_TAB = 53
-        const val INVENTORY_ICON = 60
+        const val QUESTS_ICON = 60
+        const val INVENTORY_TAB = 54
+        const val INVENTORY_ICON = 61
         const val EQUIP_TAB = 54
-        const val EQUIP_ICON = 61
-        const val PRAYER_TAB = 55
-        const val PRAYER_ICON = 62
+        const val EQUIP_ICON = 62
+        const val PRAYER_TAB = 56
+        const val PRAYER_ICON = 63
         const val SPELL_TAB = 56
         const val SPELL_ICON = 53
         const val FC_TAB = 35
-        const val FC_ICON = 41
+        const val FC_ICON = 42
         const val IGNORE_TAB = 36
         const val IGNORE_ICON = 42
         const val FRIEND_TAB = 37
-        const val FRIEND_ICON = 43
+        const val FRIEND_ICON = 44
         const val SETTINGS_TAB = 38
-        const val SETTINGS_ICON = 44
+        const val SETTINGS_ICON = 45
         const val EMOTE_TAB = 39
-        const val EMOTE_ICON = 45
+        const val EMOTE_ICON = 46
         const val MUSIC_TAB = 40
-        const val MUSIC_ICON = 46
-        const val MAGIC_ICON = 63
-        const val INVENTORY_CONTAINER = 71
+        const val MUSIC_ICON = 47
+        const val MAGIC_ICON = 64
+        const val INVENTORY_CONTAINER = 72
     }
 
     internal object Chatbox {
@@ -477,6 +483,7 @@ class WidgetID {
         const val SPELL_TEXT = 29
         const val AUTO_RETALIATE = 30
     }
+
 
     internal object VolcanicMine {
         const val GENERAL_INFOBOX_GROUP_ID = 4

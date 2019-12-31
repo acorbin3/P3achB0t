@@ -10,6 +10,7 @@ import java.awt.Graphics2D
 
 class PrintScript(val client: Client, val mk: IScriptManager) : Script {
     val line = BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
+    val mouse = client as IScriptManager
     override fun loop() {
     }
 
@@ -18,7 +19,13 @@ class PrintScript(val client: Client, val mk: IScriptManager) : Script {
         val x = mk.getMouse().getX()
         val y = mk.getMouse().getY()
         g2.stroke = line
-        g2.color = Color.RED
+
+        if (mouse.getMouse().isPressed) {
+            g2.color = Color.RED
+        } else {
+            g2.color = Color.GREEN
+        }
+
         g2.drawString("Mouse ($x, $y)", 30, 50)
 
         if (x != -1 && y != -1) {

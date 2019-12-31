@@ -1,10 +1,10 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.Timer
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.api.wrappers.widgets.Widgets
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -28,16 +28,20 @@ class Dialog(val ctx: Context) {
         return getDialogContinue().widget != null
     }
 
+    fun isContinueAvailable(): Boolean{
+        return getDialogContinue().containsText("continue") || getDialogContinue().containsText("Please wait")
+    }
+
     fun getDialogContinue(): WidgetItem {
-        var dialog = WidgetItem(Widgets.find(ctx, PARENT, CONTINUE), ctx = ctx)
+        var dialog = WidgetItem(ctx.widgets.find(PARENT, CONTINUE), ctx = ctx)
         if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-            dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP, CONTINUE_BACKUP), ctx = ctx)
+            dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP, CONTINUE_BACKUP), ctx = ctx)
             if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_2, CONTINUE_BACKUP_2), ctx = ctx)
+                dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_2, CONTINUE_BACKUP_2), ctx = ctx)
                 if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                    dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_3, CONTINUE_BACKUP_3), ctx = ctx)
+                    dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_3, CONTINUE_BACKUP_3), ctx = ctx)
                     if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
-                        dialog = WidgetItem(Widgets.find(ctx, PARENT_BACKUP_4, CONTINUE_BACKUP_4), ctx = ctx)
+                        dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_4, CONTINUE_BACKUP_4), ctx = ctx)
                     }
                 }
             }
@@ -47,7 +51,9 @@ class Dialog(val ctx: Context) {
     }
 
     suspend fun continueDialog(sleep: Boolean = true) {
-        while (getDialogContinue().containsText("continue")) {
+        val time = 20 //20 seconds
+        val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
+        while (isContinueAvailable() && t.isRunning()) {
             doConversation(sleep)
         }
     }
@@ -55,25 +61,31 @@ class Dialog(val ctx: Context) {
     private suspend fun doConversation(sleep: Boolean) {
         val dialog = getDialogContinue()
         if (dialog.containsText("continue", false)) {
-            dialog.click()
+//            dialog.click()
+            ctx.keyboard.sendKeys(" ")
             delay(Random.nextLong(100, 200))
 
         } else if (dialog.containsText("continue")) {
             //NEed to find children
             dialog.widget?.getChildren()?.iterator()?.forEach {
                 if (WidgetItem(it, ctx = ctx).containsText("continue")) {
-                    WidgetItem(it, ctx = ctx).click()
+//                    WidgetItem(it, ctx = ctx).click()
+                    ctx.keyboard.sendKeys(" ")
                     delay(Random.nextLong(100, 200))
                 }
             }
         }
+        else if(isContinueAvailable()){
+            ctx.keyboard.sendKeys(" ")
+            delay(Random.nextLong(100, 200))
+        }
         //TODO - add a smart sleep based on the number of words in the continue dialog
         if (sleep)//&& getDialogContinue().containsText("continue"))
-            delay(Random.nextLong(1250, 3650))
+            delay(Random.nextLong(350, 550))
     }
 
     suspend fun selectionOption(action: String) {
-        val dialog = WidgetItem(Widgets.find(ctx, PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
+        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         // Options are in children but not index zero
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
@@ -84,7 +96,7 @@ class Dialog(val ctx: Context) {
     }
 
     suspend fun selectRandomOption() {
-        val dialog = WidgetItem(Widgets.find(ctx, PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
+        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0
         if (childrenSize == 0) return
         val randOptionIndex = Random.nextInt(1, childrenSize)

@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers.interfaces
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
-import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
@@ -41,11 +41,15 @@ abstract class Interactable(val ctx: Context?) {
     open suspend fun interact(action: String): Boolean {
         //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
+        var retryCount = 0
         while (true) {
-            val startPoint = Point(ctx?.mouse?.ioMouse?.getX() ?: -1, ctx?.mouse?.ioMouse?.getY() ?: -1)
+//            val startPoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
 //            val distance = startPoint?.distance(desiredPoint)
             ctx?.mouse?.moveMouse(desiredPoint, click = false)
-            if(isMouseOverObj()){break}
+            if (isMouseOverObj() || retryCount == 5) {
+                break
+            }
+            retryCount += 1
 //            if (distance != null) {
 //                if (abs(distance) < 100) {
 //                    break

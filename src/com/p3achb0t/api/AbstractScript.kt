@@ -1,40 +1,20 @@
 package com.p3achb0t.api
 
-import com.naturalmouse.custom.RuneScapeFactoryTemplates
-import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.GroundItems
-import com.p3achb0t.api.wrappers.NPCs
-import com.p3achb0t.api.wrappers.Players
-import com.p3achb0t.client.ui.components.GameTab
-import com.p3achb0t.interfaces.IScriptManager
-import java.applet.Applet
 import java.awt.Graphics
 
 abstract class AbstractScript {
 
-    protected lateinit var ctx: Context
-    protected lateinit var players: Players
-    protected lateinit var groundItems: GroundItems
-    protected lateinit var npcs: NPCs
-    protected lateinit var mouse: Mouse
-    protected lateinit var keyboard: Keyboard
+    lateinit var ctx: Context
 
     fun initialize(client: Any) {
         ctx = Context(client)
-        keyboard = ctx.keyboard
-        mouse = ctx.mouse
-        players = Players(ctx)
-        groundItems = GroundItems(ctx)
-        npcs = NPCs(ctx)
     }
 
     abstract suspend fun loop()
 
     abstract suspend fun start()
 
-    abstract suspend fun stop()
+    abstract fun stop()
 
     open fun draw(g: Graphics) {}
 }

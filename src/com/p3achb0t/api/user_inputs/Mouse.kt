@@ -16,9 +16,19 @@ import kotlin.random.Random
 
 class Mouse(obj: Any) {
 
-    val component: Component = (obj as Applet).getComponent(0)
-    val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
-    val ioMouse: Mouse = (obj as IScriptManager).getMouse()
+    private val component: Component = (obj as Applet).getComponent(0)
+    private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
+    private val mouseHopping: MouseHop = MouseHop(obj as IScriptManager,obj as Applet)
+    private val ioMouse: Mouse = (obj as IScriptManager).getMouse()
+
+    fun getX() : Int {
+        return ioMouse.getX()
+    }
+
+
+    fun getY() : Int {
+        return ioMouse.getY()
+    }
 
     enum class ClickType {
         Right,
@@ -45,22 +55,23 @@ class Mouse(obj: Any) {
             return false
         }
 
-        mouseMotionFactory.move(destPoint.x, destPoint.y)
+//        mouseMotionFactory.move(destPoint.x, destPoint.y)
+        mouseHopping.move(destPoint)
 
         if (click) {
             delay(Random.nextLong(50, 150))
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
             val mousePress =
-                MouseEvent(
-                        component,
-                        MouseEvent.MOUSE_PRESSED,
-                    System.currentTimeMillis(),
-                    0,
-                    destPoint.x,
-                    destPoint.y,
-                    0,
-                    clickType == ClickType.Right
-                )
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_PRESSED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+                            0,
+                            clickType == ClickType.Right
+                    )
 
             ioMouse.sendEvent(mousePress)
 
@@ -68,16 +79,16 @@ class Mouse(obj: Any) {
             val delayTime = Math.floor(Math.random() * 40 + 30)
             delay(delayTime.toLong())
             val mouseRelease =
-                MouseEvent(
-                    component,
-                    MouseEvent.MOUSE_RELEASED,
-                    System.currentTimeMillis(),
-                    clickMask,
-                    destPoint.x,
-                    destPoint.y,
-                    0,
-                    clickType == ClickType.Right
-                )
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_RELEASED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+                            0,
+                            clickType == ClickType.Right
+                    )
             ioMouse.sendEvent(mouseRelease)
         }
         return true

@@ -1,10 +1,10 @@
 package com.p3achb0t._runestar_interfaces
 
-interface MilliClock: Clock{
+interface MilliClock : Clock {
+    fun get__b(): Int
     fun get__i(): Int
-    fun get__j(): Int
-    fun get__n(): Int
-    fun get__u(): Int
-    fun get__k(): Long
-    fun get__s(): Array<Long>
+    fun get__p(): Int
+    fun get__y(): Int
+    fun get__w(): Long
+    fun get__f(): Array<Long>
 }

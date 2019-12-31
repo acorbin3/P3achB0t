@@ -2,10 +2,10 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.Context
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -60,11 +60,14 @@ open class Actor(
 
     suspend fun waitTillIdle(time: Int = 4) {
         //Add a small delay to allow for initial movement from the previous command
-        delay(Random.nextLong(100, 400))
+        delay(Random.nextLong(450, 700))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
+                //Need to make sure we are idle for at least 200ms
+                if (ctx!!.players.getLocal().isIdle())
+                    delay(100)
                 delay(100)
-                return if(ctx?.client != null) Players(ctx).getLocal().isIdle() else return false
+                return if (ctx?.client != null) ctx.players.getLocal().isIdle() else return false
             }
         })
     }

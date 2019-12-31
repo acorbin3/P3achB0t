@@ -1,13 +1,13 @@
 package com.p3achb0t.client.ui.components
 
-import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
-import com.p3achb0t.scripts.*
+import com.p3achb0t.scripts.GoblinKiller
+import com.p3achb0t.scripts.TestBankPin
+import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -45,25 +45,50 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         injection.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getManager()
-            manager?.setScriptHookAbs(GoblinKiller())
+            val manager = game.client?.getScriptManager()
+            manager?.setScript(GoblinKiller())
 
         }
 
-        val tutorialIsland = JMenuItem("Run Tutorial Island")
-        tutorialIsland.addActionListener {
+
+        val menuItem = JMenuItem("Run Tutorial Island")
+        menuItem.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.manager.getManager()
-            manager.setScriptHookAbs(TutorialIsland())
+            val manager = game.client.getScriptManager()
+            manager.setScript(TutorialIsland())
 
         }
+        menu.add(menuItem)
+
+        val menuItem2 = JMenuItem("Bank Pin test")
+        menuItem2.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setScript(TestBankPin())
+
+        }
+        menu.add(menuItem2)
+
+
         val widgetExplorer = JMenuItem("Open Widget Explorer")
         widgetExplorer.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            WidgetExplorerV3.createWidgetExplorer(Context(game.client.manager))
+            //widget exporer should always be the first in the list of debug scripts
+            WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
         }
+
+        val varbitExplorer = JMenuItem("Open Varbit Explorer")
+        varbitExplorer.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+
+            VarBitExplorer(Context(game.client.getScriptManager().client))
+        }
+
+
 
 
         val mouse = JMenuItem("Move Mouse")
@@ -97,19 +122,28 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             //manager.changeWindow()
             val f = TabManager.instance.getSelected()
             //f.requestFocus()
-            f.client.applet?.repaint()
+            f.client.getApplet()?.repaint()
+            //f.client.applet.focusTraversalKeysEnabled = true
+        }
+
+        val test4 = JMenuItem("Draw")
+        test4.addActionListener {
+
+            //manager.changeWindow()
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            //manager.setScript(MouseIntercept())
             //f.client.applet.focusTraversalKeysEnabled = true
         }
 
         menu.add(mouse)
         menu.add(injection)
-        menu.add(tutorialIsland)
         menu.add(widgetExplorer)
+        menu.add(varbitExplorer)
         menu.add(test)
         menu.add(test2)
         menu.add(test3)
-
-
+        menu.add(test4)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 
@@ -137,18 +171,15 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         start.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.manager.getManager()
-            GlobalScope.launch {
-                manager.start()
-            }
-
+            val manager = game.client.getScriptManager()
+            manager.start()
         }
 
         val stop = JMenuItem("Stop")
         stop.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.manager.getManager()
+            val manager = game.client.getScriptManager()
             manager.stop()
 
         }
@@ -157,7 +188,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         resume.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getManager()
+            val manager = game.client?.getScriptManager()
             manager?.resume()
 
         }
@@ -166,8 +197,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         suspend.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getManager()
-            manager?.suspend()
+            val manager = game.client?.getScriptManager()
+            manager?.pause()
 
         }
 
@@ -175,7 +206,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         keyboardEnable.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getKeyboard()
+            val manager = game.client?.getKeyboard()
             manager?.inputBlocked(!manager.inputBlocked())
             println(manager?.inputBlocked())
 
@@ -184,7 +215,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val mouseDisable= JMenuItem("Toggle Mouse")
         mouseDisable.addActionListener {
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getMouse()
+            val manager = game.client?.getMouse()
             manager?.inputBlocked(!manager.inputBlocked())
             //println("${manager?.x}, ${manager?.y}")
         }
@@ -192,7 +223,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val getMouseCoords = JMenuItem("Mouse POS")
         getMouseCoords.addActionListener {
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client?.manager?.getMouse()
+            val manager = game.client?.getMouse()
             //manager?.inputBlocked(!manager.inputBlocked())
             println("${manager?.getX()}, ${manager?.getY()}")
         }

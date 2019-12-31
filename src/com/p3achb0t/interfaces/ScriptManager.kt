@@ -1,73 +1,112 @@
 package com.p3achb0t.interfaces
 
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.DebugScript
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.awt.Graphics
+import java.awt.image.BufferedImage
 
-class ScriptManager(val client: Any) : ScriptHook {
-    val dd = client as IScriptManager
-    val o = client
-    var shouldRun = false
-    var script: Script = NullScript()
-    val debug: Script = PrintScript(client as Client, dd)
-    var gb : AbstractScript = com.p3achb0t.scripts.NullScript()
+class ScriptManager(val client: Any) {
+
+    private val mouse = (client as IScriptManager).getMouse()
+    private val keyboard = (client as IScriptManager).getKeyboard()
+    private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    val debugScripts = mutableListOf<DebugScript>()
 
     var x = 800
     var y = 600
+    private var image: BufferedImage = BufferedImage(x,y,BufferedImage.TYPE_INT_RGB)
+    var captureScreen = false
+    var captureScreenFrame = 1000
+    private var isRunning = false
+    private var paused = false
+    lateinit var thread: Job
 
 
+    fun setScript(s: AbstractScript) {
+        s.initialize(client)
+        this.script = s
+    }
 
-    var thread = Thread { println("${Thread.currentThread()} has run.") }
-
-    override fun getScriptHook(): Script {
+    fun getScript(): AbstractScript {
         return script
     }
 
-    override fun setScriptHook(s: Script) {
-
-        script = s
-    }
-
-    fun setScriptHookAbs(s: AbstractScript) {
-        s.initialize(client)
-        gb = s
-
-    }
-
-    suspend fun start() {
-        gb.start()
-        shouldRun = true
-        GlobalScope.launch {
-            while (true) {
-                gb.loop()
+    suspend fun loop() {
+        if (isRunning) {
+            try {
+                script.loop()
+            } catch (e: Error) {
+                for (el in e.stackTrace) {
+                    println(el.toString())
+                }
             }
         }
-        //thread = createThread()
-        //thread.start()
     }
 
-    fun suspend() {
-        thread.suspend()
+
+    fun start() {
+//        mouse.inputBlocked(true)
+        isRunning = true
+        //This the script thread.
+        thread = GlobalScope.launch {
+            script.start()
+            while (true) {
+                while (paused) {
+                    delay(100)
+                }
+                loop()
+            }
+        }
+    }
+
+    fun pause() {
+        isRunning = false
+        paused = true
+
     }
 
     fun resume() {
-        thread.resume()
+        isRunning = true
+        paused = false
     }
 
     fun stop() {
-        thread.stop()
+        isRunning = false
+        script.stop()
+        thread.cancel()
 
     }
 
-    private fun createThread() : Thread {
-        return Thread {
-            println("${Thread.currentThread()} has run.")
-            while (true) {
-                script.loop()
-                Thread.sleep(50)
-            }
+    fun setGameImage(buffer: BufferedImage) {
+        image = buffer
+    }
+
+    fun takeScreenShot() : BufferedImage {
+        return image
+    }
+
+    fun paintScript(g: Graphics) {
+        script.draw(g)
+    }
+
+    // Rs Canvas debug
+    fun paintDebug(g: Graphics) {
+        for (i in debugScripts) {
+            i.draw(g)
         }
+    }
+
+    fun addDebugPaint(debugScript: DebugScript) {
+        debugScript.initialize(client)
+        debugScripts.add(debugScript)
+    }
+
+    fun removeDebugPaint(debugScript: DebugScript) {
+        debugScripts.remove(debugScript)
     }
 }
 
