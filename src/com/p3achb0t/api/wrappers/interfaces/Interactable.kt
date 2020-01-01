@@ -7,7 +7,7 @@ import java.awt.Point
 import java.awt.Polygon
 import kotlin.random.Random
 
-abstract class Interactable(val ctx: Context?) {
+abstract class Interactable(var ctx: Context?) {
     abstract fun getInteractPoint(): Point
     abstract fun isMouseOverObj(): Boolean
 
@@ -61,7 +61,7 @@ abstract class Interactable(val ctx: Context?) {
 //            }
             desiredPoint = getInteractPoint()
         }
-        return if (ctx?.client != null) ctx?.mouse?.let { Interact(ctx).interact(desiredPoint, action) } ?: false else false
+        return if (ctx?.client != null) ctx?.mouse?.let { Interact(ctx!!).interact(desiredPoint, action) } ?: false else false
     }
 
     suspend fun hover(click: Boolean = false, clickType: Mouse.ClickType = Mouse.ClickType.Right) {

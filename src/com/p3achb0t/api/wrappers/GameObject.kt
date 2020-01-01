@@ -110,14 +110,14 @@ class GameObject(
         if (ctx?.client != null) {
             return when {
                 sceneryObject != null -> Tile(
-                        sceneryObject.getCenterX() / 128 + ctx?.client.getBaseX(),
-                        sceneryObject.getCenterY() / 128 + ctx?.client.getBaseY(),
+                        sceneryObject.getCenterX() / 128 + ctx?.client!!.getBaseX(),
+                        sceneryObject.getCenterY() / 128 + ctx?.client!!.getBaseY(),
                         sceneryObject.getPlane(),ctx
 
                 )
                 wallObject != null -> Tile(
-                        wallObject.getX() / 128 + ctx?.client.getBaseX(),
-                        wallObject.getY() / 128 + ctx?.client.getBaseY(),
+                        wallObject.getX() / 128 + ctx?.client!!.getBaseX(),
+                        wallObject.getY() / 128 + ctx?.client!!.getBaseY(),
                         sceneryObject?.getPlane() ?: 0,ctx
 
                 )

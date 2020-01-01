@@ -1,17 +1,23 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.Utils
 import kotlinx.coroutines.delay
 
+//Interesting website that can create paths: https://explv.github.io/
 class Walking {
     companion object {
-        suspend fun walkPath(path: ArrayList<Tile>, reverse: Boolean = false) {
+        suspend fun walkPath(path: ArrayList<Tile>, reverse: Boolean = false, ctx: Context? = null) {
             if (reverse) path.reverse()
             //Check to see if we are alreay at the end of the path, return if so
             if (path[path.size - 1].distanceTo() < 5)
                 return
             var distance = 0
             path.forEach {
+                if(it.ctx == null && ctx != null) {
+                    it.ctx = ctx
+                    it.loc_ctx = ctx
+                }
                 val t = it.getGlobalLocation()
                 println("Clicking on map: for tile: (${t.x},${t.y})")
                 it.clickOnMiniMap()
