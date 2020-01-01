@@ -80,33 +80,57 @@ public class VarBitExplorer {
             }
 
             Map<Integer, Integer> varBitValues = new HashMap<>();
+
             //Get initial values
             for (int i = 0; i < varBitDataList.size(); i++) {
                 varBitValues.put(i, 0);
             }
-            int counter = 0;
+
+            Map<Integer, Integer> varpValues = new HashMap<>();
+            int varpLength = ctx.getClient().getVarps_main().length;
+            for (int i = 0; i < varpLength; i++) {
+                varpValues.put(i,0);
+            }
+
+            Map<Integer, String> varStringValues = new HashMap<>();
+            int varStringsLength = ctx.getClient().getVarcs().getStrings().length;
+            for (int i = 0; i < varStringsLength; i++) {
+                varStringValues.put(i,"");
+            }
+
             while (keepRunning()) {
                 try {
-                    System.out.println("Counter: " + counter);
-                    counter += 1;
+                    //Get Latest Varp data
+                    for (int i = 0; i < varpLength; i++) {
+                        int newVarpVal = ctx.getVars().getVarp(i);
+                        int oldVarpVal = varpValues.get(i);
+                        if(oldVarpVal != newVarpVal){
+                            varpValues.replace(i,newVarpVal);
+                            updatedVar(i, Integer.toString(oldVarpVal), Integer.toString(newVarpVal),"[Varp]");
+                        }
+                    }
+
+                    //Get latest VarBit data
                     for (VarbitData varBitDataItem : varBitDataList) {
                         int i = varBitDataItem.getId();
                         int oldVarBitVal = varBitValues.get(i);
                         int varp = ctx.getVars().getVarp(varBitDataItem.getBaseVar());
                         int newVarBitVal = varBitDataItem.getVarbitValue(varp);
                         if (oldVarBitVal != newVarBitVal) {
-                            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                            varBitValues.replace(i, newVarBitVal);
-                            String newLine = timeStamp + " (" + i + ")\t" + oldVarBitVal + "\t->\t" + newVarBitVal + "\n";
-                            SimpleAttributeSet attributes = new SimpleAttributeSet();
-                            try {
-                                editorPane1.getDocument().insertString(editorPane1.getDocument().getLength(), newLine, attributes);
-                                editorPane1.setCaretPosition(editorPane1.getDocument().getLength());
-                            } catch (BadLocationException e) {
-                                System.out.println(i);
-                                e.printStackTrace();
-                            }
 
+                            varBitValues.replace(i, newVarBitVal);
+                            updatedVar(i, Integer.toString(oldVarBitVal), Integer.toString(newVarBitVal),"[Varbit]");
+
+                        }
+                    }
+
+                    //Get Latest VarString data
+                    for (int i = 0; i < varStringsLength; i++) {
+                        String newVarpVal = ctx.getVars().getVarcString(i);
+                        String oldVarpVal = varStringValues.get(i);
+                        if(oldVarpVal != newVarpVal){
+                            varStringValues.replace(i,newVarpVal);
+                            updatedVar(i, oldVarpVal, newVarpVal,"[VarString]");
                         }
                     }
 
@@ -116,6 +140,19 @@ public class VarBitExplorer {
                 }
 
 
+            }
+        }
+
+        private void updatedVar(int i, String oldVal, String newVal, String varDetail) {
+            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            String newLine = timeStamp + " " + varDetail + " (" + i + ")\t" + oldVal + "\t->\t" + newVal + "\n";
+            SimpleAttributeSet attributes = new SimpleAttributeSet();
+            try {
+                editorPane1.getDocument().insertString(editorPane1.getDocument().getLength(), newLine, attributes);
+                editorPane1.setCaretPosition(editorPane1.getDocument().getLength());
+            } catch (BadLocationException e) {
+                System.out.println(i);
+                e.printStackTrace();
             }
         }
     }
