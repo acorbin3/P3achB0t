@@ -49,35 +49,12 @@ public class VarBitExplorer {
         @Override
         public void run() {
 
-            // Update Cache
             // get the varbit data
             // look into getting the info from the VarPs
-            //TODO - look at the VARPs as well
-            try (var net = NetCache.connect(new InetSocketAddress("oldschool7.runescape.com", NetCache.DEFAULT_PORT), 187);
-                 var disk = DiskCache.open(Path.of(".cache"))) {
-                System.out.println("Updating Cache");
-                Cache.update(net, disk).join();
-                System.out.println("Complete: Cache updated");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // look at the VARPs as well
 
 
-            var varBitDataList = new ArrayList<VarbitData>();
-
-            try (var disk = DiskCache.open(Path.of(".cache"))) {
-                System.out.println("Getting VarBit info");
-                MemCache cache = MemCache.of(disk);
-                for (var file : cache.archive(VarBitType.ARCHIVE).group(VarBitType.GROUP).files()) {
-                    var varbit = new VarBitType();
-                    varbit.decode(file.data());
-                    varBitDataList.add(new VarbitData(file.id(), varbit.startBit, varbit.endBit , varbit.baseVar));
-
-                }
-                System.out.println("Complete: getting varbit info");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            var varBitDataList = ctx.getCache().getVarbitInfo();
 
             Map<Integer, Integer> varBitValues = new HashMap<>();
 
