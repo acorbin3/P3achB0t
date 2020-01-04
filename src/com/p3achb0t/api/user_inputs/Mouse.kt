@@ -30,6 +30,10 @@ class Mouse(obj: Any) {
         return ioMouse.getY()
     }
 
+    fun getPosition(): Point{
+        return Point(ioMouse.getX(),ioMouse.getY())
+    }
+
     enum class ClickType {
         Right,
         Left
@@ -45,8 +49,8 @@ class Mouse(obj: Any) {
     private val RATE_PIXELS_PER_SEC = 700
 
     //////
-
-    suspend fun click(destPoint: Point, clickType: ClickType = ClickType.Left): Boolean {
+    //The default position is current position
+    suspend fun click(destPoint: Point = getPosition(), clickType: ClickType = ClickType.Left): Boolean {
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 

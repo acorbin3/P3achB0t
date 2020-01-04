@@ -37,6 +37,7 @@ class Context(val obj: Any) {
     val tabs: Tabs
     val widgets: Widgets
     val vars: Vars
+    val cache: Cache
 
     init {
         client = obj as Client
@@ -61,6 +62,7 @@ class Context(val obj: Any) {
         tabs = Tabs(this)
         widgets = Widgets(this)
         vars = Vars(this)
+        cache = Cache()
     }
 }
 

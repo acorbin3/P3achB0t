@@ -11,6 +11,8 @@ import java.awt.Point
 import java.awt.Polygon
 
 //Tile are stored in global coordinates.
+// There is a context associated with the tile so we can make it Intractable. Problem is it can be annoying to want to specify
+// a context for a path or list of Tiles. Thus we have updated the ctx to be updateable
 
 //Default of -1,-1 means the tile is not valid
 class Tile(
@@ -24,6 +26,10 @@ class Tile(
         val NIL = Tile(-1, -1, -1, null)
     }
 
+    fun updateCTX(ctx: Context){
+        this.ctx = ctx
+        this.loc_ctx = ctx
+    }
     fun getPolyBounds(ctx: Context): Polygon {
         val regional = getRegionalLocation()
         return getCanvasTileAreaPoly(ctx, regional.x, regional.y)
@@ -44,7 +50,7 @@ class Tile(
     override suspend fun clickOnMiniMap(): Boolean {
         val regional = getRegionalLocation()
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
-        return ctx.mouse.click(point)
+        return ctx!!.mouse.click(point)
     }
 
     override fun getInteractPoint(): Point {
@@ -83,4 +89,8 @@ class Tile(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun equals(other: Any?): Boolean {
+        val tile = other as Tile
+        return this.x == tile.x && this.y == tile.y
+    }
 }

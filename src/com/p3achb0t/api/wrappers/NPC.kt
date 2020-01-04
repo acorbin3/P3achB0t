@@ -9,9 +9,13 @@ import java.awt.Polygon
 
 class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
 
+    val name: String
+        get() {
+            return npc.getType().getName()
+        }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx!!.mouse.getX(), ctx.mouse.getY())
+        val mousePoint = ctx?.let { Point(it.mouse.getX(), it.mouse.getY()) }
         return getConvexHull().contains(mousePoint)
     }
 

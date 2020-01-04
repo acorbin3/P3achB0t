@@ -14,7 +14,7 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
         val players = ArrayList<Player>()
         ctx?.client?.getPlayers()?.forEach {
             if (it != null) {
-                players.add(Player(it,ctx ))
+                players.add(Player(it, ctx!!))
             }
         }
 
@@ -51,7 +51,7 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
                     this.player.getAppearance().getNpcTransformId().toLong(),
                     ctx!!)
             //Checking to see if this is on screen
-            Interact(ctx).interact(ch, action)
+            Interact(ctx!!).interact(ch, action)
         } catch (e: Exception) {
         }
         return false

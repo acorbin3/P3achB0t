@@ -106,5 +106,9 @@ class Inventory(val ctx: Context? = null) {
         }
         return count
     }
+    fun contains(itemID: Int): Boolean{
+        println("Item $itemID has ${getCount(itemID)} in inventory")
+        return getCount(itemID) > 0
+    }
 
 }
