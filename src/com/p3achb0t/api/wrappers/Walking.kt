@@ -18,7 +18,7 @@ class Walking {
             }
             if (reverse) updatedPath.reverse()
 
-            //TODO - find the most optimal tile to start at if we are in the middle of the path.
+            //find the most optimal tile to start at if we are in the middle of the path.
             var starterTile = Tile()
             var targetDistance = Float.POSITIVE_INFINITY
             updatedPath.forEach{
