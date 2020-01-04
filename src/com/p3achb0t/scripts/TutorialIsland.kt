@@ -157,7 +157,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class ContinueDialog(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Click here to continue"
             return dialogWidget.containsText(text)
         }
@@ -168,7 +168,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ICantReachThatDialog(val ctx: Context): Job(ctx.client){
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return WidgetItem(ctx.widgets.find(162,44),ctx=ctx).containsText("I can't reach that!")
         }
 
@@ -203,7 +203,7 @@ class TutorialIsland: AbstractScript()  {
                 "mrg00ddude", "bea_gabrielle", "kools", "Rationalwoman", "scienceisgod", "andrewtr89", "hafizx", "landiss77", "Cuba5259", "fafb",
                 "dfgdg", "ldvt", "ahmadkelby", "undercommoner", "spookybill", "guruatmoneyassistant", "codemonk", "johnkelly00", "reesan", "hollywooddental"
         )
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return ctx.widgets.isWidgetAvaliable(558, 0)
         }
 
@@ -246,7 +246,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class SelectCharOutfit(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return ctx.widgets.isWidgetAvaliable(269, 0)
         }
 
@@ -285,7 +285,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ChatWithGielinorGuide(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Before you begin, have a read"
             return dialogWidget.containsText(text)
         }
@@ -311,7 +311,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenOptions(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val text = "Options menu"
             return chatBox.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Options
@@ -325,7 +325,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TurnOffRoofsAndSound(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return ctx.players.getLocal().getGlobalLocation().x == 3098
                     && ctx.players.getLocal().getGlobalLocation().y == 3107
         }
@@ -364,7 +364,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class FinalChatWithGielinor(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "On the side"
             return dialogWidget.containsText(text)
         }
@@ -387,7 +387,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenDoorFromFirstBuilding(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "time to meet your first instructor"
             return dialogWidget.containsText(text)
 
@@ -416,7 +416,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MoveToFishingSpot(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Follow the path to find the next instructor"
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val doorLocation = Tile(3098, 3107, ctx = ctx)
@@ -433,7 +433,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToSurvivalExpertFirstTime(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val survivalExpert = ctx.npcs.findNpc(8503)
             val text = "Follow the path to find the next instructor"
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
@@ -454,7 +454,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenInvetory(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("click on the flashing backpack icon") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Inventory
         }
 
@@ -466,7 +466,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class CatchSomeShrimp(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "catch some shrimp"
             return dialogWidget.containsText(text)
         }
@@ -498,7 +498,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class ClickSkillsTab(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "on the flashing bar graph icon near the inventory"
             return dialogWidget.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Skills
         }
@@ -510,7 +510,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToSurvivalGuideAfterSkillsTab(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "this menu you can view your skills"
             return dialogWidget.containsText(text)
         }
@@ -534,7 +534,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ChopTree(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "time to cook your shrimp. However, you require"
             return dialogWidget.containsText(text)
         }
@@ -566,7 +566,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class ContinueFromChopTree(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "You manage to cut some logs"
             return dialogWidget.containsText(text)
         }
@@ -578,7 +578,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class LightLog(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "that you have some logs, it's time"
             return dialogWidget.containsText(text)
         }
@@ -626,7 +626,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class CookShrimp(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Now it's time to get cooking."
             return dialogWidget.containsText(text)
         }
@@ -675,7 +675,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenGateAfterFishing(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Well done, you've just cooked your first meal!"
             return dialogWidget.containsText(text)
         }
@@ -710,7 +710,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MoveToKitchen(val ctx: Context)  : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Follow the path until you get to the door with the yellow arrow above it."
             val percentComplete = getPercentComplete(ctx)
             return dialogWidget.containsText(text) && percentComplete == .196875
@@ -737,7 +737,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToMasterChef(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Talk to the chef indicated"
             return dialogWidget.containsText(text)
         }
@@ -753,7 +753,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MakeDough(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "This is the base for many meals"
             return dialogWidget.containsText(text)
         }
@@ -771,7 +771,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MakeBread(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Now you have made the dough,"
             return dialogWidget.containsText(text)
         }
@@ -798,7 +798,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ExitKitchen(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "You've baked your first loaf of bread"
             return dialogWidget.containsText(text)
         }
@@ -830,7 +830,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TurnOnRun(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "When navigating the world, you can either run or walk"
             return dialogWidget.containsText(text)
         }
@@ -843,7 +843,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MoveToNextBuilding(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Follow the path to the next guide"
             return dialogWidget.containsText(text) && getPercentComplete(ctx) == .296875
         }
@@ -869,7 +869,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToQuestGuide(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "It's time to learn about quests!"
             return dialogWidget.containsText(text)
         }
@@ -888,7 +888,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenQuestList(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Click on the flashing icon to the left of your inventory"
             return dialogWidget.containsText(text) && ctx.tabs.getOpenTab() != Tabs.Tab_Types.QuestList
         }
@@ -903,7 +903,7 @@ class TutorialIsland: AbstractScript()  {
     //TODO - Add a node if some how we make our way upstairs to go back down
 
     class TalkToQuestGuide2ndTime(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "This is your quest journal."
             return dialogWidget.containsText(text)
         }
@@ -921,7 +921,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class GoDownToTheCaves(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "It's time to enter some caves"
             return dialogWidget.containsText(text)
         }
@@ -941,7 +941,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class WalkAndTalkToSmitingAndMiningGuide(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Next let's get you a weapon,"
             return dialogWidget.containsText(text)
         }
@@ -984,7 +984,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MineTin(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "It's quite simple really. To mine a rock, all you need"
             return dialogWidget.containsText(text)
                     || dialogWidget.containsText("Now that you have some copper ore,")
@@ -1004,7 +1004,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class MineCopper(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val text = "Now that you have some tin ore"
             return dialogWidget.containsText(text)
         }
@@ -1024,7 +1024,7 @@ class TutorialIsland: AbstractScript()  {
     //TODO - There has been a case where the furnance is clicked on after the bar is been made & the dialog blocks
     // continuing into the next node
     class SmeltBronze(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You now have some tin ore and some copper ore.")
         }
 
@@ -1052,7 +1052,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToMiningGuideAboutSmiting(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You've made a bronze bar!")
         }
 
@@ -1075,7 +1075,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MakeBronzeDagger(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("To smith you'll need a hammer") || dialogWidget.containsText("Use an anvil to open") || dialogWidget.containsText(
                 "Now you have the smithing"
             )
@@ -1115,7 +1115,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class AfterSmithingMovetoGate(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Congratulations, you've made your first weapon")
         }
 
@@ -1137,7 +1137,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToCombatInstructor(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("In this area you will find out about melee and ranged combat.")
         }
 
@@ -1168,7 +1168,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenEquipment(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You now have access to a new") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Equiptment
         }
 
@@ -1180,7 +1180,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenEquipmentStats(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("This is your worn inventory")
         }
 
@@ -1193,7 +1193,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class EquipBronzeDagger(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You can see what items you are")
         }
 
@@ -1206,7 +1206,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class SpeakWithCombatAfterBronzeDaggerEquipt(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You're now holding your dagger")
         }
 
@@ -1223,7 +1223,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class EquipLongSwordAndShield(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("To unequip an item, go to your")
         }
 
@@ -1237,7 +1237,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenCombatTab(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Click on the flashing crossed") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Combat
         }
 
@@ -1249,7 +1249,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class GoIntoRatCage(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("This is your combat interface. From here,")
         }
 
@@ -1280,7 +1280,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MeleeKillRat(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("It's time to slay some rats!") || dialogWidget.containsText("attack the rat")
         }
 
@@ -1311,7 +1311,7 @@ class TutorialIsland: AbstractScript()  {
                 Tile(3104, 9524, ctx = ctx), Tile(3106, 9522, ctx = ctx), Tile(3108, 9522, ctx = ctx),
                 Tile(3109, 9521, ctx = ctx)
         )
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Pass through the gate and talk to the combat")
         }
 
@@ -1347,7 +1347,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class KillRatWithBow(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Now you have a bow and some arrows.")
         }
 
@@ -1381,7 +1381,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class ExitCaves(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You have completed the tasks here")
         }
 
@@ -1416,7 +1416,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class UseBank(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Follow the path and you will come to the front of the building")
         }
 
@@ -1454,7 +1454,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class CloseBankAndDoPollBooth(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("This is your bank.")
         }
 
@@ -1500,7 +1500,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class DoPollBooth(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Now it's time for a quick look at polls")
         }
 
@@ -1518,7 +1518,7 @@ class TutorialIsland: AbstractScript()  {
 
 
     class ClosePollAndMoveOutOfBank(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Polls are run periodically to let the Old School")
         }
 
@@ -1545,7 +1545,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class TalkToAccountManager(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("The guide here will tell you all about your account.") ||
                     dialogWidget.containsText("This is your Account Management menu")
         }
@@ -1564,7 +1564,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenAccountManager(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Click on the flashing icon to open your Account Management") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.AccountManagement
         }
 
@@ -1576,7 +1576,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ExitAccountManagerRoom(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Continue through the next door.")
         }
 
@@ -1598,7 +1598,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MoveToChapelAndTalkToBrotherBrace(val ctx: Context ) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Follow the path to the chapel")
                     || dialogWidget.containsText("Talk with Brother Brace")
                     || dialogWidget.containsText("These two lists can be very helpful for keeping track")
@@ -1624,7 +1624,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenPrayerTab(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Click on the flashing icon to open the Prayer menu.") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Prayer
         }
 
@@ -1636,7 +1636,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenFriendsTab(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You should now see another new icon. Click on the flashing face") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.FriendsList
         }
 
@@ -1648,7 +1648,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ExitChapleHouse(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You're almost finished on tutorial island")
         }
 
@@ -1670,7 +1670,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class GoToWizardHouseAndSpeakWithWizard(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Follow the path to the wizard")
                     || dialogWidget.containsText("This is your magic interface")
         }
@@ -1697,7 +1697,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class OpenMagicTab(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("Open up the magic interface") && ctx.tabs.getOpenTab() != Tabs.Tab_Types.Magic
         }
 
@@ -1717,7 +1717,7 @@ class TutorialIsland: AbstractScript()  {
                 ctx = ctx
         )
 
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You now have some runes.")
         }
 
@@ -1749,7 +1749,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class ExitTutIsland(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return dialogWidget.containsText("You're nearly finished with the tutorial")
         }
 
@@ -1772,7 +1772,7 @@ class TutorialIsland: AbstractScript()  {
     }
 
     class MainlandLogout(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val completedWidget = WidgetItem(ctx.widgets.find(193, 2), ctx = ctx)
             return completedWidget.containsText("Welcome to Lumbridge!")
         }
