@@ -29,7 +29,7 @@ class GameObjects(val ctx: Context) {
             return gameObjects
         }
 
-    fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
+    fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
         val region = ctx.client.getScene()
 
@@ -62,13 +62,20 @@ class GameObjects(val ctx: Context) {
             }
         } else {
             //TODO - Specific tile we will zoom into that specific spot. This should be faster
-
         }
         if (sortByDistance) {
             val local = ctx.players.getLocal()
             gameObjects.sortBy { it.distanceTo(local) }
         }
         return gameObjects
+    }
+    fun findNearest(id: Int): GameObject?{
+        val items = find(id,sortByDistance = true)
+        return if(items.isNotEmpty()){
+            items.first()
+        }else{
+            null
+        }
     }
 
     fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {

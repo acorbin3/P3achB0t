@@ -26,6 +26,10 @@ class Tile(
         val NIL = Tile(-1, -1, -1, null)
     }
 
+    fun updateCTX(ctx: Context){
+        this.ctx = ctx
+        this.loc_ctx = ctx
+    }
     fun getPolyBounds(ctx: Context): Polygon {
         val regional = getRegionalLocation()
         return getCanvasTileAreaPoly(ctx, regional.x, regional.y)
@@ -85,4 +89,8 @@ class Tile(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun equals(other: Any?): Boolean {
+        val tile = other as Tile
+        return this.x == tile.x && this.y == tile.y
+    }
 }

@@ -47,36 +47,7 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                                     ctx
 
                                             )
-                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                        ctx,point
-                                                )
-                                        ) {
-                                            g.color = Color.GREEN
-                                            val id = it.getTag().shr(17).and(0x7fff).toInt()
-                                            val rawID = it.getTag().shr(14).and(0x7fff)
-                                            //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
-                                            val objectComposite =
-                                                    getObjectComposite(sceneData, id)
-                                            val point2 =
-                                                Calculations.worldToScreen(
-                                                        it.getCenterX(),
-                                                        it.getCenterY(),
-                                                        it.getEntity().getHeight(),
-                                                        ctx
 
-                                                )
-
-
-                                            //For now only filter objects near m
-                                            if (localPlayer.distanceTo(globalPos) < 5)
-                                                g.drawString(
-                                                    objectComposite?.getName() + "($id)(${globalPos.x},${globalPos.y}",
-                                                    point2.x,
-                                                    point2.y
-                                                )
-
-                                            //Filter only near me: if(abs(globalPos.x - localPlayer.getGlobalLocation().x) <5 && abs(globalPos.y - localPlayer.getGlobalLocation().y) < 5)
-                                        }
 
                                         //Printing out the model and the hull
                                         if (localPlayer.distanceTo(globalPos) < 5) {
@@ -112,6 +83,38 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
 
                                             }
                                         }
+
+                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+                                                        ctx,point
+                                                )
+                                        ) {
+                                            g.color = Color.GREEN
+                                            val id = it.getTag().shr(17).and(0x7fff).toInt()
+                                            val rawID = it.getTag().shr(14).and(0x7fff)
+                                            //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
+                                            val objectComposite =
+                                                    getObjectComposite(sceneData, id)
+                                            val point2 =
+                                                    Calculations.worldToScreen(
+                                                            it.getCenterX(),
+                                                            it.getCenterY(),
+                                                            it.getEntity().getHeight(),
+                                                            ctx
+
+                                                    )
+
+                                            //Add offset on the Y so Things on the same tile do not stack
+                                            val offsetY = (count-1) * 30
+                                            //For now only filter objects near m
+                                            if (localPlayer.distanceTo(globalPos) < 5)
+                                                g.drawString(
+                                                        objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}",
+                                                        point2.x,
+                                                        point2.y + offsetY
+                                                )
+
+                                            //Filter only near me: if(abs(globalPos.x - localPlayer.getGlobalLocation().x) <5 && abs(globalPos.y - localPlayer.getGlobalLocation().y) < 5)
+                                        }
                                     }
                                 }
                             }
@@ -128,30 +131,13 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                             // Display the wall object
                             if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5) {
                                 val wall = tile.getWall()
+                                val wo = GameObject(wallObject = wall,ctx=ctx)
 
                                 g.color = Color.GREEN
                                 val id = wall.getTag().shr(17).and(0x7fff).toInt()
                                 //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
                                 val objectComposite =
                                         getObjectComposite(sceneData, id)
-                                val point2 =
-                                    Calculations.worldToScreen(
-                                            wall.getX(),
-                                            wall.getY(),
-                                            wall.getEntity1().getHeight(),
-                                            ctx
-
-                                    )
-
-
-                                //For now only filter objects near m
-//                            if(globalPos.x == localPlayer.getGlobalLocation().x && globalPos.y == localPlayer.getGlobalLocation().y)
-                                g.drawString(
-                                    objectComposite?.getName() + "($id)(${globalPos.x},${globalPos.y}",
-                                    point2.x,
-                                    point2.y
-                                )
-
 
                                 val model = wall.getEntity1()
                                 if (model is Model) {
@@ -183,6 +169,18 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                     g.drawPolygon(hull)
 
                                 }
+                                val point2 =
+                                        Calculations.worldToScreen(
+                                                wall.getX(),
+                                                wall.getY(),
+                                                wall.getEntity1().getHeight(),
+                                                ctx
+                                        )
+                                g.drawString(
+                                        objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y}",
+                                        point2.x,
+                                        point2.y
+                                )
                             }
                         }
                     }

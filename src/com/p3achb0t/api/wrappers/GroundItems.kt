@@ -64,4 +64,9 @@ class GroundItems(val ctx: Context)  {
         }
         return itemList
     }
+
+    fun find(itemID: Int): List<GroundItem>{
+        val items = getAllItems()
+        return items.filter { it.id == itemID }
+    }
 }

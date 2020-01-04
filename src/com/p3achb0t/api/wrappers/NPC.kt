@@ -9,6 +9,10 @@ import java.awt.Polygon
 
 class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
 
+    val name: String
+        get() {
+            return npc.getType().getName()
+        }
 
     override fun isMouseOverObj(): Boolean {
         val mousePoint = ctx?.let { Point(it.mouse.getX(), it.mouse.getY()) }
