@@ -48,20 +48,34 @@ class Tile(
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
+        if(ctx == null){
+            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            return false
+        }
         val regional = getRegionalLocation()
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
         return ctx!!.mouse.click(point)
     }
 
     override fun getInteractPoint(): Point {
+        if(ctx == null){
+            println("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
+            return Point(-1,-1)
+        }
         val regional = getRegionalLocation()
         val poly =  getCanvasTileAreaPoly(ctx!!, regional.x, regional.y)
         return getRandomPoint(poly)
     }
 
     override fun isOnScreen(): Boolean {
-        val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
-        return Calculations.isOnscreen(ctx!!, tilePoly.bounds)
+        return if(ctx == null){
+            println("ERROR: ctx is null, isOnScreen cant be computed. Please provide the ctx")
+            false
+        }else{
+            val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
+            Calculations.isOnscreen(ctx!!, tilePoly.bounds)
+        }
+
     }
 
     override fun distanceTo(locatable: Locatable): Int {
@@ -74,6 +88,9 @@ class Tile(
 
     // This is distance to local player
     override fun distanceTo(): Int {
+        if(ctx == null){
+            println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+        }
         return ctx?.let { Calculations.distanceTo(this, it) } ?: -1
     }
 
