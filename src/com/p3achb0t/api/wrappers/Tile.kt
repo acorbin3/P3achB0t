@@ -1,7 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.Constants
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.Context
@@ -16,8 +18,8 @@ import java.awt.Polygon
 
 //Default of -1,-1 means the tile is not valid
 class Tile(
-        val x: Int = -1,
-        val y: Int = -1,
+        var x: Int = -1,
+        var y: Int = -1,
         val z: Int = 0,
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
@@ -30,9 +32,9 @@ class Tile(
         this.ctx = ctx
         this.loc_ctx = ctx
     }
-    fun getPolyBounds(ctx: Context): Polygon {
-        val regional = getRegionalLocation()
-        return getCanvasTileAreaPoly(ctx, regional.x, regional.y)
+    fun getPolyBounds(): Polygon {
+        val region = getRegionalLocation()
+        return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y) } ?: Polygon()
     }
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
@@ -100,6 +102,14 @@ class Tile(
 
     override fun getGlobalLocation(): Tile {
         return this
+    }
+
+    override fun getRegionalLocation(): Tile {
+        //For some reason the defined tiles are shifted by half a tile. This adding half to the x and y aligns the tiles to the gird
+        var rTile = super.getRegionalLocation()
+        rTile.x = rTile.x + LOCAL_HALF_TILE_SIZE
+        rTile.y = rTile.y + LOCAL_HALF_TILE_SIZE
+        return rTile
     }
 
     override fun draw(g: Graphics2D) {

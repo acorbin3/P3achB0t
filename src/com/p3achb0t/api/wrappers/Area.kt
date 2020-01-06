@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.Tiles
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import java.awt.Point
@@ -14,30 +15,44 @@ import kotlin.random.Random
 //Ripped this from Powerbot here: https://github.com/powerbot/powerbot/blob/a5986a7eaaed0b07d952f14d637592a4c548630c/src/main/java/org/powerbot/script/Area.java
 
 class Area {
-    var tiles = arrayListOf<Tile>()
+    var inputTiles = arrayListOf<Tile>()
+    var computedTiles = arrayListOf<Tile>()
     var polygon = Polygon()
     var plane = 0
     var ctx: Context?
 
     constructor(t1: Tile, t2: Tile, ctx: Context?=null) {
         this.ctx = ctx
+        val lArea =
         Area(
             Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z),
             Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z ),
             Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z),
             Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z)
         )
+        inputTiles = lArea.inputTiles
+        computedTiles = lArea.computedTiles
+        polygon = lArea.polygon
+        plane = lArea.plane
     }
 
     constructor(vararg tiles: Tile, ctx: Context?=null) {
         this.plane = tiles[0].z
         this.ctx = ctx
-        //Create a polygon from the files
-        for (tile in tiles) {
+        println("input tiles:")
+        tiles.forEach {
+            print(it)
+            this.inputTiles.add(Tile(it.x,it.y,it.z,ctx))
+        }
+        println()
+        computeAreaTiles()
+    }
+
+    private fun computeAreaTiles() {
+        //Create a polygon from the tiles
+        for (tile in inputTiles) {
             polygon.addPoint(tile.x + 1, tile.y + 1)
         }
-
-
         //Convert the polygon to all tiles that would be associated with this area
         val r = polygon.bounds
         var c = 0
@@ -47,14 +62,24 @@ class Area {
                 val _x = r.x + x
                 val _y = r.y + y
                 if (polygon.contains(_x, _y)) {
-                    lTiles[c++] = Tile(_x, _y, plane)
+                    lTiles[c++] = Tile(_x, _y, plane, ctx = ctx)
                 }
             }
         }
 
         val t = lTiles.clone()
-        this.tiles.clear()
-        t.iterator().forEach { this.tiles.add(it) }
+        computedTiles.clear()
+        t.iterator().forEach {
+            if(it.x > -1 && it.y > -1) {
+                computedTiles.add(Tile(it.x, it.y, it.z, ctx))
+            }
+        }
+    }
+
+    fun updateCTX(ctx: Context){
+        inputTiles.forEach { print(it) }
+        println()
+        computedTiles.forEach { it.updateCTX(ctx) }
     }
 
     /**
@@ -159,8 +184,8 @@ class Area {
     }
 
     fun getRandomTile(): Tile {
-        val len = tiles.size
-        return if (len != 0) this.tiles[Random.nextInt(0, len)] else Tile()
+        val len = computedTiles.size
+        return if (len != 0) this.computedTiles[Random.nextInt(0, len)] else Tile()
     }
 
     fun getClosestTo(locatable: Locatable?): Tile {
@@ -168,7 +193,7 @@ class Area {
         if (t != Tile.NIL) {
             var dist = java.lang.Double.POSITIVE_INFINITY
             var tile = Tile.NIL
-            for (item in tiles) {
+            for (item in computedTiles) {
                 val d = t.distanceTo(item).toDouble()
                 if (d < dist) {
                     dist = d
