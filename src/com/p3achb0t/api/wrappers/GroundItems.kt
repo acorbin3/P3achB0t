@@ -65,8 +65,15 @@ class GroundItems(val ctx: Context)  {
         return itemList
     }
 
-    fun find(itemID: Int): List<GroundItem>{
+    fun find(itemID: Int, sortByDistance: Boolean = true): List<GroundItem>{
         val items = getAllItems()
-        return items.filter { it.id == itemID }
+        var filteredItems = items.filter { it.id == itemID }
+        if(sortByDistance)
+            filteredItems.sortedBy { it.distanceTo() }
+        return filteredItems
+    }
+
+    fun findNearest(itemID: Int): GroundItem{
+        return find(itemID)[0]
     }
 }
