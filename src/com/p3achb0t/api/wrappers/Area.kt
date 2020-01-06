@@ -19,7 +19,7 @@ class Area {
     var plane = 0
     var ctx: Context?
 
-    constructor(t1: Tile, t2: Tile, ctx: Context?) {
+    constructor(t1: Tile, t2: Tile, ctx: Context?=null) {
         this.ctx = ctx
         Area(
             Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z),
