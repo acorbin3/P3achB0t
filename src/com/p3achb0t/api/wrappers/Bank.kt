@@ -51,7 +51,7 @@ class Bank(val ctx: Context) {
         if (!isOpen()) {
             val bankers = ctx.npcs.findNpc("Banker")
             if (bankers.size > 0) {
-                bankers[0].interact("Use" )
+                bankers[0].interact("Bank")
                 Utils.waitFor(3, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -126,9 +126,12 @@ class Bank(val ctx: Context) {
         return count
     }
 
-    suspend fun withdraw(id: Int, count: Int = 1) {
+    /**
+     * added by sirscript
+     */
+    suspend fun withdraw(id: Int, name: String, count: Int = 1) {
         if (isOpen()) {
-            val items = getAll()
+            var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     //Check to see if its visible
@@ -160,7 +163,89 @@ class Bank(val ctx: Context) {
                         })
                     } else {
                         //TODO- scroll to item
+                        println("Searching for item ")
+                        SearchForItem(id, name)
+                        delay(600)
+                        items = getAll()
+                        items.forEach {
+                            if (it.id == id) {
+                                //Check to see if its visible
+                                if (itemVisible(it.area)) {
+                                    it.interact("Withdraw-X")
+                                    Utils.waitFor(3, object : Utils.Condition {
+                                        override suspend fun accept(): Boolean {
+                                            delay(100)
+                                            val chatText =
+                                                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                                            val text = chatText?.getText()
+                                            println(text + " " + chatText?.getIsHidden())
+                                            return text?.equals("*") ?: false
+                                        }
+                                    })
+                                    delay(Random.nextLong(100, 350))
+                                    ctx.keyboard?.sendKeys(count.toString(), sendReturn = true)
+                                }
+                                delay(600)
+                                }
+                            }
+                        }
                     }
+                }
+            }
+        }
+    /**
+     * added by sirscript
+     */
+    suspend fun withdrawAll(id: Int, name: String) {
+        if (isOpen()) {
+            var items = getAll()
+            items.forEach {
+                if (it.id == id) {
+                    //Check to see if its visible
+                    if (itemVisible(it.area)) {
+                            it.interact("Withdraw-all" )
+                    } else {
+                        println("Searching for item ")
+                        SearchForItem(id, name)
+                        delay(600)
+                        items = getAll()
+                        items.forEach {
+                            if (it.id == id) {
+                                //Check to see if its visible
+                                if (itemVisible(it.area)) {
+                                    it.interact("Withdraw-all")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * added by sirscript
+     */
+    suspend fun SearchForItem(id: Int, name: String) {
+        val items = getAll()
+        val searchWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SEARCH_BUTTON_BACKGROUND), ctx = ctx)
+        items.forEach {
+            if (it.id == id) {
+                if (!itemVisible(it.area)) {
+                    var chatText =
+                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                    var text = chatText?.getText()
+                    if(!text.equals("*") && !text.equals("$name*")){
+                        searchWidget.click()
+                    }
+                  delay(600)
+                    chatText =
+                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                    text = chatText?.getText()
+                    if(text.equals("*")) {
+                        delay(Random.nextLong(100, 350))
+                        ctx.keyboard?.sendKeys(name)
+                    }
+                    delay(200)
                 }
             }
         }

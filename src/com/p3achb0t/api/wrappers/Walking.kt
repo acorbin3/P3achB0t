@@ -7,6 +7,8 @@ import kotlinx.coroutines.delay
 //Interesting website that can create paths: https://explv.github.io/
 class Walking {
     companion object {
+        // It is recommended to pass in the ctx so the list of Tiles dont need to have the ctx in each tile. That way
+        // the walkPath can update the ctx on each tile.
         suspend fun walkPath(path: ArrayList<Tile>, reverse: Boolean = false, ctx: Context? = null) {
             //Since all parameters are declared as val we need to create a mutable list so we can update the CTX if needed
             var updatedPath = path.toMutableList()
@@ -18,7 +20,7 @@ class Walking {
             }
             if (reverse) updatedPath.reverse()
 
-            //TODO - find the most optimal tile to start at if we are in the middle of the path.
+            //find the most optimal tile to start at if we are in the middle of the path.
             var starterTile = Tile()
             var targetDistance = Float.POSITIVE_INFINITY
             updatedPath.forEach{
