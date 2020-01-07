@@ -30,10 +30,11 @@ class Area {
         this.ctx = ctx
         val lArea =
         Area(
-            Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z),
-            Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z ),
-            Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z),
-            Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z)
+            Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx),
+            Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx ),
+            Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx),
+            Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx)
+                , ctx=ctx
         )
         inputTiles = lArea.inputTiles
         computedTiles = lArea.computedTiles
