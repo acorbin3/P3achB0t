@@ -77,6 +77,7 @@ class Area {
     }
 
     fun updateCTX(ctx: Context){
+        this.ctx = ctx
         inputTiles.forEach { print(it) }
         println()
         computedTiles.forEach { it.updateCTX(ctx) }
