@@ -14,6 +14,11 @@ import kotlin.random.Random
 
 //Ripped this from Powerbot here: https://github.com/powerbot/powerbot/blob/a5986a7eaaed0b07d952f14d637592a4c548630c/src/main/java/org/powerbot/script/Area.java
 
+/*  This area class uses the ctx in some methods so it can access the play for distance references or if its within the
+    defined area. Many cases the ctx is not available especially if its defined as companion object(static variable) to be
+    used in many different classes. Thus its required to use the updateCTX method to ensure that all the tiles and area
+    has the ctx correctly set up so the methods work correctly.
+ */
 class Area {
     var inputTiles = arrayListOf<Tile>()
     var computedTiles = arrayListOf<Tile>()
@@ -39,12 +44,9 @@ class Area {
     constructor(vararg tiles: Tile, ctx: Context?=null) {
         this.plane = tiles[0].z
         this.ctx = ctx
-        println("input tiles:")
         tiles.forEach {
-            print(it)
             this.inputTiles.add(Tile(it.x,it.y,it.z,ctx))
         }
-        println()
         computeAreaTiles()
     }
 
@@ -150,6 +152,9 @@ class Area {
     }
 
     fun isPlayerInArea(): Boolean{
+        if(ctx == null){
+            println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+        }
         return ctx?.players?.getLocal()?.getGlobalLocation()?.let { this.containsOrIntersects(it) } ?: false
     }
 
