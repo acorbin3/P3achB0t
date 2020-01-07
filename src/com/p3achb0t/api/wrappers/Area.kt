@@ -187,7 +187,7 @@ class Area {
 
     fun getCentralTile(): Tile {
         val point = PolygonUtils.getCenter(polygon)
-        return Tile(point.x, point.y, plane)
+        return Tile(point.x, point.y, plane,ctx)
     }
 
     fun getRandomTile(): Tile {
