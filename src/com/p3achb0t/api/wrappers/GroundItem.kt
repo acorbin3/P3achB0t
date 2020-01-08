@@ -46,8 +46,8 @@ class GroundItem(
 
     override fun getGlobalLocation(): Tile {
         return Tile(
-                position.x / 128 + ctx?.client?.getBaseX()!!,
-                position.y / 128 + ctx?.client.getBaseY(),
+                position.x / 128 + ctx!!.client?.getBaseX()!!,
+                position.y / 128 + ctx!!.client.getBaseY(),
                 position.plane,ctx
 
         )
@@ -59,14 +59,14 @@ class GroundItem(
     }
 
     suspend fun take() {
-        val inventoryCount = ctx?.client?.let { ctx.inventory.getCount() }
+        val inventoryCount = ctx?.client?.let { ctx!!.inventory.getCount() }
         if (interact("Take")) {
             Utils.waitFor(2, object : Utils.Condition {
 
                 override suspend fun accept(): Boolean {
                     delay(100)
-                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { ctx.inventory.getCount() }}")
-                    return inventoryCount != ctx?.client?.let { ctx.inventory.getCount() }
+                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { ctx!!.inventory.getCount() }}")
+                    return inventoryCount != ctx?.client?.let { ctx!!.inventory.getCount() }
                 }
             })
         }
@@ -76,7 +76,7 @@ class GroundItem(
         val groundItemModels = ctx?.client?.getObjType_cachedModels()
         val model: Model? = groundItemModels?.let { getModel(it) }
         return if(model != null && ctx?.client != null) {
-            getTrianglesFromModel(position, model, ctx)
+            getTrianglesFromModel(position, model, ctx!!)
         }else{
             ArrayList()
         }
@@ -109,7 +109,7 @@ class GroundItem(
         val groundItemModels = ctx?.client!!.getObjType_cachedModels()
         val model: Model? = getModel(groundItemModels)
         return if(model != null && ctx?.client != null) {
-            getConvexHullFromModel(position, model,ctx )
+            getConvexHullFromModel(position, model,ctx!! )
         }else{
             Polygon()
         }
