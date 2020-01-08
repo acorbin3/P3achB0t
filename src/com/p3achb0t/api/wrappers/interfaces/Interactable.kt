@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.Utils
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.Interact
 import java.awt.Point
@@ -18,10 +19,8 @@ abstract class Interactable(val ctx: Context?) {
             //Pick random point in hull
             while (true) {
                 try {
-                    point = Point(
-                        Random.nextInt(poly.bounds.x, poly.bounds.width + poly.bounds.x),
-                        Random.nextInt(poly.bounds.y, poly.bounds.height + poly.bounds.y)
-                    )
+                    point = Utils.getCenter(poly)
+
                     if (poly.contains(point)) {
                         return point
                     }
