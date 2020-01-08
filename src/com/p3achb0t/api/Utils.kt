@@ -27,7 +27,7 @@ class Utils {
         }
 
         fun getElapsedSeconds(timer: Long): Int{
-            return toInt(timer / 1000)
+            return (timer / 1000).toInt()
         }
 
     }
