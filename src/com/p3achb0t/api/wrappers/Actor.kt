@@ -51,7 +51,7 @@ open class Actor(
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return if(ctx?.client != null)Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx) else Point(-1,-1)
+        return if(ctx?.client != null)Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx!!) else Point(-1,-1)
     }
 
     fun isIdle(): Boolean {
@@ -67,7 +67,7 @@ open class Actor(
                 if (ctx!!.players.getLocal().isIdle())
                     delay(100)
                 delay(100)
-                return if (ctx?.client != null) ctx.players.getLocal().isIdle() else return false
+                return if (ctx?.client != null) ctx!!.players.getLocal().isIdle() else return false
             }
         })
     }
@@ -126,9 +126,9 @@ open class Actor(
 
     override fun getGlobalLocation(): Tile {
         return if(ctx!!.client != null) Tile(
-                (raw.getX() shr 7) + ctx.client.getBaseX(),
-                (raw.getY() shr 7) + ctx.client.getBaseY(),
-                ctx.client.getPlane(),ctx
+                (raw.getX() shr 7) + ctx!!.client.getBaseX(),
+                (raw.getY() shr 7) + ctx!!.client.getBaseY(),
+                ctx!!.client.getPlane(),ctx
 
         )
         else

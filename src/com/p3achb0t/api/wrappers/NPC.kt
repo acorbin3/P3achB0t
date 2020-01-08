@@ -11,7 +11,7 @@ class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
 
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx!!.mouse.getX(), ctx.mouse.getY())
+        val mousePoint = Point(ctx!!.mouse.getX(), ctx!!.mouse.getY())
         return getConvexHull().contains(mousePoint)
     }
 
