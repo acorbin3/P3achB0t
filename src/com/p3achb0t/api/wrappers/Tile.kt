@@ -27,10 +27,10 @@ class Tile(
         val NIL = Tile(-1, -1, -1, null)
     }
 
-//    fun updateCTX(ctx: Context){
-//        this.ctx = ctx
-//        this.loc_ctx = ctx
-//    }
+    fun updateCTX(ctx: Context){
+        this.ctx = ctx
+        this.loc_ctx = ctx
+    }
     fun getPolyBounds(): Polygon {
         val region = getRegionalLocation()
         return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y) } ?: Polygon()

@@ -84,6 +84,7 @@ class GroundItems(val ctx: Context) {
                         obj = obj.getPrevious()
                     if (obj is Obj) {
                         try {
+                            val stacksize = obj.getQuantity()
                             val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
                             val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
                             val id = obj.getId()
@@ -93,7 +94,8 @@ class GroundItems(val ctx: Context) {
                                             GroundItem(
                                                     ctx,
                                                     id,
-                                                    ObjectPositionInfo(x, y, plane = groundItemIndex)
+                                                    ObjectPositionInfo(x, y, plane = groundItemIndex),
+                                                    stacksize
                                             )
                                     )
                                 }

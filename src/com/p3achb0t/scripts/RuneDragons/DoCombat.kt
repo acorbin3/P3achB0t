@@ -33,33 +33,30 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
         val prayerpots: IntArray = intArrayOf(143, 141, 139, 2434)
         if (!ctx.prayer.isProtectMageActive()) {
             ctx.prayer.activate(Prayer.Companion.PrayerKind.PROTECT_FROM_MAGIC)
-            delay(250)
         }
         if (!ctx.prayer.isPietyActive()) {
             ctx.prayer.activate(Prayer.Companion.PrayerKind.PIETY)
-            delay(250)
         }
         if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 720 || firsttrip) {
             antifires.forEach {
                 if (ctx.inventory.Contains(it)) {
                     println("using antifire")
                     ctx.inventory.getItem(it)?.click()
-                    delay(1500)
                     RuneDragsMain.Antifiretimer.reset()
                 }
             }
+            delay(2000)
         }
         if (Utils.getElapsedSeconds(RuneDragsMain.Divinepottimer.time) > 300 || firsttrip) {
             divinecombats.forEach {
                 if (ctx.inventory.Contains(it)) {
                     println("using combats")
                     ctx.inventory.getItem(it)?.click()
-                    delay(1500)
                     RuneDragsMain.Divinepottimer.reset()
                     firsttrip = false
                 }
-
             }
+            delay(600)
         }
         if (ctx.players.getLocal().getHealth() < 56) {
             ctx.inventory.getItem(385)?.click()
@@ -70,7 +67,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 prayerpots.forEach {
                     if (ctx.inventory.Contains(it)) {
                         ctx.inventory.getItem(it)?.click()
-                        delay(1500)
+                        delay(500)
                     }
                     if (ctx.players.getLocal().getPrayer() >= 60) {
                         return@prayerpots
@@ -130,7 +127,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     try {
                         if (dragon.distanceTo() >= 6) {
                             dragon.getGlobalLocation().clickOnMiniMap(dragon.npc.getX() - 2, dragon.npc.getY() - 2)
-                            delay(1000)
+                            delay(400)
                         }
                         if (!dragon.isOnScreen())
                             dragon.turnTo()
@@ -158,7 +155,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
             groundloot.forEach {
                 if (ctx.inventory.isFull()) {
                     ctx.inventory.getItem(385)?.click()
-                    delay(1000)
+                    delay(400)
                 }
                 if (!ctx.inventory.isFull()) {
                     try {
@@ -176,8 +173,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                             })
                         }
                         if (it.isOnScreen()) {
-                            it.take()
-                            delay(400)
+                            it.interact("Take")
                         }
 
 

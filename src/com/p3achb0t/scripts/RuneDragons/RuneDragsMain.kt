@@ -92,10 +92,10 @@ class RuneDragsMain : AbstractScript() {
 
         Task.forEach {
             if (it.isValidToRun()) {
-                println("Running: ${it.javaClass.name}")
+
                 currentJob = it.javaClass.name
                 it.execute()
-                println("Completed: ${it.javaClass.name}")
+
             }
         }
     }

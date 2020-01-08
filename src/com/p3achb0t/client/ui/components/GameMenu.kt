@@ -80,6 +80,15 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         }
         menu.add(menuItem3)
 
+        val menuItem4 = JMenuItem("Testing123")
+        menuItem4.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setScript((Testing123()))
+
+        }
+        menu.add(menuItem4)
 
 
 

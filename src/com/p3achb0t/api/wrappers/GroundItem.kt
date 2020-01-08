@@ -61,7 +61,7 @@ class GroundItem(
     suspend fun take() {
         val inventoryCount = ctx?.client?.let { ctx!!.inventory.getCount() }
         if (interact("Take")) {
-            Utils.waitFor(2, object : Utils.Condition {
+            Utils.waitFor(1, object : Utils.Condition {
 
                 override suspend fun accept(): Boolean {
                     delay(100)

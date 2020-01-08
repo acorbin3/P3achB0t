@@ -44,11 +44,9 @@ class Bank(val ctx: Context) : Task(ctx.client) {
             if(cwBank.distanceTo() < 25) {
                 if(ctx.prayer.isProtectMageActive()){
                     ctx.prayer.disable(Prayer.Companion.PrayerKind.PROTECT_FROM_MAGIC);
-                    delay(1000)
                 }
                 if(ctx.prayer.isPietyActive()){
                     ctx.prayer.disable(Prayer.Companion.PrayerKind.PIETY);
-                    delay(1000)
                 }
                 val bank = ctx.gameObjects.find(4483)
                 if(!ctx.bank.isOpen()) {
