@@ -3,9 +3,7 @@ package com.p3achb0t.client.ui.components
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
-import com.p3achb0t.scripts.GoblinKiller
-import com.p3achb0t.scripts.TestBankPin
-import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
@@ -70,6 +68,19 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
         menu.add(menuItem2)
+
+
+        val menuItem3 = JMenuItem("SirScript RuneDrags")
+        menuItem3.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setScript((RuneDragsMain()))
+
+        }
+        menu.add(menuItem3)
+
+
 
 
         val widgetExplorer = JMenuItem("Open Widget Explorer")
