@@ -1,6 +1,7 @@
 package com.p3achb0t.api
 
 import kotlinx.coroutines.delay
+import org.apache.commons.lang.math.NumberUtils.toInt
 import java.util.regex.Pattern
 import kotlin.random.Random
 
@@ -23,6 +24,10 @@ class Utils {
 
         fun cleanColorText(input: String): String {
             return Pattern.compile("<.+?>").matcher(input).replaceAll("")
+        }
+
+        fun getElapsedSeconds(timer: Long): Int{
+            return toInt(timer / 1000)
         }
 
     }
