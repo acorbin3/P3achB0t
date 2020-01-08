@@ -1,21 +1,24 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
 
 //Tile are stored in global coordinates.
+// There is a context associated with the tile so we can make it Intractable. Problem is it can be annoying to want to specify
+// a context for a path or list of Tiles. Thus we have updated the ctx to be updateable
 
 //Default of -1,-1 means the tile is not valid
 class Tile(
-        val x: Int = -1,
-        val y: Int = -1,
+        var x: Int = -1,
+        var y: Int = -1,
         val z: Int = 0,
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
@@ -24,9 +27,13 @@ class Tile(
         val NIL = Tile(-1, -1, -1, null)
     }
 
-    fun getPolyBounds(ctx: Context): Polygon {
-        val regional = getRegionalLocation()
-        return getCanvasTileAreaPoly(ctx, regional.x, regional.y)
+//    fun updateCTX(ctx: Context){
+//        this.ctx = ctx
+//        this.loc_ctx = ctx
+//    }
+    fun getPolyBounds(): Polygon {
+        val region = getRegionalLocation()
+        return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y) } ?: Polygon()
     }
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
@@ -42,20 +49,45 @@ class Tile(
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
+        if(ctx == null){
+            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            return false
+        }
         val regional = getRegionalLocation()
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
-        return ctx.mouse.click(point)
+        return ctx!!.mouse.click(point)
+    }
+
+    suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
+        // translation
+        if(ctx == null){
+            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            return false
+        }
+        val regional = getRegionalLocation()
+        val point = Calculations.worldToMiniMap(regional.x + x, regional.y + y, ctx!!)
+        return ctx!!.mouse.click(point)
     }
 
     override fun getInteractPoint(): Point {
+        if(ctx == null){
+            println("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
+            return Point(-1,-1)
+        }
         val regional = getRegionalLocation()
         val poly =  getCanvasTileAreaPoly(ctx!!, regional.x, regional.y)
         return getRandomPoint(poly)
     }
 
     override fun isOnScreen(): Boolean {
-        val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
-        return Calculations.isOnscreen(ctx!!, tilePoly.bounds)
+        return if(ctx == null){
+            println("ERROR: ctx is null, isOnScreen cant be computed. Please provide the ctx")
+            false
+        }else{
+            val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
+            Calculations.isOnscreen(ctx!!, tilePoly.bounds)
+        }
+
     }
 
     override fun distanceTo(locatable: Locatable): Int {
@@ -68,6 +100,9 @@ class Tile(
 
     // This is distance to local player
     override fun distanceTo(): Int {
+        if(ctx == null){
+            println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+        }
         return ctx?.let { Calculations.distanceTo(this, it) } ?: -1
     }
 
@@ -79,8 +114,20 @@ class Tile(
         return this
     }
 
+    override fun getRegionalLocation(): Tile {
+        //For some reason the defined tiles are shifted by half a tile. This adding half to the x and y aligns the tiles to the gird
+        var rTile = super.getRegionalLocation()
+        rTile.x = rTile.x + LOCAL_HALF_TILE_SIZE
+        rTile.y = rTile.y + LOCAL_HALF_TILE_SIZE
+        return rTile
+    }
+
     override fun draw(g: Graphics2D) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun equals(other: Any?): Boolean {
+        val tile = other as Tile
+        return this.x == tile.x && this.y == tile.y
+    }
 }
