@@ -1,67 +1,126 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Obj
-import com.p3achb0t._runestar_interfaces.ObjStack
-import com.p3achb0t._runestar_interfaces.ObjectNode
-import com.p3achb0t.api.ObjectPositionInfo
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.ObjectPositionInfo
 
-class GroundItems(val ctx: Context)  {
+class GroundItems(val ctx: Context) {
+
+    fun getTileItemsInRegion() {
+
+
+    }
+
     fun getAllItems(): ArrayList<GroundItem> {
+
         val itemList = ArrayList<GroundItem>()
         val groundItems = ctx.client.getObjStacks()
         val groundItemModels = ctx.client.getObjType_cachedModels()
         val tiles = ctx.client.getScene().getTiles()
-        for ((iP, plane) in groundItems.withIndex()) {
-            for ((iX, x) in plane.iterator().withIndex()) {
-                for ((iY, itemPile) in x.iterator().withIndex()) {
-                    if (itemPile != null) {
 
-                        var gi = itemPile.getSentinel()
+        //groundItems = [4][104][104]
+        // height, r_x, r_y
+        // tile specific, not obj specific.
+        // stores if tile has or not, only 1 needs to be present.
 
-                        if (gi != null) {
-                            gi = gi.getPrevious()
-                        }
-                        if (gi != null) {
-                            if (gi is ObjectNode) {
-                                println("Found ObjectNode")
-                            }
-                            if (gi is ObjStack) {
-                                println("Found ObjStack")
-                            }
-                            if (gi is Obj) {
-//                                    println("Found Obj")
-//                                    println(" ID: ${gi.getKey()} ($iP,$iX,$iY) Found Item: ${gi.getId()} stackSize: ${gi.getQuantity()}")
-                                groundItemModels.getHashTable().getBuckets().iterator().forEach {
-                                    if (it != null) {
-                                        var next = it.getNext()
-                                        while (next != null && next != it && next is Model && next.getKey().toInt() == gi.getId()) {
-                                            try {
-                                                val x = tiles[iP][iX][iY].getX() * 128 + 64
-                                                val y = tiles[iP][iX][iY].getY() * 128 + 64
-                                                val id = gi.getId()
+        val stackedGroundItems = mutableListOf<Obj>()
 
-                                                itemList.add(
-                                                    GroundItem(
-                                                            ctx,
-                                                            id,
-                                                            ObjectPositionInfo(x, y, plane = iP)
-                                                    )
-                                                )
-                                                next = next.getNext()
-                                            } catch (e: Exception) {
-                                                println(e.stackTrace)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+        groundItems.forEachIndexed { groundItemIndex, groundObjs ->
+
+            groundObjs.forEachIndexed { planeIndex, groundObjPlanes ->
+
+                groundObjPlanes.forEachIndexed groundobjectplane@{ index, groundObjByPlane ->
+
+                    if (groundObjByPlane == null) return@groundobjectplane
+
+                    var obj = groundObjByPlane.getSentinel()
+
+                    if (obj != null)
+                        obj = obj.getPrevious()
+                    if (obj is Obj) {
+                        try {
+                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            val id = obj.getId()
+
+                            itemList.add(
+                                    GroundItem(
+                                            ctx,
+                                            id,
+                                            ObjectPositionInfo(x, y, plane = groundItemIndex)
+                                    )
+                            )
+
+                        } catch (e: Exception) {
+                            println(e.stackTrace)
                         }
                     }
+
                 }
+
             }
+
         }
         return itemList
+    }
+
+
+    fun getItempred(itemid: IntArray): ArrayList<GroundItem> {
+        val itemList = ArrayList<GroundItem>()
+        val groundItems = ctx.client.getObjStacks()
+        val tiles = ctx.client.getScene().getTiles()
+
+        groundItems.forEachIndexed { groundItemIndex, groundObjs ->
+
+            groundObjs.forEachIndexed { planeIndex, groundObjPlanes ->
+
+                groundObjPlanes.forEachIndexed groundobjectplane@{ index, groundObjByPlane ->
+
+                    if (groundObjByPlane == null) return@groundobjectplane
+
+                    var obj = groundObjByPlane.getSentinel()
+
+                    if (obj != null)
+                        obj = obj.getPrevious()
+                    if (obj is Obj) {
+                        try {
+                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            val id = obj.getId()
+                            itemid.forEach {
+                                if (it == id) {
+                                    itemList.add(
+                                            GroundItem(
+                                                    ctx,
+                                                    id,
+                                                    ObjectPositionInfo(x, y, plane = groundItemIndex)
+                                            )
+                                    )
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            println(e.stackTrace)
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+        return itemList
+    }
+
+    fun find(itemID: Int, sortByDistance: Boolean = true): List<GroundItem> {
+        val items = getAllItems()
+        var filteredItems = items.filter { it.id == itemID }
+        if (sortByDistance)
+            filteredItems.sortedBy { it.distanceTo() }
+        return filteredItems
+    }
+
+    fun findNearest(itemID: Int): GroundItem {
+        return find(itemID)[0]
     }
 }
