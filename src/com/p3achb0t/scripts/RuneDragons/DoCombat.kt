@@ -19,7 +19,8 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
     var firsttrip = true
     override suspend fun execute() {
-        val loot: IntArray = intArrayOf(2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
+        val center = Tile(1588, 5075, ctx = ctx)
+        val loot: IntArray = intArrayOf(1432, 2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
                 21930, 995, 21918, 22103, 11286, 1333, 536)
         val groundloot = ctx.groundItems.getItempred(loot)
         val combatArea = Area(
@@ -43,6 +44,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     println("using antifire")
                     ctx.inventory.getItem(it)?.click()
                     RuneDragsMain.Antifiretimer.reset()
+                    RuneDragsMain.Antifiretimer.start()
                 }
             }
             delay(2000)
@@ -53,6 +55,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     println("using combats")
                     ctx.inventory.getItem(it)?.click()
                     RuneDragsMain.Divinepottimer.reset()
+                    RuneDragsMain.Divinepottimer.start()
                     firsttrip = false
                 }
             }
@@ -90,90 +93,80 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 }
                 val dragon = ctx.npcs.nearestAttackableNpc("Rune dragon")
                 if (dragon.size > 0) {
+                    println(dragon[0].distanceTo())
                     println("npc size > 0")
-                    try {
-                        if (dragon[0].distanceTo() >= 6) {
-                            dragon[0].getGlobalLocation().clickOnMiniMap(dragon[0].npc.getX() - 2, dragon[0].npc.getY() - 2)
-                            delay(800)
-                        }
-                        if (!dragon[0].isOnScreen())
-                            dragon[0].turnTo()
-                        println("turning to npc")
-                        if (dragon[0].isOnScreen())
-                            dragon[0].clickNPC(dragon[0])
-                        println("attacking npc")
-                        Utils.waitFor(2, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return ctx.players.getLocal().player.getTargetIndex() != -1
-                            }
-                        })
-                    } catch (e: Exception) {
-                        println("Error: NPC " + e.message)
-                        e.stackTrace.iterator().forEach {
-                            println(it)
-                        }
+                    if (dragon[0].distanceTo() >= 6) {
+                        dragon[0].getGlobalLocation().clickOnMiniMap()
+                        delay(400)
                     }
+                    if (dragon[0].distanceTo() <= 6) {
+                        if (!dragon[0].isOnScreen()) {
+                            println("turning to npc")
+                            dragon[0].turnAngleTo()
+                        }
+                        if (dragon[0].isOnScreen())
+                            println("attacking npc")
+                        dragon[0].clickNPC(dragon[0])
+                    }
+                    Utils.waitFor(2, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return ctx.players.getLocal().player.getTargetIndex() != -1
+                        }
+                    })
 
                 }
             }
+
             if (ctx.players.getLocal().player.getTargetIndex() == -1 && ctx.npcs.isTargetted()) {
                 println("being attacked - locating target")
-                if (ctx.camera.pitch < 60) {
+                if (ctx.camera.pitch < 50) {
                     ctx.camera.setHighPitch()
                 }
                 val dragon = ctx.npcs.getTargetted("Rune dragon")
+                println(dragon?.distanceTo())
                 if (dragon != null) {
-                    try {
-                        if (dragon.distanceTo() >= 6) {
-                            dragon.getGlobalLocation().clickOnMiniMap(dragon.npc.getX() - 2, dragon.npc.getY() - 2)
-                            delay(400)
-                        }
-                        if (!dragon.isOnScreen())
-                            dragon.turnTo()
-                        if (dragon.isOnScreen())
-                            dragon.clickNPC(dragon)
-                        Utils.waitFor(2, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return ctx.players.getLocal().player.getTargetIndex() != -1
-                            }
-                        })
-                    } catch (e: Exception) {
-                        println("Error: NPC " + e.message)
-                        e.stackTrace.iterator().forEach {
-                            println(it)
-                        }
+                    if (dragon.distanceTo() >= 6) {
+                        dragon.getGlobalLocation().clickOnMiniMap()
+                        delay(400)
                     }
+                    if (dragon.distanceTo() <= 6) {
+                        if (!dragon.isOnScreen()) {
+                            println("turning to npc")
+                            dragon.turnAngleTo()
+                        }
+                        if (dragon.isOnScreen())
+                            println("attacking npc")
+                        dragon.clickNPC(dragon)
+                    }
+                    Utils.waitFor(2, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return ctx.players.getLocal().player.getTargetIndex() != -1
+                        }
+                    })
 
                 }
             }
         }
 
         if (!groundloot.isEmpty()) {
-            println("item found")
+            println(groundloot[0].id)
+            println(groundloot[0].position)
             groundloot.forEach {
+                println("item found " + it.id)
                 if (ctx.inventory.isFull()) {
                     ctx.inventory.getItem(385)?.click()
                     delay(400)
                 }
                 if (!ctx.inventory.isFull()) {
                     try {
-                        if (!it.isOnScreen()) {
-                            if (it.distanceTo() > 5) {
-                                it.clickOnMiniMap()
-                                delay(800)
-                            }
-                            it.turnTo()
-                            Utils.waitFor(3, object : Utils.Condition {
-                                override suspend fun accept(): Boolean {
-                                    delay(100)
-                                    return it.isOnScreen()
-                                }
-                            })
+                        if (it.distanceTo() > 4) {
+                            it.clickOnMiniMap()
+                            delay(500)
                         }
-                        if (it.isOnScreen()) {
-                            it.interact("Take")
+                        if (it.distanceTo() <= 4) {
+                            it.take()
                         }
 
 

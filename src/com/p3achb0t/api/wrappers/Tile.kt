@@ -3,9 +3,10 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
-import com.p3achb0t.api.Context
+import com.p3achb0t.api.Constants
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -57,6 +58,7 @@ class Tile(
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
         return ctx!!.mouse.click(point)
     }
+
 
     suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
         // translation

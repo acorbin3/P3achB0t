@@ -18,6 +18,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
 
 
     override suspend fun execute() {
+        val prayerpots: IntArray = intArrayOf(143, 141, 139, 2434)
         val combatArea = Area(
                 Tile(1575, 5086, ctx = ctx),
                 Tile(1597, 5062, ctx = ctx)
@@ -74,7 +75,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                     }
                 }
                 if (Door.size > 0 && Barrier.size < 1) {
-                    if (Door[0].distanceTo() <= 13) {
+                    if (Door[0].distanceTo() <= 15) {
                         if (!Door[0].isOnScreen())
                             Door[0].turnTo()
                         if (Door[0].isOnScreen())
@@ -91,8 +92,29 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                     if (BarrierTile.distanceTo() > 2) {
                         BarrierTile.clickOnMiniMap()
                         delay(Random.nextLong(1500, 2500))
+                        if (ctx.players.getLocal().getHealth() < 56) {
+                            ctx.inventory.getItem(385)?.click()
+                            delay(1500)
+                        }
+                        run prayerpots@{
+                            if (ctx.players.getLocal().getPrayer() < 60) {
+                                prayerpots.forEach {
+                                    if (ctx.inventory.Contains(it)) {
+                                        ctx.inventory.getItem(it)?.click()
+                                        delay(500)
+                                    }
+                                    if (ctx.players.getLocal().getPrayer() >= 60) {
+                                        return@prayerpots
+                                    }
+                                }
+                            }
+                        }
                     }
                     if (BarrierTile.distanceTo() <= 4) {
+                        if (ctx.players.getLocal().getHealth() < 56) {
+                            ctx.inventory.getItem(385)?.click()
+                            delay(1500)
+                        }
                         ctx.camera.turnEast()
                         ctx.camera.setPitch(20)
                         val random = Random.nextInt(0, 5)

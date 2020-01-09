@@ -52,10 +52,23 @@ class Camera(val ctx: Context) {
     suspend fun turnTo(locatable: Locatable)  {
         CoroutineScope(IO).launch {
             turnPitchTo(locatable)
+            delay(100)
+        }
+        CoroutineScope(IO).launch {
             turnAngleTo(locatable)
             delay(100)
         }
+
     }
+
+    suspend fun turnTononco(locatable: Locatable)  {
+            turnPitchTononeco(locatable)
+            delay(100)
+            turnAngleTononeco(locatable)
+            delay(100)
+
+    }
+
 
     suspend fun turnWest() {
         CoroutineScope(IO).launch {
@@ -206,21 +219,49 @@ class Camera(val ctx: Context) {
         }
     }
 
+    suspend fun  turnPitchTononeco(locatable: Locatable) {
+            var pitch = 90 - locatable.distanceTo() * 9
+            val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
+            pitch += factor * Random.nextInt(5, 10)
+
+            if (pitch > 90) {
+                pitch = 90
+            } else if (pitch < 0) {
+                pitch = Random.nextInt(5, 10)
+            }
+
+            setPitch(pitch)
+    }
+
     /**
      * Change angel to locatable angel so it's get on screen
      *
      * @param locatable
      */
     suspend fun turnAngleTo(locatable: Locatable) {
-        var set = getAngleTo(locatable)
+        CoroutineScope(IO).launch {
+            var set = getAngleTo(locatable)
 
-        if (set > 180) {
-            set -= 180
-        } else {
-            set += 180
+            if (set > 180) {
+                set -= 180
+            } else {
+                set += 180
+            }
+
+            setAngle(set)
         }
+    }
 
-        setAngle(set)
+    suspend fun turnAngleTononeco(locatable: Locatable) {
+            var set = getAngleTo(locatable)
+
+            if (set > 180) {
+                set -= 180
+            } else {
+                set += 180
+            }
+
+            setAngle(set)
     }
 
     private suspend fun normalizeAngle(angle: Int): Int {

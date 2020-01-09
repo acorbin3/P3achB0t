@@ -52,7 +52,7 @@ class Bank(val ctx: Context) : Task(ctx.client) {
                 if(!ctx.bank.isOpen()) {
                     if (bank.size > 0) {
                         if (!bank[0].isOnScreen()) {
-                            bank[0].turnTo()
+                            bank[0].turnTononeco()
                             Utils.waitFor(5, object : Utils.Condition {
                                 override suspend fun accept(): Boolean {
                                     delay(100)

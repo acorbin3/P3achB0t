@@ -2,10 +2,7 @@ package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.Area
-import com.p3achb0t.api.wrappers.GameObject
-import com.p3achb0t.api.wrappers.Interact
-import com.p3achb0t.api.wrappers.NPC
+import com.p3achb0t.api.wrappers.*
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.math.abs
@@ -183,6 +180,15 @@ abstract class Interactable(var ctx: Context?) {
             false
         } else {
             ctx?.mouse?.moveMouse(getInteractPoint(), click = true) ?: false
+        }
+    }
+
+    suspend fun clickGroundObject(groundItem: GroundItem): Boolean {
+        val point = getInteractPoint()
+        return if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
+            false
+        } else {
+            ctx?.mouse?.moveMouseGroundItem(groundItem, getInteractPoint(), click = true) ?: false
         }
     }
 

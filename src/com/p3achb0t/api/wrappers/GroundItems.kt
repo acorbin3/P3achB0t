@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.ObjectPositionInfo
+import tornadofx.getProperty
 
 class GroundItems(val ctx: Context) {
 
@@ -33,21 +34,24 @@ class GroundItems(val ctx: Context) {
 
                     if (groundObjByPlane == null) return@groundobjectplane
 
+
                     var obj = groundObjByPlane.getSentinel()
 
                     if (obj != null)
                         obj = obj.getPrevious()
                     if (obj is Obj) {
                         try {
+                            val stacksize = obj.getQuantity()
+                            tiles[groundItemIndex][planeIndex][index].getObjStack().getFirst()
                             val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
                             val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
                             val id = obj.getId()
-
                             itemList.add(
                                     GroundItem(
                                             ctx,
                                             id,
-                                            ObjectPositionInfo(x, y, plane = groundItemIndex)
+                                            ObjectPositionInfo(x, y, plane = groundItemIndex),
+                                            stacksize
                                     )
                             )
 

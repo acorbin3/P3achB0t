@@ -14,11 +14,6 @@ import kotlin.random.Random
 
 //Ripped this from Powerbot here: https://github.com/powerbot/powerbot/blob/a5986a7eaaed0b07d952f14d637592a4c548630c/src/main/java/org/powerbot/script/Area.java
 
-/*  This area class uses the ctx in some methods so it can access the play for distance references or if its within the
-    defined area. Many cases the ctx is not available especially if its defined as companion object(static variable) to be
-    used in many different classes. Thus its required to use the updateCTX method to ensure that all the tiles and area
-    has the ctx correctly set up so the methods work correctly.
- */
 class Area {
     var inputTiles = arrayListOf<Tile>()
     var computedTiles = arrayListOf<Tile>()

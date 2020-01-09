@@ -70,46 +70,7 @@ class Testing123 : AbstractScript() {
         }
 
         override suspend fun execute() {
-            val loot: IntArray = intArrayOf(2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
-                    21930, 995, 21918, 22103, 11286, 1333, 536)
-            val groundloot = ctx.groundItems.getItempred(loot)
-            if (!groundloot.isEmpty()) {
 
-                groundloot.forEach {
-                    println("item found " + it.id)
-                    if (ctx.inventory.isFull()) {
-                        ctx.inventory.getItem(385)?.click()
-                        delay(400)
-                    }
-                    if (!ctx.inventory.isFull()) {
-                        try {
-                            if (!it.isOnScreen()) {
-                                if (it.distanceTo() > 5) {
-                                    it.clickOnMiniMap()
-                                    delay(800)
-                                }
-                                it.turnTo()
-                                Utils.waitFor(3, object : Utils.Condition {
-                                    override suspend fun accept(): Boolean {
-                                        delay(100)
-                                        return it.isOnScreen()
-                                    }
-                                })
-                            }
-                            if (it.isOnScreen()) {
-                                it.interact("Take")
-                            }
-
-
-                        } catch (e: Exception) {
-                            println("Error: NPC " + e.message)
-                            e.stackTrace.iterator().forEach {
-                                println(it)
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 

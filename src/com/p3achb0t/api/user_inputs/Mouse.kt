@@ -3,6 +3,7 @@ package com.p3achb0t.api.user_inputs
 import com.naturalmouse.api.MouseMotionFactory
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.api.wrappers.GameObject
+import com.p3achb0t.api.wrappers.GroundItem
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.client.interfaces.io.Mouse
 import com.p3achb0t.interfaces.IScriptManager
@@ -157,6 +158,8 @@ class Mouse(obj: Any) {
             hasclicked = true
         }
 
+
+
 //        var retries = 0
 //        while(!npc.isMouseOverObj() && !hasclicked){
 //            println("Mouse not over object")
@@ -211,6 +214,58 @@ class Mouse(obj: Any) {
 //                break
 //            }
 //        }
+        return true
+    }
+
+    suspend fun moveMouseGroundItem(grounditem: GroundItem, destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
+        val grounditem = grounditem.getInteractPoint()
+        mouseMotionFactory.move(grounditem.x, grounditem.y)
+
+//        mouseHopping.move(destPoint)
+        var hasclicked = false
+        if (click && !hasclicked) {
+            val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
+            val mousePress =
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_PRESSED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+//                                if(Random.nextLong(1000, 20000) < 2000){
+//                                    1
+//                                }
+//                                else 0,
+                            0,
+                            clickType == ClickType.Right
+                    )
+
+            ioMouse.sendEvent(mousePress)
+
+            // Create a random number 30-70 to delay between clicks
+            var delayTime = Math.floor(Math.random() * 40 + 30)
+            delay(delayTime.toLong())
+            val mouseRelease =
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_RELEASED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+//                                if(Random.nextLong(1000, 20000) < 2000){
+//                                    1
+//                                }
+//                                else 0,
+                            0,
+                            clickType == ClickType.Right
+                    )
+            ioMouse.sendEvent(mouseRelease)
+            delayTime = Math.floor(Math.random() * 50 + 100)
+            delay(delayTime.toLong())
+            hasclicked = true
+        }
         return true
     }
 
