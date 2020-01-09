@@ -91,7 +91,7 @@ class Tile(
     // This is distance to local player
     override fun distanceTo(): Int {
         if(ctx == null){
-            println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+            println("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
         }
         return ctx?.let { Calculations.distanceTo(this, it) } ?: -1
     }
