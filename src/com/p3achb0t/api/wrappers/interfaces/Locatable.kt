@@ -71,6 +71,12 @@ interface Locatable {
         loc_ctx?.camera?.turnTo(this)
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
+
+    suspend fun turnAngleTo() {
+        loc_ctx?.camera?.turnAngleTo(this)
+        delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
+    }
+
     abstract fun isOnScreen(): Boolean
 
     fun distanceTo(): Int {
