@@ -33,7 +33,7 @@ class GroundItem(
     }
 
     override fun getInteractPoint(): Point {
-        return getRandomPoint(getConvexHull())
+        return getGlobalLocation().getInteractPoint()
     }
 
     override fun draw(g: Graphics2D) {
@@ -59,16 +59,8 @@ class GroundItem(
     }
 
     suspend fun take() {
-        val inventoryCount = ctx?.client?.let { ctx?.inventory?.getCount() }
+        val inventoryCount = ctx?.client?.let { ctx!!.inventory.getCount() }
         if (interact("Take")) {
-            Utils.waitFor(2, object : Utils.Condition {
-
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    println("Waiting for inventory to change $inventoryCount == ${ctx?.client?.let { ctx?.inventory?.getCount() }}")
-                    return inventoryCount != ctx?.client?.let { ctx?.inventory?.getCount() }
-                }
-            })
         }
     }
 

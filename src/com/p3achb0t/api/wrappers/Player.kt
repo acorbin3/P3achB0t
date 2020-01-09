@@ -1,8 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Point
 import kotlin.math.abs
 import kotlin.math.max
@@ -34,6 +35,34 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return Calculations.worldToScreen(region.x, region.y, player.getHeight(), ctx!!)
+    }
+
+    fun getHealth(): Int {
+        var healthInt = 0
+        val health = WidgetItem(ctx?.widgets?.find(160, 5), ctx = ctx).widget?.getText()
+        healthInt = health?.toInt()!!
+        return healthInt
+    }
+
+    fun getPrayer(): Int {
+        var healthInt = 0
+        val health = WidgetItem(ctx?.widgets?.find(160, 15), ctx = ctx).widget?.getText()
+        healthInt = health?.toInt()!!
+        return healthInt
+    }
+
+    fun getStrength(): Int {
+        var level = 0
+        var temp = WidgetItem(ctx?.widgets?.find(320, 2)?.getChildren()?.get(4), ctx = ctx)
+        level = temp.widget?.getText()?.toInt()!!
+        return level
+    }
+
+    fun getCurrentStrength(): Int {
+        var level = 0
+        var temp = WidgetItem(ctx?.widgets?.find(320, 2)?.getChildren()?.get(3), ctx = ctx)
+        level = temp.widget?.getText()?.toInt()!!
+        return level
     }
 
     override suspend fun interact(action: String): Boolean {

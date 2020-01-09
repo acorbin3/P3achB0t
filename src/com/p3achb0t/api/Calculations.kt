@@ -261,6 +261,7 @@ class Calculations {
          * @return a polygon representing the tiles in the area
          */
         fun getCanvasTileAreaPoly(ctx: Context, localX: Int, localY: Int, size: Int = 1): Polygon {
+
             val plane = ctx.client.getPlane()
 
             val swX = localX - size * LOCAL_TILE_SIZE / 2

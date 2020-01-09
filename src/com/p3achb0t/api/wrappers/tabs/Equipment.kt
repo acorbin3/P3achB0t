@@ -79,8 +79,21 @@ class Equipment(val ctx: Context) {
                     return !isEquipmentSlotEquipted(slot)
                 }
             })
-
     }
+
+    suspend fun interactWithSlot(slot: Slot, interaction: String) {
+        if(!isOpen()){
+            open()
+        }
+        if(isOpen()) {
+            val item = getItemAtSlot(slot)
+            println("Interacting with item ${slot.name} ${item?.area}" + " " + interaction)
+            item?.interact(interaction)
+            // Wait till item gets removed
+            delay((250))
+        }
+    }
+
 
     fun isEquipmentSlotEquipted(slot: Slot): Boolean {
         try {
@@ -95,6 +108,8 @@ class Equipment(val ctx: Context) {
         }
         return false
     }
+
+
 
     fun getItemAtSlot(slot: Slot): WidgetItem? {
         return try {

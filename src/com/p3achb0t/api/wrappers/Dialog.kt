@@ -95,6 +95,22 @@ class Dialog(val ctx: Context) {
         }
     }
 
+    suspend fun selecTeleportOption(action: String) {
+        val dialog = WidgetItem(ctx.widgets.find(219, 1), ctx = ctx)
+        // Options are in children but not index zero
+        dialog.widget?.getChildren()?.iterator()?.forEach {
+            if (it.getText().contains(action)) {
+                WidgetItem(it, ctx = ctx).click()
+                delay(Random.nextLong(1500, 2500))
+            }
+        }
+    }
+
+    fun isDialogOptionsOpen(): Boolean {
+        return ctx.widgets.isWidgetAvaliable(219, 1)
+    }
+
+
     suspend fun selectRandomOption() {
         val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0

@@ -6,9 +6,8 @@ import kotlinx.coroutines.runBlocking
 import java.applet.Applet
 import java.awt.Component
 import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 
-class Keyboard(val obj: Any)  {
+class Keyboard(val obj: Any) {
     val component: Component = (obj as Applet).getComponent(0)
     val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as IScriptManager).getKeyboard()
 
@@ -25,12 +24,12 @@ class Keyboard(val obj: Any)  {
                 )
             }
 
-            if(c in 'a'..'z' || c in 'A'..'Z'){
+            if (c in 'a'..'z' || c in 'A'..'Z') {
                 keyCode = 0
             }
 
             KeyEvent.VK_SPACE
-        println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
+            println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
             val down = KeyEvent(
                     component,
                     KeyEvent.KEY_PRESSED,
@@ -102,5 +101,4 @@ class Keyboard(val obj: Any)  {
         keyboard.sendEvent(up)
     }
 }
-
 
