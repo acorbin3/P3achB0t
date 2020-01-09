@@ -53,8 +53,16 @@ class NPCs(val ctx: Context) {
         }
         return npcs
     }
-
     fun getNearestNPC() : NPC {
-        return findNpcs(true)[0]
+        return findNpcs()[0]
+    }
+
+    fun getNearestNPC(npcId: Int) : NPC? {
+        val npcs = findNpc(npcId)
+        return if(npcs.isEmpty()){
+            null
+        }else{
+            npcs.first()
+        }
     }
 }

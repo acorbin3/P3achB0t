@@ -60,7 +60,7 @@ open class Actor(
 
     suspend fun waitTillIdle(time: Int = 4) {
         //Add a small delay to allow for initial movement from the previous command
-        delay(Random.nextLong(450, 700))
+        delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 //Need to make sure we are idle for at least 200ms

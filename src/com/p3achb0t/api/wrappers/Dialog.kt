@@ -63,7 +63,7 @@ class Dialog(val ctx: Context) {
         if (dialog.containsText("continue", false)) {
 //            dialog.click()
             ctx.keyboard.sendKeys(" ")
-            delay(Random.nextLong(100, 200))
+            delay(Random.nextLong(200, 350))
 
         } else if (dialog.containsText("continue")) {
             //NEed to find children
@@ -71,17 +71,17 @@ class Dialog(val ctx: Context) {
                 if (WidgetItem(it, ctx = ctx).containsText("continue")) {
 //                    WidgetItem(it, ctx = ctx).click()
                     ctx.keyboard.sendKeys(" ")
-                    delay(Random.nextLong(100, 200))
+                    delay(Random.nextLong(200, 350))
                 }
             }
         }
         else if(isContinueAvailable()){
             ctx.keyboard.sendKeys(" ")
-            delay(Random.nextLong(100, 200))
+            delay(Random.nextLong(200, 350))
         }
         //TODO - add a smart sleep based on the number of words in the continue dialog
         if (sleep)//&& getDialogContinue().containsText("continue"))
-            delay(Random.nextLong(350, 550))
+            delay(Random.nextLong(650, 750))
     }
 
     suspend fun selectionOption(action: String) {
