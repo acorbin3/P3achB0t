@@ -76,8 +76,6 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
             println("${this.player.getUsername()}: Getting Hull!")
             val ch = getConvexHull(
                     this.player,
-                    ctx?.client!!.getLocType_cachedModels(),
-                    this.player.getAppearance().getNpcTransformId().toLong(),
                     ctx!!)
             //Checking to see if this is on screen
             Interact(ctx!!).interact(ch, action)

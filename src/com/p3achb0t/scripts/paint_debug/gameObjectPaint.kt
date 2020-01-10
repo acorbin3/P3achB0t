@@ -51,7 +51,10 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
 
                                         //Printing out the model and the hull
                                         if (localPlayer.distanceTo(globalPos) < 5) {
-                                            val model = it.getEntity()
+                                            var model = it.getEntity()
+                                            if(!(model is Model)){
+                                                model = model.getModel()
+                                            }
                                             if (model is Model) {
                                                 val positionInfo =
                                                     ObjectPositionInfo(

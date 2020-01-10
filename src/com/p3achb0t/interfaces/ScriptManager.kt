@@ -47,6 +47,17 @@ class ScriptManager(val client: Any) {
         }
     }
 
+    fun notifyMessage(){
+
+    }
+
+    suspend fun gameLoop(){
+        if(this.script is ChatListener) {
+            (this.script as ChatListener).notifyMessage()
+        }
+
+    }
+
 
     fun start() {
 //        mouse.inputBlocked(true)
