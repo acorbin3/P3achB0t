@@ -1,11 +1,10 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -65,8 +64,11 @@ class GroundItem(
     }
 
     fun getTriangles(): ArrayList<Polygon> {
-        val groundItemModels = ctx?.client?.getObjType_cachedModels()
-        val model: Model? = groundItemModels?.let { getModel(it) }
+        var model: Model? = null
+        //Go to the Tile, look at the item piles for the model.
+        model = getModelFromTile()
+
+
         return if(model != null && ctx?.client != null) {
             getTrianglesFromModel(position, model, ctx!!)
         }else{
@@ -74,32 +76,39 @@ class GroundItem(
         }
     }
 
-    private fun getModel(
-        groundItemModels: EvictingDualNodeHashTable
-    ): Model? {
-        var model1: Model? = null
-        groundItemModels.getHashTable().getBuckets().iterator().forEach {
-            if (it != null) {
-                var next = it.getNext()
-                while (next.getKey() > 0 && next is Model) {
-                    try {
-                        if (next.getKey().toInt() == this.id) {
-                            model1 = next
-                            break
-                        }
-                        next = next.getNext()
-                    } catch (e: Exception) {
-                        println(e.stackTrace)
-                    }
+    private fun getModelFromTile(): Model? {
+        var model: Model? = null
+        val tiles = ctx?.client?.getScene()?.getTiles()
+        val regional = this.getLocalLocation()
+        println("${regional.z},${regional.x},${regional.y}")
+
+        val observableTile = tiles?.get(regional.z)?.get(regional.x)?.get(regional.y)
+
+        if (observableTile != null) {
+            val objectStackPile = observableTile.getObjStack()
+            if (objectStackPile != null) {
+                val firstItem = objectStackPile.getFirst()
+                if (firstItem != null && firstItem is Obj && firstItem.getId() == this.id) {
+                    model = firstItem.getModel()
+//                    println("\tFirst: ID: ${firstItem.getKey()} (${regional.z},${regional.x},${regional.y}) Found Item: ${firstItem.getId()} stackSize: ${firstItem.getQuantity()}")
+                }
+                val secondItem = objectStackPile.getSecond()
+                if (secondItem != null && secondItem is Obj && secondItem.getId() == this.id) {
+                    model = secondItem.getModel()
+//                    println("\tSecond: ID: ${secondItem.getKey()} (${regional.z},${regional.x},${regional.y}) Found Item: ${secondItem.getId()} stackSize: ${secondItem.getQuantity()}")
+                }
+                val thirdItem = objectStackPile.getThird()
+                if (thirdItem != null && thirdItem is Obj && thirdItem.getId() == this.id) {
+                    model = thirdItem.getModel()
+//                    println("\tThird: ID: ${thirdItem.getKey()} (${regional.z},${regional.x},${regional.y}) Found Item: ${thirdItem.getId()} stackSize: ${thirdItem.getQuantity()}")
                 }
             }
         }
-        return model1
+        return model
     }
 
     fun getConvexHull(): Polygon {
-        val groundItemModels = ctx?.client!!.getObjType_cachedModels()
-        val model: Model? = getModel(groundItemModels)
+        val model: Model? = this.getModelFromTile()
         return if(model != null && ctx?.client != null) {
             getConvexHullFromModel(position, model, ctx!!)
         }else{

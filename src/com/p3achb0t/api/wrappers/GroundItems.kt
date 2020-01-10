@@ -23,10 +23,18 @@ class GroundItems(val ctx: Context) {
 
         val stackedGroundItems = mutableListOf<Obj>()
 
+        tiles.iterator().forEach {yTile->
+            yTile.iterator().forEach {xTile ->
+
+                xTile.iterator().forEach {
+//                    it.
+                }
+            }
+
+        }
         groundItems.forEachIndexed { planeIndex, groundObjs ->
             groundObjs.forEachIndexed { xIndex, groundObjPlanes ->
                 groundObjPlanes.forEachIndexed groundobjectplane@{ yIndex, groundObjByPlane ->
-
                     if (groundObjByPlane == null) return@groundobjectplane
 
 
@@ -37,7 +45,7 @@ class GroundItems(val ctx: Context) {
                     if (obj is Obj) {
                         try {
                             val stacksize = obj.getQuantity()
-                            tiles[planeIndex][xIndex][yIndex].getObjStack().getFirst()
+//                            tiles[planeIndex][xIndex][yIndex].getObjStack().getFirst()
                             val x = tiles[planeIndex][xIndex][yIndex].getX() * 128 + 64
                             val y = tiles[planeIndex][xIndex][yIndex].getY() * 128 + 64
                             val id = obj.getId()
@@ -135,11 +143,12 @@ class GroundItems(val ctx: Context) {
         val listOfIds = ArrayList<Int>()
         groundItemModels.getHashTable().getBuckets().iterator().forEach {
             if (it != null) {
+
                 var next = it.getNext()
-                while (next != null && next != it && next is Model) {
+                while (next != null && next != it ) {
                     try {
                         listOfIds.add(next.getKey().toInt())
-                        if(next.getKey().toInt() == gi.getId()) {
+                        if(next is Model && next.getKey().toInt() == gi.getId()) {
                             val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
                             val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
                             val id = gi.getId()
