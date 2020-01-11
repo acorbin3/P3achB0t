@@ -60,14 +60,14 @@ open class Actor(
 
     suspend fun waitTillIdle(time: Int = 4) {
         //Add a small delay to allow for initial movement from the previous command
-        delay(Random.nextLong(450, 700))
+        delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 //Need to make sure we are idle for at least 200ms
                 if (ctx!!.players.getLocal().isIdle())
                     delay(100)
                 delay(100)
-                return if (ctx?.client != null) ctx!!.players.getLocal().isIdle() else return false
+                return if (ctx != null && ctx?.client != null) ctx!!.players.getLocal().isIdle() else return false
             }
         })
     }
@@ -125,7 +125,7 @@ open class Actor(
     }
 
     override fun getGlobalLocation(): Tile {
-        return if(ctx!!.client != null) Tile(
+        return if(ctx?.client != null) Tile(
                 (raw.getX() shr 7) + ctx!!.client.getBaseX(),
                 (raw.getY() shr 7) + ctx!!.client.getBaseY(),
                 ctx!!.client.getPlane(),ctx

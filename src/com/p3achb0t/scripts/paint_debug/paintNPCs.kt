@@ -2,9 +2,10 @@ package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.getActorTriangles
 import com.p3achb0t.api.getConvexHull
-import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.NPC
 import java.awt.Color
 import java.awt.Graphics
 
@@ -15,9 +16,10 @@ fun paintNPCs(g: Graphics, ctx: Context) {
         count = 0
         val localNpcs = ctx.client.getNpcs()
         var npc: Npc? = null
-        localNpcs.iterator().forEach {
+        localNpcs.iterator().forEach { it ->
             if (it != null) {
                 npc = it
+                val newNPC = NPC(it, ctx)
 
                 //                                print("Name: ${it.getComposite().getName()}, ID:${it.getType()?.getId()} x:${it.getX()} y:${it.getY()},")
                 count += 1
@@ -31,8 +33,7 @@ fun paintNPCs(g: Graphics, ctx: Context) {
 
                 val polygon = npc?.getType()?.getId()?.toLong()?.let { it1 ->
                     getActorTriangles(
-                            npc, ctx.client.getNPCType_cachedModels(),
-                            it1, ctx
+                            npc, ctx
 
                     )
                 }
@@ -46,20 +47,14 @@ fun paintNPCs(g: Graphics, ctx: Context) {
 
                 val ch = getConvexHull(
                         npc,
-                        ctx.client.getNPCType_cachedModels(),
-                        npc!!.getType().getId().toLong(), ctx
+                        ctx
 
                 )
                 g.color = Color.PINK
                 g.drawPolygon(ch)
 
-                val namePoint =
-                    Calculations.worldToScreen(
-                            it.getX(),
-                            it.getY(),
-                            it.getHeight(), ctx
+                val namePoint = newNPC.getNamePoint()
 
-                    )
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(ctx,namePoint )) {
                     g.color = Color.GREEN
                     g.drawString(

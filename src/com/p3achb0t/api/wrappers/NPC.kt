@@ -2,16 +2,20 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.getConvexHull
 import java.awt.Point
 import java.awt.Polygon
 
 class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
 
+    val name: String
+        get() {
+            return npc.getType().getName()
+        }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx!!.mouse.getX(), ctx!!.mouse.getY())
+        val mousePoint = ctx?.let { Point(it.mouse.getX(), it.mouse.getY()) }
         return getConvexHull().contains(mousePoint)
     }
 
@@ -23,8 +27,7 @@ class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
         return ctx?.let {
             getConvexHull(
                     this.npc,
-                    it.client.getNPCType_cachedModels(),
-                    this.npc.getType().getKey(),it
+                    it
             )
         } ?: Polygon()
 

@@ -41,7 +41,7 @@ class Keyboard(val obj: Any) {
             )
             keyboard.sendEvent(down)
 
-            if (!instantEntry)
+            if(!instantEntry)
                 delay(20)
             val typeed = KeyEvent(
                     component,
@@ -53,7 +53,7 @@ class Keyboard(val obj: Any) {
                     KeyEvent.KEY_LOCATION_UNKNOWN
             )
             keyboard.sendEvent(typeed)
-            if (!instantEntry)
+            if(!instantEntry)
                 delay(20)
 
             val up = KeyEvent(
@@ -66,13 +66,13 @@ class Keyboard(val obj: Any) {
                     KeyEvent.KEY_LOCATION_STANDARD
             )
             keyboard.sendEvent(up)
-            if (!instantEntry)
+            if(!instantEntry)
                 delay(20)
         }
 
         if (sendReturn) {
             pressDownKey(KeyEvent.VK_ENTER)
-            if (!instantEntry)
+            if(!instantEntry)
                 delay(20)
             release(KeyEvent.VK_ENTER)
 

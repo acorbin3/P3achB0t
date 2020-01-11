@@ -241,8 +241,8 @@ class Calculations {
             if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE) {
                 val tileHeights = ctx.client.getTiles_heights()
 
-                val x = localX.and(LOCAL_TILE_SIZE - 1)
-                val y = localY.and(LOCAL_TILE_SIZE - 1)
+                val x = localX.and(LOCAL_TILE_SIZE)
+                val y = localY.and(LOCAL_TILE_SIZE)
                 val var8 =
                     (x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY]) shr LOCAL_COORD_BITS
                 val var9 =

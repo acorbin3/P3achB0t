@@ -1,7 +1,6 @@
 package com.p3achb0t.api
 
 import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.Model
 import java.awt.Point
 import java.awt.Polygon
@@ -10,37 +9,15 @@ import java.util.*
 data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
 
-fun getActorTriangles(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, ctx: Context): ArrayList<Polygon> {
+fun getActorTriangles(actor: Actor?, ctx: Context): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
-
-    models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
-        if (bucketItem != null) {
-            var next = bucketItem.getNext()
-            while (next != null && next != bucketItem) {
-                if (next.getKey() == modelID) {
-
-                    val model = next as Model
-
-                    if (actor != null) {
-                        val positionInfo =
-                            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygonList = getTrianglesFromModel(positionInfo, model, ctx)
-                    }
-                    break
-                }
-                next = next.getNext()
-            }
-        }
+    var model = actor?.getModel()
+    if (actor != null && model != null) {
+        val positionInfo =
+                ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
+        polygonList = getTrianglesFromModel(positionInfo, model, ctx)
     }
     return polygonList
-}
-
-fun getTrianglesFromModel(actor: Actor, model: Model, ctx: Context): ArrayList<Polygon> {
-    return getTrianglesFromModel(
-            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-            model, ctx
-
-    )
 }
 
 fun getTrianglesFromModel(
@@ -116,37 +93,18 @@ fun getTrianglesFromModel(
     return polygonList
 }
 
-fun getConvexHull(actor: Actor?, models: EvictingDualNodeHashTable, modelID: Long, ctx: Context): Polygon {
+fun getConvexHull(actor: Actor?, ctx: Context): Polygon {
+
+
     var polygon = Polygon()
-    models.getHashTable().getBuckets().iterator().forEach { bucketItem ->
-        if (bucketItem != null) {
-            var next = bucketItem.getNext()
-            while (next != null && next != bucketItem) {
-                if (next.getKey() == modelID) {
-
-                    val model = next as Model
-
-                    if (actor != null) {
-                        val positionInfo =
-                            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-                        polygon = getConvexHullFromModel(positionInfo, model, ctx)
-                    }
-                    break
-                }
-                next = next.getNext()
-            }
-        }
+    var model = actor?.getModel()
+    if (actor != null && model != null) {
+        val positionInfo =
+                ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
+        polygon = getConvexHullFromModel(positionInfo, model, ctx)
     }
 
     return polygon
-}
-
-fun getConvexHullFromModel(actor: Actor, model: Model, ctx: Context): Polygon {
-    return getConvexHullFromModel(
-            ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation()),
-            model, ctx
-
-    )
 }
 
 fun getConvexHullFromModel(

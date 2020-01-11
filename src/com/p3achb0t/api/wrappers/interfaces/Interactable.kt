@@ -130,26 +130,14 @@ abstract class Interactable(var ctx: Context?) {
 
 
     open suspend fun interact(action: String): Boolean {
-        //Find distance between ineraction point, if distance i > 25, then re compute otherwise interact
         var desiredPoint = getInteractPoint()
         var retryCount = 0
         while (true) {
-//            val startPoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
-//            val distance = startPoint?.distance(desiredPoint)
             ctx?.mouse?.moveMouse(desiredPoint, click = false)
             if (isMouseOverObj() || retryCount == 5) {
                 break
             }
             retryCount += 1
-//            if (distance != null) {
-//                if (abs(distance) < 100) {
-//                    break
-//                } else {
-//                    val midPoint = midPoint(desiredPoint, startPoint)
-//                    MainApplet.mouse.moveMouse(midPoint, click = false)
-//                    delay(Random.nextLong(100, 200))
-//                }
-//            }
             desiredPoint = getInteractPoint()
         }
         return if (ctx?.client != null) ctx?.mouse?.let { Interact(ctx!!).interact(desiredPoint, action) } ?: false else false
