@@ -2,10 +2,10 @@ package com.p3achb0t.analyser
 
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.injection.class_generation.cleanType
-import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.injection.class_generation.cleanType
+import com.p3achb0t.injection.class_generation.isBaseType
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Opcodes
@@ -114,6 +114,10 @@ class Analyser{
 
             }
 
+//            if (clazzData.`class` == "GameShell") {
+//                injectGameLoop(classes[clazzData.name]!!)
+//            }
+
             if(clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
             }
@@ -182,6 +186,34 @@ class Analyser{
                 varBitMethodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
+            }
+
+            // Inject getModel for the Entity
+            if(clazzData.`class` == "Entity") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
+                println("MethodHook: $methodHook")
+                //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
+                //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                var returnType = "L$classPath/$clazzName;"
+                println("Returntype $returnType")
+
+                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
+
+                methodNode.visitVarInsn(ALOAD, 0)
+                methodNode.visitInsn(ICONST_0)
+                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
+
+                val cast = "$classPath/$clazzName"
+                methodNode.visitTypeInsn(CHECKCAST, cast)
+                methodNode.visitInsn(Opcodes.ARETURN)
+                methodNode.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
 
 //            println("Methods:~~~~~~")
@@ -394,7 +426,7 @@ class Analyser{
                                 val prev = j.previous
                                 val il = InsnList()
                                 il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "loop", "()V"))
+                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "gameLoop", "()V"))
                                 //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
                                 //il.add(LdcInsnNode("."));
                                 //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V"))

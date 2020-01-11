@@ -14,6 +14,11 @@ import kotlin.random.Random
 
 //Ripped this from Powerbot here: https://github.com/powerbot/powerbot/blob/a5986a7eaaed0b07d952f14d637592a4c548630c/src/main/java/org/powerbot/script/Area.java
 
+/*  This area class uses the ctx in some methods so it can access the play for distance references or if its within the
+    defined area. Many cases the ctx is not available especially if its defined as companion object(static variable) to be
+    used in many different classes. Thus its required to use the updateCTX method to ensure that all the tiles and area
+    has the ctx correctly set up so the methods work correctly.
+ */
 class Area {
     var inputTiles = arrayListOf<Tile>()
     var computedTiles = arrayListOf<Tile>()
@@ -24,13 +29,13 @@ class Area {
     constructor(t1: Tile, t2: Tile, ctx: Context?=null) {
         this.ctx = ctx
         val lArea =
-                Area(
-                        Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx),
-                        Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx ),
-                        Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx),
-                        Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx)
-                        , ctx=ctx
-                )
+        Area(
+            Tile(min(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx),
+            Tile(max(t1.x, t2.x), min(t1.y, t2.y), t1.z, ctx=ctx ),
+            Tile(max(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx),
+            Tile(min(t1.x, t2.x), max(t1.y, t2.y), t2.z, ctx=ctx)
+                , ctx=ctx
+        )
         inputTiles = lArea.inputTiles
         computedTiles = lArea.computedTiles
         polygon = lArea.polygon
@@ -182,7 +187,7 @@ class Area {
 
     fun getCentralTile(): Tile {
         val point = PolygonUtils.getCenter(polygon)
-        return Tile(point.x, point.y, plane)
+        return Tile(point.x, point.y, plane,ctx)
     }
 
     fun getRandomTile(): Tile {

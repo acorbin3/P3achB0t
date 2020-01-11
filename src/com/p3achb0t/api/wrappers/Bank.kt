@@ -267,6 +267,7 @@ class Bank(val ctx: Context) {
                             }
                         }
                     }
+                    delay(200)
                 }
             }
         }

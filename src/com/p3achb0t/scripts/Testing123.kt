@@ -65,8 +65,9 @@ class Testing123 : AbstractScript() {
     }
 
     class MoveMouse(val ctx: Context) : Job(ctx.client) {
-        override suspend fun isValidToRun(dialogWidget: WidgetItem): Boolean {
-            return true
+
+        override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override suspend fun execute() {
