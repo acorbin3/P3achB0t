@@ -2,6 +2,7 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.listeners.ChatListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -49,7 +50,6 @@ class ScriptManager(val client: Any) {
     }
 
     fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
-        println("Message received Flags: $flags, name:$name, message:$message, prefix:$prefix")
             if (this.script is ChatListener) {
                 val updatedPrefix  = prefix ?: ""
                 (this.script as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
