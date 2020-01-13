@@ -44,7 +44,19 @@ public class WidgetExplorerV3 {
                                 if (currentParentNode == null) {
                                     currentParentNode = new DefaultMutableTreeNode(parentID);
                                 }
-                                currentParentNode.add(new DefaultMutableTreeNode(childID));
+
+                                DefaultMutableTreeNode child = new DefaultMutableTreeNode(childID);
+                                //Add Children, of Children ids
+                                Component[] childChildren = components[parentID][childID].getChildren();
+                                if (childChildren != null) {
+//                                    System.out.println("Children children len: " + childChildren.length + "(" + parentID + "," + childID + ")");
+                                    for (int i = 0; i < childChildren.length; i++) {
+                                        child.add(new DefaultMutableTreeNode(i));
+                                    }
+                                }
+
+
+                                currentParentNode.add(child);
                             }
                         }
                         if (currentParentNode != null) {
@@ -78,11 +90,27 @@ public class WidgetExplorerV3 {
                         Integer childID = Integer.parseInt(index.split(",")[2]);
                         Component[][] components = ctx.getClient().getInterfaceComponents();
                         Component widget = components[parentID][childID];
-                        ctx.setSelectedWidget(widget);
-                        String result = ctx.getWidgets().getWidgetDetails(widget, 0);
-                        textArea1.removeAll();
-                        textArea1.setText(result);
-                        textArea1.setCaretPosition(0);
+                        if (index.split(",").length == 3) {
+                            ctx.setSelectedWidget(widget);
+                            String result = ctx.getWidgets().getWidgetDetails(widget, 0);
+                            textArea1.removeAll();
+                            textArea1.setText(result);
+                            textArea1.setCaretPosition(0);
+                        } else if (index.split(",").length == 4) {
+                            // Children of children case
+                            Integer childChildID = Integer.parseInt(index.split(",")[3]);
+                            Component[] children = widget.getChildren();
+                            if (children != null) {
+                                Component childChild = children[childChildID];
+                                ctx.setSelectedWidget(childChild);
+                                String result = ctx.getWidgets().getWidgetDetails(childChild, childChildID);
+                                textArea1.removeAll();
+                                textArea1.setText(result);
+                                textArea1.setCaretPosition(0);
+
+                            }
+
+                        }
 
                     }
                 } catch (Exception ignored) {
@@ -102,8 +130,8 @@ public class WidgetExplorerV3 {
     private void doSearch(Context ctx) {
         node.removeAllChildren();
         String searchText = textField1.getText();
-        //TODO - get all text, from widgets
-        //TODO - loop over all widgets, if a child matches then add that to the node list
+        // get all text, from widgets
+        // loop over all widgets, if a child matches then add that to the node list
         Component[][] components = ctx.getClient().getInterfaceComponents();
         DefaultMutableTreeNode currentParentNode = null;
         for (Integer parentID = 0; parentID < components.length; parentID++) {
@@ -115,7 +143,20 @@ public class WidgetExplorerV3 {
                             if (currentParentNode == null) {
                                 currentParentNode = new DefaultMutableTreeNode(parentID);
                             }
-                            currentParentNode.add(new DefaultMutableTreeNode(childID));
+                            DefaultMutableTreeNode child = new DefaultMutableTreeNode(childID);
+                            //Add Children, of Children ids
+                            Component[] childChildren = components[parentID][childID].getChildren();
+                            if (childChildren != null) {
+//                                System.out.println("Children children len: " + childChildren.length + "(" + parentID + "," + childID + ")");
+                                for (int i = 0; i < childChildren.length; i++) {
+                                    String childResult = ctx.getWidgets().getWidgetDetails(components[parentID][childID], i);
+                                    if (childResult.toLowerCase().contains(searchText.toLowerCase())) {
+                                        child.add(new DefaultMutableTreeNode(i));
+                                    }
+                                }
+                            }
+
+                            currentParentNode.add(child);
                         }
                     }
                 }
