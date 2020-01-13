@@ -2,8 +2,8 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.getConvexHull
 import java.awt.Point
 import java.awt.Polygon
 
@@ -27,8 +27,7 @@ class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
         return ctx?.let {
             getConvexHull(
                     this.npc,
-                    it.client.getNPCType_cachedModels(),
-                    this.npc.getType().getKey(),it
+                    it
             )
         } ?: Polygon()
 

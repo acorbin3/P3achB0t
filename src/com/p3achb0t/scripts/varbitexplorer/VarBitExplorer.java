@@ -57,13 +57,13 @@ public class VarBitExplorer {
             Map<Integer, Integer> varpValues = new HashMap<>();
             int varpLength = ctx.getClient().getVarps_main().length;
             for (int i = 0; i < varpLength; i++) {
-                varpValues.put(i,0);
+                varpValues.put(i, 0);
             }
 
             Map<Integer, String> varStringValues = new HashMap<>();
             int varStringsLength = ctx.getClient().getVarcs().getStrings().length;
             for (int i = 0; i < varStringsLength; i++) {
-                varStringValues.put(i,"");
+                varStringValues.put(i, "");
             }
 
             while (keepRunning()) {
@@ -72,9 +72,9 @@ public class VarBitExplorer {
                     for (int i = 0; i < varpLength; i++) {
                         int newVarpVal = ctx.getVars().getVarp(i);
                         int oldVarpVal = varpValues.get(i);
-                        if(oldVarpVal != newVarpVal){
-                            varpValues.replace(i,newVarpVal);
-                            updatedVar(i, Integer.toString(oldVarpVal), Integer.toString(newVarpVal),"[Varp]");
+                        if (oldVarpVal != newVarpVal) {
+                            varpValues.replace(i, newVarpVal);
+                            updatedVar(i, Integer.toString(oldVarpVal), Integer.toString(newVarpVal), "[Varp]");
                         }
                     }
 
@@ -87,7 +87,7 @@ public class VarBitExplorer {
                         if (oldVarBitVal != newVarBitVal) {
 
                             varBitValues.replace(i, newVarBitVal);
-                            updatedVar(i, Integer.toString(oldVarBitVal), Integer.toString(newVarBitVal),"[Varbit]");
+                            updatedVar(i, Integer.toString(oldVarBitVal), Integer.toString(newVarBitVal), "[Varbit]");
 
                         }
                     }
@@ -96,9 +96,9 @@ public class VarBitExplorer {
                     for (int i = 0; i < varStringsLength; i++) {
                         String newVarpVal = ctx.getVars().getVarcString(i);
                         String oldVarpVal = varStringValues.get(i);
-                        if(oldVarpVal != newVarpVal){
-                            varStringValues.replace(i,newVarpVal);
-                            updatedVar(i, oldVarpVal, newVarpVal,"[VarString]");
+                        if (oldVarpVal != newVarpVal) {
+                            varStringValues.replace(i, newVarpVal);
+                            updatedVar(i, oldVarpVal, newVarpVal, "[VarString]");
                         }
                     }
 
@@ -124,6 +124,7 @@ public class VarBitExplorer {
             }
         }
     }
+
     public VarBitExplorer(Context ctx) {
         JFrame frame = new JFrame("VarBitExplorer");
         createUIComponents();
@@ -171,6 +172,7 @@ public class VarBitExplorer {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
+        createUIComponents();
         panel1.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel1.setBorder(BorderFactory.createTitledBorder("VarBit Log"));
         final JScrollPane scrollPane1 = new JScrollPane();
@@ -196,4 +198,5 @@ public class VarBitExplorer {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

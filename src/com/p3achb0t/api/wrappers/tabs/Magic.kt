@@ -11,6 +11,7 @@ class Magic(val ctx: Context) {
         private const val PARENT = WidgetID.SPELLBOOK_GROUP_ID
         private const val FILTER_BUTTON_ID = 187
         enum class Spells(val widgetID: Int) {
+            Home_Teleport(5),
             Wind_Strike(6)
         }
     }

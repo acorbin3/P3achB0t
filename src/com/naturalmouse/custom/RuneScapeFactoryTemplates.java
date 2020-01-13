@@ -106,7 +106,10 @@ public class RuneScapeFactoryTemplates {
      *
      * @return the factory
      */
-    public static MouseMotionFactory createFastGamerMotionFactory(Client client, Applet applet) {
+
+    public static MouseMotionFactory createFastGamerMotionFactory(Object obj) {
+        Client client = (Client) obj;
+        Applet applet = (Applet)obj;
         return createFastGamerMotionFactory(new RuneScapeMouseMotionNature(client, applet));
     }
 
@@ -129,10 +132,10 @@ public class RuneScapeFactoryTemplates {
         factory.setDeviationProvider(new SinusoidalDeviationProvider(SinusoidalDeviationProvider.DEFAULT_SLOPE_DIVIDER));
         factory.setNoiseProvider(new DefaultNoiseProvider(DefaultNoiseProvider.DEFAULT_NOISINESS_DIVIDER));
         factory.getNature().setReactionTimeVariationMs(100);
-        manager.setMouseMovementBaseTimeMs(250);
+        manager.setMouseMovementBaseTimeMs(150);
 
         DefaultOvershootManager overshootManager = (DefaultOvershootManager) factory.getOvershootManager();
-        overshootManager.setOvershoots(4);
+        overshootManager.setOvershoots(0);
 
         factory.setSpeedManager(manager);
         return factory;
@@ -170,11 +173,11 @@ public class RuneScapeFactoryTemplates {
         DefaultSpeedManager manager = new DefaultSpeedManager(flows);
         factory.setDeviationProvider(new SinusoidalDeviationProvider(SinusoidalDeviationProvider.DEFAULT_SLOPE_DIVIDER));
         factory.setNoiseProvider(new DefaultNoiseProvider(DefaultNoiseProvider.DEFAULT_NOISINESS_DIVIDER));
-        factory.getNature().setReactionTimeVariationMs(110);
-        manager.setMouseMovementBaseTimeMs(400);
+        factory.getNature().setReactionTimeVariationMs(100);
+        manager.setMouseMovementBaseTimeMs(300);
 
         DefaultOvershootManager overshootManager = (DefaultOvershootManager) factory.getOvershootManager();
-        overshootManager.setOvershoots(4);
+        overshootManager.setOvershoots(6);
 
         factory.setSpeedManager(manager);
         return factory;

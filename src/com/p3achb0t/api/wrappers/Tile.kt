@@ -59,6 +59,18 @@ class Tile(
         return ctx!!.mouse.click(point)
     }
 
+
+    suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
+        // translation
+        if(ctx == null){
+            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            return false
+        }
+        val regional = getRegionalLocation()
+        val point = Calculations.worldToMiniMap(regional.x + x, regional.y + y, ctx!!)
+        return ctx!!.mouse.click(point)
+    }
+
     override fun getInteractPoint(): Point {
         if(ctx == null){
             println("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
@@ -91,7 +103,7 @@ class Tile(
     // This is distance to local player
     override fun distanceTo(): Int {
         if(ctx == null){
-            println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+            println("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
         }
         return ctx?.let { Calculations.distanceTo(this, it) } ?: -1
     }

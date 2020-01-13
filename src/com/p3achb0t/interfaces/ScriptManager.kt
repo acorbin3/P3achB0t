@@ -24,6 +24,7 @@ class ScriptManager(val client: Any) {
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
+    var gameLoopI = 0
 
 
     fun setScript(s: AbstractScript) {
@@ -46,6 +47,15 @@ class ScriptManager(val client: Any) {
             }
         }
     }
+
+    fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
+        println("Message received Flags: $flags, name:$name, message:$message, prefix:$prefix")
+            if (this.script is ChatListener) {
+                val updatedPrefix  = prefix ?: ""
+                (this.script as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+            }
+    }
+
 
 
     fun start() {

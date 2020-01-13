@@ -32,6 +32,6 @@ class Run(val ctx: Context) {
 
     //1065 is activated, 1064 is not activated
     fun isRunActivated(): Boolean {
-        return ctx.widgets.find(PARENT, CHILD_RUN_ENERGY_NUMBER)?.getSpriteId2() == 1065
+        return ctx.vars.getVarp(173) == 1
     }
 }
