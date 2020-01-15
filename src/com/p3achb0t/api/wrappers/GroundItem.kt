@@ -5,6 +5,10 @@ import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
+import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
+import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point

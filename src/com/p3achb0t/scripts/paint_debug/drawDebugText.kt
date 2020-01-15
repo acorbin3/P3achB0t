@@ -1,8 +1,10 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
+import com.p3achb0t.api.wrappers.Stats
+import com.p3achb0t.api.wrappers.quests.Quest
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
@@ -25,15 +27,15 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
         try {
             if(ctx.client.getGameState() == 30) {
-//                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
-//                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
-//                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
-//                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
-//                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))
-//                debugText.add(DebugText("quick Prayer Enabled(4103): ${ctx.vars.getVarbit(4103)}"))
-//                debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
-//                debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
-//                debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
+                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
+                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
+                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
+                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
+                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))
+                debugText.add(DebugText("quick Prayer Enabled(4103): ${ctx.vars.getVarbit(4103)}"))
+                debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
+                debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
+                debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
                 debugText.add(
                         DebugText(
                                 "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
@@ -59,6 +61,16 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
                 debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
                 debugText.add(DebugText(ctx.menu.getHoverAction()))
+                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
+
+
+
+                var statsStr = ""
+                for(stat in Stats.Skill.values()){
+
+                    statsStr+= stat.name + ":" + ctx.stats.currentLevel(stat) + " "
+                }
+                debugText.add(DebugText(statsStr))
 //            debugText.add(DebugText())
             }
 

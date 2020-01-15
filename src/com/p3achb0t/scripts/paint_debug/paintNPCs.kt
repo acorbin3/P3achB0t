@@ -1,10 +1,10 @@
 package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t._runestar_interfaces.Npc
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.getActorTriangles
-import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.utils.getActorTriangles
+import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.NPC
 import java.awt.Color
 import java.awt.Graphics

@@ -5,7 +5,7 @@ import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t._runestar_interfaces.Tile
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.ObjectPositionInfo
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 
 class GroundItems(val ctx: Context) {
 

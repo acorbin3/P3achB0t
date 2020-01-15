@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import kotlinx.coroutines.delay
@@ -51,7 +51,7 @@ open class Actor(
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return if(ctx?.client != null)Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx!!) else Point(-1,-1)
+        return if(ctx?.client != null) Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx!!) else Point(-1,-1)
     }
 
     fun isIdle(): Boolean {

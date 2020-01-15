@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Point
 import kotlin.math.abs
