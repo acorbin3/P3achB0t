@@ -2,6 +2,7 @@ package com.p3achb0t.interfaces
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.listeners.ChatListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -24,6 +25,7 @@ class ScriptManager(val client: Any) {
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
+    var gameLoopI = 0
 
 
     fun setScript(s: AbstractScript) {
@@ -47,16 +49,13 @@ class ScriptManager(val client: Any) {
         }
     }
 
-    fun notifyMessage(){
-
+    fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
+            if (this.script is ChatListener) {
+                val updatedPrefix  = prefix ?: ""
+                (this.script as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+            }
     }
 
-    suspend fun gameLoop(){
-        if(this.script is ChatListener) {
-            (this.script as ChatListener).notifyMessage()
-        }
-
-    }
 
 
     fun start() {
