@@ -14,8 +14,8 @@ public class RuneScapeMouseMotionNature extends MouseMotionNature {
     public static final int TIME_TO_STEPS_DIVIDER = 8;
     public static final int MIN_STEPS = 10;
     public static final int EFFECT_FADE_STEPS = 15;
-    public static final int REACTION_TIME_BASE_MS = 20;
-    public static final int REACTION_TIME_VARIATION_MS = 120;
+    public static final int REACTION_TIME_BASE_MS = 15;
+    public static final int REACTION_TIME_VARIATION_MS = 80;
 
     public RuneScapeMouseMotionNature(Client client, Applet applet) {
         try {

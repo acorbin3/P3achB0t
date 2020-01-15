@@ -8,6 +8,7 @@ import com.p3achb0t.api.wrappers.tabs.Prayer
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.Task
 import kotlinx.coroutines.delay
+import java.util.*
 
 class Bank(val ctx: Context) : Task(ctx.client) {
     override suspend fun isValidToRun(): Boolean {
@@ -17,9 +18,10 @@ class Bank(val ctx: Context) : Task(ctx.client) {
 
     override suspend fun execute() {
         var cwBank = Tile(2442, 3083, 0 , ctx=ctx)
-        val duelingids = hashSetOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566)
-        val pendantids = hashSetOf(11194,11193,11192,11191,11190)
-        val antifires = hashSetOf(11951, 11953, 11955, 11957)
+        var duelingids = hashSetOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566).shuffled()
+        var pendantids = hashSetOf(11194,11193,11192,11191,11190).shuffled()
+        var antifires = hashSetOf(11951, 11953, 11955, 11957).shuffled()
+
         run teleportcw@{
         if(cwBank.distanceTo() > 25) {
             duelingids.forEach {
@@ -76,12 +78,12 @@ class Bank(val ctx: Context) : Task(ctx.client) {
                         ctx.bank.depositAll()
                     }
                     delay(500)
-                    ctx.bank.withdraw(2434, "Prayer potion(4)", 4)
+                    ctx.bank.withdraw(2434, "Prayer pot", 4)
                     delay(600)
                     run withdrawdueling@{
                         duelingids.forEach {
                             if(!ctx.inventory.Contains(it) && ctx.bank.getItemCount(it) > 0){
-                                ctx.bank.withdraw1(it, "Ring of dueling")
+                                ctx.bank.withdraw1(it, "Ring of duel")
                                 delay(600)
                             }
                             if(ctx.inventory.Contains(it)){
@@ -111,7 +113,7 @@ class Bank(val ctx: Context) : Task(ctx.client) {
                             }
                         }
                     }
-                    ctx.bank.withdraw1(23685, "Divine super combat")
+                    ctx.bank.withdraw1(23685, "Divine super")
                     delay(600)
                     ctx.bank.withdrawAll(385, "Shark")
                     delay(600)

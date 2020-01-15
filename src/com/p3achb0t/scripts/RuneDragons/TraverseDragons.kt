@@ -21,8 +21,11 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
         val prayerpots: IntArray = intArrayOf(143, 141, 139, 2434)
         val combatArea = Area(
                 Tile(1575, 5086, ctx = ctx),
-                Tile(1597, 5062, ctx = ctx)
-        )
+                Tile(1597, 5062, ctx = ctx),ctx=ctx)
+
+        val barrierArea = Area(
+                Tile(1569, 5077, ctx = ctx),
+                Tile(1571, 5071, ctx = ctx),ctx=ctx)
 
         var cwBank = Tile(2442, 3083, 0, ctx = ctx)
         val pendantids: IntArray = intArrayOf(11194, 11193, 11192, 11191, 11190)
@@ -88,14 +91,12 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                         })
                     }
                 }
-                if (Barrier.size > 0 && !combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
-                    if (BarrierTile.distanceTo() > 2) {
-                        BarrierTile.clickOnMiniMap()
-                        delay(Random.nextLong(1500, 2500))
-                        if (ctx.players.getLocal().getHealth() < 56) {
-                            ctx.inventory.getItem(385)?.click()
-                            delay(1500)
-                        }
+                if (Barrier.size > 0 && !combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
+                    barrierArea.getRandomTile().clickOnMiniMap()
+                    delay(Random.nextLong(1500, 2500))
+                    if (ctx.players.getLocal().getHealth() < 56) {
+                        ctx.inventory.getItem(385)?.click()
+                        delay(1500)
                         run prayerpots@{
                             if (ctx.players.getLocal().getPrayer() < 60) {
                                 prayerpots.forEach {
@@ -110,7 +111,9 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                             }
                         }
                     }
-                    if (BarrierTile.distanceTo() <= 4) {
+                }
+                    if (barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
+                        println("In barrier area")
                         if (ctx.players.getLocal().getHealth() < 56) {
                             ctx.inventory.getItem(385)?.click()
                             delay(1500)
@@ -124,7 +127,6 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                             Barrier[random].getGlobalLocation().click()
                         delay(Random.nextLong(1500, 2500))
                     }
-                }
 
             }
         }

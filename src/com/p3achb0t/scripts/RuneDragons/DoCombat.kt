@@ -1,6 +1,7 @@
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
+import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.tabs.Prayer
 import com.p3achb0t.scripts.RuneDragsMain
@@ -45,18 +46,19 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     ctx.inventory.getItem(it)?.click()
                     RuneDragsMain.Antifiretimer.reset()
                     RuneDragsMain.Antifiretimer.start()
+                    firsttrip = false
                 }
             }
-            delay(2000)
+            delay(1000)
         }
-        if (Utils.getElapsedSeconds(RuneDragsMain.Divinepottimer.time) > 300 || firsttrip) {
+        if (ctx.stats.level(Stats.Skill.STRENGTH) == ctx.stats.currentLevel(Stats.Skill.STRENGTH)) {
             divinecombats.forEach {
                 if (ctx.inventory.Contains(it)) {
                     println("using combats")
                     ctx.inventory.getItem(it)?.click()
                     RuneDragsMain.Divinepottimer.reset()
                     RuneDragsMain.Divinepottimer.start()
-                    firsttrip = false
+
                 }
             }
             delay(600)
@@ -95,11 +97,11 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 if (dragon.size > 0) {
                     println(dragon[0].distanceTo())
                     println("npc size > 0")
-                    if (dragon[0].distanceTo() >= 6) {
+                    if (dragon[0].distanceTo() >= 8) {
                         dragon[0].getGlobalLocation().clickOnMiniMap()
                         delay(400)
                     }
-                    if (dragon[0].distanceTo() <= 6) {
+                    if (dragon[0].distanceTo() <= 8) {
                         if (!dragon[0].isOnScreen()) {
                             println("turning to npc")
                             dragon[0].turnAngleTo()
@@ -126,11 +128,11 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 val dragon = ctx.npcs.getTargetted("Rune dragon")
                 println(dragon?.distanceTo())
                 if (dragon != null) {
-                    if (dragon.distanceTo() >= 6) {
+                    if (dragon.distanceTo() >= 8) {
                         dragon.getGlobalLocation().clickOnMiniMap()
                         delay(400)
                     }
-                    if (dragon.distanceTo() <= 6) {
+                    if (dragon.distanceTo() <= 8) {
                         if (!dragon.isOnScreen()) {
                             println("turning to npc")
                             dragon.turnAngleTo()
@@ -161,11 +163,11 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 }
                 if (!ctx.inventory.isFull()) {
                     try {
-                        if (it.distanceTo() > 4) {
+                        if (it.distanceTo() > 8) {
                             it.clickOnMiniMap()
                             delay(500)
                         }
-                        if (it.distanceTo() <= 4) {
+                        if (it.distanceTo() <= 8) {
                             it.take()
                         }
 

@@ -109,7 +109,7 @@ class RuneDragsMain : AbstractScript() {
                     Tile(1597, 5062, ctx = ctx), ctx = ctx
             )
             var cwBank = Tile(2442, 3083, 0 , ctx=ctx)
-            return !ctx.inventory.hasDueling() || (!ctx.inventory.Contains(385) && ctx.players.getLocal().getHealth() > 50) || (!ctx.inventory.hasPrayerPots() && ctx.players.getLocal().getPrayer() <= 1) ||
+            return !ctx.inventory.hasDivineCombats() && cwBank.distanceTo() < 30 || !ctx.inventory.hasDueling() || (!ctx.inventory.Contains(385) && ctx.players.getLocal().getHealth() > 50) || (!ctx.inventory.hasPrayerPots() && ctx.players.getLocal().getPrayer() <= 1) ||
                     (!ctx.inventory.hasPendant() && ctx.npcs.findNpc("Rune dragon").size == 0 && cwBank.distanceTo() < 30) || (!ctx.inventory.hasextendedAntiFire() && ctx.npcs.findNpc("Rune dragon").size == 0) ||
                     (cwBank.distanceTo() < 30 && (ctx.inventory.getCount(385) < 4 || ctx.inventory.getPrayerDoses() < 4) || (combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !canFightNext(ctx)))
         }

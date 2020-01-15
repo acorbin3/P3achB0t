@@ -5,6 +5,7 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.quests.Quest
+import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
@@ -36,6 +37,10 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
                 debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
                 debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
+                var chatText =
+                        ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                var text = chatText?.getText()
+                debugText.add(DebugText("Bank search Text: ${text}"))
                 debugText.add(
                         DebugText(
                                 "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
