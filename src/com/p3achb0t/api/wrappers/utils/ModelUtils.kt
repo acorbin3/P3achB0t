@@ -1,7 +1,8 @@
-package com.p3achb0t.api
+package com.p3achb0t.api.wrappers.utils
 
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*

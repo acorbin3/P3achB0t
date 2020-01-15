@@ -230,17 +230,17 @@ class WidgetID {
     }
 
     internal object Equipment {
-        const val HELMET = 6
-        const val CAPE = 7
-        const val AMULET = 8
-        const val WEAPON = 9
-        const val BODY = 10
-        const val SHIELD = 11
-        const val LEGS = 12
-        const val GLOVES = 13
-        const val BOOTS = 14
-        const val RING = 15
-        const val AMMO = 16
+        const val HELMET = 14
+        const val CAPE = 15
+        const val AMULET = 16
+        const val WEAPON = 17
+        const val BODY = 18
+        const val SHIELD = 19
+        const val LEGS = 20
+        const val GLOVES = 21
+        const val BOOTS = 22
+        const val RING = 23
+        const val AMMO = 24
         const val INVENTORY_ITEM_CONTAINER = 0
     }
 

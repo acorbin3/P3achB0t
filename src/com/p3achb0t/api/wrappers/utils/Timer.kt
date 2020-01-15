@@ -1,4 +1,4 @@
-package com.p3achb0t.api
+package com.p3achb0t.api.wrappers.utils
 
 
 class Timer(private var period: Long) {

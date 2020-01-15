@@ -13,13 +13,14 @@ fun groundItemsPaint(g: Graphics, ctx: Context) {
 
         groundItems.forEach {
 
-            if (it.isOnScreen()) {
+            if (it.isOnScreen() && it.stackSize > 0) {
 
                 val namePoint = it.getNamePoint()
 //                g.drawString(it.id.toString(), namePoint.x, namePoint.y)
                 g.color = Color.GREEN
+                val name = ctx.cache.getItemName(it.id)
                 g.drawString(
-                        "------${it.id} ${it.stackSize} ${it.position}",
+                        "$name(${it.id}) ${it.stackSize}",
                         namePoint.x,
                         namePoint.y
                 )

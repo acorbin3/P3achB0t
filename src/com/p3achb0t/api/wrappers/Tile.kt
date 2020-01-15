@@ -1,9 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.Calculations.Companion.LOCAL_HALF_TILE_SIZE
-import com.p3achb0t.api.Calculations.Companion.getCanvasTileAreaPoly
-import com.p3achb0t.api.Constants
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations.Companion.LOCAL_HALF_TILE_SIZE
+import com.p3achb0t.api.wrappers.utils.Calculations.Companion.getCanvasTileAreaPoly
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.Context

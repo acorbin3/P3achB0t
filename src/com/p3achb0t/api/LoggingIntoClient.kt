@@ -2,6 +2,7 @@ package com.p3achb0t.api
 
 import com.p3achb0t.UserDetails
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.GlobalScope

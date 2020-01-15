@@ -1,7 +1,8 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.quests
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.VarPlayer;
-import com.p3achb0t.api.wrappers.Varbits;
+import com.p3achb0t.api.wrappers.VarPlayer
+import com.p3achb0t.api.wrappers.Varbits
+
 enum class Quest {
     //Free Quests
     BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress", VarPlayer.QUEST_BLACK_KNIGHTS_FORTRESS),
@@ -182,14 +183,14 @@ enum class Quest {
         this.varPlayer = varPlayer
     }
 
-//    fun getState(client: Client): QuestState {
-//        client.runScript(ScriptID.QUESTLIST_PROGRESS, id)
-//        return when (client.getIntStack().get(0)) {
-//            2 -> QuestState.FINISHED
-//            1 -> QuestState.NOT_STARTED
-//            else -> QuestState.IN_PROGRESS
-//        }
-//    }
+    fun getState(ctx: Context): QuestState {
+        return when (this.getVar(ctx)) {
+            2 -> QuestState.FINISHED
+            1 -> QuestState.IN_PROGRESS
+            0 -> QuestState.NOT_STARTED
+			else-> QuestState.NOT_STARTED
+        }
+    }
 
     fun getVar(ctx: Context): Int {
         return if (varbit != null) {

@@ -1,6 +1,8 @@
-package com.p3achb0t.api
+package com.p3achb0t.api.wrappers.utils
 
+import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Constants.TILE_FLAG_BRIDGE
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.tabs.Tabs

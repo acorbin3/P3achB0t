@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts
 
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import java.awt.Graphics
 
 class MouseIntercept : AbstractScript() {

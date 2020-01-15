@@ -3,10 +3,10 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.ObjectPositionInfo
-import com.p3achb0t.api.getConvexHullFromModel
-import com.p3achb0t.api.getTrianglesFromModel
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
+import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
+import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import com.p3achb0t.scripts.paint_debug.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -42,14 +42,14 @@ class GameObject(
         get() {
             return when {
                 sceneryObject != null -> ObjectPositionInfo(
-                    sceneryObject.getCenterX(),
-                    sceneryObject.getCenterY(),
-                    sceneryObject.getOrientation()
+                        sceneryObject.getCenterX(),
+                        sceneryObject.getCenterY(),
+                        sceneryObject.getOrientation()
                 )
                 wallObject != null -> ObjectPositionInfo(
-                    wallObject.getX(),
-                    wallObject.getY(),
-                    wallObject.getOrientationA()
+                        wallObject.getX(),
+                        wallObject.getY(),
+                        wallObject.getOrientationA()
                 )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
@@ -140,7 +140,7 @@ class GameObject(
                 objectPositionInfo
 
             val modelTriangles =
-                getTrianglesFromModel(positionInfo, model!!,ctx!! )
+                    getTrianglesFromModel(positionInfo, model!!, ctx!!)
 
             modelTriangles
         } else {
@@ -152,8 +152,8 @@ class GameObject(
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model,ctx!! )
-            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model,ctx!!)
+            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model, ctx!!)
+            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model, ctx!!)
             else -> Polygon()
         }
     }
