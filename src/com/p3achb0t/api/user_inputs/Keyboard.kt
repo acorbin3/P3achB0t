@@ -90,6 +90,17 @@ class Keyboard(val obj: Any) {
         keyboard.sendEvent(down)
     }
 
+    fun pressBackspace(keyCode: Int) {
+        val backspace = KeyEvent(
+                component,
+                KeyEvent.VK_BACK_SPACE,
+                System.currentTimeMillis(),
+                0,
+                keyCode, keyCode.toChar()
+        )
+        keyboard.sendEvent(backspace)
+    }
+
     fun release(keyCode: Int) {
         val up = KeyEvent(
                 component,
