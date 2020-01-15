@@ -216,6 +216,37 @@ class Analyser{
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
 
+//Inject addMessage
+            if (clazzData.`class` == "ChatChannel") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "addMessage" }
+                println("MethodHook: $methodHook")
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                val returnType = "L$classPath/$clazzName;"
+                println("Return type $returnType")
+
+                //Find the addMessage method, then inject the call back at the front
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
+                    println("Looking at method: ${methodNode.name}")
+                    if (methodNode.name == methodHook.name && methodNode.desc.contains("ILjava/lang/String;Ljava/lang/String;Ljava/lang/String")) {
+                        println("methodNode.desc: ${methodNode.desc}")
+                        println("Time to insert instructions")
+                        val il = InsnList()
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                        il.add(VarInsnNode(ILOAD, 1))
+                        il.add(VarInsnNode(ALOAD, 2))
+                        il.add(VarInsnNode(ALOAD, 3))
+                        il.add(VarInsnNode(ALOAD, 4))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "notifyMessage", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"))
+                        methodNode.instructions.insert(il)
+
+                    }
+                }
+            }
+
 //            println("Methods:~~~~~~")
 //            addInvokeMethods(clazzData, runeStar, classPath, classes)
 

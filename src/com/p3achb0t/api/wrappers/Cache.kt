@@ -23,6 +23,7 @@ class Cache {
         //There are some cases where the Context will initialize the Cache a few times, we only need to update the cache 1 time
         var cacheUpdated: Boolean = false
         lateinit var npcCacheInfo: Map<Int,NPCCacheType>
+        lateinit var itemCacheInfo: Map<Int,ItemCacheType>
     }
     init {
         // Update Cache
@@ -40,8 +41,24 @@ class Cache {
                 e.printStackTrace()
             }
             npcCacheInfo = getNPCInfo()
+            itemCacheInfo = getItemInfo()
         }
     }
+
+    fun getItemName(id: Int): String{
+        return itemCacheInfo[id]?.name ?: ""
+    }
+    fun getItemID(name: String): IntArray{
+        //Find all items with the same name. Return
+        val returnedItems = itemCacheInfo.filter { name == name }
+        return if(returnedItems.size > 0){
+            returnedItems.keys.toIntArray()
+        }else{
+            intArrayOf(-1)
+        }
+
+    }
+
 
     fun getVarbitInfo(): ArrayList<VarbitData>{
         val varBitDataList = ArrayList<VarbitData>()
@@ -64,7 +81,7 @@ class Cache {
     }
 
     data class NPCCacheType(val id: Int, val name: String, val modelIDs: IntArray)
-    fun getNPCInfo(): Map<Int,NPCCacheType>{
+    private fun getNPCInfo(): Map<Int,NPCCacheType>{
         val npcCacheInfo = HashMap<Int,NPCCacheType>()
 
         try {
@@ -92,18 +109,23 @@ class Cache {
         return npcCacheInfo
     }
 
-    fun getGroundItemModels(){
+    data class ItemCacheType(val id: Int, val name: String, val modelID: Int)
+    private fun getItemInfo():  Map<Int,ItemCacheType>{
+        val LitemCacheInfo = HashMap<Int,ItemCacheType>()
         try {
+
             DiskCache.open(Path.of(cachePath)).use { disk ->
                 val cache = MemCache.of(disk)
                 for (file in cache.archive(ConfigType.ARCHIVE).group(ObjType.GROUP).files()) {
                     val obj = ObjType()
                     obj.decode(file.data())
-                    println("Model id:  ${file.id()} model#:${obj.model} name: ${obj.name}")
+//                    println("Item id:  ${file.id()} model#:${obj.model} name: ${obj.name}")
+                    LitemCacheInfo[file.id()] = ItemCacheType(file.id(),obj.name, obj.model)
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        return LitemCacheInfo
     }
 }

@@ -65,7 +65,6 @@ class Context(val obj: Any) {
         widgets = Widgets(this)
         vars = Vars(this)
         cache = Cache()
-        cache.getNPCInfo()
         run = Run(this)
         stats = Stats(this)
     }
