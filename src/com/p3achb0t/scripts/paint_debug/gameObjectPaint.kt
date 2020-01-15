@@ -6,6 +6,10 @@ import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t.api.*
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
+import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
+import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import java.awt.Color
 import java.awt.Graphics
 
@@ -57,19 +61,19 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                             }
                                             if (model is Model) {
                                                 val positionInfo =
-                                                    ObjectPositionInfo(
-                                                        it.getCenterX(),
-                                                        it.getCenterY(),
-                                                        it.getOrientation()
-                                                    )
+                                                        ObjectPositionInfo(
+                                                                it.getCenterX(),
+                                                                it.getCenterY(),
+                                                                it.getOrientation()
+                                                        )
 
                                                 val modelTriangles =
-                                                    getTrianglesFromModel(
-                                                            positionInfo,
-                                                            model,
-                                                            ctx
+                                                        getTrianglesFromModel(
+                                                                positionInfo,
+                                                                model,
+                                                                ctx
 
-                                                    )
+                                                        )
                                                 g.color = Color.RED
                                                 modelTriangles.forEach {
                                                     g.drawPolygon(it)
@@ -145,19 +149,19 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                 val model = wall.getEntity1()
                                 if (model is Model) {
                                     val positionInfo =
-                                        ObjectPositionInfo(
-                                            wall.getX(),
-                                            wall.getY(),
-                                            wall.getOrientationA()
-                                        )
+                                            ObjectPositionInfo(
+                                                    wall.getX(),
+                                                    wall.getY(),
+                                                    wall.getOrientationA()
+                                            )
 
                                     val modelTriangles =
-                                        getTrianglesFromModel(
-                                                positionInfo,
-                                                model,
-                                                ctx
+                                            getTrianglesFromModel(
+                                                    positionInfo,
+                                                    model,
+                                                    ctx
 
-                                        )
+                                            )
                                     g.color = Color.RED
                                     modelTriangles.forEach {
                                         g.drawPolygon(it)

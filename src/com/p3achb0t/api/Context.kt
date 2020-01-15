@@ -6,6 +6,7 @@ import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.applet.Applet
@@ -40,6 +41,7 @@ class Context(val obj: Any) {
     val cache: Cache
     val run: Run
     val stats: Stats
+    val questData: QuestData
 
     init {
         client = obj as Client
@@ -67,6 +69,7 @@ class Context(val obj: Any) {
         cache = Cache()
         run = Run(this)
         stats = Stats(this)
+        questData = QuestData(this)
     }
 }
 

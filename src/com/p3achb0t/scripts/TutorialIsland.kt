@@ -6,6 +6,8 @@ import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay

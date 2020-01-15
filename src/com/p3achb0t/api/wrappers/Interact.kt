@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay

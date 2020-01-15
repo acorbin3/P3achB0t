@@ -2,6 +2,7 @@ package com.p3achb0t.api.user_inputs
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.utils.Timer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
@@ -120,7 +121,7 @@ class Camera(val ctx: Context) {
             CoroutineScope(IO).launch {
                 ctx.keyboard.pressDownKey(KeyEvent.VK_UP)
             }
-                val t = com.p3achb0t.api.Timer(5000)
+                val t = Timer(5000)
 
             while (_pitch < pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
@@ -134,7 +135,7 @@ class Camera(val ctx: Context) {
             CoroutineScope(IO).launch {
                 ctx.keyboard.pressDownKey(KeyEvent.VK_DOWN)
             }
-            val t = com.p3achb0t.api.Timer(5000)
+            val t = Timer(5000)
 
             while (_pitch > pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch

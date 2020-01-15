@@ -1,7 +1,6 @@
-package com.p3achb0t.api
+package com.p3achb0t.api.wrappers.utils
 
 import kotlinx.coroutines.delay
-import org.apache.commons.lang.math.NumberUtils.toInt
 import java.awt.Point
 import java.awt.Polygon
 import java.util.regex.Pattern

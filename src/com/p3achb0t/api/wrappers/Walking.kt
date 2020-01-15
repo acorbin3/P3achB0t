@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 
 //Interesting website that can create paths: https://explv.github.io/

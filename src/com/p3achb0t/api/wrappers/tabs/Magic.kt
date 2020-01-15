@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay

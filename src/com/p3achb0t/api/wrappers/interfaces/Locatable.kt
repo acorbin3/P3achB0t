@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
 import java.awt.Color

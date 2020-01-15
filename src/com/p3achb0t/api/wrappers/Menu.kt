@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random

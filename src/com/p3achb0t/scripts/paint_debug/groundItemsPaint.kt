@@ -24,7 +24,6 @@ fun groundItemsPaint(g: Graphics, ctx: Context) {
                         namePoint.x,
                         namePoint.y
                 )
-                println("$name(${it.id}) ${it.stackSize}")
 
 
                 val triangles = it.getTriangles()
