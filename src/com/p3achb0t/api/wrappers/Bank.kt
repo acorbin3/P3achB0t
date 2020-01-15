@@ -9,6 +9,8 @@ import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Rectangle
+import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random
 
 class Bank(val ctx: Context) {
@@ -142,9 +144,11 @@ class Bank(val ctx: Context) {
                             delay(300)
                         } else {
                             //TODO- scroll to item
-                            println("Searching for item ")
-                            searchForItem(id, name)
-                            delay(600)
+                            println("Searching for item " + name)
+                            if(!itemVisible(it.area)) {
+                                searchForItem(id, name)
+                                delay(600)
+                            }
                             items = getAll()
                             items.forEach {
                                 if (it.id == id) {
@@ -283,10 +287,13 @@ class Bank(val ctx: Context) {
             if (it.id == id) {
                 if (!itemVisible(it.area)) {
                     var chatText =
-                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                            ctx.widgets.find(12, 4)
                     var text = chatText?.getText()
-                    if(!text.equals("*") && !text.equals("$name*")){
+                    println(text)
+                    println(text?.length)
+                    if(text.equals("The Bank of Gielinor")){
                         searchWidget.click()
+                        delay(Random.nextLong(100, 350))
                     }
                   delay(600)
                     chatText =
@@ -297,6 +304,15 @@ class Bank(val ctx: Context) {
                         ctx.keyboard.sendKeys(name)
                     }
                     delay(200)
+                       while (!text.equals("*")) {
+                            delay(Random.nextLong(25, 75))
+                            ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                           text = chatText?.getText()
+                           if(text.equals("*")) {
+                               break
+                           }
+                        }
+
                 }
                 }
             }
@@ -347,7 +363,7 @@ class Bank(val ctx: Context) {
     }
 
     fun getBankWidget(): Component? {
-        return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+        return ctx.widgets.find(12,12)
     }
 
     fun getSize(): Int {
