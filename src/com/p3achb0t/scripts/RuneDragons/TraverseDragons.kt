@@ -3,8 +3,10 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.tabs.Prayer
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.Task
+import doCombat.Companion.firsttrip
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -82,14 +84,15 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                     if (Door[0].distanceTo() <= 15) {
                         if (!Door[0].isOnScreen())
                             Door[0].turnAngleTo()
-                        if (Door[0].isOnScreen())
+                        if (Door[0].isOnScreen()) {
                             Door[0].click()
-                        Utils.waitFor(5, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return Barrier.size > 0
-                            }
-                        })
+                            Utils.waitFor(5, object : Utils.Condition {
+                                override suspend fun accept(): Boolean {
+                                    delay(100)
+                                    return Barrier.size > 0
+                                }
+                            })
+                        }
                     }
                 }
                 if (!combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
@@ -121,10 +124,22 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                         }
                     })
                     Barrier = ctx.gameObjects.find("Barrier", sortByDistance = true)
-                    Barrier[0]
 
                 }
                     if (barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
+                        var extendedantifires = hashSetOf(22209, 22212, 22215).shuffled()
+                        if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 355 || firsttrip) {
+                            extendedantifires.forEach {
+                                if (ctx.inventory.Contains(it)) {
+                                    println("using antifire")
+                                    ctx.inventory.getItem(it)?.click()
+                                    RuneDragsMain.Antifiretimer.reset()
+                                    RuneDragsMain.Antifiretimer.start()
+                                    firsttrip = false
+                                }
+                            }
+                            delay(1300)
+                        }
                         println("In barrier area")
                         if (ctx.players.getLocal().getHealth() < 56) {
                             ctx.inventory.getItem(385)?.click()
@@ -133,7 +148,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                         val random = Random.nextInt(0, 5)
                         if (!Barrier[random].getGlobalLocation().isOnScreen())
                             Barrier[random].turnAngleTo()
-                        Utils.waitFor(5, object : Utils.Condition {
+                        Utils.waitFor(3, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
                                 delay(100)
                                 return Barrier[random].getGlobalLocation().isOnScreen()
@@ -141,7 +156,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                         })
                         if (Barrier[random].getGlobalLocation().isOnScreen())
                             Barrier[random].getGlobalLocation().click()
-                        Utils.waitFor(5, object : Utils.Condition {
+                        Utils.waitFor(3, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
                                 delay(100)
                                 return combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())

@@ -21,7 +21,8 @@ class Bank(val ctx: Context) : Task(ctx.client) {
         var duelingids = hashSetOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566).shuffled()
         var pendantids = hashSetOf(11194,11193,11192,11191,11190).shuffled()
         var antifires = hashSetOf(11951, 11953, 11955, 11957).shuffled()
-        var supercombats = hashSetOf(23688, 23691, 23686).shuffled()
+        var extendedantifires = hashSetOf(22209, 22212, 22215).shuffled()
+        var supercombats = hashSetOf(23688, 23691, 23685).shuffled()
 
         run teleportcw@{
         if(cwBank.distanceTo() > 25) {
@@ -103,14 +104,25 @@ class Bank(val ctx: Context) : Task(ctx.client) {
                             }
                         }
                     }
-                    run withdrawantifire@{
-                        antifires.forEach {
+//                    run withdrawantifire@{
+//                        antifires.forEach {
+//                            if(!ctx.inventory.Contains(it) && ctx.bank.getItemCount(it) > 0){
+//                                ctx.bank.withdraw1(it, "antifire")
+//                                delay(600)
+//                            }
+//                            if(ctx.inventory.Contains(it)){
+//                                return@withdrawantifire
+//                            }
+//                        }
+//                    }
+                    run extendedantifires@{
+                        extendedantifires.forEach {
                             if(!ctx.inventory.Contains(it) && ctx.bank.getItemCount(it) > 0){
-                                ctx.bank.withdraw1(it, "antifire")
+                                ctx.bank.withdraw1(it, "extended")
                                 delay(600)
                             }
                             if(ctx.inventory.Contains(it)){
-                                return@withdrawantifire
+                                return@extendedantifires
                             }
                         }
                     }

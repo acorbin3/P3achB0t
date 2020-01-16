@@ -115,11 +115,11 @@ class RuneDragsMain : AbstractScript() {
             )
             var cwBank = Tile(2442, 3083, 0 , ctx=ctx)
             return !ctx.inventory.hasDivineCombats() && cwBank.distanceTo() < 30 || !ctx.inventory.hasDueling() || (!ctx.inventory.Contains(385) && ctx.players.getLocal().getHealth() > 50) || (!ctx.inventory.hasPrayerPots() && ctx.players.getLocal().getPrayer() <= 1) ||
-                    (!ctx.inventory.hasPendant() && ctx.npcs.findNpc("Rune dragon").size == 0 && cwBank.distanceTo() < 30) || (!ctx.inventory.hasextendedAntiFire() && ctx.npcs.findNpc("Rune dragon").size == 0) ||
-                    (cwBank.distanceTo() < 30 && (ctx.inventory.getCount(385) < 4 || ctx.inventory.getPrayerDoses() < 4) || (combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !canFightNext(ctx)))
+                    (!ctx.inventory.hasPendant() && ctx.npcs.findNpc("Rune dragon").size == 0 && cwBank.distanceTo() < 30) || (!ctx.inventory.hasextendedSuperAntiFire() && ctx.npcs.findNpc("Rune dragon").size == 0) ||
+                    (cwBank.distanceTo() < 30 && (ctx.inventory.getCount(385) < 2 || ctx.inventory.getPrayerDoses() < 1) || (combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !canFightNext(ctx)))
         }
         fun canFightNext(ctx: Context): Boolean {
-            return ctx.npcs.findNpc("Rune dragon").size > 0 && ctx.inventory.getCount(385) > 3 && ctx.inventory.getPrayerDoses() > 2
+            return ctx.npcs.findNpc("Rune dragon").size > 0 && ctx.inventory.getCount(385) > 3 && ctx.inventory.getPrayerDoses() > 1
         }
     }
 

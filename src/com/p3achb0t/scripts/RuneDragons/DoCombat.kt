@@ -14,6 +14,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
     companion object {
         var prayer = 60
+        var firsttrip = true
 
     }
 
@@ -25,8 +26,9 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
         return !RuneDragsMain.shouldBank(ctx) && combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && RuneDragsMain.canFightNext(ctx)
     }
 
-    var firsttrip = true
+
     override suspend fun execute() {
+
         if(!ctx.players.getLocal().isIdle()){
             RuneDragsMain.IdleTimer.reset()
             RuneDragsMain.IdleTimer.start()
@@ -48,14 +50,15 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
         val antifires = hashSetOf(11951, 11953, 11955, 11957)
         val divinecombats = hashSetOf(23685, 23688, 23691, 23694)
         val prayerpots: IntArray = intArrayOf(143, 141, 139, 2434)
+        var extendedantifires = hashSetOf(22209, 22212, 22215).shuffled()
         if (!ctx.prayer.isProtectMageActive()) {
             ctx.prayer.activate(Prayer.Companion.PrayerKind.PROTECT_FROM_MAGIC)
         }
         if (!ctx.prayer.isPietyActive()) {
             ctx.prayer.activate(Prayer.Companion.PrayerKind.PIETY)
         }
-        if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 720 || firsttrip) {
-            antifires.forEach {
+        if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 355 || firsttrip) {
+            extendedantifires.forEach {
                 if (ctx.inventory.Contains(it)) {
                     println("using antifire")
                     ctx.inventory.getItem(it)?.click()
@@ -87,7 +90,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 prayerpots.forEach {
                     if (ctx.inventory.Contains(it)) {
                         ctx.inventory.getItem(it)?.click()
-                        delay(600)
+                        delay(1000)
                     }
                     if (ctx.players.getLocal().getPrayer() >= 60) {
                         prayer = Random.nextInt(22, 65)
