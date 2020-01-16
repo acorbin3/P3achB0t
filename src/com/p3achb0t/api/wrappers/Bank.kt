@@ -322,12 +322,12 @@ class Bank(val ctx: Context) {
 
     suspend fun searchForItem(id: Int, name: String) {
         val items = getAll()
-        val searchWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SEARCH_BUTTON_BACKGROUND), ctx = ctx)
+        val searchWidget = WidgetItem(ctx.widgets.find(12, 38), ctx = ctx)
         items.forEach {
                 if (it.id == id) {
                     if (!itemVisible(it.area)) {
                         var chatText =
-                                ctx.widgets.find(12, 4)
+                                ctx.widgets.find(12, 3)
                         var text = chatText?.getText()
                         if (text.equals("The Bank of Gielinor")) {
                             searchWidget.click()
