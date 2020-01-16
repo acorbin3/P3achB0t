@@ -1,3 +1,4 @@
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
@@ -25,7 +26,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
 
         val barrierArea = Area(
                 Tile(1569, 5077, ctx = ctx),
-                Tile(1571, 5071, ctx = ctx),ctx=ctx)
+                Tile(1573, 5071, ctx = ctx),ctx=ctx)
 
         var cwBank = Tile(2442, 3083, 0, ctx = ctx)
         val pendantids: IntArray = intArrayOf(11194, 11193, 11192, 11191, 11190)
@@ -66,8 +67,8 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                 val secondTile = Tile(3549, 10466, ctx.players.getLocal().player.getPlane(), ctx)
                 val Stairs = ctx.gameObjects.find("Staircase", sortByDistance = true)
                 val Door = ctx.gameObjects.find("Broken Grandiose Doors", sortByDistance = true)
-                val Barrier = ctx.gameObjects.find("Barrier", sortByDistance = true)
                 val BarrierTile = Tile(1573, 5076, ctx.players.getLocal().player.getPlane(), ctx)
+                var Barrier = ctx.gameObjects.find("Barrier", sortByDistance = true)
                 if (secondTile.distanceTo() <= 4) {
                     if (Stairs.size > 0) {
                         if (!Stairs[0].isOnScreen())
@@ -80,7 +81,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                 if (Door.size > 0 && Barrier.size < 1) {
                     if (Door[0].distanceTo() <= 15) {
                         if (!Door[0].isOnScreen())
-                            Door[0].turnTo()
+                            Door[0].turnAngleTo()
                         if (Door[0].isOnScreen())
                             Door[0].click()
                         Utils.waitFor(5, object : Utils.Condition {
@@ -91,26 +92,37 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                         })
                     }
                 }
-                if (Barrier.size > 0 && !combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
+                if (!combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
+                    if (ctx.camera.pitch < 60) {
+                        ctx.camera.setHighPitch()
+                    }
                     barrierArea.getRandomTile().clickOnMiniMap()
-                    delay(Random.nextLong(1500, 2500))
-                    if (ctx.players.getLocal().getHealth() < 56) {
-                        ctx.inventory.getItem(385)?.click()
-                        delay(1500)
-                        run prayerpots@{
-                            if (ctx.players.getLocal().getPrayer() < 60) {
-                                prayerpots.forEach {
-                                    if (ctx.inventory.Contains(it)) {
-                                        ctx.inventory.getItem(it)?.click()
-                                        delay(500)
-                                    }
-                                    if (ctx.players.getLocal().getPrayer() >= 60) {
-                                        return@prayerpots
+                    Utils.waitFor(5, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            if (ctx.players.getLocal().getHealth() < 56) {
+                                ctx.inventory.getItem(385)?.click()
+                                delay(1500)
+                                run prayerpots@{
+                                    if (ctx.players.getLocal().getPrayer() < 60) {
+                                        prayerpots.forEach {
+                                            if (ctx.inventory.Contains(it)) {
+                                                ctx.inventory.getItem(it)?.click()
+                                                delay(500)
+                                            }
+                                            if (ctx.players.getLocal().getPrayer() >= 60) {
+                                                return@prayerpots
+                                            }
+                                        }
                                     }
                                 }
                             }
+                            delay(100)
+                            return barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())
                         }
-                    }
+                    })
+                    Barrier = ctx.gameObjects.find("Barrier", sortByDistance = true)
+                    Barrier[0]
+
                 }
                     if (barrierArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
                         println("In barrier area")
@@ -118,14 +130,23 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                             ctx.inventory.getItem(385)?.click()
                             delay(1500)
                         }
-                        ctx.camera.turnEast()
-                        ctx.camera.setPitch(20)
                         val random = Random.nextInt(0, 5)
                         if (!Barrier[random].getGlobalLocation().isOnScreen())
-                            Barrier[random].turnTo()
+                            Barrier[random].turnAngleTo()
+                        Utils.waitFor(5, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                delay(100)
+                                return Barrier[random].getGlobalLocation().isOnScreen()
+                            }
+                        })
                         if (Barrier[random].getGlobalLocation().isOnScreen())
                             Barrier[random].getGlobalLocation().click()
-                        delay(Random.nextLong(1500, 2500))
+                        Utils.waitFor(5, object : Utils.Condition {
+                            override suspend fun accept(): Boolean {
+                                delay(100)
+                                return combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())
+                            }
+                        })
                     }
 
             }

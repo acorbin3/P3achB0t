@@ -21,6 +21,7 @@ class Bank(val ctx: Context) : Task(ctx.client) {
         var duelingids = hashSetOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566).shuffled()
         var pendantids = hashSetOf(11194,11193,11192,11191,11190).shuffled()
         var antifires = hashSetOf(11951, 11953, 11955, 11957).shuffled()
+        var supercombats = hashSetOf(23688, 23691, 23686).shuffled()
 
         run teleportcw@{
         if(cwBank.distanceTo() > 25) {
@@ -113,8 +114,17 @@ class Bank(val ctx: Context) : Task(ctx.client) {
                             }
                         }
                     }
-                    ctx.bank.withdraw1(23685, "Divine super")
-                    delay(600)
+                    run withdrawsupercombats@{
+                        supercombats.forEach {
+                            if(!ctx.inventory.Contains(it) && ctx.bank.getItemCount(it) > 0){
+                                ctx.bank.withdraw1(it, "divine super")
+                                delay(600)
+                            }
+                            if(ctx.inventory.Contains(it)){
+                                return@withdrawsupercombats
+                            }
+                        }
+                    }
                     ctx.bank.withdrawAll(385, "Shark")
                     delay(600)
                 }

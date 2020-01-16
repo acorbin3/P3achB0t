@@ -7,6 +7,7 @@ import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.wrappers.Actor
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.widgets.Widget
@@ -43,6 +44,7 @@ class RuneDragsMain : AbstractScript() {
             stopwatch.start()
             Antifiretimer.start()
             Divinepottimer.start()
+            IdleTimer.start()
         } catch (e: Exception) {
         }
         println("Running Start")
@@ -58,6 +60,7 @@ class RuneDragsMain : AbstractScript() {
         stopwatch.reset()
         Antifiretimer.reset()
         Divinepottimer.reset()
+        IdleTimer.reset()
     }
 
     override fun draw(g: Graphics) {
@@ -77,6 +80,7 @@ class RuneDragsMain : AbstractScript() {
     }
 
     suspend fun run() {
+
         if (ctx.widgets.isWidgetAvaliable(413, 77)) {
             val welcomeScreen = WidgetItem(ctx.widgets.find(413, 77), ctx = ctx)
             welcomeScreen.click()
@@ -103,6 +107,7 @@ class RuneDragsMain : AbstractScript() {
     companion object {
         var Antifiretimer = StopWatch()
         var Divinepottimer = StopWatch()
+        var IdleTimer = StopWatch()
         fun shouldBank(ctx: Context): Boolean {
             val combatArea = Area(
                     Tile(1575, 5086, ctx = ctx),

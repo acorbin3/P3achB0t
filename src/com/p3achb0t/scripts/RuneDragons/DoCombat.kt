@@ -7,9 +7,16 @@ import com.p3achb0t.api.wrappers.tabs.Prayer
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.Task
 import kotlinx.coroutines.delay
+import org.apache.commons.lang.time.StopWatch
 import kotlin.random.Random
 
 class doCombat(val ctx: Context) : Task(ctx.client) {
+
+    companion object {
+        var prayer = 60
+
+    }
+
     override suspend fun isValidToRun(): Boolean {
         val combatArea = Area(
                 Tile(1575, 5086, ctx = ctx),
@@ -20,9 +27,17 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
     var firsttrip = true
     override suspend fun execute() {
+        if(!ctx.players.getLocal().isIdle()){
+            RuneDragsMain.IdleTimer.reset()
+            RuneDragsMain.IdleTimer.start()
+        }
+
+        if (ctx.camera.pitch < 60) {
+            ctx.camera.setHighPitch()
+        }
         val center = Tile(1588, 5075, ctx = ctx)
         val loot: IntArray = intArrayOf(1432, 2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
-                21930, 995, 21918, 22103, 11286, 1333, 536)
+                21930, 995, 21918, 22103, 11286, 1333)
         val groundloot = ctx.groundItems.getItempred(loot)
         val combatArea = Area(
                 Tile(1575, 5086, ctx = ctx),
@@ -49,7 +64,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     firsttrip = false
                 }
             }
-            delay(1000)
+            delay(1300)
         }
         if (ctx.stats.level(Stats.Skill.STRENGTH) == ctx.stats.currentLevel(Stats.Skill.STRENGTH)) {
             divinecombats.forEach {
@@ -61,20 +76,21 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
                 }
             }
-            delay(600)
+            delay(1250)
         }
         if (ctx.players.getLocal().getHealth() < 56) {
             ctx.inventory.getItem(385)?.click()
-            delay(1500)
+            delay(600)
         }
         run prayerpots@{
-            if (ctx.players.getLocal().getPrayer() < 60) {
+            if (ctx.players.getLocal().getPrayer() < prayer) {
                 prayerpots.forEach {
                     if (ctx.inventory.Contains(it)) {
                         ctx.inventory.getItem(it)?.click()
-                        delay(500)
+                        delay(600)
                     }
                     if (ctx.players.getLocal().getPrayer() >= 60) {
+                        prayer = Random.nextInt(22, 65)
                         return@prayerpots
                     }
                 }
@@ -87,7 +103,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 delay(Random.nextLong(1500, 2500))
             }
         }
-        if (groundloot.isEmpty()) {
+        if (groundloot.isEmpty() && Utils.getElapsedSeconds(RuneDragsMain.IdleTimer.time) > 5) {
             if (ctx.players.getLocal().player.getTargetIndex() == -1 && !ctx.npcs.isTargetted()) {
                 println("Getting new target")
                 if (ctx.camera.pitch < 60) {
@@ -159,16 +175,23 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 println("item found " + it.id)
                 if (ctx.inventory.isFull()) {
                     ctx.inventory.getItem(385)?.click()
-                    delay(400)
+                    delay(666)
                 }
                 if (!ctx.inventory.isFull()) {
                     try {
-                        if (it.distanceTo() > 8) {
+                        if (it.distanceTo() > 9) {
                             it.clickOnMiniMap()
                             delay(500)
                         }
-                        if (it.distanceTo() <= 8) {
-                            it.take()
+                        if (it.distanceTo() <= 9) {
+                            if(!it.isOnScreen()) {
+                                it.turnAngleTo()
+                                delay(Random.nextLong(50, 666))
+                            }
+                            if(it.isOnScreen()) {
+                                it.take()
+                                delay(Random.nextLong(50, 666))
+                            }
                         }
 
 

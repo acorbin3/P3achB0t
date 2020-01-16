@@ -28,19 +28,20 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
         try {
             if(ctx.client.getGameState() == 30) {
-                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
-                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
-                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
-                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
-                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))
-                debugText.add(DebugText("quick Prayer Enabled(4103): ${ctx.vars.getVarbit(4103)}"))
-                debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
-                debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
-                debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
+//                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
+//                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
+//                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
+//                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
+//                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))
+//                debugText.add(DebugText("quick Prayer Enabled(4103): ${ctx.vars.getVarbit(4103)}"))
+//                debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
+//                debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
+//                debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
                 var chatText =
                         ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                 var text = chatText?.getText()
                 debugText.add(DebugText("Bank search Text: ${text}"))
+                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(RuneDragsMain.IdleTimer.time)}"))
                 debugText.add(
                         DebugText(
                                 "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
