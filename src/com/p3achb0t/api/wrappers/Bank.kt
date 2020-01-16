@@ -134,11 +134,11 @@ class Bank(val ctx: Context) {
                 ctx.keyboard.pressDownKey(VK_BACK_SPACE)
                 text = chatText?.getText()
                 if (text.equals("*") || text.equals("4*")) {
-                    delay(Random.nextLong(555, 1255))
+                    delay(Random.nextLong(250, 550))
                     break
                 }
             }
-            delay(Random.nextLong(555, 1255))
+            delay(Random.nextLong(250, 550))
             var items = getAll()
             if (ctx.vars.getVarp(1666) != 0) {
                 if (ctx.widgets.isWidgetAvaliable(12, 28)) {
@@ -195,7 +195,7 @@ class Bank(val ctx: Context) {
                 ctx.keyboard.pressDownKey(VK_BACK_SPACE)
                 text = chatText?.getText()
                 if (text.equals("*") || text.equals("4*")) {
-                    delay(Random.nextLong(555, 1255))
+                    delay(Random.nextLong(250, 550))
                     break
                 }
             }
@@ -244,7 +244,7 @@ class Bank(val ctx: Context) {
                 ctx.keyboard.pressDownKey(VK_BACK_SPACE)
                 text = chatText?.getText()
                 if (text.equals("*") || text.equals("4*") || text!!.length < 1) {
-                    delay(Random.nextLong(555, 1255))
+                    delay(Random.nextLong(250, 550))
                     break
                 }
             }
@@ -268,7 +268,7 @@ class Bank(val ctx: Context) {
                                     return text?.equals("*") ?: false
                                 }
                             })
-                            delay(Random.nextLong(400, 800))
+                            delay(Random.nextLong(335, 665))
                             ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
                         }
 
@@ -401,7 +401,7 @@ class Bank(val ctx: Context) {
     }
 
     fun getBankWidget(): Component? {
-        return ctx.widgets.find(12,12)
+        return ctx.widgets.find(12,11)
     }
 
     fun getSize(): Int {
