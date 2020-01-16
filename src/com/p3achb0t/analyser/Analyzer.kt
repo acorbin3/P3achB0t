@@ -172,6 +172,22 @@ class Analyser{
             }
 
 
+            //Inject doAction
+            if(clazzData.`class` == "Client") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
+                println("MethodHook: $methodHook")
+                val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
+
+                doActionMethodNode.visitVarInsn(ILOAD, 1)
+                doActionMethodNode.visitInsn(ICONST_0)
+                doActionMethodNode.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+
+                doActionMethodNode.visitInsn(Opcodes.IRETURN)
+                doActionMethodNode.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(doActionMethodNode)
+            }
+
             //Inject varBit
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
