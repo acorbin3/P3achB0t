@@ -189,7 +189,7 @@ class Analyser{
                 doActionMethodNode.visitInsn(ICONST_0)
                 doActionMethodNode.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
 
-                doActionMethodNode.visitInsn(Opcodes.IRETURN)
+                doActionMethodNode.visitInsn(Opcodes.RETURN)
                 doActionMethodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(doActionMethodNode)
