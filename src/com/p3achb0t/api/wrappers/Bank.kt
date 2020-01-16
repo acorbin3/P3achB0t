@@ -91,7 +91,7 @@ class Bank(val ctx: Context) {
 
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
+        val depositAllWidget = WidgetItem(ctx.widgets.find(12, 40), ctx = ctx)
         depositAllWidget.click()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
@@ -141,7 +141,7 @@ class Bank(val ctx: Context) {
             delay(Random.nextLong(250, 550))
             var items = getAll()
             if (ctx.vars.getVarp(1666) != 0) {
-                if (ctx.widgets.isWidgetAvaliable(12, 28)) {
+                if (ctx.widgets.isWidgetAvaliable(12, 27)) {
                     val Quantity1 = WidgetItem(ctx.widgets.find(12, 28), ctx = ctx)
                     Quantity1.click()
                     delay(300)
@@ -406,7 +406,7 @@ class Bank(val ctx: Context) {
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+            val widget = ctx.widgets.find(12, 4)
             if (widget?.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
