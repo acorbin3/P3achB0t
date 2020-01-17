@@ -25,7 +25,6 @@ fun groundItemsPaint(g: Graphics, ctx: Context) {
                         namePoint.y
                 )
 
-
                 val triangles = it.getTriangles()
                 g.color = Color.CYAN
                 triangles.forEach { poly ->

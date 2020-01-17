@@ -131,7 +131,7 @@ public class RuneScapeFactoryTemplates {
         DefaultSpeedManager manager = new DefaultSpeedManager(flows);
         factory.setDeviationProvider(new SinusoidalDeviationProvider(SinusoidalDeviationProvider.DEFAULT_SLOPE_DIVIDER));
         factory.setNoiseProvider(new DefaultNoiseProvider(DefaultNoiseProvider.DEFAULT_NOISINESS_DIVIDER));
-        factory.getNature().setReactionTimeVariationMs(100);
+        factory.getNature().setReactionTimeVariationMs(75);
         manager.setMouseMovementBaseTimeMs(150);
 
         DefaultOvershootManager overshootManager = (DefaultOvershootManager) factory.getOvershootManager();

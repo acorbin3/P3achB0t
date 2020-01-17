@@ -55,7 +55,7 @@ open class Actor(
     }
 
     fun isIdle(): Boolean {
-        return raw.getSequence() == -1 && raw.getTargetIndex() == -1 && raw.getMovementSequence() == 808
+        return raw.getSequence() == -1 && raw.getTargetIndex() == -1
     }
 
     suspend fun waitTillIdle(time: Int = 4) {

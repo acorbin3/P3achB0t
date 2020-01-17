@@ -134,7 +134,7 @@ abstract class Interactable(var ctx: Context?) {
         var retryCount = 0
         while (true) {
             ctx?.mouse?.moveMouse(desiredPoint, click = false)
-            if (isMouseOverObj() || retryCount == 5) {
+            if (isMouseOverObj() || retryCount == 1) {
                 break
             }
             retryCount += 1

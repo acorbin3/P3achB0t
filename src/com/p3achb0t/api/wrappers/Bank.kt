@@ -9,6 +9,8 @@ import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Rectangle
+import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random
 
 class Bank(val ctx: Context) {
@@ -89,7 +91,7 @@ class Bank(val ctx: Context) {
 
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.DEPOSIT_INVENTORY), ctx = ctx)
+        val depositAllWidget = WidgetItem(ctx.widgets.find(12, 40), ctx = ctx)
         depositAllWidget.click()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
@@ -124,9 +126,22 @@ class Bank(val ctx: Context) {
 
     suspend fun withdraw1(id: Int, name: String) {
         if (isOpen()) {
+            val chatText =
+                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+            var text = chatText?.getText()
+            while (!text.equals("*")) {
+                delay(Random.nextLong(25, 75))
+                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                text = chatText?.getText()
+                if (text.equals("*") || text.equals("4*")) {
+                    delay(Random.nextLong(250, 550))
+                    break
+                }
+            }
+            delay(Random.nextLong(250, 550))
             var items = getAll()
             if (ctx.vars.getVarp(1666) != 0) {
-                if (ctx.widgets.isWidgetAvaliable(12, 28)) {
+                if (ctx.widgets.isWidgetAvaliable(12, 27)) {
                     val Quantity1 = WidgetItem(ctx.widgets.find(12, 28), ctx = ctx)
                     Quantity1.click()
                     delay(300)
@@ -142,9 +157,11 @@ class Bank(val ctx: Context) {
                             delay(300)
                         } else {
                             //TODO- scroll to item
-                            println("Searching for item ")
-                            searchForItem(id, name)
-                            delay(600)
+                            println("Searching for item " + name)
+                            if(!itemVisible(it.area)) {
+                                searchForItem(id, name)
+                                delay(600)
+                            }
                             items = getAll()
                             items.forEach {
                                 if (it.id == id) {
@@ -164,6 +181,54 @@ class Bank(val ctx: Context) {
     }
 
 
+    /**
+     * added by sirscript
+     */
+
+    suspend fun withdrawAll(id: Int, name: String) {
+        if (isOpen()) {
+            val chatText =
+                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+            var text = chatText?.getText()
+            while (!text.equals("*")) {
+                delay(Random.nextLong(25, 75))
+                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                text = chatText?.getText()
+                if (text.equals("*") || text.equals("4*")) {
+                    delay(Random.nextLong(250, 550))
+                    break
+                }
+            }
+            var items = getAll()
+            items.forEach {
+                if (it.id == id) {
+                    //Check to see if its visible
+                    if (itemVisible(it.area)) {
+                        it.interact("Withdraw-all" )
+
+                    } else {
+                        println("Searching for item ")
+                        searchForItem(id, name)
+                        delay(600)
+                        items = getAll()
+                        items.forEach {
+                            if (it.id == id) {
+                                //Check to see if its visible
+                                if (itemVisible(it.area)) {
+                                    it.interact("Withdraw-all")
+
+                                }
+                            }
+                        }
+                    }
+                    delay(200)
+                }
+            }
+        }
+    }
+
+
+
 
     /**
      * added by sirscript
@@ -171,6 +236,18 @@ class Bank(val ctx: Context) {
 
     suspend fun withdraw(id: Int, name: String, count: Int = 1) {
         if (isOpen()) {
+            val chatText =
+                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+            var text = chatText?.getText()
+            while (!text.equals("*")) {
+                delay(Random.nextLong(25, 75))
+                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                text = chatText?.getText()
+                if (text.equals("*") || text.equals("4*") || text!!.length < 1) {
+                    delay(Random.nextLong(250, 550))
+                    break
+                }
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
@@ -191,7 +268,7 @@ class Bank(val ctx: Context) {
                                     return text?.equals("*") ?: false
                                 }
                             })
-                            delay(Random.nextLong(100, 350))
+                            delay(Random.nextLong(335, 665))
                             ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
                         }
 
@@ -238,39 +315,6 @@ class Bank(val ctx: Context) {
 
 
 
-    /**
-     * added by sirscript
-     */
-
-    suspend fun withdrawAll(id: Int, name: String) {
-        if (isOpen()) {
-            var items = getAll()
-            items.forEach {
-                if (it.id == id) {
-                    //Check to see if its visible
-                    if (itemVisible(it.area)) {
-                            it.interact("Withdraw-all" )
-
-                    } else {
-                        println("Searching for item ")
-                        searchForItem(id, name)
-                        delay(600)
-                        items = getAll()
-                        items.forEach {
-                            if (it.id == id) {
-                                //Check to see if its visible
-                                if (itemVisible(it.area)) {
-                                    it.interact("Withdraw-all")
-
-                                }
-                            }
-                        }
-                    }
-                    delay(200)
-                }
-            }
-        }
-    }
 
     /**
      * added by sirscript
@@ -278,26 +322,36 @@ class Bank(val ctx: Context) {
 
     suspend fun searchForItem(id: Int, name: String) {
         val items = getAll()
-        val searchWidget = WidgetItem(ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SEARCH_BUTTON_BACKGROUND), ctx = ctx)
+        val searchWidget = WidgetItem(ctx.widgets.find(12, 38), ctx = ctx)
         items.forEach {
-            if (it.id == id) {
-                if (!itemVisible(it.area)) {
-                    var chatText =
-                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                    var text = chatText?.getText()
-                    if(!text.equals("*") && !text.equals("$name*")){
-                        searchWidget.click()
+                if (it.id == id) {
+                    if (!itemVisible(it.area)) {
+                        var chatText =
+                                ctx.widgets.find(12, 3)
+                        var text = chatText?.getText()
+                        if (text.equals("The Bank of Gielinor")) {
+                            searchWidget.click()
+                            delay(Random.nextLong(100, 350))
+                        }
+                        delay(600)
+                        chatText =
+                                ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                        text = chatText?.getText()
+                        while (!text.equals("*")) {
+                            delay(Random.nextLong(25, 75))
+                            ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                            text = chatText?.getText()
+                            if (text.equals("*") || text.equals("4*")) {
+                                break
+                            }
+                        }
+                        if (text.equals("*")) {
+                            delay(Random.nextLong(100, 350))
+                            ctx.keyboard.sendKeys(name)
+                        }
+                        delay(200)
+
                     }
-                  delay(600)
-                    chatText =
-                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                    text = chatText?.getText()
-                    if(text.equals("*")) {
-                        delay(Random.nextLong(100, 350))
-                        ctx.keyboard.sendKeys(name)
-                    }
-                    delay(200)
-                }
                 }
             }
         }
@@ -347,12 +401,12 @@ class Bank(val ctx: Context) {
     }
 
     fun getBankWidget(): Component? {
-        return ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.ITEM_CONTAINER)
+        return ctx.widgets.find(12,11)
     }
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = ctx.widgets.find(WidgetID.BANK_GROUP_ID, WidgetID.Bank.SIZE)
+            val widget = ctx.widgets.find(12, 4)
             if (widget?.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
