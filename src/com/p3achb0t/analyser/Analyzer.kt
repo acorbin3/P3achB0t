@@ -195,6 +195,39 @@ class Analyser{
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(doActionMethodNode)
             }
 
+            //Inject doAction callback
+            if (clazzData.`class` == "Client") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
+                println("MethodHook: $methodHook")
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                //Find the addMessage method, then inject the call back at the front
+                println("looking at class ${methodHook.owner}")
+                classes[methodHook.owner]?.methods?.forEach { methodNode ->
+                    println("Looking at method: ${methodNode.name}")
+                    if (methodNode.name == methodHook.name && methodNode.desc.contains("IIIILjava/lang/String;Ljava/lang/String;III")) {
+                        println("methodNode.desc: ${methodNode.desc}")
+                        println("Time to insert instructions")
+                        val il = InsnList()
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                        il.add(VarInsnNode(ILOAD, 1))
+                        il.add(VarInsnNode(ILOAD, 2))
+                        il.add(VarInsnNode(ILOAD, 3))
+                        il.add(VarInsnNode(ILOAD, 4))
+                        il.add(VarInsnNode(ALOAD, 5))
+                        il.add(VarInsnNode(ALOAD, 6))
+                        il.add(VarInsnNode(ILOAD, 7))
+                        il.add(VarInsnNode(ILOAD, 8))
+                        il.add(VarInsnNode(ILOAD, 9))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", "(IIIILjava/lang/String;Ljava/lang/String;III)V"))
+                        methodNode.instructions.insert(il)
+
+                    }
+                }
+            }
 
             //Inject varBit
             if(clazzData.`class` == "Client") {
@@ -240,7 +273,7 @@ class Analyser{
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
 
-//Inject addMessage
+            //Inject addMessage
             if (clazzData.`class` == "ChatChannel") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "addMessage" }
                 println("MethodHook: $methodHook")
