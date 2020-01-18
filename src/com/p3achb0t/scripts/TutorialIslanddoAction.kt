@@ -552,7 +552,8 @@ class TutorialIslanddoAction: AbstractScript()  {
             suspend fun chopTree(ctx: Context) {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
-                ctx.gameObjects.gameObjectdoAction(trees[Random.nextInt(0, 3)])
+                ctx.mouse.instantclick(Point(0,599))
+                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
                 // Wait till we get a log in the invetory.
                 Utils.waitFor(4, object : Utils.Condition {
@@ -781,7 +782,9 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Range is 9736
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
-            ctx.gameObjects.gameObjectdoAction(range)
+            ctx.mouse.instantclick(Point(0,599))
+            ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0)
+
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
@@ -835,7 +838,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Run(ctx).activateRun()
+            ctx.run.clickRunButton()
             delay(Random.nextLong(1500, 2500))
         }
 
@@ -848,6 +851,8 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
+            Run(ctx).activateRun()
+            delay(Random.nextLong(1500, 2500))
             val walkingPath = arrayListOf(
                 Tile(3073, 3103, ctx = ctx), Tile(3074, 3117, ctx = ctx),
                 Tile(3079, 3127, ctx = ctx), Tile(3086, 3127, ctx = ctx)
