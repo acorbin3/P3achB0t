@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color
 import java.awt.Graphics
+import java.awt.Point
 import kotlin.random.Random
 
 
@@ -1036,9 +1037,12 @@ class TutorialIslanddoAction: AbstractScript()  {
                 })
             }
 
-            val furnace = ctx.gameObjects.find("Furnace")[0]
-            ctx.gameObjects.gameObjectdoAction(furnace)
-            delay(100)
+            val furnace = ctx.gameObjects.find("Furnace")
+
+            // had to add this in manually for some reason the location was off by 1? not sure why.
+
+            ctx.mouse.instantclick(Point(0,599))
+            ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0)
             ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
         }
@@ -1177,7 +1181,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             ctx.equipment.open()
-            ctx.equipment.clickButton(Equipment.Companion.Slot.EquiptmentStats)
+            WidgetItem(ctx.widgets.find(387, 1), ctx = ctx).click()
             delay(Random.nextLong(1500, 2637))
         }
 
@@ -1432,7 +1436,13 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val bankBooth = ctx.gameObjects.find("Bank booth", sortByDistance = true)
             if (bankBooth.size > 0) {
-                ctx.gameObjects.gameObjectdoAction2(bankBooth[0])
+                ctx.gameObjects.gameObjectdoAction(bankBooth[0])
+                Utils.waitFor(10, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return ctx.bank.isOpen()
+                    }
+                })
             }
 
         }
@@ -1455,13 +1465,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         companion object {
             suspend fun openPollBooth(ctx: Context) {
                 val pollBooth = ctx.gameObjects.find(26815)
-                pollBooth[0].turnTo()
-
-                val pollTile = Tile(3119, 3121, ctx.players.getLocal().player.getPlane(), ctx)
-                if (pollTile.distanceTo() > 3)
-                    Tile(3120, 3121, ctx.client.getPlane(), ctx).clickOnMiniMap()
-
-                pollTile.click()
+                ctx.gameObjects.gameObjectdoAction(pollBooth[0])
                 delay(Random.nextLong(1500, 2500))
                 ctx.dialog.continueDialog()
             }
