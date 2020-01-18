@@ -67,6 +67,11 @@ class GroundItem(
         }
     }
 
+    /**
+     * added by sirscript
+     * doaction (local location.x + y and id of the grounditem
+     */
+
     suspend fun takedoAction(x: Int, y: Int, id: Int) {
         ctx?.mouse?.instantclick(Point(0,599))
         ctx?.client?.doAction(x, y, 20, id, "", "", 0 ,0)
