@@ -72,9 +72,9 @@ class GroundItem(
      * doaction (local location.x + y and id of the grounditem
      */
 
-    suspend fun takedoAction(x: Int, y: Int, id: Int) {
+    suspend fun takedoAction(groundItem: GroundItem) {
         ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(x, y, 20, id, "", "", 0 ,0)
+        ctx?.client?.doAction(groundItem.getLocalLocation().x, groundItem.getLocalLocation().y, 20, groundItem.id, "", "", 0 ,0)
     }
 
     fun getTriangles(): ArrayList<Polygon> {
