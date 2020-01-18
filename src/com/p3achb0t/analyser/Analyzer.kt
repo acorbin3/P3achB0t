@@ -176,8 +176,7 @@ class Analyser{
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
                 println("MethodHook: $methodHook")
-                val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
-
+                val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;II)V", null, null)
                 doActionMethodNode.visitVarInsn(ILOAD, 1)
                 doActionMethodNode.visitVarInsn(ILOAD, 2)
                 doActionMethodNode.visitVarInsn(ILOAD, 3)
@@ -199,16 +198,16 @@ class Analyser{
             if (clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
                 println("MethodHook: $methodHook")
-                val list = methodHook?.descriptor?.split(")")!!
-                val argumentDescription = list[0] + ")" // Add back in the )
-                val returnDescriptor = list[1]
-                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+//                val list = methodHook?.descriptor?.split(")")!!
+//                val argumentDescription = list[0] + ")" // Add back in the )
+//                val returnDescriptor = list[1]
+//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
 
                 //Find the addMessage method, then inject the call back at the front
-                println("looking at class ${methodHook.owner}")
-                classes[methodHook.owner]?.methods?.forEach { methodNode ->
+                println("looking at class ${methodHook?.owner}")
+                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
                     println("Looking at method: ${methodNode.name}")
-                    if (methodNode.name == methodHook.name ) {
+                    if (methodNode.name == methodHook?.name ) {
                         println("methodNode.desc: ${methodNode.desc}")
                         println("Time to insert instructions")
                         val il = InsnList()
@@ -222,10 +221,7 @@ class Analyser{
                         il.add(VarInsnNode(ILOAD, 6))
                         il.add(VarInsnNode(ILOAD, 7))
                         il.add(VarInsnNode(ILOAD, 8))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", methodHook.descriptor))
-//                        il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
-//                        il.add(LdcInsnNode("."));
-//                        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V"))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", methodHook?.descriptor))
                         methodNode.instructions.insert(il)
 
                     }
