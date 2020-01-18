@@ -22,7 +22,7 @@ class GroundItem(
         val stackSize: Int = 0,
         override var loc_ctx: Context? = ctx
 ) : Interactable(ctx),
-    Locatable {
+        Locatable {
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return ctx.let { ctx?.client?.getPlane()?.let { it1 -> it?.let { it2 -> Calculations.worldToScreen(region.x, region.y, it1, it2) } } } ?: Point(0,0)
@@ -65,6 +65,11 @@ class GroundItem(
         val inventoryCount = ctx?.client?.let { ctx!!.inventory.getCount() }
         if (interact("Take")) {
         }
+    }
+
+    suspend fun takedoAction(x: Int, y: Int, id: Int) {
+        ctx?.mouse?.instantclick(Point(0,599))
+        ctx?.client?.doAction(x, y, 20, id, "", "", 0 ,0)
     }
 
     fun getTriangles(): ArrayList<Polygon> {
