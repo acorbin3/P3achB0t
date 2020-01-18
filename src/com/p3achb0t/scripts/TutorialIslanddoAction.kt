@@ -165,7 +165,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
         }
     }
 
@@ -303,10 +303,10 @@ class TutorialIslanddoAction: AbstractScript()  {
                     return ctx.dialog.isDialogUp()
                 }
             })
-            ctx.dialog.continueDialogdoAction()
-            ctx.dialog.selectRandomOption()
+            ctx.dialog.continueDialog()
+            ctx.dialog.selectRandomOptiondoAction()
             delay(Random.nextLong(1250, 1650))
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
             println("Interact with Gielinor Guide Complete")
         }
 
@@ -382,7 +382,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                     return ctx.dialog.isDialogUp()
                 }
             })
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
             println("Finished final chat with Gielinor")
         }
 
@@ -402,8 +402,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val doorLocation = Tile(3098, 3107, ctx = ctx)
             gameObjects.forEach {
                 if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
-                    it.turnTo()
-                    it.interact("Open")
+                   ctx.gameObjects.gameObjectdoAction(it)
                     //Wait till here Tile(3098,3107)
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -450,7 +449,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // WAit till the continue is avaliable
             ctx.players.getLocal().waitTillIdle()
 
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
         }
 
     }
@@ -529,7 +528,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 }
             })
 
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
         }
 
@@ -544,7 +543,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             chopTree(ctx)
 
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
 
         }
@@ -574,7 +573,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
         }
 
     }
@@ -614,7 +613,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                     //Wait till idle
                     ctx.players.getLocal().waitTillIdle()
                     delay(100)
-                    ctx.dialog.continueDialogdoAction()
+                    ctx.dialog.continueDialog()
                 }
 
                 ctx.inventory.getItem(590)?.click()
@@ -671,7 +670,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 //Wait till idle
                 ctx.players.getLocal().waitTillIdle()
                 delay(100)
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
     }
@@ -750,7 +749,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             delay(Random.nextLong(3000, 5000))
 
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
         }
     }
 
@@ -765,7 +764,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             Inventory(ctx = ctx).getItem(1929)?.click()
             Inventory(ctx = ctx).getItem(2516)?.click()
             delay(Random.nextLong(1250, 1650))
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
 
         }
@@ -793,7 +792,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 }
             })
             delay(Random.nextLong(1250, 1650))
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
         }
 
@@ -884,7 +883,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                     questGuide[0].interact("Talk-to Quest Guide")
                 ctx.players.getLocal().waitTillIdle()
                 delay(Random.nextLong(100, 150))
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
     }
@@ -917,7 +916,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     questGuide[0].interact("Talk-to Quest Guide")
                 ctx.players.getLocal().waitTillIdle()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
     }
@@ -958,7 +957,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     miningGuide[0].talkTo()
                 delay(Random.nextLong(1250, 3650))
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
 
             }
         }
@@ -980,7 +979,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                         }
                     })
                 }
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
     }
@@ -1069,7 +1068,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     miningGuide[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
 
             }
         }
@@ -1163,7 +1162,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if(!ctx.dialog.isContinueAvailable())
                 combatInstructor[0].talkTo()
             ctx.players.getLocal().waitTillIdle()
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
         }
 
@@ -1218,7 +1217,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
             if(!ctx.dialog.isContinueAvailable())
                 combatInstructor[0].talkTo()
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
 
         }
 
@@ -1342,7 +1341,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
                 if(!ctx.dialog.isContinueAvailable())
                     combatInstructor[0].talkTo()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
 
@@ -1479,7 +1478,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
                 pollTile.click()
                 delay(Random.nextLong(1500, 2500))
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
              suspend fun closePollWidget(ctx: Context) {
                 try {
@@ -1509,7 +1508,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             //TODO figure out how to access moving objects OR need to find a more center tile point
             PollBooth.openPollBooth(ctx)
-            ctx.dialog.continueDialogdoAction()
+            ctx.dialog.continueDialog()
             //If poll widget open, Close out of polling booth widget (310,2) child index 3
             PollBooth.closePollWidget(ctx)
 
@@ -1559,7 +1558,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     accountManager[0].talkTo()
 //                delay(Random.nextLong(2500, 4500))
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
 
@@ -1619,7 +1618,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     brotherBrace[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
             }
         }
 
@@ -1691,7 +1690,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     magicInstructor[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
 
             }
         }
@@ -1762,11 +1761,11 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if(!ctx.dialog.isContinueAvailable())
                     magicInstructor[0].talkTo()
                 ctx.players.getLocal().waitTillIdle()
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
                 ctx.dialog.selectionOptiondoAction("Yes")
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
                 ctx.dialog.selectionOptiondoAction("No")
-                ctx.dialog.continueDialogdoAction()
+                ctx.dialog.continueDialog()
 
             }
         }
