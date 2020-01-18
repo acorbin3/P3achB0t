@@ -7,6 +7,7 @@ import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.KeyEvent
@@ -227,7 +228,98 @@ class Bank(val ctx: Context) {
         }
     }
 
+    /**
+     * added by sirscript
+     */
 
+    suspend fun withdrawAlldoAction(id: Int) {
+        if (isOpen()) {
+            var items = getAll()
+            items.forEach {
+                if (it.id == id) {
+                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
+                    delay(600)
+                }
+            }
+        }
+    }
+
+    /**
+     * added by sirscript
+     */
+
+    suspend fun withdraw1doAction(id: Int) {
+        if (isOpen()) {
+            var items = getAll()
+            items.forEach {
+                if (it.id == id) {
+                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+                    delay(600)
+                }
+            }
+        }
+    }
+
+    /**
+     * added by sirscript
+     */
+
+    suspend fun withdrawXdoAction(id: Int) {
+        if (isOpen()) {
+            var items = getAll()
+            items.forEach {
+                if (it.id == id) {
+                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
+                    delay(600)
+                }
+            }
+        }
+    }
+
+    /**
+     * added by sirscript
+     * sets bank withdrawmode to noted
+     */
+
+    suspend fun setnoted() {
+        if (isOpen()) {
+            ctx.client.doAction(-1, 786454, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            delay(600)
+        }
+    }
+
+    /**
+     * added by sirscript
+     * sets bank withdrawmode to items
+     */
+
+    suspend fun setitem() {
+        if (isOpen()) {
+            ctx.client.doAction(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            delay(600)
+        }
+    }
+
+
+    /**
+     * added by sirscript
+     * deposits all inventory using doAction
+     */
+
+    suspend fun depositAlldoAction() {
+        ctx.mouse.instantclick(Point(0,0))
+        ctx.client.doAction(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+    }
+
+    /**
+     * added by sirscript
+     * deposits all equipment using doAction
+     */
+
+    suspend fun depositEquipmentdoAction() {
+        ctx.mouse.instantclick(Point(0,0))
+        ctx.client.doAction(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+    }
 
 
     /**
@@ -304,13 +396,13 @@ class Bank(val ctx: Context) {
                                 }
 
                                 delay(600)
-                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
 
 
 
@@ -324,37 +416,37 @@ class Bank(val ctx: Context) {
         val items = getAll()
         val searchWidget = WidgetItem(ctx.widgets.find(12, 38), ctx = ctx)
         items.forEach {
-                if (it.id == id) {
-                    if (!itemVisible(it.area)) {
-                        var chatText =
-                                ctx.widgets.find(12, 3)
-                        var text = chatText?.getText()
-                        if (text.equals("The Bank of Gielinor")) {
-                            searchWidget.click()
-                            delay(Random.nextLong(100, 350))
-                        }
-                        delay(600)
-                        chatText =
-                                ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                        text = chatText?.getText()
-                        while (!text.equals("*")) {
-                            delay(Random.nextLong(25, 75))
-                            ctx.keyboard.pressDownKey(VK_BACK_SPACE)
-                            text = chatText?.getText()
-                            if (text.equals("*") || text.equals("4*")) {
-                                break
-                            }
-                        }
-                        if (text.equals("*")) {
-                            delay(Random.nextLong(100, 350))
-                            ctx.keyboard.sendKeys(name)
-                        }
-                        delay(200)
-
+            if (it.id == id) {
+                if (!itemVisible(it.area)) {
+                    var chatText =
+                            ctx.widgets.find(12, 3)
+                    var text = chatText?.getText()
+                    if (text.equals("The Bank of Gielinor")) {
+                        searchWidget.click()
+                        delay(Random.nextLong(100, 350))
                     }
+                    delay(600)
+                    chatText =
+                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                    text = chatText?.getText()
+                    while (!text.equals("*")) {
+                        delay(Random.nextLong(25, 75))
+                        ctx.keyboard.pressDownKey(VK_BACK_SPACE)
+                        text = chatText?.getText()
+                        if (text.equals("*") || text.equals("4*")) {
+                            break
+                        }
+                    }
+                    if (text.equals("*")) {
+                        delay(Random.nextLong(100, 350))
+                        ctx.keyboard.sendKeys(name)
+                    }
+                    delay(200)
+
                 }
             }
         }
+    }
 
     suspend fun deposit(id: Int, count: Int = 1) {
         if (isOpen()) {
