@@ -551,7 +551,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             suspend fun chopTree(ctx: Context) {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
-                trees[Random.nextInt(0, 3)].interact("Chop")
+                ctx.gameObjects.gameObjectdoAction(trees[Random.nextInt(0, 3)])
 
                 // Wait till we get a log in the invetory.
                 Utils.waitFor(4, object : Utils.Condition {
@@ -700,9 +700,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val gateIDs = arrayOf(9708, 9470)
             val gates = ctx.gameObjects.find(gateIDs.random(), sortByDistance = true)
             if (gates.size > 0) {
-                gates[0].turnTo()
-                gates[0].interact("Open")
-                ctx.players.getLocal().waitTillIdle()
+               ctx.gameObjects.gameObjectdoAction(gates[0])
                 delay(Random.nextLong(100, 150))
             }
             println("Complete: Going to open gate")
@@ -731,7 +729,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val gameObjects = ctx.gameObjects.find(9709, sortByDistance = true)
             if (gameObjects.size > 0) {
-                gameObjects[0].interact("Open")
+                ctx.gameObjects.gameObjectdoAction( gameObjects[0])
                 ctx.players.getLocal().waitTillIdle()
             }
         }
@@ -782,8 +780,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Range is 9736
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
-            ctx.camera.turnTo(range)
-            range.interact("Cook Range")
+            ctx.gameObjects.gameObjectdoAction(range)
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
@@ -823,7 +820,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //DOOR 9710
             val door = ctx.gameObjects.find(9710)
             if (door.size > 0) {
-                door[0].interact("Open Door")
+                ctx.gameObjects.gameObjectdoAction(door[0])
                 ctx.players.getLocal().waitTillIdle()
             }
         }
@@ -856,11 +853,9 @@ class TutorialIslanddoAction: AbstractScript()  {
             )
             Walking.walkPath(walkingPath)
             //Open Door(9716)
-            ctx.camera.setHighPitch()
-            ctx.camera.turnSouth()
             val doors = ctx.gameObjects.find("Door", sortByDistance = true)
             if (doors.size > 0) {
-                doors[0].interact("Open Door")
+                ctx.gameObjects.gameObjectdoAction(doors[0])
                 ctx.players.getLocal().waitTillIdle()
             }
 
@@ -932,8 +927,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // Go down ladder
             val ladder = ctx.gameObjects.find("Ladder")
             if (ladder.size > 0) {
-                ctx.camera.turnTo(ladder[0])
-                ladder[0].interact("Climb-down Ladder")
+                ctx.gameObjects.gameObjectdoAction(ladder[0])
                 ctx.players.getLocal().waitTillIdle()
 //                delay(Random.nextLong(3500, 6400))
             }
@@ -970,7 +964,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val rocks = ctx.gameObjects.find("Rocks", sortByDistance = true)
                 if (rocks.size > 0) {
                     val oldInventoryCount = ctx.inventory.getCount()
-                    rocks[0].interact("Mine")
+                    ctx.gameObjects.gameObjectdoAction(rocks[0])
                     ctx.players.getLocal().waitTillIdle()
                     Utils.waitFor(8, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -1043,8 +1037,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             }
 
             val furnace = ctx.gameObjects.find("Furnace")[0]
-            if (!furnace.isOnScreen()) furnace.turnTo()
-            furnace.click()
+            ctx.gameObjects.gameObjectdoAction(furnace)
             delay(100)
             ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
@@ -1088,9 +1081,8 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (anvil.size > 0) {
 
                 val index = (0..1).random()
-                anvil[index].turnTo()
                 Inventory(ctx = ctx).open()
-                anvil[index].click()
+                ctx.gameObjects.gameObjectdoAction(anvil[index])
                 delay(Random.nextLong(300, 700))
                 ctx.players.getLocal().waitTillIdle()
                 //Wait for smiting widgets
@@ -1125,9 +1117,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             Walking.walkPath(walkingPath)
             val gate = ctx.gameObjects.find("Gate", sortByDistance = true)
             if (gate.size > 0) {
-                ctx.camera.setHighPitch()
-                ctx.camera.turnEast()
-                gate[0].interact("Open")
+                ctx.gameObjects.gameObjectdoAction(gate[0])
                 delay(100)
                 //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 ctx.players.getLocal().waitTillIdle()
@@ -1271,8 +1261,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Enter cage
             val gates = ctx.gameObjects.find("Gate", sortByDistance = true)
             if (gates.size > 0) {
-                ctx.camera.turnWest()
-                gates[0].interact("Open")
+                ctx.gameObjects.gameObjectdoAction(gates[0])
                 ctx.players.getLocal().waitTillIdle()
             }
 
@@ -1323,11 +1312,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (ratCageArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
                 val gates = ctx.gameObjects.find("Gate", sortByDistance = true)
                 if (gates.size > 0) {
-                    if (!gates[0].isOnScreen()) {
-                        gates[0].clickOnMiniMap()
-                        ctx.players.getLocal().waitTillIdle()
-                    }
-                    gates[0].interact("Open")
+                    ctx.gameObjects.gameObjectdoAction(gates[0])
                     ctx.players.getLocal().waitTillIdle()
                 }
             }
@@ -1402,7 +1387,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val ladder = ctx.gameObjects.find("Ladder", sortByDistance = true)
             if (ladder.size > 0) {
-                ladder[0].interact("Climb")
+                ctx.gameObjects.gameObjectdoAction(ladder[0])
                 ctx.players.getLocal().waitTillIdle()
                 //We are expecting to be really far from the ladder so lets wait till then
                 Utils.waitFor(4, object : Utils.Condition {
@@ -1428,7 +1413,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if(caveTile.distanceTo() < 10){
                 val ladder = ctx.gameObjects.find("Ladder", sortByDistance = true)
                 if (ladder.size > 0) {
-                    ladder[0].interact("Climb")
+                    ctx.gameObjects.gameObjectdoAction(ladder[0])
                     ctx.players.getLocal().waitTillIdle()
                 }
             }
@@ -1447,7 +1432,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val bankBooth = ctx.gameObjects.find("Bank booth", sortByDistance = true)
             if (bankBooth.size > 0) {
-                bankBooth[0].interact("Use")
+                ctx.gameObjects.gameObjectdoAction2(bankBooth[0])
             }
 
         }
@@ -1530,8 +1515,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3125 && it.getGlobalLocation().y == 3124) {
-                        it.turnTo()
-                        it.interact("Open")
+                        ctx.gameObjects.gameObjectdoAction(it)
                         Utils.waitFor(6, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
                                 delay(100)
@@ -1586,9 +1570,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3130 && it.getGlobalLocation().y == 3124) {
-                        ctx.camera.turnEast()
-                        ctx.camera.setHighPitch()
-                        it.interact("Open")
+                        ctx.gameObjects.gameObjectdoAction(it)
                         ctx.players.getLocal().waitTillIdle()
                         delay(Random.nextLong(100, 150))
                     }
@@ -1658,9 +1640,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3122 && it.getGlobalLocation().y == 3102) {
-                        ctx.camera.turnSouth()
-                        ctx.camera.setHighPitch()
-                        it.interact("Open")
+                        ctx.gameObjects.gameObjectdoAction(it)
                         delay(Random.nextLong(1500, 2500))
                         ctx.players.getLocal().waitTillIdle()
                     }
