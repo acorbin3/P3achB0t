@@ -11,6 +11,7 @@ import com.p3achb0t.scripts.paint_debug.getObjectComposite
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.Context
+import net.runelite.api.MenuOpcode
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -23,7 +24,7 @@ class GameObject(
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable,
-    Interactable(ctx) {
+        Interactable(ctx) {
     val id: Int
         get() {
             return when {
@@ -137,7 +138,7 @@ class GameObject(
 
         return if (model != null) {
             val positionInfo =
-                objectPositionInfo
+                    objectPositionInfo
 
             val modelTriangles =
                     getTrianglesFromModel(positionInfo, model!!, ctx!!)
@@ -148,6 +149,10 @@ class GameObject(
         }
     }
 
+    suspend fun gameObjectdoAction(x: Int, y: Int, id: MenuOpcode) {
+        ctx?.mouse?.instantclick(Point(0,599))
+        ctx?.client?.doAction(x, y, 20, id.id, "", "", 0 ,0)
+    }
 
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
