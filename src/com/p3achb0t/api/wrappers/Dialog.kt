@@ -6,6 +6,7 @@ import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import java.awt.Point
 import kotlin.random.Random
 
 class Dialog(val ctx: Context) {
@@ -55,6 +56,40 @@ class Dialog(val ctx: Context) {
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
             doConversation(sleep)
+        }
+    }
+
+    /**
+     * added by sirscript
+     * continue dialog for doAction arg1 = -1
+     */
+
+
+    suspend fun continueDialogdoActon() {
+        val time = 20 //20 seconds
+        val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
+        while (isContinueAvailable() && t.isRunning()) {
+            ctx.mouse.instantclick(Point(0,599))
+            ctx.client.doAction(-1, 15138819, 30, 0, "", "", 0, 0)
+            delay(Random.nextLong(200, 350))
+        }
+    }
+
+    /**
+     * added by sirscript
+     * select dialog options for doAction dialog option 1=1, 2=2 etc
+     */
+
+
+    suspend fun selectionOptiondoAction(action: String) {
+        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
+        // Options are in children but not index zero
+        dialog.widget?.getChildren()?.iterator()?.forEach {
+            if (it.getText().contains(action)) {
+                ctx.mouse.instantclick(Point(0,599))
+                ctx.client.doAction(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
+                delay(Random.nextLong(1500, 2500))
+            }
         }
     }
 
