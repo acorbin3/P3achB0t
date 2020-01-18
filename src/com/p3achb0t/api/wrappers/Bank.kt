@@ -237,6 +237,7 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
+                    ctx.mouse.instantclick(Point(0,0))
                     ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
                     delay(600)
                 }
@@ -253,6 +254,7 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
+                    ctx.mouse.instantclick(Point(0,0))
                     ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
                     delay(600)
                 }
@@ -269,6 +271,7 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
+                    ctx.mouse.instantclick(Point(0,0))
                     ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
                     delay(600)
                 }
@@ -295,6 +298,7 @@ class Bank(val ctx: Context) {
 
     suspend fun setitem() {
         if (isOpen()) {
+            ctx.mouse.instantclick(Point(0,0))
             ctx.client.doAction(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
             delay(600)
         }
