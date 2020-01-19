@@ -82,9 +82,9 @@ class NPCs(val ctx: Context) {
     // This function will return a list of NPCs with closes distance to you
     fun findNpcs(npcName: String, sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
-        ctx.client.getNpcs().forEach {
-            if (it != null && it.getType().getName().contentEquals(npcName)) {
-                npcs.add(NPC(it, ctx))
+        ctx.client.getNpcs().forEachIndexed { index, npc ->
+            if (npc != null && npc.getType().getName().contentEquals(npcName)) {
+                npcs.add(NPC(npc, ctx, index))
             }
         }
         if (sortByDist) {
@@ -119,9 +119,9 @@ class NPCs(val ctx: Context) {
     fun findNpcs(sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
         try {
-            ctx.client.getNpcs().forEach {
-                if (it != null) {
-                    npcs.add(NPC(it, ctx))
+            ctx.client.getNpcs().forEachIndexed { index, npc ->
+                if (npc != null) {
+                    npcs.add(NPC(npc, ctx, index))
                 }
             }
             if (sortByDist) {

@@ -1,13 +1,14 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Polygon
 
-class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
+class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     val name: String
         get() {
@@ -33,6 +34,10 @@ class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
 
     }
 
+    suspend fun doAction(){
+        ctx?.mouse?.instantclick(Point(0,599))
+        ctx?.client?.doAction(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
+    }
 
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())

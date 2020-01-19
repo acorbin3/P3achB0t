@@ -42,6 +42,7 @@ class ScriptManager(val client: Any) {
             try {
                 script.loop()
             } catch (e: Error) {
+                println(e.localizedMessage)
                 for (el in e.stackTrace) {
                     println(el.toString())
                 }
