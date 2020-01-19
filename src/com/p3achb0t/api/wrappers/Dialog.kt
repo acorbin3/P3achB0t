@@ -65,7 +65,7 @@ class Dialog(val ctx: Context) {
      */
 
 
-    suspend fun continueDialogdoActon() {
+    suspend fun continueDialogdoAction() {
         val time = 20 //20 seconds
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
@@ -91,6 +91,19 @@ class Dialog(val ctx: Context) {
                 delay(Random.nextLong(1500, 2500))
             }
         }
+    }
+
+    /**
+     * added by sirscript
+     * select dialog options for doAction dialog option 1=1, 2=2 etc
+     */
+
+    suspend fun selectRandomOptiondoAction() {
+        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
+        val childrenSize = dialog.widget?.getChildren()?.size ?: 0
+        ctx.mouse.instantclick(Point(0,599))
+        ctx.client.doAction(Random.nextInt(1, childrenSize), 14352385, 30, 0, "", "", 0, 0)
+        delay(Random.nextLong(1500, 2500))
     }
 
     private suspend fun doConversation(sleep: Boolean) {
