@@ -90,6 +90,16 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         }
         menu.add(menuItem4)
 
+        val menuItem5 = JMenuItem("Run Tutorial Island with doActions")
+        menuItem5.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setScript(TutorialIslanddoAction())
+
+        }
+        menu.add(menuItem5)
+
 
 
         val widgetExplorer = JMenuItem("Open Widget Explorer")

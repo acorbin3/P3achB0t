@@ -57,6 +57,50 @@ class Mouse(obj: Any) {
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 
+    suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
+        if (destPoint == Point(-1, -1)) {
+            return false
+        }
+
+//        mouseMotionFactory.move(destPoint.x, destPoint.y)
+        mouseHopping.move(destPoint)
+
+        if (click) {
+            val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
+            val mousePress =
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_PRESSED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+                            0,
+                            clickType == ClickType.Right
+                    )
+
+            ioMouse.sendEvent(mousePress)
+
+            val mouseRelease =
+                    MouseEvent(
+                            component,
+                            MouseEvent.MOUSE_RELEASED,
+                            System.currentTimeMillis(),
+                            clickMask,
+                            destPoint.x,
+                            destPoint.y,
+//                                if(Random.nextLong(1000, 20000) < 2000){
+//                                    1
+//                                }
+//                                else 0,
+                            0,
+                            clickType == ClickType.Right
+                    )
+            ioMouse.sendEvent(mouseRelease)
+        }
+        return true
+    }
+
 
     suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
