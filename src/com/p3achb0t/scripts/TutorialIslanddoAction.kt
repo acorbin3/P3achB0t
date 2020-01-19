@@ -8,6 +8,7 @@ import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -561,7 +562,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
                 ctx.mouse.instantclick(Point(0,599))
-                trees[Random.nextInt(0, 3)].doAction()
+                trees[Random.nextInt(0, 3)].doAction(offsetX = -1, offsetY = -1)
 //                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
                 // Wait till we get a log in the invetory.
@@ -670,15 +671,14 @@ class TutorialIslanddoAction: AbstractScript()  {
                 ctx.inventory.getItem(SHRIMP_ID)?.click()
                 // The fire is an animated object so it thows a NPE when trying to interact with model.
                 if (fires[0].sceneryObject != null) {
-                    fires[0].doAction()
-//                    val point = Calculations.worldToScreen(
-//                            fires[0].sceneryObject!!.getCenterX(),
-//                            fires[0].sceneryObject!!.getCenterY(),
-//                            0,
-//                            ctx
-//
-//                    )
-//                    Interact(ctx).interact(point, "Use Raw shrimps -> Fire")
+                    val point = Calculations.worldToScreen(
+                            fires[0].sceneryObject!!.getCenterX(),
+                            fires[0].sceneryObject!!.getCenterY(),
+                            0,
+                            ctx
+
+                    )
+                    Interact(ctx).interact(point, "Use Raw shrimps -> Fire")
                 }
 
                 //Wait till idle
@@ -798,6 +798,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
             ctx.mouse.instantclick(Point(0,599))
+//            range.doAction(offsetX = -1)
             ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0)
 
             // Wait till bread in inventory
@@ -1065,6 +1066,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // had to add this in manually for some reason the location was off by 1? not sure why.
 
             ctx.mouse.instantclick(Point(0,599))
+//            furnace[0].doAction(offsetX = -1, offsetY = -1)
             ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0)
             ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
@@ -1308,7 +1310,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (rats.size > 0) {
                 val randomIndex = (0..5).random()
                 if (ctx.players.getLocal().isIdle()) {
-                    rats[randomIndex].doAction()
+                    rats[randomIndex].interact("Attack")
                 }
                 ctx.players.getLocal().waitTillIdle()
             }
@@ -1384,7 +1386,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val randomIndex = (0..2).random()
                 rats[randomIndex].turnTo()
                 if (ctx.players.getLocal().isIdle()) {
-                    rats[randomIndex].doAction()
+                    rats[randomIndex].interact("Attack")
                 }
                 ctx.players.getLocal().waitTillIdle()
 
@@ -1744,7 +1746,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val randChick = Random.nextInt(0, chickens.size - 1)
                 chickens[randChick].swingTo()
                 ctx.camera.setHighPitch()
-                chickens[randChick].doAction()
+                chickens[randChick].interact("Cast")
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
