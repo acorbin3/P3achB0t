@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers.widgets
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Interactable
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -47,6 +48,11 @@ class WidgetItem(
         return if (this.widget != null)
             doesWidgetContainText(this.widget!!, text, includeChildren)
         else false
+    }
+
+    suspend fun doAction(){
+        ctx?.mouse?.instantclick(Point(0,599))
+        ctx?.client?.doAction(-1, this.id, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0 ,0)
     }
 
     override suspend fun interact(action: String): Boolean {
