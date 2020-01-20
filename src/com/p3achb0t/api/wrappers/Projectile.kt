@@ -24,7 +24,10 @@ class Projectile(
         Locatable, ActorTargeting {
 
     val id get() = raw.getId()
-    val position  get() = ObjectPositionInfo(raw.getSourceX(), raw.getSourceY(),raw.getYaw(),raw.getPlane())
+    val position  get() = ObjectPositionInfo(raw.getX().toInt(), raw.getY().toInt(),
+            orientation=raw.getYaw() % 2048,
+            plane = raw.getPlane())
+            .copy(heigth = Calculations.getTileHeight(ctx!!,raw.getPlane(),raw.getX().toInt(),raw.getY().toInt()) - raw.getZ().toInt())
     val speed get() = raw.getSpeed()
     val speedX get() = raw.getSpeedX()
     val speedY get() = raw.getSpeedY()
