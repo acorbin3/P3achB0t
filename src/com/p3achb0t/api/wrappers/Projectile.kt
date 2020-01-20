@@ -2,33 +2,40 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Obj
-import com.p3achb0t.api.*
+import com.p3achb0t._runestar_interfaces.Projectile
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.interfaces.ActorTargeting
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
-import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
-import java.util.*
 
 class Projectile(
         ctx: Context,
-        val id: Int,
-        val position: ObjectPositionInfo,
-        val speedx: Double,
-        val speedy: Double,
-        val acceleration: Double,
-        val targetindex: Int,
-        val x: Double,
-        val y: Double,
-        val z: Double,
-        override var loc_ctx: Context? = ctx
+        val raw: Projectile,
+        override var loc_ctx: Context? = ctx,
+        override var actTar_ctx: Context? = ctx
 ) : Interactable(ctx),
-        Locatable {
+        Locatable, ActorTargeting {
+
+    val id get() = raw.getId()
+    val position  get() = ObjectPositionInfo(raw.getSourceX(), raw.getSourceY(),raw.getYaw(),raw.getPlane())
+    val speed get() = raw.getSpeed()
+    val speedX get() = raw.getSpeedX()
+    val speedY get() = raw.getSpeedY()
+    override val npcTargetIndex: Int
+        get() = raw.getTargetIndex().let { if(it>0) it-1 else -1 }
+    val acceleration get() =  raw.getAccelerationZ()
+    val x  get() = raw.getX()
+    val y  get() = raw.getY()
+    val z  get() = raw.getZ()
+
+
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return ctx.let { ctx?.client?.getPlane()?.let { it1 -> it?.let { it2 -> Calculations.worldToScreen(region.x, region.y, it1, it2) } } } ?: Point(0,0)

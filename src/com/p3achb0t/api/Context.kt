@@ -42,6 +42,7 @@ class Context(val obj: Any) {
     val run: Run
     val stats: Stats
     val questData: QuestData
+    val projectiles: Projectiles
 
     init {
         client = obj as Client
@@ -70,6 +71,7 @@ class Context(val obj: Any) {
         run = Run(this)
         stats = Stats(this)
         questData = QuestData(this)
+        projectiles = Projectiles(this)
     }
 }
 
