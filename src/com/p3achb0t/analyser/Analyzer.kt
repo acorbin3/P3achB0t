@@ -1,16 +1,14 @@
 package com.p3achb0t.analyser
 
+import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
 import com.p3achb0t.injection.class_generation.cleanType
 import com.p3achb0t.injection.class_generation.isBaseType
-import org.objectweb.asm.ClassReader
-import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.Opcodes
+import org.objectweb.asm.*
 import org.objectweb.asm.Opcodes.*
-import org.objectweb.asm.Type
 import org.objectweb.asm.tree.*
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -19,6 +17,7 @@ import java.lang.reflect.Modifier
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
+
 
 
 class Analyser{
@@ -234,7 +233,6 @@ class Analyser{
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
                 println("MethodHook: $methodHook")
                 val varBitMethodNode = MethodNode(ACC_PUBLIC, "getVarbit", "(I)I", null, null)
-
                 varBitMethodNode.visitVarInsn(ILOAD, 1)
                 varBitMethodNode.visitInsn(ICONST_0)
                 varBitMethodNode.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
@@ -246,19 +244,47 @@ class Analyser{
             }
 
 
-            //Inject focusLost set to true
-            if(clazzData.`class` == "GameShell") {
-                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "__focusLost_100" }
-                println("MethodHook: $methodHook")
-                val a = MethodNode(ACC_PUBLIC, "__focusLost_100", "(Ljava/awt/event/FocusEvent;)V", null, null)
-                a.visitInsn(ICONST_1)
-                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//            //Inject focusgained
+//            if(clazzData.`class` == "GameShell") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "focusGained" && it.owner == "bj" }
+//                println("MethodHook: $methodHook")
+//
+//                val a = MethodNode(ACC_PUBLIC, "focusGained", "(Ljava/awt/event/FocusEvent;)V", null, null)
+//                a.visitVarInsn(ALOAD, 1)
+//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//
+//                a.visitInsn(Opcodes.RETURN)
+//                a.visitEnd()
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
+//
+//
+//            }
+//
+//
+//            //Inject focusLost set to true
+//            if(clazzData.`class` == "GameShell") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "__focusLost_100" }
+//                println("MethodHook: $methodHook")
+//                val a = MethodNode(ACC_PUBLIC, "__focusLost_100", "(Ljava/awt/event/FocusEvent;)V", null, null)
+//                a.visitCode()
+//                val l1 = Label()
+//                a.visitVarInsn(ALOAD, 1)
+//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//
+//                a.visitInsn(Opcodes.RETURN)
+//                a.visitEnd()
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
+//
+//                a.instructions.iterator().forEach {
+//                    if(it is MethodInsnNode){
+//                       println(it.toString())
+//                    }
+//                }
+//            }
 
-                a.visitInsn(Opcodes.RETURN)
-                a.visitEnd()
 
-                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
-            }
+
+
 
 
 
