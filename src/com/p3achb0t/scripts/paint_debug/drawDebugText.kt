@@ -6,7 +6,7 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.quests.Quest
 import com.p3achb0t.api.wrappers.widgets.WidgetID
-import com.p3achb0t.scripts.RuneDragsMain
+import com.p3achb0t.scripts.VorkathMain
 import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
@@ -18,12 +18,13 @@ fun drawDebugText(g: Graphics, ctx: Context) {
     val debugText = arrayListOf<DebugText>()
     if (true) {
         g.color = Color.white
+        debugText.add(DebugText("hasFocus? x:${ctx.client.getHasFocus()}"))
         debugText.add(DebugText("Mouse x:${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time)}"))
-        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(RuneDragsMain.Divinepottimer.time)}"))
+        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
+        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
 //        debugText.add(DebugText("Account status :${ctx.client.get__cq_aw()}"))
 
         try {
@@ -41,7 +42,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                         ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                 var text = chatText?.getText()
                 debugText.add(DebugText("Bank search Text: ${text}"))
-                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(RuneDragsMain.IdleTimer.time)}"))
+                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
                 debugText.add(
                         DebugText(
                                 "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +
