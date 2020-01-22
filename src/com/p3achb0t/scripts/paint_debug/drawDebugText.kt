@@ -1,10 +1,10 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.quests.Quest
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.TutorialIsland
@@ -28,7 +28,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
         try {
             if(ctx.client.getGameState() == 30) {
-//                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
+                debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
 //                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
 //                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))

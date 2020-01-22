@@ -153,11 +153,13 @@ class GameObject(
     /**
      * added by sirscript
      * doaction (local location.x + y and id of the gameobject it seems like MenuOpcode.GAME_OBJECT_SECOND_OPTION is the first option usually for the opcode
+     * offsetX & offsetY: sometimes the location of the object needs to be offset and there is a way to provide this
+     *
      */
 
-    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION) {
+    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0) {
         ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(this.getLocalLocation().x, this.getLocalLocation().y, opcode.id, this.id, "", "", 0 ,0)
+        ctx?.client?.doAction(this.getLocalLocation().x - offsetX, this.getLocalLocation().y - offsetY, opcode.id, this.id, "", "", 0 ,0)
     }
 
     suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {

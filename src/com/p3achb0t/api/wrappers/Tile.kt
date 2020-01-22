@@ -1,17 +1,17 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.interfaces.Interactable
+import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.getCanvasTileAreaPoly
-import com.p3achb0t.api.wrappers.interfaces.Interactable
-import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.Context
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
 
-//Tile are stored in global coordinates.
+// Tile are stored in global coordinates.
 // There is a context associated with the tile so we can make it Intractable. Problem is it can be annoying to want to specify
 // a context for a path or list of Tiles. Thus we have updated the ctx to be updateable
 
@@ -23,6 +23,7 @@ class Tile(
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable, Interactable(ctx) {
+    val plane get() = z
     companion object {
         val NIL = Tile(-1, -1, -1, null)
     }

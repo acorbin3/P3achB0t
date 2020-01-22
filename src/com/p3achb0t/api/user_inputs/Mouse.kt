@@ -102,6 +102,9 @@ class Mouse(obj: Any) {
     }
 
 
+    suspend fun instaMove(destPoint: Point){
+        mouseHopping.move(destPoint)
+    }
     suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
             return false

@@ -24,10 +24,17 @@ class Projectile(
         Locatable, ActorTargeting {
 
     val id get() = raw.getId()
-    val position  get() = ObjectPositionInfo(raw.getX().toInt(), raw.getY().toInt(),
-            orientation=raw.getYaw() % 2048,
-            plane = raw.getPlane())
-            .copy(heigth = Calculations.getTileHeight(ctx!!,raw.getPlane(),raw.getX().toInt(),raw.getY().toInt()) - raw.getZ().toInt())
+    val position: ObjectPositionInfo  get() {
+        val tileHeight = Calculations.getTileHeight(ctx!!, raw.getPlane(), raw.getX().toInt(), raw.getY().toInt())
+
+        val height =  tileHeight - raw.getZ().toInt()
+        //println("TileHeight (${raw.getX()},${raw.getY()}) $tileHeight. z=${raw.getZ()}. height = $height")
+        return ObjectPositionInfo(raw.getX().toInt(),
+                raw.getY().toInt(),
+                orientation = raw.getYaw() % 2048,
+                height = height,
+                plane = raw.getPlane())
+    }
     val speed get() = raw.getSpeed()
     val speedX get() = raw.getSpeedX()
     val speedY get() = raw.getSpeedY()

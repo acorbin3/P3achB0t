@@ -1,8 +1,8 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.api.wrappers.utils.Calculations
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -15,6 +15,8 @@ class PaintDebug: DebugScript() {
         var isNPCPaintOn = false
         var isGroundItemsOn = false
         var isGameObjectOn = false
+        var isCanWalkDebug = false
+        var isProjectileDebug = false
         val scriptName = "PaintDebug"
         fun drawRect(g: Graphics, rect: Rectangle) {
             g.drawRect(rect.x, rect.y, rect.width, rect.height)
@@ -28,7 +30,13 @@ class PaintDebug: DebugScript() {
 
 
             g.color = Color.white
-            g.drawRect(ctx!!.mouse.getX(), ctx.mouse.getY(), 5, 5)
+            g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
+            g.drawString("Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",10,10)
+            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",10,20)
+            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",10,30)
+
+            if(isCanWalkDebug)
+                canWalkDebug(g,ctx)
 
             if (isDebugTextOn)
                 drawDebugText(g, ctx)
@@ -44,6 +52,8 @@ class PaintDebug: DebugScript() {
                         playerPaint(g, ctx)
                     if (isNPCPaintOn)
                         paintNPCs(g, ctx)
+                    if(isProjectileDebug)
+                        projectilePaint(g,ctx)
                     widgetBlockingPaint(g)
                     ///////Object paint//////////
 //                        gameObjectPaint(g)
@@ -92,7 +102,10 @@ class PaintDebug: DebugScript() {
 
 
         } catch (e: Exception) {
-            println("Error:  General  $e\n ${e.stackTrace} \n ${e.localizedMessage}")
+            println("Error:  General  $e\n ${e.localizedMessage}")
+            e.stackTrace.forEach {
+                println("\t$it")
+            }
         }
     }
 }
