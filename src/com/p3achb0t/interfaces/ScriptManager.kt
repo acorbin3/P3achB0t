@@ -15,6 +15,7 @@ class ScriptManager(val client: Any) {
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
     private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var blockFocus = false
     val debugScripts = mutableListOf<DebugScript>()
 
     var x = 800
@@ -26,7 +27,6 @@ class ScriptManager(val client: Any) {
     private var paused = false
     lateinit var thread: Job
     var gameLoopI = 0
-
 
     fun setScript(s: AbstractScript) {
         s.initialize(client)

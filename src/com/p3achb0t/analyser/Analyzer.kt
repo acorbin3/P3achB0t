@@ -198,10 +198,7 @@ class Analyser{
             if (clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
                 println("MethodHook: $methodHook")
-//                val list = methodHook?.descriptor?.split(")")!!
-//                val argumentDescription = list[0] + ")" // Add back in the )
-//                val returnDescriptor = list[1]
-//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
 
                 //Find the addMessage method, then inject the call back at the front
                 println("looking at class ${methodHook?.owner}")
@@ -227,6 +224,7 @@ class Analyser{
                     }
                 }
             }
+
 
             //Inject varBit
             if(clazzData.`class` == "Client") {
@@ -302,6 +300,14 @@ class Analyser{
                     }
                 }
             }
+
+
+
+            // Bypass focus events
+            if(clazzData.`class` == "GameShell"){
+                injectFocusBlocker(classes[clazzData.name]!!)
+            }
+
 
 //            println("Methods:~~~~~~")
 //            addInvokeMethods(clazzData, runeStar, classPath, classes)
@@ -536,6 +542,41 @@ class Analyser{
     private fun putClasses(name: String): ByteArray {
         val file = File(name)
         return file.readBytes()
+    }
+
+    //This method will inject a boolean check in for the scriptManager object for field blockFocus
+    // the gain focus only set 1 time, then block all get focus events
+    // Always block loseFocus events when blockFocus is true
+    private fun injectFocusBlocker(classNode: ClassNode){
+        for (method in classNode.methods) {
+            if (method.name.contains("focusLost")) {
+                val il = InsnList()
+                val labelNode = LabelNode()
+
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getBlockFocus","()Z"))
+                il.add(JumpInsnNode(IFEQ,labelNode))
+                il.add(labelNode)
+                il.add(InsnNode(RETURN))
+                method.instructions.insert(il)
+            }
+            else if (method.name.contains("focusGained")) {
+                //create new label that just returns
+                val il = InsnList()
+                val labelNode = LabelNode()
+
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getBlockFocus","()Z"))
+                il.add(JumpInsnNode(IFNE,labelNode))
+                //Jump to return
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/interfaces/ScriptManager;"))
+                il.add(InsnNode(ICONST_1))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "setBlockFocus","(Z)V"))
+                il.add(labelNode)
+                il.add(InsnNode(RETURN))
+                method.instructions.insert(il)
+            }
+        }
     }
 
     private fun injectScriptManagerField(classNode: ClassNode) {
