@@ -16,8 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class WidgetExplorerV3 {
     private JTextField textField1;
@@ -119,7 +117,7 @@ public class WidgetExplorerV3 {
         node.removeAllChildren();
         textField1.setText("");
         HashMap<Widget.WidgetIndex, DefaultMutableTreeNode> treeNodeHashMap = new HashMap();
-        SortedMap<Widget.WidgetIndex, DefaultMutableTreeNode> rootNodes = new TreeMap<>((a1, a2) -> Integer.parseInt(a1.getChildID()) - Integer.parseInt(a2.getChildID()));
+        HashMap<Widget.WidgetIndex, DefaultMutableTreeNode> rootNodes = new HashMap();
         Component[][] components = ctx.getClient().getInterfaceComponents();
         DefaultMutableTreeNode currentParentNode = null;
         for (Integer parentID = 0; parentID < components.length; parentID++) {
@@ -151,10 +149,18 @@ public class WidgetExplorerV3 {
 
                             //Get next parent index
                             currentIndex = parentIndex;
-                            parentIndex = Widget.Companion.getParentIndex(components[Integer.parseInt(currentIndex.getParentID())][Integer.parseInt(currentIndex.getChildID())], ctx);
-                            if (parentIndex.getParentID().equals("-1") && !rootNodes.containsKey(currentIndex)) {
-                                rootNodes.put(currentIndex, parentNode);
-                                System.out.println("Adding root(" + currentIndex.getParentID() + "," + currentIndex.getChildID() + " -> " + "(" + parentIndex.getParentID() + "," + parentIndex.getChildID() + ")");
+                            System.out.println("cur_index:" + currentIndex.toString());
+                            try {
+                                System.out.println("size: " + components.length + " parent index:" + currentIndex.getParentID() + ' ' + components[Integer.parseInt(currentIndex.getParentID())].length);
+                                Integer.parseInt(currentIndex.getParentID());
+                                parentIndex = Widget.Companion.getParentIndex(components[Integer.parseInt(currentIndex.getParentID())][Integer.parseInt(currentIndex.getChildID())], ctx);
+
+                                if (parentIndex.getParentID().equals("-1") && !rootNodes.containsKey(currentIndex)) {
+                                    rootNodes.put(currentIndex, parentNode);
+                                    System.out.println("Adding root(" + currentIndex.getParentID() + "," + currentIndex.getChildID() + " -> " + "(" + parentIndex.getParentID() + "," + parentIndex.getChildID() + ")");
+                                }
+                            } catch (Exception e) {
+                                break;
                             }
                         }
 
@@ -163,7 +169,13 @@ public class WidgetExplorerV3 {
                         if (childChildren != null) {
                             System.out.println("Children children len: " + childChildren.length + "(" + parentID + "," + childID + ")");
                             parentIndex = new Widget.WidgetIndex(parentID.toString(), childID.toString(), 0);
-                            DefaultMutableTreeNode parentNode = treeNodeHashMap.get(parentIndex);
+                            DefaultMutableTreeNode parentNode = null;
+                            if (!treeNodeHashMap.containsKey(parentIndex)) {
+                                parentNode = new DefaultMutableTreeNode(parentIndex.toString());
+                                treeNodeHashMap.put(parentIndex, parentNode);
+                            } else {
+                                parentNode = treeNodeHashMap.get(parentIndex);
+                            }
                             for (int i = 0; i < childChildren.length; i++) {
                                 parentNode.add(new DefaultMutableTreeNode(parentIndex.toString() + "." + i));
                             }
@@ -173,9 +185,18 @@ public class WidgetExplorerV3 {
             }
         }
         // sort the rootNode set
-        for (DefaultMutableTreeNode rootNode : rootNodes.values()) {
+        for (Widget.WidgetIndex index : rootNodes.keySet()) {
+            DefaultMutableTreeNode rootNode = rootNodes.get(index);
             if (rootNode != null) {
-                node.add(rootNode);
+                if (ctx.getClient().getClientPreferences().getWindowMode() == 1) {// Fixed mode
+                    if (index.getParentID().equals("548")) {
+                        node.add(rootNode);
+                    }
+                } else {
+                    if (index.getParentID().equals("164")) {
+                        node.add(rootNode);
+                    }
+                }
             }
         }
         treeModel.reload();
