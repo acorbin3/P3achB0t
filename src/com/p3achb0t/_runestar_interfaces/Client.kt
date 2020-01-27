@@ -618,7 +618,7 @@ interface Client : GameShell {
     fun getUserHomeDirectory(): String
     fun getVarcs(): Varcs
     fun getVarbit(id: Int): Int
-    fun doAction(ActionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int)
+    fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int)
     fun getViewportComponent(): Component
     fun getViewportDrawCount(): Int
     fun getViewportHeight(): Int
