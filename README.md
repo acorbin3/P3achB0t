@@ -8,6 +8,11 @@ This project is to learn:
 1. Runtime analysis of values to identify fields/classes
 1. Learn control flow analysis to trim unused fields and classes when deobfuscating the code
 
+# Discord
+If you would like to join the community or have questions feel free to join this discord
+
+https://discord.gg/kcepXFP
+
 # How to setup & build the project
 Its recommended that you use InteliJ IDEA for the development environment. Currently we are using Java 11
 
@@ -52,11 +57,4 @@ OR
 
 On the Project View on the left hand side you can right click a file and select "Compile
 
-Caveat - Depending on what you change within the file or files its possible you cant just recompile. For example if you change a class signatur or add a new class then you need to do a recomple and relaunch. 
-
-
-
-# Discord
-If you would like to join the community or have questions feel free to join this discord
-
-https://discord.gg/kcepXFP
+Caveat - Depending on what you change within the file or files its possible you cant just recompile. For example, if you change a class signature or add a new class then you need to do a recompile and relaunch.
