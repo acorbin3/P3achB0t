@@ -1,8 +1,10 @@
 package com.p3achb0t.scripts
 
-import com.p3achb0t.api.*
+import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.LoggingIntoAccount
+import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.*
-import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
@@ -172,7 +174,8 @@ class TutorialIslanddoAction: AbstractScript()  {
 
     class ICantReachThatDialog(val ctx: Context): Job(ctx.client){
         override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
-            return WidgetItem(ctx.widgets.find(162,44),ctx=ctx).containsText("I can't reach that!")
+            val cantDoThat = WidgetItem(ctx.widgets.find(162,44),ctx=ctx)
+            return cantDoThat.containsText("I can't reach that!") || cantDoThat.containsText("You can't attack players")
         }
 
         override suspend fun execute() {
@@ -296,8 +299,9 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             println("Time to interact with Gielinor Guide")
             val gielinorGuide = ctx.npcs.findNpc("Gielinor Guide")[0]
-            if(!ctx.dialog.isContinueAvailable())
-                gielinorGuide.interact("Talk-to")
+            if(!ctx.dialog.isContinueAvailable()) {
+                gielinorGuide.doAction()
+            }
             Utils.waitFor(5, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
@@ -376,7 +380,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             println("Time to interact with Gielinor Guide")
             val gielinorGuide = ctx.npcs.findNpc("Gielinor Guide")[0]
             if(!ctx.dialog.isContinueAvailable())
-                gielinorGuide.interact("Talk-to")
+                gielinorGuide.doAction()
             Utils.waitFor(5, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
@@ -403,7 +407,8 @@ class TutorialIslanddoAction: AbstractScript()  {
             val doorLocation = Tile(3098, 3107, ctx = ctx)
             gameObjects.forEach {
                 if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
-                   ctx.gameObjects.gameObjectdoAction(it)
+                    it.doAction()
+                   it.doAction()
                     //Wait till here Tile(3098,3107)
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -445,8 +450,10 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             val survivalExpert = ctx.npcs.findNpc(8503)
             if (!survivalExpert[0].isOnScreen()) survivalExpert[0].turnTo()
-            if(!ctx.dialog.isContinueAvailable())
-                survivalExpert[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable()) {
+                survivalExpert[0].doAction()
+//                survivalExpert[0].doAction()
+            }
             // WAit till the continue is avaliable
             ctx.players.getLocal().waitTillIdle()
 
@@ -485,7 +492,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             suspend fun catchShrimp(ctx: Context) {
                 val shrimps = ctx.npcs.findNpc(3317)
                 shrimps[0].turnTo()
-                shrimps[0].interact("Net")
+                shrimps[0].doAction()
                 // Wait till shrimp is in Inventory
                 Utils.waitFor(10, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -519,8 +526,10 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             val survivalExpert = ctx.npcs.findNpc(8503)
-            if(!ctx.dialog.isContinueAvailable())
-                survivalExpert[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable()) {
+                survivalExpert[0].doAction()
+//                survivalExpert[0].doAction()
+            }
             // WAit till the continue is avaliable
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
@@ -553,7 +562,9 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
                 ctx.mouse.instantclick(Point(0,599))
-                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
+                //TODO this is not working correctly
+                trees[Random.nextInt(0, 3)].doAction(offsetX = -1, offsetY = -1)
+//                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
                 // Wait till we get a log in the invetory.
                 Utils.waitFor(4, object : Utils.Condition {
@@ -602,14 +613,15 @@ class TutorialIslanddoAction: AbstractScript()  {
                     ctx.inventory.getItem(SHRIMP_ID)?.click()
                     // The fire is an animated object so it thows a NPE when trying to interact with model.
                     if (fires[0].sceneryObject != null) {
-                        val point = Calculations.worldToScreen(
-                                fires[0].sceneryObject!!.getCenterX(),
-                                fires[0].sceneryObject!!.getCenterY(),
-                                0,
-                                ctx
-
-                        )
-                        Interact(ctx).interact(point, "Use Raw shrimps -> Fire")
+                        fires[0].doAction()
+//                        val point = Calculations.worldToScreen(
+//                                fires[0].sceneryObject!!.getCenterX(),
+//                                fires[0].sceneryObject!!.getCenterY(),
+//                                0,
+//                                ctx
+//
+//                        )
+//                        Interact(ctx).interact(point, "Use Raw shrimps -> Fire")
                     }
 
                     //Wait till idle
@@ -617,6 +629,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                     delay(100)
                     ctx.dialog.continueDialog()
                 }
+
 
                 ctx.inventory.getItem(590)?.click()
                 ctx.inventory.getItem(LOGS_ID_2511)?.click()
@@ -702,7 +715,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val gateIDs = arrayOf(9708, 9470)
             val gates = ctx.gameObjects.find(gateIDs.random(), sortByDistance = true)
             if (gates.size > 0) {
-               ctx.gameObjects.gameObjectdoAction(gates[0])
+                gates[0].doAction()
                 delay(Random.nextLong(100, 150))
             }
             println("Complete: Going to open gate")
@@ -731,7 +744,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val gameObjects = ctx.gameObjects.find(9709, sortByDistance = true)
             if (gameObjects.size > 0) {
-                ctx.gameObjects.gameObjectdoAction( gameObjects[0])
+                gameObjects[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
             }
         }
@@ -744,8 +757,11 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            if(!ctx.dialog.isContinueAvailable())
-                ctx.npcs.findNpc(3305)[0].talkTo()
+            if(!ctx.dialog.isContinueAvailable()) {
+//                ctx.npcs.findNpc(3305)[0].doAction()
+                ctx.npcs.findNpc(3305)[0].doAction()
+            }
+
 
             delay(Random.nextLong(3000, 5000))
 
@@ -783,6 +799,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
             ctx.mouse.instantclick(Point(0,599))
+//            range.doAction(offsetX = -1)
             ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0)
 
             // Wait till bread in inventory
@@ -824,7 +841,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //DOOR 9710
             val door = ctx.gameObjects.find(9710)
             if (door.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(door[0])
+                door[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
             }
         }
@@ -861,7 +878,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Open Door(9716)
             val doors = ctx.gameObjects.find("Door", sortByDistance = true)
             if (doors.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(doors[0])
+                doors[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
             }
 
@@ -880,8 +897,9 @@ class TutorialIslanddoAction: AbstractScript()  {
             val questGuide = ctx.npcs.findNpc("Quest Guide")
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
-                if(!ctx.dialog.isContinueAvailable())
-                    questGuide[0].interact("Talk-to Quest Guide")
+                if(!ctx.dialog.isContinueAvailable()) {
+                    questGuide[0].doAction()
+                }
                 ctx.players.getLocal().waitTillIdle()
                 delay(Random.nextLong(100, 150))
                 ctx.dialog.continueDialog()
@@ -914,8 +932,9 @@ class TutorialIslanddoAction: AbstractScript()  {
             val questGuide = ctx.npcs.findNpc("Quest Guide")
             if (questGuide.size > 0) {
                 if (!questGuide[0].isOnScreen()) ctx.camera.turnTo(questGuide[0])
-                if(!ctx.dialog.isContinueAvailable())
-                    questGuide[0].interact("Talk-to Quest Guide")
+                if(!ctx.dialog.isContinueAvailable()) {
+                    questGuide[0].doAction()
+                }
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
@@ -933,7 +952,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // Go down ladder
             val ladder = ctx.gameObjects.find("Ladder")
             if (ladder.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(ladder[0])
+                ladder[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
 //                delay(Random.nextLong(3500, 6400))
             }
@@ -954,8 +973,9 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (miningGuide.size > 0) {
                 ctx.camera.setHighPitch()
                 if (!miningGuide[0].isOnScreen()) miningGuide[0].turnTo()
-                if(!ctx.dialog.isContinueAvailable())
-                    miningGuide[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable()) {
+                    miningGuide[0].doAction()
+                }
                 delay(Random.nextLong(1250, 3650))
                 ctx.dialog.continueDialog()
 
@@ -970,7 +990,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val rocks = ctx.gameObjects.find("Rocks", sortByDistance = true)
                 if (rocks.size > 0) {
                     val oldInventoryCount = ctx.inventory.getCount()
-                    ctx.gameObjects.gameObjectdoAction(rocks[0])
+                    rocks[0].doAction()
                     ctx.players.getLocal().waitTillIdle()
                     Utils.waitFor(8, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -1047,6 +1067,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // had to add this in manually for some reason the location was off by 1? not sure why.
 
             ctx.mouse.instantclick(Point(0,599))
+//            furnace[0].doAction(offsetX = -1, offsetY = -1)
             ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0)
             ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
@@ -1067,8 +1088,9 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if (Tile(3081, 9504, ctx = ctx).distanceTo() > 4) {
                     Tile(3081, 9504, ctx = ctx).clickOnMiniMap()
                 }
-                if(!ctx.dialog.isContinueAvailable())
-                    miningGuide[0].talkTo()
+                if(!ctx.dialog.isContinueAvailable()) {
+                    miningGuide[0].doAction()
+                }
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
 
@@ -1091,7 +1113,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
                 val index = (0..1).random()
                 Inventory(ctx = ctx).open()
-                ctx.gameObjects.gameObjectdoAction(anvil[index])
+                anvil[index].doAction()
                 delay(Random.nextLong(300, 700))
                 ctx.players.getLocal().waitTillIdle()
                 //Wait for smiting widgets
@@ -1126,7 +1148,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             Walking.walkPath(walkingPath)
             val gate = ctx.gameObjects.find("Gate", sortByDistance = true)
             if (gate.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(gate[0])
+                gate[0].doAction()
                 delay(100)
                 //TODO - This somehow keeps clicking gate. Figure out how to make this better
                 ctx.players.getLocal().waitTillIdle()
@@ -1159,7 +1181,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Talk with combat instructor
             val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
             if(!ctx.dialog.isContinueAvailable())
-                combatInstructor[0].talkTo()
+                combatInstructor[0].doAction()
             ctx.players.getLocal().waitTillIdle()
             ctx.dialog.continueDialog()
 
@@ -1215,7 +1237,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Talk with combat instructor
             val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
             if(!ctx.dialog.isContinueAvailable())
-                combatInstructor[0].talkTo()
+                combatInstructor[0].doAction()
             ctx.dialog.continueDialog()
 
         }
@@ -1270,7 +1292,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Enter cage
             val gates = ctx.gameObjects.find("Gate", sortByDistance = true)
             if (gates.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(gates[0])
+                gates[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
             }
 
@@ -1321,7 +1343,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (ratCageArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
                 val gates = ctx.gameObjects.find("Gate", sortByDistance = true)
                 if (gates.size > 0) {
-                    ctx.gameObjects.gameObjectdoAction(gates[0])
+                    gates[0].doAction()
                     ctx.players.getLocal().waitTillIdle()
                 }
             }
@@ -1334,7 +1356,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 }
 
                 if(!ctx.dialog.isContinueAvailable())
-                    combatInstructor[0].talkTo()
+                    combatInstructor[0].doAction()
                 ctx.dialog.continueDialog()
             }
         }
@@ -1396,7 +1418,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val ladder = ctx.gameObjects.find("Ladder", sortByDistance = true)
             if (ladder.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(ladder[0])
+                ladder[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
                 //We are expecting to be really far from the ladder so lets wait till then
                 Utils.waitFor(4, object : Utils.Condition {
@@ -1422,7 +1444,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if(caveTile.distanceTo() < 10){
                 val ladder = ctx.gameObjects.find("Ladder", sortByDistance = true)
                 if (ladder.size > 0) {
-                    ctx.gameObjects.gameObjectdoAction(ladder[0])
+                    ladder[0].doAction()
                     ctx.players.getLocal().waitTillIdle()
                 }
             }
@@ -1441,7 +1463,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val bankBooth = ctx.gameObjects.find("Bank booth", sortByDistance = true)
             if (bankBooth.size > 0) {
-                ctx.gameObjects.gameObjectdoAction(bankBooth[0])
+                bankBooth[0].doAction()
                 Utils.waitFor(10, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -1470,7 +1492,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         companion object {
             suspend fun openPollBooth(ctx: Context) {
                 val pollBooth = ctx.gameObjects.find(26815)
-                ctx.gameObjects.gameObjectdoAction(pollBooth[0])
+                pollBooth[0].doAction()
                 delay(Random.nextLong(1500, 2500))
                 ctx.dialog.continueDialog()
             }
@@ -1524,7 +1546,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3125 && it.getGlobalLocation().y == 3124) {
-                        ctx.gameObjects.gameObjectdoAction(it)
+                        it.doAction()
                         Utils.waitFor(6, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
                                 delay(100)
@@ -1549,7 +1571,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (accountManager.isNotEmpty()) {
                 ctx.camera.setHighPitch()
                 if(!ctx.dialog.isContinueAvailable())
-                    accountManager[0].talkTo()
+                    accountManager[0].doAction()
 //                delay(Random.nextLong(2500, 4500))
                 ctx.dialog.continueDialog()
             }
@@ -1579,7 +1601,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3130 && it.getGlobalLocation().y == 3124) {
-                        ctx.gameObjects.gameObjectdoAction(it)
+                        it.doAction()
                         ctx.players.getLocal().waitTillIdle()
                         delay(Random.nextLong(100, 150))
                     }
@@ -1607,7 +1629,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 if (!brotherBrace[0].isOnScreen())
                     brotherBrace[0].turnTo()
                 if(!ctx.dialog.isContinueAvailable())
-                    brotherBrace[0].talkTo()
+                    brotherBrace[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
             }
@@ -1649,7 +1671,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (doors.isNotEmpty()) {
                 doors.forEach {
                     if (it.getGlobalLocation().x == 3122 && it.getGlobalLocation().y == 3102) {
-                        ctx.gameObjects.gameObjectdoAction(it)
+                        it.doAction()
                         delay(Random.nextLong(1500, 2500))
                         ctx.players.getLocal().waitTillIdle()
                     }
@@ -1677,7 +1699,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (magicInstructor.isNotEmpty()) {
                 if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
                 if(!ctx.dialog.isContinueAvailable())
-                    magicInstructor[0].talkTo()
+                    magicInstructor[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
 
@@ -1746,9 +1768,10 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             val magicInstructor = ctx.npcs.findNpc("Magic Instructor")
             if (magicInstructor.isNotEmpty()) {
+                //TODO make sure windString is not selected
                 if (!magicInstructor[0].isOnScreen()) magicInstructor[0].turnTo()
                 if(!ctx.dialog.isContinueAvailable())
-                    magicInstructor[0].talkTo()
+                    magicInstructor[0].doAction()
                 ctx.players.getLocal().waitTillIdle()
                 ctx.dialog.continueDialog()
                 ctx.dialog.selectionOptiondoAction("Yes")

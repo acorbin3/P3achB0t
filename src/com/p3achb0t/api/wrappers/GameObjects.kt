@@ -1,8 +1,6 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import net.runelite.api.MenuOpcode
-import java.awt.Point
 
 
 class GameObjects(val ctx: Context) {
@@ -31,35 +29,6 @@ class GameObjects(val ctx: Context) {
             return gameObjects
         }
 
-    /**
-     * added by sirscript
-     * doaction (local location.x + y and id of the gameobject it seems like MenuOpcode.GAME_OBJECT_SECOND_OPTION is the first option usually for the opcode
-     */
-
-    suspend fun gameObjectdoAction(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION) {
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
-    }
-
-    suspend fun gameObjectdoAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
-    }
-
-    suspend fun gameObjectdoAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
-    }
-
-    suspend fun gameObjectdoAction4(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
-    }
-
-    suspend fun gameObjectdoAction5(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
-    }
 
     fun find(id: Int, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()

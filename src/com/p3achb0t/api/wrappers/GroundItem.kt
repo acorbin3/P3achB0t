@@ -2,7 +2,8 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Obj
-import com.p3achb0t.api.*
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -72,9 +73,9 @@ class GroundItem(
      * doaction (local location.x + y and id of the grounditem
      */
 
-    suspend fun takedoAction(groundItem: GroundItem) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(groundItem.getLocalLocation().x, groundItem.getLocalLocation().y, 20, groundItem.id, "", "", 0 ,0)
+    suspend fun takedoAction() {
+        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, 20, this.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     fun getTriangles(): ArrayList<Polygon> {
@@ -94,7 +95,6 @@ class GroundItem(
         var model: Model? = null
         val tiles = ctx?.client?.getScene()?.getTiles()
         val regional = this.getLocalLocation()
-        println("${regional.z},${regional.x},${regional.y}")
 
         val observableTile = tiles?.get(regional.z)?.get(regional.x)?.get(regional.y)
 

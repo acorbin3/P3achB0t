@@ -14,7 +14,8 @@ class ScriptManager(val client: Any) {
 
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
-    private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var blockFocus = false
     val debugScripts = mutableListOf<DebugScript>()
 
     var x = 800
@@ -27,14 +28,9 @@ class ScriptManager(val client: Any) {
     lateinit var thread: Job
     var gameLoopI = 0
 
-
-    fun setScript(s: AbstractScript) {
+    fun setUpScript(s: AbstractScript) {
         s.initialize(client)
         this.script = s
-    }
-
-    fun getScript(): AbstractScript {
-        return script
     }
 
     suspend fun loop() {
@@ -42,6 +38,7 @@ class ScriptManager(val client: Any) {
             try {
                 script.loop()
             } catch (e: Error) {
+                println(e.localizedMessage)
                 for (el in e.stackTrace) {
                     println(el.toString())
                 }
@@ -54,6 +51,10 @@ class ScriptManager(val client: Any) {
                 val updatedPrefix  = prefix ?: ""
                 (this.script as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
             }
+    }
+
+    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int){
+        println("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 
 

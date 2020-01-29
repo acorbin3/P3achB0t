@@ -1,10 +1,11 @@
 package com.p3achb0t.api.wrappers.interfaces
 
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Constants
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.LineOfSight
+import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -13,8 +14,8 @@ import kotlin.random.Random
 
 interface Locatable {
     var loc_ctx: Context?
-    abstract fun draw(g: Graphics2D)
-    abstract fun draw(g: Graphics2D, color: Color)
+    fun draw(g: Graphics2D)
+    fun draw(g: Graphics2D, color: Color)
 
 
     // In general players, objects, ground items getting x and y are stored in Regional coordinates.
@@ -22,9 +23,9 @@ interface Locatable {
     // you right shift, and then add the applet.baseX and applet.baseY
 
     //namePoint returns the position at which the name of an item, npc, or actor would have the name displayed
-    abstract fun getNamePoint(): Point
+    fun getNamePoint(): Point
 
-    abstract fun getGlobalLocation(): Tile
+    fun getGlobalLocation(): Tile
 
     // This function will remove the base and shift over by 7
     fun getLocalLocation(): Tile {
@@ -82,7 +83,7 @@ interface Locatable {
         delay(Random.nextLong(100, 200)) // This is to limit any movement on next interactions
     }
 
-    abstract fun isOnScreen(): Boolean
+    fun isOnScreen(): Boolean
 
     fun distanceTo(): Int {
         return loc_ctx?.let { Calculations.distanceTo(getGlobalLocation(), it) } ?: -1
@@ -94,5 +95,15 @@ interface Locatable {
 
     fun distanceTo(tile: Tile): Int {
         return Calculations.distanceBetween(getGlobalLocation(), tile.getGlobalLocation())
+    }
+
+    //This utility is checking to see if the player can reach the specific tile
+    fun canReach(): Boolean{
+        return loc_ctx?.let { LineOfSight(it).canReach(it.players.getLocal().getLocalLocation(),getLocalLocation()) } ?: false
+    }
+
+    fun getMiniMapPoint():Point{
+        val regional = getRegionalLocation()
+        return loc_ctx?.let { Calculations.worldToMiniMap(regional.x, regional.y, it) } ?: Point(-1,-1)
     }
 }

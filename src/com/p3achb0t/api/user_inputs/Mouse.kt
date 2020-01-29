@@ -17,8 +17,22 @@ import java.awt.event.MouseEvent
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
+// This class will be used to specify want will be requested do action params when doing a click from the mouse
+data class DoActionParams(
+        val actionParam: Int = 0,
+        val widgetID: Int = 0,
+        val menuAction: Int = 0,
+        val id: Int = 0,
+        val menuOption: String = "",
+        val menuTarget: String = "",
+        val mouseX: Int = 0,
+        val mouseY: Int = 0
+)
+
 class Mouse(obj: Any) {
 
+    var overrideDoActionParams = false
+    var doActionParams: DoActionParams = DoActionParams()
     private val component: Component = (obj as Applet).getComponent(0)
     private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createFastGamerMotionFactory(obj)
     private val mouseHopping: MouseHop = MouseHop(obj as IScriptManager, obj as Applet)
@@ -57,13 +71,19 @@ class Mouse(obj: Any) {
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 
+    suspend fun doAction(doActionParams: DoActionParams){
+        overrideDoActionParams = true
+        this.doActionParams = doActionParams
+        instantclick(Point(0,0))
+    }
+
     suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
             return false
         }
 
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
-        mouseHopping.move(destPoint)
+        mouseHopping.setMousePosition(destPoint)
 
         if (click) {
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
@@ -102,6 +122,9 @@ class Mouse(obj: Any) {
     }
 
 
+    suspend fun instaMove(destPoint: Point){
+        mouseHopping.move(destPoint)
+    }
     suspend fun moveMouse(destPoint: Point, click: Boolean = false, clickType: ClickType = ClickType.Left): Boolean {
         if (destPoint == Point(-1, -1)) {
             return false

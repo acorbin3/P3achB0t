@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Utils
 import java.awt.Color
 import java.awt.Graphics
 
@@ -28,7 +28,10 @@ fun rightClickMenuPaint(g: Graphics, ctx: Context) {
                 menuAction = Utils.cleanColorText(menuAction)
                 var menuOption = ctx.client.getMenuTargetNames()[mCount - i]
                 menuOption = Utils.cleanColorText(menuOption)
-                val action = "$menuAction $menuOption"
+                val menuArgument0 = ctx.client.getMenuArguments0()[mCount - i]
+                val menuArgument1 = ctx.client.getMenuArguments1()[mCount - i]
+                val menuArgument2 = ctx.client.getMenuArguments2()[mCount - i]
+                val action = "$menuAction $menuOption $menuArgument0 $menuArgument1 $menuArgument2"
                 g.color = Color.GREEN
 
                 g.drawString(action, mX + width, mY + yDiff + (lineHeight / 2) + 7)

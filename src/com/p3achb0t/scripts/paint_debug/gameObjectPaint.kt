@@ -3,7 +3,7 @@ package com.p3achb0t.scripts.paint_debug
 import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
 import com.p3achb0t._runestar_interfaces.LocType
 import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t.api.*
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -109,13 +109,14 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                                             ctx
 
                                                     )
+                                            val localPos = go.getLocalLocation()
 
                                             //Add offset on the Y so Things on the same tile do not stack
                                             val offsetY = (count-1) * 30
                                             //For now only filter objects near m
                                             if (localPlayer.distanceTo(globalPos) < 5)
                                                 g.drawString(
-                                                        objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}",
+                                                        objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
                                                         point2.x,
                                                         point2.y + offsetY
                                                 )

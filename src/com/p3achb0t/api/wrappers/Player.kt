@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Point
@@ -51,19 +51,6 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
         return healthInt
     }
 
-    fun getStrength(): Int {
-        var level = 0
-        var temp = WidgetItem(ctx?.widgets?.find(320, 2)?.getChildren()?.get(4), ctx = ctx)
-        level = temp.widget?.getText()?.toInt()!!
-        return level
-    }
-
-    fun getCurrentStrength(): Int {
-        var level = 0
-        var temp = WidgetItem(ctx?.widgets?.find(320, 2)?.getChildren()?.get(3), ctx = ctx)
-        level = temp.widget?.getText()?.toInt()!!
-        return level
-    }
 
     override suspend fun interact(action: String): Boolean {
         //TODO check is player is on screen

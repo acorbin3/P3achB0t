@@ -46,6 +46,10 @@ class Calculations {
             }
         }
 
+        fun getTileHeight(ctx: Context, tile: Tile): Int{
+            return getTileHeight(ctx, tile.plane, tile.x, tile.y)
+        }
+
         fun getTileHeight(ctx: Context, plane: Int, x: Int, y: Int): Int {
             val x1 = x shr 7
             val y1 = y shr 7

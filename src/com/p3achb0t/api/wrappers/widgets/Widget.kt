@@ -6,9 +6,16 @@ import com.p3achb0t.api.Context
 import java.awt.Rectangle
 
 interface Widget {
-	data class WidgetIndex(var parentID: String, var childID: String, var raw: Int = 0)
+	data class WidgetIndex(var parentID: String, var childID: String, var raw: Int = 0){
+		override fun toString():String{
+			return "($parentID,$childID)"
+		}
+	}
 	companion object {
 
+		fun getCurrentIndex(widget: Component): WidgetIndex{
+			return WidgetIndex(widget.getId().shr(16).toString(), widget.getId().and(0xFFFF).toString())
+		}
 		fun getParentIndex(widget: Component, ctx: Context): WidgetIndex {
 			val parentIndex = widget.getParentId().shr(16)
 			val childIndex = widget.getParentId().and(0xFFFF)

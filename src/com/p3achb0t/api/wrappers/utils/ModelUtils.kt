@@ -7,7 +7,7 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
+data class ObjectPositionInfo(var x: Int, var y: Int, var height: Int = 0, var orientation: Int = 0, val plane: Int = 0)
 
 
 fun getActorTriangles(actor: Actor?, ctx: Context): ArrayList<Polygon> {

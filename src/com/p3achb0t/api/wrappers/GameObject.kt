@@ -3,14 +3,15 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.wrappers.interfaces.Interactable
+import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
 import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import com.p3achb0t.scripts.paint_debug.getObjectComposite
-import com.p3achb0t.api.wrappers.interfaces.Interactable
-import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.Context
 import net.runelite.api.MenuOpcode
 import java.awt.Color
 import java.awt.Graphics2D
@@ -149,9 +150,37 @@ class GameObject(
         }
     }
 
-    suspend fun gameObjectdoAction(x: Int, y: Int, id: MenuOpcode) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(x, y, 20, id.id, "", "", 0 ,0)
+
+    /**
+     * added by sirscript
+     * doaction (local location.x + y and id of the gameobject it seems like MenuOpcode.GAME_OBJECT_SECOND_OPTION is the first option usually for the opcode
+     * offsetX & offsetY: sometimes the location of the object needs to be offset and there is a way to provide this
+     *
+     */
+
+    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0) {
+        val doActionParams = DoActionParams(this.getLocalLocation().x - offsetX, this.getLocalLocation().y - offsetY, opcode.id, this.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction4(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction5(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     fun getConvexHull(): Polygon {
