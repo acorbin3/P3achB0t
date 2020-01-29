@@ -562,6 +562,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
                 ctx.mouse.instantclick(Point(0,599))
+                //TODO this is not working correctly
                 trees[Random.nextInt(0, 3)].doAction(offsetX = -1, offsetY = -1)
 //                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
