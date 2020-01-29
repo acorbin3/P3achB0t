@@ -83,7 +83,7 @@ class Mouse(obj: Any) {
         }
 
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
-        mouseHopping.move(destPoint)
+        mouseHopping.setMousePosition(destPoint)
 
         if (click) {
             val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
