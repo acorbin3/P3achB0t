@@ -2,15 +2,15 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.utils.Utils
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Rectangle
-import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random
 
@@ -237,8 +237,8 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
-                    ctx.mouse.instantclick(Point(0,0))
-                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
+                    val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
+                    ctx.mouse.doAction(doActionParams)
                     delay(600)
                 }
             }
@@ -254,8 +254,8 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
-                    ctx.mouse.instantclick(Point(0,0))
-                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+                    val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+                    ctx.mouse.doAction(doActionParams)
                     delay(600)
                 }
             }
@@ -271,8 +271,8 @@ class Bank(val ctx: Context) {
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
-                    ctx.mouse.instantclick(Point(0,0))
-                    ctx.client.doAction(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
+                    val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
+                    ctx.mouse.doAction(doActionParams)
                     delay(600)
                 }
             }
@@ -298,8 +298,8 @@ class Bank(val ctx: Context) {
 
     suspend fun setitem() {
         if (isOpen()) {
-            ctx.mouse.instantclick(Point(0,0))
-            ctx.client.doAction(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            val doActionParams = DoActionParams(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            ctx.mouse.doAction(doActionParams)
             delay(600)
         }
     }
@@ -311,8 +311,8 @@ class Bank(val ctx: Context) {
      */
 
     suspend fun depositAlldoAction() {
-        ctx.mouse.instantclick(Point(0,0))
-        ctx.client.doAction(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        val doActionParams = DoActionParams(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        ctx.mouse.doAction(doActionParams)
     }
 
     /**
@@ -321,8 +321,8 @@ class Bank(val ctx: Context) {
      */
 
     suspend fun depositEquipmentdoAction() {
-        ctx.mouse.instantclick(Point(0,0))
-        ctx.client.doAction(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        val doActionParams = DoActionParams(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        ctx.mouse.doAction(doActionParams)
     }
 
 

@@ -1,12 +1,12 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Timer
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import java.awt.Point
 import kotlin.random.Random
 
 class Dialog(val ctx: Context) {
@@ -69,8 +69,9 @@ class Dialog(val ctx: Context) {
         val time = 20 //20 seconds
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
-            ctx.mouse.instantclick(Point(0,599))
-            ctx.client.doAction(-1, 15138819, 30, 0, "", "", 0, 0)
+            val doActionParams = DoActionParams(-1, 15138819, 30, 0, "", "", 0, 0)
+            ctx.mouse.doAction(doActionParams)
+
             delay(Random.nextLong(200, 350))
         }
     }
@@ -86,8 +87,8 @@ class Dialog(val ctx: Context) {
         // Options are in children but not index zero
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
-                ctx.mouse.instantclick(Point(0,599))
-                ctx.client.doAction(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
+                val doActionParams = DoActionParams(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(1500, 2500))
             }
         }
@@ -101,8 +102,8 @@ class Dialog(val ctx: Context) {
     suspend fun selectRandomOptiondoAction() {
         val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0
-        ctx.mouse.instantclick(Point(0,599))
-        ctx.client.doAction(Random.nextInt(1, childrenSize), 14352385, 30, 0, "", "", 0, 0)
+        val doActionParams = DoActionParams(Random.nextInt(1, childrenSize), 14352385, 30, 0, "", "", 0, 0)
+        ctx.mouse.doAction(doActionParams)
         delay(Random.nextLong(1500, 2500))
     }
 

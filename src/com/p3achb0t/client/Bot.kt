@@ -2,18 +2,16 @@ package com.p3achb0t.client
 
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.client.loader.ConfigReader
-import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.interfaces.io.Keyboard
 import com.p3achb0t.client.interfaces.io.Mouse
+import com.p3achb0t.client.loader.ConfigReader
+import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.managers.scripts.LoadDebugScripts
 import com.p3achb0t.client.managers.scripts.LoadScripts
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.interfaces.IScriptManager
 import com.p3achb0t.interfaces.ScriptManager
-import com.p3achb0t.scripts.WidgetExplorerDebug
-
 import java.applet.Applet
 import java.awt.Dimension
 import java.util.*
@@ -48,7 +46,7 @@ class Bot(world: Int) {
         val appletStub = RSAppletStub(map)
         appletStub.appletContext.setApplet(applet)
         applet.setStub(appletStub)
-        appletStub.appletResize(800,600);
+        appletStub.appletResize(800,600)
         applet.preferredSize = Dimension(800,600) // needs to be here
         applet.setSize(800,600)// = Dimension(800,600)
         applet.validate()
@@ -77,11 +75,11 @@ class Bot(world: Int) {
     }
 
     fun setScript(name: AbstractScript) {
-        manager.getManager().setScript(name)
+        manager.getManager().setUpScript(name)
     }
 
     fun getScript() : AbstractScript {
-        return manager.getManager().getScript()
+        return manager.getManager().script
     }
 
     fun startScript() {

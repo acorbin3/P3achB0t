@@ -4,6 +4,7 @@ import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -158,28 +159,28 @@ class GameObject(
      */
 
     suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(this.getLocalLocation().x - offsetX, this.getLocalLocation().y - offsetY, opcode.id, this.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(this.getLocalLocation().x - offsetX, this.getLocalLocation().y - offsetY, opcode.id, this.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction4(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction5(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     fun getConvexHull(): Polygon {

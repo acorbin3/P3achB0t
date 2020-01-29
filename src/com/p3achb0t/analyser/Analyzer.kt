@@ -347,20 +347,31 @@ class Analyser{
         }
 
         // Find all doAction calls
-//        classes.forEach { clazz ->
-//            println("class: ${clazz.key}" )
-//            clazz.value.methods.forEach {methodNode->
-//                println("\tmethod: ${methodNode.name}")
-//                methodNode.instructions.iterator().forEach { abstractNode->
-//                    if(abstractNode.opcode == INVOKESTATIC){
-//                        abstractNode.visibleTypeAnnotations.forEach { vizTypeAnn ->
-//                            println("\t\t ${vizTypeAnn.desc}")
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        classes.forEach { clazz ->
+            clazz.value.methods.iterator().forEach{methodNode->
+                //Skip our doAction call
+                if(methodNode.name != "doAction") {
+
+                    methodNode.instructions.iterator().forEach { abstractNode ->
+                        if (abstractNode.opcode == INVOKESTATIC) {
+                            val mn = (abstractNode as MethodInsnNode)
+                            if(mn.owner == "h" && mn.name == "ir") {
+//                                println("class: ${clazz.key}" )
+//                                println("\tmethod: ${methodNode.name}")
+//                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
+                                val il = InsnList()
+                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                                il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/interfaces/ScriptManager;)V", false))
+                                //doAction
+                                methodNode.instructions.insertBefore(mn, il)
+                                methodNode.instructions.remove(mn)
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
         val path = System.getProperty("user.dir")
         val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
@@ -553,7 +564,8 @@ class Analyser{
         
         //TODO Check to see if we can override
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getCtx","()Lcom/p3achb0t/api/Context;",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/user_inputs/Mouse;",false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "getOverrideDoActionParams","()Z",false))
         il.add(JumpInsnNode(IFEQ,label)) // Jump to regular processing
@@ -567,7 +579,8 @@ class Analyser{
         val label3 = LabelNode(Label())
         il.add(label3)
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getCtx","()Lcom/p3achb0t/api/Context;",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/user_inputs/Mouse;",false))
         il.add(InsnNode(ICONST_0))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "setOverrideDoActionParams","(Z)V",false))
@@ -616,10 +629,11 @@ class Analyser{
         val label = LabelNode(Label())
         il.add(label)
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/user_inputs/Mouse;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "getDoActionParams", "()Lcom/p3achb0t/api/user_inputs/Mouse/DoActionParams;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse/DoActionParams", paramName, paramDescription, false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "getDoActionParams", "()Lcom/p3achb0t/api/user_inputs/DoActionParams;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/DoActionParams", paramName, paramDescription, false))
     }
 
     //This method will inject a boolean check in for the scriptManager object for field blockFocus

@@ -1,7 +1,8 @@
 package com.p3achb0t.client.ui.components
 
-import com.p3achb0t.scripts.paint_debug.PaintDebug
+import com.p3achb0t.scripts.NullScript
 import com.p3achb0t.scripts.WidgetExplorerDebug
+import com.p3achb0t.scripts.paint_debug.PaintDebug
 import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
@@ -38,11 +39,13 @@ class TabManager private constructor() : JTabbedPane() {
         }
         gameTab.revalidate()
         setTabComponentAt(selectedIndex, NewTab(this))
-        //gameTab.revalidate()
+        gameTab.revalidate()
 
         //Here is a place to add some debug script since the client has been loaded
         gameTab.client.addDebugScript(WidgetExplorerDebug.scriptName)
         gameTab.client.addDebugScript(PaintDebug.scriptName)
+        gameTab.client.setScript(NullScript())
+
 
 
 
@@ -57,7 +60,7 @@ class TabManager private constructor() : JTabbedPane() {
         thread(start = true) {
             println("running from thread(): ${Thread.currentThread()}")
             //clients.get(s).client!!.setApplet()
-            clients.get(s).client!!.getApplet()?.destroy()
+            clients.get(s).client.getApplet().destroy()
             remove(s)
             clients.removeAt(s)
         }

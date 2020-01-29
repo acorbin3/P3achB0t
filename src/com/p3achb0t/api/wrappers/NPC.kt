@@ -2,6 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import net.runelite.api.MenuOpcode
@@ -35,8 +36,9 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
     }
 
     suspend fun doAction(){
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
+
+        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     override fun getInteractPoint(): Point {

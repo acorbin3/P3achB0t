@@ -74,7 +74,7 @@ class Mouse(obj: Any) {
     suspend fun doAction(doActionParams: DoActionParams){
         overrideDoActionParams = true
         this.doActionParams = doActionParams
-        instantclick(Point(0,599))
+        instantclick(Point(0,0))
     }
 
     suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {

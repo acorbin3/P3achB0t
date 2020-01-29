@@ -17,7 +17,7 @@ class Context(val obj: Any) {
     val applet: Applet
     var selectedWidget: Component? = null
 
-    val client: Client
+    val client: Client = obj as Client
     val players: Players
     val groundItems: GroundItems
     val npcs: NPCs
@@ -45,7 +45,6 @@ class Context(val obj: Any) {
     val projectiles: Projectiles
 
     init {
-        client = obj as Client
         mouse = Mouse(obj)
         keyboard = Keyboard(obj)
         applet = obj as Applet

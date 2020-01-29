@@ -14,7 +14,7 @@ class ScriptManager(val client: Any) {
 
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
-    private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
     var blockFocus = false
     val debugScripts = mutableListOf<DebugScript>()
 
@@ -28,13 +28,9 @@ class ScriptManager(val client: Any) {
     lateinit var thread: Job
     var gameLoopI = 0
 
-    fun setScript(s: AbstractScript) {
+    fun setUpScript(s: AbstractScript) {
         s.initialize(client)
         this.script = s
-    }
-
-    fun getScript(): AbstractScript {
-        return script
     }
 
     suspend fun loop() {

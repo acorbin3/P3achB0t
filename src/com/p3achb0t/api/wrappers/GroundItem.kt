@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -73,8 +74,8 @@ class GroundItem(
      */
 
     suspend fun takedoAction() {
-        ctx?.mouse?.instantclick(Point(0,599))
-        ctx?.client?.doAction(this.getLocalLocation().x, this.getLocalLocation().y, 20, this.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, 20, this.id, "", "", 0 ,0)
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     fun getTriangles(): ArrayList<Polygon> {
