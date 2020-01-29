@@ -43,6 +43,7 @@ class Context(val obj: Any) {
     val stats: Stats
     val questData: QuestData
     val projectiles: Projectiles
+    val worldHop: WorldHop
 
     init {
         mouse = Mouse(obj)
@@ -71,6 +72,7 @@ class Context(val obj: Any) {
         stats = Stats(this)
         questData = QuestData(this)
         projectiles = Projectiles(this)
+        worldHop = WorldHop(this)
     }
 }
 
