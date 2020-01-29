@@ -1,5 +1,6 @@
 package com.p3achb0t.analyser
 
+import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
@@ -16,6 +17,7 @@ import java.lang.reflect.Modifier
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
+
 
 
 class Analyser{
@@ -52,10 +54,10 @@ class Analyser{
 
 
     data class GetterData(
-        val fieldDescription: String,
-        val methodName: String,
-        val clazz: String = "",
-        val returnFieldDescription: String = ""
+            val fieldDescription: String,
+            val methodName: String,
+            val clazz: String = "",
+            val returnFieldDescription: String = ""
     )
 
     data class InvokerData(
@@ -169,6 +171,7 @@ class Analyser{
             }
 
 
+
             //Inject doAction
             if(clazzData.`class` == "Client") {
                 injectDoActionHook(runeStar, clazzData, classes)
@@ -203,15 +206,48 @@ class Analyser{
                     }
 
                 }
+
             }
 
+            //Inject doAction callback
+            if (clazzData.`class` == "Client") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
+                println("MethodHook: $methodHook")
+//                val list = methodHook?.descriptor?.split(")")!!
+//                val argumentDescription = list[0] + ")" // Add back in the )
+//                val returnDescriptor = list[1]
+//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                //Find the addMessage method, then inject the call back at the front
+                println("looking at class ${methodHook?.owner}")
+                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
+                    println("Looking at method: ${methodNode.name}")
+                    if (methodNode.name == methodHook?.name ) {
+                        println("methodNode.desc: ${methodNode.desc}")
+                        println("Time to insert instructions")
+                        val il = InsnList()
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                        il.add(VarInsnNode(ILOAD, 0))
+                        il.add(VarInsnNode(ILOAD, 1))
+                        il.add(VarInsnNode(ILOAD, 2))
+                        il.add(VarInsnNode(ILOAD, 3))
+                        il.add(VarInsnNode(ALOAD, 4))
+                        il.add(VarInsnNode(ALOAD, 5))
+                        il.add(VarInsnNode(ILOAD, 6))
+                        il.add(VarInsnNode(ILOAD, 7))
+                        il.add(VarInsnNode(ILOAD, 8))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", methodHook?.descriptor))
+                        methodNode.instructions.insert(il)
+
+                    }
+                }
+            }
 
             //Inject varBit
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
                 println("MethodHook: $methodHook")
                 val varBitMethodNode = MethodNode(ACC_PUBLIC, "getVarbit", "(I)I", null, null)
-
                 varBitMethodNode.visitVarInsn(ILOAD, 1)
                 varBitMethodNode.visitInsn(ICONST_0)
                 varBitMethodNode.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
@@ -221,6 +257,51 @@ class Analyser{
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
             }
+
+
+//            //Inject focusgained
+//            if(clazzData.`class` == "GameShell") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "focusGained" && it.owner == "bj" }
+//                println("MethodHook: $methodHook")
+//
+//                val a = MethodNode(ACC_PUBLIC, "focusGained", "(Ljava/awt/event/FocusEvent;)V", null, null)
+//                a.visitVarInsn(ALOAD, 1)
+//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//
+//                a.visitInsn(Opcodes.RETURN)
+//                a.visitEnd()
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
+//
+//
+//            }
+//
+//
+//            //Inject focusLost set to true
+//            if(clazzData.`class` == "GameShell") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "__focusLost_100" }
+//                println("MethodHook: $methodHook")
+//                val a = MethodNode(ACC_PUBLIC, "__focusLost_100", "(Ljava/awt/event/FocusEvent;)V", null, null)
+//                a.visitCode()
+//                val l1 = Label()
+//                a.visitVarInsn(ALOAD, 1)
+//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//
+//                a.visitInsn(Opcodes.RETURN)
+//                a.visitEnd()
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
+//
+//                a.instructions.iterator().forEach {
+//                    if(it is MethodInsnNode){
+//                       println(it.toString())
+//                    }
+//                }
+//            }
+
+
+
+
+
+
 
             // Inject getModel for the Entity
             if(clazzData.`class` == "Entity") {
@@ -853,10 +934,10 @@ class Analyser{
     }
 
     private fun injectFieldGetter(
-        getterData: GetterData,
-        classes: MutableMap<String, ClassNode>,
-        analyserClass: String,
-        runeStar: RuneStarAnalyzer?
+            getterData: GetterData,
+            classes: MutableMap<String, ClassNode>,
+            analyserClass: String,
+            runeStar: RuneStarAnalyzer?
     ) {
         val normalizedFieldName = getterData.methodName
         val field = runeStar?.analyzers?.get(analyserClass)?.fields?.find { it.field == normalizedFieldName }
@@ -865,13 +946,13 @@ class Analyser{
 
         val fieldDescriptor = getterData.fieldDescription
         val returnFieldDescription =
-            if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
+                if (getterData.returnFieldDescription == "") getterData.fieldDescription else getterData.returnFieldDescription
 
 
         val signature = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.signature
 //        println("Class:$analyserClass Filed: $normalizedFieldName fieldOwner: $fieldOwner sig:$signature ReturnFieldDesc:$returnFieldDescription")
         val methodNode =
-            MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
+                MethodNode(ACC_PUBLIC, normalizedFieldName, "()$returnFieldDescription", signature, null)
 
 
         val isStatic = classes[fieldOwner]?.fields?.find { it.name == fieldName }?.access?.and(ACC_STATIC) != 0
@@ -907,7 +988,7 @@ class Analyser{
         methodNode.visitEnd()
         if(!returnFieldDescription.contains("null") && runeStar?.analyzers?.get(analyserClass)?.name in classes) {
 //                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
-                methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
+            methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
         }else{
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }
