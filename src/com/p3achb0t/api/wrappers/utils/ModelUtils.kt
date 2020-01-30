@@ -2,6 +2,7 @@ package com.p3achb0t.api.wrappers.utils
 
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
@@ -12,11 +13,18 @@ data class ObjectPositionInfo(var x: Int, var y: Int, var height: Int = 0, var o
 
 fun getActorTriangles(actor: Actor?, ctx: Context): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
-    var model = actor?.getModel()
-    if (actor != null && model != null) {
-        val positionInfo =
-                ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-        polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+    try {
+        var model = actor?.getModel()
+        if (actor != null && model != null) {
+            val positionInfo =
+                    ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
+            polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+        }
+    }catch (e: Exception){
+        println("Exception " + e.toString())
+        for (statck in e.stackTrace) {
+            println(statck.toString())
+        }
     }
     return polygonList
 }
@@ -92,6 +100,19 @@ fun getTrianglesFromModel(
 
     }
     return polygonList
+}
+
+fun getConvexHull(npc: Npc?, ctx: Context): Polygon {
+
+    var polygon = Polygon()
+    var model = npc?.getModel()
+    if (npc != null && model != null) {
+        val positionInfo =
+                ObjectPositionInfo(npc.getX(), npc.getY(), npc.getOrientation())
+        polygon = getConvexHullFromModel(positionInfo, model, ctx)
+    }
+
+    return polygon
 }
 
 fun getConvexHull(actor: Actor?, ctx: Context): Polygon {

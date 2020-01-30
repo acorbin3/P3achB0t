@@ -4,9 +4,7 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.quests.Quest
 import com.p3achb0t.api.wrappers.utils.Calculations
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
-import com.p3achb0t.scripts.VorkathMain
 import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
@@ -23,13 +21,14 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
-        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
+//        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
+//        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
 //        debugText.add(DebugText("Account status :${ctx.client.get__cq_aw()}"))
 
         try {
             if(ctx.client.getGameState() == 30) {
                 debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
+                debugText.add(DebugText("World: ${ctx.client.getWorldId()}  Host: ${ctx.client.getWorldHost()}"))
 //                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
 //                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
@@ -42,7 +41,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                         ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                 var text = chatText?.getText()
                 debugText.add(DebugText("Bank search Text: ${text}"))
-                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
+//                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
                 debugText.add(
                         DebugText(
                                 "LocalPlayer Position: (${ctx.client.getLocalPlayer().getX() / 128},${ctx.client.getLocalPlayer().getY() / 128})" +

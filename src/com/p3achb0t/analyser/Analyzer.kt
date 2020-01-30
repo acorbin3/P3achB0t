@@ -1,6 +1,5 @@
 package com.p3achb0t.analyser
 
-import com.p3achb0t._runestar_interfaces.Obj
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
@@ -17,7 +16,6 @@ import java.lang.reflect.Modifier
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
-
 
 
 class Analyser{
@@ -307,6 +305,32 @@ class Analyser{
             if(clazzData.`class` == "Entity") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
                 println("MethodHook: $methodHook")
+                //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
+                //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                var returnType = "L$classPath/$clazzName;"
+                println("Returntype $returnType")
+
+                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
+
+                methodNode.visitVarInsn(ALOAD, 0)
+                methodNode.visitInsn(ICONST_0)
+                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
+
+                val cast = "$classPath/$clazzName"
+                methodNode.visitTypeInsn(CHECKCAST, cast)
+                methodNode.visitInsn(Opcodes.ARETURN)
+                methodNode.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+            }
+            if(clazzData.`class` == "Npc") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
+                println("NPC MethodHook: $methodHook")
                 //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
                 //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
                 val list = methodHook?.descriptor?.split(")")!!
