@@ -136,7 +136,6 @@ class TutorialIslanddoAction: AbstractScript()  {
 
     suspend fun run() {
         if (!isInititilized) init()
-//        if (!LoggingIntoClient.loggedIn) return
         jobs.forEach {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             if (it.isValidToRun(chatBox)) {

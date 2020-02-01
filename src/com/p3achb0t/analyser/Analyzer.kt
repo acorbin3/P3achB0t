@@ -302,9 +302,10 @@ class Analyser{
 
 
             // Inject getModel for the Entity
-            if(clazzData.`class` == "Entity") {
+            val listOfModelInjections = listOf<String>("Entity", "Npc") // listOf<String>("Player","Entity", "Npc")
+            if(clazzData.`class` in listOfModelInjections){
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
-                println("MethodHook: $methodHook")
+                println("${clazzData.`class`} MethodHook: $methodHook")
                 //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
                 //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
                 val list = methodHook?.descriptor?.split(")")!!
@@ -328,32 +329,36 @@ class Analyser{
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
-            if(clazzData.`class` == "Npc") {
-                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
-                println("NPC MethodHook: $methodHook")
-                //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
-                //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
-                val list = methodHook?.descriptor?.split(")")!!
-                val argumentDescription = list[0] + ")" // Add back in the )
-                val returnDescriptor = list[1]
-                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
-
-                var returnType = "L$classPath/$clazzName;"
-                println("Returntype $returnType")
-
-                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
-
-                methodNode.visitVarInsn(ALOAD, 0)
-                methodNode.visitInsn(ICONST_0)
-                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
-
-                val cast = "$classPath/$clazzName"
-                methodNode.visitTypeInsn(CHECKCAST, cast)
-                methodNode.visitInsn(Opcodes.ARETURN)
-                methodNode.visitEnd()
-
-                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
-            }
+//            if(clazzData.`class` == "Entity") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
+//                println("MethodHook: $methodHook")
+//                //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
+//                //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
+//                val list = methodHook?.descriptor?.split(")")!!
+//                val argumentDescription = list[0] + ")" // Add back in the )
+//                val returnDescriptor = list[1]
+//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+//
+//                var returnType = "L$classPath/$clazzName;"
+//                println("Returntype $returnType")
+//
+//                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
+//
+//                methodNode.visitVarInsn(ALOAD, 0)
+//                methodNode.visitInsn(ICONST_0)
+//                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
+//
+//                val cast = "$classPath/$clazzName"
+//                methodNode.visitTypeInsn(CHECKCAST, cast)
+//                methodNode.visitInsn(Opcodes.ARETURN)
+//                methodNode.visitEnd()
+//
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+//            }
+//            if(clazzData.`class` == "Npc") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
+//
+//            }
 
             //Inject addMessage
             if (clazzData.`class` == "ChatChannel") {
@@ -452,6 +457,7 @@ class Analyser{
         }
 
         // Find all doAction calls
+        val doActionMethodHook = runeStar?.analyzers!!.get("Client")?.methods?.find { it.method == "doAction" }
         classes.forEach { clazz ->
             clazz.value.methods.iterator().forEach{methodNode->
                 //Skip our doAction call
@@ -460,7 +466,7 @@ class Analyser{
                     methodNode.instructions.iterator().forEach { abstractNode ->
                         if (abstractNode.opcode == INVOKESTATIC) {
                             val mn = (abstractNode as MethodInsnNode)
-                            if(mn.owner == "h" && mn.name == "ir") {
+                            if(mn.owner == doActionMethodHook?.owner && mn.name == doActionMethodHook?.name) {
 //                                println("class: ${clazz.key}" )
 //                                println("\tmethod: ${methodNode.name}")
 //                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
@@ -659,7 +665,6 @@ class Analyser{
     private fun injectDoActionHook(runeStar: RuneStarAnalyzer, clazzData: ClassHook, classes: MutableMap<String, ClassNode>) {
         val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
         println("MethodHook: $methodHook")
-        //TODO - add in logic to if we should override the params
 
         val label = LabelNode(Label())
 
@@ -667,7 +672,6 @@ class Analyser{
         val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;II)V", null, null)
         val il = InsnList()
         
-        //TODO Check to see if we can override
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
@@ -710,6 +714,9 @@ class Analyser{
 
         //Normal processing
         il.add(label)
+        il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
+        il.add(LdcInsnNode("Normal DoAction params"))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",false))
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
         il.add(VarInsnNode(ILOAD, 1))
         il.add(VarInsnNode(ILOAD, 2))
@@ -773,6 +780,9 @@ class Analyser{
                 il.add(InsnNode(ICONST_1))
                 il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "setBlockFocus","(Z)V"))
                 il.add(labelNode)
+                il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
+                il.add(LdcInsnNode("#####Blocked gained focus"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
                 il.add(InsnNode(RETURN))
                 method.instructions.insert(il)
             }
