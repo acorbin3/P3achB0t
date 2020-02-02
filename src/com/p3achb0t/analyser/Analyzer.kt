@@ -203,6 +203,25 @@ class Analyser{
                 }
             }
 
+            //Inject NPc Model callback
+            if (clazzData.`class` == "Npc") {
+                println("Injecting getModel callback for NPC")
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
+                println("MethodHook: $methodHook")
+                println("looking at class ${methodHook?.owner}")
+                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
+                    if (methodNode.name == methodHook?.name) {
+                        println("found getModel at method: ${methodNode.name}")
+                        val il = InsnList()
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                        il.add(VarInsnNode(ILOAD, 1))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getModelCallback", "(I)V"))
+                        methodNode.instructions.insert(il)
+
+                    }
+                }
+            }
+
             //Inject varBit
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
@@ -238,7 +257,9 @@ class Analyser{
                 val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
 
                 methodNode.visitVarInsn(ALOAD, 0)
-                methodNode.visitInsn(ICONST_0)
+//                methodNode.visitInsn(ICONST_0)
+                methodNode.visitLdcInsn(-2120872049)
+//                il.add(LdcInsnNode("."));
                 methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
 
                 val cast = "$classPath/$clazzName"
