@@ -359,11 +359,11 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Open audio section
             WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(3), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
+            WidgetItem(ctx.widgets.find(261, 39), ctx = ctx).click()
+            delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 45), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 51), ctx = ctx).click()
-            delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 57), ctx = ctx).click()
 
         }
 

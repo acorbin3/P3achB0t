@@ -1,6 +1,9 @@
 package com.p3achb0t.scripts
 
-import com.p3achb0t.api.*
+import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.LoggingIntoAccount
+import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -355,11 +358,11 @@ class TutorialIsland: AbstractScript()  {
             //Open audio section
             WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(3), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
+            WidgetItem(ctx.widgets.find(261, 39), ctx = ctx).click()
+            delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 45), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 51), ctx = ctx).click()
-            delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 57), ctx = ctx).click()
 
         }
 
