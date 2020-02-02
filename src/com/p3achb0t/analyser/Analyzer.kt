@@ -179,8 +179,6 @@ class Analyser{
             if (clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
                 println("MethodHook: $methodHook")
-
-
                 //Find the addMessage method, then inject the call back at the front
                 println("looking at class ${methodHook?.owner}")
                 classes[methodHook?.owner]?.methods?.forEach { methodNode ->
@@ -201,42 +199,6 @@ class Analyser{
                         il.add(VarInsnNode(ILOAD, 8))
                         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", methodHook?.descriptor))
                         methodNode.instructions.insert(il)
-                    }
-
-                }
-
-            }
-
-            //Inject doAction callback
-            if (clazzData.`class` == "Client") {
-                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
-                println("MethodHook: $methodHook")
-//                val list = methodHook?.descriptor?.split(")")!!
-//                val argumentDescription = list[0] + ")" // Add back in the )
-//                val returnDescriptor = list[1]
-//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
-
-                //Find the addMessage method, then inject the call back at the front
-                println("looking at class ${methodHook?.owner}")
-                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
-                    println("Looking at method: ${methodNode.name}")
-                    if (methodNode.name == methodHook?.name ) {
-                        println("methodNode.desc: ${methodNode.desc}")
-                        println("Time to insert instructions")
-                        val il = InsnList()
-                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-                        il.add(VarInsnNode(ILOAD, 0))
-                        il.add(VarInsnNode(ILOAD, 1))
-                        il.add(VarInsnNode(ILOAD, 2))
-                        il.add(VarInsnNode(ILOAD, 3))
-                        il.add(VarInsnNode(ALOAD, 4))
-                        il.add(VarInsnNode(ALOAD, 5))
-                        il.add(VarInsnNode(ILOAD, 6))
-                        il.add(VarInsnNode(ILOAD, 7))
-                        il.add(VarInsnNode(ILOAD, 8))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "doActionCallback", methodHook?.descriptor))
-                        methodNode.instructions.insert(il)
-
                     }
                 }
             }
@@ -255,49 +217,6 @@ class Analyser{
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
             }
-
-
-//            //Inject focusgained
-//            if(clazzData.`class` == "GameShell") {
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "focusGained" && it.owner == "bj" }
-//                println("MethodHook: $methodHook")
-//
-//                val a = MethodNode(ACC_PUBLIC, "focusGained", "(Ljava/awt/event/FocusEvent;)V", null, null)
-//                a.visitVarInsn(ALOAD, 1)
-//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
-//
-//                a.visitInsn(Opcodes.RETURN)
-//                a.visitEnd()
-//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
-//
-//
-//            }
-//
-//
-//            //Inject focusLost set to true
-//            if(clazzData.`class` == "GameShell") {
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "__focusLost_100" }
-//                println("MethodHook: $methodHook")
-//                val a = MethodNode(ACC_PUBLIC, "__focusLost_100", "(Ljava/awt/event/FocusEvent;)V", null, null)
-//                a.visitCode()
-//                val l1 = Label()
-//                a.visitVarInsn(ALOAD, 1)
-//                a.visitMethodInsn(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
-//
-//                a.visitInsn(Opcodes.RETURN)
-//                a.visitEnd()
-//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(a)
-//
-//                a.instructions.iterator().forEach {
-//                    if(it is MethodInsnNode){
-//                       println(it.toString())
-//                    }
-//                }
-//            }
-
-
-
-
 
 
 
@@ -329,39 +248,12 @@ class Analyser{
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
-//            if(clazzData.`class` == "Entity") {
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
-//                println("MethodHook: $methodHook")
-//                //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
-//                //the data inbetween the () is the argument descriptor, and the data after ) is the return descriptor
-//                val list = methodHook?.descriptor?.split(")")!!
-//                val argumentDescription = list[0] + ")" // Add back in the )
-//                val returnDescriptor = list[1]
-//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
-//
-//                var returnType = "L$classPath/$clazzName;"
-//                println("Returntype $returnType")
-//
-//                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
-//
-//                methodNode.visitVarInsn(ALOAD, 0)
-//                methodNode.visitInsn(ICONST_0)
-//                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
-//
-//                val cast = "$classPath/$clazzName"
-//                methodNode.visitTypeInsn(CHECKCAST, cast)
-//                methodNode.visitInsn(Opcodes.ARETURN)
-//                methodNode.visitEnd()
-//
-//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
-//            }
-//            if(clazzData.`class` == "Npc") {
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
-//
-//            }
+
+
 
             //Inject addMessage
             if (clazzData.`class` == "ChatChannel") {
+                println("Adding chat listener callback")
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "addMessage" }
                 println("MethodHook: $methodHook")
                 val list = methodHook?.descriptor?.split(")")!!
@@ -395,6 +287,7 @@ class Analyser{
 
             // Bypass focus events
             if(clazzData.`class` == "GameShell"){
+                println("Adding focus blocker")
                 injectFocusBlocker(classes[clazzData.name]!!)
             }
 
@@ -457,31 +350,32 @@ class Analyser{
         }
 
         // Find all doAction calls
-        val doActionMethodHook = runeStar?.analyzers!!.get("Client")?.methods?.find { it.method == "doAction" }
-        classes.forEach { clazz ->
-            clazz.value.methods.iterator().forEach{methodNode->
-                //Skip our doAction call
-                if(methodNode.name != "doAction") {
+        if(true) {
+            val doActionMethodHook = runeStar?.analyzers!!.get("Client")?.methods?.find { it.method == "doAction" }
+            classes.forEach { clazz ->
+                clazz.value.methods.iterator().forEach { methodNode ->
+                    //Skip our doAction call
+                    if (methodNode.name != "doAction") {
 
-                    methodNode.instructions.iterator().forEach { abstractNode ->
-                        if (abstractNode.opcode == INVOKESTATIC) {
-                            val mn = (abstractNode as MethodInsnNode)
-                            if(mn.owner == doActionMethodHook?.owner && mn.name == doActionMethodHook?.name) {
-//                                println("class: ${clazz.key}" )
-//                                println("\tmethod: ${methodNode.name}")
-//                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
-                                val il = InsnList()
-                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
-                                il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/interfaces/ScriptManager;)V", false))
-                                //doAction
-                                methodNode.instructions.insertBefore(mn, il)
-                                methodNode.instructions.remove(mn)
+                        methodNode.instructions.iterator().forEach { abstractNode ->
+                            if (abstractNode.opcode == INVOKESTATIC) {
+                                val mn = (abstractNode as MethodInsnNode)
+                                if (mn.owner == doActionMethodHook?.owner && mn.name == doActionMethodHook?.name) {
+                                println("class: ${clazz.key}" )
+                                println("\tmethod: ${methodNode.name}")
+                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
+                                    val il = InsnList()
+                                    il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
+                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/interfaces/ScriptManager;)V", false))
+                                    //doAction
+                                    methodNode.instructions.insertBefore(mn, il)
+                                    methodNode.instructions.remove(mn)
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
 
         val path = System.getProperty("user.dir")
@@ -669,7 +563,7 @@ class Analyser{
         val label = LabelNode(Label())
 
         //                script.ctx.mouse.overrideDoActionParams
-        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;II)V", null, null)
+        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
         val il = InsnList()
         
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
@@ -705,7 +599,8 @@ class Analyser{
         addDoActionParamGetter(il, "getMouseX", "()I")
         addDoActionParamGetter(il, "getMouseY", "()I")
 
-        il.add(InsnNode(ICONST_0))
+//        il.add(InsnNode(ICONST_0))
+        il.add(VarInsnNode(ILOAD, 9))
 //        //Finally call the doAction internal method
         il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor,false))
         il.add(InsnNode(POP))
@@ -726,7 +621,8 @@ class Analyser{
         il.add(VarInsnNode(ALOAD, 6))
         il.add(VarInsnNode(ILOAD, 7))
         il.add(VarInsnNode(ILOAD, 8))
-        il.add(InsnNode(ICONST_0))
+        il.add(VarInsnNode(ILOAD, 9))
+//        il.add(InsnNode(ICONST_0))
         il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor,false))
         il.add(InsnNode(POP))
         il.add(InsnNode(RETURN))
