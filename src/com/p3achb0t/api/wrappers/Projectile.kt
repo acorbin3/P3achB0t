@@ -32,7 +32,6 @@ class Projectile(
         return ObjectPositionInfo(raw.getX().toInt(),
                 raw.getY().toInt(),
                 orientation = raw.getYaw() % 2048,
-                height = height,
                 plane = raw.getPlane())
     }
     val speed get() = raw.getSpeed()

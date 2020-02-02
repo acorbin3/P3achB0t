@@ -9,25 +9,26 @@ import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-data class ObjectPositionInfo(var x: Int, var y: Int, var height: Int = 0, var orientation: Int = 0, val plane: Int = 0)
+data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
-//fun getActorTriangles(player: Player?, ctx: Context): ArrayList<Polygon> {
-//    var polygonList = ArrayList<Polygon>()
-//    try {
-//        var model = player?.getModel()
-//        if (player != null && model != null) {
-//            val positionInfo =
-//                    ObjectPositionInfo(player.getX(), player.getY(), player.getOrientation())
-//            polygonList = getTrianglesFromModel(positionInfo, model, ctx)
-//        }
-//    }catch (e: Exception){
-//        println("Exception 1  ${e.message} ${e.cause}")
-//        for (statck in e.stackTrace) {
-//            println(statck.toString())
-//        }
-//    }
-//    return polygonList
-//}
+
+fun getActorTriangles(npc: Npc?, ctx: Context): ArrayList<Polygon> {
+    var polygonList = ArrayList<Polygon>()
+    try {
+        var model = npc?.getModel()
+        if (npc != null && model != null) {
+            val positionInfo =
+                    ObjectPositionInfo(npc.getX(), npc.getY(), npc.getOrientation())
+            polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+        }
+    }catch (e: Exception){
+        println("Exception 1  ${e.message} ${e.cause}")
+        for (statck in e.stackTrace) {
+            println(statck.toString())
+        }
+    }
+    return polygonList
+}
 
 fun getActorTriangles(actor: Actor?, ctx: Context): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
@@ -63,6 +64,7 @@ fun getTrianglesFromModel(
     val indiciesZ = model.getIndices3().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
+
     if (orientation != 0) {
         val sin = Calculations.SINE[orientation]
         val cos = Calculations.COSINE[orientation]
