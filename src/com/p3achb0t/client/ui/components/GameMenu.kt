@@ -5,7 +5,6 @@ import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
 import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
-import com.p3achb0t.scripts_private.CooksAssistant
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -80,16 +79,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
         menu.add(menuItem3)
-
-        val menuItem4 = JMenuItem("CooksAssistant")
-        menuItem4.addActionListener {
-
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript((CooksAssistant()))
-
-        }
-        menu.add(menuItem4)
 
         val menuItem5 = JMenuItem("Run Tutorial Island with doActions")
         menuItem5.addActionListener {
