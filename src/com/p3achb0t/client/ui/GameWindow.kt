@@ -4,9 +4,10 @@ import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.loader.Loader
-import com.p3achb0t.client.ui.components.*
+import com.p3achb0t.client.ui.components.GameMenu
+import com.p3achb0t.client.ui.components.TabManager
 import com.p3achb0t.client.util.Util
-import java.awt.BorderLayout
+import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
 import java.nio.file.Paths
@@ -39,8 +40,16 @@ class GameWindow : JFrame() {
 
     }
 
-    fun run() {
-
+    suspend fun run() {
+        //Waiting till game has been loaded and then revalidate
+         val client = TabManager.instance.clients[0].client.getScript().ctx.client
+        while(client.getGameState() != 10){
+            delay(50)
+        }
+        println("Validating client")
+        for (i in 0..10) {
+            TabManager.instance.getSelected().client.getApplet().repaint()
+        }
     }
 
     fun setup() {

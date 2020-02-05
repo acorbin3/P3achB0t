@@ -2,6 +2,9 @@ package com.p3achb0t
 
 import com.p3achb0t.client.ui.GameWindow
 import com.p3achb0t.client.ui.setup
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 object Main {
@@ -9,7 +12,6 @@ object Main {
     fun main(args: Array<String>) {
         setup()
         val g = GameWindow()
-
-        g.run()
+        CoroutineScope(Dispatchers.Default).launch { g.run() }
     }
 }
