@@ -58,7 +58,7 @@ fun paintNPCs(g: Graphics, ctx: Context) {
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(ctx,namePoint )) {
                     g.color = Color.GREEN
                     g.drawString(
-                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} menuIndex:$index",
+                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} menuIndex:$index Health: ${newNPC.health} targIndex: ${newNPC.npc.getTargetIndex()}",
                         namePoint.x,
                         namePoint.y
                     )

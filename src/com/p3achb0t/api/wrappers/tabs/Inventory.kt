@@ -2,10 +2,13 @@ package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import kotlinx.coroutines.delay
 import java.awt.Rectangle
+import kotlin.random.Random
 
 class Inventory(val ctx: Context? = null) {
 
@@ -21,6 +24,26 @@ class Inventory(val ctx: Context? = null) {
 
     fun isOpen(): Boolean {
         return Tabs(ctx!!).getOpenTab() == Tabs.Tab_Types.Inventory
+    }
+
+    suspend fun waitTillInventorySizeChanges(waitTime: Int = 10){
+        val oldInventorySize = getCount()
+        delay(Random.nextLong(450,600))
+        Utils.waitFor(waitTime, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(100)
+                return oldInventorySize != getCount()
+            }
+        })
+    }
+    suspend fun waitTillNotedItemChanges(notedItemID: Int ,waitTime: Int = 10){
+        val oldNotedSize = getCount(notedItemID,useStack = true)
+        Utils.waitFor(waitTime, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(100)
+                return oldNotedSize != getCount(notedItemID,useStack = true)
+            }
+        })
     }
 
     fun getAll(): ArrayList<WidgetItem> {

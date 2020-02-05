@@ -29,6 +29,7 @@ class Stats(val ctx: Context) {
         CONSTRUCTION(22),
     }
     fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]
-
     fun currentLevel(skill: Skill): Int = ctx.client.getCurrentLevels()[skill.statID]
+    fun currentXP(skill: Skill): Int = ctx.client.getExperience()[skill.statID]
+
 }
