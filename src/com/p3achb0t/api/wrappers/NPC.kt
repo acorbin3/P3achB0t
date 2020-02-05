@@ -35,9 +35,21 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     }
 
+    suspend fun doActionAttack(){
+        val doActionParams = DoActionParams(0, 0, MenuOpcode.NPC_SECOND_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doActionCast(){
+        val doActionParams = DoActionParams(0, 0, MenuOpcode.SPELL_CAST_ON_NPC.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
     suspend fun doAction(){
 
         val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 

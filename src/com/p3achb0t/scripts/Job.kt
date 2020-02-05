@@ -9,7 +9,3 @@ abstract class Job(val client: Client) {
     abstract suspend fun execute()
 }
 
-abstract class Task(val client: Client) {
-    abstract suspend fun isValidToRun(): Boolean
-    abstract suspend fun execute()
-}

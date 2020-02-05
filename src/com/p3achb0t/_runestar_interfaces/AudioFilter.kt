@@ -1,8 +1,8 @@
 package com.p3achb0t._runestar_interfaces
 
 interface AudioFilter {
-    fun get__f(): IntArray
-    fun get__p(): IntArray
-    fun get__w(): Array<Array<IntArray>>
-    fun get__y(): Array<Array<IntArray>>
+    fun get__c(): IntArray
+    fun get__i(): IntArray
+    fun get__e(): Array<Array<IntArray>>
+    fun get__o(): Array<Array<IntArray>>
 }

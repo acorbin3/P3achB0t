@@ -136,7 +136,6 @@ class TutorialIslanddoAction: AbstractScript()  {
 
     suspend fun run() {
         if (!isInititilized) init()
-//        if (!LoggingIntoClient.loggedIn) return
         jobs.forEach {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             if (it.isValidToRun(chatBox)) {
@@ -360,11 +359,11 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Open audio section
             WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(3), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
+            WidgetItem(ctx.widgets.find(261, 39), ctx = ctx).click()
+            delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 45), ctx = ctx).click()
             delay(Random.nextLong(300, 700))
             WidgetItem(ctx.widgets.find(261, 51), ctx = ctx).click()
-            delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 57), ctx = ctx).click()
 
         }
 
@@ -562,7 +561,6 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
                 ctx.mouse.instantclick(Point(0,599))
-                //TODO this is not working correctly
                 trees[Random.nextInt(0, 3)].doAction(offsetX = -1, offsetY = -1)
 //                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
@@ -800,7 +798,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val range = ctx.gameObjects.find(9736)[0]
             ctx.mouse.instantclick(Point(0,599))
 //            range.doAction(offsetX = -1)
-            ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0)
+            ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0,dummy = -1223904486)
 
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
@@ -1068,7 +1066,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             ctx.mouse.instantclick(Point(0,599))
 //            furnace[0].doAction(offsetX = -1, offsetY = -1)
-            ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0)
+            ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0, dummy = -1223904486)
             ctx.players.getLocal().waitTillIdle()
             //TODO- somtime we keep clicking here and it can mess us up
         }
@@ -1311,7 +1309,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (rats.size > 0) {
                 val randomIndex = (0..5).random()
                 if (ctx.players.getLocal().isIdle()) {
-                    rats[randomIndex].interact("Attack")
+                    rats[randomIndex].doActionAttack()
                 }
                 ctx.players.getLocal().waitTillIdle()
             }
@@ -1387,7 +1385,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val randomIndex = (0..2).random()
                 rats[randomIndex].turnTo()
                 if (ctx.players.getLocal().isIdle()) {
-                    rats[randomIndex].interact("Attack")
+                    rats[randomIndex].doActionAttack()
                 }
                 ctx.players.getLocal().waitTillIdle()
 
@@ -1747,7 +1745,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val randChick = Random.nextInt(0, chickens.size - 1)
                 chickens[randChick].swingTo()
                 ctx.camera.setHighPitch()
-                chickens[randChick].interact("Cast")
+                chickens[randChick].doActionCast()
                 Utils.waitFor(5, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)

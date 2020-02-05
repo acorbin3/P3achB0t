@@ -2,21 +2,48 @@ package com.p3achb0t.api.wrappers.utils
 
 import com.p3achb0t._runestar_interfaces.Actor
 import com.p3achb0t._runestar_interfaces.Model
+import com.p3achb0t._runestar_interfaces.Npc
+import com.p3achb0t._runestar_interfaces.Player
 import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon
 import java.util.*
 
-data class ObjectPositionInfo(var x: Int, var y: Int, var height: Int = 0, var orientation: Int = 0, val plane: Int = 0)
+data class ObjectPositionInfo(var x: Int, var y: Int, var orientation: Int = 0, val plane: Int = 0)
 
+
+fun getActorTriangles(npc: Npc?, ctx: Context): ArrayList<Polygon> {
+    var polygonList = ArrayList<Polygon>()
+    try {
+        var model = npc?.getModel()
+        if (npc != null && model != null) {
+            val positionInfo =
+                    ObjectPositionInfo(npc.getX(), npc.getY(), npc.getOrientation())
+            polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+        }
+    }catch (e: Exception){
+        println("Exception 1  ${e.message} ${e.cause}")
+        for (statck in e.stackTrace) {
+            println(statck.toString())
+        }
+    }
+    return polygonList
+}
 
 fun getActorTriangles(actor: Actor?, ctx: Context): ArrayList<Polygon> {
     var polygonList = ArrayList<Polygon>()
-    var model = actor?.getModel()
-    if (actor != null && model != null) {
-        val positionInfo =
-                ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
-        polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+    try {
+        var model = actor?.getModel()
+        if (actor != null && model != null) {
+            val positionInfo =
+                    ObjectPositionInfo(actor.getX(), actor.getY(), actor.getOrientation())
+            polygonList = getTrianglesFromModel(positionInfo, model, ctx)
+        }
+    }catch (e: Exception){
+        println("Exception ${e.message} ${e.cause}")
+        for (statck in e.stackTrace) {
+            println(statck.toString())
+        }
     }
     return polygonList
 }
@@ -37,6 +64,7 @@ fun getTrianglesFromModel(
     val indiciesZ = model.getIndices3().copyOf()
 
     val orientation = (positionInfo.orientation).rem(2048)
+
     if (orientation != 0) {
         val sin = Calculations.SINE[orientation]
         val cos = Calculations.COSINE[orientation]
@@ -92,6 +120,40 @@ fun getTrianglesFromModel(
 
     }
     return polygonList
+}
+
+fun getConvexHull(npc: Npc?, ctx: Context): Polygon {
+
+    var polygon = Polygon()
+    try {
+        var model = npc?.getModel()
+        if (npc != null && model != null) {
+            val positionInfo =
+                    ObjectPositionInfo(npc.getX(), npc.getY(), npc.getOrientation())
+            polygon = getConvexHullFromModel(positionInfo, model, ctx)
+        }
+    }catch (e: Exception){
+        println("Exception  ${e.message} ${e.cause}")
+        for (statck in e.stackTrace) {
+            println(statck.toString())
+        }
+    }
+
+    return polygon
+}
+
+fun getConvexHull(player: Player?, ctx: Context): Polygon {
+
+
+    var polygon = Polygon()
+    var model = player?.getModel0()
+    if (player != null && model != null) {
+        val positionInfo =
+                ObjectPositionInfo(player.getX(), player.getY(), player.getOrientation())
+        polygon = getConvexHullFromModel(positionInfo, model, ctx)
+    }
+
+    return polygon
 }
 
 fun getConvexHull(actor: Actor?, ctx: Context): Polygon {

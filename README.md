@@ -13,6 +13,9 @@ If you would like to join the community or have questions feel free to join this
 
 https://discord.gg/kcepXFP
 
+# Requirements
+Make sure you have Java 11
+
 # How to setup & build the project
 Its recommended that you use InteliJ IDEA for the development environment. Currently we are using Java 11
 
@@ -34,7 +37,7 @@ At this point you should have all the external Libraries loaded in the project p
 ![](https://puu.sh/F4xrN/a21f379a25.png)
 
 ## Building & running using native Kotlin template using InteliJ(recommended) 
-1. Go to com.p3achb0t.Main
+1. Go to com.p3achb0t.Main or src/com/p3achb0t/main.kt
 2. Click on the green play button. This should compile and launch the app as well.
 ![](https://puu.sh/F4xzk/5b89375591.png)
 

@@ -72,8 +72,9 @@ class Mouse(obj: Any) {
     }
 
     suspend fun doAction(doActionParams: DoActionParams){
-        overrideDoActionParams = true
+        this.overrideDoActionParams = true
         this.doActionParams = doActionParams
+        println()
         instantclick(Point(0,0))
     }
 

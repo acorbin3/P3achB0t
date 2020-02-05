@@ -30,7 +30,7 @@ class Cache {
         if(!cacheUpdated) {
             try {
                 cacheUpdated = true
-                NetCache.connect(InetSocketAddress("oldschool7.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
+                NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
                         Cache.update(net, disk).join()

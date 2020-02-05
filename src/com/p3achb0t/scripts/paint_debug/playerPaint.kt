@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getActorTriangles
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Color
@@ -57,7 +57,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 ) {
                     g.color = Color.GREEN
                     g.drawString(
-                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()}",
+                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}",
                         namePoint.x,
                         namePoint.y
                     )

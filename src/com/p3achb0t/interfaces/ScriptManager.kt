@@ -57,6 +57,10 @@ class ScriptManager(val client: Any) {
         println("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 
+    fun getModelCallback(argument1: Int){
+//        val arg1 = argument1 * -1917052667
+//        println("getModel Callback arg1: $argument1 $arg1")
+    }
 
 
     fun start() {

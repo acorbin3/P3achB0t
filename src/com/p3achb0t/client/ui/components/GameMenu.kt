@@ -3,9 +3,11 @@ package com.p3achb0t.client.ui.components
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
-import com.p3achb0t.scripts.*
+import com.p3achb0t.scripts.RuneDragsMain
+import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.TutorialIslanddoAction
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
-import com.p3achb0t.scripts_private.CooksAssistant
+import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -40,15 +42,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         val menu = JMenu("Debug")
 
 
-        val injection = JMenuItem("Run Goblin script")
-        injection.addActionListener {
-
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript(GoblinKiller())
-
-        }
-
 
         val menuItem = JMenuItem("Run Tutorial Island")
         menuItem.addActionListener {
@@ -60,15 +53,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         }
         menu.add(menuItem)
 
-        val menuItem2 = JMenuItem("Bank Pin test")
-        menuItem2.addActionListener {
-
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript(TestBankPin())
-
-        }
-        menu.add(menuItem2)
 
 
         val menuItem3 = JMenuItem("SirScript RuneDrags")
@@ -80,16 +64,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
         menu.add(menuItem3)
-
-        val menuItem4 = JMenuItem("CooksAssistant")
-        menuItem4.addActionListener {
-
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript((CooksAssistant()))
-
-        }
-        menu.add(menuItem4)
 
         val menuItem5 = JMenuItem("Run Tutorial Island with doActions")
         menuItem5.addActionListener {
@@ -132,21 +106,6 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
 
-        val test = JMenuItem("Test")
-        test.addActionListener {
-
-
-            manager.addBot_old()
-
-        }
-
-        val test2 = JMenuItem("Test 2")
-        test2.addActionListener {
-
-            manager.changeWindow()
-
-        }
-
         val test3 = JMenuItem("Test 3")
         test3.addActionListener {
 
@@ -168,11 +127,8 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         }
 
         menu.add(mouse)
-        menu.add(injection)
         menu.add(widgetExplorer)
         menu.add(varbitExplorer)
-        menu.add(test)
-        menu.add(test2)
         menu.add(test3)
         menu.add(test4)
 

@@ -159,7 +159,9 @@ class GameObject(
      */
 
     suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0) {
-        val doActionParams = DoActionParams(this.getLocalLocation().x - offsetX, this.getLocalLocation().y - offsetY, opcode.id, this.id, "", "", 0 ,0)
+        val localLocation = this.getLocalLocation()
+        //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
+        val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), opcode.id, this.id, "", "", 0 ,0)
         ctx?.mouse?.doAction(doActionParams)
     }
 
