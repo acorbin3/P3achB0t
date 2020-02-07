@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.DynamicObject
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
@@ -22,6 +23,7 @@ import java.util.*
 class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
+        val dynamicObject: DynamicObject? = null,
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable,
@@ -31,6 +33,7 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getTag().shr(17).and(0x7fff).toInt()
                 wallObject != null -> wallObject.getTag().shr(17).and(0x7fff).toInt()
+                dynamicObject != null -> dynamicObject.getPlane()
                 else -> 0
             }
         }
@@ -53,6 +56,11 @@ class GameObject(
                         wallObject.getY(),
                         wallObject.getOrientationA()
                 )
+                dynamicObject != null -> ObjectPositionInfo(
+                        dynamicObject.getX(),
+                        dynamicObject.getY(),
+                        dynamicObject.getOrientation()
+                )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
         }
@@ -61,6 +69,7 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getEntity() as Model
                 wallObject != null -> wallObject.getEntity1() as Model
+                dynamicObject != null -> dynamicObject as Model
                 else -> null
             }
         }
