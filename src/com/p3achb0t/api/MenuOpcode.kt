@@ -246,14 +246,36 @@ enum class MenuOpcode(val id: Int) {
      */
     RUNELITE_OVERLAY(1501),
     /**
-     * Menu action for configuring runelite overlays.
+     * Menu action for configuring runelite overlays.w
      */
     RUNELITE_OVERLAY_CONFIG(1502),
     FOLLOW(2046), TRADE(2047), /**
      * Menu action triggered when the id is not defined in this class.
      */
     UNKNOWN(-1);
-
-
+//
+//    val MENU_ACTION_DEPRIORITIZE_OFFSET = 2000
+//
+//    private val map: MutableMap<Int, MenuOpcode> = HashMap()
+//
+//
+//        for (MenuOpcode menuOpcode : values())
+//        {
+//            map.put(menuOpcode.getId(), menuOpcode)
+//        }
+//
+//    private val id = 0
+//
+//    open fun MenuOpcode(id: Int) {
+//        this.id = id
+//    }
+//
+//    open fun getId(): Int {
+//        return id
+//    }
+//
+//    open fun of(id: Int): MenuOpcode? {
+//        return map.getOrDefault(id, UNKNOWN)
+//    }
 
 }

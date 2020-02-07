@@ -7,6 +7,7 @@ interface WorldMap {
     fun getEnabledCategories(): Any
     fun getEnabledElements(): Any
     fun getFlashingElements(): Any
+//    fun menuAction(): String
     fun getFont(): Font
     fun getFonts(): Any
     fun getIconIterator(): Any

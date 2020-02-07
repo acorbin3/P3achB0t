@@ -7,22 +7,21 @@ import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.wrappers.Actor
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.scripts.RuneDragons.Bank
-import com.sun.javafx.util.Utils
 import doCombat
 import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color
 import java.awt.Graphics
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 @ScriptManifest("RuneDrags","RuneDrags","Zak")
-class RuneDragsMain : AbstractScript() {
+class VorkathMain : AbstractScript() {
     var factory = MouseMotionFactory()
     val stopwatch = StopWatch()
     var currentJob = ""
@@ -44,9 +43,6 @@ class RuneDragsMain : AbstractScript() {
             }
             stopwatch.start()
             Antifiretimer.start()
-            Divinepottimer.start()
-            IdleTimer.start()
-            Killtimer.start()
         } catch (e: Exception) {
         }
         println("Running Start")
@@ -61,18 +57,12 @@ class RuneDragsMain : AbstractScript() {
         println("Stopping Test script")
         stopwatch.reset()
         Antifiretimer.reset()
-        Divinepottimer.reset()
-        IdleTimer.reset()
-        Killtimer.reset()
-        kills = 0.0
     }
 
     override fun draw(g: Graphics) {
         g.color = Color.WHITE
         g.drawString("Current Runtime: $stopwatch", 12, 400)
         g.drawString(currentJob, 12, 415)
-            g.drawString("Kills(hr): " + kills + "(" + kills / (com.p3achb0t.api.wrappers.utils.Utils.getElapsedSeconds(stopwatch.time) /3600 .toFloat()) + ")", 12, 385)
-
         super.draw(g)
     }
 
@@ -91,46 +81,28 @@ class RuneDragsMain : AbstractScript() {
             val welcomeScreen = WidgetItem(ctx.widgets.find(413, 77), ctx = ctx)
             welcomeScreen.click()
         }
-        if (ctx.client.getGameState() == 10) {
+        if(ctx.client.getGameState() == 10){
             println("Logging in")
             LoggingIntoAccount(ctx)
             //Lets wait till the client is logged in
-            delay(3000)
+                delay(3000)
         }
         if (!isInititilized) init()
 //        if (!LoggingIntoClient.loggedIn) return
 
-        if (ctx.client.getGameState() == 30) {
-            Task.forEach {
-                if (it.isValidToRun()) {
+        Task.forEach {
+            if (it.isValidToRun()) {
 
-                    currentJob = it.javaClass.name
-                    it.execute()
+                currentJob = it.javaClass.name
+                it.execute()
 
-                }
             }
         }
     }
 
     companion object {
         var Antifiretimer = StopWatch()
-        var Divinepottimer = StopWatch()
-        var IdleTimer = StopWatch()
-        var Killtimer = StopWatch()
-        var kills = 0.0
-        fun shouldBank(ctx: Context): Boolean {
-            val combatArea = Area(
-                    Tile(1575, 5086, ctx = ctx),
-                    Tile(1597, 5062, ctx = ctx), ctx = ctx
-            )
-            var cwBank = Tile(2442, 3083, 0 , ctx=ctx)
-            return !ctx.inventory.hasDivineCombats() && cwBank.distanceTo() < 30 || !ctx.inventory.hasDueling() || (!ctx.inventory.Contains(385) && ctx.players.getLocal().getHealth() > 50) || (!ctx.inventory.hasPrayerPots() && ctx.players.getLocal().getPrayer() <= 1) ||
-                    (!ctx.inventory.hasPendant() && ctx.npcs.findNpc("Rune dragon").size == 0 && cwBank.distanceTo() < 30) || (!ctx.inventory.hasextendedSuperAntiFire() && ctx.npcs.findNpc("Rune dragon").size == 0) ||
-                    (cwBank.distanceTo() < 30 && (ctx.inventory.getCount(385) < 1 || ctx.inventory.getPrayerDoses() < 1) || (combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation()) && !canFightNext(ctx)))
-        }
-        fun canFightNext(ctx: Context): Boolean {
-            return ctx.npcs.findNpc("Rune dragon").size > 0 && ctx.inventory.getCount(385) > 0 && ctx.inventory.getPrayerDoses() > 0
-        }
+
     }
 
 

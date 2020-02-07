@@ -158,30 +158,35 @@ class GameObject(
      *
      */
 
-    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0) {
+    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
         val localLocation = this.getLocalLocation()
         //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
-        val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), opcode.id, this.id, "", "", 0 ,0)
+        val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), opcode.id, this.id.plus(offsetID), "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
         val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
         val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction4(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
         val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
     suspend fun doAction5(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
         val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 

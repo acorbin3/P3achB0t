@@ -88,6 +88,7 @@ class Dialog(val ctx: Context) {
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
                 val doActionParams = DoActionParams(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
                 ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(1500, 2500))
             }

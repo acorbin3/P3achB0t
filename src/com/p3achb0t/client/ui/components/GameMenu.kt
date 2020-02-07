@@ -55,12 +55,12 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
 
 
-        val menuItem3 = JMenuItem("SirScript RuneDrags")
+        val menuItem3 = JMenuItem("chicken killer")
         menuItem3.addActionListener {
 
             val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
             val manager = game.client.getScriptManager()
-            manager.setUpScript((RuneDragsMain()))
+            manager.setUpScript((ChickenKiller()))
 
         }
         menu.add(menuItem3)
@@ -75,6 +75,15 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
         }
         menu.add(menuItem5)
 
+        val menuItem6 = JMenuItem("runedrags")
+        menuItem6.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setUpScript(RuneDragsMain())
+
+        }
+        menu.add(menuItem6)
 
 
         val widgetExplorer = JMenuItem("Open Widget Explorer")
@@ -115,6 +124,7 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
             f.client.getApplet().repaint()
             //f.client.applet.focusTraversalKeysEnabled = true
         }
+
 
         val test4 = JMenuItem("Draw")
         test4.addActionListener {

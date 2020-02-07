@@ -28,31 +28,28 @@ fun LoggingIntoAccount(ctx: Context) {
                 // When loaded login
                 if (ctx.client.getGameState() == 10) {
                     delay(2000)
-                    ctx.mouse.moveMouse(Point(399, 316), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(418, 311), true, Mouse.ClickType.Left)
                     delay(1000)
                     ctx.mouse.moveMouse(Point(531, 280), true, Mouse.ClickType.Left)
                     delay(2000)
                     ctx.keyboard.sendKeys(UserDetails.data.username)
                     delay(500)
                     ctx.mouse.moveMouse(Point(367, 262), true, Mouse.ClickType.Left)
-                    delay(2000)
+                    delay(1000)
                     ctx.keyboard.sendKeys(UserDetails.data.password)
                     ctx.mouse.moveMouse(Point(326, 323), true, Mouse.ClickType.Left)
 
-                    while (ctx.client.getGameState() != 30) {
-                        delay(100)
-                    }
-                    delay(1500)
-                    println("Clicking login")
-                    val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
-                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
-                    login.click()
-                    Utils.waitFor(5, object : Utils.Condition {
+                    Utils.waitFor(10, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
                             return ctx.client.getGameState() == 30
                         }
                     })
+                    delay(1500)
+                    println("Clicking login")
+                    val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
+                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
+                    login.click()
                 }
 
 
