@@ -10,9 +10,6 @@ class Walking {
         // It is recommended to pass in the ctx so the list of Tiles dont need to have the ctx in each tile. That way
         // the walkPath can update the ctx on each tile.
 
-
-
-
         suspend fun walkPath(path: ArrayList<Tile>, reverse: Boolean = false, ctx: Context? = null) {
             //Since all parameters are declared as val we need to create a mutable list so we can update the CTX if needed
             var updatedPath = path.toMutableList()
@@ -58,7 +55,7 @@ class Walking {
 
                 val t = it.getGlobalLocation()
                 println("Clicking on map: for tile: (${t.x},${t.y})")
-                it.clickOnMiniMap()
+                t.walktoTile(t)
 //                if(!it.isOnScreen()) Camera(client).turnAngleTo(it)
 //                it.click()
                 Utils.waitFor(5, object : Utils.Condition {
