@@ -9,7 +9,6 @@ import com.p3achb0t.scripts.TestVorkScript
 import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.scripts.TutorialIslanddoAction
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
-import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -57,15 +56,15 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
 
 
-        val menuItem3 = JMenuItem("chicken killer")
-        menuItem3.addActionListener {
-
-            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript((ChickenKiller()))
-
-        }
-        menu.add(menuItem3)
+//        val menuItem3 = JMenuItem("chicken killer")
+//        menuItem3.addActionListener {
+//
+//            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+//            val manager = game.client.getScriptManager()
+//            manager.setUpScript((ChickenKiller()))
+//
+//        }
+//        menu.add(menuItem3)
 
         val menuItem5 = JMenuItem("Run Tutorial Island with doActions")
         menuItem5.addActionListener {
