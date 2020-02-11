@@ -132,8 +132,8 @@ class Calculations {
             miniMapDimensions = miniMapWidget.area
 
 
-            //inventory bar 164,47(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 47), ctx = ctx)
+            //inventory bar 164,48(topbar), bottom 164,33
+            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 48), ctx = ctx)
             inventoryBarTopDimensions = inventoryTop.area
             val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), ctx = ctx)
             inventoryBarBottomDimensions = inventoryBottom.area
