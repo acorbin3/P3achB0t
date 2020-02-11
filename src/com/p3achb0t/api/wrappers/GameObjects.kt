@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.DynamicObject
 import com.p3achb0t.api.Context
 
 
