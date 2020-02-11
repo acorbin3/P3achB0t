@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -92,6 +93,20 @@ class Equipment(val ctx: Context) {
             // Wait till item gets removed
             delay((250))
         }
+    }
+
+    suspend fun duelingcastlewars() {
+        val doActionParams = DoActionParams(-1, 25362455, 57, 3, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(600)
+    }
+
+    suspend fun duelingclawnwars() {
+        val doActionParams = DoActionParams(-1, 25362455, 57, 4, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(600)
     }
 
 

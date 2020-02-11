@@ -84,8 +84,10 @@ class Bank(val ctx: Context) {
 
     suspend fun close() {
         if (isOpen()) {
-            ctx.mouse.moveMouse(Point(523, 18), true, Mouse.ClickType.Left)
-            delay(500)
+            val doActionParams = DoActionParams(11, 786434, 57, 1, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+            delay(300)
         }
     }
 
@@ -232,14 +234,25 @@ class Bank(val ctx: Context) {
      * added by sirscript
      */
 
+    suspend fun doActionAttack(){
+
+    }
+
     suspend fun withdrawAlldoAction(id: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
-                    ctx.mouse.doAction(doActionParams)
-                    delay(600)
+                    ctx?.mouse?.overrideDoActionParams = true
+                    ctx?.mouse?.doAction(doActionParams)
+                    delay(Random.nextLong(189, 1076))
                 }
             }
         }
@@ -251,12 +264,19 @@ class Bank(val ctx: Context) {
 
     suspend fun withdraw1doAction(id: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-                    ctx.mouse.doAction(doActionParams)
-                    delay(600)
+                    ctx?.mouse?.overrideDoActionParams = true
+                    ctx?.mouse?.doAction(doActionParams)
+                    delay(Random.nextLong(189, 1076))
                 }
             }
         }
@@ -266,14 +286,32 @@ class Bank(val ctx: Context) {
      * added by sirscript
      */
 
-    suspend fun withdrawXdoAction(id: Int) {
+    suspend fun withdrawXdoAction(id: Int, count: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
-                    ctx.mouse.doAction(doActionParams)
-                    delay(600)
+                    ctx?.mouse?.overrideDoActionParams = true
+                    ctx?.mouse?.doAction(doActionParams)
+                    Utils.waitFor(3, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            val chatText =
+                                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                            val text = chatText?.getText()
+                            println(text + " " + chatText?.getIsHidden())
+                            return text?.equals("*") ?: false
+                        }
+                    })
+                    delay(Random.nextLong(189, 1076))
+                    ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
                 }
             }
         }
@@ -286,8 +324,10 @@ class Bank(val ctx: Context) {
 
     suspend fun setnoted() {
         if (isOpen()) {
-            ctx.client.doAction(-1, 786454, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            delay(600)
+            val doActionParams =   DoActionParams(-1, 786454, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+            delay(Random.nextLong(189, 1076))
         }
     }
 
@@ -298,9 +338,10 @@ class Bank(val ctx: Context) {
 
     suspend fun setitem() {
         if (isOpen()) {
-            val doActionParams = DoActionParams(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            ctx.mouse.doAction(doActionParams)
-            delay(600)
+            val doActionParams =   DoActionParams(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+            delay(Random.nextLong(189, 1076))
         }
     }
 
@@ -310,9 +351,10 @@ class Bank(val ctx: Context) {
      * deposits all inventory using doAction
      */
 
-    suspend fun depositAlldoAction() {
-        val doActionParams = DoActionParams(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx.mouse.doAction(doActionParams)
+    suspend fun depositInvdoAction() {
+        val doActionParams =   DoActionParams(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     /**
@@ -321,10 +363,14 @@ class Bank(val ctx: Context) {
      */
 
     suspend fun depositEquipmentdoAction() {
-        val doActionParams = DoActionParams(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx.mouse.doAction(doActionParams)
+        val doActionParams =   DoActionParams(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
     }
 
+    suspend fun depositallExcept(arrayList: ArrayList<Int>){
+
+    }
 
     /**
      * added by sirscript

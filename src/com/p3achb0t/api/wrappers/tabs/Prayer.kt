@@ -1,10 +1,12 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import net.runelite.api.MenuOpcode
 
 class Prayer(val ctx: Context) {
     //TODO - Quick prayers
@@ -95,11 +97,22 @@ class Prayer(val ctx: Context) {
         return ctx.players.getLocal().player.getHeadIconPrayer() == 2
     }
 
+    suspend fun isQuickPrayerActive(): Boolean {
+
+        return return ctx.vars.getVarp(375) == 1
+    }
+
     suspend fun disable(kind: PrayerKind) {
         if (!isOpen()) open()
 
         val prayer = WidgetItem(ctx.widgets.find(PARENT, kind.widgetID), ctx = ctx)
         prayer.click()
         delay(100)
+    }
+
+    suspend fun ActivateQuickPrayer(){
+        val doActionParams = DoActionParams(-1, 10485774, 57, 1, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
     }
 }

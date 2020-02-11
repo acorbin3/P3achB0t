@@ -88,6 +88,20 @@ class Dialog(val ctx: Context) {
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
                 val doActionParams = DoActionParams(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
+                delay(Random.nextLong(1500, 2500))
+            }
+        }
+    }
+
+    suspend fun selectTreeOptionDoAction(action: String) {
+        val dialog = WidgetItem(ctx.widgets.find(187, 3), ctx = ctx)
+        // Options are in children but not index zero
+        dialog.widget?.getChildren()?.iterator()?.forEach {
+            if (it.getText().contains(action)) {
+                val doActionParams = DoActionParams(it.getChildIndex(), 12255235, 30, 0, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
                 ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(1500, 2500))
             }
@@ -157,6 +171,10 @@ class Dialog(val ctx: Context) {
 
     fun isDialogOptionsOpen(): Boolean {
         return ctx.widgets.isWidgetAvaliable(219, 1)
+    }
+
+    fun isSpiritDialogOpen(): Boolean {
+        return ctx.widgets.isWidgetAvaliable(187, 3)
     }
 
 

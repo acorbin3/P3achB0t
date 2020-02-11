@@ -85,7 +85,7 @@ class GroundItems(val ctx: Context) {
                             val stacksize = obj.getQuantity()
                             val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
                             val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
-                            val id = obj.getId()
+                            var id = obj.getId()
                             itemid.forEach {
                                 if (it == id) {
                                     itemList.add(
@@ -109,6 +109,104 @@ class GroundItems(val ctx: Context) {
         return itemList
     }
 
+    fun getItempredinarea(itemid: IntArray, tile: com.p3achb0t.api.wrappers.Tile): ArrayList<GroundItem> {
+        val itemList = ArrayList<GroundItem>()
+        val groundItems = ctx.client.getObjStacks()
+        val tiles = ctx.client.getScene().getTiles()
+        val lootArea = Area(
+                Tile(tile.x - 3, tile.y + 3, ctx = ctx),
+                Tile(tile.x + 3, tile.y - 3, ctx = ctx), ctx = ctx
+        )
+
+        groundItems.forEachIndexed { groundItemIndex, groundObjs ->
+            groundObjs.forEachIndexed { planeIndex, groundObjPlanes ->
+                groundObjPlanes.forEachIndexed groundobjectplane@{ index, groundObjByPlane ->
+
+                    if (groundObjByPlane == null) return@groundobjectplane
+
+                    var obj = groundObjByPlane.getSentinel()
+
+                    if (obj != null)
+                        obj = obj.getPrevious()
+                    if (obj is Obj) {
+                        try {
+                            val stacksize = obj.getQuantity()
+                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            val LootTile =  Tile(x, y, ctx = ctx)
+                            var id = obj.getId()
+                            itemid.forEach {
+                                if (it == id && lootArea.containsOrIntersects(LootTile)) {
+                                    itemList.add(
+                                            GroundItem(
+                                                    ctx,
+                                                    id,
+                                                    ObjectPositionInfo(x, y, plane = groundItemIndex),
+                                                    stacksize
+                                            )
+                                    )
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            println(e.stackTrace)
+                        }
+                    }
+                }
+            }
+        }
+        return itemList
+    }
+
+    fun getItempredinarea(itemid: IntArray, area: Area): ArrayList<GroundItem> {
+        val itemList = ArrayList<GroundItem>()
+        val groundItems = ctx.client.getObjStacks()
+        val tiles = ctx.client.getScene().getTiles()
+
+
+        groundItems.forEachIndexed { groundItemIndex, groundObjs ->
+            groundObjs.forEachIndexed { planeIndex, groundObjPlanes ->
+                groundObjPlanes.forEachIndexed groundobjectplane@{ index, groundObjByPlane ->
+
+                    if (groundObjByPlane == null) return@groundobjectplane
+
+                    var obj = groundObjByPlane.getSentinel()
+
+                    if (obj != null)
+                        obj = obj.getPrevious()
+                    if (obj is Obj) {
+                        try {
+                            val stacksize = obj.getQuantity()
+                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            var X = (x - 64) / 128
+                            var Y = (y - 64) / 128
+                            val basex = ctx.client.getBaseX()
+                            val basey = ctx.client.getBaseY()
+                            val LootTile =  Tile(X + basex, Y + basey, ctx = area.ctx)
+                            var id = obj.getId()
+                            itemid.forEach {
+                                if (it == id && area.containsOrIntersects(LootTile)) {
+                                    itemList.add(
+                                            GroundItem(
+                                                    ctx,
+                                                    id,
+                                                    ObjectPositionInfo(x, y, plane = groundItemIndex),
+                                                    stacksize
+                                            )
+                                    )
+                                }
+                            }
+
+                        } catch (e: Exception) {
+                            println(e.stackTrace)
+                        }
+                    }
+                }
+            }
+        }
+        return itemList
+    }
 
     fun find(itemID: Int, sortByDistance: Boolean = true): List<GroundItem> {
         val items = getAllItems()

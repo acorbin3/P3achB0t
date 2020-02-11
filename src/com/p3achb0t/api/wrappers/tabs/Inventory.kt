@@ -2,11 +2,13 @@ package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import net.runelite.api.MenuOpcode
 import java.awt.Rectangle
 import kotlin.random.Random
 
@@ -53,7 +55,6 @@ class Inventory(val ctx: Context? = null) {
         if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
             val ids = inventory.getItemIds()
             val stacks = inventory.getItemQuantities()
-
             val columns = inventory.getWidth()
             val rows = inventory.getHeight()
             val baseX = Widget.getWidgetX(inventory, ctx)
@@ -81,6 +82,28 @@ class Inventory(val ctx: Context? = null) {
         return items
     }
 
+    fun getfirstIndex(id: Int): Int{
+        var count = 0
+        var index = 0
+        var founditem = false
+        val inventory = getWidget()
+        val items = inventory?.getItemIds()
+        items?.forEach {
+            var ID = 0
+            ID = it
+            ID = ID - 1
+            if(ID == id && !founditem){
+                index = count
+                founditem = true
+            }
+            count++
+        }
+        return index
+    }
+
+
+
+
     fun hasPrayerPots(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(2434, 139, 141, 143)
@@ -91,6 +114,7 @@ class Inventory(val ctx: Context? = null) {
         }
         return HasItems
     }
+
 
 
     fun getPrayerDoses(): Int {
@@ -155,6 +179,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasDivineRange(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(23733, 23736, 23739, 23742)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasDueling(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566)
@@ -198,7 +233,7 @@ class Inventory(val ctx: Context? = null) {
     fun getWidget(): Component? {
         var widget: Component? = null
         try {
-            widget = ctx?.client!!.getInterfaceComponents()[PARENT_ID][CHILD_ID]
+            widget = ctx?.client!!.getInterfaceComponents()[149][0]
         } catch (e: Exception) {
         }
         return widget
@@ -221,6 +256,78 @@ class Inventory(val ctx: Context? = null) {
             }
         }
         return count
+    }
+
+    suspend fun wear(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 34, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun eat(id: Int) {
+            var items = getAll()
+        var index = getfirstIndex(id)
+            out_loop@ for (it in items) {
+                if (it.id == id) {
+                    val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
+                    ctx?.mouse?.overrideDoActionParams = true
+                    ctx?.mouse?.doAction(doActionParams)
+                    delay(600)
+                    break@out_loop
+                }
+            }
+    }
+
+
+
+    suspend fun drink(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun rub(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 36, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun rub2(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 35, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
     }
 
 
