@@ -20,7 +20,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 
-@ScriptManifest("RuneDrags","RuneDrags","Zak")
+@ScriptManifest("Vorkath","Vorkath","Zak")
 class VorkathMain : AbstractScript() {
     var factory = MouseMotionFactory()
     val stopwatch = StopWatch()

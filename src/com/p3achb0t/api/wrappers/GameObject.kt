@@ -23,7 +23,6 @@ import java.util.*
 class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
-        val dynamicObject: DynamicObject? = null,
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable,
@@ -33,7 +32,6 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getTag().shr(17).and(0x7fff).toInt()
                 wallObject != null -> wallObject.getTag().shr(17).and(0x7fff).toInt()
-                dynamicObject != null -> dynamicObject.getPlane()
                 else -> 0
             }
         }
@@ -56,11 +54,6 @@ class GameObject(
                         wallObject.getY(),
                         wallObject.getOrientationA()
                 )
-                dynamicObject != null -> ObjectPositionInfo(
-                        dynamicObject.getX(),
-                        dynamicObject.getY(),
-                        dynamicObject.getOrientation()
-                )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
         }
@@ -69,7 +62,6 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getEntity() as Model
                 wallObject != null -> wallObject.getEntity1() as Model
-                dynamicObject != null -> dynamicObject as Model
                 else -> null
             }
         }
@@ -167,12 +159,18 @@ class GameObject(
      *
      */
 
-    suspend fun doAction(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIRST_OPTION, offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+    suspend fun doAction(offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val scenebasex = ctx?.client?.getBaseX()
+        val scenebasey = ctx?.client?.getBaseY()
         val localLocation = this.getLocalLocation()
-        //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
-        val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), opcode.id, this.id.plus(offsetID), "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        val X = localLocation.x
+        val Y = localLocation.y
+        if(scenebasex != null && scenebasey != null) {
+            //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
+            val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), MenuOpcode.GAME_OBJECT_FIRST_OPTION.id, this.id.plus(offsetID), "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+        }
     }
 
     suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {

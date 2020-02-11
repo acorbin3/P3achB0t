@@ -21,23 +21,19 @@ fun LoggingIntoAccount(ctx: Context) {
     Thread.sleep(2000)
     GlobalScope.launch {
 
-        repeat(1000) {
+        repeat(2) {
             try {
 
 //                val disconnected = WidgetItem(ctx.widgets.find(WidgetID.login, 85), ctx = ctx)
                 // When loaded login
                 if (ctx.client.getGameState() == 10) {
-                    delay(2000)
-                    ctx.mouse.moveMouse(Point(418, 311), true, Mouse.ClickType.Left)
-                    delay(1000)
-                    ctx.mouse.moveMouse(Point(531, 280), true, Mouse.ClickType.Left)
-                    delay(2000)
-                    ctx.keyboard.sendKeys(UserDetails.data.username)
                     delay(500)
-                    ctx.mouse.moveMouse(Point(367, 262), true, Mouse.ClickType.Left)
-                    delay(1000)
-                    ctx.keyboard.sendKeys(UserDetails.data.password)
-                    ctx.mouse.moveMouse(Point(326, 323), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(400, 310), true, Mouse.ClickType.Left)
+                    delay(500)
+                    ctx.mouse.moveMouse(Point(466, 294), true, Mouse.ClickType.Left)
+                    delay(500)
+                    ctx.keyboard.sendKeys(UserDetails.data.username, true, true)
+                    ctx.keyboard.sendKeys(UserDetails.data.password, true, true)
 
                     Utils.waitFor(10, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -46,10 +42,6 @@ fun LoggingIntoAccount(ctx: Context) {
                         }
                     })
                     delay(1500)
-                    println("Clicking login")
-                    val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
-                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
-                    login.click()
                 }
 
 

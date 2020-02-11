@@ -1,14 +1,11 @@
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
-import com.p3achb0t.api.wrappers.Players
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.scripts.RuneDragsMain
-import com.p3achb0t.scripts.VorkathMain
 import com.p3achb0t.scripts.Task
 import doCombat.Companion.firsttrip
 import kotlinx.coroutines.delay
-import java.awt.Point
 import kotlin.random.Random
 
 class TraverseDragons(val ctx: Context) : Task(ctx.client) {
@@ -34,8 +31,8 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                 Tile(3563, 10384, ctx = ctx),ctx=ctx)
 
         val starArea2 = Area(
-                Tile(3530, 10468, ctx = ctx),
-                Tile(3570, 10442, ctx = ctx),ctx=ctx)
+                Tile(3544, 10470, ctx = ctx),
+                Tile(3559, 10447, ctx = ctx),ctx=ctx)
 
 
         val combatArea = Area(
@@ -121,11 +118,11 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
                 }
                 if(Barrier.size > 0) {
                     delay(1000)
-                    var extendedantifires = hashSetOf(22209, 22212, 22215).shuffled()
+                    val extendedantifires = intArrayOf(22218, 22215, 22212, 22209)
 
                     if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 355 || firsttrip) {
                         extendedantifires.forEach {
-                            if (ctx.inventory.Contains(it)) {
+                            while (ctx.inventory.Contains(it)) {
                                 println("using antifire")
                                 ctx.inventory.drink(it)
                                 RuneDragsMain.Antifiretimer.reset()

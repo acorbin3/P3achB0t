@@ -179,6 +179,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasDivineRange(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(23733, 23736, 23739, 23742)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasDueling(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566)
@@ -297,6 +308,20 @@ class Inventory(val ctx: Context? = null) {
         out_loop@ for (it in items) {
             if (it.id == id) {
                 val doActionParams = DoActionParams(index, 9764864, 36, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun rub2(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 35, id, "", "", 0, 0)
                 ctx?.mouse?.overrideDoActionParams = true
                 ctx?.mouse?.doAction(doActionParams)
                 delay(600)

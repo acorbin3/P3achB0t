@@ -3,13 +3,8 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.tabs.Prayer
-import com.p3achb0t.client.util.Util
 import com.p3achb0t.scripts.RuneDragsMain
-import com.p3achb0t.scripts.RuneDragsMain.Companion.Divinepottimer
-import com.p3achb0t.scripts.RuneDragsMain.Companion.Killtimer
 import com.p3achb0t.scripts.RuneDragsMain.Companion.kills
-import com.p3achb0t.scripts.VorkathMain
 import com.p3achb0t.scripts.Task
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -21,8 +16,16 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
         var firsttrip = true
         var eatto = 0
         var eatfrom = 47
-
+        var loottile = Tile()
     }
+
+    val loot: IntArray = intArrayOf(1432, 2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560,561, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
+            21930, 995, 21918, 22103, 11286, 1333, 536)
+
+    val combatArea = Area(
+            Tile(1575, 5086, ctx = ctx),
+            Tile(1597, 5062, ctx = ctx), ctx = ctx
+    )
 
     override suspend fun isValidToRun(): Boolean {
         val combatArea = Area(
@@ -34,26 +37,19 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
 
     override suspend fun execute() {
-        var killedtarget = false
+        var groundloot = ctx.groundItems.getItempred(loot)
         if(!ctx.players.getLocal().isIdle()){
             RuneDragsMain.IdleTimer.reset()
             RuneDragsMain.IdleTimer.start()
         }
 
-        val center = Tile(1588, 5075, ctx = ctx)
-        val loot: IntArray = intArrayOf(1432, 2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,
-                21930, 995, 21918, 22103, 11286, 1333, 536)
-        val groundloot = ctx.groundItems.getItempred(loot)
-        val combatArea = Area(
-                Tile(1575, 5086, ctx = ctx),
-                Tile(1597, 5062, ctx = ctx), ctx = ctx
-        )
+
 
 
         val antifires = hashSetOf(11951, 11953, 11955, 11957)
         val divinecombats = hashSetOf(23685, 23688, 23691, 23694)
         val prayerpots: IntArray = intArrayOf(143, 141, 139, 2434)
-        var extendedantifires = hashSetOf(22209, 22212, 22215, 22218)
+        val extendedantifires = intArrayOf(22218, 22215, 22212, 22209)
         if (!ctx.prayer.isQuickPrayerActive()){
                     ctx.prayer.ActivateQuickPrayer()
             Utils.waitFor(5, object : Utils.Condition {
@@ -65,7 +61,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 }
         if (Utils.getElapsedSeconds(RuneDragsMain.Antifiretimer.time) > 355 || firsttrip) {
             extendedantifires.forEach {
-                if (ctx.inventory.Contains(it)) {
+                while (ctx.inventory.Contains(it)) {
                     println("using antifire")
                     ctx.inventory.drink(it)
                     RuneDragsMain.Antifiretimer.reset()
@@ -90,7 +86,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
             run eat@{
                if (ctx.inventory.contains(385) && ctx.players.getLocal().getHealth() < eatto) {
                     ctx.inventory.eat(385)
-                    Random.nextInt(585, 1178)
+                    Random.nextInt(777, 1178)
                    return@eat
                 }
                 if (ctx.players.getLocal().getHealth() >= eatto) {
@@ -104,7 +100,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 prayerpots.forEach {
                     if (ctx.inventory.Contains(it)) {
                         ctx.inventory.drink(it)
-                        delay(1000)
+                        delay(1500)
                     }
                     if (ctx.players.getLocal().getPrayer() >= prayer) {
                         prayer = Random.nextInt(14, 37)
@@ -113,11 +109,15 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 }
             }
         }
-        if (ctx.players.getLocal().player.getTargetIndex() != -1){
-            if(ctx.npcs.getTargetted("Rune dragon")?.health == 0.0 && Utils.getElapsedSeconds(RuneDragsMain.Killtimer.time) > 4){
-                kills++
-                RuneDragsMain.Killtimer.reset()
-                RuneDragsMain.Killtimer.start()
+        if (ctx.players.getLocal().player.getTargetIndex() != -1) {
+            var npc = ctx.npcs.getTargetted("Rune dragon")
+            if (npc != null) {
+                if (ctx.npcs.getTargetted("Rune dragon")?.health == 0.0 && Utils.getElapsedSeconds(RuneDragsMain.Killtimer.time) > 4) {
+                    kills++
+                    loottile = npc.getGlobalLocation()
+                    RuneDragsMain.Killtimer.reset()
+                    RuneDragsMain.Killtimer.start()
+                }
             }
         }
 
@@ -158,24 +158,25 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
         if (!groundloot.isEmpty()) {
             println(groundloot[0].id)
             println(groundloot[0].position)
+            loottile = groundloot[0].getGlobalLocation()
             groundloot.forEach {
                 println("item found " + it.id)
                 if (ctx.inventory.isFull()) {
                     ctx.inventory.eat(385)
-                    delay(666)
+                    delay(Random.nextLong(333, 888))
                 }
                 if (!ctx.inventory.isFull()) {
                     try {
-                                if(it.distanceTo() >= 4) {
+                        if(tileContainsLoot(loottile)) {
+                                if (it.distanceTo() >= 6 && it.getGlobalLocation() == loottile) {
                                     it.takedoAction()
-                                    delay(Random.nextLong(466, 999))
+                                    delay(Random.nextLong(2111, 2999))
                                 }
-                        if(it.distanceTo() < 5) {
-                            it.takedoAction()
-                            delay(Random.nextLong(167, 356))
+                                if (it.distanceTo() < 7 && it.getGlobalLocation() == loottile) {
+                                    it.takedoAction()
+                                    delay(Random.nextLong(277, 577))
+                                }
                         }
-
-
 
                     } catch (e: Exception) {
                         println("Error: NPC " + e.message)
@@ -187,6 +188,18 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
             }
         }
     }
+
+    suspend fun tileContainsLoot(tile: Tile): Boolean {
+        var hasLoot = false
+        val groundloot = ctx.groundItems.getItempredinarea(loot, combatArea)
+        groundloot.forEach {
+            if(it.getGlobalLocation() == tile){
+                hasLoot = true
+            }
+        }
+        return hasLoot
+    }
+
     suspend fun shouldEat(hp: Int, hpeatto: Int){
         while(ctx.stats.currentLevel(Stats.Skill.HITPOINTS) <= hpeatto){
             ctx.inventory.eat(385)

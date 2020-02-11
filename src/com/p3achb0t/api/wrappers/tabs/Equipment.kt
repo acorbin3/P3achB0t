@@ -102,6 +102,13 @@ class Equipment(val ctx: Context) {
         delay(600)
     }
 
+    suspend fun duelingclawnwars() {
+        val doActionParams = DoActionParams(-1, 25362455, 57, 4, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(600)
+    }
+
 
     fun isEquipmentSlotEquipted(slot: Slot): Boolean {
         try {

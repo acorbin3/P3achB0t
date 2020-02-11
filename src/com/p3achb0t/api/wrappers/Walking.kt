@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 //Interesting website that can create paths: https://explv.github.io/
 class Walking {
@@ -68,6 +69,7 @@ class Walking {
                         return curDist < 4
                     }
                 })
+                delay(Random.nextLong(143, 788))
             }
 //            while(path[path.lastIndex].distanceTo() > 4){
 //                // get next tile
