@@ -1,6 +1,7 @@
 package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import java.awt.Color
 import java.awt.Graphics
 
@@ -10,11 +11,15 @@ fun groundItemsPaint(g: Graphics, ctx: Context) {
                 21930, 995, 21918, 22103, 11286, 1333, 536)
 //        val groundItems = ctx.groundItems.getItempred(loot)
         val groundItems = ctx.groundItems.getAllItems()
-
+        val tileCount: HashMap<ObjectPositionInfo,Int> = HashMap()
         groundItems.forEach {
-
             if (it.isOnScreen() && it.stackSize > 0) {
-
+                if(it.position in tileCount){
+                    tileCount[it.position]?.plus(1)?.let { it1 -> tileCount.put(it.position, it1) }
+                }else{
+                    tileCount[it.position] = 1
+                }
+                val count = tileCount[it.position]
                 val namePoint = it.getNamePoint()
 //                g.drawString(it.id.toString(), namePoint.x, namePoint.y)
                 g.color = Color.GREEN
@@ -22,7 +27,7 @@ fun groundItemsPaint(g: Graphics, ctx: Context) {
                 g.drawString(
                         "$name(${it.id}) ${it.stackSize}",
                         namePoint.x,
-                        namePoint.y
+                        namePoint.y - (count?.times(10)!!)
                 )
 
                 val triangles = it.getTriangles()
