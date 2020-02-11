@@ -21,5 +21,5 @@ public class Detours {
         Context ctx = script.getCtx();
         Client client = ctx.getClient();
         client.doAction(actionParam,widgetID,menuAction,id,menuOption,menuTarget,mouseX,mouseY,dummy);
-        }
-        }
+    }
+}
