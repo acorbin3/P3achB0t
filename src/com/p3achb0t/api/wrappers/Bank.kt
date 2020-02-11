@@ -240,6 +240,12 @@ class Bank(val ctx: Context) {
 
     suspend fun withdrawAlldoAction(id: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
@@ -258,6 +264,12 @@ class Bank(val ctx: Context) {
 
     suspend fun withdraw1doAction(id: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
@@ -276,6 +288,12 @@ class Bank(val ctx: Context) {
 
     suspend fun withdrawXdoAction(id: Int, count: Int) {
         if (isOpen()) {
+            if (ctx.vars.getVarp(1666) != 0) {
+                val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
