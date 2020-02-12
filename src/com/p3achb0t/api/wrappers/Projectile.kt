@@ -32,7 +32,8 @@ class Projectile(
         return ObjectPositionInfo(raw.getX().toInt(),
                 raw.getY().toInt(),
                 orientation = raw.getYaw() % 2048,
-                plane = raw.getPlane())
+                plane = raw.getPlane(),
+                z = raw.getZ().toInt())
     }
     val speed get() = raw.getSpeed()
     val speedX get() = raw.getSpeedX()
@@ -44,7 +45,7 @@ class Projectile(
     val y  get() = raw.getY()
     val z  get() = raw.getZ()
     val getPosition = Tile(raw.getX().toInt(), raw.getY().toInt())
-    val predictedTile = Tile(getPosition.x + Math.round(speedX * .95).toInt(), (getPosition.y + Math.round(speedY * .95).toInt()))
+    val predictedTile = Tile(getPosition.x + Math.round(speedX * .95).toInt(), (getPosition.z + Math.round(speedY * .95).toInt()))
 
 
     override fun getNamePoint(): Point {
