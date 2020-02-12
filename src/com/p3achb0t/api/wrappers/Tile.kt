@@ -9,7 +9,6 @@ import com.p3achb0t.api.wrappers.utils.Calculations.Companion.LOCAL_HALF_TILE_SI
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.getCanvasTileAreaPoly
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.worldToScreen
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -118,6 +117,9 @@ class Tile(
     override fun distanceTo(): Int {
         if(ctx == null){
             println("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
+            for(stack in Thread.currentThread().stackTrace){
+                println(stack)
+            }
         }
         return ctx?.let { Calculations.distanceTo(this, it) } ?: -1
     }
