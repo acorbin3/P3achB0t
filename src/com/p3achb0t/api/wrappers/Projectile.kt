@@ -33,7 +33,8 @@ class Projectile(
                 raw.getY().toInt(),
                 orientation = raw.getYaw() % 2048,
                 plane = raw.getPlane(),
-                z = raw.getZ().toInt())
+                z = raw.getZ().toInt(),
+                tileHeight = tileHeight)
     }
     val speed get() = raw.getSpeed()
     val speedX get() = raw.getSpeedX()
