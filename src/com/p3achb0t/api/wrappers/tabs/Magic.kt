@@ -1,10 +1,12 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class Magic(val ctx: Context) {
     companion object {
@@ -59,5 +61,22 @@ class Magic(val ctx: Context) {
             spellWidget.interact("Cast")
         }
     }
+
+    suspend fun castCrumble(id: Int) {
+        var doActionParams = DoActionParams(-1, 14286875,25, 0, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(100)
+        doActionParams = DoActionParams(0, 0,8, id, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        Utils.waitFor(1, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(100)
+                return ctx.players.getLocal().player.getSequence() == 724
+            }
+        })
+    }
+
 
 }

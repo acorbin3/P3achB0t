@@ -40,7 +40,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 var chatText =
                         ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                 var text = chatText?.getText()
-                debugText.add(DebugText("Bank search Text: ${text}"))
+//                debugText.add(DebugText("Bank search Text: ${text}"))
 //                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
                 debugText.add(
                         DebugText(
@@ -64,19 +64,19 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                                         "mapAngle: ${ctx.client.getCamAngleY()}"
                         )
                 )
-                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
-                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
-                debugText.add(DebugText(ctx.menu.getHoverAction()))
-                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
+//                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
+//                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
+//                debugText.add(DebugText(ctx.menu.getHoverAction()))
+//                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
 
 
 
-                var statsStr = ""
-                for(stat in Stats.Skill.values()){
-
-                    statsStr+= stat.name + ":" + ctx.stats.currentLevel(stat) + " "
-                }
-                debugText.add(DebugText(statsStr))
+//                var statsStr = ""
+//                for(stat in Stats.Skill.values()){
+//
+//                    statsStr+= stat.name + ":" + ctx.stats.currentLevel(stat) + " "
+//                }
+//                debugText.add(DebugText(statsStr))
 //            debugText.add(DebugText())
             }
 

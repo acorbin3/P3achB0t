@@ -38,6 +38,38 @@ class Equipment(val ctx: Context) {
         return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
     }
 
+    fun getEquippeditems():ArrayList<Int>{
+        val itemids = ArrayList<Int>()
+        Slot.values().forEach {
+            if(isEquipmentSlotEquipted(it)){
+                println("Item equipped = " + getItemAtSlot(it)!!.id)
+                itemids.add(getItemAtSlot(it)!!.id)
+            }
+        }
+        return itemids
+    }
+
+    fun Contains(id: Int): Boolean {
+        var Contains = false
+        Slot.values().forEach {
+            if(getItemAtSlot(it)?.id == id ){
+               Contains = true
+            }
+        }
+        return Contains
+    }
+
+    fun ContainsAll(id: ArrayList<Int>): Boolean {
+        var Contains = true
+        id.forEach {
+            if(!Contains(it)){
+                println("Can't find " + it + " in inv")
+                Contains = false
+            }
+        }
+        return Contains
+    }
+
     suspend fun open(waitForActionToComplete: Boolean = true) {
         if (isOpen()) return
 

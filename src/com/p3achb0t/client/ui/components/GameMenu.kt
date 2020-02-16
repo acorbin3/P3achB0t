@@ -3,11 +3,8 @@ package com.p3achb0t.client.ui.components
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.AccountManager
+import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
-import com.p3achb0t.scripts.RuneDragsMain
-import com.p3achb0t.scripts.TestVorkScript
-import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.scripts.TutorialIslanddoAction
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
@@ -117,6 +114,26 @@ class GameMenu(val tabs: JTabbedPane, var index: Int) : JMenuBar() {
 
         }
         menu.add(menuItem8)
+
+        val menuItem9 = JMenuItem("Vorkath")
+        menuItem9.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setUpScript(ZulrahMain())
+
+        }
+        menu.add(menuItem9)
+
+        val menuItem10 = JMenuItem("Zulrah")
+        menuItem10.addActionListener {
+
+            val game = TabManager.instance.getInstance(TabManager.instance.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setUpScript(ZulrahMain())
+
+        }
+        menu.add(menuItem10)
 
         val varbitExplorer = JMenuItem("Open Varbit Explorer")
         varbitExplorer.addActionListener {

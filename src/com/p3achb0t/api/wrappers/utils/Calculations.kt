@@ -119,7 +119,7 @@ class Calculations {
         }
 
         fun initScreenWidgetDimentions(ctx: Context) {
-            println("Init screenDimentions")
+//            println("Init screenDimentions")
             // main screen 122,0
             //Mini map 164, 17
             val miniMapWidget = WidgetItem(
@@ -146,7 +146,7 @@ class Calculations {
             mainScreen = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), ctx = ctx).area
             // Only set to true if login screen is not visible
             val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
-            println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
+//            println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
             if (login.area.x == 0
                 && login.area.y == 0
                 && login.area.height == 0

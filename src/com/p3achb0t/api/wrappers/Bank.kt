@@ -120,6 +120,23 @@ class Bank(val ctx: Context) {
                 }
             }
         }
+        println("Bankitemcount in array " + count)
+        return count
+    }
+
+    fun getItemCount(itemid: IntArray): Int {
+        var count = 0
+        if (isOpen()) {
+            val items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        count = widgetItem.stackSize
+                        return@forEach
+                    }
+                }
+            }
+        }
         return count
     }
 

@@ -4,6 +4,7 @@ import com.p3achb0t.UserDetails
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.wrappers.NPCs
 import com.p3achb0t.api.wrappers.Projectile
 import com.p3achb0t.api.wrappers.Tile
 import kotlinx.coroutines.delay
@@ -13,15 +14,20 @@ import java.awt.Graphics
 @ScriptManifest("testVork","testVork","zak")
 class TestVorkScript: AbstractScript()  {
     override suspend fun loop() {
+        val combatTile1 = Tile(ctx.npcs.getNearestNPC("Vorkath").getGlobalLocation().x, ctx.npcs.getNearestNPC("Vorkath").getGlobalLocation().y - 5)
+        val combatTile2 = Tile(ctx.npcs.getNearestNPC("Vorkath").getGlobalLocation().x, ctx.npcs.getNearestNPC("Vorkath").getGlobalLocation().y - 5)
+        println("my tile = " + ctx.players.getLocal().getGlobalLocation())
+        println("Vork tile = " + ctx.npcs.getNearestNPC("Vorkath").getGlobalLocation())
         val proj = ctx.projectiles.projectiles.forEach{
             println("proj it = " + it.id)
             println("proj pos = " + it.getPosition)
             println("proj predicted tile = " + it.predictedTile)
             println("my tile = " + Tile(ctx.players.getLocal().x, ctx.players.getLocal().y))
+            println("Vork tile = " + Tile(ctx.npcs.getNearestNPC("Vorkath").x, ctx.npcs.getNearestNPC("Vorkath").y))
             val scenebase = Tile(ctx.client.getBaseX(), ctx.client.getBaseY())
             println(scenebase)
         }
-        delay(250)
+        delay(50000)
     }
 
     override suspend fun start() {

@@ -79,9 +79,7 @@ class Mouse(obj: Any) {
     }
 
     suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
-        if (destPoint == Point(-1, -1)) {
-            return false
-        }
+
 
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
         mouseHopping.setMousePosition(destPoint)

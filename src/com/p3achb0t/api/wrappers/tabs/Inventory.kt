@@ -179,6 +179,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasAntiVenom(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(12919, 12917, 12915, 12913)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasDivineRange(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(23733, 23736, 23739, 23742)
@@ -258,12 +269,40 @@ class Inventory(val ctx: Context? = null) {
         return count
     }
 
+    suspend fun Teleport(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
     suspend fun wear(id: Int) {
         var items = getAll()
         var index = getfirstIndex(id)
         out_loop@ for (it in items) {
             if (it.id == id) {
                 val doActionParams = DoActionParams(index, 9764864, 34, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun wearInBank(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 983043, 1007, 9, "", "", 0, 0)
                 ctx?.mouse?.overrideDoActionParams = true
                 ctx?.mouse?.doAction(doActionParams)
                 delay(600)
@@ -353,6 +392,34 @@ class Inventory(val ctx: Context? = null) {
             if (widget.id == id) Contains = true
         }
         return Contains
+    }
+
+    fun ContainsAll(id: ArrayList<Int>): Boolean {
+        var Contains = true
+            id.forEach {
+                if(!Contains(it)){
+                    println("Can't find " + it + " in inv")
+                    Contains = false
+                }
+        }
+        return Contains
+    }
+
+
+    fun getItemCount(itemid: ArrayList<Int>): Int {
+        var count = 0
+        if (isOpen()) {
+            val items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        count = widgetItem.stackSize
+                        return@forEach
+                    }
+                }
+            }
+        }
+        return count
     }
 
 }

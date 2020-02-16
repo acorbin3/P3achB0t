@@ -17,6 +17,7 @@ class PaintDebug: DebugScript() {
         var isGameObjectOn = false
         var isCanWalkDebug = false
         var isProjectileDebug = false
+        var isZulrah = true
         val scriptName = "PaintDebug"
         fun drawRect(g: Graphics, rect: Rectangle) {
             g.drawRect(rect.x, rect.y, rect.width, rect.height)
@@ -29,8 +30,8 @@ class PaintDebug: DebugScript() {
         try {
 
 
-//            g.color = Color.white
-//            g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
+            g.color = Color.white
+            g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
 //            g.drawString("Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",10,10)
 //            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",10,20)
 //            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",10,30)
@@ -40,6 +41,9 @@ class PaintDebug: DebugScript() {
 
             if (isDebugTextOn)
                 drawDebugText(g, ctx)
+
+            if (isZulrah)
+                zulrahPaintDebug(g, ctx)
 
             if (ctx.client.getGameState() == 30) {
                 if(isGameObjectOn)

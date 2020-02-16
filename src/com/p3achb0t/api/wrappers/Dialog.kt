@@ -70,8 +70,8 @@ class Dialog(val ctx: Context) {
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
             val doActionParams = DoActionParams(-1, 15138819, 30, 0, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
             ctx.mouse.doAction(doActionParams)
-
             delay(Random.nextLong(200, 350))
         }
     }

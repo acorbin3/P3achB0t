@@ -25,16 +25,16 @@ class MouseHop(val scriptManager: IScriptManager, val applet: Applet) {
     }
     fun setMousePosition(point: Point) {
         val mouseMove = MouseEvent(
-                applet.getComponent(0),
+                applet?.getComponent(0),
                 MouseEvent.MOUSE_MOVED,
                 System.currentTimeMillis(),
                 0,
-                point.x,
-                point.y,
+                point?.x,
+                point?.y,
                 0,
                 false
         )
-        scriptManager.getMouse().sendEvent(mouseMove)
+        scriptManager?.getMouse()?.sendEvent(mouseMove)
     }
 
 }
