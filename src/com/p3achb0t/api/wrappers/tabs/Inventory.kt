@@ -223,6 +223,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasWealth(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(11980, 11982, 11984, 11986, 11988)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     suspend fun getItem(id: Int): WidgetItem? {
         if (!isOpen()) {
             open()

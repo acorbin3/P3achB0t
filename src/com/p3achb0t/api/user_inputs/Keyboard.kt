@@ -29,7 +29,6 @@ class Keyboard(val obj: Any) {
             }
 
             KeyEvent.VK_SPACE
-            println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
             val down = KeyEvent(
                     component,
                     KeyEvent.KEY_PRESSED,

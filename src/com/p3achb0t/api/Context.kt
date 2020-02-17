@@ -8,6 +8,7 @@ import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
+import com.p3achb0t.api.wrappers.widgets.GrandExchange
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.applet.Applet
 
@@ -44,6 +45,7 @@ class Context(val obj: Any) {
     val questData: QuestData
     val projectiles: Projectiles
     val worldHop: WorldHop
+    val grandExchange: GrandExchange
 
     init {
         mouse = Mouse(obj)
@@ -73,6 +75,7 @@ class Context(val obj: Any) {
         questData = QuestData(this)
         projectiles = Projectiles(this)
         worldHop = WorldHop(this)
+        grandExchange = GrandExchange(this)
     }
 }
 

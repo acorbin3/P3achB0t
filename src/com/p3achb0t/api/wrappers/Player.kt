@@ -38,10 +38,10 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
     }
 
     fun getHealth(): Int {
-        var healthInt = 0
-        val health = WidgetItem(ctx?.widgets?.find(160, 5), ctx = ctx).widget?.getText()
-        healthInt = health?.toInt()!!
         return try {
+            var healthInt = 0
+            val health = WidgetItem(ctx?.widgets?.find(160, 5), ctx = ctx).widget?.getText()
+            healthInt = health?.toInt()!!
             return healthInt
         } catch (e: Exception) {
             println("getHealth threw an exception")
@@ -53,10 +53,10 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
     }
 
     fun getPrayer(): Int {
-        var healthInt = 0
-        val health = WidgetItem(ctx?.widgets?.find(160, 15), ctx = ctx).widget?.getText()
-        healthInt = health?.toInt()!!
         return try {
+            var healthInt = 0
+            val health = WidgetItem(ctx?.widgets?.find(160, 15), ctx = ctx).widget?.getText()
+            healthInt = health?.toInt()!!
             return healthInt
         } catch (e: Exception) {
             println("getPrayer threw an exception")
@@ -68,10 +68,10 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
     }
 
     fun getRunEnergy(): Int {
-        var healthInt = 0
-        val health = WidgetItem(ctx?.widgets?.find(160, 23), ctx = ctx).widget?.getText()
-        healthInt = health?.toInt()!!
         return try {
+            var healthInt = 0
+            val health = WidgetItem(ctx?.widgets?.find(160, 23), ctx = ctx).widget?.getText()
+            healthInt = health?.toInt()!!
             return healthInt
         } catch (e: Exception) {
             println("getRunEnergy threw an exception")
