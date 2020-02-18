@@ -15,11 +15,6 @@ fun inventoryPaint(g: Graphics, ctx: Context) {
                 items.forEach {
                     g.color = Color.YELLOW
                     g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y)
-                    g.color = Color.GREEN
-                    g.drawString("${it.stackSize}", it.getBasePoint().x + 10, it.getBasePoint().y + 10)
-
-                    g.color = Color.RED
-                    g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
                 }
             }
         }

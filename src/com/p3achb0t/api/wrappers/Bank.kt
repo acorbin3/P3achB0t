@@ -82,6 +82,22 @@ class Bank(val ctx: Context) {
 
     }
 
+    suspend fun openAtGe() {
+        if (!isOpen()) {
+            val bank = ctx.gameObjects.find(10060)
+            if (!ctx.bank.isOpen() && !bank.isEmpty()) {
+                bank[0].doAction2()
+                Utils.waitFor(5, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return ctx.bank.isOpen()
+                    }
+                })
+            }
+            delay(300)
+        }
+    }
+
     suspend fun close() {
         if (isOpen()) {
             val doActionParams = DoActionParams(11, 786434, 57, 1, "", "", 0, 0)
@@ -138,6 +154,21 @@ class Bank(val ctx: Context) {
             }
         }
         return count
+    }
+
+    fun containsAny(itemid: List<Int>): Boolean {
+        var contains = false
+        if (isOpen()) {
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        contains = true
+                    }
+                }
+            }
+        }
+        return contains
     }
 
     /**
@@ -270,6 +301,28 @@ class Bank(val ctx: Context) {
                     ctx?.mouse?.overrideDoActionParams = true
                     ctx?.mouse?.doAction(doActionParams)
                     delay(Random.nextLong(189, 1076))
+                }
+            }
+        }
+    }
+
+    suspend fun withdrawAlldoActionNoted(id: Int) {
+        if (isOpen()) {
+            while (ctx.vars.getVarp(115) != 1 && isOpen()) {
+                val doActionParams = DoActionParams(-1, 786454,57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(Random.nextLong(189, 1076))
+            }
+            if (ctx.vars.getVarp(115) == 1) {
+                var items = getAll()
+                items.forEach {
+                    if (it.id == id) {
+                        val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
+                        ctx?.mouse?.overrideDoActionParams = true
+                        ctx?.mouse?.doAction(doActionParams)
+                        delay(Random.nextLong(189, 1076))
+                    }
                 }
             }
         }
@@ -579,10 +632,8 @@ class Bank(val ctx: Context) {
         var itemCount = 0
         val maxItemCount = getSize()
         bank?.getChildren()?.iterator()?.forEach {
-
             if (itemCount > maxItemCount) return@forEach
-
-            if (it.getItemId() > 0) {
+            if (it.getItemId() > 0 && it.getItemId() != 6512) {
 
                 itemWidgets.add(
                         WidgetItem(
@@ -594,9 +645,14 @@ class Bank(val ctx: Context) {
                                 ctx = ctx
                         )
                 )
+                itemCount += 1
             }
 
-            itemCount += 1
+
+
+
+
+
         }
 
         return itemWidgets

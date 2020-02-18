@@ -9,6 +9,9 @@ import com.p3achb0t.injection.class_generation.isBaseType
 import org.objectweb.asm.*
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
+import org.objectweb.asm.util.Printer
+import org.objectweb.asm.util.Textifier
+import org.objectweb.asm.util.TraceMethodVisitor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
@@ -22,6 +25,9 @@ class Analyser{
 
     val logger = LoggerFactory.getLogger(Analyser::class.java)
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
+
+    private val printer: Printer = Textifier()
+    private val mp: TraceMethodVisitor = TraceMethodVisitor(printer)
 
     fun createInjectedJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
@@ -75,6 +81,48 @@ class Analyser{
 
     private fun injectJARWithInterfaces(classes: MutableMap<String, ClassNode>, runeStar: RuneStarAnalyzer?) {
         val classPath = "com/p3achb0t/_runestar_interfaces"
+
+        //delete opaquePredicates
+        println("Starting - Deleting opaque Predicates")
+        classes.forEach { clazz ->
+            clazz.value.methods.iterator().forEach { methodNode ->
+                //                println("clazz: ${clazz.key}.${methodNode.name}")
+                val lastParamIndex = methodNode?.lastParamIndex!!
+                val instructions = methodNode.instructions?.iterator()!!
+                var returns = 0
+                var exceptions = 0
+                while (instructions.hasNext()) {
+                    val insn = instructions.next()
+//                    insn.accept(mp)
+//                    val sw = StringWriter()
+//                    printer.print(PrintWriter(sw))
+//                    printer.getText().clear()
+//                    println("\t${sw.toString().replace("\n", "")}")
+
+                    val toDelete = if (insn.matchesReturn(lastParamIndex)) {
+                        returns++
+                        4
+                    } else if (insn.matchesException(lastParamIndex)) {
+                        exceptions++
+                        7
+                    } else {
+                        continue
+                    }
+//                    println("\tdeleting: $toDelete")
+                    val label = (insn.next.next as JumpInsnNode).label.label
+                    instructions.remove()
+                    repeat(toDelete - 1) {
+                        instructions.next()
+                        instructions.remove()
+                    }
+                    instructions.add(JumpInsnNode(GOTO, LabelNode(label)))
+                }
+            }
+        }
+
+        println("Finished - Deleting opaque Predicates")
+
+
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
             if(clazzData.`class` == "Client") {
@@ -240,7 +288,7 @@ class Analyser{
 
 
             // Inject getModel for the Entity
-            val listOfModelInjections = listOf<String>("Entity", "Npc") // listOf<String>("Player","Entity", "Npc")
+            val listOfModelInjections = listOf<String>("Entity")
             if(clazzData.`class` in listOfModelInjections){
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
                 println("${clazzData.`class`} MethodHook: $methodHook")
@@ -254,12 +302,16 @@ class Analyser{
                 var returnType = "L$classPath/$clazzName;"
                 println("Returntype $returnType")
 
+                //Find the class.method, look for the opaque predicate
+                println("methodHook.owner: ${methodHook.owner} methodHook.name ${methodHook.name}")
+                val foundMethod = classes[methodHook.owner]?.methods?.first { it.name == methodHook.name }
+                var loadFound = false
+
+
                 val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
 
                 methodNode.visitVarInsn(ALOAD, 0)
-//                methodNode.visitInsn(ICONST_0)
-                methodNode.visitLdcInsn(-2120872049)
-//                il.add(LdcInsnNode("."));
+                methodNode.visitInsn(ICONST_0)
                 methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook.owner, methodHook.name, methodHook.descriptor)
 
                 val cast = "$classPath/$clazzName"
@@ -382,9 +434,9 @@ class Analyser{
                             if (abstractNode.opcode == INVOKESTATIC) {
                                 val mn = (abstractNode as MethodInsnNode)
                                 if (mn.owner == doActionMethodHook?.owner && mn.name == doActionMethodHook?.name) {
-                                println("class: ${clazz.key}" )
-                                println("\tmethod: ${methodNode.name}")
-                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
+                                    println("class: ${clazz.key}" )
+                                    println("\tmethod: ${methodNode.name}")
+                                    println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
                                     val il = InsnList()
                                     il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                                     il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/interfaces/ScriptManager;)V", false))
@@ -422,6 +474,95 @@ class Analyser{
         out.close()
     }
 
+
+    private fun AbstractInsnNode.matchesReturn(lastParamIndex: Int): Boolean {
+        val i0 = this
+        if (i0.opcode != ILOAD) return false
+        i0 as VarInsnNode
+        if (i0.`var` != lastParamIndex) return false
+        val i1 = i0.next
+        if (!i1.isConstantIntProducer) return false
+        val i2 = i1.next
+        if (!i2.isIf) return false
+        val i3 = i2.next
+        if (!i3.isReturn) return false
+        return true
+    }
+
+    private val ISE_INTERNAL_NAME = Type.getInternalName(IllegalStateException::class.java)
+
+    private fun AbstractInsnNode.matchesException(lastParamIndex: Int): Boolean {
+        val i0 = this
+        if (i0.opcode != ILOAD) return false
+        i0 as VarInsnNode
+        if (i0.`var` != lastParamIndex) return false
+        val i1 = i0.next
+        if (!i1.isConstantIntProducer) return false
+        val i2 = i1.next
+        if (!i2.isIf) return false
+        val i3 = i2.next
+        if (i3.opcode != NEW) return false
+        val i4 = i3.next
+        if (i4.opcode != DUP) return false
+        val i5 = i4.next
+        if (i5.opcode != INVOKESPECIAL) return false
+        i5 as MethodInsnNode
+        if (i5.owner != ISE_INTERNAL_NAME) return false
+        val i6 = i5.next
+        if (i6.opcode != ATHROW) return false
+        return true
+    }
+
+    val AbstractInsnNode.isConstantIntProducer: Boolean get() {
+        return when (opcode) {
+            Opcodes.LDC -> (this as LdcInsnNode).cst is Int
+            Opcodes.SIPUSH, Opcodes.BIPUSH, Opcodes.ICONST_0, Opcodes.ICONST_1, Opcodes.ICONST_2, Opcodes.ICONST_3, Opcodes.ICONST_4, Opcodes.ICONST_5, Opcodes.ICONST_M1 -> true
+            else -> false
+        }
+    }
+
+    val AbstractInsnNode.constantIntProduced: Int get() {
+        return when (opcode) {
+            Opcodes.LDC -> (this as LdcInsnNode).cst as Int
+            Opcodes.SIPUSH, Opcodes.BIPUSH -> (this as IntInsnNode).operand
+            Opcodes.ICONST_0 -> 0
+            Opcodes.ICONST_1 -> 1
+            Opcodes.ICONST_2 -> 2
+            Opcodes.ICONST_3 -> 3
+            Opcodes.ICONST_4 -> 4
+            Opcodes.ICONST_5 -> 5
+            Opcodes.ICONST_M1 -> -1
+            else -> error(this)
+        }
+    }
+
+    private val MethodNode.lastParamIndex: Int get() {
+        val offset = if (Modifier.isStatic(access)) 1 else 0
+        return (Type.getArgumentsAndReturnSizes(desc) shr 2) - offset - 1
+    }
+
+    private fun passingVal(pushed: Int, ifOpcode: Int): Int {
+        return when(ifOpcode) {
+            IF_ICMPEQ -> pushed
+            IF_ICMPGE,
+            IF_ICMPGT -> pushed + 1
+            IF_ICMPLE,
+            IF_ICMPLT,
+            IF_ICMPNE -> pushed - 1
+            else -> error(ifOpcode)
+        }
+    }
+
+    private val AbstractInsnNode.isIf: Boolean get() {
+        return this is JumpInsnNode && opcode != Opcodes.GOTO
+    }
+
+    private val AbstractInsnNode.isReturn: Boolean get() {
+        return when (opcode) {
+            RETURN, ARETURN, DRETURN, FRETURN, IRETURN, LRETURN -> true
+            else -> false
+        }
+    }
 
     private fun addInvokeMethods(clazzData: ClassHook, runeStar: RuneStarAnalyzer, classPath: String, classes: MutableMap<String, ClassNode>) {
         val invokeList = ArrayList<InvokerData>()
@@ -586,7 +727,7 @@ class Analyser{
         //                script.ctx.mouse.overrideDoActionParams
         val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
         val il = InsnList()
-        
+
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/interfaces/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))

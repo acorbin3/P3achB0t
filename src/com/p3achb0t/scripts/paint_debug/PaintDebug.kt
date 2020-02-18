@@ -3,6 +3,7 @@ package com.p3achb0t.scripts.paint_debug
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.widgets.Widget
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -64,14 +65,19 @@ class PaintDebug: DebugScript() {
 
                 }
 
-//                if (Bank(ctx).isOpen()) {
-//                    val items = Bank(ctx).getAll()
-//                    items.forEach {
-//                        g.color = Color.ORANGE
+                if (Bank(ctx).isOpen()) {
+                    val items = Bank(ctx).getAll()
+                    items.forEach {
+                        g.color = Color.WHITE
+                        var area: Rectangle = Rectangle(60, 70, 440, 315)
+                        if(area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
+                            g.setFont(g.getFont().deriveFont(9.5f))
+                            g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
+                        }
 //                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
-//
-//                    }
-//                }
+
+                    }
+                }
 //
 //
 //                rightClickMenuPaint(g, ctx)

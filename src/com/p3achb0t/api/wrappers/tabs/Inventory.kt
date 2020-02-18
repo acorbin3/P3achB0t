@@ -82,6 +82,21 @@ class Inventory(val ctx: Context? = null) {
         return items
     }
 
+    fun getAllIds(): ArrayList<Int> {
+        val items = ArrayList<Int>()
+        val inventory = getWidget()
+        // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
+        if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
+            val ids = inventory.getItemIds()
+            ids.forEach {
+                if(it != 996) {
+                    items.add(it - 1)
+                }
+            }
+        }
+        return items
+    }
+
     fun getfirstIndex(id: Int): Int{
         var count = 0
         var index = 0
@@ -199,6 +214,22 @@ class Inventory(val ctx: Context? = null) {
             }
         }
         return HasItems
+    }
+
+    fun containsAny(itemid: List<Int>): Boolean {
+        var contains = false
+        if (isOpen()) {
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        contains = true
+                        return@forEach
+                    }
+                }
+            }
+        }
+        return contains
     }
 
     fun hasDueling(): Boolean {
