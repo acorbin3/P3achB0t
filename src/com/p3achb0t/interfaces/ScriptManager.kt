@@ -69,7 +69,7 @@ class ScriptManager(val client: Any) {
         //This the script thread.
         thread = GlobalScope.launch {
             script.start()
-            while (true) {
+            while (isRunning) {
                 while (paused) {
                     delay(100)
                 }
@@ -79,7 +79,7 @@ class ScriptManager(val client: Any) {
     }
 
     fun pause() {
-        isRunning = false
+        isRunning = true
         paused = true
 
     }
@@ -89,10 +89,11 @@ class ScriptManager(val client: Any) {
         paused = false
     }
 
-    fun stop() {
+    suspend fun stop() {
         isRunning = false
         script.stop()
         thread.cancel()
+        thread.join()
 
     }
 
