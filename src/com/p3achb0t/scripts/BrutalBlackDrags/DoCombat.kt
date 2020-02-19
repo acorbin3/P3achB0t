@@ -1,9 +1,9 @@
 package com.p3achb0t.scripts.BrutalBlackDrags
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.scripts.Task
 import kotlinx.coroutines.delay
 import kotlin.random.Random
@@ -39,7 +39,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
 
     override suspend fun execute() {
         if(!combatArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())){
-            combatArea.getRandomTile().walktoTile(combatArea.getRandomTile())
+            combatArea.getRandomTile().walktoTile()
             delay(1300)
 
         }
@@ -119,8 +119,8 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
             var npc = ctx.npcs.getTargetted("Brutal black dragon")
             if(npc != null) {
                 if (npc.distanceTo() < 4 && groundloot.isEmpty()) {
-                    println("Walking to tile "+ combatArea.getRandomTile().walktoTile(combatArea.getRandomTile()))
-                    combatArea.getRandomTile().walktoTile(combatArea.getRandomTile())
+                    println("Walking to tile "+ combatArea.getRandomTile().walktoTile())
+                    combatArea.getRandomTile().walktoTile()
                     delay(Random.nextLong(1343, 1888))
                 }
             }
@@ -145,7 +145,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                     println(dragon[0].distanceTo())
                     if(dragon[0].distanceTo() < 4){
                         println("Walking to tile "+ dragon[0].getRegionalLocation())
-                        combatArea.getRandomTile().walktoTile(combatArea.getRandomTile())
+                        combatArea.getRandomTile().walktoTile()
                         delay(Random.nextLong(1343, 1888))
                 }
                         dragon[0].doActionAttack()
@@ -163,10 +163,10 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 println("being attacked - locating target")
                 val dragon = ctx.npcs.getTargetted("Brutal black dragon")
                 if (dragon != null && combatArea.containsOrIntersects(dragon.getGlobalLocation())) {
-                    println(dragon?.distanceTo())
+                    println(dragon.distanceTo())
                     if(dragon.distanceTo() < 4){
                         println("Walking to tile "+ dragon.getRegionalLocation())
-                        combatArea.getRandomTile().walktoTile(combatArea.getRandomTile())
+                        combatArea.getRandomTile().walktoTile()
                         delay(Random.nextLong(1343, 1888))
                     }
                         dragon.doActionAttack()

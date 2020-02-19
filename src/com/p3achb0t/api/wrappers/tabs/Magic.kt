@@ -39,7 +39,7 @@ class Magic(val ctx: Context) {
     //TODO - deselect spell
 
 
-    suspend fun cast(spell: Spells) {
+    suspend fun selectSpell(spell: Spells) {
         // Ingore if spell is already selected
         try {
             if (Utils.cleanColorText(
@@ -54,9 +54,7 @@ class Magic(val ctx: Context) {
 
         val spellWidget = WidgetItem(ctx.widgets.find(PARENT, spell.widgetID), ctx = ctx)
         if (spellWidget.widget != null) {
-            println(spellWidget.getInteractPoint())
-
-            spellWidget.interact("Cast")
+            spellWidget.selectSpell()
         }
     }
 

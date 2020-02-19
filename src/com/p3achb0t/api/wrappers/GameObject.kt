@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.DynamicObject
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
@@ -173,26 +172,32 @@ class GameObject(
         }
     }
 
-    suspend fun doAction2(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
-        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+    suspend fun doAction2(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
-    suspend fun doAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
-        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+    suspend fun doAction3(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
-    suspend fun doAction4(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
-        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+    suspend fun doAction4(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }
 
-    suspend fun doAction5(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
-        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
+    suspend fun doAction5(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun useItemOn(opcode: MenuOpcode = MenuOpcode.ITEM_USE_ON_GAME_OBJECT, offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val doActionParams = DoActionParams(getLocalLocation().x.plus(offsetX), getLocalLocation().y.plus(offsetY), opcode.id, id.plus(offsetID), "", "", 0 ,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }

@@ -56,7 +56,7 @@ class Walking {
 
                 val t = it.getGlobalLocation()
                 println("Clicking on map: for tile: (${t.x},${t.y})")
-                t.walktoTile(t)
+                t.walktoTile()
 //                if(!it.isOnScreen()) Camera(client).turnAngleTo(it)
 //                it.click()
                 Utils.waitFor(5, object : Utils.Condition {
