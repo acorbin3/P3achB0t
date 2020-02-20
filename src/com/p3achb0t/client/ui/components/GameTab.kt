@@ -7,7 +7,7 @@ import java.awt.Color
 import java.awt.Dimension
 import javax.swing.JPanel
 
-class GameTab(account: Account = Account(), manager: Manager) : JPanel() {
+class GameTab(val account: Account = Account(), manager: Manager) : JPanel() {
 
     val client: Bot
 

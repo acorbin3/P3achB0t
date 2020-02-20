@@ -63,7 +63,9 @@ class GameWindow : JFrame() {
             while(it.client.getScript().ctx.client.getGameState() != 10){
                 delay(50)
             }
-            it.client.startScript()
+            //Only start the script if its a real script. otherwise we dont want to start the null script
+            if(it.account.script.isNotEmpty())
+                it.client.startScript()
         }
 
         println("Validating client")
