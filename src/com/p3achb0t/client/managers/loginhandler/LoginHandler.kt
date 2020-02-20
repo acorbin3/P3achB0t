@@ -8,6 +8,8 @@ import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.client.managers.accounts.Account
 import kotlinx.coroutines.delay
 import java.awt.Point
+import java.awt.event.KeyEvent
+import kotlin.random.Random
 
 class LoginHandler(var client: Client, var account: Account = Account()) {
 
@@ -29,9 +31,24 @@ class LoginHandler(var client: Client, var account: Account = Account()) {
         println("${client.getLogin_username()}:${client.getLogin_password()}")
         if(client.getLogin_username() != account.username){
             //Delete user name and replace
+            mouseWrapper.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(240,249)), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
+            while(client.getLogin_username().isNotEmpty()){
+                keyboardWrapper.pressDownKey(KeyEvent.VK_BACK_SPACE)
+            }
+            keyboardWrapper.release(KeyEvent.VK_DOWN)
+
+            keyboardWrapper.sendKeys(account.username, false, true)
+
         }
+
+        //Move to password
+        mouseWrapper.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(258,269)), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
         if(client.getLogin_password().isNotEmpty()){
             //Clear password
+            while(client.getLogin_password().isNotEmpty()){
+                keyboardWrapper.pressDownKey(KeyEvent.VK_BACK_SPACE)
+            }
+            keyboardWrapper.release(KeyEvent.VK_DOWN)
         }
         keyboardWrapper.sendKeys(account.password, true, true)
         Utils.waitFor(10, object : Utils.Condition {
