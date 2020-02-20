@@ -47,8 +47,12 @@ class GameWindow : JFrame() {
         manager.loadedScripts.addScript("BarrowsMain", BarrowsMain())
 
         //Load each account in a different tab
-        manager.accountManager.accounts.forEach {
-            manager.tabManager.addInstance(account = it)
+        if(manager.accountManager.accounts.isNotEmpty()) {
+            manager.accountManager.accounts.forEach {
+                manager.tabManager.addInstance(account = it)
+            }
+        }else{
+            manager.tabManager.addInstance()
         }
     }
 
