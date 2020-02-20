@@ -625,7 +625,7 @@ class TutorialIslandDoAction: AbstractScript()  {
 
 
                 ctx.inventory.use(590)
-                ctx.inventory.use(LOGS_ID_2511)
+                ctx.inventory.useSelectedItemOnItem(LOGS_ID_2511)
                 delay(Random.nextLong(2500, 4500))
                 //Wait till hes not doing anything which should mean fire has been made
                 ctx.players.getLocal().waitTillIdle()
