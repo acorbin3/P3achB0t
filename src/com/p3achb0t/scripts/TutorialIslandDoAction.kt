@@ -2,7 +2,6 @@ package com.p3achb0t.scripts
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Inventory
@@ -22,8 +21,8 @@ import kotlin.random.Random
 
 private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
-@ScriptManifest("Quests","TutorialIsland","P3aches")
-class TutorialIslanddoAction: AbstractScript()  {
+@ScriptManifest("Quests","TutorialIslandDoAction","P3aches")
+class TutorialIslandDoAction: AbstractScript()  {
     val stopwatch = StopWatch()
     var currentJob = ""
     override suspend fun loop() {
@@ -39,13 +38,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             stopwatch.start()
         } catch (e: Exception) {
         }
-        println("Running Start")
-        println("Running Start2")
-        LoggingIntoAccount(ctx)
-        //Lets wait till the client is logged in
-        while (ctx.client.getGameState() != 30) {
-            delay(100)
-        }
+        println("Running Start for TutorialIslandDoAction")
     }
 
     override fun stop() {
@@ -136,13 +129,16 @@ class TutorialIslanddoAction: AbstractScript()  {
 
     suspend fun run() {
         if (!isInititilized) init()
-        jobs.forEach {
-            val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
-            if (it.isValidToRun(chatBox)) {
-                println("Running: ${it.javaClass.name}")
-                currentJob = it.javaClass.name
-                it.execute()
-                println("Completed: ${it.javaClass.name}")
+        //Only run jobs if logged in
+        if(GameState.currentState(ctx) == GameState.LOGGED_IN) {
+            jobs.forEach {
+                val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
+                if (it.isValidToRun(chatBox)) {
+                    println("Running: ${it.javaClass.name}")
+                    currentJob = it.javaClass.name
+                    it.execute()
+                    println("Completed: ${it.javaClass.name}")
+                }
             }
         }
     }

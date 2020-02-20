@@ -10,17 +10,13 @@ import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.scripts.Task
-import com.sun.javafx.util.Utils
-import doCombat
 import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color
 import java.awt.Graphics
-import java.util.*
-import kotlin.collections.ArrayList
 
 
-@ScriptManifest("RuneDrags","RuneDrags","Zak")
+@ScriptManifest("BrutalBlackDragsMain","BrutalBlackDragsMain","Zak")
 class BrutalBlackDragsMain : AbstractScript() {
     var factory = MouseMotionFactory()
     val stopwatch = StopWatch()
