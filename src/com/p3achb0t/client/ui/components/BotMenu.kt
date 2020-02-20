@@ -20,12 +20,12 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val accountManager = JMenuItem("Add BOT")
         accountManager.addActionListener {
-            manager.tabManager.create()
+//            manager.tabManager.create()
         }
 
         val refreshScript = JMenuItem("Refresh Scripts")
         refreshScript.addActionListener {
-            manager.scriptManager.setScript(0,"nameofSCRIPT")
+//            manager.scriptManager.setScript(0,"nameofSCRIPT")
         }
 
         menu.add(accountManager)
@@ -39,7 +39,7 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val test1 = JMenuItem("Detach bot")
         test1.addActionListener {
-            manager.tabManager.detach()
+//            manager.tabManager.detach()
         }
 
         val test2 = JMenuItem("Remove")
@@ -50,7 +50,7 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val test3 = JMenuItem("Resize to 900x800")
         test3.addActionListener {
-            manager.tabManager.resizeView(900,800)
+//            manager.tabManager.resizeView(900,800)
         }
 
         val test4 = JMenuItem("Running bots")
@@ -60,7 +60,7 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val test5 = JMenuItem("Repaint")
         test5.addActionListener {
-            manager.tabManager.getSelectedTabBot().bot.getApplet().repaint()
+//            manager.tabManager.getSelectedTabBot().bot.getApplet().repaint()
         }
 
         menu.add(test1)

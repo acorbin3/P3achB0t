@@ -1,9 +1,9 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.getActorTriangles
-import com.p3achb0t.api.getConvexHull
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.getActorTriangles
+import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Color
 import java.awt.Graphics
 
@@ -30,8 +30,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 g.fillPolygon(tile)
                 val polygon = getActorTriangles(
                         _player,
-                        ctx.client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__p(), ctx
+                        ctx
 
                 )
                 g.color = Color.YELLOW
@@ -40,8 +39,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 }
                 val ch = getConvexHull(
                         _player,
-                        ctx.client.getPlayerAppearance_cachedModels(),
-                        _player.getAppearance().get__p(), ctx
+                        ctx
 
                 )
                 g.color = Color.RED
@@ -59,7 +57,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 ) {
                     g.color = Color.GREEN
                     g.drawString(
-                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()}",
+                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}",
                         namePoint.x,
                         namePoint.y
                     )

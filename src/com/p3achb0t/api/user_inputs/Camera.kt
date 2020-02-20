@@ -2,6 +2,11 @@ package com.p3achb0t.api.user_inputs
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.utils.Timer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.awt.event.KeyEvent
 import java.lang.Thread.sleep
 import kotlin.math.abs
@@ -23,7 +28,7 @@ class Camera(val ctx: Context) {
      * @param locatable such as NPC/GameObject/Tile
      * @return Integer 0-360
      */
-    fun getAngleTo(locatable: Locatable): Int {
+    suspend fun getAngleTo(locatable: Locatable): Int {
         val local = ctx.client.getLocalPlayer()
 
         var degree = 360 - Math.toDegrees(
@@ -38,34 +43,63 @@ class Camera(val ctx: Context) {
         return degree.toInt()
     }
 
-    fun swingTo(locatable: Locatable) {
-        turnAngleTo(locatable)
+    suspend fun swingTo(locatable: Locatable) {
+        CoroutineScope(IO).launch {
+            turnAngleTo(locatable)
+        }
     }
 
-    fun turnTo(locatable: Locatable) {
-        turnPitchTo(locatable)
-        turnAngleTo(locatable)
+
+    suspend fun turnTo(locatable: Locatable)  {
+        CoroutineScope(IO).launch {
+            turnPitchTo(locatable)
+            delay(100)
+        }
+        CoroutineScope(IO).launch {
+            turnAngleTo(locatable)
+            delay(100)
+        }
+
     }
 
-    fun turnWest() {
-        setAngle(270 + Random.nextInt(-10, 10))
+    suspend fun turnTononco(locatable: Locatable)  {
+            turnPitchTononeco(locatable)
+            delay(100)
+            turnAngleTononeco(locatable)
+            delay(100)
+
     }
 
-    fun turnEast() {
-        setAngle(90 + Random.nextInt(-10, 10))
+
+    suspend fun turnWest() {
+        CoroutineScope(IO).launch {
+            setAngle(270 + Random.nextInt(-10, 10))
+        }
     }
 
-    fun turnNorth() {
-        setAngle(0 + Random.nextInt(-10, 10))
+    suspend fun turnEast() {
+        CoroutineScope(IO).launch {
+            setAngle(90 + Random.nextInt(-10, 10))
+        }
     }
 
-    fun turnSouth() {
-        setAngle(180 + Random.nextInt(-10, 10))
+    suspend fun turnNorth() {
+        CoroutineScope(IO).launch {
+            setAngle(0 + Random.nextInt(-10, 10))
+        }
     }
 
-    fun setHighPitch() {
-        if (pitch < 100)
-            setPitch(90 + Random.nextInt(-5, 7))
+    suspend fun turnSouth() {
+        CoroutineScope(IO).launch {
+            setAngle(180 + Random.nextInt(-10, 10))
+        }
+    }
+
+    suspend fun setHighPitch() {
+        CoroutineScope(IO).launch {
+            if (pitch < 100)
+                setPitch(90 + Random.nextInt(-5, 7))
+        }
     }
 
     /**
@@ -74,7 +108,7 @@ class Camera(val ctx: Context) {
      * @param pitch
      * @return Boolean : true if it done correctly else False
      */
-    fun setPitch(pitch: Int): Boolean {
+    suspend fun setPitch(pitch: Int): Boolean {
 //            if (!Game.isLoggedIn())
 //                return false
 
@@ -84,8 +118,10 @@ class Camera(val ctx: Context) {
             return true
         } else if (_pitch < pitch) {
             println("Starting to move camera UP")
-            ctx.keyboard.pressDownKey(KeyEvent.VK_UP)
-            val t = com.p3achb0t.api.Timer(5000)
+            CoroutineScope(IO).launch {
+                ctx.keyboard.pressDownKey(KeyEvent.VK_UP)
+            }
+                val t = Timer(5000)
 
             while (_pitch < pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
@@ -96,14 +132,18 @@ class Camera(val ctx: Context) {
 
         } else if (_pitch > pitch) {
             println("Starting to move camera Down")
-            ctx.keyboard.pressDownKey(KeyEvent.VK_DOWN)
-            val t = com.p3achb0t.api.Timer(5000)
+            CoroutineScope(IO).launch {
+                ctx.keyboard.pressDownKey(KeyEvent.VK_DOWN)
+            }
+            val t = Timer(5000)
 
             while (_pitch > pitch && abs(_pitch - pitch) > 5 && t.isRunning()) {
                 _pitch = this.pitch
                 sleep(59, 100)
             }
-            ctx.keyboard.release(KeyEvent.VK_DOWN)
+            CoroutineScope(IO).launch {
+                ctx.keyboard.release(KeyEvent.VK_DOWN)
+            }
             println("Finished moving camera Down")
         }
 
@@ -114,7 +154,7 @@ class Camera(val ctx: Context) {
      * @param angle to change
      * @return true if done else false
      */
-    fun setAngle(angle: Int): Boolean {
+    suspend fun setAngle(angle: Int): Boolean {
 //            if (!Game.isLoggedIn())
 //                return false
 
@@ -164,18 +204,34 @@ class Camera(val ctx: Context) {
      * @param locatable
      */
     //Higest pitch is 383?, lowest is 128
-    fun turnPitchTo(locatable: Locatable) {
-        var pitch = 90 - locatable.distanceTo() * 9
-        val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
-        pitch += factor * Random.nextInt(5, 10)
+    suspend fun  turnPitchTo(locatable: Locatable) {
+        CoroutineScope(IO).launch {
+            var pitch = 90 - locatable.distanceTo() * 9
+            val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
+            pitch += factor * Random.nextInt(5, 10)
 
-        if (pitch > 90) {
-            pitch = 90
-        } else if (pitch < 0) {
-            pitch = Random.nextInt(5, 10)
+            if (pitch > 90) {
+                pitch = 90
+            } else if (pitch < 0) {
+                pitch = Random.nextInt(5, 10)
+            }
+
+            setPitch(pitch)
         }
+    }
 
-        setPitch(pitch)
+    suspend fun  turnPitchTononeco(locatable: Locatable) {
+            var pitch = 90 - locatable.distanceTo() * 9
+            val factor = if (Random.nextInt(0, 1) == 0) -1 else 1
+            pitch += factor * Random.nextInt(5, 10)
+
+            if (pitch > 90) {
+                pitch = 90
+            } else if (pitch < 0) {
+                pitch = Random.nextInt(5, 10)
+            }
+
+            setPitch(pitch)
     }
 
     /**
@@ -183,23 +239,37 @@ class Camera(val ctx: Context) {
      *
      * @param locatable
      */
-    fun turnAngleTo(locatable: Locatable) {
-        var set = getAngleTo(locatable)
+    suspend fun turnAngleTo(locatable: Locatable) {
+        CoroutineScope(IO).launch {
+            var set = getAngleTo(locatable)
 
-        if (set > 180) {
-            set -= 180
-        } else {
-            set += 180
+            if (set > 180) {
+                set -= 180
+            } else {
+                set += 180
+            }
+
+            setAngle(set)
         }
-
-        setAngle(set)
     }
 
-    private fun normalizeAngle(angle: Int): Int {
+    suspend fun turnAngleTononeco(locatable: Locatable) {
+            var set = getAngleTo(locatable)
+
+            if (set > 180) {
+                set -= 180
+            } else {
+                set += 180
+            }
+
+            setAngle(set)
+    }
+
+    private suspend fun normalizeAngle(angle: Int): Int {
         return angle % 360
     }
 
-    private fun getDiff(curAngle: Int, angle: Int): Int {
+    private suspend fun getDiff(curAngle: Int, angle: Int): Int {
         val raw_diff = normalizeAngle(Math.abs(angle - curAngle))
         return if (raw_diff > 180) 360 - raw_diff else raw_diff
     }

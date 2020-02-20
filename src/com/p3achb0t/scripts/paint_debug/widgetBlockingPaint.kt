@@ -1,6 +1,6 @@
 package com.p3achb0t.scripts.paint_debug
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.scripts.paint_debug.PaintDebug.Companion.drawRect
 import java.awt.Color
 import java.awt.Graphics

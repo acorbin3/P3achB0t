@@ -6,6 +6,7 @@ import com.p3achb0t.api.user_inputs.Camera
 import com.p3achb0t.api.user_inputs.Keyboard
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.applet.Applet
@@ -16,7 +17,7 @@ class Context(val obj: Any) {
     val applet: Applet
     var selectedWidget: Component? = null
 
-    val client: Client
+    val client: Client = obj as Client
     val players: Players
     val groundItems: GroundItems
     val npcs: NPCs
@@ -37,9 +38,14 @@ class Context(val obj: Any) {
     val tabs: Tabs
     val widgets: Widgets
     val vars: Vars
+    val cache: Cache
+    val run: Run
+    val stats: Stats
+    val questData: QuestData
+    val projectiles: Projectiles
+    val worldHop: WorldHop
 
     init {
-        client = obj as Client
         mouse = Mouse(obj)
         keyboard = Keyboard(obj)
         applet = obj as Applet
@@ -61,6 +67,12 @@ class Context(val obj: Any) {
         tabs = Tabs(this)
         widgets = Widgets(this)
         vars = Vars(this)
+        cache = Cache()
+        run = Run(this)
+        stats = Stats(this)
+        questData = QuestData(this)
+        projectiles = Projectiles(this)
+        worldHop = WorldHop(this)
     }
 }
 

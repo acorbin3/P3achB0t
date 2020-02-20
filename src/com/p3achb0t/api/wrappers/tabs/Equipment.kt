@@ -1,7 +1,8 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
@@ -79,8 +80,35 @@ class Equipment(val ctx: Context) {
                     return !isEquipmentSlotEquipted(slot)
                 }
             })
-
     }
+
+    suspend fun interactWithSlot(slot: Slot, interaction: String) {
+        if(!isOpen()){
+            open()
+        }
+        if(isOpen()) {
+            val item = getItemAtSlot(slot)
+            println("Interacting with item ${slot.name} ${item?.area}" + " " + interaction)
+            item?.interact(interaction)
+            // Wait till item gets removed
+            delay((250))
+        }
+    }
+
+    suspend fun duelingcastlewars() {
+        val doActionParams = DoActionParams(-1, 25362455, 57, 3, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(600)
+    }
+
+    suspend fun duelingclawnwars() {
+        val doActionParams = DoActionParams(-1, 25362455, 57, 4, "", "", 0, 0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+        delay(600)
+    }
+
 
     fun isEquipmentSlotEquipted(slot: Slot): Boolean {
         try {
@@ -95,6 +123,8 @@ class Equipment(val ctx: Context) {
         }
         return false
     }
+
+
 
     fun getItemAtSlot(slot: Slot): WidgetItem? {
         return try {

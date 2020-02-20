@@ -7,6 +7,7 @@ interface WorldMap {
     fun getEnabledCategories(): Any
     fun getEnabledElements(): Any
     fun getFlashingElements(): Any
+//    fun menuAction(): String
     fun getFont(): Font
     fun getFonts(): Any
     fun getIconIterator(): Any
@@ -19,39 +20,39 @@ interface WorldMap {
     fun getWorldMapManager(): WorldMapManager
     fun getZoom(): Float
     fun getZoomTarget(): Float
-    fun get__n(): WorldMapArea
-    fun get__aj(): Boolean
-    fun get__a(): AbstractArchive
-    fun get__e(): AbstractArchive
-    fun get__x(): AbstractArchive
+    fun get__z(): WorldMapArea
+    fun get__ao(): Boolean
+    fun get__d(): AbstractArchive
+    fun get__j(): AbstractArchive
+    fun get__l(): AbstractArchive
+    fun get__a(): Int
     fun get__ac(): Int
     fun get__ad(): Int
-    fun get__ae(): Int
-    fun get__ag(): Int
-    fun get__ah(): Int
+    fun get__af(): Int
+    fun get__aj(): Int
     fun get__ak(): Int
-    fun get__an(): Int
+    fun get__am(): Int
     fun get__ar(): Int
     fun get__as(): Int
     fun get__au(): Int
     fun get__av(): Int
     fun get__aw(): Int
+    fun get__ax(): Int
     fun get__ay(): Int
     fun get__az(): Int
-    fun get__bj(): Int
-    fun get__bm(): Int
-    fun get__bo(): Int
-    fun get__bs(): Int
-    fun get__bz(): Int
-    fun get__g(): Int
-    fun get__h(): Int
-    fun get__m(): Int
+    fun get__b(): Int
+    fun get__be(): Int
+    fun get__bn(): Int
+    fun get__bq(): Int
+    fun get__bt(): Int
+    fun get__bw(): Int
     fun get__r(): Int
-    fun get__ai(): Any
-    fun get__am(): Any
-    fun get__bq(): Any
+    fun get__s(): Int
+    fun get__ab(): Any
+    fun get__ap(): Any
+    fun get__bi(): Any
     fun get__bk(): Any
     fun get__al(): Long
-    fun get__bw(): IntArray
-    fun get__bc(): Boolean
+    fun get__bc(): IntArray
+    fun get__bl(): Boolean
 }

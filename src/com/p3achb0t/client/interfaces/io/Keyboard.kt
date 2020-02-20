@@ -27,7 +27,7 @@ open abstract class Keyboard : KeyListener {
         //println(e)
 
         try {
-            when (e.getID()) {
+            when (e.id) {
                 KeyEvent.KEY_PRESSED -> _keyPressed(e)
                 KeyEvent.KEY_RELEASED -> _keyReleased(e)
                 KeyEvent.KEY_TYPED -> _keyTyped(e)
@@ -51,19 +51,32 @@ open abstract class Keyboard : KeyListener {
         if(e.isControlDown && e.keyChar.isDigit()){
             when (e.keyChar) {
                 '1' -> {
+                    println("Swapping debug text")
                     PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
                 }
                 '2' -> {
+                    println("Swapping NPC paint")
                     PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
                 }
                 '3' -> {
+                    println("Swapping players")
                     PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
                 }
                 '4' -> {
+                    println("Swapping gameobjects")
                     PaintDebug.isGameObjectOn = !PaintDebug.isGameObjectOn
                 }
                 '5' -> {
+                    println("Swapping gounditems")
                     PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
+                }
+                '8' -> {
+                    println("Swapping can walk")
+                    PaintDebug.isCanWalkDebug = !PaintDebug.isCanWalkDebug
+                }
+                '7' -> {
+                    println("Swapping projectiles")
+                    PaintDebug.isProjectileDebug = !PaintDebug.isProjectileDebug
                 }
             }
         }

@@ -1,17 +1,23 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.getConvexHull
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.getConvexHull
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Polygon
 
-class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
+class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
+    val name: String
+        get() {
+            return npc.getType().getName()
+        }
 
     override fun isMouseOverObj(): Boolean {
-        val mousePoint = Point(ctx!!.mouse.getX(), ctx.mouse.getY())
+        val mousePoint = ctx?.let { Point(it.mouse.getX(), it.mouse.getY()) }
         return getConvexHull().contains(mousePoint)
     }
 
@@ -23,18 +29,37 @@ class NPC(var npc: Npc, ctx: Context) : Actor(npc, ctx) {
         return ctx?.let {
             getConvexHull(
                     this.npc,
-                    it.client.getNPCType_cachedModels(),
-                    this.npc.getType().getKey(),it
+                    it
             )
         } ?: Polygon()
 
     }
 
+    suspend fun doActionAttack(){
+        val doActionParams = DoActionParams(0, 0, MenuOpcode.NPC_SECOND_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doActionCast(){
+        val doActionParams = DoActionParams(0, 0, MenuOpcode.SPELL_CAST_ON_NPC.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+    suspend fun doAction(){
+
+        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
 
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
     }
 
+    suspend fun walkTo(){
+        this.getGlobalLocation().walktoTile()
+    }
     override suspend fun clickOnMiniMap(): Boolean {
         return ctx?.client.let {
             it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), ctx!!) }

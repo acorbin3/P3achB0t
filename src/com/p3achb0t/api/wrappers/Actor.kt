@@ -1,11 +1,13 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t.api.Calculations
+import com.p3achb0t._runestar_interfaces.Headbar
+import com.p3achb0t._runestar_interfaces.HeadbarUpdate
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
@@ -51,58 +53,43 @@ open class Actor(
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return if(ctx?.client != null)Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx) else Point(-1,-1)
+        return if(ctx?.client != null) Calculations.worldToScreen(region.x, region.y, raw.getHeight(),ctx!!) else Point(-1,-1)
     }
 
     fun isIdle(): Boolean {
-        return raw.getSequence() == -1 && raw.getTargetIndex() == -1 && raw.getMovementSequence() == 808
+        return raw.getSequence() == -1 && raw.getTargetIndex() == -1
     }
 
     suspend fun waitTillIdle(time: Int = 4) {
         //Add a small delay to allow for initial movement from the previous command
-        delay(Random.nextLong(450, 700))
+        delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 //Need to make sure we are idle for at least 200ms
                 if (ctx!!.players.getLocal().isIdle())
                     delay(100)
                 delay(100)
-                return if (ctx?.client != null) ctx.players.getLocal().isIdle() else return false
+                return if (ctx != null && ctx?.client != null) ctx!!.players.getLocal().isIdle() else return false
             }
         })
     }
 
-    //TODO - fix getting health
-//    fun getHealth(): Int {
-//        println("Looking for healthbars")
-//        var node = raw.getHeadbars().getCurrent()
-//        if (raw.getHeadbars().getCurrent() is HealthBar) {
-//            println("Found healthbar")
-//        }
-//        if (node == null) {
-//            println("Node is null")
-//        }
-//
-//        var count = 0
-//        while (node != null) {
-//            println("Looking at node $count")
-//            if (node is Health) {
-//                println("Found health Bar")
-//                var healthData = node.getData().getNode()
-//                while (healthData != null && healthData != node.getData()) {
-//                    if (healthData is HealthBarData) {
-//                        println("Found Health bar data")
-//                        return healthData.getCurrentHealth()
-//                    }
-//                    healthData = healthData.getNext()
-//                }
-//
-//            }
-//            count += 1
-//            node = node.getNext()
-//        }
-//        return 0
-//    }
+    /**
+     * Health percent between `0.0` and `1.0` of limited precision. `null` if the health-bar is not visible.
+     */
+    val health: Double? get(){
+        val headBars = raw.getHeadbars()
+        val headbar = headBars.getSentinel().getNext()
+        if(headbar is Headbar){
+            val update = headbar.getUpdates().getSentinel().getNext()
+            if(update is HeadbarUpdate){
+                val def = headbar.getType()
+                return update.getHealth().toDouble() / def.getWidth()
+            }
+        }
+        return null
+    }
+
     override fun isOnScreen(): Boolean {
 
         val tilePoly = ctx?.let {
@@ -125,10 +112,10 @@ open class Actor(
     }
 
     override fun getGlobalLocation(): Tile {
-        return if(ctx!!.client != null) Tile(
-                (raw.getX() shr 7) + ctx.client.getBaseX(),
-                (raw.getY() shr 7) + ctx.client.getBaseY(),
-                ctx.client.getPlane(),ctx
+        return if(ctx?.client != null) Tile(
+                (raw.getX() shr 7) + ctx!!.client.getBaseX(),
+                (raw.getY() shr 7) + ctx!!.client.getBaseY(),
+                ctx!!.client.getPlane(),ctx
 
         )
         else

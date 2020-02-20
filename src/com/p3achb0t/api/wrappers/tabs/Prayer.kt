@@ -1,10 +1,12 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import net.runelite.api.MenuOpcode
 
 class Prayer(val ctx: Context) {
     //TODO - Quick prayers
@@ -67,18 +69,50 @@ class Prayer(val ctx: Context) {
 
     suspend fun activate(kind: PrayerKind) {
         if (!isOpen()) open()
+        if (isOpen()) {
+            val prayer = WidgetItem(ctx.widgets.find(PARENT, kind.widgetID), ctx = ctx)
+            prayer.click()
+            delay(100)
+        }
 
-        val prayer = WidgetItem(ctx.widgets.find(PARENT, kind.widgetID), ctx = ctx)
-        prayer.interact("Activate" )
-        //TODO - Check if activated
+    }
 
+    suspend fun isPietyActive(): Boolean {
+
+        return ctx.vars.getVarp(83) >= 67108864
+    }
+
+    suspend fun isProtectMeleActive(): Boolean {
+
+        return ctx.players.getLocal().player.getHeadIconPrayer() == 0
+    }
+
+    suspend fun isProtectRangeActive(): Boolean {
+
+        return ctx.players.getLocal().player.getHeadIconPrayer() == 1
+    }
+
+    suspend fun isProtectMageActive(): Boolean {
+
+        return ctx.players.getLocal().player.getHeadIconPrayer() == 2
+    }
+
+    suspend fun isQuickPrayerActive(): Boolean {
+
+        return return ctx.vars.getVarp(375) == 1
     }
 
     suspend fun disable(kind: PrayerKind) {
         if (!isOpen()) open()
 
         val prayer = WidgetItem(ctx.widgets.find(PARENT, kind.widgetID), ctx = ctx)
-        prayer.interact("Deactivate")
-        //TODO - Check if Deactivated
+        prayer.click()
+        delay(100)
+    }
+
+    suspend fun ActivateQuickPrayer(){
+        val doActionParams = DoActionParams(-1, 10485774, 57, 1, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
     }
 }

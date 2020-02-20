@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.Calculations
+import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.Mouse
 import kotlinx.coroutines.delay
@@ -92,8 +92,8 @@ class Interact(val ctx: Context) {
                     //Give up after 2 trys
                     if (retryCount == 1) return false
                     //Reinteracte with menu
-                    println("Retrying interaction -> $action")
-                    interact(point, action, retryCount + 1)
+//                    println("Retrying interaction -> $action")
+//                    interact(point, action, retryCount + 1)
                 }
                 if (actionPoint == Point(-1, -1)) {
                     print("Could not find $action in menue")

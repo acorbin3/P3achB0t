@@ -1,7 +1,10 @@
 package com.p3achb0t.interfaces
 
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.listeners.ChatListener
+import com.p3achb0t.client.managers.loginhandler.LoginHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -13,26 +16,25 @@ class ScriptManager(val client: Any) {
 
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
-    private var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var blockFocus = false
     val debugScripts = mutableListOf<DebugScript>()
+
+    var loginHandler = LoginHandler(client = client as Client)
 
     var x = 800
     var y = 600
-    private var image: BufferedImage = BufferedImage(x,y,BufferedImage.TYPE_INT_RGB)
+    private var image: BufferedImage = BufferedImage(x, y, BufferedImage.TYPE_INT_RGB)
     var captureScreen = false
     var captureScreenFrame = 1000
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
+    var gameLoopI = 0
 
-
-    fun setScript(s: AbstractScript) {
+    fun setUpScript(s: AbstractScript) {
         s.initialize(client)
         this.script = s
-    }
-
-    fun getScript(): AbstractScript {
-        return script
     }
 
     suspend fun loop() {
@@ -40,11 +42,28 @@ class ScriptManager(val client: Any) {
             try {
                 script.loop()
             } catch (e: Error) {
+                println(e.localizedMessage)
                 for (el in e.stackTrace) {
                     println(el.toString())
                 }
             }
         }
+    }
+
+    fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
+        if (this.script is ChatListener) {
+            val updatedPrefix = prefix ?: ""
+            (this.script as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+        }
+    }
+
+    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
+        println("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
+    }
+
+    fun getModelCallback(argument1: Int) {
+//        val arg1 = argument1 * -1917052667
+//        println("getModel Callback arg1: $argument1 $arg1")
     }
 
 
@@ -54,7 +73,16 @@ class ScriptManager(val client: Any) {
         //This the script thread.
         thread = GlobalScope.launch {
             script.start()
-            while (true) {
+            while (isRunning) {
+                // Check to see if we have a good loaded account
+                // Check to see if we are logged in
+                // If logged out, login
+                //TODO - handle the breaks if there are any
+                if (!paused
+                        && loginHandler.account.username.isNotEmpty()
+                        && loginHandler.isAtHomeScreen()) {
+                    loginHandler.login()
+                }
                 while (paused) {
                     delay(100)
                 }
@@ -64,7 +92,7 @@ class ScriptManager(val client: Any) {
     }
 
     fun pause() {
-        isRunning = false
+        isRunning = true
         paused = true
 
     }
@@ -78,14 +106,16 @@ class ScriptManager(val client: Any) {
         isRunning = false
         script.stop()
         thread.cancel()
-
+        GlobalScope.launch {
+            thread.join()
+        }
     }
 
     fun setGameImage(buffer: BufferedImage) {
         image = buffer
     }
 
-    fun takeScreenShot() : BufferedImage {
+    fun takeScreenShot(): BufferedImage {
         return image
     }
 

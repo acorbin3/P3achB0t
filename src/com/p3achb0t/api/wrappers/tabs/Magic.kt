@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
@@ -11,6 +11,7 @@ class Magic(val ctx: Context) {
         private const val PARENT = WidgetID.SPELLBOOK_GROUP_ID
         private const val FILTER_BUTTON_ID = 187
         enum class Spells(val widgetID: Int) {
+            Home_Teleport(5),
             Wind_Strike(6)
         }
     }
@@ -38,7 +39,7 @@ class Magic(val ctx: Context) {
     //TODO - deselect spell
 
 
-    suspend fun cast(spell: Spells) {
+    suspend fun selectSpell(spell: Spells) {
         // Ingore if spell is already selected
         try {
             if (Utils.cleanColorText(
@@ -53,9 +54,7 @@ class Magic(val ctx: Context) {
 
         val spellWidget = WidgetItem(ctx.widgets.find(PARENT, spell.widgetID), ctx = ctx)
         if (spellWidget.widget != null) {
-            println(spellWidget.getInteractPoint())
-
-            spellWidget.interact("Cast")
+            spellWidget.selectSpell()
         }
     }
 

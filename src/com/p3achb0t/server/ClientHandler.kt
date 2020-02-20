@@ -2,9 +2,7 @@ package com.p3achb0t.server
 
 import com.p3achb0t.client.test.BotWindow
 import com.p3achb0t.server.packets.PacketTypes
-import com.p3achb0t.server.packets.Ping
 import java.io.DataInputStream
-import java.io.InputStream
 import java.io.OutputStream
 import java.net.Socket
 import kotlin.experimental.and
@@ -103,15 +101,15 @@ class ClientHandler(client: Socket, window: BotWindow) {
     }
 
     private fun handleAddBot(bytes: ByteArray) {
-        for (i in 1..bytes[0])
-            botWindow.manager.tabManager.create()
+//        for (i in 1..bytes[0])
+//            botWindow.manager.tabManager.create()
     }
 
     private fun handlerRemoveBot(bytes: ByteArray) {
         if (bytes.size > 1) {
-            botWindow.manager.tabManager.destroy(bytes)
+//            botWindow.manager.tabManager.destroy(bytes)
         } else {
-            botWindow.manager.tabManager.destroy(bytes[0].toInt())
+//            botWindow.manager.tabManager.destroy(bytes[0].toInt())
         }
     }
 

@@ -3,14 +3,16 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
-import com.p3achb0t.api.Calculations
-import com.p3achb0t.api.ObjectPositionInfo
-import com.p3achb0t.api.getConvexHullFromModel
-import com.p3achb0t.api.getTrianglesFromModel
-import com.p3achb0t.scripts.paint_debug.getObjectComposite
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
-import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
+import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
+import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
+import com.p3achb0t.scripts.paint_debug.getObjectComposite
+import net.runelite.api.MenuOpcode
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -23,7 +25,7 @@ class GameObject(
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable,
-    Interactable(ctx) {
+        Interactable(ctx) {
     val id: Int
         get() {
             return when {
@@ -42,14 +44,14 @@ class GameObject(
         get() {
             return when {
                 sceneryObject != null -> ObjectPositionInfo(
-                    sceneryObject.getCenterX(),
-                    sceneryObject.getCenterY(),
-                    sceneryObject.getOrientation()
+                        sceneryObject.getCenterX(),
+                        sceneryObject.getCenterY(),
+                        sceneryObject.getOrientation()
                 )
                 wallObject != null -> ObjectPositionInfo(
-                    wallObject.getX(),
-                    wallObject.getY(),
-                    wallObject.getOrientationA()
+                        wallObject.getX(),
+                        wallObject.getY(),
+                        wallObject.getOrientationA()
                 )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
@@ -110,14 +112,14 @@ class GameObject(
         if (ctx?.client != null) {
             return when {
                 sceneryObject != null -> Tile(
-                        sceneryObject.getCenterX() / 128 + ctx?.client.getBaseX(),
-                        sceneryObject.getCenterY() / 128 + ctx?.client.getBaseY(),
+                        sceneryObject.getCenterX() / 128 + ctx?.client!!.getBaseX(),
+                        sceneryObject.getCenterY() / 128 + ctx?.client!!.getBaseY(),
                         sceneryObject.getPlane(),ctx
 
                 )
                 wallObject != null -> Tile(
-                        wallObject.getX() / 128 + ctx?.client.getBaseX(),
-                        wallObject.getY() / 128 + ctx?.client.getBaseY(),
+                        wallObject.getX() / 128 + ctx?.client!!.getBaseX(),
+                        wallObject.getY() / 128 + ctx?.client!!.getBaseY(),
                         sceneryObject?.getPlane() ?: 0,ctx
 
                 )
@@ -137,10 +139,10 @@ class GameObject(
 
         return if (model != null) {
             val positionInfo =
-                objectPositionInfo
+                    objectPositionInfo
 
             val modelTriangles =
-                getTrianglesFromModel(positionInfo, model!!,ctx!! )
+                    getTrianglesFromModel(positionInfo, model!!, ctx!!)
 
             modelTriangles
         } else {
@@ -149,11 +151,62 @@ class GameObject(
     }
 
 
+    /**
+     * added by sirscript
+     * doaction (local location.x + y and id of the gameobject it seems like MenuOpcode.GAME_OBJECT_SECOND_OPTION is the first option usually for the opcode
+     * offsetX & offsetY: sometimes the location of the object needs to be offset and there is a way to provide this
+     *
+     */
+
+    suspend fun doAction(offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val scenebasex = ctx?.client?.getBaseX()
+        val scenebasey = ctx?.client?.getBaseY()
+        val localLocation = this.getLocalLocation()
+        val X = localLocation.x
+        val Y = localLocation.y
+        if(scenebasex != null && scenebasey != null) {
+            //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
+            val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), MenuOpcode.GAME_OBJECT_FIRST_OPTION.id, this.id.plus(offsetID), "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+        }
+    }
+
+    suspend fun doAction2(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction3(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction4(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FOURTH_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun doAction5(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_FIFTH_OPTION) {
+        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
+    suspend fun useItemOn(opcode: MenuOpcode = MenuOpcode.ITEM_USE_ON_GAME_OBJECT, offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val doActionParams = DoActionParams(getLocalLocation().x.plus(offsetX), getLocalLocation().y.plus(offsetY), opcode.id, id.plus(offsetID), "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model,ctx!! )
-            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model,ctx!!)
+            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model, ctx!!)
+            wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model, ctx!!)
             else -> Polygon()
         }
     }

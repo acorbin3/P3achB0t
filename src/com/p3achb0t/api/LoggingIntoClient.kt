@@ -2,6 +2,7 @@ package com.p3achb0t.api
 
 import com.p3achb0t.UserDetails
 import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.GlobalScope
@@ -20,29 +21,27 @@ fun LoggingIntoAccount(ctx: Context) {
     Thread.sleep(2000)
     GlobalScope.launch {
 
-        repeat(1000) {
+        repeat(2) {
             try {
 
+//                val disconnected = WidgetItem(ctx.widgets.find(WidgetID.login, 85), ctx = ctx)
                 // When loaded login
-                if (!LoggingIntoClient.loggedIn && ctx.client.getGameState() == 10) {
-                    ctx.mouse.moveMouse(Point(531, 280), true, Mouse.ClickType.Left)
-
-                    delay(2000)
-                    ctx.keyboard.sendKeys(UserDetails.data.password)
+                if (ctx.client.getGameState() == 10) {
                     delay(500)
+                    ctx.mouse.moveMouse(Point(400, 310), true, Mouse.ClickType.Left)
+                    delay(500)
+                    ctx.mouse.moveMouse(Point(466, 294), true, Mouse.ClickType.Left)
+                    delay(500)
+                    ctx.keyboard.sendKeys(UserDetails.data.username, true, true)
+                    ctx.keyboard.sendKeys(UserDetails.data.password, true, true)
 
-                    ctx.mouse.moveMouse(Point(300, 310), true, Mouse.ClickType.Left)
-
-                    while (ctx.client.getGameState() != 30) {
-                        delay(100)
-                    }
+                    Utils.waitFor(10, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            return ctx.client.getGameState() == 30
+                        }
+                    })
                     delay(1500)
-                    println("Clicking login")
-                    val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
-                    println("login: ${login.area.x},${login.area.y},${login.area.height},${login.area.width}")
-
-                    login.click()
-                    LoggingIntoClient.loggedIn = true
                 }
 
 

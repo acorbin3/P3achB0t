@@ -2,7 +2,9 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -48,6 +50,18 @@ class WidgetItem(
             doesWidgetContainText(this.widget!!, text, includeChildren)
         else false
     }
+
+    suspend fun doAction(){
+        val doActionParams = this.widget?.getId()?.let { DoActionParams(-1, it, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0 ,0) }
+        doActionParams?.let { ctx?.mouse?.doAction(it) }
+    }
+    //
+
+    suspend fun selectSpell(){
+        val doActionParams = this.widget?.getId()?.let { DoActionParams(-1, it, MenuOpcode.WIDGET_TYPE_2.id, 1, "", "", 0 ,0) }
+        doActionParams?.let { ctx?.mouse?.doAction(it) }
+    }
+
 
     override suspend fun interact(action: String): Boolean {
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false

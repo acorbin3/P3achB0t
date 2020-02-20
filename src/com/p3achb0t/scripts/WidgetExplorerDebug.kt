@@ -19,7 +19,7 @@ class WidgetExplorerDebug : DebugScript() {
 
     override fun draw(g: Graphics) {
         g.color = Color.YELLOW
-        if (selectedWidget?.getId() != ctx.selectedWidget?.getId()) {
+        if (selectedWidget?.getId() != ctx.selectedWidget?.getId() || (selectedWidget?.getChildIndex() != ctx.selectedWidget?.getChildIndex())) {
             println("Widget Switched to ${ctx.selectedWidget?.getId()}")
             selectedWidget = ctx.selectedWidget
             selectedWidgetItem = WidgetItem(selectedWidget, ctx = ctx)

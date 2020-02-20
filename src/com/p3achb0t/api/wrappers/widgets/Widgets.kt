@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.Utils
+import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 
 class Widgets(val ctx: Context) {
@@ -134,14 +134,20 @@ class Widgets(val ctx: Context) {
             result += "-----\n"
 //            result += "Children: ${widget.getChildren().size}"
             var i = 0
-            widget.getChildren().iterator().forEach {
-                result += getWidgetDetails(it, i)
-                i += 1
+            if(widget.getChildren() != null && widget.getChildren().isNotEmpty()) {
+                widget.getChildren().iterator().forEach {
+                    result += getWidgetDetails(it, i)
+                    i += 1
+                }
             }
 //                if (widget.getChildren().isNotEmpty()) {
 //                widget.getChildren().iterator().forEach { result += getWidgetDetails(it) }
 //            }
         } catch (e: Exception) {
+            println("Exception!" + e.localizedMessage)
+            e.stackTrace.forEach {
+                println(it)
+            }
             return result
         }
         return result
