@@ -5,7 +5,7 @@ import com.p3achb0t.server.packets.PacketTypes
 import java.io.DataInputStream
 import kotlin.experimental.and
 
-class PacketHandler() {
+class PacketHandler {
 
     init {
 
@@ -66,6 +66,6 @@ class PacketHandler() {
     }
 
     private fun handleAddBot(window: BotWindow) {
-        window.manager.tabManager.create()
+//        window.manager.tabManager.create()
     }
 }

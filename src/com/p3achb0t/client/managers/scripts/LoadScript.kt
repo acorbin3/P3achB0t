@@ -1,19 +1,17 @@
 package com.p3achb0t.client.managers.scripts
 
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.DebugScript
 import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_ABSTRACT_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.scripts.NullScript
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarFile
-import java.util.ArrayList
-
 
 
 class LoadScripts {
@@ -29,7 +27,21 @@ class LoadScripts {
 
 
     fun getScript(name: String) : AbstractScript {
-        return scripts["$name.jar"]!!
+        return when {
+            name in scripts -> {
+                scripts[name]!!
+            }
+            "$name.jar" in scripts -> {
+                scripts["$name.jar"]!!
+            }
+            else -> {
+                NullScript()
+            }
+        }
+    }
+
+    fun addScript(name:String, abstractScript: AbstractScript){
+        scripts[name] = abstractScript
     }
 
     fun load(fileName: String): AbstractScript? {

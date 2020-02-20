@@ -1,5 +1,7 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.client.managers.Manager
+import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.scripts.NullScript
 import com.p3achb0t.scripts.WidgetExplorerDebug
 import com.p3achb0t.scripts.paint_debug.PaintDebug
@@ -7,7 +9,7 @@ import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
 
-class TabManager private constructor() : JTabbedPane() {
+class TabManager(var manager: Manager) : JTabbedPane() {
 
     val clients = mutableListOf<GameTab>()
 
@@ -19,15 +21,9 @@ class TabManager private constructor() : JTabbedPane() {
 
     }
 
-    private object Holder { val INSTANCE = TabManager() }
-
-    companion object {
-        val instance: TabManager by lazy { Holder.INSTANCE }
-    }
-
-    fun addInstance() {
+    fun addInstance(account: Account = Account()) {
         println("RUNNING")
-        val gameTab = GameTab()
+        val gameTab = GameTab(account = account, manager = manager)
 
         clients.add(gameTab)
         addTab("Game ${tabCount+1}", gameTab)
@@ -44,11 +40,14 @@ class TabManager private constructor() : JTabbedPane() {
         //Here is a place to add some debug script since the client has been loaded
         gameTab.client.addDebugScript(WidgetExplorerDebug.scriptName)
         gameTab.client.addDebugScript(PaintDebug.scriptName)
-        gameTab.client.setScript(NullScript())
 
-
-
-
+        //Load the script based on config
+        if(account.script.isNotEmpty()) {
+            println("Account: ${account.username} setting script: ${account.script}" )
+            gameTab.client.setScript(manager.loadedScripts.getScript(account.script))
+        }else{
+            gameTab.client.setScript(NullScript())
+        }
     }
 
     fun removeInstance(id: Int) { // DO SOME CHECKS
@@ -57,6 +56,7 @@ class TabManager private constructor() : JTabbedPane() {
 
     fun removeInstance() { // DO SOME CHECKS
         val s = selectedIndex
+        //TODO - error when tab is not selected but the X button was pressed. It closes the selected tab
         thread(start = true) {
             println("running from thread(): ${Thread.currentThread()}")
             //clients.get(s).client!!.setApplet()
