@@ -20,7 +20,7 @@ enum class ClientState {
     RUNNING, PAUSED, STOPPED
 }
 
-class Bot(world: Int, var clientManager: Manager, account: Account = Account()) {
+class Bot(var world: Int, var clientManager: Manager, account: Account = Account()) {
 
     val id = UUID.randomUUID().toString()
     private val applet: Applet
@@ -31,10 +31,19 @@ class Bot(world: Int, var clientManager: Manager, account: Account = Account()) 
      * Constructor
      */
     init {
+        var proxy = "none"
+        if(account.username.isNotEmpty()){
+            world = account.world
+            proxy = account.proxy
+        }
         val configReader = ConfigReader(world)
         val map = configReader.read()
 
-        val clientClazz = JarLoader.load("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}","client")
+        val clientClazz = JarLoader.load(
+                "./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}",
+                "client",
+                proxy
+        )
         client = clientClazz as Client
         applet = clientClazz as Applet
         iScriptManager = clientClazz as IScriptManager
