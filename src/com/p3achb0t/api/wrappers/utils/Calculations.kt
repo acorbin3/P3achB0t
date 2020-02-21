@@ -133,14 +133,14 @@ class Calculations {
 
 
             //inventory bar 164,48(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 48), ctx = ctx)
+            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 49), ctx = ctx)
             inventoryBarTopDimensions = inventoryTop.area
-            val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), ctx = ctx)
+            val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 34), ctx = ctx)
             inventoryBarBottomDimensions = inventoryBottom.area
             //chatbox 162,0
             val chatbox = WidgetItem(ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, 0), ctx = ctx)
             chatBoxDimensions = chatbox.area
-            val tabWidget = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65), ctx = ctx)
+            val tabWidget = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 66), ctx = ctx)
             inventoryDimensions = tabWidget.area
 
             mainScreen = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), ctx = ctx).area
