@@ -15,6 +15,7 @@ class Account {
     var banned: Boolean = false
     var proxy: String = "none"  // SOCKS5;185.244.192.119:7670 or none
     var world: Int = 80
+    var startAutomatically: Boolean = true
 
     override fun toString(): String {
         return "$id [$username, pass:$password, pin:$pin, script:$script, minRuntime:$minRuntime, maxRuntime:$maxRuntime," +

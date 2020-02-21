@@ -37,6 +37,21 @@ class WorldHop(val ctx: Context) {
         }
     }
 
+    suspend fun logout(){
+        this.ctx.mouse.doAction(DoActionParams(-1, 10747934, 57, 1, "Logout", "", 0, 0))
+        delay(400)
+        this.ctx.mouse.doAction(DoActionParams(-1, 11927560, 57, 1, "Logout", "", 0, 0))
+        delay(400)
+
+        Utils.waitFor(10,object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                delay(50)
+                return ctx.client.getGameState() == 10
+            }
+        })
+    }
+
+
     private suspend fun hopWorld(worldNum: Int) {
         //Open logout menu
         //argument0:-1, argument1:10747934, argument2:57, argument3:1, action:Logout, targetName:, mouseX:781, mouseY:10, argument8:0

@@ -11,10 +11,10 @@ import java.awt.Point
 import java.awt.event.KeyEvent
 import kotlin.random.Random
 
-class LoginHandler(var client: Client, var account: Account = Account()) {
+class LoginHandler(var client: Client, var account: Account = Account(), var ctx: Context?=null) {
 
     fun isLoggedIn(): Boolean{
-        return false
+        return GameState.of(client.getGameState()) == GameState.LOGGED_IN
     }
 
     fun isAtHomeScreen(): Boolean{
