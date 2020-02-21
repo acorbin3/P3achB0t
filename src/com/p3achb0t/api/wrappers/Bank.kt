@@ -136,7 +136,7 @@ class Bank(val ctx: Context) {
                 }
             }
         }
-        println("Bankitemcount in array " + count)
+        println("Bankitemcount " + count)
         return count
     }
 
@@ -147,12 +147,14 @@ class Bank(val ctx: Context) {
             items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
-                        count = widgetItem.stackSize
+                        count = widgetItem.stackSize + count
+                        println("id in array found: " + widgetItem.id + " count:" + count)
                         return@forEach
                     }
                 }
             }
         }
+        println("Bankitemcount in array " + count)
         return count
     }
 
@@ -163,6 +165,7 @@ class Bank(val ctx: Context) {
             items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
+                        println("Bank contains: " + widgetItem.id)
                         contains = true
                     }
                 }

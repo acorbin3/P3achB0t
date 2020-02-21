@@ -89,7 +89,7 @@ class Inventory(val ctx: Context? = null) {
         if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
             val ids = inventory.getItemIds()
             ids.forEach {
-                if(it != 996) {
+                if(it != 996 && it > 0) {
                     items.add(it - 1)
                 }
             }
@@ -216,19 +216,33 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun containsAny(itemid: ArrayList<WidgetItem>): Boolean {
+        var contains = false
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                println("Contains " + contains)
+                println("Wdiget id = " + widgetItem.id)
+                itemid.forEach {
+                    println("item id = " + it.id)
+                    if (widgetItem.id == it.id && widgetItem.id != 995) {
+                        println("matched")
+                        contains = true
+                    }
+                }
+            }
+        return contains
+    }
+
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
-        if (isOpen()) {
             var items = getAll()
             items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
                         contains = true
-                        return@forEach
                     }
                 }
             }
-        }
         return contains
     }
 
@@ -298,6 +312,10 @@ class Inventory(val ctx: Context? = null) {
 
     fun isEmpty(): Boolean {
         return getCount() == 0
+    }
+
+    fun isEmptyCoins(): Boolean {
+        return getCount() == 1
     }
 
     fun getCount(): Int {
@@ -424,6 +442,37 @@ class Inventory(val ctx: Context? = null) {
         return getCount(itemID) > 0
     }
 
+    suspend fun use(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE.id, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    /**
+     * This funtion is intended to take a already selected Item and use it with another item in the invetory
+     */
+    suspend fun useSelectedItemOnItem(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE_ON_WIDGET_ITEM.id, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
     /**
      * added by sirscript
      */
@@ -455,7 +504,7 @@ class Inventory(val ctx: Context? = null) {
             items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
-                        count = widgetItem.stackSize
+                        count = widgetItem.stackSize + count
                         return@forEach
                     }
                 }

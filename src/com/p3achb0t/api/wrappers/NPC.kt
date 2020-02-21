@@ -64,6 +64,10 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
         return getRandomPoint(getConvexHull())
     }
 
+    suspend fun walkTo(){
+        this.getGlobalLocation().walktoTile()
+    }
+
     override suspend fun clickOnMiniMap(): Boolean {
         return ctx?.client.let {
             it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), ctx!!) }

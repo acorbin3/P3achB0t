@@ -1,50 +1,46 @@
-package com.p3achb0t.api.wrappers.widgets
+package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.DoActionParams
-import com.p3achb0t.api.user_inputs.Mouse
-import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.utils.Utils
+import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
-import java.awt.Point
 import java.awt.Rectangle
-import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random
 
 class GrandExchange(val ctx: Context) {
     companion object {
         const val OfferVarpBit = 4439
-        enum class Offers(val widgetID: Int, val varpbitValue: Int, val Arg1: Int) {
-            OfferSlotOne(7, 1, 30474247),
-            OfferSlotTwo(8, 2, 30474248),
-            OfferSlotThree(9, 3, 30474249),
-            OfferSlotFour(10, 4, 30474250),
-            OfferSlotFive(11, 5, 30474251),
-            OfferSlotSix(12, 6, 30474252),
-            OfferSlotSeven(13, 7, 30474253),
-            OfferSlotEight(14, 8, 30474254),
+        enum class Offers(val index: Int, val widgetID: Int, val varpbitValue: Int, val Arg1: Int) {
+            OfferSlotOne(0, 7, 1, 30474247),
+            OfferSlotTwo(1,8, 2, 30474248),
+            OfferSlotThree(2,9, 3, 30474249),
+            OfferSlotFour(3,10, 4, 30474250),
+            OfferSlotFive(4,11, 5, 30474251),
+            OfferSlotSix(5,12, 6, 30474252),
+            OfferSlotSeven(6,13, 7, 30474253),
+            OfferSlotEight(7,14, 8, 30474254),
 
         }
     }
 
-    suspend fun getExchangeWidget(): Component? {
+     fun getExchangeWidget(): Component? {
         return ctx.widgets.find(465,1)
     }
 
 
-    suspend fun isOpen(): Boolean {
+     fun isOpen(): Boolean {
         return getExchangeWidget() != null
     }
 
-    suspend fun offerIsOpen(): Boolean {
+     fun offerIsOpen(): Boolean {
         return ctx.vars.getVarp(375) != 0
     }
 
-    suspend fun getFirstFreeSlot(): Offers? {
+     fun getFirstFreeSlot(): Offers? {
         if(isOpen()) {
            Offers.values().forEach {
                if(!ctx.widgets.find(465, it.widgetID)!!.getChildren()[3].getIsHidden()){
@@ -55,9 +51,18 @@ class GrandExchange(val ctx: Context) {
         return null
     }
 
+    fun getOffers(){
+        if(isOpen()){
+            ctx.client.getGrandExchangeOffers().iterator().forEach {
+                println("state " + it.getState().toInt())
+                println("id " + it.getId())
+                println("quant " + it.getCurrentQuantity())
+            }
+        }
+    }
 
 
-    suspend fun getQuantity(): Int? {
+     fun getQuantity(): Int? {
         if(isOpen() && offerIsOpen()) {
             val quantWidget = ctx.widgets.find(465,24)!!.getChildren()[32].getText().filter { it.isDigit() }
             if(quantWidget.length > 0) {
@@ -71,7 +76,35 @@ class GrandExchange(val ctx: Context) {
         return null
     }
 
-    suspend fun getPrice(): Int? {
+    fun isOfferSlotFinishedSelling(offer: Offers): Boolean {
+        var isFinished = false
+        if (isOpen()) {
+            try {
+                    if (ctx.client.getGrandExchangeOffers()[offer.index].getState().toInt() == 13) {
+                        isFinished = true
+                    }
+            } catch (e: Exception) {
+                return false
+            }
+        }
+        return isFinished
+    }
+
+    fun isOfferSlotFinishedBuying(offer: Offers): Boolean {
+        var isFinished = false
+        if (isOpen()) {
+            try {
+                if (ctx.client.getGrandExchangeOffers()[offer.index].getState().toInt() == 5) {
+                    isFinished = true
+                }
+            } catch (e: Exception) {
+                return false
+            }
+        }
+        return isFinished
+    }
+
+     fun getPrice(): Int? {
         if(isOpen() && offerIsOpen()) {
             val priceWidget = ctx.widgets.find(465,24)!!.getChildren()[39].getText()
             if(priceWidget.length < 1){
@@ -86,7 +119,7 @@ class GrandExchange(val ctx: Context) {
         return null
     }
 
-    suspend fun getItemName(): String? {
+     fun getItemName(): String? {
         if(isOpen() && offerIsOpen()) {
             val itemName = ctx.widgets.find(465,24)!!.getChildren()[25].getText()
             println("getitemname = " +itemName)
@@ -130,24 +163,12 @@ class GrandExchange(val ctx: Context) {
                     if (getPrice() != price) {
                         println("Get price = " + getPrice() + " price = " + price)
                         setPrice(price)
-                        println("Get price = " + getPrice() + " price = " + price)
-                        Utils.waitFor(2, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return getPrice() == price
-                            }
-                        })
+                        println("Get price2 = " + getPrice() + " price = " + price)
                     }
                     if (getQuantity() != quantity) {
                         println("Get quantity = " + getPrice() + " quantity = " + price)
                         setQuantity(quantity)
                         println("Get quantity = " + getPrice() + " quantity = " + price)
-                        Utils.waitFor(2, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return getQuantity() == getQuantity()
-                            }
-                        })
                     }
                 }
 
@@ -176,30 +197,34 @@ class GrandExchange(val ctx: Context) {
     suspend fun setPrice(price: Int) {
         val chatText =
                 ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, 44)
-        while(getPrice() != null && getPrice() != price && offerIsOpen()) {
-            val text = chatText?.getText()
-            val doActionParams = DoActionParams(12, 30474264, 57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
-            Utils.waitFor(1, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    println(text + " price: does text contain?" + text?.contains("Set a price"))
-                    return text?.contains("Set a price") ?: true
+        run setPrice@{
+            if (getPrice() != null && getPrice() != price && offerIsOpen()) {
+                val text = chatText?.getText()
+                val doActionParams = DoActionParams(12, 30474264, 57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                Utils.waitFor(1, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        println(text + " price: does text contain?" + text?.contains("Set a price"))
+                        return text?.contains("Set a price") ?: true
+                    }
+                })
+                delay(Random.nextLong(666, 999))
+                println("setting price in SET price" + price)
+                if (text?.contains("Set a price") != null) {
+                    println("Text contains set a price, sending price")
+                    ctx.keyboard.sendKeys(price.toString(), true, true)
                 }
-            })
-            delay(Random.nextLong(155, 333))
-            println("setting price in SET price" + price)
-            if(text?.contains("Set a price") ?: true) {
-                ctx.keyboard.sendKeys(price.toString(), true, true)
+                Utils.waitFor(1, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return return getPrice() == price
+                    }
+                })
+                delay(Random.nextLong(888, 1111))
+                return@setPrice
             }
-            Utils.waitFor(2, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return return getPrice() == price
-                }
-            })
-            delay(Random.nextLong(222, 444))
         }
     }
 
@@ -218,33 +243,35 @@ class GrandExchange(val ctx: Context) {
                     }
                 })
                 var searchtext =  ctx.widgets.find(162, 45)
-
+            run setItem@{
                 if(searchtext != null) {
                     if (!searchtext.getText().contains(ctx.cache.getItemName(id))) {
                         ctx.keyboard.sendKeys(ctx.cache.getItemName(id), true, true)
                         delay(Random.nextLong(222, 444))
                     }
-                        if (searchtext.getText().length > 46) {
-                            var finaltext = searchtext.getText().substring(46, searchtext.getText().length - 1)
-                            println("Final text = " + finaltext)
-                            if (finaltext.contentEquals(ctx.cache.getItemName(id))) {
-                                println("final text true")
-                                delay(Random.nextLong(50, 200))
-                                if(ctx.cache.getItemName(id).equals("Shark")){
-                                    val doActionParams = DoActionParams(3, 10616885, 57, 1, "", "", 0, 0)
-                                    ctx?.mouse?.overrideDoActionParams = true
-                                    ctx?.mouse?.doAction(doActionParams)
-                                    delay(Random.nextLong(155, 333))
-                                }
-                                if(!ctx.cache.getItemName(id).equals("Shark")) {
-                                    val doActionParams = DoActionParams(0, 10616885, 57, 1, "", "", 0, 0)
-                                    ctx?.mouse?.overrideDoActionParams = true
-                                    ctx?.mouse?.doAction(doActionParams)
-                                    delay(Random.nextLong(155, 333))
-                                }
-
+                    if (searchtext.getText().length > 46) {
+                        var finaltext = searchtext.getText().substring(46, searchtext.getText().length - 1)
+                        println("Final text = " + finaltext)
+                        if (ctx.cache.getItemName(id).contains(finaltext)) {
+                            println("final text true")
+                            delay(Random.nextLong(50, 200))
+                            if (ctx.cache.getItemName(id).equals("Shark")) {
+                                val doActionParams = DoActionParams(3, 10616885, 57, 1, "", "", 0, 0)
+                                ctx?.mouse?.overrideDoActionParams = true
+                                ctx?.mouse?.doAction(doActionParams)
+                                delay(Random.nextLong(155, 333))
                             }
+                            if (!ctx.cache.getItemName(id).equals("Shark")) {
+                                val doActionParams = DoActionParams(0, 10616885, 57, 1, "", "", 0, 0)
+                                ctx?.mouse?.overrideDoActionParams = true
+                                ctx?.mouse?.doAction(doActionParams)
+                                delay(Random.nextLong(155, 333))
+                            }
+
                         }
+                    }
+                    return@setItem
+                }
                 }
         }
     }
@@ -253,31 +280,35 @@ class GrandExchange(val ctx: Context) {
         println("setting quantity")
         val chatText =
                 ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID,44)
-        while(getQuantity() != null && getQuantity() != qauntity && offerIsOpen()) {
-            val text = chatText?.getText()
-            val doActionParams = DoActionParams(7, 30474264, 57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
-            Utils.waitFor(1, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
+        run setQuantity@{
+            if (getQuantity() != null && getQuantity() != qauntity && offerIsOpen()) {
+                val text = chatText?.getText()
+                val doActionParams = DoActionParams(7, 30474264, 57, 1, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                Utils.waitFor(1, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
 
-                    println(text + " quantity: does text contains?" + text?.contains("How many do"))
-                    return text?.contains("How many do") ?: true
+                        println(text + " quantity: does text contains?" + text?.contains("How many do"))
+                        return text?.contains("How many do") ?: true
+                    }
+                })
+                delay(Random.nextLong(222, 444))
+                if (text?.contains("How many do") != null) {
+                    println("Text contains How many, sending quant")
+                    ctx.keyboard.sendKeys(qauntity.toString(), true, true)
                 }
-            })
-            delay(Random.nextLong(155, 333))
-            if(text?.contains("How many do") ?: true) {
-                ctx.keyboard.sendKeys(qauntity.toString(), true, true)
+                println("setting quantity " + qauntity)
+                Utils.waitFor(1, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return getQuantity() == qauntity
+                    }
+                })
+                delay(Random.nextLong(222, 444))
+                return@setQuantity
             }
-            println("setting quantity " + qauntity)
-            Utils.waitFor(2, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return getQuantity() == qauntity
-                }
-            })
-            delay(Random.nextLong(222, 444))
         }
     }
 
@@ -294,7 +325,7 @@ class GrandExchange(val ctx: Context) {
                         return !offerIsOpen()
                     }
                 })
-                delay(Random.nextLong(189, 444))
+                delay(Random.nextLong(222, 444))
             }
     }
 
@@ -326,28 +357,17 @@ class GrandExchange(val ctx: Context) {
             if(!offerIsOpen()){
                 println("offer is not open")
                 sell(id)
-                Utils.waitFor(1, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return offerIsOpen()
-                    }
-                })
-                delay(Random.nextLong(50, 200))
             }
-            if (getPrice() != price) {
-                println("Setting price " + price)
-                setPrice(price)
-                Utils.waitFor(2, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return getPrice() == price
-                    }
-                })
-            }
-                if(getPrice() == price){
+            if(offerIsOpen()) {
+                if (getPrice() != price) {
+                    println("Setting price " + price)
+                    setPrice(price)
+                }
+                if (getPrice() == price) {
                     delay(Random.nextLong(189, 444))
                     confirm()
                 }
+            }
         }
     }
 
@@ -365,11 +385,17 @@ class GrandExchange(val ctx: Context) {
         var index = getfirstIndex(id)
         out_loop@ for (it in items) {
             println("Selling item: " +id + " it = " + it.id)
-            if (it.id == id) {
+            if (it.id == id && !offerIsOpen()) {
                 val doActionParams = DoActionParams(index, 30605312, 57, 1, "", "", 0, 0)
                 ctx?.mouse?.overrideDoActionParams = true
                 ctx?.mouse?.doAction(doActionParams)
-                delay(600)
+                Utils.waitFor(1, object : Utils.Condition {
+                    override suspend fun accept(): Boolean {
+                        delay(100)
+                        return offerIsOpen()
+                    }
+                })
+                delay(Random.nextLong(50, 200))
                 break@out_loop
             }
         }

@@ -4,51 +4,75 @@ import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.loader.Loader
+import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.ui.components.GameMenu
-import com.p3achb0t.client.ui.components.TabManager
 import com.p3achb0t.client.util.Util
+import com.p3achb0t.scripts.Barrows.BarrowsMain
+import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
+import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.TutorialIslanddoAction
+import com.p3achb0t.scripts.VorkathMain
+import com.p3achb0t.scripts.ZulrahMain
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
 import java.nio.file.Paths
 import java.util.jar.JarFile
 import javax.swing.JFrame
-import javax.swing.JTabbedPane
 
 class GameWindow : JFrame() {
     var index = 0
-    val tabs = JTabbedPane()
-
+    var manager: Manager
 
     init {
 
         title = "RuneScape Bot ALPHA"
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
-        tabs.preferredSize = Dimension(800,600)
         focusTraversalKeysEnabled = true
         size = Dimension(800, 800)
-        jMenuBar = GameMenu(tabs, 0)
-        add(TabManager.instance)
+        manager = Manager()
+        jMenuBar = GameMenu(manager)
+
+        add(manager.tabManager)
         setLocationRelativeTo(null)
 
         validate()
         isVisible = true
-        TabManager.instance.addInstance()
 
+        //Load all scripts
+        manager.loadedScripts.addScript("TutorialIsland",TutorialIsland())
+        manager.loadedScripts.addScript("TutorialIslandDoAction",TutorialIslanddoAction())
+        manager.loadedScripts.addScript("Vorkath",VorkathMain())
+        manager.loadedScripts.addScript("BrutalBlackDragsMain", BrutalBlackDragsMain())
+        manager.loadedScripts.addScript("BarrowsMain", BarrowsMain())
+        manager.loadedScripts.addScript("Zulrah", ZulrahMain())
 
-
+        //Load each account in a different tab
+        if(manager.accountManager.accounts.isNotEmpty()) {
+            manager.accountManager.accounts.forEach {
+                manager.tabManager.addInstance(account = it)
+            }
+        }else{
+            manager.tabManager.addInstance()
+        }
     }
 
     suspend fun run() {
         //Waiting till game has been loaded and then revalidate
-         val client = TabManager.instance.clients[0].client.getScript().ctx.client
-        while(client.getGameState() != 10){
-            delay(50)
+        manager.tabManager.clients.forEach {
+            //Check to see if we are ready to login
+            while(it.client.getScript().ctx.client.getGameState() != 10){
+                delay(50)
+            }
+            //Only start the script if its a real script. otherwise we dont want to start the null script
+            if(it.account.script.isNotEmpty())
+                it.client.startScript()
         }
+
         println("Validating client")
         for (i in 0..10) {
-            TabManager.instance.getSelected().client.getApplet().repaint()
+            manager.tabManager.getSelected().client.getApplet().repaint()
         }
     }
 

@@ -70,7 +70,9 @@ class Keyboard(val obj: Any) {
         }
 
         if (sendReturn) {
+            delay(50)
             pressDownKey(KeyEvent.VK_ENTER)
+            delay(50)
             if(!instantEntry)
                 delay(20)
             release(KeyEvent.VK_ENTER)

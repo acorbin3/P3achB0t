@@ -204,6 +204,12 @@ class GameObject(
         ctx?.mouse?.doAction(doActionParams)
     }
 
+    suspend fun useItemOn(opcode: MenuOpcode = MenuOpcode.ITEM_USE_ON_GAME_OBJECT, offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val doActionParams = DoActionParams(getLocalLocation().x.plus(offsetX), getLocalLocation().y.plus(offsetY), opcode.id, id.plus(offsetID), "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {

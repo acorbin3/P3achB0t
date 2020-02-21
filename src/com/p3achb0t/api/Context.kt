@@ -8,7 +8,7 @@ import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
-import com.p3achb0t.api.wrappers.widgets.GrandExchange
+import com.p3achb0t.api.wrappers.GrandExchange
 import com.p3achb0t.api.wrappers.widgets.Widgets
 import java.applet.Applet
 

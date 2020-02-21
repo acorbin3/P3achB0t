@@ -63,14 +63,13 @@ class Tile(
         return ctx!!.mouse.click(point)
     }
 
-    suspend fun walktoTile(tile: Tile) {
-        val regional = tile.getRegionalLocation()
-        val point = worldToScreen(regional.x, regional.y, regional.z, ctx!!)
-        println("Walk to tile point " + point)
+    suspend fun walktoTile() {
+        val regional = this.getRegionalLocation()
+        val point = worldToScreen(regional.x, regional.y, z, ctx!!)
         val doActionParams =   DoActionParams(point.x,point.y,23, 0, "", "",0,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
-        delay(Random.nextLong(189, 555))
+        delay(Random.nextLong(189, 1076))
     }
 
 

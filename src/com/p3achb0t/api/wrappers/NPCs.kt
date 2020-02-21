@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.Headbar
 import com.p3achb0t.api.Context
 import kotlin.math.abs
 import kotlin.math.max
@@ -101,6 +102,27 @@ class NPCs(val ctx: Context) {
         return npcs
     }
 
+    // This function will return a list of NPCs with closes distance to you
+    fun findNpcs(npcName: String, area: Area, sortByDist: Boolean = false): ArrayList<NPC> {
+        val npcs = ArrayList<NPC>()
+        ctx.client.getNpcs().forEachIndexed { index, npc ->
+            if (npc != null && npc.getType()?.getName()?.contentEquals(npcName) && area.containsOrIntersects(Tile(npc.getX(), npc.getY()).getGlobalLocation())) {
+                npcs?.add(NPC(npc, ctx, index))
+            }
+        }
+        if (sortByDist) {
+            npcs.sortBy {
+                // Sort closest to player
+                val localPlayer = ctx.client.getLocalPlayer()
+                max(
+                        abs(localPlayer.getX() - it.npc.getX()),
+                        abs(localPlayer.getY() - it.npc.getY())
+                )
+            }
+        }
+        return npcs
+    }
+
     fun getTargetted(npcname: String): NPC? {
         val foundNPCs = ArrayList<NPC>()
         val npcs = findNpcs(npcname, sortByDist = true)
@@ -142,6 +164,10 @@ class NPCs(val ctx: Context) {
 
     fun getNearestNPC(npcname: String): NPC {
         return findNpcs(npcname, true)[0]
+    }
+
+    fun getNearestNPC(npcname: String, area: Area): NPC {
+        return findNpcs(npcname,area, true)[0]
     }
 
     fun getNearestNPC() : NPC {
