@@ -3,13 +3,11 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.DoActionParams
-import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import net.runelite.api.MenuOpcode
-import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random
@@ -85,8 +83,8 @@ class Bank(val ctx: Context) {
     suspend fun close() {
         if (isOpen()) {
             val doActionParams = DoActionParams(11, 786434, 57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(300)
         }
     }
@@ -242,16 +240,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     delay(Random.nextLong(189, 1076))
                 }
             }
@@ -266,16 +264,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     delay(Random.nextLong(189, 1076))
                 }
             }
@@ -290,16 +288,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     Utils.waitFor(3, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -325,8 +323,8 @@ class Bank(val ctx: Context) {
     suspend fun setnoted() {
         if (isOpen()) {
             val doActionParams =   DoActionParams(-1, 786454, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(189, 1076))
         }
     }
@@ -339,8 +337,8 @@ class Bank(val ctx: Context) {
     suspend fun setitem() {
         if (isOpen()) {
             val doActionParams =   DoActionParams(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(189, 1076))
         }
     }
@@ -353,8 +351,8 @@ class Bank(val ctx: Context) {
 
     suspend fun depositInvdoAction() {
         val doActionParams =   DoActionParams(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 
     /**
@@ -364,8 +362,8 @@ class Bank(val ctx: Context) {
 
     suspend fun depositEquipmentdoAction() {
         val doActionParams =   DoActionParams(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 
     suspend fun depositallExcept(arrayList: ArrayList<Int>){
@@ -565,7 +563,7 @@ class Bank(val ctx: Context) {
 
             if (itemCount > maxItemCount) return@forEach
 
-            if (it.getItemId() > 0) {
+            if (it.getItemId() > 0 && it.getItemId() != 6512) {
 
                 itemWidgets.add(
                         WidgetItem(
@@ -577,11 +575,9 @@ class Bank(val ctx: Context) {
                                 ctx = ctx
                         )
                 )
+                itemCount += 1
             }
-
-            itemCount += 1
         }
-
         return itemWidgets
     }
 

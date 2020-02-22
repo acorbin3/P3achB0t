@@ -29,11 +29,13 @@ class PaintDebug: DebugScript() {
         try {
 
 
+            val debugX = 50
+            val debugY = 10
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
-            g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",10,10)
-            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",10,20)
-            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",10,30)
+            g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",debugX,debugY)
+            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",debugX,debugY +10)
+            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",debugX,debugY + 20)
 
             if(isCanWalkDebug)
                 canWalkDebug(g,ctx)
@@ -65,6 +67,8 @@ class PaintDebug: DebugScript() {
                     items.forEach {
                         g.color = Color.ORANGE
                         g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                        g.color = Color.white
+                        g.drawString(it.id.toString(),it.area.x + 2, it.area.y + 20 )
 
                     }
                 }
