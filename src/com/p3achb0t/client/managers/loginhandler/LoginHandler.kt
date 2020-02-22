@@ -54,11 +54,11 @@ class LoginHandler(var client: Client, var account: Account = Account(), var ctx
         Utils.waitFor(10, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return client.getGameState() == 30
+                println("Current game state " + GameState.currentState(ctx!!).name)
+                return GameState.currentState(ctx!!) == GameState.LOGGED_IN
             }
         })
         println("Game state == ${client.getGameState()}")
-        delay(5500)
 
         val ctx = Context(client)
         //Press red button

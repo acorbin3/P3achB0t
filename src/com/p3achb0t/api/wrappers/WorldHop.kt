@@ -46,9 +46,12 @@ class WorldHop(val ctx: Context) {
         Utils.waitFor(10,object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(50)
-                return ctx.client.getGameState() == 10
+                return GameState.currentState(ctx) == GameState.LOGIN_SCREEN
             }
         })
+        if(GameState.currentState(ctx) == GameState.LOGGED_IN){
+            logout()
+        }
     }
 
 

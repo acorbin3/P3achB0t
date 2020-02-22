@@ -3,14 +3,17 @@ package com.p3achb0t.interfaces
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.awt.Color
 import java.awt.Graphics
 import java.awt.image.BufferedImage
+import kotlin.random.Random
 
 class ScriptManager(val client: Any) {
 
@@ -32,8 +35,12 @@ class ScriptManager(val client: Any) {
     lateinit var thread: Job
     var gameLoopI = 0
 
+    var breaking = false
+    var breakReturnTime = 0L
+
     fun setUpScript(s: AbstractScript) {
         s.initialize(client)
+        loginHandler.ctx = s.ctx
         this.script = s
     }
 
@@ -72,12 +79,30 @@ class ScriptManager(val client: Any) {
         isRunning = true
         //This the script thread.
         thread = GlobalScope.launch {
+            val runtime = StopWatch()
+            val lastCheck = StopWatch()
+            val fiveMin = 5 * 60 *1000
             script.start()
             while (isRunning) {
                 // Check to see if we have a good loaded account
-                // Check to see if we are logged in
-                // If logged out, login
-                //TODO - handle the breaks if there are any
+                // Every 5 min check to see if we need to logout
+                if(loginHandler.account.userBreaks && lastCheck.elapsed > fiveMin){
+                    //Are we in the runtime range
+                    if(runtime.elapsedSec < Random.nextInt(loginHandler.account.minRuntime,loginHandler.account.maxRuntime)){
+                        val breakTime = Random.nextInt(loginHandler.account.minBreakTime,loginHandler.account.maxBreakTime)
+                        println("Hit our break handler. Logging out")
+                        delay(5000) // Some times its good to add a little delay
+                        loginHandler.ctx?.worldHop?.logout()
+                        println("Delaying ${1000*breakTime.toLong()}ms")
+                        breakReturnTime = System.currentTimeMillis() + 1000*breakTime.toLong()
+                        breaking = true
+                        delay(1000*breakTime.toLong())
+                        runtime.reset()
+                        breaking = false
+
+                    }
+                    lastCheck.reset()
+                }
                 if (!paused
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen()) {
@@ -120,6 +145,11 @@ class ScriptManager(val client: Any) {
     }
 
     fun paintScript(g: Graphics) {
+        if(breaking) {
+            g.color = Color.RED
+            val timeLeftInSec = (breakReturnTime - System.currentTimeMillis()) / 1000
+            g.drawString("Breaking. Will return in $timeLeftInSec", 280, 225)
+        }
         script.draw(g)
     }
 
