@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.p3achb0t</groupId>
     <artifactId>P3achB0t</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.188-SNAPSHOT</version>
     <name>client</name>
 
@@ -41,11 +41,6 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>no.tornado</groupId>
-            <artifactId>tornadofx</artifactId>
-            <version>1.7.19</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -156,9 +151,6 @@
 
     <build>
         <resources>
-            <resource>
-                <directory>src/com/p3achb0t/_runestar_interfaces</directory>
-            </resource>
             <resource>
                 <directory>/hooks</directory>
                 <includes>
