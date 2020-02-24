@@ -1,9 +1,9 @@
 package com.p3achb0t.analyser
 
+import com.p3achb0t.Main
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
-import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
 import com.p3achb0t.injection.class_generation.cleanType
 import com.p3achb0t.injection.class_generation.isBaseType
 import org.objectweb.asm.*
@@ -15,6 +15,7 @@ import org.objectweb.asm.util.TraceMethodVisitor
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.lang.reflect.Modifier
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
@@ -462,11 +463,11 @@ class Analyser{
         }
 
         out.putNextEntry(JarEntry("ProxySocket.class"))
-        out.write(putClasses("$USER_DIR/src/ProxySocket.class"))
+        out.write(putClasses("/ProxySocket.class"))
         out.closeEntry()
 
         out.putNextEntry(JarEntry("ProxyConnection.class"))
-        out.write(putClasses("$USER_DIR/src/ProxyConnection.class"))
+        out.write(putClasses("/ProxyConnection.class"))
 
         out.closeEntry()
 
@@ -714,8 +715,10 @@ class Analyser{
     }
 
     private fun putClasses(name: String): ByteArray {
-        val file = File(name)
-        return file.readBytes()
+        println("Putting class $name")
+
+        val file: InputStream? = Main.javaClass.getResourceAsStream(name) ?: return File("${Constants.USER_DIR}/src/"+name).readBytes()
+        return file?.readBytes()!!
     }
 
     private fun injectDoActionHook(runeStar: RuneStarAnalyzer, clazzData: ClassHook, classes: MutableMap<String, ClassNode>) {

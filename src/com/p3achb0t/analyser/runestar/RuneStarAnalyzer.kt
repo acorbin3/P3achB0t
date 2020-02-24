@@ -1,6 +1,7 @@
 package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
+import com.p3achb0t.Main
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.injection.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
@@ -15,9 +16,16 @@ class RuneStarAnalyzer {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
         val hookFileName = "hooks_188.json"
-        val file = File("./$hookDir/$hookFileName")
+        var json = ""
 
-        val json = file.readText() // your json value here
+        //Depending on if we are running within IntelliJ or from Jar the hooks file might be in a different location
+        json = if( File("./$hookDir/$hookFileName").exists()) {
+            File("./$hookDir/$hookFileName").readText()
+        }else{
+            Main.javaClass.getResourceAsStream("/$hookFileName").bufferedReader().readLines().forEach { json+= it + "\n" }
+            json
+        }
+//        val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
         //RuneStar has the Y and Z flipped from how our client works. Need to update the field name
         val yTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0].copy()

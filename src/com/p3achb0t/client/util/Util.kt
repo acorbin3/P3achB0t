@@ -39,6 +39,9 @@ class Util {
 
         fun readConfig(path: String) : String {
             val file = File(path)
+            if(!file.exists()){
+                return ""
+            }
             val ins: InputStream = file.inputStream()
             val content = ins.readBytes().toString(Charset.defaultCharset())
             return content

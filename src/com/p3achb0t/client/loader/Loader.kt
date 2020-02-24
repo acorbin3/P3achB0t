@@ -26,6 +26,10 @@ class Loader {
 
         } else {
             // clean -> Download TODO clean
+            print("Cleaning up old gamepacks")
+            val gamePacksDir = "${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.JARS_DIR}"
+            File(gamePacksDir).deleteRecursively()
+            File(gamePacksDir).mkdir()
             download()
             return isLocalGamepack()
         }
@@ -70,8 +74,8 @@ class Loader {
         for (line in res.split("\n")) {
             if (line.contains("archive=")) {
                 val strReplace = "g.*.jar"
-                val gamePack = getRegSelection(strReplace, line)
-                println("Current game pack: " + gamePack)
+                val gamePack = getRegSelection(strReplace, line).replace(".jar", "__v${Constants.REVISION }.jar")
+                println("Current game pack: $gamePack")
                 return gamePack
             }
         }
