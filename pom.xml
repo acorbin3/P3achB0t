@@ -152,7 +152,7 @@
     <build>
         <resources>
             <resource>
-                <directory>/hooks</directory>
+                <directory>hooks</directory>
                 <includes>
                     <include>hooks_188.json</include>
                 </includes>
@@ -160,8 +160,8 @@
             <resource>
                 <directory>src/</directory>
                 <includes>
-                    <include>/ProxySocket.class</include>
-                    <include>/ProxyConnection.class</include>
+                    <include>ProxySocket.class</include>
+                    <include>ProxyConnection.class</include>
                 </includes>
             </resource>
         </resources>
@@ -397,7 +397,39 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>ideauidesigner-maven-plugin</artifactId>-->
+<!--                <version>1.0-beta-1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>javac2</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
 
+<!--                <configuration>-->
+<!--                    <fork>true</fork>-->
+<!--                    <debug>true</debug>-->
+<!--                    <failOnError>true</failOnError>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>${main.class}</argument>
+                    </arguments>
+                    <workingDirectory></workingDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
