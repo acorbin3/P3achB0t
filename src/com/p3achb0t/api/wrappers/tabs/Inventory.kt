@@ -21,7 +21,17 @@ class Inventory(val ctx: Context? = null) {
 
     suspend fun open() {
 
-        if (!isOpen()) Tabs(ctx!!).openTab(Tabs.Tab_Types.Inventory)
+        if (!isOpen()) {
+            val doActionParams = DoActionParams(-1, 10747959, 57, 1, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+            Utils.waitFor(1, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return isOpen()
+                }
+            })
+        }
     }
 
     fun isOpen(): Boolean {
@@ -220,12 +230,8 @@ class Inventory(val ctx: Context? = null) {
         var contains = false
             var items = getAll()
             items.forEachIndexed { index, widgetItem ->
-                println("Contains " + contains)
-                println("Wdiget id = " + widgetItem.id)
                 itemid.forEach {
-                    println("item id = " + it.id)
                     if (widgetItem.id == it.id && widgetItem.id != 995) {
-                        println("matched")
                         contains = true
                     }
                 }
@@ -489,7 +495,6 @@ class Inventory(val ctx: Context? = null) {
         var Contains = true
             id.forEach {
                 if(!Contains(it)){
-                    println("Can't find " + it + " in inv")
                     Contains = false
                 }
         }

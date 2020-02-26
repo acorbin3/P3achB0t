@@ -101,8 +101,8 @@ class Bank(val ctx: Context) {
     suspend fun close() {
         if (isOpen()) {
             val doActionParams = DoActionParams(11, 786434, 57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(300)
         }
     }
@@ -136,7 +136,6 @@ class Bank(val ctx: Context) {
                 }
             }
         }
-        println("Bankitemcount " + count)
         return count
     }
 
@@ -148,13 +147,28 @@ class Bank(val ctx: Context) {
                 itemid.forEach {
                     if (widgetItem.id == it) {
                         count = widgetItem.stackSize + count
-                        println("id in array found: " + widgetItem.id + " count:" + count)
                         return@forEach
                     }
                 }
             }
         }
-        println("Bankitemcount in array " + count)
+        return count
+    }
+
+    fun containsNumberOfItems(itemid: ArrayList<Int>): Int {
+        var count = 0
+        if (isOpen()) {
+            val items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        count = widgetItem.stackSize + count
+                        count = count + 1
+                        return@forEach
+                    }
+                }
+            }
+        }
         return count
     }
 
@@ -165,7 +179,6 @@ class Bank(val ctx: Context) {
             items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
-                        println("Bank contains: " + widgetItem.id)
                         contains = true
                     }
                 }
@@ -174,116 +187,12 @@ class Bank(val ctx: Context) {
         return contains
     }
 
-    /**
-     * added by sirscript
-     */
-
-    suspend fun withdraw1(id: Int, name: String) {
-        if (isOpen()) {
-            val chatText =
-                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-            var text = chatText?.getText()
-            while (!text.equals("*")) {
-                delay(Random.nextLong(25, 75))
-                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
-                text = chatText?.getText()
-                if (text.equals("*") || text.equals("4*")) {
-                    delay(Random.nextLong(250, 550))
-                    break
-                }
-            }
-            delay(Random.nextLong(250, 550))
-            var items = getAll()
-            if (ctx.vars.getVarp(1666) != 0) {
-                if (ctx.widgets.isWidgetAvaliable(12, 27)) {
-                    val Quantity1 = WidgetItem(ctx.widgets.find(12, 28), ctx = ctx)
-                    Quantity1.click()
-                    delay(300)
-                }
-            }
-            if (ctx.vars.getVarp(1666) == 0) {
-                items.forEach {
-                    if (it.id == id) {
-                        //Check to see if its visible
-                        if (itemVisible(it.area)) {
-                            val itemCount = getItemCount(id)
-                            it.click()
-                            delay(300)
-                        } else {
-                            //TODO- scroll to item
-                            println("Searching for item " + name)
-                            if(!itemVisible(it.area)) {
-                                searchForItem(id, name)
-                                delay(600)
-                            }
-                            items = getAll()
-                            items.forEach {
-                                if (it.id == id) {
-                                    //Check to see if its visible
-                                    if (itemVisible(it.area)) {
-                                        it.click()
-                                    }
-
-                                    delay(600)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
     /**
      * added by sirscript
      */
 
-    suspend fun withdrawAll(id: Int, name: String) {
-        if (isOpen()) {
-            val chatText =
-                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-            var text = chatText?.getText()
-            while (!text.equals("*")) {
-                delay(Random.nextLong(25, 75))
-                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
-                text = chatText?.getText()
-                if (text.equals("*") || text.equals("4*")) {
-                    delay(Random.nextLong(250, 550))
-                    break
-                }
-            }
-            var items = getAll()
-            items.forEach {
-                if (it.id == id) {
-                    //Check to see if its visible
-                    if (itemVisible(it.area)) {
-                        it.interact("Withdraw-all" )
 
-                    } else {
-                        println("Searching for item ")
-                        searchForItem(id, name)
-                        delay(600)
-                        items = getAll()
-                        items.forEach {
-                            if (it.id == id) {
-                                //Check to see if its visible
-                                if (itemVisible(it.area)) {
-                                    it.interact("Withdraw-all")
-
-                                }
-                            }
-                        }
-                    }
-                    delay(200)
-                }
-            }
-        }
-    }
-
-    /**
-     * added by sirscript
-     */
 
     suspend fun doActionAttack(){
 
@@ -293,16 +202,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     delay(Random.nextLong(189, 1076))
                 }
             }
@@ -313,8 +222,8 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             while (ctx.vars.getVarp(115) != 1 && isOpen()) {
                 val doActionParams = DoActionParams(-1, 786454,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             if (ctx.vars.getVarp(115) == 1) {
@@ -322,8 +231,8 @@ class Bank(val ctx: Context) {
                 items.forEach {
                     if (it.id == id) {
                         val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 7, "", "", 0, 0)
-                        ctx?.mouse?.overrideDoActionParams = true
-                        ctx?.mouse?.doAction(doActionParams)
+                        ctx.mouse.overrideDoActionParams = true
+                        ctx.mouse.doAction(doActionParams)
                         delay(Random.nextLong(189, 1076))
                     }
                 }
@@ -339,16 +248,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     delay(Random.nextLong(189, 1076))
                 }
             }
@@ -363,16 +272,16 @@ class Bank(val ctx: Context) {
         if (isOpen()) {
             if (ctx.vars.getVarp(1666) != 0) {
                 val doActionParams = DoActionParams(-1, 786458,57, 1, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(189, 1076))
             }
             var items = getAll()
             items.forEach {
                 if (it.id == id) {
                     val doActionParams = DoActionParams(it.widget!!.getChildIndex(), 786443, MenuOpcode.WIDGET_DEFAULT.id, 6, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
                     Utils.waitFor(3, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
                             delay(100)
@@ -398,8 +307,8 @@ class Bank(val ctx: Context) {
     suspend fun setnoted() {
         if (isOpen()) {
             val doActionParams =   DoActionParams(-1, 786454, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(189, 1076))
         }
     }
@@ -412,8 +321,8 @@ class Bank(val ctx: Context) {
     suspend fun setitem() {
         if (isOpen()) {
             val doActionParams =   DoActionParams(-1, 786452, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(189, 1076))
         }
     }
@@ -426,8 +335,8 @@ class Bank(val ctx: Context) {
 
     suspend fun depositInvdoAction() {
         val doActionParams =   DoActionParams(-1, 786472, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 
     /**
@@ -437,8 +346,8 @@ class Bank(val ctx: Context) {
 
     suspend fun depositEquipmentdoAction() {
         val doActionParams =   DoActionParams(-1, 786474, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 
     suspend fun depositallExcept(arrayList: ArrayList<Int>){
@@ -449,159 +358,6 @@ class Bank(val ctx: Context) {
      * added by sirscript
      */
 
-    suspend fun withdraw(id: Int, name: String, count: Int = 1) {
-        if (isOpen()) {
-            val chatText =
-                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-            var text = chatText?.getText()
-            while (!text.equals("*")) {
-                delay(Random.nextLong(25, 75))
-                ctx.keyboard.pressDownKey(VK_BACK_SPACE)
-                text = chatText?.getText()
-                if (text.equals("*") || text.equals("4*") || text!!.length < 1) {
-                    delay(Random.nextLong(250, 550))
-                    break
-                }
-            }
-            var items = getAll()
-            items.forEach {
-                if (it.id == id) {
-                    //Check to see if its visible
-                    if (itemVisible(it.area)) {
-                        val itemCount = getItemCount(id)
-                        if (count in listOf(1, 5, 10)) {
-                            it.interact("Withdraw-$count" )
-                        } else {
-                            it.interact("Withdraw-X")
-                            Utils.waitFor(3, object : Utils.Condition {
-                                override suspend fun accept(): Boolean {
-                                    delay(100)
-                                    val chatText =
-                                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                                    val text = chatText?.getText()
-                                    println(text + " " + chatText?.getIsHidden())
-                                    return text?.equals("*") ?: false
-                                }
-                            })
-                            delay(Random.nextLong(335, 665))
-                            ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
-                        }
-
-                        Utils.waitFor(3, object : Utils.Condition {
-                            override suspend fun accept(): Boolean {
-                                delay(100)
-                                return itemCount != getItemCount(id)
-                            }
-                        })
-                    } else {
-                        //TODO- scroll to item
-                        println("Searching for item ")
-                        searchForItem(id, name)
-                        delay(600)
-                        items = getAll()
-                        items.forEach {
-                            if (it.id == id) {
-                                //Check to see if its visible
-                                if (itemVisible(it.area)) {
-                                    it.interact("Withdraw-X")
-                                    Utils.waitFor(3, object : Utils.Condition {
-                                        override suspend fun accept(): Boolean {
-                                            delay(100)
-                                            val chatText =
-                                                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                                            val text = chatText?.getText()
-                                            println(text + " " + chatText?.getIsHidden())
-                                            return text?.equals("*") ?: false
-                                        }
-                                    })
-                                    delay(Random.nextLong(100, 350))
-                                    ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
-                                }
-
-                                delay(600)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
-
-
-    /**
-     * added by sirscript
-     */
-
-    suspend fun searchForItem(id: Int, name: String) {
-        val items = getAll()
-        val searchWidget = WidgetItem(ctx.widgets.find(12, 38), ctx = ctx)
-        items.forEach {
-            if (it.id == id) {
-                if (!itemVisible(it.area)) {
-                    var chatText =
-                            ctx.widgets.find(12, 3)
-                    var text = chatText?.getText()
-                    if (text.equals("The Bank of Gielinor")) {
-                        searchWidget.click()
-                        delay(Random.nextLong(100, 350))
-                    }
-                    delay(600)
-                    chatText =
-                            ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                    text = chatText?.getText()
-                    while (!text.equals("*")) {
-                        delay(Random.nextLong(25, 75))
-                        ctx.keyboard.pressDownKey(VK_BACK_SPACE)
-                        text = chatText?.getText()
-                        if (text.equals("*") || text.equals("4*")) {
-                            break
-                        }
-                    }
-                    if (text.equals("*")) {
-                        delay(Random.nextLong(100, 350))
-                        ctx.keyboard.sendKeys(name)
-                    }
-                    delay(200)
-
-                }
-            }
-        }
-    }
-
-    suspend fun deposit(id: Int, count: Int = 1) {
-        if (isOpen()) {
-            val itemCount = getItemCount(id)
-            if (count in listOf(1, 5, 10)) {
-                ctx.inventory.getItem(id)?.interact("Deposit-$count")
-            } else {
-                ctx.inventory.getItem(id)?.interact("Deposit-X")
-                //Wait till the * shows up in the chat box
-                Utils.waitFor(3, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        val chatText = ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                        val text = chatText?.getText()
-                        println(text + " " + chatText?.getIsHidden())
-                        return text?.equals("*") ?: false
-                    }
-                })
-                delay(Random.nextLong(100, 350))
-
-                ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
-            }
-            // wait till item get into the bank
-            Utils.waitFor(3, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return itemCount != getItemCount(id)
-                }
-            })
-
-        }
-    }
 
     fun isOpen(): Boolean {
         return getBankWidget() != null
@@ -650,14 +406,7 @@ class Bank(val ctx: Context) {
                 )
                 itemCount += 1
             }
-
-
-
-
-
-
         }
-
         return itemWidgets
     }
 

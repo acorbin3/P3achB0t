@@ -178,7 +178,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            WidgetItem(ctx.widgets.find(162,45), ctx=ctx).click()
+            WidgetItem(ctx.widgets.find(162,45), ctx=ctx).doAction()
         }
 
     }
@@ -215,8 +215,8 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             println("Picking name")
             //Name widget to click into and type a name 558,7
-            val nameEntry = WidgetItem(ctx.widgets.find(558, 7), ctx = ctx)
-            nameEntry.click()
+//            val nameEntry = WidgetItem(ctx.widgets.find(558, 7), ctx = ctx)
+//            nameEntry.doAction()
             delay(Random.nextLong(2200, 5550))
             println("Sending keys")
             ctx.keyboard.sendKeys(names.random(), sendReturn = true)
@@ -230,12 +230,12 @@ class TutorialIslanddoAction: AbstractScript()  {
             } else {
                 val rand = Random.nextInt(14, 16)
                 val selectRandomName = WidgetItem(ctx.widgets.find(558, rand), ctx = ctx)
-                selectRandomName.click()
+                selectRandomName.doAction()
                 delay(Random.nextLong(2200, 5550))
             }
             //Pick set name in 558,18
             val pickName = WidgetItem(ctx.widgets.find(558, 18), ctx = ctx)
-            pickName.click()
+            pickName.doAction()
             delay(Random.nextLong(2200, 5550))
             Utils.waitFor(4, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
@@ -269,20 +269,20 @@ class TutorialIslanddoAction: AbstractScript()  {
                 }
                 println("Clicking widget (${widgetIndex.parentID},${widgetIndex.childID})")
                 for (j in 0..Random.nextInt(5)) {
-                    WidgetItem(ctx.widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt()), ctx = ctx).click()
+                    WidgetItem(ctx.widgets.find(widgetIndex.parentID.toInt(), widgetIndex.childID.toInt()), ctx = ctx).doAction()
                     delay(Random.nextLong(250, 650))
                 }
             }
             //Randomly pick if you are going to be afemale
             if (Random.nextBoolean()) {
                 println("Picking Female")
-                WidgetItem(ctx.widgets.find(269, 139), ctx = ctx).click()
+                WidgetItem(ctx.widgets.find(269, 139), ctx = ctx).doAction()
                 delay(Random.nextLong(250, 650))
             } else {
                 println("Leaving male")
             }
             //select accept
-            WidgetItem(ctx.widgets.find(269, "Accept"), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(269, "Accept"), ctx = ctx).doAction()
             delay(Random.nextLong(1250, 2650))
             println("Completed Character outfit")
         }
@@ -340,30 +340,30 @@ class TutorialIslanddoAction: AbstractScript()  {
             ctx.tabs.openTab(Tabs.Tab_Types.Options)
             delay(Random.nextLong(500, 1500))
             //Display settings(261,1)child 1
-            WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(1), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(1), ctx = ctx).doAction()
             delay(Random.nextLong(500, 1500))
             //Advanced options(261,35
-            WidgetItem(ctx.widgets.find(261, 35), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 35), ctx = ctx).doAction()
             delay(Random.nextLong(500, 1500))
             //Turn off roofs(60,14). Texture Id when on is 762
             ctx.widgets.waitTillWidgetNotNull(60, 14)
             val roofToggle = ctx.widgets.find(60, 14)
             if (roofToggle?.getSpriteId2() == 761) {
-                WidgetItem(ctx.widgets.find(60, 14), ctx = ctx).click()
+                WidgetItem(ctx.widgets.find(60, 14), ctx = ctx).doAction()
                 delay(Random.nextLong(500, 1500))
             }
             //Close out of Advanced options widget(60,2) child index 3
-            WidgetItem(ctx.widgets.find(60, 2)?.getChildren()?.get(3), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(60, 2)?.getChildren()?.get(3), ctx = ctx).doAction()
 
             //Turn off music
             //Open audio section
-            WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(3), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 1)?.getChildren()?.get(3), ctx = ctx).doAction()
             delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 39), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 39), ctx = ctx).doAction()
             delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 45), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 45), ctx = ctx).doAction()
             delay(Random.nextLong(300, 700))
-            WidgetItem(ctx.widgets.find(261, 51), ctx = ctx).click()
+            WidgetItem(ctx.widgets.find(261, 51), ctx = ctx).doAction()
 
         }
 
@@ -407,7 +407,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             gameObjects.forEach {
                 if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
                     it.doAction()
-                   it.doAction()
+                    it.doAction()
                     //Wait till here Tile(3098,3107)
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -560,7 +560,6 @@ class TutorialIslanddoAction: AbstractScript()  {
             suspend fun chopTree(ctx: Context) {
                 val trees = ctx.gameObjects.find(9730, sortByDistance = true)
                 // Should be more than 4, lets pick a random one between 1 and 4
-                ctx.mouse.instantclick(Point(0,599))
                 trees[Random.nextInt(0, 3)].doAction(offsetX = -1, offsetY = -1)
 //                ctx.client.doAction(trees[Random.nextInt(0, 3)].getLocalLocation().x - 1, trees[Random.nextInt(0, 3)].getLocalLocation().y - 1, 3, trees[Random.nextInt(0, 3)].id, "", "", 0 ,0)
 
@@ -608,10 +607,10 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val fires = ctx.gameObjects.find(26185, sortByDistance = true)
                 if (fires.size > 0) {
                     ctx.inventory.open()
-                    ctx.inventory.getItem(SHRIMP_ID)?.click()
+                    ctx.inventory.use(SHRIMP_ID)
                     // The fire is an animated object so it thows a NPE when trying to interact with model.
                     if (fires[0].sceneryObject != null) {
-                        fires[0].doAction()
+                        fires[0].useItemOn()
 //                        val point = Calculations.worldToScreen(
 //                                fires[0].sceneryObject!!.getCenterX(),
 //                                fires[0].sceneryObject!!.getCenterY(),
@@ -629,8 +628,8 @@ class TutorialIslanddoAction: AbstractScript()  {
                 }
 
 
-                ctx.inventory.getItem(590)?.click()
-                ctx.inventory.getItem(LOGS_ID_2511)?.click()
+                ctx.inventory.use(590)
+                ctx.inventory.use(LOGS_ID_2511)
                 delay(Random.nextLong(2500, 4500))
                 //Wait till hes not doing anything which should mean fire has been made
                 ctx.players.getLocal().waitTillIdle()
@@ -667,7 +666,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             fires = ctx.gameObjects.find(26185, sortByDistance = true)
             if (fires.size > 0) {
                 ctx.inventory.open()
-                ctx.inventory.getItem(SHRIMP_ID)?.click()
+                ctx.inventory.use(SHRIMP_ID)
                 // The fire is an animated object so it thows a NPE when trying to interact with model.
                 if (fires[0].sceneryObject != null) {
                     val point = Calculations.worldToScreen(
@@ -700,7 +699,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             val gateTile = Tile(3090, 3092, 0, ctx)
             println("Onscreen? ${gateTile.isOnScreen()}")
             if (gateTile.distanceTo() > 5) {
-                gateTile.clickOnMiniMap()
+                gateTile.walktoTile()
                 Utils.waitFor(10, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -731,7 +730,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             val tile = Tile(3079, 3084, 0, ctx)
             if (tile.distanceTo() > 5) {
-                tile.clickOnMiniMap()
+                tile.walktoTile()
                 Utils.waitFor(10, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -775,8 +774,8 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             // Mix water(1929) and flower(2516)
-            Inventory(ctx = ctx).getItem(1929)?.click()
-            Inventory(ctx = ctx).getItem(2516)?.click()
+            Inventory(ctx = ctx).use(1929)
+            Inventory(ctx = ctx).useSelectedItemOnItem(2516)
             delay(Random.nextLong(1250, 1650))
             ctx.dialog.continueDialog()
 
@@ -796,9 +795,10 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Range is 9736
             ctx.inventory.open()
             val range = ctx.gameObjects.find(9736)[0]
-            ctx.mouse.instantclick(Point(0,599))
+            range.doAction(offsetX=-1)
+//            ctx.mouse.instantclick(Point(0,0))
 //            range.doAction(offsetX = -1)
-            ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0,dummy = -1223904486)
+//            ctx.client.doAction(range.getLocalLocation().x - 1, range.getLocalLocation().y, 3,range.id, "", "", 0 ,0,dummy = -1223904486)
 
             // Wait till bread in inventory
             Utils.waitFor(4, object : Utils.Condition {
@@ -825,7 +825,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val tileNearDoor = Tile(3073, 3090, ctx = ctx)
             if (tileNearDoor.distanceTo() > 4) {
-                tileNearDoor.clickOnMiniMap()
+                tileNearDoor.walktoTile()
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -853,6 +853,9 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
+            ctx.run.activateRun()
+            ctx.run.deactivateRun()
+            ctx.run.activateRun()
             ctx.run.clickRunButton()
             delay(Random.nextLong(1500, 2500))
         }
@@ -869,8 +872,8 @@ class TutorialIslanddoAction: AbstractScript()  {
             Run(ctx).activateRun()
             delay(Random.nextLong(1500, 2500))
             val walkingPath = arrayListOf(
-                Tile(3073, 3103, ctx = ctx), Tile(3074, 3117, ctx = ctx),
-                Tile(3079, 3127, ctx = ctx), Tile(3086, 3127, ctx = ctx)
+                    Tile(3073, 3103, ctx = ctx), Tile(3074, 3117, ctx = ctx),
+                    Tile(3079, 3127, ctx = ctx), Tile(3086, 3127, ctx = ctx)
             )
             Walking.walkPath(walkingPath)
             //Open Door(9716)
@@ -1013,7 +1016,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //walk to tile(3076,9505
             //Mine rocks
             val miningspot = Tile(3076, 9505, 0, ctx)
-            miningspot.clickOnMiniMap()
+            miningspot.walktoTile()
             ctx.players.getLocal().waitTillIdle()
             ctx.camera.setHighPitch()
             MineRock.mineRock(ctx)
@@ -1031,7 +1034,7 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             val miningspot = Tile(3085, 9502, 0, ctx)
             if (miningspot.distanceTo() > 5) {
-                miningspot.clickOnMiniMap()
+                miningspot.walktoTile()
                 delay(Random.nextLong(3500, 5500))
             }
             ctx.camera.setHighPitch()
@@ -1050,8 +1053,8 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             val miningspot = Tile(3079, 9498, 0, ctx)
             if (miningspot.distanceTo() > 3) {
-
-                miningspot.clickOnMiniMap()
+                miningspot.turnTo()
+                miningspot.walktoTile()
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -1064,7 +1067,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             // had to add this in manually for some reason the location was off by 1? not sure why.
 
-            ctx.mouse.instantclick(Point(0,599))
+            ctx.mouse.instantclick(Point(0,0))
 //            furnace[0].doAction(offsetX = -1, offsetY = -1)
             ctx.client.doAction(furnace[0].getLocalLocation().x - 1, furnace[0].getLocalLocation().y - 1, 3, furnace[0].id, "", "", 0 ,0, dummy = -1223904486)
             ctx.players.getLocal().waitTillIdle()
@@ -1084,7 +1087,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (miningGuide.size > 0) {
                 miningGuide[0].turnTo()
                 if (Tile(3081, 9504, ctx = ctx).distanceTo() > 4) {
-                    Tile(3081, 9504, ctx = ctx).clickOnMiniMap()
+                    Tile(3081, 9504, ctx = ctx).walktoTile()
                 }
                 if(!ctx.dialog.isContinueAvailable()) {
                     miningGuide[0].doAction()
@@ -1120,7 +1123,7 @@ class TutorialIslanddoAction: AbstractScript()  {
                 val oldInventoryCount = ctx.inventory.getCount()
                 val daggerSmitingPage = WidgetItem(ctx.widgets.find(312, 9)?.getChildren()?.get(2), ctx = ctx)
                 if (daggerSmitingPage.widget != null) {
-                    daggerSmitingPage.click()
+                    daggerSmitingPage.doAction()
 
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -1166,7 +1169,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             // Move to combat insturctor
             val tileNearCombatInstructor = Tile(3107, 9509, ctx = ctx)
             if (tileNearCombatInstructor.distanceTo() > 5) {
-                tileNearCombatInstructor.clickOnMiniMap()
+                tileNearCombatInstructor.walktoTile()
                 val local = ctx.players.getLocal()
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
@@ -1206,7 +1209,9 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             ctx.equipment.open()
-            WidgetItem(ctx.widgets.find(387, 1), ctx = ctx).click()
+//            argument0:-1, argument1:25362433, argument2:57, argument3:1, action:View equipment stats, targetName:, mouseX:631, mouseY:492, argument8:-1223904486
+
+            WidgetItem(ctx.widgets.find(387, 1), ctx = ctx).doAction()
             delay(Random.nextLong(1500, 2637))
         }
 
@@ -1218,9 +1223,10 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Inventory(ctx = ctx).getItem(1205)?.click()
+            Inventory(ctx = ctx).wear(1205)
             delay(Random.nextLong(2500, 4000))
-            WidgetItem(ctx.widgets.find(84, 4), ctx = ctx).click() // Close out of Equoptment status
+            //argument0:-1, argument1:5505028, argument2:57, argument3:1, action:Close, targetName:, mouseX:527, mouseY:68, argument8:-1223904486
+            WidgetItem(ctx.widgets.find(84, 4), ctx = ctx).doAction() // Close out of Equoptment status
         }
 
     }
@@ -1248,9 +1254,9 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Inventory(ctx = ctx).getItem(1277)?.click()
+            Inventory(ctx = ctx).wear(1277)
             delay(Random.nextLong(1500, 2500))
-            Inventory(ctx = ctx).getItem(1171)?.click()
+            Inventory(ctx = ctx).wear(1171)
             delay(Random.nextLong(1500, 2500))
         }
 
@@ -1278,7 +1284,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Walk over to tile
             val tileNearGate = Tile(3111, 9519, ctx = ctx)
             if (tileNearGate.distanceTo() > 5) {
-                tileNearGate.clickOnMiniMap()
+                tileNearGate.walktoTile()
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -1349,7 +1355,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             if (!ratCageArea.containsOrIntersects(ctx.players.getLocal().getGlobalLocation())) {
                 val combatInstructor = ctx.npcs.findNpc("Combat Instructor")
                 if (combatInstructor[0].distanceTo() > 5) {
-                    combatInstructor[0].clickOnMiniMap()
+                    combatInstructor[0].walkTo()
                     combatInstructor[0].waitTillNearObject()
                 }
 
@@ -1368,15 +1374,15 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             ctx.inventory.open()
-            Inventory(ctx = ctx).getItem(841)?.click()
+            Inventory(ctx = ctx).wear(841)
             delay(Random.nextLong(1500, 2500))
-            Inventory(ctx = ctx).getItem(882)?.click()
+            Inventory(ctx = ctx).wear(882)
             delay(Random.nextLong(1500, 2500))
 
             //Move over to a better spot to kill the rats
             val idealSpot = Tile(3110, 9515, ctx = ctx)
             if(idealSpot.distanceTo() > 3){
-                idealSpot.clickOnMiniMap()
+                idealSpot.walktoTile()
                 ctx.players.getLocal().waitTillIdle()
             }
 
@@ -1404,7 +1410,7 @@ class TutorialIslanddoAction: AbstractScript()  {
             ctx.camera.setHighPitch()
             val tileNearLadder = Tile(3110, 9526, ctx = ctx)
             if (tileNearLadder.distanceTo() > 3) {
-                tileNearLadder.clickOnMiniMap()
+                tileNearLadder.walktoTile()
                 Utils.waitFor(4, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -1449,7 +1455,7 @@ class TutorialIslanddoAction: AbstractScript()  {
 
             val tileNearBank = Tile(3122, 3123, ctx = ctx)
             if (tileNearBank.distanceTo() > 5) {
-                tileNearBank.clickOnMiniMap()
+                tileNearBank.walktoTile()
                 Utils.waitFor(10, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)
@@ -1494,17 +1500,17 @@ class TutorialIslanddoAction: AbstractScript()  {
                 delay(Random.nextLong(1500, 2500))
                 ctx.dialog.continueDialog()
             }
-             suspend fun closePollWidget(ctx: Context) {
+            suspend fun closePollWidget(ctx: Context) {
                 try {
                     var pollWidget = ctx.widgets.find(345, 0)
                     if (pollWidget != null) {
                         val pollExitWidget = WidgetItem(ctx.widgets.find(345, 2)?.getChildren()?.get(3), ctx = ctx)
-                        pollExitWidget.click()
+                        pollExitWidget.doAction()
                     }
                     pollWidget = ctx.widgets.find(310, 0)
                     if (pollWidget != null) {
                         val pollExitWidget = WidgetItem(ctx.widgets.find(310, 2)?.getChildren()?.get(3), ctx = ctx)
-                        pollExitWidget.click()
+                        pollExitWidget.doAction()
                     }
 
                 } catch (e: Exception) {
@@ -1687,8 +1693,8 @@ class TutorialIslanddoAction: AbstractScript()  {
 
         override suspend fun execute() {
             val pathToWizardHouse = arrayListOf(
-                Tile(3128, 3090, ctx = ctx), Tile(3138, 3087, ctx = ctx),
-                Tile(3140, 3087, ctx = ctx)
+                    Tile(3128, 3090, ctx = ctx), Tile(3138, 3087, ctx = ctx),
+                    Tile(3140, 3087, ctx = ctx)
             )
             if (pathToWizardHouse[2].distanceTo() > 6) {
                 Walking.walkPath(pathToWizardHouse)
@@ -1735,10 +1741,10 @@ class TutorialIslanddoAction: AbstractScript()  {
             //Make sure we are near the chicken cage
             val rightInFrontOfTheGate = Tile(3140, 3091,0,ctx=ctx)
             if(rightInFrontOfTheGate.distanceTo() > 2  && !mageHutArea.isPlayerInArea()){
-                rightInFrontOfTheGate.clickOnMiniMap()
+                rightInFrontOfTheGate.walktoTile()
                 ctx.players.getLocal().waitTillIdle()
             }
-            ctx.magic.cast(Magic.Companion.Spells.Wind_Strike)
+            ctx.magic.castSpell(Magic.Companion.Spells.WIND_STRIKE)
             //Attack chicken
             val chickens = ctx.npcs.findNpc("Chicken")
             if (chickens.isNotEmpty()) {
@@ -1791,20 +1797,20 @@ class TutorialIslanddoAction: AbstractScript()  {
         override suspend fun execute() {
             //Run few different paths and then logout
             val pathNorth = arrayListOf(
-                Tile(3234, 3225, ctx = ctx), Tile(3224, 3237, ctx = ctx),
-                Tile(3218, 3250, ctx = ctx), Tile(3214, 3262, ctx = ctx)
+                    Tile(3234, 3225, ctx = ctx), Tile(3224, 3237, ctx = ctx),
+                    Tile(3218, 3250, ctx = ctx), Tile(3214, 3262, ctx = ctx)
             )
             val pathEast = arrayListOf(
-                Tile(3240, 3225, ctx = ctx), Tile(3256, 3227, ctx = ctx),
-                Tile(3258, 3233, ctx = ctx), Tile(3257, 3245, ctx = ctx), Tile(3251, 3257, ctx = ctx)
+                    Tile(3240, 3225, ctx = ctx), Tile(3256, 3227, ctx = ctx),
+                    Tile(3258, 3233, ctx = ctx), Tile(3257, 3245, ctx = ctx), Tile(3251, 3257, ctx = ctx)
             )
             val pathSouth = arrayListOf(
-                Tile(3235, 3204, ctx = ctx), Tile(3243, 3193, ctx = ctx),
-                Tile(3241, 3181, ctx = ctx), Tile(3231, 3175, ctx = ctx), Tile(3238, 3163, ctx = ctx)
+                    Tile(3235, 3204, ctx = ctx), Tile(3243, 3193, ctx = ctx),
+                    Tile(3241, 3181, ctx = ctx), Tile(3231, 3175, ctx = ctx), Tile(3238, 3163, ctx = ctx)
             )
             val pathWest = arrayListOf(
-                Tile(3223, 3219, ctx = ctx), Tile(3213, 3210, ctx = ctx),
-                Tile(3206, 3210, ctx = ctx)
+                    Tile(3223, 3219, ctx = ctx), Tile(3213, 3210, ctx = ctx),
+                    Tile(3206, 3210, ctx = ctx)
             )
             if (Random.nextBoolean()) {
                 println("Walking path random")
@@ -1823,5 +1829,5 @@ class TutorialIslanddoAction: AbstractScript()  {
         }
 
     }
-   
+
 }

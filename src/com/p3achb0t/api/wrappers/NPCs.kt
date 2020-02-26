@@ -85,8 +85,8 @@ class NPCs(val ctx: Context) {
     fun findNpcs(npcName: String, sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
         ctx.client.getNpcs().forEachIndexed { index, npc ->
-            if (npc != null && npc.getType()?.getName()?.contentEquals(npcName)) {
-                npcs?.add(NPC(npc, ctx, index))
+            if (npc != null && npc.getType().getName().contentEquals(npcName)) {
+                npcs.add(NPC(npc, ctx, index))
             }
         }
         if (sortByDist) {
@@ -106,8 +106,8 @@ class NPCs(val ctx: Context) {
     fun findNpcs(npcName: String, area: Area, sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
         ctx.client.getNpcs().forEachIndexed { index, npc ->
-            if (npc != null && npc.getType()?.getName()?.contentEquals(npcName) && area.containsOrIntersects(Tile(npc.getX(), npc.getY()).getGlobalLocation())) {
-                npcs?.add(NPC(npc, ctx, index))
+            if (npc != null && npc.getType().getName().contentEquals(npcName) && area.containsOrIntersects(Tile(npc.getX(), npc.getY()).getGlobalLocation())) {
+                npcs.add(NPC(npc, ctx, index))
             }
         }
         if (sortByDist) {

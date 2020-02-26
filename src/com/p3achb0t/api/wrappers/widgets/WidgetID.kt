@@ -272,12 +272,12 @@ class WidgetID {
     }
 
     internal object Viewport {
-        const val MINIMAP_RESIZABLE_WIDGET = 18
-        const val MINIMAP_RESIZABLE_CLICKBOX = 19
-        const val MINIMAP_RESIZABLE_DRAW_AREA = 26
-        const val MINIMAP_RESIZABLE_DECORATIONS = 28
-        const val MINIMAP_RESIZABLE_ORB_HOLDER = 29
-        const val MINIMAP_RESIZABLE_LOGOUT_BUTTON = 31
+        const val MINIMAP_RESIZABLE_WIDGET = 19
+        const val MINIMAP_RESIZABLE_CLICKBOX = 20
+        const val MINIMAP_RESIZABLE_DRAW_AREA = 27
+        const val MINIMAP_RESIZABLE_DECORATIONS = 29
+        const val MINIMAP_RESIZABLE_ORB_HOLDER = 30
+        const val MINIMAP_RESIZABLE_LOGOUT_BUTTON = 32
         const val FIXED_VIEWPORT = 17
         const val RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX = 13
     }

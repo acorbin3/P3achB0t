@@ -119,7 +119,6 @@ class Calculations {
         }
 
         fun initScreenWidgetDimentions(ctx: Context) {
-//            println("Init screenDimentions")
             // main screen 122,0
             //Mini map 164, 17
             val miniMapWidget = WidgetItem(
@@ -133,28 +132,27 @@ class Calculations {
 
 
             //inventory bar 164,48(topbar), bottom 164,33
-            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 48), ctx = ctx)
+            val inventoryTop = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 49), ctx = ctx)
             inventoryBarTopDimensions = inventoryTop.area
-            val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 33), ctx = ctx)
+            val inventoryBottom = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 34), ctx = ctx)
             inventoryBarBottomDimensions = inventoryBottom.area
             //chatbox 162,0
             val chatbox = WidgetItem(ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, 0), ctx = ctx)
             chatBoxDimensions = chatbox.area
-            val tabWidget = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 65), ctx = ctx)
+            val tabWidget = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 66), ctx = ctx)
             inventoryDimensions = tabWidget.area
 
             mainScreen = WidgetItem(ctx.widgets.find(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID, 0), ctx = ctx).area
             // Only set to true if login screen is not visible
             val login = WidgetItem(ctx.widgets.find(WidgetID.LOGIN_CLICK_TO_PLAY_GROUP_ID, 85), ctx = ctx)
-//            println("login x,y: ${login.area.x}, ${login.area.y}  inventoryDimensions: ${chatBoxDimensions.x},${chatBoxDimensions.y}")
             if (login.area.x == 0
-                && login.area.y == 0
-                && login.area.height == 0
-                && login.area.width == 0
-                && miniMapWidget.area.x > 500
-                && chatBoxDimensions.y > 50
-                && inventoryBarBottomDimensions.y > 10
-                && inventoryBarTopDimensions.y > 50
+                    && login.area.y == 0
+                    && login.area.height == 0
+                    && login.area.width == 0
+                    && miniMapWidget.area.x > 500
+                    && chatBoxDimensions.y > 50
+                    && inventoryBarBottomDimensions.y > 10
+                    && inventoryBarTopDimensions.y > 50
             ) {
                 screenInit = true
                 resizeableOffScreenAreas.add(chatBoxDimensions)
@@ -216,9 +214,9 @@ class Calculations {
             val local = ctx.client.getLocalPlayer()
 
             val playerPX =
-                ((local.getX() - ctx.client.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+                    ((local.getX() - ctx.client.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
             val playerPY =
-                ((local.getY() - ctx.client.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
+                    ((local.getY() - ctx.client.getBaseY()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
 
 
             val diffX = tilePX - playerPX
@@ -250,9 +248,9 @@ class Calculations {
                 val x = localX.and(LOCAL_TILE_SIZE)
                 val y = localY.and(LOCAL_TILE_SIZE)
                 val var8 =
-                    (x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY]) shr LOCAL_COORD_BITS
+                        (x * tileHeights[plane][sceneX + 1][sceneY] + (LOCAL_TILE_SIZE - x) * tileHeights[plane][sceneX][sceneY]) shr LOCAL_COORD_BITS
                 val var9 =
-                    (tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1]) shr LOCAL_COORD_BITS
+                        (tileHeights[plane][sceneX][sceneY + 1] * (LOCAL_TILE_SIZE - x) + x * tileHeights[plane][sceneX + 1][sceneY + 1]) shr LOCAL_COORD_BITS
                 return ((LOCAL_TILE_SIZE - y) * var8 + y * var9) shr LOCAL_COORD_BITS + 168
             }
 

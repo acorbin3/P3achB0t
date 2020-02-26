@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.client.util.JarLoader
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.border.EtchedBorder
@@ -24,10 +25,18 @@ class NewTab(val tabs: TabManager) : JPanel() {
     }
 
     private fun addLabel() {
-        val label = JLabel("Game ${tabs.tabCount}")
+        if(JarLoader.s.length > 9) {
+            val label = JLabel("${JarLoader.s.substring(7)}")
+            label.border = EmptyBorder(0, 0, 0, 10)
+            add(label)
+        }
+        if(JarLoader.s.length <= 9) {
+            val label = JLabel("None")
+            label.border = EmptyBorder(0, 0, 0, 10)
+            add(label)
+        }
         /** add more space between the label and the button  */
-        label.border = EmptyBorder(0, 0, 0, 10)
-        add(label)
+
     }
 
 

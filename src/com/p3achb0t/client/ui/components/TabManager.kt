@@ -27,7 +27,12 @@ class TabManager(var manager: Manager) : JTabbedPane() {
         val gameTab = GameTab(account = account, manager = manager)
 
         clients.add(gameTab)
-        addTab("Proxy: ${JarLoader.s}", gameTab)
+        if(JarLoader.s.length > 9) {
+            addTab("${JarLoader.s.substring(7)}", gameTab)
+        }
+        if(JarLoader.s.length <= 9) {
+            addTab("None", gameTab)
+        }
 
         if (tabCount == 1) {
             selectedIndex = 0

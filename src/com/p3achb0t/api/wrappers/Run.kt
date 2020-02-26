@@ -25,8 +25,8 @@ class Run(val ctx: Context) {
 
     suspend fun activateRun() {
             val doActionParams = DoActionParams(-1, 10485782,57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
+            ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(189, 333))
     }
 

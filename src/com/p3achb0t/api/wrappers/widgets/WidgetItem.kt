@@ -55,6 +55,11 @@ class WidgetItem(
         val doActionParams = this.widget?.getId()?.let { DoActionParams(-1, it, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0 ,0) }
         doActionParams?.let { ctx?.mouse?.doAction(it) }
     }
+
+    suspend fun cancel(){
+        val doActionParams = this.widget?.getId()?.let { DoActionParams(0, 0, MenuOpcode.CANCEL.id, 1, "", "", 0 ,0) }
+        doActionParams?.let { ctx?.mouse?.doAction(it) }
+    }
     //
 
     suspend fun selectSpell(){

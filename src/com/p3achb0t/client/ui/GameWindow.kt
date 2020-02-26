@@ -7,17 +7,15 @@ import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.ui.components.GameMenu
 import com.p3achb0t.client.util.Util
+import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.Barrows.BarrowsMain
 import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
-import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.scripts.TutorialIslanddoAction
-import com.p3achb0t.scripts.VorkathMain
-import com.p3achb0t.scripts.ZulrahMain
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
 import java.nio.file.Paths
 import java.util.jar.JarFile
+import javax.swing.ImageIcon
 import javax.swing.JFrame
 
 class GameWindow : JFrame() {
@@ -26,11 +24,12 @@ class GameWindow : JFrame() {
 
     init {
 
-        title = "RuneScape Bot ALPHA"
+        iconImage =  ImageIcon("C:\\Users\\zak\\Documents\\P3achB0t-master (2)\\resources\\icons\\toppng.com-download-peach-690x523.png").image
+        title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
         focusTraversalKeysEnabled = true
-        size = Dimension(800, 800)
+        size = Dimension(850, 710)
         manager = Manager()
         jMenuBar = GameMenu(manager)
 
@@ -66,7 +65,7 @@ class GameWindow : JFrame() {
                 delay(50)
             }
             //Only start the script if its a real script. otherwise we dont want to start the null script
-            if(it.account.script.isNotEmpty())
+            if(it.account.script.isNotEmpty() && it.account.startAutomatically)
                 it.client.startScript()
         }
 

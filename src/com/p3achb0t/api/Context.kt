@@ -46,6 +46,7 @@ class Context(val obj: Any) {
     val projectiles: Projectiles
     val worldHop: WorldHop
     val grandExchange: GrandExchange
+    val trade: Trade
 
     init {
         mouse = Mouse(obj)
@@ -76,6 +77,8 @@ class Context(val obj: Any) {
         projectiles = Projectiles(this)
         worldHop = WorldHop(this)
         grandExchange = GrandExchange(this)
+        trade = Trade(this)
+
     }
 }
 

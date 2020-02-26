@@ -1,36 +1,18 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import net.runelite.api.MenuOpcode
 import java.awt.Point
 import kotlin.math.abs
 import kotlin.math.max
 
 
-class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context) : Actor(player, ctx) {
-    // This function will return a list of NPCs with closes distance to you
-    fun findPlayers(sortByDist: Boolean = false): ArrayList<Player> {
-        val players = ArrayList<Player>()
-        ctx?.client?.getPlayers()?.forEach {
-            if (it != null) {
-                players.add(Player(it, ctx!!))
-            }
-        }
+class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context, val menuIndex: Int) : Actor(player, ctx) {
 
-        if (sortByDist) {
-            players.sortBy {
-                // Sort closest to player
-                val localPlayer = ctx?.client!!.getLocalPlayer()
-                max(
-                        abs(localPlayer.getX() - it.player.getX()),
-                        abs(localPlayer.getY() - it.player.getY())
-                )
-            }
-        }
-        return players
-    }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
@@ -80,6 +62,12 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context)
             }
             -1
         }
+    }
+
+    suspend fun trade(player: Player){
+        val doActionParams = DoActionParams(0, 0, 2047, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
     }
 
     override suspend fun interact(action: String): Boolean {

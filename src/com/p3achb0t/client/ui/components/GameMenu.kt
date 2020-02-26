@@ -4,7 +4,8 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
-import com.p3achb0t.scripts.CrumbleAlch.CrumbleAlch
+import com.p3achb0t.scripts_private.CrumbleAlch.CrumbleAlch
+import com.p3achb0t.scripts_private.Mule.Main
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
@@ -22,7 +23,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
     }
 
     private fun accountMenu() : JMenu {
-        val menu = JMenu("Account")
+        val menu = JMenu("Accounts")
 
         val accountManager = JMenuItem("Manage Accounts")
         accountManager.addActionListener {
@@ -35,7 +36,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
     }
 
     private fun debugMenu() : JMenu {
-        val menu = JMenu("Debug")
+        val menu = JMenu("Scripts")
 
 
 
@@ -141,6 +142,26 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
         }
         menu.add(menuItem11)
+
+        val menuItem12 = JMenuItem("Zulrah_Starter")
+        menuItem12.addActionListener {
+
+            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setUpScript(ZulrahStarter())
+
+        }
+        menu.add(menuItem12)
+
+        val menuItem13 = JMenuItem("Mule")
+        menuItem13.addActionListener {
+
+            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+            val manager = game.client.getScriptManager()
+            manager.setUpScript(Main())
+
+        }
+        menu.add(menuItem13)
 
         val varbitExplorer = JMenuItem("Open Varbit Explorer")
         varbitExplorer.addActionListener {

@@ -105,8 +105,8 @@ class Equipment(val ctx: Context) {
         println("Removing item from ${slot.name} ${item?.area}")
         // Wait till item gets removed
         val doActionParams = DoActionParams(-1, slot.unequipMenuAction, 57, 1, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
         delay(600)
         if (waitForActionToComplete)
             Utils.waitFor(2, object : Utils.Condition {
@@ -132,15 +132,15 @@ class Equipment(val ctx: Context) {
 
     suspend fun duelingcastlewars() {
         val doActionParams = DoActionParams(-1, 25362455, 57, 3, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
         delay(600)
     }
 
     suspend fun duelingclawnwars() {
         val doActionParams = DoActionParams(-1, 25362455, 57, 4, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
         delay(600)
     }
 

@@ -91,7 +91,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
         val holeposx = 1563
         val holeposy = 3791
         val doActionParams =   DoActionParams(holeposx - scenebasex, holeposy - scenebasey, 3, 28921, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 }

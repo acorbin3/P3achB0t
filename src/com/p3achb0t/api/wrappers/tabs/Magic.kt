@@ -39,8 +39,8 @@ class Magic(val ctx: Context) {
         }
         println(spell.name.replace("_", " ").toLowerCase())
         var doActionParams = DoActionParams(-1, spell.arg1,25, 0, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
         delay(100)
     }
 
@@ -69,8 +69,8 @@ class Magic(val ctx: Context) {
                     && ctx.client.getIsSpellSelected()
             ) {
                 var doActionParams = DoActionParams(0, 0, 8, menuid, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(100)
             }
         } catch (e: Exception) {
@@ -87,8 +87,8 @@ class Magic(val ctx: Context) {
             ) {
                 println("True")
                 var doActionParams = DoActionParams(ctx.inventory.getfirstIndex(id), 9764864, 32, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
+                ctx.mouse.overrideDoActionParams = true
+                ctx.mouse.doAction(doActionParams)
                 delay(100)
             }
         } catch (e: Exception) {

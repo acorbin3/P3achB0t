@@ -12,7 +12,7 @@ import java.net.URL
 import java.util.*
 import javax.imageio.ImageIO
 
-public class RSAppletContext : AppletContext {
+class RSAppletContext : AppletContext {
 
     private val streams = HashMap<String, InputStream>()
     private var applet: Applet? = null

@@ -58,7 +58,7 @@ class Tabs(val ctx: Context) {
         val parentID =
                 if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) PARENT_ID else RESIZE_PARENT_ID
         val childID =
-                if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab?.id else tab?.resizeID
+                if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
         if (childID != null) {
             val widget = ctx.client.getInterfaceComponents()[parentID][childID]
             WidgetItem(widget, ctx = ctx).click()

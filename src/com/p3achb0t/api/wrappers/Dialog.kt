@@ -70,7 +70,7 @@ class Dialog(val ctx: Context) {
         val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
         while (isContinueAvailable() && t.isRunning()) {
             val doActionParams = DoActionParams(-1, 15138819, 30, 0, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
+            ctx.mouse.overrideDoActionParams = true
             ctx.mouse.doAction(doActionParams)
             delay(Random.nextLong(200, 350))
         }
@@ -88,7 +88,7 @@ class Dialog(val ctx: Context) {
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
                 val doActionParams = DoActionParams(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
+                ctx.mouse.overrideDoActionParams = true
                 ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(1500, 2500))
             }
@@ -101,7 +101,7 @@ class Dialog(val ctx: Context) {
         dialog.widget?.getChildren()?.iterator()?.forEach {
             if (it.getText().contains(action)) {
                 val doActionParams = DoActionParams(it.getChildIndex(), 12255235, 30, 0, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
+                ctx.mouse.overrideDoActionParams = true
                 ctx.mouse.doAction(doActionParams)
                 delay(Random.nextLong(1500, 2500))
             }

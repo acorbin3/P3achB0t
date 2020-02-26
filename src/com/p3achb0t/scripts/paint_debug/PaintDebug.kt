@@ -3,7 +3,7 @@ package com.p3achb0t.scripts.paint_debug
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.utils.Calculations
-import com.p3achb0t.api.wrappers.widgets.Widget
+import com.p3achb0t.scripts_private.Zulrah.zulrahPaintDebug
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -71,7 +71,7 @@ class PaintDebug: DebugScript() {
                         g.color = Color.WHITE
                         var area: Rectangle = Rectangle(60, 70, 440, 315)
                         if(area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
-                            g.setFont(g.getFont().deriveFont(9.5f))
+                            g.font = g.font.deriveFont(9.5f)
                             g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
                         }
 //                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)

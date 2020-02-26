@@ -1,9 +1,63 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import kotlin.math.abs
+import kotlin.math.max
 
 class Players(val ctx: Context) {
     fun getLocal(): Player {
-        return Player(ctx.client.getLocalPlayer(), ctx)
+        return Player(ctx.client.getLocalPlayer(), ctx, 0)
     }
+       // This function will return a list of NPCs with closes distance to you
+    fun findPlayers(playerName: String, sortByDist: Boolean = false): ArrayList<Player> {
+           val players = ArrayList<Player>()
+           return try {
+               ctx.client.getPlayers().forEachIndexed { index, player ->
+                   if(player != null){
+                       println("player username = " + player.getUsername())
+                       println("Target name = " + playerName)
+                   }
+                   if (player != null && player.getUsername().toString().contains(playerName.substring(0,playerName.length -2))) {
+                       println("Found matched username = " +player.getUsername())
+                       players.add(Player(player, ctx, index))
+                   }
+               }
+               if (sortByDist) {
+                   players.sortBy {
+                       // Sort closest to player
+                       val localPlayer = ctx.client.getLocalPlayer()
+                       max(
+                               abs(localPlayer.getX() - it.player.getX()),
+                               abs(localPlayer.getY() - it.player.getY())
+                       )
+                   }
+               }
+               return players
+           } catch (e: Exception) {
+               return players
+           }
+    }
+
+    // This function will return a list of NPCs with closes distance to you
+    fun findPlayersClean(playerName: String, sortByDist: Boolean = false): ArrayList<Player> {
+        val players = ArrayList<Player>()
+        ctx.client.getPlayers().forEachIndexed { index, player ->
+            if (player != null && player.getUsername().getCleanName().contentEquals(playerName)) {
+                players.add(Player(player, ctx, index))
+            }
+        }
+        if (sortByDist) {
+            players.sortBy {
+                // Sort closest to player
+                val localPlayer = ctx.client.getLocalPlayer()
+                max(
+                        abs(localPlayer.getX() - it.player.getX()),
+                        abs(localPlayer.getY() - it.player.getY())
+                )
+            }
+        }
+        return players
+    }
+
+
 }
