@@ -2,14 +2,15 @@ package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.MenuOpcode
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
 import java.awt.Rectangle
+import java.text.DecimalFormat
 import kotlin.random.Random
 
 class Inventory(val ctx: Context? = null) {
@@ -18,6 +19,49 @@ class Inventory(val ctx: Context? = null) {
         private const val PARENT_ID = WidgetID.INVENTORY_GROUP_ID
         private const val CHILD_ID = 0
     }
+
+    //The concept here is to track items that are picked up from the ground. The addItemToTrack will
+    // only be called when an item is trying to be picked up
+    data class Item(val id: Int, val name: String)
+
+    val itemsToTrack = ArrayList<Item>()
+    val totalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
+    val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory
+    fun addItemToTrack(id: Int) {
+        if (itemsToTrack.none { it.id == id }) {
+            itemsToTrack.add(Item(id, ctx?.cache?.getItemName(id) ?: ""))
+            println("Adding Item to tracked: $id")
+            totalTrackedItemCount[id] = 0
+            val curCount = getCount(id)
+            val stackedCount = getCount(id, true)
+            curTrackedItemCount[id] = if (stackedCount > 1) stackedCount else curCount
+        }
+    }
+
+    fun updateTrackedItems() {
+        itemsToTrack.forEach {
+            val curCount = getCount(it.id)
+            val stackedCount = getCount(it.id, true)
+            var diff: Int = 0
+            if (stackedCount > 1) {
+                diff = stackedCount - curTrackedItemCount[it.id]!!
+                curTrackedItemCount[it.id] = stackedCount
+            } else {
+                diff = curCount - curTrackedItemCount[it.id]!!
+                curTrackedItemCount[it.id] = curCount
+            }
+            //We could have negative if the player is banking, just ignore that
+            if (diff > 0) {
+                totalTrackedItemCount[it.id] = totalTrackedItemCount[it.id]!! + diff
+            }
+        }
+    }
+    fun trackedItemPerHour(id: Int): String{
+        val df = DecimalFormat("###,###,###")
+        val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed!! * 3_600_000
+        return df.format(itemsPerHour)
+    }
+
 
     suspend fun open() {
 
@@ -28,9 +72,9 @@ class Inventory(val ctx: Context? = null) {
         return Tabs(ctx!!).getOpenTab() == Tabs.Tab_Types.Inventory
     }
 
-    suspend fun waitTillInventorySizeChanges(waitTime: Int = 10){
+    suspend fun waitTillInventorySizeChanges(waitTime: Int = 10) {
         val oldInventorySize = getCount()
-        delay(Random.nextLong(450,600))
+        delay(Random.nextLong(450, 600))
         Utils.waitFor(waitTime, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
@@ -38,12 +82,13 @@ class Inventory(val ctx: Context? = null) {
             }
         })
     }
-    suspend fun waitTillNotedItemChanges(notedItemID: Int ,waitTime: Int = 10){
-        val oldNotedSize = getCount(notedItemID,useStack = true)
+
+    suspend fun waitTillNotedItemChanges(notedItemID: Int, waitTime: Int = 10) {
+        val oldNotedSize = getCount(notedItemID, useStack = true)
         Utils.waitFor(waitTime, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
-                return oldNotedSize != getCount(notedItemID,useStack = true)
+                return oldNotedSize != getCount(notedItemID, useStack = true)
             }
         })
     }
@@ -82,7 +127,7 @@ class Inventory(val ctx: Context? = null) {
         return items
     }
 
-    fun getfirstIndex(id: Int): Int{
+    fun getfirstIndex(id: Int): Int {
         var count = 0
         var index = 0
         var founditem = false
@@ -92,7 +137,7 @@ class Inventory(val ctx: Context? = null) {
             var ID = 0
             ID = it
             ID = ID - 1
-            if(ID == id && !founditem){
+            if (ID == id && !founditem) {
                 index = count
                 founditem = true
             }
@@ -100,8 +145,6 @@ class Inventory(val ctx: Context? = null) {
         }
         return index
     }
-
-
 
 
     fun hasPrayerPots(): Boolean {
@@ -114,7 +157,6 @@ class Inventory(val ctx: Context? = null) {
         }
         return HasItems
     }
-
 
 
     fun getPrayerDoses(): Int {
@@ -273,19 +315,18 @@ class Inventory(val ctx: Context? = null) {
     }
 
     suspend fun eat(id: Int) {
-            var items = getAll()
+        var items = getAll()
         var index = getfirstIndex(id)
-            out_loop@ for (it in items) {
-                if (it.id == id) {
-                    val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
-                    ctx?.mouse?.overrideDoActionParams = true
-                    ctx?.mouse?.doAction(doActionParams)
-                    delay(600)
-                    break@out_loop
-                }
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
             }
+        }
     }
-
 
 
     suspend fun drink(id: Int) {
@@ -369,7 +410,8 @@ class Inventory(val ctx: Context? = null) {
         }
         return count
     }
-    fun contains(itemID: Int): Boolean{
+
+    fun contains(itemID: Int): Boolean {
         println("Item $itemID has ${getCount(itemID)} in inventory")
         return getCount(itemID) > 0
     }

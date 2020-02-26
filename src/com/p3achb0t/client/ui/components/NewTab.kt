@@ -2,14 +2,14 @@ package com.p3achb0t.client.ui.components
 
 import java.awt.Color
 import java.awt.Dimension
-import javax.swing.border.EtchedBorder
-import java.awt.event.MouseListener
-import javax.swing.JButton
-import javax.swing.border.EmptyBorder
-import javax.swing.JLabel
 import java.awt.FlowLayout
 import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
+import javax.swing.JButton
+import javax.swing.JLabel
 import javax.swing.JPanel
+import javax.swing.border.EmptyBorder
+import javax.swing.border.EtchedBorder
 
 
 class NewTab(val tabs: TabManager) : JPanel() {
@@ -60,6 +60,7 @@ class CustomButton(val tabs: TabManager, text: String) : JButton(), MouseListene
 
     /** when click button, tab will close  */
     override fun mouseClicked(e: MouseEvent) {
+        //TODO this can close the wrong tab if the tab is not selected
         val index = tabs.selectedIndex
 
         tabs.clients.removeAt(index)

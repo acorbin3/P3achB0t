@@ -1,6 +1,10 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.StopWatch
+import java.text.DecimalFormat
+import java.util.*
+
 
 class Stats(val ctx: Context) {
     enum class Skill(val statID: Int){
@@ -28,8 +32,59 @@ class Stats(val ctx: Context) {
         HUNTER(21),
         CONSTRUCTION(22),
     }
+
+    val startXP = EnumMap<Skill,Int>(Skill::class.java)
+    val curXP = EnumMap<Skill,Int>(Skill::class.java)
+    var runtime = StopWatch()
+
+    init {
+        Skill.values().iterator().forEach {
+            startXP[it] = 0
+            curXP[it] = 0
+        }
+
+        try {
+            if (ctx.worldHop.isLoggedIn) {
+                updateStats()
+            }
+        }catch (e: Exception){
+
+        }
+    }
+
     fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]
     fun currentLevel(skill: Skill): Int = ctx.client.getCurrentLevels()[skill.statID]
     fun currentXP(skill: Skill): Int = ctx.client.getExperience()[skill.statID]
+
+    fun xpGained(skill: Skill) : Int{
+        return curXP[skill]!! - startXP[skill]!!
+    }
+    fun xpPerHour(skill: Skill): Double {
+        val xpGained = xpGained(skill)
+        return if( skill in curXP && xpGained > 0) {
+            xpGained.toDouble() / runtime.elapsed * 3_600_000
+
+        }else{
+            0.0
+        }
+    }
+    fun xpPerHourFormatted(skill: Skill): String{
+        val df = DecimalFormat("###,###,###")
+        return df.format(xpPerHour(skill))
+    }
+
+    fun updateStats(){
+//        println("Updating stats")
+        //Weird case where we might be logged in but the stats havent been loaded yet.
+        // Lets just skip the update for now
+        if(currentXP(Skill.ATTACK) == 0)
+            return
+        Skill.values().iterator().forEach {
+            if(startXP[it] == 0 && ctx.worldHop.isLoggedIn) {
+                startXP[it] = currentXP(it)
+            }
+            curXP[it] = currentXP(it)
+        }
+    }
 
 }

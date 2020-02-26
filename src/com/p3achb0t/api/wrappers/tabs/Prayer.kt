@@ -6,7 +6,6 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
 
 class Prayer(val ctx: Context) {
     //TODO - Quick prayers
@@ -112,7 +111,7 @@ class Prayer(val ctx: Context) {
 
     suspend fun ActivateQuickPrayer(){
         val doActionParams = DoActionParams(-1, 10485774, 57, 1, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 }

@@ -4,6 +4,7 @@ import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.MenuOpcode
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
@@ -12,7 +13,6 @@ import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
 import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import com.p3achb0t.scripts.paint_debug.getObjectComposite
-import net.runelite.api.MenuOpcode
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point

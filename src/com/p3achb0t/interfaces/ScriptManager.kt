@@ -33,6 +33,7 @@ class ScriptManager(val client: Any) {
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
+    lateinit var statsThread: Job
     var gameLoopI = 0
 
     var breaking = false
@@ -73,12 +74,28 @@ class ScriptManager(val client: Any) {
 //        println("getModel Callback arg1: $argument1 $arg1")
     }
 
+    private suspend fun trackStats(){
+        //Track stats
+        while(isRunning) {
+            if (loginHandler.ctx?.worldHop?.isLoggedIn!!) {
+                loginHandler.ctx?.stats?.updateStats()
+                loginHandler.ctx?.inventory?.updateTrackedItems()
+            }
+            delay(300)
+        }
+    }
 
     fun start() {
+
 //        mouse.inputBlocked(true)
         isRunning = true
         //This the script thread.
+
+        statsThread = GlobalScope.launch {
+            trackStats()
+        }
         thread = GlobalScope.launch {
+            loginHandler.ctx?.stats?.runtime?.reset()
             val runtime = StopWatch()
             val lastCheck = StopWatch()
             val fiveMin = 5 * 60 *1000
@@ -131,8 +148,10 @@ class ScriptManager(val client: Any) {
         isRunning = false
         script.stop()
         thread.cancel()
+        statsThread.cancel()
         GlobalScope.launch {
             thread.join()
+            statsThread.join()
         }
     }
 

@@ -19,6 +19,9 @@ class AccountManager {
 
     fun loadAccounts() : MutableList<Account> {
         val content = Util.readConfig("./" + Constants.APPLICATION_CACHE_DIR + "/" + Constants.ACCOUNTS_DIR + "/" + Constants.ACCOUNTS_FILE )
+        if(content.isEmpty()){
+            return MutableList(0,{Account()})
+        }
         val gson = Gson()
         return gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
     }

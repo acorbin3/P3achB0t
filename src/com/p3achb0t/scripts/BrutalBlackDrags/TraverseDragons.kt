@@ -1,14 +1,13 @@
 package com.p3achb0t.scripts.BrutalBlackDrags
-import com.p3achb0t._runestar_interfaces.DynamicObject
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.DoActionParams
-import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.Area
+import com.p3achb0t.api.wrappers.Stats
+import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.Walking
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.scripts.Task
-import doCombat.Companion.firsttrip
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
-import kotlin.random.Random
 
 class TraverseDragons(val ctx: Context) : Task(ctx.client) {
 
@@ -91,7 +90,7 @@ class TraverseDragons(val ctx: Context) : Task(ctx.client) {
         val holeposx = 1563
         val holeposy = 3791
         val doActionParams =   DoActionParams(holeposx - scenebasex, holeposy - scenebasey, 3, 28921, "", "", 0, 0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
     }
 }
