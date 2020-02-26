@@ -5,6 +5,8 @@ import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.listeners.ChatListener
+import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -128,6 +130,19 @@ class ScriptManager(val client: Any) {
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen()) {
                     loginHandler.login()
+                }
+
+                if(loginHandler.isLoggedIn()){
+                    if(loginHandler.ctx?.clientMode?.getMode() == ClientMode.Companion.ModeType.FixedMode){
+                        //Open options
+                        //argument0:-1, argument1:10747944, argument2:57, argument3:1, action:Options, targetName:, mouseX:712, mouseY:585, argument8:-1223904486
+                        loginHandler.ctx?.mouse?.doAction(DoActionParams(-1, 35913765, 57, 1, "Options", "", 0, 0))
+                        delay(1000)
+                        //set re-size mode
+                        //argument0:-1, argument1:17104930, argument2:57, argument3:1, action:Resizable mode, targetName:, mouseX:688, mouseY:362, argument8:-1223904486
+                        loginHandler.ctx?.mouse?.doAction(DoActionParams(-1, 17104930, 57, 1, "World Switcher", "", 0, 0))
+                        delay(1000)
+                    }
                 }
                 while (paused) {
                     delay(100)
