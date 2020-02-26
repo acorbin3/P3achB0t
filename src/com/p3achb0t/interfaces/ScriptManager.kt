@@ -34,6 +34,9 @@ class ScriptManager(val client: Any) {
     private var paused = false
     lateinit var thread: Job
     lateinit var statsThread: Job
+    val runtime = StopWatch()
+    val lastCheck = StopWatch()
+    val fiveMin = 5 * 60 *1000
     var gameLoopI = 0
 
     var breaking = false
@@ -96,16 +99,17 @@ class ScriptManager(val client: Any) {
         }
         thread = GlobalScope.launch {
             loginHandler.ctx?.stats?.runtime?.reset()
-            val runtime = StopWatch()
-            val lastCheck = StopWatch()
-            val fiveMin = 5 * 60 *1000
+            runtime.reset()
+            lastCheck.reset()
+
             script.start()
             while (isRunning) {
                 // Check to see if we have a good loaded account
                 // Every 5 min check to see if we need to logout
-                if(loginHandler.account.userBreaks && lastCheck.elapsed > fiveMin){
+                val timeTillBreak = (fiveMin - lastCheck.elapsed) / 1000
+                if(loginHandler.account.userBreaks && timeTillBreak< 0){
                     //Are we in the runtime range
-                    if(runtime.elapsedSec < Random.nextInt(loginHandler.account.minRuntimeSec,loginHandler.account.maxRuntimeSec)){
+                    if(runtime.elapsedSec > Random.nextInt(loginHandler.account.minRuntimeSec,loginHandler.account.maxRuntimeSec)){
                         val breakTime = Random.nextInt(loginHandler.account.minBreakTimeSec,loginHandler.account.maxBreakTimeSec)
                         println("Hit our break handler. Logging out")
                         delay(5000) // Some times its good to add a little delay
@@ -168,7 +172,16 @@ class ScriptManager(val client: Any) {
             g.color = Color.RED
             val timeLeftInSec = (breakReturnTime - System.currentTimeMillis()) / 1000
             g.drawString("Breaking. Will return in $timeLeftInSec", 280, 225)
+        }else{
+            if(loginHandler.account.userBreaks) {
+                val timeTillBreak = loginHandler.account.maxRuntimeSec - runtime.elapsedSec
+                val nextCheck = ((fiveMin - lastCheck.elapsed) / 1000).toInt()
+                val estTimeToBreak = if(timeTillBreak>nextCheck) timeTillBreak else nextCheck
+                g.drawString("Estimated Time till break: ~$estTimeToBreak", 100, 100)
+//                g.drawString("${runtime.elapsedSec}  ${loginHandler.account.maxRuntimeSec}", 100,110)
+            }
         }
+
         script.draw(g)
     }
 
