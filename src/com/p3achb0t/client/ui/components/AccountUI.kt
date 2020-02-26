@@ -19,8 +19,8 @@ class AccountUI(val accountManager: AccountManager): JFrame() {
 
         val list = arrayOfNulls<Array<Any>>(accountManager.accounts.size)
         accountManager.accounts.forEachIndexed { index, account -> 
-            list[index]=(arrayOf(account.id,account.username,account.password, account.pin, account.script, account.minRuntime, account.maxRuntime, account.userBreaks,
-                    account.minBreakTime, account.maxBreakTime, account.banned))
+            list[index]=(arrayOf(account.id,account.username,account.password, account.pin, account.script, account.minRuntimeSec, account.maxRuntimeSec, account.userBreaks,
+                    account.minBreakTimeSec, account.maxBreakTimeSec, account.banned))
         }
 
         //actual data for the table in a 2d array

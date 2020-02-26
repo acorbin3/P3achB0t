@@ -1,6 +1,9 @@
 package com.p3achb0t.client.util
 
+import com.google.gson.GsonBuilder
 import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.managers.accounts.Account
+import com.p3achb0t.client.util.Util.Companion.createDefaultConfig
 import java.io.File
 import java.io.InputStream
 import java.net.Socket
@@ -38,8 +41,11 @@ class Util {
         }
 
         fun readConfig(path: String) : String {
+            println("Looking for config here: $path")
             val file = File(path)
             if(!file.exists()){
+                println("Could not find $path")
+                createDefaultConfig(path)
                 return ""
             }
             val ins: InputStream = file.inputStream()
@@ -47,7 +53,31 @@ class Util {
             return content
 
         }
+
+        fun createDefaultConfig(path: String){
+            val file = File(path)
+            println(file.path)
+            println(file.parent)
+
+            File(file.parent).mkdirs()
+            file.createNewFile()
+            val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+            val jsonAccountPretty = gsonPretty.toJson(arrayOf(Account()))
+            file.writeText(jsonAccountPretty)
+
+            val readme = File(file.parent + "/readme.txt")
+            readme.createNewFile()
+            readme.writeText("Proxy example would be : SOCKS5;185.244.192.119:7670 or none")
+
+
+        }
     }
 
 
+}
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        createDefaultConfig("test/account.json")
+    }
 }

@@ -105,8 +105,8 @@ class ScriptManager(val client: Any) {
                 // Every 5 min check to see if we need to logout
                 if(loginHandler.account.userBreaks && lastCheck.elapsed > fiveMin){
                     //Are we in the runtime range
-                    if(runtime.elapsedSec < Random.nextInt(loginHandler.account.minRuntime,loginHandler.account.maxRuntime)){
-                        val breakTime = Random.nextInt(loginHandler.account.minBreakTime,loginHandler.account.maxBreakTime)
+                    if(runtime.elapsedSec < Random.nextInt(loginHandler.account.minRuntimeSec,loginHandler.account.maxRuntimeSec)){
+                        val breakTime = Random.nextInt(loginHandler.account.minBreakTimeSec,loginHandler.account.maxBreakTimeSec)
                         println("Hit our break handler. Logging out")
                         delay(5000) // Some times its good to add a little delay
                         loginHandler.ctx?.worldHop?.logout()

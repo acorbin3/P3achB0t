@@ -40,6 +40,10 @@ class Loader {
         println("Gamepack not found locally...downloading pack")
         val gamepackURL = URL(Constants.GAME_WORLD_URL + "/" + gamepackName)
         val readableByteChannel = Channels.newChannel(gamepackURL.openStream())
+        val directory = File(Constants.USER_DIR + "/" + Constants.APPLICATION_CACHE_DIR + "/" + Constants.JARS_DIR)
+        if(!directory.exists()){
+            directory.mkdirs()
+        }
         val fileOutStream = FileOutputStream(Paths.get(Constants.USER_DIR, Constants.APPLICATION_CACHE_DIR, Constants.JARS_DIR, gamepackName).toString())
         val fileChannel = fileOutStream.channel
         fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE)
