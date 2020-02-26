@@ -17,6 +17,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.lang.reflect.Modifier
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
@@ -227,14 +231,14 @@ class Analyser{
             //Inject doAction callback
             if (clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
-                println("MethodHook: $methodHook")
+//                println("MethodHook: $methodHook")
                 //Find the addMessage method, then inject the call back at the front
-                println("looking at class ${methodHook?.owner}")
+//                println("looking at class ${methodHook?.owner}")
                 classes[methodHook?.owner]?.methods?.forEach { methodNode ->
-                    println("Looking at method: ${methodNode.name}")
+//                    println("Looking at method: ${methodNode.name}")
                     if (methodNode.name == methodHook?.name ) {
-                        println("methodNode.desc: ${methodNode.desc}")
-                        println("Time to insert instructions")
+//                        println("methodNode.desc: ${methodNode.desc}")
+//                        println("Time to insert instructions")
                         val il = InsnList()
                         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                         il.add(VarInsnNode(ILOAD, 0))
@@ -256,11 +260,11 @@ class Analyser{
             if (clazzData.`class` == "Npc") {
                 println("Injecting getModel callback for NPC")
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
-                println("MethodHook: $methodHook")
-                println("looking at class ${methodHook?.owner}")
+//                println("MethodHook: $methodHook")
+//                println("looking at class ${methodHook?.owner}")
                 classes[methodHook?.owner]?.methods?.forEach { methodNode ->
                     if (methodNode.name == methodHook?.name) {
-                        println("found getModel at method: ${methodNode.name}")
+//                        println("found getModel at method: ${methodNode.name}")
                         val il = InsnList()
                         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                         il.add(VarInsnNode(ILOAD, 1))
@@ -274,7 +278,7 @@ class Analyser{
             //Inject varBit
             if(clazzData.`class` == "Client") {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
-                println("MethodHook: $methodHook")
+//                println("MethodHook: $methodHook")
                 val varBitMethodNode = MethodNode(ACC_PUBLIC, "getVarbit", "(I)I", null, null)
                 varBitMethodNode.visitVarInsn(ILOAD, 1)
                 varBitMethodNode.visitInsn(ICONST_0)
@@ -301,10 +305,10 @@ class Analyser{
                 val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
 
                 var returnType = "L$classPath/$clazzName;"
-                println("Returntype $returnType")
+//                println("Returntype $returnType")
 
                 //Find the class.method, look for the opaque predicate
-                println("methodHook.owner: ${methodHook.owner} methodHook.name ${methodHook.name}")
+//                println("methodHook.owner: ${methodHook.owner} methodHook.name ${methodHook.name}")
                 val foundMethod = classes[methodHook.owner]?.methods?.first { it.name == methodHook.name }
                 var loadFound = false
 
@@ -329,21 +333,21 @@ class Analyser{
             if (clazzData.`class` == "ChatChannel") {
                 println("Adding chat listener callback")
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "addMessage" }
-                println("MethodHook: $methodHook")
+//                println("MethodHook: $methodHook")
                 val list = methodHook?.descriptor?.split(")")!!
                 val argumentDescription = list[0] + ")" // Add back in the )
                 val returnDescriptor = list[1]
                 val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
 
                 val returnType = "L$classPath/$clazzName;"
-                println("Return type $returnType")
+//                println("Return type $returnType")
 
                 //Find the addMessage method, then inject the call back at the front
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
-                    println("Looking at method: ${methodNode.name}")
+//                    println("Looking at method: ${methodNode.name}")
                     if (methodNode.name == methodHook.name && methodNode.desc.contains("ILjava/lang/String;Ljava/lang/String;Ljava/lang/String")) {
-                        println("methodNode.desc: ${methodNode.desc}")
-                        println("Time to insert instructions")
+//                        println("methodNode.desc: ${methodNode.desc}")
+//                        println("Time to insert instructions")
                         val il = InsnList()
                         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                         il.add(VarInsnNode(ILOAD, 1))
@@ -435,9 +439,9 @@ class Analyser{
                             if (abstractNode.opcode == INVOKESTATIC) {
                                 val mn = (abstractNode as MethodInsnNode)
                                 if (mn.owner == doActionMethodHook?.owner && mn.name == doActionMethodHook?.name) {
-                                println("class: ${clazz.key}" )
-                                println("\tmethod: ${methodNode.name}")
-                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
+//                                println("class: ${clazz.key}" )
+//                                println("\tmethod: ${methodNode.name}")
+//                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
                                     val il = InsnList()
                                     il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/interfaces/ScriptManager;"))
                                     il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/interfaces/ScriptManager;)V", false))
@@ -717,6 +721,12 @@ class Analyser{
     private fun putClasses(name: String): ByteArray {
         println("Putting class $name")
 
+        val file1 = File("${Constants.USER_DIR}/src/"+name)
+        if(!file1.exists()){
+            File("${Constants.USER_DIR}/src/").mkdir()
+            val input = URL("https://raw.githubusercontent.com/acorbin3/P3achB0t/master/src//$name").openStream()
+            Files.copy(input, Paths.get("${Constants.USER_DIR}/src/"+name), StandardCopyOption.REPLACE_EXISTING)
+        }
         val file: InputStream? = Main.javaClass.getResourceAsStream(name) ?: return File("${Constants.USER_DIR}/src/"+name).readBytes()
         return file?.readBytes()!!
     }
