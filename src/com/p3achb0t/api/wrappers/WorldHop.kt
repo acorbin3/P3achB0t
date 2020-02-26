@@ -54,6 +54,8 @@ class WorldHop(val ctx: Context) {
         }
     }
 
+    val isLoggedIn: Boolean get() { return GameState.currentState(ctx) == GameState.LOGGED_IN}
+
 
     private suspend fun hopWorld(worldNum: Int) {
         //Open logout menu

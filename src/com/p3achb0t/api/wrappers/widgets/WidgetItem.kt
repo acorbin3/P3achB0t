@@ -2,9 +2,9 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.MenuOpcode
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
-import net.runelite.api.MenuOpcode
 import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random

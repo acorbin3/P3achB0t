@@ -2,12 +2,12 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.MenuOpcode
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import net.runelite.api.MenuOpcode
 import java.awt.Rectangle
 import java.awt.event.KeyEvent.VK_BACK_SPACE
 import kotlin.random.Random

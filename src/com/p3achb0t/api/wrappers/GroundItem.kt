@@ -74,6 +74,7 @@ class GroundItem(
      */
 
     suspend fun takedoAction() {
+        ctx?.inventory?.addItemToTrack(this.id)
         val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, 20, this.id, "", "", 0 ,0)
         ctx?.mouse?.doAction(doActionParams)
     }
