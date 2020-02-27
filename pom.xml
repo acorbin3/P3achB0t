@@ -114,19 +114,6 @@
             <artifactId>javac2</artifactId>
             <version>7.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.zeromq</groupId>
-            <artifactId>jeromq</artifactId>
-            <version>0.5.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>flatlaf</artifactId>
-            <version>0.27</version>
-            <scope>runtime</scope>
-        </dependency>
-
 
 
 
@@ -141,6 +128,16 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.26</version>
     </dependency>
+        <dependency>
+            <groupId>org.zeromq</groupId>
+            <artifactId>jeromq</artifactId>
+            <version>0.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>0.27</version>
+        </dependency>
 
     </dependencies>
 
@@ -349,7 +346,9 @@
 <!--                    <execution>-->
 <!--                        <id>make-assembly</id>-->
 <!--                        <phase>package</phase>-->
-            <!--            <goals> <goal>single</goal> </goals>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
 <!--                        <configuration>-->
 <!--                            <archive>-->
 <!--                                <manifest>-->
