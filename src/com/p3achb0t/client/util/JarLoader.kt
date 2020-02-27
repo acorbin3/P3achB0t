@@ -7,7 +7,9 @@ import java.net.URLClassLoader
 class JarLoader {
 
     companion object {
+        var proxy = ""
         fun load(path: String, main: String, proxy: String = "none"): Any? {
+            this.proxy = proxy
             val file = File(path)
             val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
             val classLoader = URLClassLoader(urlArray)

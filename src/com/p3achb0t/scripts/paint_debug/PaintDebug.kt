@@ -65,10 +65,13 @@ class PaintDebug: DebugScript() {
                 if (Bank(ctx).isOpen()) {
                     val items = Bank(ctx).getAll()
                     items.forEach {
-                        g.color = Color.ORANGE
-                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
-                        g.color = Color.white
-                        g.drawString(it.id.toString(),it.area.x + 2, it.area.y + 20 )
+                        g.color = Color.WHITE
+                        var area: Rectangle = Rectangle(60, 70, 440, 315)
+                        if(area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
+                            g.font = g.font.deriveFont(9.5f)
+                            g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
+                        }
+//                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
 
                     }
                 }

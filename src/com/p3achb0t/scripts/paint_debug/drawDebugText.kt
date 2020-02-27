@@ -1,11 +1,8 @@
 package com.p3achb0t.scripts.paint_debug
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.api.wrappers.quests.Quest
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.widgets.WidgetID
-import com.p3achb0t.scripts.TutorialIsland
 import java.awt.Color
 import java.awt.Graphics
 
@@ -40,7 +37,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 var chatText =
                         ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
                 var text = chatText?.getText()
-                debugText.add(DebugText("Bank search Text: ${text}"))
+//                debugText.add(DebugText("Bank search Text: ${text}"))
 //                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
                 debugText.add(
                         DebugText(
@@ -64,19 +61,19 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                                         "mapAngle: ${ctx.client.getCamAngleY()}"
                         )
                 )
-                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
-                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
-                debugText.add(DebugText(ctx.menu.getHoverAction()))
-                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
+//                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
+//                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
+//                debugText.add(DebugText(ctx.menu.getHoverAction()))
+//                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
 
 
 
-                var statsStr = ""
-                for(stat in Stats.Skill.values()){
-
-                    statsStr+= stat.name + ":" + ctx.stats.currentLevel(stat) + " "
-                }
-                debugText.add(DebugText(statsStr))
+//                var statsStr = ""
+//                for(stat in Stats.Skill.values()){
+//
+//                    statsStr+= stat.name + ":" + ctx.stats.currentLevel(stat) + " "
+//                }
+//                debugText.add(DebugText(statsStr))
 //            debugText.add(DebugText())
             }
 

@@ -16,11 +16,21 @@ class Utils {
 
     companion object {
         suspend fun waitFor(time: Int, condition: Condition): Boolean {
-            var t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
+            var t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 0.5) * 1000).toLong()))
             while (t.isRunning()) {
                 if (condition.accept())
                     return true
                 delay(Random.nextLong(100, 150))
+            }
+            return false
+        }
+
+        suspend fun waitFor(time: Long, condition: Condition): Boolean {
+            var t = Timer(time)
+            while (t.isRunning()) {
+                if (condition.accept())
+                    return true
+                delay(Random.nextLong(33, 99))
             }
             return false
         }

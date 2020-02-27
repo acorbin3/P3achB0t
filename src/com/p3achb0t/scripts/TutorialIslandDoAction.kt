@@ -403,7 +403,7 @@ class TutorialIslandDoAction: AbstractScript()  {
             gameObjects.forEach {
                 if (it.getGlobalLocation().x == doorLocation.x && it.getGlobalLocation().y == doorLocation.y) {
                     it.doAction()
-                   it.doAction()
+                    it.doAction()
                     //Wait till here Tile(3098,3107)
                     Utils.waitFor(4, object : Utils.Condition {
                         override suspend fun accept(): Boolean {
@@ -868,8 +868,8 @@ class TutorialIslandDoAction: AbstractScript()  {
             Run(ctx).activateRun()
             delay(Random.nextLong(1500, 2500))
             val walkingPath = arrayListOf(
-                Tile(3073, 3103, ctx = ctx), Tile(3074, 3117, ctx = ctx),
-                Tile(3079, 3127, ctx = ctx), Tile(3086, 3127, ctx = ctx)
+                    Tile(3073, 3103, ctx = ctx), Tile(3074, 3117, ctx = ctx),
+                    Tile(3079, 3127, ctx = ctx), Tile(3086, 3127, ctx = ctx)
             )
             Walking.walkPath(walkingPath)
             //Open Door(9716)
@@ -1496,7 +1496,7 @@ class TutorialIslandDoAction: AbstractScript()  {
                 delay(Random.nextLong(1500, 2500))
                 ctx.dialog.continueDialog()
             }
-             suspend fun closePollWidget(ctx: Context) {
+            suspend fun closePollWidget(ctx: Context) {
                 try {
                     var pollWidget = ctx.widgets.find(345, 0)
                     if (pollWidget != null) {
@@ -1689,8 +1689,8 @@ class TutorialIslandDoAction: AbstractScript()  {
 
         override suspend fun execute() {
             val pathToWizardHouse = arrayListOf(
-                Tile(3128, 3090, ctx = ctx), Tile(3138, 3087, ctx = ctx),
-                Tile(3140, 3087, ctx = ctx)
+                    Tile(3128, 3090, ctx = ctx), Tile(3138, 3087, ctx = ctx),
+                    Tile(3140, 3087, ctx = ctx)
             )
             if (pathToWizardHouse[2].distanceTo() > 6) {
                 Walking.walkPath(pathToWizardHouse)
@@ -1740,7 +1740,7 @@ class TutorialIslandDoAction: AbstractScript()  {
                 rightInFrontOfTheGate.walktoTile()
                 ctx.players.getLocal().waitTillIdle()
             }
-            ctx.magic.selectSpell(Magic.Companion.Spells.Wind_Strike)
+            ctx.magic.castSpell(Magic.Companion.Spells.WIND_STRIKE)
             //Attack chicken
             val chickens = ctx.npcs.findNpc("Chicken")
             if (chickens.isNotEmpty()) {
@@ -1793,20 +1793,20 @@ class TutorialIslandDoAction: AbstractScript()  {
         override suspend fun execute() {
             //Run few different paths and then logout
             val pathNorth = arrayListOf(
-                Tile(3234, 3225, ctx = ctx), Tile(3224, 3237, ctx = ctx),
-                Tile(3218, 3250, ctx = ctx), Tile(3214, 3262, ctx = ctx)
+                    Tile(3234, 3225, ctx = ctx), Tile(3224, 3237, ctx = ctx),
+                    Tile(3218, 3250, ctx = ctx), Tile(3214, 3262, ctx = ctx)
             )
             val pathEast = arrayListOf(
-                Tile(3240, 3225, ctx = ctx), Tile(3256, 3227, ctx = ctx),
-                Tile(3258, 3233, ctx = ctx), Tile(3257, 3245, ctx = ctx), Tile(3251, 3257, ctx = ctx)
+                    Tile(3240, 3225, ctx = ctx), Tile(3256, 3227, ctx = ctx),
+                    Tile(3258, 3233, ctx = ctx), Tile(3257, 3245, ctx = ctx), Tile(3251, 3257, ctx = ctx)
             )
             val pathSouth = arrayListOf(
-                Tile(3235, 3204, ctx = ctx), Tile(3243, 3193, ctx = ctx),
-                Tile(3241, 3181, ctx = ctx), Tile(3231, 3175, ctx = ctx), Tile(3238, 3163, ctx = ctx)
+                    Tile(3235, 3204, ctx = ctx), Tile(3243, 3193, ctx = ctx),
+                    Tile(3241, 3181, ctx = ctx), Tile(3231, 3175, ctx = ctx), Tile(3238, 3163, ctx = ctx)
             )
             val pathWest = arrayListOf(
-                Tile(3223, 3219, ctx = ctx), Tile(3213, 3210, ctx = ctx),
-                Tile(3206, 3210, ctx = ctx)
+                    Tile(3223, 3219, ctx = ctx), Tile(3213, 3210, ctx = ctx),
+                    Tile(3206, 3210, ctx = ctx)
             )
             if (Random.nextBoolean()) {
                 println("Walking path random")
@@ -1825,5 +1825,5 @@ class TutorialIslandDoAction: AbstractScript()  {
         }
 
     }
-   
+
 }

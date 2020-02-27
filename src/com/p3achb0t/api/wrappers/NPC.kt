@@ -53,6 +53,13 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
         ctx?.mouse?.doAction(doActionParams)
     }
 
+    suspend fun doActionCollect(){
+
+        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_THIRD_OPTION.id, menuIndex, "", "", 0 ,0)
+        ctx?.mouse?.overrideDoActionParams = true
+        ctx?.mouse?.doAction(doActionParams)
+    }
+
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
     }
@@ -60,6 +67,7 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
     suspend fun walkTo(){
         this.getGlobalLocation().walktoTile()
     }
+
     override suspend fun clickOnMiniMap(): Boolean {
         return ctx?.client.let {
             it?.let { it1 -> Calculations.worldToMiniMap(npc.getX(), npc.getY(), ctx!!) }

@@ -1733,7 +1733,7 @@ class TutorialIsland: AbstractScript()  {
                 rightInFrontOfTheGate.clickOnMiniMap()
                 ctx.players.getLocal().waitTillIdle()
             }
-            ctx.magic.selectSpell(Magic.Companion.Spells.Wind_Strike)
+            ctx.magic.castSpell(Magic.Companion.Spells.WIND_STRIKE)
             //Attack chicken
             val chickens = ctx.npcs.findNpc("Chicken")
             if (chickens.isNotEmpty()) {

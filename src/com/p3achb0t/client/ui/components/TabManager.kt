@@ -2,6 +2,7 @@ package com.p3achb0t.client.ui.components
 
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
+import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.scripts.NullScript
 import com.p3achb0t.scripts.WidgetExplorerDebug
 import com.p3achb0t.scripts.paint_debug.PaintDebug
@@ -26,7 +27,12 @@ class TabManager(var manager: Manager) : JTabbedPane() {
         val gameTab = GameTab(account = account, manager = manager)
 
         clients.add(gameTab)
-        addTab("Game ${tabCount+1}", gameTab)
+        if(JarLoader.proxy.length > 9) {
+            addTab("${JarLoader.proxy.substring(7)}", gameTab)
+        }
+        if(JarLoader.proxy.length <= 9) {
+            addTab("None", gameTab)
+        }
 
         if (tabCount == 1) {
             selectedIndex = 0
@@ -78,7 +84,7 @@ class TabManager(var manager: Manager) : JTabbedPane() {
     fun getSelected() : GameTab {
         println("Get selected index: $selectedIndex")
 
-            return clients[selectedIndex]
+        return clients[selectedIndex]
     }
 
     fun getSelectedIndexx(): Int {

@@ -24,7 +24,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
     }
 
     private fun accountMenu() : JMenu {
-        val menu = JMenu("Account")
+        val menu = JMenu("Accounts")
 
         val accountManager = JMenuItem("Manage Accounts")
         accountManager.addActionListener {
@@ -37,7 +37,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
     }
 
     private fun debugMenu() : JMenu {
-        val menu = JMenu("Debug")
+        val menu = JMenu("Scripts")
 
 
 
@@ -73,7 +73,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         }
         menu.add(menuItem5)
 
-               val menuItem6 = JMenuItem("runeDrags")
+        val menuItem6 = JMenuItem("runeDrags")
         menuItem6.addActionListener {
 
             val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
@@ -113,6 +113,47 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
         }
         menu.add(menuItem8)
+//
+//        val menuItem9 = JMenuItem("Vorkath")
+//        menuItem9.addActionListener {
+//
+//            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+//            val manager = game.client.getScriptManager()
+//            manager.setUpScript(VorkathMain())
+//
+//        }
+//        menu.add(menuItem9)
+//
+//        val menuItem10 = JMenuItem("Zulrah")
+//        menuItem10.addActionListener {
+//
+//            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+//            val manager = game.client.getScriptManager()
+//            manager.setUpScript(ZulrahMain())
+//
+//        }
+//        menu.add(menuItem10)
+//
+//        val menuItem11 = JMenuItem("CrumbleAlch")
+//        menuItem11.addActionListener {
+//
+//            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+//            val manager = game.client.getScriptManager()
+//            manager.setUpScript(CrumbleAlch())
+//
+//        }
+//        menu.add(menuItem11)
+//
+//
+//        val menuItem13 = JMenuItem("Mule")
+//        menuItem13.addActionListener {
+//
+//            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+//            val manager = game.client.getScriptManager()
+//            manager.setUpScript(Main())
+//
+//        }
+//        menu.add(menuItem13)
 
         val varbitExplorer = JMenuItem("Open Varbit Explorer")
         varbitExplorer.addActionListener {

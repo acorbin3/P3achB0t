@@ -5,8 +5,8 @@ import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DEBUG_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
-import com.p3achb0t.scripts.paint_debug.PaintDebug
 import com.p3achb0t.scripts.WidgetExplorerDebug
+import com.p3achb0t.scripts.paint_debug.PaintDebug
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -57,7 +57,7 @@ class LoadDebugScripts {
         //If this pathname does not denote a directory, then listFiles() returns null.
 
         if (files != null) {
-            for (file in files!!) {
+            for (file in files) {
                 if (file.isFile && file.name.contains(".jar")) {
                     println(file.name)
                     val dscript = load(file.name) ?: continue

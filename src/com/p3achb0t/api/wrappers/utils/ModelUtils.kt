@@ -103,16 +103,16 @@ fun getTrianglesFromModel(
                             0 - yPoints[indiciesZ[i]] - locZ + localTileHeight, ctx
                     )
                     if (one.x >= 0 && two.x >= 0 && three.x >= 0
-                        && Calculations.isOnscreen(ctx,one) && Calculations.isOnscreen(ctx,two ) && Calculations.isOnscreen(ctx,
+                            && Calculations.isOnscreen(ctx,one) && Calculations.isOnscreen(ctx,two ) && Calculations.isOnscreen(ctx,
                                     three
                             )
                     ) {
                         polygonList.add(
-                            Polygon(
-                                intArrayOf(one.x, two.x, three.x),
-                                intArrayOf(one.y, two.y, three.y),
-                                3
-                            )
+                                Polygon(
+                                        intArrayOf(one.x, two.x, three.x),
+                                        intArrayOf(one.y, two.y, three.y),
+                                        3
+                                )
                         )
                     }
                 }

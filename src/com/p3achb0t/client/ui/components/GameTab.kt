@@ -11,14 +11,14 @@ class GameTab(val account: Account = Account(), manager: Manager) : JPanel() {
 
     val client: Bot
 
-     init {
-         focusTraversalKeysEnabled = true
-         background = Color.BLACK
-         client = Bot(80,manager,account)
-         size = Dimension(800,600)
-         //validate()
-         add(client.getApplet())
-         revalidate()
+    init {
+        focusTraversalKeysEnabled = true
+        background = Color.BLACK
+        client = Bot(80,manager,account)
+        size = Dimension(800,600)
+        //validate()
+        add(client.getApplet())
+        revalidate()
     }
 
 

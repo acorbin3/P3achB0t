@@ -88,12 +88,12 @@ class Prayer(val ctx: Context) {
 
     suspend fun isProtectRangeActive(): Boolean {
 
-        return ctx.players.getLocal().player.getHeadIconPrayer() == 1
+        return ctx.vars.getVarbit(4117) == 1
     }
 
     suspend fun isProtectMageActive(): Boolean {
 
-        return ctx.players.getLocal().player.getHeadIconPrayer() == 2
+        return ctx.vars.getVarbit(4116) == 1
     }
 
     suspend fun isQuickPrayerActive(): Boolean {
@@ -111,6 +111,42 @@ class Prayer(val ctx: Context) {
 
     suspend fun ActivateQuickPrayer(){
         val doActionParams = DoActionParams(-1, 10485774, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggleProtectFromMage(){
+        val doActionParams = DoActionParams(-1, 35454993, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggleProtectFromMele(){
+        val doActionParams = DoActionParams(-1, 35454994, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggleProtectFromRange(){
+        val doActionParams = DoActionParams(-1, 35454994, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggleMysticMight(){
+        val doActionParams = DoActionParams(-1, 35455004, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggleEagleEye(){
+        val doActionParams = DoActionParams(-1, 35455003, 57, 1, "", "", 0 ,0)
+        ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+    }
+
+    suspend fun toggieRigour(){
+        val doActionParams = DoActionParams(-1, 35455007, 57, 1, "", "", 0 ,0)
         ctx.mouse.overrideDoActionParams = true
         ctx.mouse.doAction(doActionParams)
     }
