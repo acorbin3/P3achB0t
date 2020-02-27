@@ -26,7 +26,7 @@ class GameWindow : JFrame() {
 
     init {
 
-        iconImage =  ImageIcon("C:\\Users\\zak\\Documents\\P3achB0t-master (2)\\resources\\icons\\toppng.com-download-peach-690x523.png").image
+        iconImage =  ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
