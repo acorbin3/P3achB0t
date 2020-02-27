@@ -1,10 +1,8 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.ClientMode
-import com.p3achb0t.api.wrappers.Interact
-import com.p3achb0t.api.wrappers.widgets.Widget
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
@@ -116,8 +114,8 @@ class Tabs(val ctx: Context) {
                     if (ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode) tab.id else tab.resizeID
             val widget = ctx.client.getInterfaceComponents()[parentID][childID]
             if (!widget.getIsHidden()) {
-                val interactRect = Widget.getDrawableRect(widget,ctx)
-                Interact(ctx).interact(interactRect)
+
+                WidgetItem(widget, ctx=ctx).doAction()
                 Utils.waitFor(2, object : Utils.Condition {
                     override suspend fun accept(): Boolean {
                         delay(100)

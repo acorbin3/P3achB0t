@@ -435,6 +435,37 @@ class Inventory(val ctx: Context? = null) {
         }
     }
 
+    suspend fun use(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE.id, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    /**
+     * This funtion is intended to take a already selected Item and use it with another item in the invetory
+     */
+    suspend fun useSelectedItemOnItem(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE_ON_WIDGET_ITEM.id, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
 
     fun getCount(itemID: Int, useStack: Boolean = false): Int {
         var count = 0

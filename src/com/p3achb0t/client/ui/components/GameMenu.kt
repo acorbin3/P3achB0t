@@ -2,10 +2,11 @@ package com.p3achb0t.client.ui.components
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
-import com.p3achb0t.scripts.*
 import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
-import com.p3achb0t.scripts_private.CrumbleAlch.CrumbleAlch
-import com.p3achb0t.scripts_private.Mule.Main
+import com.p3achb0t.scripts.RuneDragsMain
+import com.p3achb0t.scripts.TestVorkScript
+import com.p3achb0t.scripts.TutorialIsland
+import com.p3achb0t.scripts.TutorialIslandDoAction
 import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
 import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.widgetexplorer.WidgetExplorerV3
@@ -67,7 +68,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
             val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
             val manager = game.client.getScriptManager()
-            manager.setUpScript(TutorialIslanddoAction())
+            manager.setUpScript(TutorialIslandDoAction())
 
         }
         menu.add(menuItem5)

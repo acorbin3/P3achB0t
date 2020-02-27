@@ -30,6 +30,15 @@ class Run(val ctx: Context) {
             delay(Random.nextLong(189, 333))
     }
 
+    suspend fun activateRunDoAction(){
+        if(!isRunActivated()){
+            //argument0:-1, argument1:10485782, argument2:57, argument3:1, action:Toggle Run, targetName:, mouseX:641, mouseY:130, argument8:-1223904486
+            val doActionParams = DoActionParams(-1, 10485782, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0 ,0)
+            ctx.mouse.overrideDoActionParams = true
+            ctx.mouse.doAction(doActionParams)
+        }
+    }
+
     suspend fun deactivateRun() {
         if (isRunActivated()) clickRunButton()
     }

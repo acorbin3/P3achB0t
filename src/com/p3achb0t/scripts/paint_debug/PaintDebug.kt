@@ -33,9 +33,9 @@ class PaintDebug: DebugScript() {
 
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
-//            g.drawString("Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",10,10)
-//            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",10,20)
-//            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",10,30)
+            g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",10,10)
+            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",10,20)
+            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",10,30)
 
             if(isCanWalkDebug)
                 canWalkDebug(g,ctx)

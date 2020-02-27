@@ -37,7 +37,9 @@ class GroundItems(val ctx: Context) {
                                 addGroundItem(cur, tiles, planeIndex, xIndex, yIndex, itemList)
 
                             } catch (e: Exception) {
-                                println(e.stackTrace)
+                                e.stackTrace.iterator().forEach {
+                                    println(it)
+                                }
                             }
                         }
                         cur = cur.getPrevious()

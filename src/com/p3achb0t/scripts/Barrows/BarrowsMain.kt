@@ -7,10 +7,8 @@ import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.api.wrappers.Actor
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.scripts.RuneDragons.Bank
 import com.p3achb0t.scripts.Task
@@ -21,7 +19,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 
-@ScriptManifest("RuneDrags","RuneDrags","Zak")
+@ScriptManifest("BarrowsMain","BarrowsMain","Zak")
 class BarrowsMain : AbstractScript() {
     var factory = MouseMotionFactory()
     val stopwatch = StopWatch()
