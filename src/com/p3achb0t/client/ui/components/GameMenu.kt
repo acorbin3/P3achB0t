@@ -143,15 +143,6 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         }
         menu.add(menuItem11)
 
-        val menuItem12 = JMenuItem("Zulrah_Starter")
-        menuItem12.addActionListener {
-
-            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript(ZulrahStarter())
-
-        }
-        menu.add(menuItem12)
 
         val menuItem13 = JMenuItem("Mule")
         menuItem13.addActionListener {
