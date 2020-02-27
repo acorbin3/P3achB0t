@@ -57,7 +57,7 @@ fun playerPaint(g: Graphics, ctx: Context) {
                 ) {
                     g.color = Color.GREEN
                     g.drawString(
-                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}",
+                        _player.getUsername().getCleanName() + " ${_player.getSequence()}  ${_player.getTargetIndex()} ${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}  ${_player.getX()} ${_player.getY()}",
                         namePoint.x,
                         namePoint.y
                     )

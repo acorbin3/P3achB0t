@@ -1,19 +1,12 @@
 package com.p3achb0t.scripts
 
-import TraverseDragons
 import com.naturalmouse.api.MouseMotionFactory
 import com.p3achb0t.UserDetails
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.api.wrappers.Actor
-import com.p3achb0t.api.wrappers.Area
-import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.scripts.RuneDragons.Bank
-import doCombat
+import com.p3achb0t.scripts.Vorkath.Combat
 import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color
@@ -43,6 +36,8 @@ class VorkathMain : AbstractScript() {
             }
             stopwatch.start()
             Antifiretimer.start()
+            Explosion.start()
+            WooxWalk.start()
         } catch (e: Exception) {
         }
         println("Running Start")
@@ -57,11 +52,19 @@ class VorkathMain : AbstractScript() {
         println("Stopping Test script")
         stopwatch.reset()
         Antifiretimer.reset()
+        Explosion.reset()
+        WooxWalk.reset()
+        Combat.explosion = false
     }
 
     override fun draw(g: Graphics) {
         g.color = Color.WHITE
+        g.drawString("explosion time: $Explosion", 12, 430)
         g.drawString("Current Runtime: $stopwatch", 12, 400)
+        g.drawString("Explosion: " + Combat.explosion, 12, 385)
+        g.drawString("Explosion proj?: " + Combat.explosionproj, 12, 370)
+        g.drawString("Explosion tile: " + Combat.explosiontile, 12, 355)
+        g.drawString("my tile: " + ctx.players.getLocal().getGlobalLocation(), 12, 340)
         g.drawString(currentJob, 12, 415)
         super.draw(g)
     }
@@ -69,9 +72,7 @@ class VorkathMain : AbstractScript() {
     var isInititilized = false
     val Task = ArrayList<Task>()
     fun init() {
-        Task.add(Bank(ctx))
-        Task.add(doCombat(ctx))
-        Task.add(TraverseDragons(ctx))
+        Task.add(Combat(ctx))
         isInititilized = true
     }
 
@@ -102,6 +103,8 @@ class VorkathMain : AbstractScript() {
 
     companion object {
         var Antifiretimer = StopWatch()
+        var Explosion = StopWatch()
+        var WooxWalk = StopWatch()
 
     }
 

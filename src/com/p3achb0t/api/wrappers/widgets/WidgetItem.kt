@@ -67,7 +67,6 @@ class WidgetItem(
         doActionParams?.let { ctx?.mouse?.doAction(it) }
     }
 
-
     override suspend fun interact(action: String): Boolean {
         val textContains = (this.widget?.getText()?.toLowerCase()?.contains(action.toLowerCase()) ?: false
                 || this.widget?.getTargetVerb()?.toLowerCase()?.contains(action.toLowerCase()) ?: false)

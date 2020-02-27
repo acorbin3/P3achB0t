@@ -44,6 +44,8 @@ class Context(val obj: Any) {
     val questData: QuestData
     val projectiles: Projectiles
     val worldHop: WorldHop
+    val grandExchange: GrandExchange
+    val trade: Trade
 
     init {
         mouse = Mouse(obj)
@@ -73,6 +75,9 @@ class Context(val obj: Any) {
         questData = QuestData(this)
         projectiles = Projectiles(this)
         worldHop = WorldHop(this)
+        grandExchange = GrandExchange(this)
+        trade = Trade(this)
+
     }
 }
 

@@ -57,8 +57,8 @@ class AsmUtil {
             val insn = node.instructions
             insn.add(VarInsnNode(Opcodes.ALOAD, 0))
             insn.add(FieldInsnNode(Opcodes.GETSTATIC, fieldOwner, fieldName,fieldDescriptor))
-            insn.add(LdcInsnNode(multiplier));
-            insn.add(InsnNode(Opcodes.IMUL));
+            insn.add(LdcInsnNode(multiplier))
+            insn.add(InsnNode(Opcodes.IMUL))
             insn.add(InsnNode(Opcodes.IRETURN))
             node.maxStack = 3
             node.maxLocals = 2

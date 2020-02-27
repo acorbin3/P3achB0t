@@ -65,7 +65,17 @@ class Inventory(val ctx: Context? = null) {
 
     suspend fun open() {
 
-        if (!isOpen()) Tabs(ctx!!).openTab(Tabs.Tab_Types.Inventory)
+        if (!isOpen()) {
+            val doActionParams = DoActionParams(-1, 10747959, 57, 1, "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+            Utils.waitFor(1, object : Utils.Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return isOpen()
+                }
+            })
+        }
     }
 
     fun isOpen(): Boolean {
@@ -82,7 +92,6 @@ class Inventory(val ctx: Context? = null) {
             }
         })
     }
-
     suspend fun waitTillNotedItemChanges(notedItemID: Int, waitTime: Int = 10) {
         val oldNotedSize = getCount(notedItemID, useStack = true)
         Utils.waitFor(waitTime, object : Utils.Condition {
@@ -121,6 +130,21 @@ class Inventory(val ctx: Context? = null) {
                                     ctx = ctx
                             )
                     )
+                }
+            }
+        }
+        return items
+    }
+
+    fun getAllIds(): ArrayList<Int> {
+        val items = ArrayList<Int>()
+        val inventory = getWidget()
+        // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
+        if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
+            val ids = inventory.getItemIds()
+            ids.forEach {
+                if(it != 996 && it > 0) {
+                    items.add(it - 1)
                 }
             }
         }
@@ -221,6 +245,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasAntiVenom(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(12919, 12917, 12915, 12913)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasDivineRange(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(23733, 23736, 23739, 23742)
@@ -230,6 +265,32 @@ class Inventory(val ctx: Context? = null) {
             }
         }
         return HasItems
+    }
+
+    fun containsAny(itemid: ArrayList<WidgetItem>): Boolean {
+        var contains = false
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it.id && widgetItem.id != 995) {
+                        contains = true
+                    }
+                }
+            }
+        return contains
+    }
+
+    fun containsAny(itemid: List<Int>): Boolean {
+        var contains = false
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        contains = true
+                    }
+                }
+            }
+        return contains
     }
 
     fun hasDueling(): Boolean {
@@ -246,6 +307,17 @@ class Inventory(val ctx: Context? = null) {
     fun hasPendant(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(11194, 11193, 11192, 11191, 11190)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
+    fun hasWealth(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(11980, 11982, 11984, 11986, 11988)
         ItemsNeeded.forEach {
             if (getCount(it) > 0) {
                 HasItems = true
@@ -289,6 +361,10 @@ class Inventory(val ctx: Context? = null) {
         return getCount() == 0
     }
 
+    fun isEmptyCoins(): Boolean {
+        return getCount() == 1
+    }
+
     fun getCount(): Int {
         var count = 0
         val widget = getWidget()
@@ -300,12 +376,40 @@ class Inventory(val ctx: Context? = null) {
         return count
     }
 
+    suspend fun Teleport(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
     suspend fun wear(id: Int) {
         var items = getAll()
         var index = getfirstIndex(id)
         out_loop@ for (it in items) {
             if (it.id == id) {
                 val doActionParams = DoActionParams(index, 9764864, 34, id, "", "", 0, 0)
+                ctx?.mouse?.overrideDoActionParams = true
+                ctx?.mouse?.doAction(doActionParams)
+                delay(600)
+                break@out_loop
+            }
+        }
+    }
+
+    suspend fun wearInBank(id: Int) {
+        var items = getAll()
+        var index = getfirstIndex(id)
+        out_loop@ for (it in items) {
+            if (it.id == id) {
+                val doActionParams = DoActionParams(index, 983043, 1007, 9, "", "", 0, 0)
                 ctx?.mouse?.overrideDoActionParams = true
                 ctx?.mouse?.doAction(doActionParams)
                 delay(600)
@@ -371,6 +475,20 @@ class Inventory(val ctx: Context? = null) {
         }
     }
 
+
+    fun getCount(itemID: Int, useStack: Boolean = false): Int {
+        var count = 0
+        for (widget in getAll()) {
+            if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
+        }
+        return count
+    }
+
+    fun contains(itemID: Int): Boolean {
+        println("Item $itemID has ${getCount(itemID)} in inventory")
+        return getCount(itemID) > 0
+    }
+
     suspend fun use(id: Int) {
         var items = getAll()
         var index = getfirstIndex(id)
@@ -402,20 +520,6 @@ class Inventory(val ctx: Context? = null) {
         }
     }
 
-
-    fun getCount(itemID: Int, useStack: Boolean = false): Int {
-        var count = 0
-        for (widget in getAll()) {
-            if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
-        }
-        return count
-    }
-
-    fun contains(itemID: Int): Boolean {
-        println("Item $itemID has ${getCount(itemID)} in inventory")
-        return getCount(itemID) > 0
-    }
-
     /**
      * added by sirscript
      */
@@ -426,6 +530,33 @@ class Inventory(val ctx: Context? = null) {
             if (widget.id == id) Contains = true
         }
         return Contains
+    }
+
+    fun ContainsAll(id: ArrayList<Int>): Boolean {
+        var Contains = true
+            id.forEach {
+                if(!Contains(it)){
+                    Contains = false
+                }
+        }
+        return Contains
+    }
+
+
+    fun getItemCount(itemid: ArrayList<Int>): Int {
+        var count = 0
+        if (isOpen()) {
+            val items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        count = widgetItem.stackSize + count
+                        return@forEach
+                    }
+                }
+            }
+        }
+        return count
     }
 
 }

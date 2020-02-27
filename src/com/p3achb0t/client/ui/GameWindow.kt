@@ -17,6 +17,7 @@ import java.awt.Dimension
 import java.io.File
 import java.nio.file.Paths
 import java.util.jar.JarFile
+import javax.swing.ImageIcon
 import javax.swing.JFrame
 
 class GameWindow : JFrame() {
@@ -25,11 +26,12 @@ class GameWindow : JFrame() {
 
     init {
 
-        title = "RuneScape Bot ALPHA"
+        iconImage =  ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
+        title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
         focusTraversalKeysEnabled = true
-        size = Dimension(800, 800)
+        size = Dimension(850, 710)
         manager = Manager()
         jMenuBar = GameMenu(manager)
 
@@ -45,6 +47,7 @@ class GameWindow : JFrame() {
         manager.loadedScripts.addScript("Vorkath",VorkathMain())
         manager.loadedScripts.addScript("BrutalBlackDragsMain", BrutalBlackDragsMain())
         manager.loadedScripts.addScript("BarrowsMain", BarrowsMain())
+//        manager.loadedScripts.addScript("Zulrah", ZulrahMain())
 
         //Load each account in a different tab
         if(manager.accountManager.accounts.isNotEmpty()) {

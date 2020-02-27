@@ -29,7 +29,6 @@ class Keyboard(val obj: Any) {
             }
 
             KeyEvent.VK_SPACE
-            println("sending: \"$c\" keycode: $keyCode  Directionality:${c.directionality.value} space:${KeyEvent.VK_SPACE}")
             val down = KeyEvent(
                     component,
                     KeyEvent.KEY_PRESSED,
@@ -71,7 +70,9 @@ class Keyboard(val obj: Any) {
         }
 
         if (sendReturn) {
+            delay(50)
             pressDownKey(KeyEvent.VK_ENTER)
+            delay(50)
             if(!instantEntry)
                 delay(20)
             release(KeyEvent.VK_ENTER)

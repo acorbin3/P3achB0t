@@ -31,6 +31,12 @@ data class DoActionParams(
 
 class Mouse(obj: Any) {
 
+    companion object {
+       var x = 0
+        var y = 0
+
+    }
+
     var overrideDoActionParams = false
     var doActionParams: DoActionParams = DoActionParams()
     private val component: Component = (obj as Applet).getComponent(0)
@@ -75,13 +81,11 @@ class Mouse(obj: Any) {
         this.overrideDoActionParams = true
         this.doActionParams = doActionParams
         println()
-        instantclick(Point(0,0))
+        instantclick(Point(x,y))
     }
 
     suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
-        if (destPoint == Point(-1, -1)) {
-            return false
-        }
+
 
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
         mouseHopping.setMousePosition(destPoint)

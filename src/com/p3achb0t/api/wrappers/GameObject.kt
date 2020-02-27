@@ -172,14 +172,21 @@ class GameObject(
         }
     }
 
-    suspend fun doAction2(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_SECOND_OPTION) {
-        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
+    suspend fun doAction2(offsetX: Int = 0, offsetY: Int = 0, offsetID: Int = 0) {
+        val scenebasex = ctx?.client?.getBaseX()
+        val scenebasey = ctx?.client?.getBaseY()
+        val localLocation = this.getLocalLocation()
+        val X = localLocation.x
+        val Y = localLocation.y
+        if(scenebasex != null && scenebasey != null) {
+            //I am not sure why but doing x.plus is actually doing a minus which usually is the kind of offset that we are looking for
+            val doActionParams = DoActionParams(localLocation.x.plus(offsetX), localLocation.y.plus(offsetY), MenuOpcode.GAME_OBJECT_SECOND_OPTION.id, this.id.plus(offsetID), "", "", 0, 0)
+            ctx?.mouse?.overrideDoActionParams = true
+            ctx?.mouse?.doAction(doActionParams)
+        }
     }
-
-    suspend fun doAction3(opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
-        val doActionParams = DoActionParams(getLocalLocation().x, getLocalLocation().y, opcode.id, id, "", "", 0 ,0)
+    suspend fun doAction3(obj: GameObject, opcode: MenuOpcode = MenuOpcode.GAME_OBJECT_THIRD_OPTION) {
+        val doActionParams = DoActionParams(obj.getLocalLocation().x, obj.getLocalLocation().y, opcode.id, obj.id, "", "", 0 ,0)
         ctx?.mouse?.overrideDoActionParams = true
         ctx?.mouse?.doAction(doActionParams)
     }

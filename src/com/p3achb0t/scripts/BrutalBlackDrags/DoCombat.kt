@@ -10,8 +10,8 @@ import kotlin.random.Random
 
 class doCombat(val ctx: Context) : Task(ctx.client) {
 
-    val loot: IntArray = intArrayOf(9243, 536, 1747, 4087, 4180, 4585, 1249, 1631, 11377, 1247, 1079, 1163, 811, 1303, 2503, 2491, 868, 805, 1127, 1149, 1305, 1215, 830, 11232, 451, 11237, 19582, 13510, 13511, 11286, 560, 566,563, 892, 995, 11992, 565, 13441, 11993, 452, 1319)
-    val bonesandhide: IntArray = intArrayOf(536, 1747, 4087, 4180, 4585, 1249, 1631, 11377, 1247, 1079, 1163, 811, 1303, 2503, 2491, 868, 805, 1127, 1149, 1305, 1215, 830, 11232, 451, 11237, 19582, 13510, 13511, 11286, 560, 566,563, 892, 11992, 565, 13441, 11993, 452, 1319)
+    val loot: IntArray = intArrayOf(9243, 536, 1747, 4087, 4180, 4585, 1249, 1631, 11377, 1247, 1079, 1163, 811, 1303, 2503, 2491, 868, 805, 1127, 1149, 1305, 1215, 830, 11232, 451, 11237, 19582, 13510, 13511, 11286, 560, 566,563, 892, 11992, 565, 13441, 11993, 452, 1319, 995)
+    val bonesandhide: IntArray = intArrayOf(536, 1747, 4087, 4180, 4585, 1249, 1631, 11377, 1247, 1079, 1163, 811, 1303, 2503, 2491, 868, 805, 1127, 1149, 1305, 1215, 830, 11232, 451, 11237, 19582, 13510, 13511, 11286, 560, 566,563, 892, 11992, 565, 13441, 11993, 452, 1319, 995)
 
     companion object {
         var prayer = 35
@@ -115,7 +115,6 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 }
             }
         }
-        if (ctx.players.getLocal().player.getTargetIndex() != -1){
             var npc = ctx.npcs.getTargetted("Brutal black dragon")
             if(npc != null) {
                 if (npc.distanceTo() < 4 && groundloot.isEmpty()) {
@@ -131,7 +130,7 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
                 BrutalBlackDragsMain.Killtimer.reset()
                 BrutalBlackDragsMain.Killtimer.start()
             }
-        }
+
         if(!bonesongorund.isEmpty()){
             haskilled = true
             loottile = bonesongorund[0].getGlobalLocation()
@@ -218,6 +217,8 @@ class doCombat(val ctx: Context) : Task(ctx.client) {
             }
         }
     }
+
+
 
     suspend fun tileContainsLoot(tile: Tile): Boolean {
         var hasLoot = false

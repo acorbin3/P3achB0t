@@ -1,10 +1,18 @@
 [
   {
     "id" : "773fe442-80f0-4a42-bcc9-193c862e3b25",
-    "username" : "test9@gmail.com",
+    "username" : "",
     "password" : "",
     "pin" : "",
-    "script": "TutorialIslandDoAction"
+    "script": "",
+    "world": 193,
+    "proxy": "SOCKS5;38.141.62.111:58185",
+    "startAutomatically": true,
+    "userBreaks": false,
+    "minRuntime": 60,
+    "maxRuntime": 65,
+    "minBreakTime": 30,
+    "maxBreakTime": 61
   }
 
 ]

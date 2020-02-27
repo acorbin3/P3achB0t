@@ -4,6 +4,8 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.MenuOpcode
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class Run(val ctx: Context) {
     companion object {
@@ -23,9 +25,10 @@ class Run(val ctx: Context) {
     }
 
     suspend fun activateRun() {
-        if (!isRunActivated()) {
-            clickRunButton()
-        }
+            val doActionParams = DoActionParams(-1, 10485782,57, 1, "", "", 0, 0)
+            ctx.mouse.overrideDoActionParams = true
+        ctx.mouse.doAction(doActionParams)
+            delay(Random.nextLong(189, 333))
     }
 
     suspend fun activateRunDoAction(){
