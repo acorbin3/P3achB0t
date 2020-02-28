@@ -123,7 +123,7 @@
             <version>3.5.0</version>
         </dependency>
 
-    <dependency>
+        <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.26</version>
@@ -137,6 +137,17 @@
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
             <version>0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>6.12.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>136</version>
         </dependency>
 
     </dependencies>
@@ -152,6 +163,14 @@
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
