@@ -1,6 +1,6 @@
 package com.p3achb0t
 
-//import com.formdev.flatlaf.FlatDarkLaf
+import com.formdev.flatlaf.FlatDarkLaf
 import com.p3achb0t.client.ui.GameWindow
 import com.p3achb0t.client.ui.setup
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +16,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         setup()
-//        UIManager.setLookAndFeel(FlatDarkLaf())
+        UIManager.setLookAndFeel(FlatDarkLaf())
         for ((key) in UIManager.getDefaults()) {
             val value = UIManager.get(key)
             if (value != null && value is FontUIResource) {

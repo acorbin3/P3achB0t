@@ -114,19 +114,6 @@
             <artifactId>javac2</artifactId>
             <version>7.0.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.zeromq</groupId>
-            <artifactId>jeromq</artifactId>
-            <version>0.5.2</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
-        <dependency>
-            <groupId>com.formdev</groupId>
-            <artifactId>flatlaf</artifactId>
-            <version>0.27</version>
-            <scope>runtime</scope>
-        </dependency>
-
 
 
 
@@ -136,11 +123,32 @@
             <version>3.5.0</version>
         </dependency>
 
-    <dependency>
+        <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.26</version>
     </dependency>
+        <dependency>
+            <groupId>org.zeromq</groupId>
+            <artifactId>jeromq</artifactId>
+            <version>0.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>6.12.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>136</version>
+        </dependency>
 
     </dependencies>
 
@@ -155,6 +163,14 @@
         <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>google</id>
+            <url>https://maven.google.com/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -349,7 +365,9 @@
 <!--                    <execution>-->
 <!--                        <id>make-assembly</id>-->
 <!--                        <phase>package</phase>-->
-            <!--            <goals> <goal>single</goal> </goals>-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal>-->
+<!--                        </goals>-->
 <!--                        <configuration>-->
 <!--                            <archive>-->
 <!--                                <manifest>-->
@@ -419,21 +437,21 @@
 <!--                    <failOnError>true</failOnError>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <configuration>
-                    <mainClass>${main.class}</mainClass>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>${main.class}</argument>
-                    </arguments>
-                    <workingDirectory></workingDirectory>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>exec-maven-plugin</artifactId>-->
+<!--                <version>1.6.0</version>-->
+<!--                <configuration>-->
+<!--                    <mainClass>${main.class}</mainClass>-->
+<!--                    <executable>java</executable>-->
+<!--                    <arguments>-->
+<!--                        <argument>-classpath</argument>-->
+<!--                        <classpath/>-->
+<!--                        <argument>${main.class}</argument>-->
+<!--                    </arguments>-->
+<!--                    <workingDirectory></workingDirectory>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
