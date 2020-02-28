@@ -48,18 +48,13 @@ class FBDataBase {
         } else {
             userSkillOrItemCount[id] = userSkillOrItemCount[id]!!.plus(1)
         }
-
-        //.collection("Skills").document("Strength")
-        val messageID = id + userSkillOrItemCount[id]
-        return messageID
+        return userSkillOrItemCount[id].toString()
     }
 
-    //    db.collection("users").document(userID).collection("sessions").document(sessionID)
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: Int) {
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
-        //account_skill for key
         val messageID = getDocID(accountID, skill.name)
         userDocs[accountID]?.collection("Skills")?.document(skill.name)?.collection("xp")
                 ?.document(messageID)?.set(StatInfo(System.currentTimeMillis(),xp))
@@ -71,7 +66,6 @@ class FBDataBase {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
-        //account_itemName for key
         val messageID = getDocID(accountID, itemName)
         userDocs[accountID]?.collection("Items")?.document(itemName)?.collection("entry")
                 ?.document(messageID)?.set(StatInfo(System.currentTimeMillis(),count))
