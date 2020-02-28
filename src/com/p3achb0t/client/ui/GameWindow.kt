@@ -12,6 +12,7 @@ import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
 import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.scripts.TutorialIslandDoAction
 import com.p3achb0t.scripts.VorkathMain
+import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
@@ -47,6 +48,7 @@ class GameWindow : JFrame() {
         manager.loadedScripts.addScript("Vorkath",VorkathMain())
         manager.loadedScripts.addScript("BrutalBlackDragsMain", BrutalBlackDragsMain())
         manager.loadedScripts.addScript("BarrowsMain", BarrowsMain())
+        manager.loadedScripts.addScript("ChickenKiller", ChickenKiller())
 //        manager.loadedScripts.addScript("Zulrah", ZulrahMain())
 
         //Load each account in a different tab

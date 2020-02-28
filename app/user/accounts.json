@@ -1,18 +1,18 @@
 [
   {
-    "id" : "773fe442-80f0-4a42-bcc9-193c862e3b25",
-    "username" : "",
-    "password" : "",
-    "pin" : "",
-    "script": "",
-    "world": 193,
-    "proxy": "SOCKS5;38.141.62.111:58185",
-    "startAutomatically": true,
+    "id": "",
+    "username" : "rsbond60+223@gmail.com",
+    "password" : "Power1234",
+    "pin": "",
+    "script": "ChickenKiller",
+    "minRuntimeSec": 50,
+    "maxRuntimeSec": 100,
     "userBreaks": false,
-    "minRuntime": 60,
-    "maxRuntime": 65,
-    "minBreakTime": 30,
-    "maxBreakTime": 61
+    "minBreakTimeSec": 50,
+    "maxBreakTimeSec": 120,
+    "banned": false,
+    "proxy": "none",
+    "world": 80,
+    "startAutomatically": true
   }
-
 ]
