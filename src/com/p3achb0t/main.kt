@@ -1,8 +1,6 @@
 package com.p3achb0t
 
 import com.formdev.flatlaf.FlatDarkLaf
-import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.client.managers.tracker.FBDataBase
 import com.p3achb0t.client.ui.GameWindow
 import com.p3achb0t.client.ui.setup
 import kotlinx.coroutines.CoroutineScope
@@ -17,14 +15,6 @@ import javax.swing.plaf.FontUIResource
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-
-        val db = FBDataBase()
-        db.updateStat("1112","xx", Stats.Skill.ATTACK,123)
-        db.updateStat("1112","xx", Stats.Skill.ATTACK,222)
-        db.updateStat("1112","xx", Stats.Skill.HERBLORE,123)
-        db.updateStat("1113","tt", Stats.Skill.HERBLORE,123)
-        db.updateStat("1113","tt", Stats.Skill.AGILITY,123)
-        println("Done")
 
         setup()
         setLookAndFeel(FlatDarkLaf())
