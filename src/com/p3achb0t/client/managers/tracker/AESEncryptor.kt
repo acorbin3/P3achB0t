@@ -21,7 +21,7 @@ class AESEncryptor {
             val input = strToEncrypt.toByteArray(charset("UTF8"))
 
             synchronized(Cipher::class.java) {
-                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
                 cipher.init(Cipher.ENCRYPT_MODE, skey)
 
                 val cipherText = ByteArray(cipher.getOutputSize(input.size))
