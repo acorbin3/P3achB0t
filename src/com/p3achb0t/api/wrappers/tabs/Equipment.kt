@@ -53,7 +53,7 @@ class Equipment(val ctx: Context) {
         var Contains = false
         Slot.values().forEach {
             if(getItemAtSlot(it)?.id == id ){
-               Contains = true
+                Contains = true
             }
         }
         return Contains
@@ -109,7 +109,7 @@ class Equipment(val ctx: Context) {
         ctx.mouse.doAction(doActionParams)
         delay(600)
         if (waitForActionToComplete)
-            Utils.waitFor(2, object : Utils.Condition {
+            Utils.waitFor(1, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
                     return !isEquipmentSlotEquipted(slot)

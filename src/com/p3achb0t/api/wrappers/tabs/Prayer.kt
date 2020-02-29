@@ -6,6 +6,7 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import net.runelite.api.MenuOpcode
 
 class Prayer(val ctx: Context) {
     //TODO - Quick prayers
@@ -89,6 +90,11 @@ class Prayer(val ctx: Context) {
     suspend fun isProtectRangeActive(): Boolean {
 
         return ctx.vars.getVarbit(4117) == 1
+    }
+
+    suspend fun isEagleEyeActive(): Boolean {
+
+        return ctx.vars.getVarbit(4126) == 1
     }
 
     suspend fun isProtectMageActive(): Boolean {
