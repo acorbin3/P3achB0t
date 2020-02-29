@@ -1,15 +1,15 @@
 package com.p3achb0t.client.ui.components
 
+//import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
-import com.p3achb0t.scripts.BrutalBlackDrags.BrutalBlackDragsMain
 import com.p3achb0t.scripts.RuneDragsMain
 import com.p3achb0t.scripts.TestVorkScript
 import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.scripts.TutorialIslandDoAction
-import com.p3achb0t.scripts.varbitexplorer.VarBitExplorer
-//import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
-import com.p3achb0t.widgetexplorer.WidgetExplorerV3
+import com.p3achb0t.scripts_debug.varbitexplorer.VarBitExplorer
+import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
+import com.p3achb0t.scripts_private.BrutalBlackDrags.BrutalBlackDragsMain
+import com.p3achb0t.scripts_private.tutorial_island.TutorialIslandDoAction
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem

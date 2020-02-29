@@ -4,8 +4,8 @@ import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.scripts.NullScript
-import com.p3achb0t.scripts.WidgetExplorerDebug
-import com.p3achb0t.scripts.paint_debug.PaintDebug
+import com.p3achb0t.scripts_debug.WidgetExplorerDebug
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread

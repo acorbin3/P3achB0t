@@ -1,6 +1,6 @@
 package com.p3achb0t.client.interfaces.io
 
-import com.p3achb0t.scripts.paint_debug.PaintDebug
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 

@@ -12,7 +12,7 @@ import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
 import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
-import com.p3achb0t.scripts.paint_debug.getObjectComposite
+import com.p3achb0t.scripts_debug.paint_debug.getObjectComposite
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point

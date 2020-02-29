@@ -5,8 +5,8 @@ import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DEBUG_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
-import com.p3achb0t.scripts.WidgetExplorerDebug
-import com.p3achb0t.scripts.paint_debug.PaintDebug
+import com.p3achb0t.scripts_debug.WidgetExplorerDebug
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
