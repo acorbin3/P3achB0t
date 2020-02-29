@@ -90,6 +90,11 @@ class Prayer(val ctx: Context) {
         return ctx.vars.getVarbit(4117) == 1
     }
 
+    fun isEagleEyeActive(): Boolean {
+
+        return ctx.vars.getVarbit(4126) == 1
+    }
+
     fun isProtectMageActive(): Boolean {
 
         return ctx.vars.getVarbit(4116) == 1

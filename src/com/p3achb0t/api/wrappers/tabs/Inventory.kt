@@ -233,6 +233,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasDivineMagics(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(23754,23751 ,23748,23745)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasAntiVenom(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(12919, 12917, 12915, 12913)
