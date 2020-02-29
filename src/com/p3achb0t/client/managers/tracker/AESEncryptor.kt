@@ -64,7 +64,7 @@ class AESEncryptor {
                     .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
 
             synchronized(Cipher::class.java) {
-                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
                 cipher.init(Cipher.DECRYPT_MODE, skey)
 
                 val plainText = ByteArray(cipher.getOutputSize(input.size))
