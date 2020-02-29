@@ -2,8 +2,6 @@ package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.MenuOpcode
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
@@ -65,17 +63,7 @@ class Inventory(val ctx: Context? = null) {
 
     suspend fun open() {
 
-        if (!isOpen()) {
-            val doActionParams = DoActionParams(-1, 10747959, 57, 1, "", "", 0, 0)
-            ctx?.mouse?.overrideDoActionParams = true
-            ctx?.mouse?.doAction(doActionParams)
-            Utils.waitFor(1, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return isOpen()
-                }
-            })
-        }
+        if (!isOpen()) Tabs(ctx!!).openTab(Tabs.Tab_Types.Inventory)
     }
 
     fun isOpen(): Boolean {
@@ -376,105 +364,6 @@ class Inventory(val ctx: Context? = null) {
         return count
     }
 
-    suspend fun Teleport(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    suspend fun wear(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 34, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    suspend fun wearInBank(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 983043, 1007, 9, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    suspend fun eat(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-
-    suspend fun drink(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 33, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    suspend fun rub(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 36, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    suspend fun rub2(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, 35, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
 
     fun getCount(itemID: Int, useStack: Boolean = false): Int {
         var count = 0
@@ -488,41 +377,6 @@ class Inventory(val ctx: Context? = null) {
         println("Item $itemID has ${getCount(itemID)} in inventory")
         return getCount(itemID) > 0
     }
-
-    suspend fun use(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE.id, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    /**
-     * This funtion is intended to take a already selected Item and use it with another item in the invetory
-     */
-    suspend fun useSelectedItemOnItem(id: Int) {
-        var items = getAll()
-        var index = getfirstIndex(id)
-        out_loop@ for (it in items) {
-            if (it.id == id) {
-                val doActionParams = DoActionParams(index, 9764864, MenuOpcode.ITEM_USE_ON_WIDGET_ITEM.id, id, "", "", 0, 0)
-                ctx?.mouse?.overrideDoActionParams = true
-                ctx?.mouse?.doAction(doActionParams)
-                delay(600)
-                break@out_loop
-            }
-        }
-    }
-
-    /**
-     * added by sirscript
-     */
 
     fun Contains(id: Int): Boolean {
         var Contains = false

@@ -1,19 +1,15 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.getCanvasTileAreaPoly
-import com.p3achb0t.api.wrappers.utils.Calculations.Companion.worldToScreen
-import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
-import kotlin.random.Random
 
 // Tile are stored in global coordinates.
 // There is a context associated with the tile so we can make it Intractable. Problem is it can be annoying to want to specify
@@ -62,16 +58,6 @@ class Tile(
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
         return ctx!!.mouse.click(point)
     }
-
-    suspend fun walktoTile() {
-        val regional = this.getRegionalLocation()
-        val point = worldToScreen(regional.x, regional.y, z, ctx!!)
-        val doActionParams =   DoActionParams(point.x,point.y,23, 0, "", "",0,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
-        delay(Random.nextLong(189, 1076))
-    }
-
 
     suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
         // translation

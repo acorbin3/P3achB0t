@@ -14,9 +14,6 @@ import java.awt.Point
 import java.awt.event.MouseEvent
 
 
-// This class was replicated based on the mouse movement from:
-// https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
-
 // This class will be used to specify want will be requested do action params when doing a click from the mouse
 data class DoActionParams(
         val actionParam: Int = 0,
@@ -28,6 +25,9 @@ data class DoActionParams(
         val mouseX: Int = 0,
         val mouseY: Int = 0
 )
+
+// This class was replicated based on the mouse movement from:
+// https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
 class Mouse(obj: Any) {
 
@@ -77,14 +77,13 @@ class Mouse(obj: Any) {
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 
-    suspend fun doAction(doActionParams: DoActionParams){
+    fun doAction(doActionParams: DoActionParams){
         this.overrideDoActionParams = true
         this.doActionParams = doActionParams
-        println()
         instantclick(Point(x,y))
     }
 
-    suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
+    fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
 
 
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)

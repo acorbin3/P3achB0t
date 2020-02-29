@@ -2,8 +2,6 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t._runestar_interfaces.Npc
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.MenuOpcode
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Point
@@ -35,37 +33,13 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     }
 
-    suspend fun doActionAttack(){
-        val doActionParams = DoActionParams(0, 0, MenuOpcode.NPC_SECOND_OPTION.id, menuIndex, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
-    }
-
-    suspend fun doActionCast(){
-        val doActionParams = DoActionParams(0, 0, MenuOpcode.SPELL_CAST_ON_NPC.id, menuIndex, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
-    }
-    suspend fun doAction(){
-
-        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_FIRST_OPTION.id, menuIndex, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
-    }
-
-    suspend fun doActionCollect(){
-
-        val doActionParams = DoActionParams(this.getLocalLocation().x, this.getLocalLocation().y, MenuOpcode.NPC_THIRD_OPTION.id, menuIndex, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
-    }
 
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())
     }
 
     suspend fun walkTo(){
-        this.getGlobalLocation().walktoTile()
+        this.getGlobalLocation().clickOnMiniMap()
     }
 
     override suspend fun clickOnMiniMap(): Boolean {

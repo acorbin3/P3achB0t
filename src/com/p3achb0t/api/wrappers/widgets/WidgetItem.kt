@@ -2,8 +2,6 @@ package com.p3achb0t.api.wrappers.widgets
 
 import com.p3achb0t._runestar_interfaces.Component
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.MenuOpcode
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import java.awt.Point
 import java.awt.Rectangle
@@ -49,22 +47,6 @@ class WidgetItem(
         return if (this.widget != null)
             doesWidgetContainText(this.widget!!, text, includeChildren)
         else false
-    }
-
-    suspend fun doAction(){
-        val doActionParams = this.widget?.getId()?.let { DoActionParams(-1, it, MenuOpcode.WIDGET_DEFAULT.id, 1, "", "", 0 ,0) }
-        doActionParams?.let { ctx?.mouse?.doAction(it) }
-    }
-
-    suspend fun cancel(){
-        val doActionParams = this.widget?.getId()?.let { DoActionParams(0, 0, MenuOpcode.CANCEL.id, 1, "", "", 0 ,0) }
-        doActionParams?.let { ctx?.mouse?.doAction(it) }
-    }
-    //
-
-    suspend fun selectSpell(){
-        val doActionParams = this.widget?.getId()?.let { DoActionParams(-1, it, MenuOpcode.WIDGET_TYPE_2.id, 1, "", "", 0 ,0) }
-        doActionParams?.let { ctx?.mouse?.doAction(it) }
     }
 
     override suspend fun interact(action: String): Boolean {

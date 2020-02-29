@@ -68,8 +68,8 @@ class Util {
             val readme = File(file.parent + "/readme.txt")
             readme.createNewFile()
             readme.writeText("Proxy example would be : SOCKS5;185.244.192.119:7670 or none")
-            readme.writeText("Anything that is not provided in the json will be defaulted to the following:")
-            readme.writeText(jsonAccountPretty)
+            readme.appendText("Anything that is not provided in the json will be defaulted to the following:")
+            readme.appendText(jsonAccountPretty)
 
 
         }

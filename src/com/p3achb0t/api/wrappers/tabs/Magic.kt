@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 
 class Magic(val ctx: Context) {
@@ -36,9 +36,12 @@ class Magic(val ctx: Context) {
             ).toLowerCase())
         }
         println(spell.name.replace("_", " ").toLowerCase())
-        var doActionParams = DoActionParams(-1, spell.arg1,25, 0, "", "", 0, 0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
+        val spellWidget = WidgetItem(ctx.widgets.find(PARENT, spell.widgetID), ctx = ctx)
+        if (spellWidget.widget != null) {
+            println(spellWidget.getInteractPoint())
+
+            spellWidget.interact("Cast")
+        }
         delay(100)
     }
 
@@ -58,41 +61,4 @@ class Magic(val ctx: Context) {
             })
         if (!isOpen()) open()
     }
-
-    suspend fun castSpellonNPC(spell: Spells, menuid: Int) {
-        try {
-            if (Utils.cleanColorText(
-                            ctx.client.getSelectedSpellName()
-                    ).toLowerCase() == spell.name.replace("_", " ").toLowerCase()
-                    && ctx.client.getIsSpellSelected()
-            ) {
-                var doActionParams = DoActionParams(0, 0, 8, menuid, "", "", 0, 0)
-                ctx.mouse.overrideDoActionParams = true
-                ctx.mouse.doAction(doActionParams)
-                delay(100)
-            }
-        } catch (e: Exception) {
-        }
-
-    }
-
-    suspend fun castSpellonInvItem(spell: Spells, id: Int) {
-        try {
-            if (Utils.cleanColorText(
-                            ctx.client.getSelectedSpellName()
-                    ).toLowerCase() == spell.name.replace("_", " ").toLowerCase()
-                    && ctx.client.getIsSpellSelected()
-            ) {
-                println("True")
-                var doActionParams = DoActionParams(ctx.inventory.getfirstIndex(id), 9764864, 32, id, "", "", 0, 0)
-                ctx.mouse.overrideDoActionParams = true
-                ctx.mouse.doAction(doActionParams)
-                delay(100)
-            }
-        } catch (e: Exception) {
-        }
-
-    }
-
-
 }

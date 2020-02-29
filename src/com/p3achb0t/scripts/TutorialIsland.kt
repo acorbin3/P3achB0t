@@ -1807,11 +1807,11 @@ class TutorialIsland: AbstractScript()  {
                 //Walk the path and then come back
                 Walking.walkPath(path)
                 Walking.walkPath(path, reverse = true)
-                Logout(ctx).logout()
+                ctx.worldHop.logout()
             } else {
                 println("Walking path west")
                 Walking.walkPath(pathWest)
-                Logout(ctx).logout()
+                ctx.worldHop.logout()
             }
 
         }

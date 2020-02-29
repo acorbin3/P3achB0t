@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Timer
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
@@ -15,7 +14,7 @@ class Dialog(val ctx: Context) {
         private const val CONTINUE = WidgetID.DialogNPC.CONTINUE
         private const val PARENT_BACKUP = DIALOG_PLAYER_GROUP_ID
         private const val CONTINUE_BACKUP = WidgetID.DialogNPC.CONTINUE
-        private const val PARENT_DIALOG_OPTIONS = WidgetID.DIALOG_OPTION_GROUP_ID
+        const val PARENT_DIALOG_OPTIONS = WidgetID.DIALOG_OPTION_GROUP_ID
         private const val PARENT_BACKUP_2 = 229
         private const val CONTINUE_BACKUP_2 = 2
         private const val PARENT_BACKUP_3 = 193
@@ -59,67 +58,6 @@ class Dialog(val ctx: Context) {
         }
     }
 
-    /**
-     * added by sirscript
-     * continue dialog for doAction arg1 = -1
-     */
-
-
-    suspend fun continueDialogdoAction() {
-        val time = 20 //20 seconds
-        val t = Timer(Random.nextLong((time * 1000).toLong(), ((time + 2) * 1000).toLong()))
-        while (isContinueAvailable() && t.isRunning()) {
-            val doActionParams = DoActionParams(-1, 15138819, 30, 0, "", "", 0, 0)
-            ctx.mouse.overrideDoActionParams = true
-            ctx.mouse.doAction(doActionParams)
-            delay(Random.nextLong(200, 350))
-        }
-    }
-
-    /**
-     * added by sirscript
-     * select dialog options for doAction dialog option 1=1, 2=2 etc
-     */
-
-
-    suspend fun selectionOptiondoAction(action: String) {
-        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
-        // Options are in children but not index zero
-        dialog.widget?.getChildren()?.iterator()?.forEach {
-            if (it.getText().contains(action)) {
-                val doActionParams = DoActionParams(it.getChildIndex(), 14352385, 30, 0, "", "", 0, 0)
-                ctx.mouse.overrideDoActionParams = true
-                ctx.mouse.doAction(doActionParams)
-                delay(Random.nextLong(1500, 2500))
-            }
-        }
-    }
-
-    suspend fun selectTreeOptionDoAction(action: String) {
-        val dialog = WidgetItem(ctx.widgets.find(187, 3), ctx = ctx)
-        // Options are in children but not index zero
-        dialog.widget?.getChildren()?.iterator()?.forEach {
-            if (it.getText().contains(action)) {
-                val doActionParams = DoActionParams(it.getChildIndex(), 12255235, 30, 0, "", "", 0, 0)
-                ctx.mouse.overrideDoActionParams = true
-                ctx.mouse.doAction(doActionParams)
-                delay(Random.nextLong(1500, 2500))
-            }
-        }
-    }
-
-    /**
-     * added by sirscript
-     * select dialog options for doAction dialog option 1=1, 2=2 etc
-     */
-
-    suspend fun selectRandomOptiondoAction() {
-        val dialog = WidgetItem(ctx.widgets.find(PARENT_DIALOG_OPTIONS, 1), ctx = ctx)
-        val childrenSize = dialog.widget?.getChildren()?.size ?: 0
-        val doActionParams = DoActionParams(Random.nextInt(1, childrenSize), 14352385, 30, 0, "", "", 0, 0)
-        ctx.mouse.doAction(doActionParams)
-        delay(Random.nextLong(1500, 2500))
-    }
 
     private suspend fun doConversation(sleep: Boolean) {
         val dialog = getDialogContinue()

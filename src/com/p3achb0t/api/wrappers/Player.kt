@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -59,12 +58,6 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context,
             }
             -1
         }
-    }
-
-    suspend fun trade(player: Player){
-        val doActionParams = DoActionParams(0, 0, 2047, menuIndex, "", "", 0 ,0)
-        ctx?.mouse?.overrideDoActionParams = true
-        ctx?.mouse?.doAction(doActionParams)
     }
 
     override suspend fun interact(action: String): Boolean {

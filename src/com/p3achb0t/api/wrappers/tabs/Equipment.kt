@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -100,23 +99,6 @@ class Equipment(val ctx: Context) {
             })
     }
 
-    suspend fun unEquiptItem(slot: Slot, waitForActionToComplete: Boolean = true) {
-        val item = getItemAtSlot(slot)
-        println("Removing item from ${slot.name} ${item?.area}")
-        // Wait till item gets removed
-        val doActionParams = DoActionParams(-1, slot.unequipMenuAction, 57, 1, "", "", 0, 0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-        delay(600)
-        if (waitForActionToComplete)
-            Utils.waitFor(2, object : Utils.Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return !isEquipmentSlotEquipted(slot)
-                }
-            })
-    }
-
     suspend fun interactWithSlot(slot: Slot, interaction: String) {
         if(!isOpen()){
             open()
@@ -128,20 +110,6 @@ class Equipment(val ctx: Context) {
             // Wait till item gets removed
             delay((250))
         }
-    }
-
-    suspend fun duelingcastlewars() {
-        val doActionParams = DoActionParams(-1, 25362455, 57, 3, "", "", 0, 0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-        delay(600)
-    }
-
-    suspend fun duelingclawnwars() {
-        val doActionParams = DoActionParams(-1, 25362455, 57, 4, "", "", 0, 0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-        delay(600)
     }
 
 

@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.PRAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -76,29 +75,29 @@ class Prayer(val ctx: Context) {
 
     }
 
-    suspend fun isPietyActive(): Boolean {
+    fun isPietyActive(): Boolean {
 
         return ctx.vars.getVarp(83) >= 67108864
     }
 
-    suspend fun isProtectMeleActive(): Boolean {
+    fun isProtectMeleActive(): Boolean {
 
         return ctx.players.getLocal().player.getHeadIconPrayer() == 0
     }
 
-    suspend fun isProtectRangeActive(): Boolean {
+    fun isProtectRangeActive(): Boolean {
 
         return ctx.vars.getVarbit(4117) == 1
     }
 
-    suspend fun isProtectMageActive(): Boolean {
+    fun isProtectMageActive(): Boolean {
 
         return ctx.vars.getVarbit(4116) == 1
     }
 
-    suspend fun isQuickPrayerActive(): Boolean {
+    fun isQuickPrayerActive(): Boolean {
 
-        return return ctx.vars.getVarp(375) == 1
+        return ctx.vars.getVarp(375) == 1
     }
 
     suspend fun disable(kind: PrayerKind) {
@@ -109,45 +108,4 @@ class Prayer(val ctx: Context) {
         delay(100)
     }
 
-    suspend fun ActivateQuickPrayer(){
-        val doActionParams = DoActionParams(-1, 10485774, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggleProtectFromMage(){
-        val doActionParams = DoActionParams(-1, 35454993, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggleProtectFromMele(){
-        val doActionParams = DoActionParams(-1, 35454994, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggleProtectFromRange(){
-        val doActionParams = DoActionParams(-1, 35454994, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggleMysticMight(){
-        val doActionParams = DoActionParams(-1, 35455004, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggleEagleEye(){
-        val doActionParams = DoActionParams(-1, 35455003, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
-
-    suspend fun toggieRigour(){
-        val doActionParams = DoActionParams(-1, 35455007, 57, 1, "", "", 0 ,0)
-        ctx.mouse.overrideDoActionParams = true
-        ctx.mouse.doAction(doActionParams)
-    }
 }
