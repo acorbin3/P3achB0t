@@ -149,6 +149,11 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>136</version>
         </dependency>
+        <dependency>
+            <groupId>com.mashape.unirest</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>1.4.9</version>
+        </dependency>
 
     </dependencies>
 
@@ -210,6 +215,7 @@
                             <arg>-Xinline-classes</arg>
                             <arg>-Xuse-experimental=kotlin.contracts.ExperimentalContracts</arg>
                         </args>
+
                     </configuration>
                 </plugin>
                 <plugin>
@@ -223,9 +229,6 @@
                             <arg>--add-exports=java.desktop/sun.awt=ALL-UNNAMED</arg>
                             <arg>--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED</arg>
                         </compilerArgs>
-                        <excludes>
-                            <exclude>**/scripts_private/*</exclude>
-                        </excludes>
                     </configuration>
                     <executions>
                         <!-- Replacing default-compile as it is treated specially by maven -->
@@ -239,6 +242,11 @@
                             <goals>
                                 <goal>compile</goal>
                             </goals>
+                            <configuration>
+                                <excludes>
+                                    <exclude>com/p3achb0t/scripts_private/**</exclude>
+                                </excludes>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -257,10 +265,12 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+
                         <configuration>
                             <sourceDirs>
                                 <sourceDir>${project.basedir}/src/</sourceDir>
                             </sourceDirs>
+
                         </configuration>
                     </execution>
                 </executions>
