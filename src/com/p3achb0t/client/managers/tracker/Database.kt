@@ -46,7 +46,7 @@ class FBDataBase {
     private fun getDocID(accountID: String, base: String): String {
         val id = accountID + "_" + base
         if (id !in userSkillOrItemCount) {
-            userSkillOrItemCount[id] = 1
+            userSkillOrItemCount[id] = 1000
         } else {
             userSkillOrItemCount[id] = userSkillOrItemCount[id]!!.plus(1)
         }

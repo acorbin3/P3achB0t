@@ -155,7 +155,7 @@ class ScriptManager(val client: Any) {
 
             //Only delay long if we have initialized
             if(loginHandler.ctx?.worldHop?.isLoggedIn!! && prevXP[Stats.Skill.ATTACK]!! > 0) {
-                delay(Time.getMinInMils(10))//delay every 5 min
+                delay(Time.getMinInMils(15))
             }else{
                 delay(1000)
             }
