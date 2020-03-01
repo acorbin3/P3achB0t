@@ -32,8 +32,10 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
      */
     init {
         var proxy = "none"
-        if(account.username.isNotEmpty()){
+        if(account.world > 0) {
             world = account.world
+        }
+        if(account.proxy.isNotEmpty()) {
             proxy = account.proxy
         }
         val configReader = ConfigReader(world)
