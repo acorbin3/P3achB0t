@@ -8,11 +8,6 @@ import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.ui.components.GameMenu
 import com.p3achb0t.client.util.Util
 import com.p3achb0t.scripts.TutorialIsland
-import com.p3achb0t.scripts.VorkathMain
-import com.p3achb0t.scripts_private.Barrows.BarrowsMain
-import com.p3achb0t.scripts_private.BrutalBlackDrags.BrutalBlackDragsMain
-import com.p3achb0t.scripts_private.chicken_killer.ChickenKiller
-import com.p3achb0t.scripts_private.tutorial_island.TutorialIslandDoAction
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
@@ -44,12 +39,6 @@ class GameWindow : JFrame() {
 
         //Load all scripts
         manager.loadedScripts.addScript("TutorialIsland",TutorialIsland())
-        manager.loadedScripts.addScript("TutorialIslandDoAction", TutorialIslandDoAction())
-        manager.loadedScripts.addScript("Vorkath",VorkathMain())
-        manager.loadedScripts.addScript("BrutalBlackDragsMain", BrutalBlackDragsMain())
-        manager.loadedScripts.addScript("BarrowsMain", BarrowsMain())
-        manager.loadedScripts.addScript("ChickenKiller", ChickenKiller())
-//        manager.loadedScripts.addScript("Zulrah", ZulrahMain())
 
         //Load each account in a different tab
         if(manager.accountManager.accounts.isNotEmpty()) {
