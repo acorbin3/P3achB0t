@@ -8,9 +8,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.client.managers.accounts.StatInfo
 import java.io.File
 import java.io.FileInputStream
+import java.sql.Timestamp
 import java.util.*
 
 class FBDataBase {
@@ -40,6 +40,8 @@ class FBDataBase {
         userDocs = HashMap()
     }
 
+    data class StatInfo(val time: String, val xp: Int)
+    data class ItemInfo(val time: String, val count: Int)
 
     private fun getDocID(accountID: String, base: String): String {
         val id = accountID + "_" + base
@@ -56,8 +58,13 @@ class FBDataBase {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val messageID = getDocID(accountID, skill.name)
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        val lastUpdated = mutableMapOf<String,String>()
+        lastUpdated["lastUpdated"] = date.toString()
+        userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
         userDocs[accountID]?.collection("Skills")?.document(skill.name)?.collection("xp")
-                ?.document(messageID)?.set(StatInfo(System.currentTimeMillis(),xp))
+                ?.document(messageID)?.set(StatInfo(date.toString(),xp))
 
     }
 
@@ -67,7 +74,12 @@ class FBDataBase {
         }
 
         val messageID = getDocID(accountID, itemName)
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        val lastUpdated = mutableMapOf<String,String>()
+        lastUpdated["lastUpdated"] = date.toString()
+        userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
         userDocs[accountID]?.collection("Items")?.document(itemName)?.collection("entry")
-                ?.document(messageID)?.set(StatInfo(System.currentTimeMillis(),count))
+                ?.document(messageID)?.set(ItemInfo(date.toString(),count))
     }
 }

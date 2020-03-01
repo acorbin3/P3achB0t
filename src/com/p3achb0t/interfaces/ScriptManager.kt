@@ -6,8 +6,11 @@ import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.ClientMode
+import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
+import com.p3achb0t.client.managers.tracker.FBDataBase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.image.BufferedImage
+import java.util.*
 import kotlin.random.Random
 
 class ScriptManager(val client: Any) {
@@ -26,6 +30,7 @@ class ScriptManager(val client: Any) {
     val debugScripts = mutableListOf<DebugScript>()
 
     var loginHandler = LoginHandler(client = client as Client)
+    var sessionID = UUID.randomUUID().toString()
 
     var x = 800
     var y = 600
@@ -36,10 +41,12 @@ class ScriptManager(val client: Any) {
     private var paused = false
     lateinit var thread: Job
     lateinit var statsThread: Job
+    lateinit var dbUpdaterThread: Job
     val runtime = StopWatch()
     val lastCheck = StopWatch()
     val fiveMin = 5 * 60 *1000
     var gameLoopI = 0
+    val db : FBDataBase = FBDataBase()
 
     var breaking = false
     var breakReturnTime = 0L
@@ -79,7 +86,11 @@ class ScriptManager(val client: Any) {
 //        println("getModel Callback arg1: $argument1 $arg1")
     }
 
+
     private suspend fun trackStats(){
+        Stats.Skill.values().iterator().forEach {
+            prevXP
+        }
         //Track stats
         while(isRunning) {
             if (loginHandler.ctx?.worldHop?.isLoggedIn!!) {
@@ -90,14 +101,79 @@ class ScriptManager(val client: Any) {
         }
     }
 
+    val prevXP = EnumMap<Stats.Skill,Int>(Stats.Skill::class.java)
+    val prevTotalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
+    suspend fun dbUpdater(){
+        Stats.Skill.values().iterator().forEach {
+            prevXP[it] = 0
+        }
+        while(isRunning){
+            if(loginHandler.ctx?.worldHop?.isLoggedIn!!) {
+
+                //Do stats tracking
+                //Initialize previous db
+                if (loginHandler.ctx?.stats?.curXP?.get(Stats.Skill.ATTACK) == 0) {
+                    Stats.Skill.values().iterator().forEach {
+                        prevXP[it] = loginHandler.ctx?.stats?.curXP?.get(it)
+                    }
+
+                } else {
+                    Stats.Skill.values().iterator().forEach { skill ->
+                        val diff = loginHandler.ctx?.stats?.curXP?.get(skill)?.minus(prevXP[skill]!!)
+                        val wasPrevZero = prevXP[skill] == 0
+                        prevXP[skill] = loginHandler.ctx?.stats?.curXP?.get(skill)
+                        //Skip the initial load
+                        if(!wasPrevZero) {
+                            if (diff != null && diff > 0) {
+                                println("Updating ${skill.name} wiht diff: $diff")
+                                db.updateStat(loginHandler.account.id, sessionID, skill, diff)
+                            }
+                        }
+                    }
+                }
+
+                //Do inventory Tracking
+                loginHandler.ctx?.inventory?.totalTrackedItemCount?.forEach { itemID, count ->
+                    var diff: Int = 0
+                    if(itemID in prevTotalTrackedItemCount){
+                        diff = count.minus(prevTotalTrackedItemCount[itemID]!!)
+                        prevTotalTrackedItemCount[itemID] = count
+                    }else{
+                        diff = count
+                        prevTotalTrackedItemCount[itemID] = count
+                    }
+                    if(diff > 0) {
+                        db.updateItemCount(
+                                loginHandler.account.id,
+                                sessionID,
+                                loginHandler.ctx?.cache?.getItemName(itemID) ?: "",
+                                diff
+                        )
+                    }
+                }
+            }
+
+            //Only delay long if we have initialized
+            if(loginHandler.ctx?.worldHop?.isLoggedIn!! && prevXP[Stats.Skill.ATTACK]!! > 0) {
+                delay(Time.getMinInMils(10))//delay every 5 min
+            }else{
+                delay(1000)
+            }
+        }
+    }
+
     fun start() {
 
+        sessionID = UUID.randomUUID().toString()
 //        mouse.inputBlocked(true)
         isRunning = true
         //This the script thread.
 
         statsThread = GlobalScope.launch {
             trackStats()
+        }
+        dbUpdaterThread = GlobalScope.launch {
+            dbUpdater()
         }
         thread = GlobalScope.launch {
             loginHandler.ctx?.stats?.runtime?.reset()
