@@ -35,7 +35,6 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         val menu = JMenu("Scripts")
 
 
-
         val menuItem = JMenuItem("Run Tutorial Island")
         menuItem.addActionListener {
 
@@ -66,43 +65,8 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
 
 
-
-        val mouse = JMenuItem("Move Mouse")
-        mouse.addActionListener {
-
-            //val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
-            //val factory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(game.client?.client, game.client?.applet)
-            //factory.move(400,400)
-            //factory.move(50,50)
-
-        }
-
-        val test3 = JMenuItem("Test 3")
-        test3.addActionListener {
-
-            //manager.changeWindow()
-            val f = manager.tabManager.getSelected()
-            //f.requestFocus()
-            f.client.getApplet().repaint()
-            //f.client.applet.focusTraversalKeysEnabled = true
-        }
-
-
-        val test4 = JMenuItem("Draw")
-        test4.addActionListener {
-
-            //manager.changeWindow()
-            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            //manager.setScript(MouseIntercept())
-            //f.client.applet.focusTraversalKeysEnabled = true
-        }
-
-        menu.add(mouse)
         menu.add(widgetExplorer)
         menu.add(varbitExplorer)
-        menu.add(test3)
-        menu.add(test4)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
 
