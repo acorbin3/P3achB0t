@@ -64,6 +64,7 @@ class GroundItem(
     suspend fun take() {
         val inventoryCount = ctx?.client?.let { ctx!!.inventory.getCount() }
         if (interact("Take")) {
+            ctx?.inventory?.addItemToTrack(this.id)
         }
     }
 

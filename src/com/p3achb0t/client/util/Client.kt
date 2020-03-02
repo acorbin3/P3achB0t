@@ -1,8 +1,5 @@
 package com.p3achb0t.client.util
 
-//import com.p3achb0t.scripts.ZulrahMain
-
-
 import org.zeromq.ZMQ
 
 class Client{
