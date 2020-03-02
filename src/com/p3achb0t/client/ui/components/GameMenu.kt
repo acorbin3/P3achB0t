@@ -1,10 +1,12 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.analyser.ScriptClasses
+import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
-import com.p3achb0t.scripts.TutorialIsland
 import com.p3achb0t.scripts_debug.varbitexplorer.VarBitExplorer
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
+import java.util.*
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -15,6 +17,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         focusTraversalKeysEnabled = true
         add(accountMenu())
         add(debugMenu())
+        add(scriptsMenu())
         add(addClientMenu())
     }
 
@@ -31,19 +34,41 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         return menu
     }
 
-    private fun debugMenu() : JMenu {
+
+    private fun scriptsMenu(): JMenu{
         val menu = JMenu("Scripts")
 
+        //////////////Adding private scripts///////////////////
+        addScriptsMenus("com/p3achb0t/scripts_private", menu)
+        addScriptsMenus("com/p3achb0t/scripts", menu)
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        return menu
+    }
 
-        val menuItem = JMenuItem("Run Tutorial Island")
-        menuItem.addActionListener {
+    private fun addScriptsMenus(scriptsPath: String, menu: JMenu) {
+        val classes: ArrayList<Class<*>> = ArrayList()
 
-            val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
-            val manager = game.client.getScriptManager()
-            manager.setUpScript(TutorialIsland())
+        classes.addAll(ScriptClasses.findAllClasses(scriptsPath))
+        //        println("Classes: ")
+        classes.forEach { clazz ->
+            val nameSplit = clazz.name.split(".")
+            val name = nameSplit[nameSplit.size - 2]
+            val menuItem1 = JMenuItem("Run $name")
+            println("Adding menu Item: $name")
+            menuItem1.addActionListener {
+
+                val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+                val manager = game.client.getScriptManager()
+                manager.setUpScript(clazz.newInstance() as AbstractScript)
+
+            }
+            menu.add(menuItem1)
 
         }
-        menu.add(menuItem)
+    }
+
+    private fun debugMenu() : JMenu {
+        val menu = JMenu("Debug")
 
 
 
@@ -54,6 +79,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
             //widget exporer should always be the first in the list of debug scripts
             WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
         }
+        menu.add(widgetExplorer)
 
         val varbitExplorer = JMenuItem("Open Varbit Explorer")
         varbitExplorer.addActionListener {
@@ -62,10 +88,6 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
             VarBitExplorer(Context(game.client.getScriptManager().client))
         }
-
-
-
-        menu.add(widgetExplorer)
         menu.add(varbitExplorer)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
