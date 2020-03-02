@@ -9,8 +9,8 @@ import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Stats
+import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
-import com.p3achb0t.client.managers.tracker.FBDataBase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ class ScriptManager(val client: Any) {
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
-    var blockFocus = false
+    var blockFocus = false // Dont delete this. Its used within the injected functions
     val debugScripts = mutableListOf<DebugScript>()
 
     var loginHandler = LoginHandler(client = client as Client)
@@ -44,9 +44,9 @@ class ScriptManager(val client: Any) {
     lateinit var dbUpdaterThread: Job
     val runtime = StopWatch()
     val lastCheck = StopWatch()
-    val fiveMin = 5 * 60 *1000
+    val fiveMin = Time.getMinInMils(5)
     var gameLoopI = 0
-    val db : FBDataBase = FBDataBase()
+
 
     var breaking = false
     var breakReturnTime = 0L
@@ -126,7 +126,7 @@ class ScriptManager(val client: Any) {
                         if(!wasPrevZero) {
                             if (diff != null && diff > 0) {
                                 println("Updating ${skill.name} wiht diff: $diff")
-                                db.updateStat(loginHandler.account.id, sessionID, skill, diff)
+                                Manager.db.updateStat(loginHandler.account.id, sessionID, skill, diff)
                             }
                         }
                     }
@@ -143,7 +143,7 @@ class ScriptManager(val client: Any) {
                         prevTotalTrackedItemCount[itemID] = count
                     }
                     if(diff > 0) {
-                        db.updateItemCount(
+                        Manager.db.updateItemCount(
                                 loginHandler.account.id,
                                 sessionID,
                                 loginHandler.ctx?.cache?.getItemName(itemID) ?: "",
