@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui
 
+import com.p3achb0t.Main
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.ScriptClasses
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
@@ -14,6 +15,7 @@ import java.awt.Dimension
 import java.io.File
 import java.nio.file.Paths
 import java.util.jar.JarFile
+import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 import javax.swing.JFrame
 
@@ -24,7 +26,14 @@ class GameWindow : JFrame() {
 
     init {
 
-        iconImage =  ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
+        iconImage = if( File("resources\\icons\\toppng.com-download-peach-690x523.png").exists()) {
+            ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
+        }else{
+            val stream = Main.javaClass.getResourceAsStream("/toppng.com-download-peach-690x523.png")
+            ImageIO.read(stream)
+//            iconImage
+        }
+//        iconImage =  ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         //preferredSize = Dimension(765, 503)
@@ -42,6 +51,7 @@ class GameWindow : JFrame() {
         println("About to load scripts")
         val privateScripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts_private")
         privateScripts.forEach {
+            println("private: ${it.packageName}")
             val nameSplit = it.name.split(".")
             val name = nameSplit[nameSplit.size - 2]
             println("Loading $name")
@@ -49,6 +59,7 @@ class GameWindow : JFrame() {
         }
         val scripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts")
         scripts.forEach {
+            println("normal: ${it.packageName}")
             val nameSplit = it.name.split(".")
             val name = nameSplit[nameSplit.size - 2]
             println("Loading $name")

@@ -191,6 +191,12 @@
                     <include>hooks_188.json</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>resources/icons</directory>
+                <includes>
+                    <include>toppng.com-download-peach-690x523.png</include>
+                </includes>
+            </resource>
         </resources>
         <sourceDirectory>src</sourceDirectory>
         <pluginManagement>
