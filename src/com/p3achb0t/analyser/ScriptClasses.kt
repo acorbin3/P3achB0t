@@ -33,8 +33,6 @@ object ScriptClasses {
                                     && classNode.superName.contains("AbstractScript")
                                     && classNode.name.replace(".class", "")
                                             .split("/").last() !in defaultScripts) {
-                                println("Found abstract Class! ${jarEntry.name}")
-                                println("\t ${classNode.name}")
 
                                 //We want to make sure we are looking at the right package. So we compare each director
                                 // structure to make sure it matches given the diresred class path
