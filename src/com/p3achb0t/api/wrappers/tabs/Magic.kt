@@ -13,7 +13,8 @@ class Magic(val ctx: Context) {
         enum class Spells(val widgetID: Int, val arg1: Int) {
             WIND_STRIKE(6,14286854),
             CRUMBLE_UNDEAD(27, 14286875),
-            HIGH_LEVEL_ALCHEMY(39, 14286887)
+            HIGH_LEVEL_ALCHEMY(39, 14286887),
+            HOME_TELEPORT(5, 14286853)
         }
     }
 

@@ -50,16 +50,19 @@ class Util {
             }
             val ins: InputStream = file.inputStream()
             val content = ins.readBytes().toString(Charset.defaultCharset())
+            println(content)
             return content
 
         }
 
         fun createDefaultConfig(path: String){
             val file = File(path)
-            println(file.path)
-            println(file.parent)
+            println("Parth: " + file.path)
+            println("Parent: " + file.parent)
+            println("Full path: " + file.absoluteFile)
 
             File(file.parent).mkdirs()
+            println()
             file.createNewFile()
             val gsonPretty = GsonBuilder().setPrettyPrinting().create()
             val jsonAccountPretty = gsonPretty.toJson(arrayOf(Account()))

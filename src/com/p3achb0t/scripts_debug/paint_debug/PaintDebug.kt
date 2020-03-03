@@ -3,6 +3,7 @@ package com.p3achb0t.scripts_debug.paint_debug
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
 import com.p3achb0t.api.wrappers.utils.Calculations
+import com.p3achb0t.scripts_private.Zulrah.zulrahPaintDebug
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -18,6 +19,7 @@ class PaintDebug: DebugScript() {
         var isCanWalkDebug = false
         var isProjectileDebug = false
         val scriptName = "PaintDebug"
+        var isZulrah = true
         fun drawRect(g: Graphics, rect: Rectangle) {
             g.drawRect(rect.x, rect.y, rect.width, rect.height)
         }
@@ -42,6 +44,10 @@ class PaintDebug: DebugScript() {
 
             if (isDebugTextOn)
                 drawDebugText(g, ctx)
+
+            if (isZulrah)
+                zulrahPaintDebug(g, ctx)
+
 
             if (ctx.client.getGameState() == 30) {
                 if(isGameObjectOn)

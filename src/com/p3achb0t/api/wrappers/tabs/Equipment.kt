@@ -58,6 +58,19 @@ class Equipment(val ctx: Context) {
         return Contains
     }
 
+    fun ContainsAny(id: ArrayList<Int>): Boolean {
+        var Contains = false
+        Slot.values().forEach {
+            for (i in id) {
+                if(getItemAtSlot(it)?.id == i){
+                    Contains = true
+                }
+            }
+
+        }
+        return Contains
+    }
+
     fun ContainsAll(id: ArrayList<Int>): Boolean {
         var Contains = true
         id.forEach {

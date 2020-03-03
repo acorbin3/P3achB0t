@@ -78,21 +78,7 @@ class Bank(val ctx: Context) {
 
     }
 
-    suspend fun openAtGe() {
-        if (!isOpen()) {
-            val bank = ctx.gameObjects.find(10060)
-            if (!ctx.bank.isOpen() && !bank.isEmpty()) {
-                bank[0].click()
-                Utils.waitFor(5, object : Utils.Condition {
-                    override suspend fun accept(): Boolean {
-                        delay(100)
-                        return ctx.bank.isOpen()
-                    }
-                })
-            }
-            delay(300)
-        }
-    }
+
 
     suspend fun close() {
         if (isOpen()) {
