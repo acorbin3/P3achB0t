@@ -1,7 +1,6 @@
 package com.p3achb0t.interfaces
 
 import com.p3achb0t.Main
-import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.ScriptManifest
@@ -12,6 +11,7 @@ import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.Manager
+import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
 import com.p3achb0t.scripts.tutorial_island.TutorialIsland
 import kotlinx.coroutines.GlobalScope
@@ -33,7 +33,7 @@ class ScriptManager(val client: Any) {
     var blockFocus = false // Dont delete this. Its used within the injected functions
     val debugScripts = mutableListOf<DebugScript>()
 
-    var loginHandler = LoginHandler(client = client as Client)
+    var loginHandler = LoginHandler()
     var sessionID = UUID.randomUUID().toString()
 
     var x = 800
@@ -59,6 +59,10 @@ class ScriptManager(val client: Any) {
         s.initialize(client)
         loginHandler.ctx = s.ctx
         this.script = s
+    }
+
+    fun setLoginHandlerAccount(account: Account){
+        loginHandler.account = account
     }
 
     suspend fun loop() {
