@@ -1,8 +1,10 @@
 package com.p3achb0t.interfaces
 
+import com.p3achb0t.Main
 import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.user_inputs.DoActionParams
@@ -11,6 +13,7 @@ import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
+import com.p3achb0t.scripts.tutorial_island.TutorialIsland
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -20,6 +23,7 @@ import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.util.*
 import kotlin.random.Random
+import kotlin.reflect.full.findAnnotation
 
 class ScriptManager(val client: Any) {
 
@@ -163,6 +167,20 @@ class ScriptManager(val client: Any) {
     }
 
     fun start() {
+        if(script.validate){
+            Main.validationKey
+            val annotations = TutorialIsland::class.findAnnotation<ScriptManifest>()
+            println("name: ${annotations?.name} author: ${annotations?.author} ")
+            if(Manager.db.validateScript(annotations?.name ?:"", Main.validationKey)){
+                println("Validation success for script:${annotations?.name} key: ${Main.validationKey}")
+            }else{
+                println("Failed to provide a validation key. Be sure to pass in they key from the" +
+                        " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")
+                return
+            }
+
+
+        }
 
         sessionID = UUID.randomUUID().toString()
 //        mouse.inputBlocked(true)

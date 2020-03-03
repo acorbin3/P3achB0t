@@ -28,10 +28,10 @@ class TabManager(var manager: Manager) : JTabbedPane() {
 
         clients.add(gameTab)
         if(JarLoader.proxy.length > 9) {
-            addTab("${JarLoader.proxy.substring(7)}", gameTab)
+            addTab(account.script + "-" +JarLoader.proxy.substring(7), gameTab)
         }
         if(JarLoader.proxy.length <= 9) {
-            addTab("None", gameTab)
+            addTab("${account.script}-None", gameTab)
         }
 
         if (tabCount == 1) {
@@ -40,7 +40,7 @@ class TabManager(var manager: Manager) : JTabbedPane() {
             selectedIndex = tabCount-1
         }
         gameTab.revalidate()
-        setTabComponentAt(selectedIndex, NewTab(this))
+        setTabComponentAt(selectedIndex, NewTab(this,account))
         gameTab.revalidate()
 
         //Here is a place to add some debug script since the client has been loaded

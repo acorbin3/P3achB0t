@@ -51,13 +51,29 @@ class GameMenu(var manager: Manager) : JMenuBar() {
         classes.addAll(ScriptClasses.findAllClasses(scriptsPath))
         //        println("Classes: ")
         classes.forEach { clazz ->
-            val nameSplit = clazz.name.split(".")
-            val name = nameSplit[nameSplit.size - 2]
-            val menuItem1 = JMenuItem("Run $name")
-            println("Adding menu Item: $name")
+
+            var scriptName = ""
+            var category = ""
+            var author = ""
+            clazz.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    val splitManifest = manifest.split(",")
+                    category = splitManifest[0].replace("category=", "")
+                    scriptName = splitManifest[1].replace("name=", "")
+                    author = splitManifest[2].replace("author=", "")
+                }
+            }
+            val menuItem1 = JMenuItem("Run $scriptName")
+            println("Adding menu Item: $scriptName")
             menuItem1.addActionListener {
 
                 val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+                game.name = scriptName
                 val manager = game.client.getScriptManager()
                 manager.setUpScript(clazz.newInstance() as AbstractScript)
 
