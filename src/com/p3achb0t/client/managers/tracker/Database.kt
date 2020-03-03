@@ -53,6 +53,15 @@ class FBDataBase {
         return userSkillOrItemCount[id].toString()
     }
 
+    fun setStartTime(accountID: String, sessionID: String){
+
+    }
+    fun setScriptName(accountID: String, sessionID: String, script: String){
+
+    }
+    fun setLastUpdated(accountID: String, sessionID: String){
+
+    }
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: Int) {
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
@@ -81,5 +90,28 @@ class FBDataBase {
         userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
         userDocs[accountID]?.collection("Items")?.document(itemName)?.collection("entry")
                 ?.document(messageID)?.set(ItemInfo(date.toString(),count))
+    }
+
+    fun validateScript(scriptName: String, key: String):Boolean {
+        try {
+
+            val validationDoc = db.collection("validation").document(scriptName).get().get()
+
+            val keys = validationDoc.data?.get("keys") as List<String>
+
+            return keys.contains(key)
+        }catch (e: Exception){
+            println("ERROR: validating script failed for $scriptName key: $key")
+
+        }
+        return false
+    }
+}
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val db = FBDataBase()
+        println("key found: " + db.validateScript("Zulrah","test"))
+        println("key found: " + db.validateScript("Zulrah","df83jf76dh"))
     }
 }

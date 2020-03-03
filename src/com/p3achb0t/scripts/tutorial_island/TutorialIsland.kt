@@ -27,6 +27,9 @@ private val LOGS_ID_2511 = 2511
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
     var currentJob = ""
+    init {
+        validate = true
+    }
     override suspend fun loop() {
 
         run()

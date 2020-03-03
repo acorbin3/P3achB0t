@@ -13,6 +13,7 @@ class Manager {
 
     companion object{
         val db : FBDataBase = FBDataBase()
+
     }
 
     val accountManager = AccountManager() //This will load in the accounts

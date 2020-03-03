@@ -27,6 +27,13 @@ class LoadScripts {
 
 
     fun getScript(name: String) : AbstractScript {
+        if(name !in scripts){
+            println("ERROR: Didnt find $name. Be sure to use the name from the ScriptManafest")
+            println("Possible names:")
+            scripts.forEach { t, u ->
+                println(t)
+            }
+        }
         return when {
             name in scripts -> {
                 scripts[name]!!

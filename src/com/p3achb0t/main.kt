@@ -13,8 +13,22 @@ import javax.swing.plaf.FontUIResource
 
 
 object Main {
+
+    var validationKey = ""
     @JvmStatic
     fun main(args: Array<String>) {
+
+        var getNextKey = false
+        args.iterator().forEach {
+            if(getNextKey){
+                validationKey = it
+            }
+            if(it == "-key"){
+                getNextKey = true
+            }
+            println(it)
+        }
+        println("validation key: $validationKey")
 
         setup()
         setLookAndFeel(FlatDarkLaf())

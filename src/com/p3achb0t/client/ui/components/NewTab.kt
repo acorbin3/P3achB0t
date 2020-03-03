@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
 import java.awt.Color
 import java.awt.Dimension
@@ -13,7 +14,7 @@ import javax.swing.border.EmptyBorder
 import javax.swing.border.EtchedBorder
 
 
-class NewTab(val tabs: TabManager) : JPanel() {
+class NewTab(val tabs: TabManager, var account: Account) : JPanel() {
 
     init {
         focusTraversalKeysEnabled = true
@@ -25,13 +26,16 @@ class NewTab(val tabs: TabManager) : JPanel() {
     }
 
     private fun addLabel() {
+        val username = account.username.split("@")[0]
         if(JarLoader.proxy.length > 9) {
-            val label = JLabel("${JarLoader.proxy.substring(7)}")
+            val proxy = JarLoader.proxy.substring(7).split(":")[0]
+
+            val label = JLabel("${username}-${proxy}")
             label.border = EmptyBorder(0, 0, 0, 10)
             add(label)
         }
         if(JarLoader.proxy.length <= 9) {
-            val label = JLabel("None")
+            val label = JLabel("${username}-None")
             label.border = EmptyBorder(0, 0, 0, 10)
             add(label)
         }

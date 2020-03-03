@@ -13,6 +13,7 @@ import com.p3achb0t.client.util.Util
 import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
+import java.lang.Thread.sleep
 import java.nio.file.Paths
 import java.util.jar.JarFile
 import javax.imageio.ImageIO
@@ -51,27 +52,54 @@ class GameWindow : JFrame() {
         println("About to load scripts")
         val privateScripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts_private")
         privateScripts.forEach {
-            println("private: ${it.packageName}")
-            val nameSplit = it.name.split(".")
-            val name = nameSplit[nameSplit.size - 2]
-            println("Loading $name")
-            manager.loadedScripts.addScript(name, it.newInstance() as AbstractScript)
+            var scriptName = ""
+            var category = ""
+            var author = ""
+            it.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    println("Looking at manifest: $manifest")
+                    val splitManifest = manifest.split(",")
+                    category = splitManifest[0].replace("category=", "")
+                    scriptName = splitManifest[1].replace("name=", "").strip()
+                    author = splitManifest[2].replace("author=", "")
+                }
+            }
+            println("Loading $scriptName")
+            manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
         }
         val scripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts")
         scripts.forEach {
-            println("normal: ${it.packageName}")
-            val nameSplit = it.name.split(".")
-            val name = nameSplit[nameSplit.size - 2]
-            println("Loading $name")
-            manager.loadedScripts.addScript(name, it.newInstance() as AbstractScript)
+            var scriptName = ""
+            var category = ""
+            var author = ""
+            it.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    println("Looking at manifest: $manifest")
+                    val splitManifest = manifest.split(",")
+                    category = splitManifest[0].replace("category=", "")
+                    scriptName = splitManifest[1].replace("name=", "").strip()
+                    author = splitManifest[2].replace("author=", "")
+                }
+            }
+            println("Loading $scriptName")
+            manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
         }
-        //Load all scripts
-//        manager.loadedScripts.addScript("TutorialIsland", TutorialIsland())
 
         //Load each account in a different tab
         if(manager.accountManager.accounts.isNotEmpty()) {
             manager.accountManager.accounts.forEach {
                 manager.tabManager.addInstance(account = it)
+                sleep(1000*5)
             }
         }else{
             manager.tabManager.addInstance()
