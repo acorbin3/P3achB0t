@@ -2,7 +2,6 @@ package com.p3achb0t.scripts.tutorial_island
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.LoggingIntoAccount
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.tabs.Equipment
@@ -45,11 +44,6 @@ class TutorialIsland: AbstractScript()  {
         }
         println("Running Start")
         println("Running Start2")
-        LoggingIntoAccount(ctx)
-        //Lets wait till the client is logged in
-        while (ctx.client.getGameState() != 30) {
-            delay(100)
-        }
     }
 
     override fun stop() {
