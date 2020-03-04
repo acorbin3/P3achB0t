@@ -1,11 +1,14 @@
 package com.p3achb0t.client.ui.components
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.scripts.NullScript
 import com.p3achb0t.scripts_debug.WidgetExplorerDebug
 import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
@@ -42,6 +45,11 @@ class TabManager(var manager: Manager) : JTabbedPane() {
         gameTab.revalidate()
         setTabComponentAt(selectedIndex, NewTab(this,account))
         gameTab.revalidate()
+
+        gameTab.client.getScriptManager().ctx = Context(gameTab.client.getScriptManager().client)
+        GlobalScope.launch {
+            gameTab.client.getScriptManager().ctx.cache.updateCache()
+        }
 
         //Here is a place to add some debug script since the client has been loaded
         gameTab.client.addDebugScript(WidgetExplorerDebug.scriptName)

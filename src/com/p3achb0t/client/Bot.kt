@@ -62,9 +62,6 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
         applet.validate()
         applet.init()
         applet.validate()
-
-
-
     }
 
     fun getScriptManager() : ScriptManager {

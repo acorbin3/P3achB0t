@@ -7,8 +7,8 @@ abstract class AbstractScript {
     lateinit var ctx: Context
     var validate: Boolean = false
 
-    fun initialize(client: Any) {
-        ctx = Context(client)
+    fun initialize(ctx: Context) {
+        this.ctx = ctx
     }
 
     abstract suspend fun loop()

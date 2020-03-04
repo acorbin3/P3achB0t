@@ -25,7 +25,8 @@ class Cache {
         lateinit var npcCacheInfo: Map<Int,NPCCacheType>
         lateinit var itemCacheInfo: Map<Int,ItemCacheType>
     }
-    init {
+
+    suspend fun updateCache(){
         // Update Cache
         if(!cacheUpdated) {
             try {
@@ -40,8 +41,12 @@ class Cache {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+            println("loading NPC info from cache")
             npcCacheInfo = getNPCInfo()
+            println("Complete loading NPC info from cache")
+            println("Loading item info from cache")
             itemCacheInfo = getItemInfo()
+            println("Complete item info from cache")
         }
     }
 

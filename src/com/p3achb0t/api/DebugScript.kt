@@ -6,8 +6,8 @@ abstract class DebugScript {
     lateinit var ctx: Context
     var scriptName = ""
 
-    fun initialize(client: Any) {
-        ctx = Context(client)
+    fun initialize(ctx: Context) {
+        this.ctx = ctx
     }
 
     abstract fun draw(g: Graphics)

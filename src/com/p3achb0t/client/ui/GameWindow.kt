@@ -10,7 +10,6 @@ import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.ui.components.GameMenu
 import com.p3achb0t.client.util.Util
-import kotlinx.coroutines.delay
 import java.awt.Dimension
 import java.io.File
 import java.lang.Thread.sleep
@@ -99,7 +98,18 @@ class GameWindow : JFrame() {
         if(manager.accountManager.accounts.isNotEmpty()) {
             manager.accountManager.accounts.forEach {
                 manager.tabManager.addInstance(account = it)
-                sleep(1000*5)
+
+                sleep(1000*3)
+                //Start scripts
+                val curTab = manager.tabManager.clients.last()
+                while(curTab.client.getScript().ctx.client.getGameState() != 10){
+                    sleep(50)
+                }
+                //Only start the script if its a real script. otherwise we dont want to start the null script
+                if(it.script.isNotEmpty() && it.startAutomatically) {
+                    curTab.client.startScript()
+                    sleep(8000)
+                }
             }
         }else{
             manager.tabManager.addInstance()
@@ -108,17 +118,6 @@ class GameWindow : JFrame() {
 
     suspend fun run() {
         //Waiting till game has been loaded and then revalidate
-        manager.tabManager.clients.forEach {
-            //Check to see if we are ready to login
-            while(it.client.getScript().ctx.client.getGameState() != 10){
-                delay(50)
-            }
-            //Only start the script if its a real script. otherwise we dont want to start the null script
-            if(it.account.script.isNotEmpty() && it.account.startAutomatically) {
-                it.client.startScript()
-                delay(5000)
-            }
-        }
 
         println("Validating client")
         for (i in 0..10) {

@@ -1,10 +1,7 @@
 package com.p3achb0t.interfaces
 
 import com.p3achb0t.Main
-import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.DebugScript
-import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.api.StopWatch
+import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.utils.Time
@@ -50,14 +47,14 @@ class ScriptManager(val client: Any) {
     val lastCheck = StopWatch()
     val fiveMin = Time.getMinInMils(5)
     var gameLoopI = 0
+    lateinit var ctx: Context
 
 
     var breaking = false
     var breakReturnTime = 0L
 
     fun setUpScript(s: AbstractScript) {
-        s.initialize(client)
-        loginHandler.ctx = s.ctx
+        s.initialize(this.ctx)
         this.script = s
     }
 
@@ -101,9 +98,9 @@ class ScriptManager(val client: Any) {
         }
         //Track stats
         while(isRunning) {
-            if (loginHandler.ctx?.worldHop?.isLoggedIn!!) {
-                loginHandler.ctx?.stats?.updateStats()
-                loginHandler.ctx?.inventory?.updateTrackedItems()
+            if (ctx.worldHop.isLoggedIn) {
+                ctx.stats.updateStats()
+                ctx.inventory.updateTrackedItems()
             }
             delay(300)
         }
@@ -116,20 +113,20 @@ class ScriptManager(val client: Any) {
             prevXP[it] = 0
         }
         while(isRunning){
-            if(loginHandler.ctx?.worldHop?.isLoggedIn!!) {
+            if(ctx.worldHop.isLoggedIn) {
 
                 //Do stats tracking
                 //Initialize previous db
-                if (loginHandler.ctx?.stats?.curXP?.get(Stats.Skill.ATTACK) == 0) {
+                if (ctx.stats.curXP.get(Stats.Skill.ATTACK) == 0) {
                     Stats.Skill.values().iterator().forEach {
-                        prevXP[it] = loginHandler.ctx?.stats?.curXP?.get(it)
+                        prevXP[it] = ctx.stats.curXP[it]
                     }
 
                 } else {
                     Stats.Skill.values().iterator().forEach { skill ->
-                        val diff = loginHandler.ctx?.stats?.curXP?.get(skill)?.minus(prevXP[skill]!!)
+                        val diff = ctx.stats.curXP[skill]?.minus(prevXP[skill]!!)
                         val wasPrevZero = prevXP[skill] == 0
-                        prevXP[skill] = loginHandler.ctx?.stats?.curXP?.get(skill)
+                        prevXP[skill] = ctx.stats.curXP[skill]
                         //Skip the initial load
                         if(!wasPrevZero) {
                             if (diff != null && diff > 0) {
@@ -141,7 +138,7 @@ class ScriptManager(val client: Any) {
                 }
 
                 //Do inventory Tracking
-                loginHandler.ctx?.inventory?.totalTrackedItemCount?.forEach { itemID, count ->
+                ctx.inventory.totalTrackedItemCount.forEach { itemID, count ->
                     var diff: Int = 0
                     if(itemID in prevTotalTrackedItemCount){
                         diff = count.minus(prevTotalTrackedItemCount[itemID]!!)
@@ -154,7 +151,7 @@ class ScriptManager(val client: Any) {
                         Manager.db.updateItemCount(
                                 loginHandler.account.id,
                                 sessionID,
-                                loginHandler.ctx?.cache?.getItemName(itemID) ?: "",
+                                ctx.cache.getItemName(itemID),
                                 diff
                         )
                     }
@@ -162,7 +159,7 @@ class ScriptManager(val client: Any) {
             }
 
             //Only delay long if we have initialized
-            if(loginHandler.ctx?.worldHop?.isLoggedIn!! && prevXP[Stats.Skill.ATTACK]!! > 0) {
+            if(ctx.worldHop.isLoggedIn && prevXP[Stats.Skill.ATTACK]!! > 0) {
                 delay(Time.getMinInMils(15))
             }else{
                 delay(1000)
@@ -198,7 +195,7 @@ class ScriptManager(val client: Any) {
             dbUpdater()
         }
         thread = GlobalScope.launch {
-            loginHandler.ctx?.stats?.runtime?.reset()
+            ctx.stats.runtime.reset()
             runtime.reset()
             lastCheck.reset()
 
@@ -213,7 +210,7 @@ class ScriptManager(val client: Any) {
                         val breakTime = Random.nextInt(loginHandler.account.minBreakTimeSec,loginHandler.account.maxBreakTimeSec)
                         println("Hit our break handler. Logging out")
                         delay(5000) // Some times its good to add a little delay
-                        loginHandler.ctx?.worldHop?.logout()
+                        ctx.worldHop.logout()
                         println("Delaying ${1000*breakTime.toLong()}ms")
                         breakReturnTime = System.currentTimeMillis() + 1000*breakTime.toLong()
                         breaking = true
@@ -226,19 +223,20 @@ class ScriptManager(val client: Any) {
                 }
                 if (!paused
                         && loginHandler.account.username.isNotEmpty()
-                        && loginHandler.isAtHomeScreen()) {
-                    loginHandler.login()
+                        && loginHandler.isAtHomeScreen(ctx)) {
+                    println("Account: " + loginHandler.account)
+                    loginHandler.login(ctx)
                 }
 
-                if(loginHandler.isLoggedIn()){
-                    if(loginHandler.ctx?.clientMode?.getMode() == ClientMode.Companion.ModeType.FixedMode){
+                if(loginHandler.isLoggedIn(ctx)){
+                    if(ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode){
                         //Open options
                         //argument0:-1, argument1:10747944, argument2:57, argument3:1, action:Options, targetName:, mouseX:712, mouseY:585, argument8:-1223904486
-                        loginHandler.ctx?.mouse?.doAction(DoActionParams(-1, 35913765, 57, 1, "Options", "", 0, 0))
+                        ctx.mouse.doAction(DoActionParams(-1, 35913765, 57, 1, "Options", "", 0, 0))
                         delay(1000)
                         //set re-size mode
                         //argument0:-1, argument1:17104930, argument2:57, argument3:1, action:Resizable mode, targetName:, mouseX:688, mouseY:362, argument8:-1223904486
-                        loginHandler.ctx?.mouse?.doAction(DoActionParams(-1, 17104930, 57, 1, "World Switcher", "", 0, 0))
+                        ctx.mouse.doAction(DoActionParams(-1, 17104930, 57, 1, "World Switcher", "", 0, 0))
                         delay(1000)
                     }
                 }
@@ -306,7 +304,7 @@ class ScriptManager(val client: Any) {
     }
 
     fun addDebugPaint(debugScript: DebugScript) {
-        debugScript.initialize(client)
+        debugScript.initialize(ctx)
         debugScripts.add(debugScript)
     }
 
