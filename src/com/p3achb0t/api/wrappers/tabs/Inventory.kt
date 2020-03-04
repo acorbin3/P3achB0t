@@ -27,7 +27,7 @@ class Inventory(val ctx: Context? = null) {
     val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory
     fun addItemToTrack(id: Int) {
         if (itemsToTrack.none { it.id == id }) {
-            itemsToTrack.add(Item(id, ctx?.cache?.getItemName(id) ?: ""))
+            itemsToTrack.add(Item(id, ctx?.cache?.getItemName(id) ?: "$id"))
             totalTrackedItemCount[id] = 0
             val curCount = getCount(id)
             val stackedCount = getCount(id, true)

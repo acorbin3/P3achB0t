@@ -185,6 +185,7 @@ class ScriptManager(val client: Any) {
 
         sessionID = UUID.randomUUID().toString()
 //        mouse.inputBlocked(true)
+        Manager.db.initalScriptLoad(loginHandler.account.username, sessionID, loginHandler.account.script)
         isRunning = true
         //This the script thread.
 

@@ -53,14 +53,26 @@ class FBDataBase {
         return userSkillOrItemCount[id].toString()
     }
 
-    fun setStartTime(accountID: String, sessionID: String){
-
-    }
-    fun setScriptName(accountID: String, sessionID: String, script: String){
-
+    fun initalScriptLoad(accountID: String, sessionID: String, script: String){
+        if (accountID !in userDocs) {
+            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        }
+        val lastUpdated = mutableMapOf<String,String>()
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        lastUpdated["startTime"] = date.toString()
+        lastUpdated["script"] = script
+        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
     }
     fun setLastUpdated(accountID: String, sessionID: String){
-
+        if (accountID !in userDocs) {
+            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        }
+        val lastUpdated = mutableMapOf<String,String>()
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        lastUpdated["lastUpdateTime"] = date.toString()
+        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
     }
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: Int) {
         if (accountID !in userDocs) {
