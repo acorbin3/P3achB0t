@@ -31,6 +31,7 @@ class ScriptManager(val client: Any) {
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var scriptName: String = ""
     var blockFocus = false // Dont delete this. Its used within the injected functions
     val debugScripts = mutableListOf<DebugScript>()
 
@@ -58,6 +59,9 @@ class ScriptManager(val client: Any) {
     var breakReturnTime = 0L
 
     fun setUpScript(s: AbstractScript) {
+        scriptName = s::class.java.name.split(".").last()
+        println("Setting up script: $scriptName")
+
         s.initialize(this.ctx)
         this.script = s
     }
@@ -135,7 +139,7 @@ class ScriptManager(val client: Any) {
                         if(!wasPrevZero) {
                             if (diff != null && diff > 0) {
                                 println("Updating ${skill.name} wiht diff: $diff")
-                                Manager.db.updateStat(loginHandler.account.id, sessionID, skill, diff)
+                                Manager.db.updateStat(loginHandler.account.username, sessionID, skill, diff)
                             }
                         }
                     }
@@ -153,7 +157,7 @@ class ScriptManager(val client: Any) {
                     }
                     if(diff > 0) {
                         Manager.db.updateItemCount(
-                                loginHandler.account.id,
+                                loginHandler.account.username,
                                 sessionID,
                                 ctx.cache.getItemName(itemID),
                                 diff
@@ -164,7 +168,7 @@ class ScriptManager(val client: Any) {
 
             //Only delay long if we have initialized
             if(ctx.worldHop.isLoggedIn && prevXP[Stats.Skill.ATTACK]!! > 0) {
-                delay(Time.getMinInMils(15))
+                delay(Time.getMinInMils(30))
             }else{
                 delay(1000)
             }
@@ -185,6 +189,12 @@ class ScriptManager(val client: Any) {
             }
 
 
+        }
+        if(loginHandler.account.username.isEmpty()){
+            loginHandler.account.username = UUID.randomUUID().toString().substring(0,10)
+        }
+        if(loginHandler.account.script.isEmpty()){
+            loginHandler.account.script = scriptName
         }
 
         sessionID = UUID.randomUUID().toString()
