@@ -131,7 +131,7 @@ class ScriptManager(val client: Any) {
                         if(!wasPrevZero) {
                             if (diff != null && diff > 0) {
                                 println("Updating ${skill.name} wiht diff: $diff")
-                                Manager.db.updateStat(loginHandler.account.id, sessionID, skill, diff)
+                                Manager.db.updateStat(loginHandler.account.username, sessionID, skill, diff)
                             }
                         }
                     }
@@ -149,7 +149,7 @@ class ScriptManager(val client: Any) {
                     }
                     if(diff > 0) {
                         Manager.db.updateItemCount(
-                                loginHandler.account.id,
+                                loginHandler.account.username,
                                 sessionID,
                                 ctx.cache.getItemName(itemID),
                                 diff
@@ -181,6 +181,9 @@ class ScriptManager(val client: Any) {
             }
 
 
+        }
+        if(loginHandler.account.username.isEmpty()){
+            loginHandler.account.username = UUID.randomUUID().toString().substring(0,10)
         }
 
         sessionID = UUID.randomUUID().toString()
