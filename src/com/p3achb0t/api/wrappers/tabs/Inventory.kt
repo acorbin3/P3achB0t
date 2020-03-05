@@ -22,7 +22,7 @@ class Inventory(val ctx: Context? = null) {
     // only be called when an item is trying to be picked up
     data class Item(val id: Int, val name: String)
 
-    val itemsToTrack = ArrayList<Item>()
+    val  itemsToTrack = ArrayList<Item>()
     val totalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
     val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory
     fun addItemToTrack(id: Int) {

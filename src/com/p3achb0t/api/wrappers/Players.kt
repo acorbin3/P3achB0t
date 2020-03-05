@@ -14,10 +14,10 @@ class Players(val ctx: Context) {
            return try {
                ctx.client.getPlayers().forEachIndexed { index, player ->
                    if(player != null){
-                       println("player username = " + player.getUsername())
-                       println("Target name = " + playerName)
+                       println("player username = " + player.getUsername() + " length: " + player.getUsername().toString().length)
+                       println("Target name = " + playerName + " length " + playerName.length)
                    }
-                   if (player != null && player.getUsername().toString().contains(playerName.substring(0,playerName.length -2))) {
+                   if (player != null && player.getUsername().toString().contains(playerName.substring(0,2))) {
                        println("Found matched username = " +player.getUsername())
                        players.add(Player(player, ctx, index))
                    }

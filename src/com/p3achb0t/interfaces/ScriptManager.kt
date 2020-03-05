@@ -24,6 +24,10 @@ import kotlin.reflect.full.findAnnotation
 
 class ScriptManager(val client: Any) {
 
+    companion object {
+        var mule = false
+    }
+
     private val mouse = (client as IScriptManager).getMouse()
     private val keyboard = (client as IScriptManager).getKeyboard()
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
@@ -222,7 +226,7 @@ class ScriptManager(val client: Any) {
                     }
                     lastCheck.reset()
                 }
-                if (!paused
+                if (!paused && !mule
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen(ctx)) {
                     println("Account: " + loginHandler.account)

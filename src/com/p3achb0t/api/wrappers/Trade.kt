@@ -64,6 +64,35 @@ class Trade(val ctx: Context) {
         }
     }
 
+    suspend fun offerX(id: Int, count: Int){
+        if(isFirstScreenOpen()) {
+            var items = ctx.inventory.getAll()
+            var index = ctx.inventory.getfirstIndex(id)
+            out_loop@ for (it in items) {
+                if (it.id == id) {
+                    val doActionParams = DoActionParams(index, 22020096, 57, 5, "", "", 0, 0)
+                    ctx.mouse.overrideDoActionParams = true
+                    ctx.mouse.doAction(doActionParams)
+                    Utils.waitFor(3, object : Utils.Condition {
+                        override suspend fun accept(): Boolean {
+                            delay(100)
+                            val chatText =
+                                    ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
+                            val text = chatText?.getText()
+                            println(text + " " + chatText?.getIsHidden())
+                            return text?.equals("*") ?: false
+                        }
+                    })
+                    delay(Random.nextLong(189, 1076))
+                    ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
+                    delay(Random.nextLong(189, 1076))
+                }
+
+            }
+        }
+    }
+
+
     suspend fun acceptFirstScreen(){
         if(isFirstScreenOpen()) {
             val doActionParams = DoActionParams(-1, 21954570, 57, 1, "", "", 0, 0)
