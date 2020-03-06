@@ -49,7 +49,7 @@ class LoginHandler(var account: Account = Account()) {
             ctx.keyboard.release(KeyEvent.VK_DOWN)
         }
         ctx.keyboard.sendKeys(account.password, true, true)
-        Utils.waitFor(10, object : Utils.Condition {
+        Utils.waitFor(12, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
                 println("Current game state " + GameState.currentState(ctx).name)
@@ -57,6 +57,7 @@ class LoginHandler(var account: Account = Account()) {
             }
         })
         println("Game state == ${ctx.client.getGameState()}")
+        delay(2000)
 
 //        val ctx = Context(client)
         //Press red button
@@ -64,6 +65,8 @@ class LoginHandler(var account: Account = Account()) {
 
         println("Clicking button")
         WidgetItem(ctx.widgets.find(378,87),ctx = ctx).click()
+
+
 
     }
 
