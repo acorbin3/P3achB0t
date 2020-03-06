@@ -106,8 +106,8 @@ class ScriptManager(val client: Any) {
         //Track stats
         while(isRunning) {
             if (ctx.worldHop.isLoggedIn) {
-                ctx.stats.updateStats()
-                ctx.inventory.updateTrackedItems()
+//                ctx.stats.updateStats()
+//                ctx.inventory.updateTrackedItems()
             }
             delay(300)
         }
@@ -122,47 +122,47 @@ class ScriptManager(val client: Any) {
         while(isRunning){
             if(ctx.worldHop.isLoggedIn) {
 
-                //Do stats tracking
-                //Initialize previous db
-                if (ctx.stats.curXP.get(Stats.Skill.ATTACK) == 0) {
-                    Stats.Skill.values().iterator().forEach {
-                        prevXP[it] = ctx.stats.curXP[it]
-                    }
+//                //Do stats tracking
+//                //Initialize previous db
+//                if (ctx.stats.curXP.get(Stats.Skill.ATTACK) == 0) {
+//                    Stats.Skill.values().iterator().forEach {
+//                        prevXP[it] = ctx.stats.curXP[it]
+//                    }
+//
+//                } else {
+//                    Stats.Skill.values().iterator().forEach { skill ->
+//                        val diff = ctx.stats.curXP[skill]?.minus(prevXP[skill]!!)
+//                        val wasPrevZero = prevXP[skill] == 0
+//                        prevXP[skill] = ctx.stats.curXP[skill]
+//                        //Skip the initial load
+//                        if(!wasPrevZero) {
+//                            if (diff != null && diff > 0) {
+//                                println("Updating ${skill.name} wiht diff: $diff")
+//                                Manager.db.updateStat(loginHandler.account.username, sessionID, skill, diff)
+//                            }
+//                        }
+//                    }
+//                }
 
-                } else {
-                    Stats.Skill.values().iterator().forEach { skill ->
-                        val diff = ctx.stats.curXP[skill]?.minus(prevXP[skill]!!)
-                        val wasPrevZero = prevXP[skill] == 0
-                        prevXP[skill] = ctx.stats.curXP[skill]
-                        //Skip the initial load
-                        if(!wasPrevZero) {
-                            if (diff != null && diff > 0) {
-                                println("Updating ${skill.name} wiht diff: $diff")
-                                Manager.db.updateStat(loginHandler.account.username, sessionID, skill, diff)
-                            }
-                        }
-                    }
-                }
-
-                //Do inventory Tracking
-                ctx.inventory.totalTrackedItemCount.forEach { itemID, count ->
-                    var diff: Int = 0
-                    if(itemID in prevTotalTrackedItemCount){
-                        diff = count.minus(prevTotalTrackedItemCount[itemID]!!)
-                        prevTotalTrackedItemCount[itemID] = count
-                    }else{
-                        diff = count
-                        prevTotalTrackedItemCount[itemID] = count
-                    }
-                    if(diff > 0) {
-                        Manager.db.updateItemCount(
-                                loginHandler.account.username,
-                                sessionID,
-                                ctx.cache.getItemName(itemID),
-                                diff
-                        )
-                    }
-                }
+//                //Do inventory Tracking
+//                ctx.inventory.totalTrackedItemCount.forEach { itemID, count ->
+//                    var diff: Int = 0
+//                    if(itemID in prevTotalTrackedItemCount){
+//                        diff = count.minus(prevTotalTrackedItemCount[itemID]!!)
+//                        prevTotalTrackedItemCount[itemID] = count
+//                    }else{
+//                        diff = count
+//                        prevTotalTrackedItemCount[itemID] = count
+//                    }
+//                    if(diff > 0) {
+//                        Manager.db.updateItemCount(
+//                                loginHandler.account.username,
+//                                sessionID,
+//                                ctx.cache.getItemName(itemID),
+//                                diff
+//                        )
+//                    }
+//                }
             }
 
             //Only delay long if we have initialized
@@ -202,16 +202,16 @@ class ScriptManager(val client: Any) {
         isRunning = true
         //This the script thread.
 
-        statsThread = GlobalScope.launch {
-            trackStats()
-        }
-        dbUpdaterThread = GlobalScope.launch {
-            dbUpdater()
-        }
+//        statsThread = GlobalScope.launch {
+//            trackStats()
+//        }
+//        dbUpdaterThread = GlobalScope.launch {
+//            dbUpdater()
+//        }
         thread = GlobalScope.launch {
-            ctx.stats.runtime.reset()
-            runtime.reset()
-            lastCheck.reset()
+//            ctx.stats.runtime.reset()
+//            runtime.reset()
+//            lastCheck.reset()
 
             script.start()
             while (isRunning) {
@@ -276,12 +276,12 @@ class ScriptManager(val client: Any) {
     fun stop() {
         isRunning = false
         script.stop()
-        thread.cancel()
-        statsThread.cancel()
-        GlobalScope.launch {
-            thread.join()
-            statsThread.join()
-        }
+//        thread.cancel()
+//        statsThread.cancel()
+//        GlobalScope.launch {
+//            thread.join()
+//            statsThread.join()
+//        }
     }
 
     fun setGameImage(buffer: BufferedImage) {
