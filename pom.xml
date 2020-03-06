@@ -201,6 +201,14 @@
         <sourceDirectory>src</sourceDirectory>
         <pluginManagement>
             <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>2.19</version>
+                            <configuration>
+                                <argLine>-Xmx2048m</argLine>
+                            </configuration>
+                        </plugin>
                 <plugin>
                     <groupId>org.jetbrains.kotlin</groupId>
                     <artifactId>kotlin-maven-plugin</artifactId>
@@ -338,6 +346,7 @@
                     <mainClass>${main.class}</mainClass>
                     <executable>java</executable>
                     <arguments>
+
                         <argument>-classpath</argument>
                         <classpath/>
                         <argument>${main.class}</argument>

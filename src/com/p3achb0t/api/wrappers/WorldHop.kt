@@ -29,9 +29,7 @@ class WorldHop(val ctx: Context) {
     fun getCurrent(): Int{
         var World = 0
         try {
-            if(ctx.client.getWorldsCount() > 0) {
                 World = ctx.client.getWorldId()
-            }
         } catch (e: Exception) {
             println("World Exception")
         }
