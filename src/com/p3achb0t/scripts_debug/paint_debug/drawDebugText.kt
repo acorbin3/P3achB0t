@@ -3,8 +3,10 @@ package com.p3achb0t.scripts_debug.paint_debug
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.scripts_private.Zulrah.Combat
 import java.awt.Color
 import java.awt.Graphics
+
 
 data class DebugText(val text: String = "", val color: Color = Color.white)
 
@@ -12,12 +14,15 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
     val debugText = arrayListOf<DebugText>()
     if (true) {
+
         g.color = Color.white
         debugText.add(DebugText("hasFocus? x:${ctx.client.getHasFocus()}"))
         debugText.add(DebugText("Mouse x:${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
+
+
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
 //        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
 //        debugText.add(DebugText("Account status :${ctx.client.get__cq_aw()}"))
@@ -26,6 +31,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
             if(ctx.client.getGameState() == 30) {
                 debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
                 debugText.add(DebugText("World: ${ctx.client.getWorldId()}  Host: ${ctx.client.getWorldHost()}"))
+
 //                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
 //                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
@@ -88,4 +94,5 @@ fun drawDebugText(g: Graphics, ctx: Context) {
             y += 10
         }
     }
+
 }

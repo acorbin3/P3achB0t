@@ -175,20 +175,20 @@ class ScriptManager(val client: Any) {
     }
 
     fun start() {
-        if(script.validate){
-            Main.validationKey
-            val annotations = script::class.findAnnotation<ScriptManifest>()
-            println("name: ${annotations?.name} author: ${annotations?.author} ")
-            if(Manager.db.validateScript(annotations?.name ?:"", Main.validationKey)){
-                println("Validation success for script:${annotations?.name} key: ${Main.validationKey}")
-            }else{
-                println("Failed to provide a validation key. Be sure to pass in they key from the" +
-                        " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")
-                return
-            }
-
-
-        }
+//        if(script.validate){
+//            Main.validationKey
+//            val annotations = script::class.findAnnotation<ScriptManifest>()
+//            println("name: ${annotations?.name} author: ${annotations?.author} ")
+//            if(Manager.db.validateScript(annotations?.name ?:"", Main.validationKey)){
+//                println("Validation success for script:${annotations?.name} key: ${Main.validationKey}")
+//            }else{
+//                println("Failed to provide a validation key. Be sure to pass in they key from the" +
+//                        " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")
+//                return
+//            }
+//
+//
+//        }
         if(loginHandler.account.username.isEmpty()){
             loginHandler.account.username = UUID.randomUUID().toString().substring(0,10)
         }
@@ -198,7 +198,7 @@ class ScriptManager(val client: Any) {
 
         sessionID = UUID.randomUUID().toString()
 //        mouse.inputBlocked(true)
-        Manager.db.initalScriptLoad(loginHandler.account.username, sessionID, loginHandler.account.script)
+//        Manager.db.initalScriptLoad(loginHandler.account.username, sessionID, loginHandler.account.script)
         isRunning = true
         //This the script thread.
 
