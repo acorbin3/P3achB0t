@@ -19,6 +19,7 @@ class PaintDebug: DebugScript() {
         var isProjectileDebug = false
         val scriptName = "PaintDebug"
         var isZulrah = true
+        var fps = 15
         fun drawRect(g: Graphics, rect: Rectangle) {
             g.drawRect(rect.x, rect.y, rect.width, rect.height)
         }
@@ -82,8 +83,8 @@ class PaintDebug: DebugScript() {
 
 //
 //                rightClickMenuPaint(g, ctx)
-                inventoryPaint(g, ctx)
-                equipmentPaint(g, ctx)
+//                inventoryPaint(g, ctx)
+//                equipmentPaint(g, ctx)
 
                 // Paint minimap circle
                 try {
@@ -108,7 +109,7 @@ class PaintDebug: DebugScript() {
                     g.fillRect(point.x, point.y, 4, 4)
                 }
 
-
+            Thread.sleep(1000/fps.toLong())
             }
 
 

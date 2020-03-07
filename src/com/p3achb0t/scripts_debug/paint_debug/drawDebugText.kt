@@ -21,6 +21,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
+        debugText.add(DebugText("fps :${PaintDebug.fps}"))
 
 
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))

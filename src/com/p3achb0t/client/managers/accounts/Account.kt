@@ -16,10 +16,11 @@ class Account {
     var proxy: String = "none"  // SOCKS5;185.244.192.119:7670 or none
     var world: Int = 80
     var startAutomatically: Boolean = true
+    var fps: Int = 15
 
     override fun toString(): String {
         return "$id [$username, pass:$password, pin:$pin, script:$script, minRuntime:$minRuntimeSec, maxRuntime:$maxRuntimeSec," +
                 "useBreaks:$userBreaks, minBreakTime:$minBreakTimeSec,maxBreakTime:$maxBreakTimeSec, banned:$banned, " +
-                "proxy:$proxy, world:$world]"
+                "proxy:$proxy, world:$world], fps:$fps]"
     }
 }

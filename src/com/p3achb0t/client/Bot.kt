@@ -12,6 +12,7 @@ import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.interfaces.IScriptManager
 import com.p3achb0t.interfaces.ScriptManager
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.applet.Applet
 import java.awt.Dimension
 import java.util.*
@@ -32,6 +33,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
      */
     init {
         var proxy = "none"
+        PaintDebug.fps = account.fps
         if(account.world > 0) {
             world = account.world
         }
