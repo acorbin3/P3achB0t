@@ -39,7 +39,11 @@ open class RsCanvas(val scriptManager: ScriptManager) : Canvas() {
         }
         count++
 
-        super.getGraphics().drawImage(gameCanvas, 0, 0, null)
+        try {
+            super.getGraphics().drawImage(gameCanvas, 0, 0, null)
+        }catch (e: Exception){
+
+        }
 
         return g
     }
