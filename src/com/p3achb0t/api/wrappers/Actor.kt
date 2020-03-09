@@ -74,6 +74,20 @@ open class Actor(
         })
     }
 
+    suspend fun waitTillSequenceIdle(time: Int = 4) {
+        //Add a small delay to allow for initial movement from the previous command
+        delay(Random.nextLong(650, 1000))
+        Utils.waitFor(time, object : Utils.Condition {
+            override suspend fun accept(): Boolean {
+                //Need to make sure we are idle for at least 200ms
+                if (ctx!!.players.getLocal().isIdle())
+                    delay(100)
+                delay(100)
+                return if (ctx != null && ctx?.client != null) ctx!!.players.getLocal().player.getSequence() == -1 else return false
+            }
+        })
+    }
+
     /**
      * Health percent between `0.0` and `1.0` of limited precision. `null` if the health-bar is not visible.
      */
