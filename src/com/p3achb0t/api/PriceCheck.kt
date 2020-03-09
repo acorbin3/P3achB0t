@@ -69,8 +69,13 @@ object PriceCheck {
                 val name = price.name!!.toLowerCase()
                 itemNameMapping.remove(name)
                 itemNameMapping[name] = id
-                prices.remove(id)
-                prices[id] = price
+                if( id in prices && price.buy_average > 0) {
+                    prices.remove(id)
+                    prices[id] = price
+                }
+                if(id !in prices){
+                    prices[id] = price
+                }
             }
         } catch (e: UnirestException) {
             e.printStackTrace()

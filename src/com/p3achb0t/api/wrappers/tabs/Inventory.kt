@@ -21,7 +21,7 @@ class Inventory(val ctx: Context? = null) {
     //The concept here is to track items that are picked up from the ground. The addItemToTrack will
     // only be called when an item is trying to be picked up
     data class Item(val id: Int, val name: String)
-
+    val isfull : Boolean get() {return this.getCount() == 28}
     val  itemsToTrack = ArrayList<Item>()
     val totalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
     val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory

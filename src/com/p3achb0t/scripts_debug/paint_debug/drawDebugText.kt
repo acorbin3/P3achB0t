@@ -3,7 +3,6 @@ package com.p3achb0t.scripts_debug.paint_debug
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.widgets.WidgetID
-import com.p3achb0t.scripts_private.Zulrah.Combat
 import java.awt.Color
 import java.awt.Graphics
 
