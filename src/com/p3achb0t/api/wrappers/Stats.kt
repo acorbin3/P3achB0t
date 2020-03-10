@@ -124,7 +124,7 @@ class Stats(val ctx: Context) {
     fun getRuntimeString(elapsed: Long): String {
         val days = elapsed.toInt() / 86400000
         var remainder = elapsed % 86400000
-        val hours = elapsed.toInt() / 3600000
+        val hours = remainder.toInt() / 3600000
         remainder = elapsed % 3600000
         val minutes = remainder.toInt() / 60000
         remainder = remainder % 60000

@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.DynamicObject
 import com.p3achb0t.api.Context
 
 
@@ -20,6 +19,20 @@ class GameObjects(val ctx: Context) {
                                         gameObjects.add(GameObject(it, ctx = ctx))
 
                                     }
+                                }
+                            }
+                            if(tile.getFloorDecoration() != null){
+                                val floorDecoration = tile.getFloorDecoration()
+                                if(floorDecoration.getTag() > 0) {
+                                    val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
+                                    gameObjects.add(gmObj)
+                                }
+                            }
+                            if (tile.getWall() != null) {
+                                val boundaryObject = tile.getWall()
+                                if(boundaryObject.getTag() > 0) {
+                                    val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
+                                    gameObjects.add(gmObj)
                                 }
                             }
                         }
@@ -69,6 +82,19 @@ class GameObjects(val ctx: Context) {
                                 }
                             }
                         }
+                        if(colTile.getFloorDecoration() != null){
+                            val floorDecoration = colTile.getFloorDecoration()
+                            val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
+                            if (gmObj.id == id) {
+                                //Check to see if we need to filter based on the tile
+                                if(tile.x == -1 && tile.y == -1) {
+                                    gameObjects.add(gmObj)
+                                }
+                                else if(tile.x == gmObj.getGlobalLocation().x && tile.y == gmObj.getGlobalLocation().y){
+                                    gameObjects.add(gmObj)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -104,6 +130,12 @@ class GameObjects(val ctx: Context) {
                             if (colTile.getWall() != null) {
                                 val boundaryObject = colTile.getWall()
                                 val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
+                                if (gmObj.name.toLowerCase() == name.toLowerCase() && area.containsOrIntersects(gmObj.getGlobalLocation()))
+                                    gameObjects.add(gmObj)
+                            }
+                            if(colTile.getFloorDecoration() != null){
+                                val floorDecoration = colTile.getFloorDecoration()
+                                val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
                                 if (gmObj.name.toLowerCase() == name.toLowerCase() && area.containsOrIntersects(gmObj.getGlobalLocation()))
                                     gameObjects.add(gmObj)
                             }
@@ -146,6 +178,13 @@ class GameObjects(val ctx: Context) {
                             if (colTile.getWall() != null) {
                                 val boundaryObject = colTile.getWall()
                                 val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
+                                if (gmObj.id ==id && area.containsOrIntersects(gmObj.getGlobalLocation()))
+                                    gameObjects.add(gmObj)
+                            }
+
+                            if(colTile.getFloorDecoration() != null){
+                                val floorDecoration = colTile.getFloorDecoration()
+                                val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
                                 if (gmObj.id ==id && area.containsOrIntersects(gmObj.getGlobalLocation()))
                                     gameObjects.add(gmObj)
                             }

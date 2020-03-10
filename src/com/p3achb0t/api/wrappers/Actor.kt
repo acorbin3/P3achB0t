@@ -64,12 +64,24 @@ open class Actor(
         //Add a small delay to allow for initial movement from the previous command
         delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
+            var lastX = raw.getX()
+            var lastY = raw.getY()
             override suspend fun accept(): Boolean {
                 //Need to make sure we are idle for at least 200ms
+
                 if (ctx!!.players.getLocal().isIdle())
                     delay(100)
                 delay(100)
-                return if (ctx != null && ctx?.client != null) ctx!!.players.getLocal().isIdle() else return false
+                var idle = false
+
+                idle = if (ctx != null && ctx?.client != null) {
+                    ctx!!.players.getLocal().isIdle()
+                        && lastX == raw.getX()
+                        && lastY == raw.getY()
+                } else return false
+                lastX = raw.getX()
+                lastY = raw.getY()
+                return idle
             }
         })
     }
