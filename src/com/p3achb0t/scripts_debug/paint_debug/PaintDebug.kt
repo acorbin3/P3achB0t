@@ -87,27 +87,27 @@ class PaintDebug: DebugScript() {
 //                equipmentPaint(g, ctx)
 
                 // Paint minimap circle
-                try {
-                    val circle = ctx.miniMap.getMapArea()
-                    g.color = Color.RED
-                    g.drawPolygon(circle)
-                } catch (e: Exception) {
-                    println("Error: Minimap " + e.message)
-                }
+//                try {
+//                    val circle = ctx.miniMap.getMapArea()
+//                    g.color = Color.RED
+//                    g.drawPolygon(circle)
+//                } catch (e: Exception) {
+//                    println("Error: Minimap " + e.message)
+//                }
                 // Paint continue
-                val dialog = ctx.dialog.getDialogContinue()
-                if (dialog.widget != null) {
-                    g.color = Color.ORANGE
-                    drawRect(g, dialog.area)
-                }
+//                val dialog = ctx.dialog.getDialogContinue()
+//                if (dialog.widget != null) {
+//                    g.color = Color.ORANGE
+//                    drawRect(g, dialog.area)
+//                }
 
                 // Paint on minimap
-                val local = ctx.client.getLocalPlayer()
-                val point = Calculations.worldToMiniMap(local.getX(), local.getY(), ctx)
-                if (point != Point(-1, -1)) {
-                    g.color = Color.red
-                    g.fillRect(point.x, point.y, 4, 4)
-                }
+//                val local = ctx.client.getLocalPlayer()
+//                val point = Calculations.worldToMiniMap(local.getX(), local.getY(), ctx)
+//                if (point != Point(-1, -1)) {
+//                    g.color = Color.red
+//                    g.fillRect(point.x, point.y, 4, 4)
+//                }
 
             Thread.sleep(1000/fps.toLong())
             }
