@@ -1,5 +1,6 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t._runestar_interfaces.FloorDecoration
 import com.p3achb0t._runestar_interfaces.Model
 import com.p3achb0t._runestar_interfaces.Scenery
 import com.p3achb0t._runestar_interfaces.Wall
@@ -20,6 +21,7 @@ import java.util.*
 class GameObject(
         val sceneryObject: Scenery? = null,
         val wallObject: Wall? = null,
+        val floorDecoration: FloorDecoration? = null,
         ctx: Context? = null,
         override var loc_ctx: Context? = ctx
 ) : Locatable,
@@ -29,6 +31,7 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getTag().shr(17).and(0x7fff).toInt()
                 wallObject != null -> wallObject.getTag().shr(17).and(0x7fff).toInt()
+                floorDecoration != null -> floorDecoration.getTag().shr(17).and(0x7fff).toInt()
                 else -> 0
             }
         }
@@ -51,6 +54,11 @@ class GameObject(
                         wallObject.getY(),
                         wallObject.getOrientationA()
                 )
+                floorDecoration != null -> ObjectPositionInfo(
+                        floorDecoration.getX(),
+                        floorDecoration.getY(),
+                        0
+                )
                 else -> ObjectPositionInfo(0, 0, 0)
             }
         }
@@ -59,6 +67,7 @@ class GameObject(
             return when {
                 sceneryObject != null -> sceneryObject.getEntity() as Model
                 wallObject != null -> wallObject.getEntity1() as Model
+                floorDecoration != null -> floorDecoration.getEntity() as Model
                 else -> null
             }
         }
@@ -86,6 +95,15 @@ class GameObject(
                         Calculations.worldToMiniMap(
                                 wallObject.getX(),
                                 wallObject.getY(),
+                                it
+                        )
+                    }?: Point(0,0)
+            )?: false
+            floorDecoration != null -> ctx?.mouse?.click(
+                    ctx?.let {
+                        Calculations.worldToMiniMap(
+                                floorDecoration.getX(),
+                                floorDecoration.getY(),
                                 it
                         )
                     }?: Point(0,0)
@@ -118,6 +136,12 @@ class GameObject(
                 wallObject != null -> Tile(
                         wallObject.getX() / 128 + ctx?.client!!.getBaseX(),
                         wallObject.getY() / 128 + ctx?.client!!.getBaseY(),
+                        sceneryObject?.getPlane() ?: 0,ctx
+
+                )
+                floorDecoration != null -> Tile(
+                        floorDecoration.getX() / 128 + ctx?.client!!.getBaseX(),
+                        floorDecoration.getY() / 128 + ctx?.client!!.getBaseY(),
                         sceneryObject?.getPlane() ?: 0,ctx
 
                 )
