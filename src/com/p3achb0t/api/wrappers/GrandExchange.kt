@@ -7,6 +7,7 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
+import com.p3achb0t.scripts_private._api_do_action.doAction
 import kotlinx.coroutines.delay
 import java.awt.Rectangle
 import kotlin.random.Random
@@ -313,7 +314,7 @@ class GrandExchange(val ctx: Context) {
     suspend fun open() {
         if (!isOpen()) {
             val GE = ctx.gameObjects.find(10061)
-            GE[0].click()
+            GE[0].doAction()
             Utils.waitFor(5, object : Utils.Condition {
                 override suspend fun accept(): Boolean {
                     delay(100)
