@@ -214,7 +214,7 @@ class GameObjects(val ctx: Context) {
 
 
 
-    fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
+    fun find(name: String, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
         val region = ctx.client.getScene()
 

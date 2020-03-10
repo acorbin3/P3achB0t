@@ -60,7 +60,7 @@ open class Actor(
         return raw.getSequence() == -1 && raw.getTargetIndex() == -1
     }
 
-    suspend fun waitTillIdle(time: Int = 6) {
+    suspend fun waitTillIdle(time: Int = 8) {
         //Add a small delay to allow for initial movement from the previous command
         delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
