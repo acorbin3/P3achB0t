@@ -215,17 +215,22 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                                 wallDecoration.getY(),
                                                 wallDecoration.getOrientation()
                                         )
-                                val model = wallDecoration.getEntity2().getModel()
-                                val modelTriangles =
-                                        getTrianglesFromModel(
-                                                positionInfo,
-                                                model,
-                                                ctx
+                                if(wallDecoration != null
+                                        && wallDecoration.getEntity1() != null) {
+                                    if(wallDecoration.getEntity1() is Model) {
+                                        val model = wallDecoration.getEntity1() as Model
+                                        val modelTriangles =
+                                                getTrianglesFromModel(
+                                                        positionInfo,
+                                                        model,
+                                                        ctx
 
-                                        )
-                                g.color = Color.PINK
-                                modelTriangles.forEach {
-                                    g.drawPolygon(it)
+                                                )
+                                        g.color = Color.PINK
+                                        modelTriangles.forEach {
+                                            g.drawPolygon(it)
+                                        }
+                                    }
                                 }
                             }
 
