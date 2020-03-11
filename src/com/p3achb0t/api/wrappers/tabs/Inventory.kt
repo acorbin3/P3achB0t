@@ -112,6 +112,7 @@ class Inventory(val ctx: Context? = null) {
                                     widget = inventory,
                                     area = area,
                                     id = ids[i] - 1,
+                                    index = i,
                                     stackSize = stacks[i],
                                     type = WidgetItem.Type.INVENTORY,
                                     ctx = ctx

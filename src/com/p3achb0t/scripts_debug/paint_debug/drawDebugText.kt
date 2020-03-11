@@ -51,7 +51,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                                         " RAW: (${ctx.client.getLocalPlayer().getX()},${ctx.client.getLocalPlayer().getY()}"
                         )
                 )
-                debugText.add(DebugText("Base(x,y): (${ctx.client.getBaseX()},${ctx.client.getBaseY()})"))
+                debugText.add(DebugText("Base(x,y): (${ctx.client.getBaseX()},${ctx.client.getBaseY()}) Plane: ${ctx.client.getPlane()}"))
 
                 val miniMapPlayer = Calculations.worldToMiniMap(
                         ctx.client.getLocalPlayer().getX(),

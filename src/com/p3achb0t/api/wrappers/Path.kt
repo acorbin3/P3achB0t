@@ -8,6 +8,13 @@ import com.p3achb0t.scripts_private._api_do_action.Walking
     in the middle of the path and walk towards the right direction.
  */
 class Path(val tiles: ArrayList<Tile>, var ctx: Context?=null) {
+    init {
+        if(ctx != null){
+            tiles.forEach {
+                it.updateCTX(ctx!!)
+            }
+        }
+    }
 
     fun updateCTX(ctx: Context){
         this.ctx = ctx
