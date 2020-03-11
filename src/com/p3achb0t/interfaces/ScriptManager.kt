@@ -263,12 +263,14 @@ class ScriptManager(val client: Any) {
     }
 
     fun pause() {
+        println("Pausing script")
         isRunning = true
         paused = true
 
     }
 
     fun resume() {
+        println("Pausing script")
         isRunning = true
         paused = false
     }
