@@ -169,6 +169,17 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasStaminaPots(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(12625, 12627, 12629, 12631)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
 
     fun getPrayerDoses(): Int {
         var doses = 0
