@@ -246,7 +246,13 @@ class GrandExchange(val ctx: Context) {
                                 ctx.mouse.doAction(doActionParams)
                                 delay(Random.nextLong(155, 333))
                             }
-                            if (!ctx.cache.getItemName(id).equals("Shark")) {
+                            if (ctx.cache.getItemName(id).equals("Dragon bones")) {
+                                val doActionParams = DoActionParams(6, 10616885, 57, 1, "", "", 0, 0)
+                                ctx.mouse.overrideDoActionParams = true
+                                ctx.mouse.doAction(doActionParams)
+                                delay(Random.nextLong(155, 333))
+                            }
+                            if (!ctx.cache.getItemName(id).equals("Shark") && !ctx.cache.getItemName(id).equals("Dragon bones")) {
                                 val doActionParams = DoActionParams(0, 10616885, 57, 1, "", "", 0, 0)
                                 ctx.mouse.overrideDoActionParams = true
                                 ctx.mouse.doAction(doActionParams)

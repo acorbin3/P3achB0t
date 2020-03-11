@@ -418,6 +418,16 @@ class Inventory(val ctx: Context? = null) {
         return Contains
     }
 
+    fun ContainsAnyExcept(id: ArrayList<Int>): Boolean {
+        var Contains = false
+        id.forEach {
+            if(Contains(it)){
+                Contains = true
+            }
+        }
+        return Contains
+    }
+
 
     fun getItemCount(itemid: ArrayList<Int>): Int {
         var count = 0
