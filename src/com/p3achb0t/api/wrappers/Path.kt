@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.scripts_private._api_do_action.Walking
 
 /*
     This class is intended to define a list of tiles and interact to the destination. It will be smart enough to start
