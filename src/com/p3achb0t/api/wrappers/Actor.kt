@@ -91,6 +91,9 @@ open class Actor(
         delay(Random.nextLong(650, 1000))
         Utils.waitFor(time, object : Utils.Condition {
             override suspend fun accept(): Boolean {
+                if(!ctx?.worldHop?.isLoggedIn!!){
+                    return true
+                }
                 //Need to make sure we are idle for at least 200ms
                 if (ctx!!.players.getLocal().isIdle())
                     delay(100)
