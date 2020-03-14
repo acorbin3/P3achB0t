@@ -15,7 +15,7 @@ import java.lang.Thread.sleep
 import java.util.*
 import kotlin.concurrent.thread
 
-class ScriptManager(val client: Any) {
+class InstanceManager(val client: Any) {
 
     companion object {
         var mule = false
@@ -23,6 +23,8 @@ class ScriptManager(val client: Any) {
 
     lateinit var ctx: Context
     var isContextLoaded: Boolean = false
+
+
     var blockFocus = false // Dont delete this. Its used within the injected functions
 
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()

@@ -1,13 +1,13 @@
 package com.p3achb0t.injection.Replace
 
-import com.p3achb0t.client.injection.ScriptManager
+import com.p3achb0t.client.injection.InstanceManager
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
 
-open class RsCanvas(val scriptManager: ScriptManager) : Canvas() {
+open class RsCanvas(val scriptManager: InstanceManager) : Canvas() {
 
     private val gameCanvas: BufferedImage = BufferedImage(scriptManager.canvasWidth, scriptManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
     private val screen: BufferedImage = BufferedImage(scriptManager.canvasWidth, scriptManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
@@ -25,11 +25,8 @@ open class RsCanvas(val scriptManager: ScriptManager) : Canvas() {
 
 
         if (scriptManager.isContextLoaded) {
-
             //scriptManager.paintScript(g)
             scriptManager.paintDebugScript(g)
-
-
             g.drawString("o", scriptManager.ctx.mouse.getX(), scriptManager.ctx.mouse.getY())
         }
 

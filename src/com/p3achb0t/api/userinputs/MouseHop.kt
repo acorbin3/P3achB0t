@@ -1,6 +1,6 @@
 package com.p3achb0t.api.userinputs
 
-import com.p3achb0t.api.interfaces.ScriptManager
+import com.p3achb0t.api.interfaces.IOHandler
 import kotlinx.coroutines.delay
 import java.applet.Applet
 import java.awt.Point
@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent
 import kotlin.math.floor
 import kotlin.random.Random
 
-class MouseHop(val scriptManager: ScriptManager, val applet: Applet) {
+class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
 
     private val MAX_PIXELS_PER_SEC = 700
     private val MIN_PIXELS_PER_SEC = 500

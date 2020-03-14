@@ -123,7 +123,8 @@ class Analyser{
             if(clazzData.`class` == "Client") {
                 injectScriptManagerField(classes[clazzData.name]!!)
                 injectFieldProxy(classes[clazzData.name]!!)
-                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/api/interfaces/ScriptManager")
+                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/api/interfaces/IOHandler")
+                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/client/injection/InstanceManagerInterface")
                 injectCustomClient(classes[clazzData.name]!!)
                 clazzData.fields.forEach{
                     if(it.field .contains("MouseHandler_instance")){
@@ -230,7 +231,7 @@ class Analyser{
 //                        println("methodNode.desc: ${methodNode.desc}")
 //                        println("Time to insert instructions")
                         val il = InsnList()
-                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                         il.add(VarInsnNode(ILOAD, 0))
                         il.add(VarInsnNode(ILOAD, 1))
                         il.add(VarInsnNode(ILOAD, 2))
@@ -240,7 +241,7 @@ class Analyser{
                         il.add(VarInsnNode(ILOAD, 6))
                         il.add(VarInsnNode(ILOAD, 7))
                         il.add(VarInsnNode(ILOAD, 8))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "doActionCallback", methodHook?.descriptor))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "doActionCallback", methodHook?.descriptor))
                         methodNode.instructions.insert(il)
                     }
                 }
@@ -254,9 +255,9 @@ class Analyser{
                     if (methodNode.name == methodHook?.name) {
 //                        println("found getModel at method: ${methodNode.name}")
                         val il = InsnList()
-                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                         il.add(VarInsnNode(ILOAD, 1))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getModelCallback", "(I)V"))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getModelCallback", "(I)V"))
                         methodNode.instructions.insert(il)
                     }
                 }
@@ -336,12 +337,12 @@ class Analyser{
 //                        println("methodNode.desc: ${methodNode.desc}")
 //                        println("Time to insert instructions")
                         val il = InsnList()
-                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                         il.add(VarInsnNode(ILOAD, 1))
                         il.add(VarInsnNode(ALOAD, 2))
                         il.add(VarInsnNode(ALOAD, 3))
                         il.add(VarInsnNode(ALOAD, 4))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "notifyMessage", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "notifyMessage", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"))
                         methodNode.instructions.insert(il)
 
                     }
@@ -430,8 +431,8 @@ class Analyser{
 //                                println("\tmethod: ${methodNode.name}")
 //                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
                                     val il = InsnList()
-                                    il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
-                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/client/injection/ScriptManager;)V", false))
+                                    il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/client/injection/InstanceManager;)V", false))
                                     //doAction
                                     methodNode.instructions.insertBefore(mn, il)
                                     methodNode.instructions.remove(mn)
@@ -653,9 +654,9 @@ class Analyser{
                         if (insn is MethodInsnNode) {
                             val mnode = insn
                             mnode.owner = "com/p3achb0t/injection/Replace/RsCanvas"
-                            mnode.desc = "(Lcom/p3achb0t/client/injection/ScriptManager;)V"
+                            mnode.desc = "(Lcom/p3achb0t/client/injection/InstanceManager;)V"
                             val ins = InsnList()
-                            ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/ScriptManager;"))
+                            ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
                             i.insert(insn.previous, ins)
                             method.maxStack += 3
                             return
@@ -684,8 +685,8 @@ class Analyser{
                             if (j.opcode == GOTO) {
                                 val prev = j.previous
                                 val il = InsnList()
-                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
-                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "gameLoop", "()V"))
+                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
                                 //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
                                 //il.add(LdcInsnNode("."));
                                 //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V"))
@@ -728,8 +729,8 @@ class Analyser{
         val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
         val il = InsnList()
         
-        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getOverrideDoActionParams","()Z",false))
@@ -743,15 +744,15 @@ class Analyser{
         //reset override doAction back to
         val label3 = LabelNode(Label())
         il.add(label3)
-        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
         il.add(InsnNode(ICONST_0))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "setOverrideDoActionParams","(Z)V",false))
 //
 //        // load all the params
-        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         addDoActionParamGetter(il, "getActionParam", "()I")
         addDoActionParamGetter(il, "getWidgetID", "()I")
         addDoActionParamGetter(il, "getMenuAction", "()I")
@@ -774,7 +775,7 @@ class Analyser{
         il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
         il.add(LdcInsnNode("Normal DoAction params"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",false))
-        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         il.add(VarInsnNode(ILOAD, 1))
         il.add(VarInsnNode(ILOAD, 2))
         il.add(VarInsnNode(ILOAD, 3))
@@ -798,8 +799,8 @@ class Analyser{
     private fun addDoActionParamGetter(il: InsnList, paramName: String, paramDescription: String) {
         val label = LabelNode(Label())
         il.add(label)
-        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
+        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/userinputs/Mouse;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getDoActionParams", "()Lcom/p3achb0t/api/userinputs/DoActionParams;", false))
@@ -815,8 +816,8 @@ class Analyser{
                 val il = InsnList()
                 val labelNode = LabelNode(Label())
 
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/ScriptManager;"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getBlockFocus","()Z"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
                 il.add(JumpInsnNode(IFEQ,labelNode))
                 il.add(labelNode)
                 il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
@@ -830,13 +831,13 @@ class Analyser{
                 val il = InsnList()
                 val labelNode = LabelNode(Label())
 
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/ScriptManager;"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getBlockFocus","()Z"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
                 il.add(JumpInsnNode(IFNE,labelNode))
                 //Jump to return
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/ScriptManager;"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(InsnNode(ICONST_1))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "setBlockFocus","(Z)V"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "setBlockFocus","(Z)V"))
                 il.add(labelNode)
                 il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
                 il.add(LdcInsnNode("#####Blocked gained focus"))
@@ -849,7 +850,7 @@ class Analyser{
     }
 
     private fun injectScriptManagerField(classNode: ClassNode) {
-        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/client/injection/ScriptManager;",null , null)
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/client/injection/InstanceManager;",null , null)
         classNode.fields.add(node)
         //classNode.fields.add()
     }
@@ -873,11 +874,11 @@ class Analyser{
                 val last = i.last
 
                 val ins = InsnList()
-                ins.add(TypeInsnNode(NEW, "com/p3achb0t/client/injection/ScriptManager"))
+                ins.add(TypeInsnNode(NEW, "com/p3achb0t/client/injection/InstanceManager"))
                 ins.add(InsnNode(DUP))
                 ins.add(VarInsnNode(ALOAD, 0))
-                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/client/injection/ScriptManager", "<init>", "(Ljava/lang/Object;)V"))
-                ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
+                ins.add(MethodInsnNode(INVOKESPECIAL, "com/p3achb0t/client/injection/InstanceManager", "<init>", "(Ljava/lang/Object;)V"))
+                ins.add(FieldInsnNode(PUTSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
 
                 ins.add(TypeInsnNode(NEW, "ProxyConnection"))
                 ins.add(InsnNode(DUP))
@@ -892,10 +893,10 @@ class Analyser{
             }
         }
 
-        val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/client/injection/ScriptManager;", null, null)
+        val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/client/injection/InstanceManager;", null, null)
         val lli = getter.instructions
         lli.add(VarInsnNode(Opcodes.ALOAD, 0)) // maybe
-        lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/ScriptManager;"))
+        lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
         lli.add(InsnNode(ARETURN))
         getter.maxStack = 2
         getter.maxLocals = 2

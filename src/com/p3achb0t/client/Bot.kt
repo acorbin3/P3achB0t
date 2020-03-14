@@ -6,11 +6,12 @@ import com.p3achb0t.api.interfaces.Mouse
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.api.interfaces.Keyboard
+import com.p3achb0t.client.injection.InstanceManager
+import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
-import com.p3achb0t.client.injection.ScriptManager
 import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.applet.Applet
 import java.awt.Dimension
@@ -25,7 +26,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
     val id = UUID.randomUUID().toString()
     private val applet: Applet
     private val client: Client
-    private val iScriptManager: com.p3achb0t.api.interfaces.ScriptManager
+    private val iScriptManager: InstanceManagerInterface
 
     /**
      * Constructor
@@ -49,7 +50,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
         )
         client = clientClazz as Client
         applet = clientClazz as Applet
-        iScriptManager = clientClazz as com.p3achb0t.api.interfaces.ScriptManager
+        iScriptManager = clientClazz as InstanceManagerInterface
         iScriptManager.getManager().setLoginHandlerAccount(account)
         println("Tab:$account)")
         println("Account: ${iScriptManager.getManager().loginHandler.account}")
@@ -65,7 +66,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
         applet.validate()
     }
 
-    fun getScriptManager() : ScriptManager {
+    fun getScriptManager() : InstanceManager {
         return iScriptManager.getManager()
     }
 
