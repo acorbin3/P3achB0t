@@ -24,12 +24,14 @@ open class RsCanvas(val scriptManager: ScriptManager) : Canvas() {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
 
-        //scriptManager.paintScript(g)
-        scriptManager.paintDebugScript(g)
+        if (scriptManager.isContextLoaded) {
+
+            //scriptManager.paintScript(g)
+            scriptManager.paintDebugScript(g)
 
 
-        g.drawString("o", scriptManager.ctx.mouse.getX(), scriptManager.ctx.mouse.getY())
-
+            g.drawString("o", scriptManager.ctx.mouse.getX(), scriptManager.ctx.mouse.getY())
+        }
 
         // screen shot logic
         if (scriptManager.captureScreen && count > scriptManager.captureScreenFrame) {

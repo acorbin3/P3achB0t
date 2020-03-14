@@ -22,6 +22,7 @@ class ScriptManager(val client: Any) {
     }
 
     lateinit var ctx: Context
+    var isContextLoaded: Boolean = false
     var blockFocus = false // Dont delete this. Its used within the injected functions
 
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
@@ -65,6 +66,7 @@ class ScriptManager(val client: Any) {
             }
             ctx = Context(client)
             script.initialize(ctx)
+            isContextLoaded = true
         }
 
     }
