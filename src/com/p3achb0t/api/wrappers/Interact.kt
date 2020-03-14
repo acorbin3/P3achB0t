@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.userinputs.Mouse
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon

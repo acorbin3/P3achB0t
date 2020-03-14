@@ -2,9 +2,9 @@ package com.p3achb0t.api
 
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.api.interfaces.Component
-import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.userinputs.Camera
+import com.p3achb0t.api.userinputs.Keyboard
+import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*

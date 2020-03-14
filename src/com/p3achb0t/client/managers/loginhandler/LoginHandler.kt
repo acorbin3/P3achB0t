@@ -23,13 +23,13 @@ class LoginHandler(var account: Account = Account()) {
     suspend fun login(ctx: Context){
         println("Logging in")
         println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
-        ctx.mouse.moveMouse(Point(400, 310), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
+        ctx.mouse.moveMouse(Point(400, 310), true, com.p3achb0t.api.userinputs.Mouse.ClickType.Left)
         delay(500)
-        ctx.mouse.moveMouse(Point(466, 294), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
+        ctx.mouse.moveMouse(Point(466, 294), true, com.p3achb0t.api.userinputs.Mouse.ClickType.Left)
         println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
         if(ctx.client.getLogin_username() != account.username){
             //Delete user name and replace
-            ctx.mouse.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(240,249)), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(240,249)), true, com.p3achb0t.api.userinputs.Mouse.ClickType.Left)
             while(ctx.client.getLogin_username().isNotEmpty() == true){
                 ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
             }
@@ -40,7 +40,7 @@ class LoginHandler(var account: Account = Account()) {
         }
 
         //Move to password
-        ctx.mouse.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(258,269)), true, com.p3achb0t.api.user_inputs.Mouse.ClickType.Left)
+        ctx.mouse.moveMouse(Point(Random.nextInt(360,480), Random.nextInt(258,269)), true, com.p3achb0t.api.userinputs.Mouse.ClickType.Left)
         if(ctx.client.getLogin_password().isNotEmpty() == true){
             //Clear password
             while(ctx.client.getLogin_password().isNotEmpty() == true){

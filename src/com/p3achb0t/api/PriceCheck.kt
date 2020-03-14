@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 object PriceCheck {
-    private val g = Gson()
+    private val gson = Gson()
     private val itemNameMapping: MutableMap<String, Int> = HashMap()
     private val prices: MutableMap<Int, ItemPrice> = HashMap()
     private const val reloadMinutes = 30
@@ -62,9 +62,9 @@ object PriceCheck {
                 println("PriceCheck: " + "Failed to load prices. Result: " + node.body)
                 return
             }
-            val o = g.fromJson(node.body, JsonObject::class.java)
+            val o = gson.fromJson(node.body, JsonObject::class.java)
             for (s in o.keySet()) {
-                val price = g.fromJson(o[s].asJsonObject, ItemPrice::class.java)
+                val price = gson.fromJson(o[s].asJsonObject, ItemPrice::class.java)
                 val id = s.toInt()
                 val name = price.name!!.toLowerCase()
                 itemNameMapping.remove(name)

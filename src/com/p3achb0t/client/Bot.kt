@@ -2,10 +2,10 @@ package com.p3achb0t.client
 
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.interfaces.Mouse
 import com.p3achb0t.client.configs.Constants
-import com.p3achb0t.client.interfaces.io.Keyboard
-import com.p3achb0t.client.interfaces.io.Mouse
 import com.p3achb0t.client.loader.ConfigReader
+import com.p3achb0t.api.interfaces.Keyboard
 import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account

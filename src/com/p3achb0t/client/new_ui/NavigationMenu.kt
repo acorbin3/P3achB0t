@@ -58,7 +58,10 @@ class NavigationMenu: JMenuBar() {
 
         val getMouseCoords = JMenuItem("Mouse POS")
         getMouseCoords.addActionListener {
-
+            val g = GlobalStructs.botTabBar.getCurrentIndex()
+            if (g.scriptManager?.getMouse() == null) {
+                println("Mouse is null")
+            }
         }
 
         menu.add(add)

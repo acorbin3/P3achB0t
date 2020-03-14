@@ -28,7 +28,7 @@ open class RsCanvas(val scriptManager: ScriptManager) : Canvas() {
         scriptManager.paintDebugScript(g)
 
 
-
+        g.drawString("o", scriptManager.ctx.mouse.getX(), scriptManager.ctx.mouse.getY())
 
 
         // screen shot logic

@@ -131,7 +131,7 @@ class Analyser{
                         AsmUtil.addStaticMethod(
                                 classes[clazzData.name]!!,
                                 "getMouse",
-                                "()Lcom/p3achb0t/client/interfaces/io/Mouse;",
+                                "()Lcom/p3achb0t/api/interfaces/Mouse;",//()Lcom/p3achb0t/client/interfaces/io/Mouse;
                                 it.owner,
                                 it.name,
                                 "L${it.owner};"
@@ -143,7 +143,7 @@ class Analyser{
                         AsmUtil.addStaticMethod(
                                 classes[clazzData.name]!!,
                                 "getKeyboard",
-                                "()Lcom/p3achb0t/client/interfaces/io/Keyboard;",
+                                "()Lcom/p3achb0t/api/interfaces/Keyboard;",
                                 it.owner,
                                 it.name,
                                 "L${it.owner};"
@@ -362,14 +362,14 @@ class Analyser{
 
 
             if (clazzData.`class` == "KeyHandler") {
-                AsmUtil.setSuper(classes[clazzData.name]!!,"java/lang/Object","com/p3achb0t/client/interfaces/io/Keyboard")
+                AsmUtil.setSuper(classes[clazzData.name]!!,"java/lang/Object","com/p3achb0t/client/injection/io/AbstractKeyboard")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyPressed", "_keyPressed")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyReleased", "_keyReleased")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyTyped", "_keyTyped")
             }
 
             if (clazzData.`class` == "MouseHandler") {
-                AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/interfaces/io/Mouse")
+                AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/injection/io/AbstractMouse") // "com/p3achb0t/client/interfaces/io/Mouse"
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseClicked", "_mouseClicked")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseDragged", "_mouseDragged")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "mouseEntered", "_mouseEntered")
@@ -731,8 +731,8 @@ class Analyser{
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/user_inputs/Mouse;",false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "getOverrideDoActionParams","()Z",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getOverrideDoActionParams","()Z",false))
         il.add(JumpInsnNode(IFEQ,label)) // Jump to regular processing
         val label2 = LabelNode(Label())
         il.add(label2)
@@ -746,9 +746,9 @@ class Analyser{
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/user_inputs/Mouse;",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
         il.add(InsnNode(ICONST_0))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "setOverrideDoActionParams","(Z)V",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "setOverrideDoActionParams","(Z)V",false))
 //
 //        // load all the params
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
@@ -801,9 +801,9 @@ class Analyser{
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/ScriptManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/ScriptManager", "getScript", "()Lcom/p3achb0t/api/AbstractScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/AbstractScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/user_inputs/Mouse;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/Mouse", "getDoActionParams", "()Lcom/p3achb0t/api/user_inputs/DoActionParams;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/user_inputs/DoActionParams", paramName, paramDescription, false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/userinputs/Mouse;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getDoActionParams", "()Lcom/p3achb0t/api/userinputs/DoActionParams;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/DoActionParams", paramName, paramDescription, false))
     }
 
     //This method will inject a boolean check in for the scriptManager object for field blockFocus

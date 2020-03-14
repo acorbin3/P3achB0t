@@ -1,7 +1,5 @@
 package com.p3achb0t.api.interfaces
 
-import com.p3achb0t.client.interfaces.io.Keyboard
-import com.p3achb0t.client.interfaces.io.Mouse
 import com.p3achb0t.injection.Replace.RsCanvas
 import com.p3achb0t.client.injection.ScriptManager
 

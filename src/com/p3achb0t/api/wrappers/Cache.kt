@@ -1,14 +1,14 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.client.configs.Constants
-import org.runestar.cache.content.config.ConfigType
-import org.runestar.cache.content.config.NPCType
-import org.runestar.cache.content.config.ObjType
-import org.runestar.cache.content.config.VarBitType
-import org.runestar.cache.format.Cache
-import org.runestar.cache.format.disk.DiskCache
-import org.runestar.cache.format.net.NetCache
-import org.runestar.cache.tools.MemCache
+import com.p3achb0t.api.cache.content.config.ConfigType
+import com.p3achb0t.api.cache.content.config.NPCType
+import com.p3achb0t.api.cache.content.config.ObjType
+import com.p3achb0t.api.cache.content.config.VarBitType
+import com.p3achb0t.api.cache.format.Cache
+import com.p3achb0t.api.cache.format.disk.DiskCache
+import com.p3achb0t.api.cache.format.net.NetCache
+import com.p3achb0t.api.cache.tools.MemCache
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.file.Path

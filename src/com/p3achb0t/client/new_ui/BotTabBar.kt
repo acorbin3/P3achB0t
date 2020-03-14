@@ -33,4 +33,8 @@ class BotTabBar : JTabbedPane() {
         }
     }
 
+    fun getCurrentIndex(): BotInstance {
+        return selectedComponent as BotInstance
+    }
+
 }

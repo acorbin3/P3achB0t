@@ -2,7 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.userinputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import kotlinx.coroutines.delay
