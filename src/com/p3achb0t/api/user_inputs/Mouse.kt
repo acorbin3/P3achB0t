@@ -1,5 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
+
 import com.naturalmouse.api.MouseMotionFactory
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.api.wrappers.GameObject

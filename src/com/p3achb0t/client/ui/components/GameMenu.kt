@@ -4,8 +4,8 @@ import com.p3achb0t.analyser.ScriptClasses
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
-import com.p3achb0t.scripts_debug.varbitexplorer.VarBitExplorer
-import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
+//import com.p3achb0t.scripts_debug.varbitexplorer.VarBitExplorer
+//import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
 import java.util.*
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -93,7 +93,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
             val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
             //widget exporer should always be the first in the list of debug scripts
-            WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
+            //WidgetExplorerV3.createWidgetExplorer(game.client.getScriptManager().debugScripts[0].ctx)
         }
         menu.add(widgetExplorer)
 
@@ -102,7 +102,7 @@ class GameMenu(var manager: Manager) : JMenuBar() {
 
             val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
 
-            VarBitExplorer(Context(game.client.getScriptManager().client))
+            //VarBitExplorer(Context(game.client.getScriptManager().client))
         }
         menu.add(varbitExplorer)
 

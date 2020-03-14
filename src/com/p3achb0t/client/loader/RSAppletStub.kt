@@ -52,4 +52,7 @@ class RSAppletStub(private val parameters: Map<String, String>) : AppletStub {
         val applet = getAppletContext().getApplet("main")
         applet?.resize(width, height)
     }
+
+
+
 }

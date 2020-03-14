@@ -50,7 +50,7 @@ class BotMenu(val manager: Manager): JMenuBar()  {
 
         val test3 = JMenuItem("Resize to 900x800")
         test3.addActionListener {
-            //            manager.tabManager.resizeView(900,800)
+                      //manager.tabManager.resizeView(900,800)
         }
 
         val test4 = JMenuItem("Running bots")
