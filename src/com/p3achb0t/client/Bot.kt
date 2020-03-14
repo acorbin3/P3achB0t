@@ -1,6 +1,6 @@
 package com.p3achb0t.client
 
-import com.p3achb0t._runestar_interfaces.Client
+import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.interfaces.io.Keyboard
@@ -10,8 +10,7 @@ import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.JarLoader
-import com.p3achb0t.interfaces.IScriptManager
-import com.p3achb0t.interfaces.ScriptManager
+import com.p3achb0t.client.injection.ScriptManager
 import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.applet.Applet
 import java.awt.Dimension
@@ -26,7 +25,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
     val id = UUID.randomUUID().toString()
     private val applet: Applet
     private val client: Client
-    private val iScriptManager: IScriptManager
+    private val iScriptManager: com.p3achb0t.api.interfaces.ScriptManager
 
     /**
      * Constructor
@@ -50,7 +49,7 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
         )
         client = clientClazz as Client
         applet = clientClazz as Applet
-        iScriptManager = clientClazz as IScriptManager
+        iScriptManager = clientClazz as com.p3achb0t.api.interfaces.ScriptManager
         iScriptManager.getManager().setLoginHandlerAccount(account)
         println("Tab:$account)")
         println("Account: ${iScriptManager.getManager().loginHandler.account}")

@@ -2,8 +2,8 @@ package com.p3achb0t.scripts_debug.widgetexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.p3achb0t._runestar_interfaces.Client;
-import com.p3achb0t._runestar_interfaces.Component;
+import com.p3achb0t.api.interfaces.Client;
+import com.p3achb0t.api.interfaces.Component;
 import com.p3achb0t.api.Context;
 import com.p3achb0t.api.wrappers.widgets.Widget;
 

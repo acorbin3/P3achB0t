@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Node
-import com.p3achb0t._runestar_interfaces.Obj
-import com.p3achb0t._runestar_interfaces.Tile
+import com.p3achb0t.api.interfaces.Node
+import com.p3achb0t.api.interfaces.Obj
+import com.p3achb0t.api.interfaces.Tile
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 

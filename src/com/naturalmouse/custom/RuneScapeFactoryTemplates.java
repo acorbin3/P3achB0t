@@ -12,7 +12,7 @@ import com.naturalmouse.support.MouseMotionNature;
 import com.naturalmouse.support.SinusoidalDeviationProvider;
 import com.naturalmouse.util.FlowTemplates;
 import com.naturalmouse.util.Pair;
-import com.p3achb0t._runestar_interfaces.Client;
+import com.p3achb0t.api.interfaces.Client;
 
 import java.applet.Applet;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.p3achb0t.injection.Replace
 
-import com.p3achb0t.interfaces.ScriptManager
+import com.p3achb0t.client.injection.ScriptManager
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints

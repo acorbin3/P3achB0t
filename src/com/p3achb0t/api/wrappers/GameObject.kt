@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.FloorDecoration
-import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t._runestar_interfaces.Scenery
-import com.p3achb0t._runestar_interfaces.Wall
+import com.p3achb0t.api.interfaces.FloorDecoration
+import com.p3achb0t.api.interfaces.Model
+import com.p3achb0t.api.interfaces.Scenery
+import com.p3achb0t.api.interfaces.Wall
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable

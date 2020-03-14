@@ -62,7 +62,7 @@ class RuneStarAnalyzer {
         }
 
         val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
-        val _package = "com.p3achb0t._runestar_interfaces"
+        val _package = "com.p3achb0t.api._runestar_interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "./$hookDir/$hookFileName"
     }

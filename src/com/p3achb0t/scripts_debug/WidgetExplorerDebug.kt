@@ -1,6 +1,6 @@
 package com.p3achb0t.scripts_debug
 
-import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Color

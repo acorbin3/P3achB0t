@@ -3,11 +3,11 @@ package com.p3achb0t.api.user_inputs
 
 import com.naturalmouse.api.MouseMotionFactory
 import com.naturalmouse.custom.RuneScapeFactoryTemplates
+import com.p3achb0t.api.interfaces.ScriptManager
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.GroundItem
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.client.interfaces.io.Mouse
-import com.p3achb0t.interfaces.IScriptManager
 import kotlinx.coroutines.delay
 import java.applet.Applet
 import java.awt.Component
@@ -42,8 +42,8 @@ class Mouse(obj: Any) {
     var doActionParams: DoActionParams = DoActionParams()
     private val component: Component = (obj as Applet).getComponent(0)
     private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createFastGamerMotionFactory(obj)
-    private val mouseHopping: MouseHop = MouseHop(obj as IScriptManager, obj as Applet)
-    private val ioMouse: Mouse = (obj as IScriptManager).getMouse()
+    private val mouseHopping: MouseHop = MouseHop(obj as ScriptManager, obj as Applet)
+    private val ioMouse: Mouse = (obj as ScriptManager).getMouse()
 
     fun getX(): Int {
         return ioMouse.getX()

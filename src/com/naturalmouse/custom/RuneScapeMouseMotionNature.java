@@ -1,7 +1,7 @@
 package com.naturalmouse.custom;
 
 import com.naturalmouse.support.*;
-import com.p3achb0t._runestar_interfaces.Client;
+import com.p3achb0t.api.interfaces.Client;
 
 import java.applet.Applet;
 import java.util.Random;

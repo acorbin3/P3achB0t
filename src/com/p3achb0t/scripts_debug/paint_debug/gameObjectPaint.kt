@@ -1,9 +1,9 @@
 package com.p3achb0t.scripts_debug.paint_debug
 
-import com.p3achb0t._runestar_interfaces.EvictingDualNodeHashTable
-import com.p3achb0t._runestar_interfaces.LocType
-import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t._runestar_interfaces.Wall
+import com.p3achb0t.api.interfaces.EvictingDualNodeHashTable
+import com.p3achb0t.api.interfaces.LocType
+import com.p3achb0t.api.interfaces.Model
+import com.p3achb0t.api.interfaces.Wall
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Tile

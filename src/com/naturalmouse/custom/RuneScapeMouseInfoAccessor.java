@@ -1,16 +1,16 @@
 package com.naturalmouse.custom;
 
 import com.naturalmouse.api.MouseInfoAccessor;
-import com.p3achb0t._runestar_interfaces.Client;
-import com.p3achb0t.interfaces.IScriptManager;
+import com.p3achb0t.api.interfaces.Client;
+import com.p3achb0t.api.interfaces.ScriptManager;
 
 import java.awt.*;
 
 public class RuneScapeMouseInfoAccessor implements MouseInfoAccessor {
 
-    private IScriptManager client;
+    private ScriptManager client;
     public RuneScapeMouseInfoAccessor(Client client) {
-        this.client =(IScriptManager) client;
+        this.client =(ScriptManager) client;
     }
 
     @Override

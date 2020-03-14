@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Component
+import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.user_inputs.Mouse
 import com.p3achb0t.api.wrappers.utils.Utils

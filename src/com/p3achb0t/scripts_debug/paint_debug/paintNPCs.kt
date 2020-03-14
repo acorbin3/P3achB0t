@@ -1,6 +1,6 @@
 package com.p3achb0t.scripts_debug.paint_debug
 
-import com.p3achb0t._runestar_interfaces.Npc
+import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.api.wrappers.utils.Calculations

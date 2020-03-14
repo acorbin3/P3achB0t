@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t._runestar_interfaces.Obj
-import com.p3achb0t._runestar_interfaces.Projectile
+import com.p3achb0t.api.interfaces.Model
+import com.p3achb0t.api.interfaces.Obj
+import com.p3achb0t.api.interfaces.Projectile
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.ActorTargeting
 import com.p3achb0t.api.wrappers.interfaces.Interactable

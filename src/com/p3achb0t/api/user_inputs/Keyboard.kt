@@ -1,6 +1,6 @@
 package com.p3achb0t.api.user_inputs
 
-import com.p3achb0t.interfaces.IScriptManager
+import com.p3achb0t.api.interfaces.ScriptManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.applet.Applet
@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent
 
 class Keyboard(val obj: Any) {
     val component: Component = (obj as Applet).getComponent(0)
-    val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as IScriptManager).getKeyboard()
+    val keyboard: com.p3achb0t.client.interfaces.io.Keyboard = (obj as ScriptManager).getKeyboard()
 
     fun sendKeys(
             keys: String,

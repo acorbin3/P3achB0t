@@ -1,8 +1,8 @@
 package com.naturalmouse.custom;
 
 import com.naturalmouse.api.SystemCalls;
-import com.p3achb0t._runestar_interfaces.Client;
-import com.p3achb0t.interfaces.IScriptManager;
+import com.p3achb0t.api.interfaces.Client;
+import com.p3achb0t.api.interfaces.ScriptManager;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -10,12 +10,12 @@ import java.awt.event.MouseEvent;
 
 public class RuneScapeSystemCalls implements SystemCalls {
     private final Client ctx;
-    private final IScriptManager manager;
+    private final ScriptManager manager;
     private final Applet applet;
 
     public RuneScapeSystemCalls(Client ctx, Applet a) {
         this.ctx = ctx;
-        manager = (IScriptManager)ctx;
+        manager = (ScriptManager)ctx;
         applet = a;
     }
 

@@ -1,12 +1,11 @@
 package com.p3achb0t.client.new_ui
 
-import com.p3achb0t._runestar_interfaces.Client
+import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.util.JarLoader
-import com.p3achb0t.interfaces.IScriptManager
-import com.p3achb0t.scripts.NullScript
+import com.p3achb0t.api.interfaces.ScriptManager
 import java.applet.Applet
 import java.awt.Dimension
 import java.util.*
@@ -17,7 +16,7 @@ class BotInstance : JPanel() {
 
     private var applet: Applet? = null
     private var client: Client? = null
-    var scriptManager: IScriptManager? = null
+    var scriptManager: ScriptManager? = null
     val sessionToken: String = UUID.randomUUID().toString()
 
     init {
@@ -38,7 +37,7 @@ class BotInstance : JPanel() {
         client = loadedClient as Client
         applet = loadedClient as Applet
 
-        scriptManager = loadedClient as IScriptManager
+        scriptManager = loadedClient as ScriptManager
 
 
         add(applet) // add the game to the JPanel
