@@ -1,6 +1,6 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.api.APIConstants
 import com.p3achb0t.api.cache.content.config.ConfigType
 import com.p3achb0t.api.cache.content.config.NPCType
 import com.p3achb0t.api.cache.content.config.ObjType
@@ -31,7 +31,7 @@ class Cache {
         if(!cacheUpdated) {
             try {
                 cacheUpdated = true
-                NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
+                NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), APIConstants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
                         Cache.update(net, disk).join()
@@ -53,6 +53,7 @@ class Cache {
     fun getItemName(id: Int): String{
         return itemCacheInfo[id]?.name ?: id.toString()
     }
+
     fun getItemID(name: String): IntArray{
         //Find all items with the same name. Return
         val returnedItems = itemCacheInfo.filter { name == name }
@@ -61,7 +62,6 @@ class Cache {
         }else{
             intArrayOf(-1)
         }
-
     }
 
 
@@ -118,7 +118,6 @@ class Cache {
     private fun getItemInfo():  Map<Int,ItemCacheType>{
         val LitemCacheInfo = HashMap<Int,ItemCacheType>()
         try {
-
             DiskCache.open(Path.of(cachePath)).use { disk ->
                 val cache = MemCache.of(disk)
                 for (file in cache.archive(ConfigType.ARCHIVE).group(ObjType.GROUP).files()) {
