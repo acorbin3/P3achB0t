@@ -1,6 +1,7 @@
 package com.p3achb0t.interfaces
 
 import com.p3achb0t.Main
+import com.p3achb0t._runestar_interfaces.Client
 import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.user_inputs.DoActionParams
@@ -10,14 +11,18 @@ import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
+import com.p3achb0t.client.new_ui.GlobalStructs
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.applet.Applet
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.image.BufferedImage
+import java.lang.Thread.sleep
 import java.util.*
+import kotlin.concurrent.thread
 import kotlin.random.Random
 import kotlin.reflect.full.findAnnotation
 
@@ -27,21 +32,22 @@ class ScriptManager(val client: Any) {
         var mule = false
     }
 
-    private val mouse = (client as IScriptManager).getMouse()
-    private val keyboard = (client as IScriptManager).getKeyboard()
-    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
-    var scriptName: String = ""
+    lateinit var ctx: Context
     var blockFocus = false // Dont delete this. Its used within the injected functions
+
+    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
     val debugScripts = mutableListOf<DebugScript>()
+    val backgroundScripts = mutableListOf<BackgroundScript>() // TODO Higher precedence
 
-    var loginHandler = LoginHandler()
-    var sessionID = UUID.randomUUID().toString()
 
-    var x = 800
-    var y = 600
-    private var image: BufferedImage = BufferedImage(x, y, BufferedImage.TYPE_INT_RGB)
-    var captureScreen = false
-    var captureScreenFrame = 1000
+
+
+
+    var loginHandler = LoginHandler() // move to background script
+
+
+
+
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
@@ -51,25 +57,56 @@ class ScriptManager(val client: Any) {
     val lastCheck = StopWatch()
     val fiveMin = Time.getMinInMils(5)
     var gameLoopI = 0
-    lateinit var ctx: Context
+
+    // For future remote client TODO need renaming
+    var canvasWidth = GlobalStructs.width
+    var canvasHeight = GlobalStructs.height
+    private var image: BufferedImage = BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_RGB)
+    var captureScreen = true
+    var captureScreenFrame = 1000
+
+
+
+    init {
+
+        // TODO fail after 1 sec
+        thread(start = true) {
+            while ((client as Applet).componentCount == 0 ) {
+                sleep(20)
+            }
+            ctx = Context(client)
+            script.initialize(ctx)
+        }
+
+    }
+
 
 
     var breaking = false
     var breakReturnTime = 0L
 
-    fun setUpScript(s: AbstractScript) {
-        scriptName = s::class.java.name.split(".").last()
-        println("Setting up script: $scriptName")
-
-        s.initialize(this.ctx)
-        this.script = s
+    // TODO make sure current script is not running
+    fun setAbstractScript(abstractScript: AbstractScript) {
+        abstractScript.initialize(ctx)
+        this.script = abstractScript
     }
 
+
+    fun setUpScript(abstractScript: AbstractScript) {
+        //scriptName = s::class.java.name.split(".").last()
+        //println("Setting up script: $scriptName")
+        script.initialize(Context(client))
+        //s.initialize(this.ctx)
+        //this.script = s
+    }
+
+    // TODO move to a GlobalScript Manager
     fun setLoginHandlerAccount(account: Account){
-        loginHandler.account = account
+        //loginHandler.account = account
     }
 
     suspend fun loop() {
+        /*
         if (isRunning) {
             try {
                 script.loop()
@@ -79,7 +116,7 @@ class ScriptManager(val client: Any) {
                     println(el.toString())
                 }
             }
-        }
+        }*/
     }
 
     fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
@@ -99,7 +136,9 @@ class ScriptManager(val client: Any) {
     }
 
 
+    // TODO move to background task
     private suspend fun trackStats(){
+        /*
         Stats.Skill.values().iterator().forEach {
             prevXP
         }
@@ -110,12 +149,14 @@ class ScriptManager(val client: Any) {
                 ctx.inventory.updateTrackedItems()
             }
             delay(300)
-        }
+        }*/
     }
 
+    // TODO move to background task
     val prevXP = EnumMap<Stats.Skill,Int>(Stats.Skill::class.java)
     val prevTotalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
     suspend fun dbUpdater(){
+        /*
         Stats.Skill.values().iterator().forEach {
             prevXP[it] = 0
         }
@@ -171,10 +212,12 @@ class ScriptManager(val client: Any) {
             }else{
                 delay(1000)
             }
-        }
+        }*/
     }
 
+    // TODO refactor
     fun start() {
+        /*
         if(script.validate){
             Main.validationKey
             val annotations = script::class.findAnnotation<ScriptManifest>()
@@ -259,7 +302,7 @@ class ScriptManager(val client: Any) {
                 }
                 loop()
             }
-        }
+        }*/
     }
 
     fun pause() {
@@ -295,6 +338,7 @@ class ScriptManager(val client: Any) {
     }
 
     fun paintScript(g: Graphics) {
+        /*
         if(breaking) {
             g.color = Color.RED
             val timeLeftInSec = (breakReturnTime - System.currentTimeMillis()) / 1000
@@ -309,13 +353,30 @@ class ScriptManager(val client: Any) {
             }
         }
 
-        script.draw(g)
+        script.draw(g)*/
     }
 
-    // Rs Canvas debug
-    fun paintDebug(g: Graphics) {
-        for (i in debugScripts) {
-            i.draw(g)
+    // RS Canvas Background script
+    suspend fun loopBackgroundScript() {
+        for (script in backgroundScripts) {
+            script.loop()
+        }
+    }
+
+    fun addBackgroundScript(debugScript: DebugScript) {
+        debugScript.initialize(ctx)
+        debugScripts.add(debugScript)
+    }
+
+    fun removeBackgroundScript(debugScript: DebugScript) {
+        debugScripts.remove(debugScript)
+    }
+
+
+    // Rs Canvas debug scripts TODO race conditions for removing
+    fun paintDebugScript(g: Graphics) {
+        for (script in debugScripts) {
+            script.draw(g)
         }
     }
 
@@ -327,6 +388,8 @@ class ScriptManager(val client: Any) {
     fun removeDebugPaint(debugScript: DebugScript) {
         debugScripts.remove(debugScript)
     }
+
+
 }
 
 /* for the game loop lock at 100/75 tick a second
