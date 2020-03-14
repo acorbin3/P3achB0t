@@ -18,6 +18,9 @@ class WidgetItem(
         var type: Type = Type.SHOP,
         ctx: Context? = null
 ) : Interactable(ctx) {
+
+    val containerID = widget?.getId()?.shr(16) ?: -1
+    val childID = widget?.getId()?.and(0xFF) ?: -1
     override suspend fun clickOnMiniMap(): Boolean {
         println("Widgets are not a thing to click on minimap")
         return false
