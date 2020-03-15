@@ -1,18 +1,19 @@
 package com.p3achb0t.client.injection.io
 
+import com.p3achb0t.api.interfaces.Keyboard
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
 
-abstract class AbstractKeyboard : KeyListener {
+abstract class AbstractKeyboard : KeyListener, Keyboard {
 
     private var inputBlocked = false
 
-    fun inputBlocked(value: Boolean) {
+    override fun inputBlocked(value: Boolean) {
         inputBlocked = value
     }
 
-    fun inputBlocked(): Boolean {
+    override fun inputBlocked(): Boolean {
         return inputBlocked
     }
 
@@ -22,7 +23,7 @@ abstract class AbstractKeyboard : KeyListener {
 
     abstract fun _keyTyped(e: KeyEvent)
 
-    fun sendEvent(e: KeyEvent) {
+    override fun sendEvent(e: KeyEvent) {
         //println(e)
 
         try {

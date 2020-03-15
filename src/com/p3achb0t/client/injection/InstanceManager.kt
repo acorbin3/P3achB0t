@@ -6,7 +6,6 @@ import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
-import com.p3achb0t.client.managers.scripts.ScriptInformation
 import com.p3achb0t.client.new_ui.GlobalStructs
 import kotlinx.coroutines.Job
 import java.applet.Applet
@@ -18,7 +17,6 @@ import kotlin.concurrent.thread
 
 class InstanceManager(val client: Any) {
 
-
     lateinit var ctx: Context
     var isContextLoaded: Boolean = false
 
@@ -28,7 +26,7 @@ class InstanceManager(val client: Any) {
     val backgroundScripts = mutableListOf<BackgroundScript>() // TODO Higher precedence
 
     //control fps
-    var fps = 15
+    var fps = 50
 
 
     // For future remote client TODO need renaming
@@ -64,9 +62,8 @@ class InstanceManager(val client: Any) {
     var gameLoopI = 0
 
 
-
     init {
-        // TODO fail after 1 sec
+        // TODO fail after 1 sec see if it can be GlobalScope.launch
         thread(start = true) {
             while ((client as Applet).componentCount == 0 ) {
                 sleep(20)
@@ -94,7 +91,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun addDebugScript(scriptFileName: String) {
-        val debugScript = GlobalStructs.loadDebugScripts.load(scriptFileName)!!
+        val debugScript = GlobalStructs.loadDebugScripts.scripts[scriptFileName]!!.load() as DebugScript
         waitOnContext()
         debugScript.initialize(ctx)
         debugScripts[scriptFileName] = debugScript

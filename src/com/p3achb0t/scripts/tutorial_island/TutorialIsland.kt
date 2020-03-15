@@ -22,7 +22,7 @@ import kotlin.random.Random
 
 private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
-@ScriptManifest("Quests","TutorialIsland","P3aches")
+@ScriptManifest("Quests","TutorialIsland","P3aches", "0.1")
 class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
     var currentJob = ""

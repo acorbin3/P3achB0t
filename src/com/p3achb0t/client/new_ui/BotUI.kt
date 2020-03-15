@@ -2,7 +2,6 @@ package com.p3achb0t.client.new_ui
 
 import com.formdev.flatlaf.FlatDarkLaf
 import java.awt.Font
-import java.lang.Thread.sleep
 import javax.swing.JFrame
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
@@ -18,7 +17,6 @@ class BotUI : JFrame() {
         add(GlobalStructs.botTabBar)
         // add one bot
         BotInstance().initBot()
-
 
         setLocationRelativeTo(null)
         pack()

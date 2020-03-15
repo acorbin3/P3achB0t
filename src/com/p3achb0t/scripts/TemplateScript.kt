@@ -5,7 +5,7 @@ import com.p3achb0t.api.ScriptManifest
 import java.awt.Color
 import java.awt.Graphics
 
-@ScriptManifest("category","name","author")
+@ScriptManifest("category","name","author", "0.1")
 class TemplateScript: AbstractScript()  {
     override suspend fun loop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
