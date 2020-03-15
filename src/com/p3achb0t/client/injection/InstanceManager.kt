@@ -6,6 +6,7 @@ import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
+import com.p3achb0t.client.managers.scripts.ScriptInformation
 import com.p3achb0t.client.new_ui.GlobalStructs
 import kotlinx.coroutines.Job
 import java.applet.Applet
@@ -17,29 +18,41 @@ import kotlin.concurrent.thread
 
 class InstanceManager(val client: Any) {
 
-    companion object {
-        var mule = false
-    }
 
     lateinit var ctx: Context
     var isContextLoaded: Boolean = false
 
-
-    var blockFocus = false // Dont delete this. Its used within the injected functions
-
+    // Scripts vars
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
-    val debugScripts = mutableListOf<DebugScript>()
+    val debugScripts = mutableMapOf<String, DebugScript>()
     val backgroundScripts = mutableListOf<BackgroundScript>() // TODO Higher precedence
 
+    //control fps
+    var fps = 15
+
+
+    // For future remote client TODO need renaming
+    var canvasWidth = GlobalStructs.width
+    var canvasHeight = GlobalStructs.height
+    private var image: BufferedImage = BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_RGB)
+    var captureScreen = true
+    var captureScreenFrame = 1000
+
+
+    // Dont delete this. Its used within the injected functions
+    var blockFocus = false
 
 
 
 
+
+
+    // fix
+
+    companion object {
+        var mule = false
+    }
     var loginHandler = LoginHandler() // move to background script
-
-
-
-
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
@@ -50,17 +63,9 @@ class InstanceManager(val client: Any) {
     val fiveMin = Time.getMinInMils(5)
     var gameLoopI = 0
 
-    // For future remote client TODO need renaming
-    var canvasWidth = GlobalStructs.width
-    var canvasHeight = GlobalStructs.height
-    private var image: BufferedImage = BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_RGB)
-    var captureScreen = true
-    var captureScreenFrame = 1000
-
 
 
     init {
-
         // TODO fail after 1 sec
         thread(start = true) {
             while ((client as Applet).componentCount == 0 ) {
@@ -70,8 +75,98 @@ class InstanceManager(val client: Any) {
             script.initialize(ctx)
             isContextLoaded = true
         }
+    }
+
+
+    // Rs Canvas debug scripts TODO race conditions for removing
+    fun paintDebugScripts(g: Graphics) {
+        for (script in debugScripts.values) {
+            script.draw(g)
+        }
+    }
+
+    fun toggleDebugScript(scriptFileName: String) {
+        if (debugScripts[scriptFileName] == null) {
+            addDebugScript(scriptFileName)
+        } else {
+            removeDebugScript(scriptFileName)
+        }
+    }
+
+    fun addDebugScript(scriptFileName: String) {
+        val debugScript = GlobalStructs.loadDebugScripts.load(scriptFileName)!!
+        waitOnContext()
+        debugScript.initialize(ctx)
+        debugScripts[scriptFileName] = debugScript
+    }
+
+    fun removeDebugScript(scriptFileName: String) {
+        debugScripts.remove(scriptFileName)
+    }
+
+    // RS Canvas Background script
+    suspend fun loopBackgroundScript() {
+        for (script in backgroundScripts) {
+            script.loop()
+        }
+    }
+
+    fun addBackgroundScript(debugScript: DebugScript) {
+        waitOnContext()
 
     }
+
+    fun removeBackgroundScript(debugScript: DebugScript) {
+
+    }
+
+    private fun waitOnContext() {
+        while (!isContextLoaded) {
+            sleep(20)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -348,41 +443,6 @@ class InstanceManager(val client: Any) {
 
         script.draw(g)*/
     }
-
-    // RS Canvas Background script
-    suspend fun loopBackgroundScript() {
-        for (script in backgroundScripts) {
-            script.loop()
-        }
-    }
-
-    fun addBackgroundScript(debugScript: DebugScript) {
-        debugScript.initialize(ctx)
-        debugScripts.add(debugScript)
-    }
-
-    fun removeBackgroundScript(debugScript: DebugScript) {
-        debugScripts.remove(debugScript)
-    }
-
-
-    // Rs Canvas debug scripts TODO race conditions for removing
-    fun paintDebugScript(g: Graphics) {
-        for (script in debugScripts) {
-            script.draw(g)
-        }
-    }
-
-    fun addDebugPaint(debugScript: DebugScript) {
-        debugScript.initialize(ctx)
-        debugScripts.add(debugScript)
-    }
-
-    fun removeDebugPaint(debugScript: DebugScript) {
-        debugScripts.remove(debugScript)
-    }
-
-
 }
 
 /* for the game loop lock at 100/75 tick a second

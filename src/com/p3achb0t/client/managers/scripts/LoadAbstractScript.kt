@@ -14,7 +14,7 @@ import java.net.URLClassLoader
 import java.util.jar.JarFile
 
 
-class LoadScripts {
+class LoadAbstractScript {
 
     private val scripts = mutableMapOf<String, AbstractScript>()
     private val path = "$USER_DIR/$APPLICATION_CACHE_DIR/$SCRIPTS_DIR/$SCRIPTS_ABSTRACT_DIR"
@@ -101,6 +101,6 @@ class LoadScripts {
 }
 
 fun main() {
-    val debug = LoadScripts()
+    val debug = LoadAbstractScript()
 
 }

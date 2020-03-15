@@ -3,12 +3,10 @@ package com.p3achb0t.client.new_ui
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
-import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.lang.Thread.sleep
 import java.net.InetSocketAddress
 import java.util.*
-import java.util.Base64.getEncoder
 import javax.imageio.ImageIO
 
 
@@ -32,7 +30,7 @@ class Server : WebSocketServer {
             for (s in GlobalStructs.botTabBar.botInstances) {
 
                 val baos = ByteArrayOutputStream()
-                ImageIO.write(s.value.scriptManager!!.getManager().takeScreenShot(), "png", baos)
+                ImageIO.write(s.value.instanceManager!!.getManager().takeScreenShot(), "png", baos)
                 baos.flush()
                 val imageInByte = baos.toByteArray()
 

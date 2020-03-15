@@ -16,7 +16,7 @@ class BotUI : JFrame() {
 
         jMenuBar = NavigationMenu()
         add(GlobalStructs.botTabBar)
-
+        // add one bot
         BotInstance().initBot()
 
 

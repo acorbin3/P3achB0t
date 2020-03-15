@@ -2,6 +2,7 @@ package com.p3achb0t.client.new_ui
 
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.client.configs.Constants
+import com.p3achb0t.client.injection.InstanceManager
 import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.RSAppletStub
@@ -16,7 +17,7 @@ class BotInstance : JPanel() {
 
     private var applet: Applet? = null
     private var client: Client? = null
-    var scriptManager: InstanceManagerInterface? = null
+    var instanceManager: InstanceManagerInterface? = null
     val sessionToken: String = UUID.randomUUID().toString()
 
     init {
@@ -37,7 +38,7 @@ class BotInstance : JPanel() {
         client = loadedClient as Client
         applet = loadedClient as Applet
 
-        scriptManager = loadedClient as InstanceManagerInterface
+        instanceManager = loadedClient as InstanceManagerInterface
 
 
         add(applet) // add the game to the JPanel
@@ -58,6 +59,10 @@ class BotInstance : JPanel() {
     fun kill() {
         applet!!.destroy()
         GlobalStructs.botTabBar.killBotInstance(sessionToken)
+    }
+
+    fun getInstanceManager(): InstanceManager {
+        return instanceManager!!.getManager()
     }
 
 

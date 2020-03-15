@@ -111,12 +111,12 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
     }
 
     fun addDebugScript(name: String) {
-        val debugScript = clientManager.loadedDebugScripts.getScript(name)
-        iScriptManager.getManager().addDebugPaint(debugScript)
+        //val debugScript = clientManager.loadedDebugScripts.getScript(name)
+        //iScriptManager.getManager().addDebugScript(debugScript)
     }
 
     fun removeDebugScript(name: String) {
-        val debugScript = clientManager.loadedDebugScripts.getScript(name)
-        iScriptManager.getManager().removeDebugPaint(debugScript)
+        //val debugScript = clientManager.loadedDebugScripts.getScript(name)
+        //iScriptManager.getManager().removeDebugScript(debugScript)
     }
 }

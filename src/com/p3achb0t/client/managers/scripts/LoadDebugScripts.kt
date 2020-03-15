@@ -17,24 +17,15 @@ import java.util.jar.JarFile
 
 class LoadDebugScripts {
 
-    private val debugScripts = mutableMapOf<String, DebugScript>()
+    val debugScripts = mutableMapOf<String, ScriptInformation>()
+
     private val path = "$USER_DIR/$APPLICATION_CACHE_DIR/$SCRIPTS_DIR/$SCRIPTS_DEBUG_DIR"
 
     init {
         println(path)
-        //Add the WidgetExplorer debug script first
-        debugScripts[WidgetExplorerDebug.scriptName] = WidgetExplorerDebug()
-        debugScripts[PaintDebug.scriptName] = PaintDebug()
         loadAll()
     }
 
-
-    fun getScript(name: String) : DebugScript {
-        return if("$name.jar" in debugScripts)
-            debugScripts["$name.jar"]!!
-        else
-            debugScripts["$name"]!!
-    }
 
     fun load(fileName: String): DebugScript? {
 
@@ -60,8 +51,8 @@ class LoadDebugScripts {
             for (file in files) {
                 if (file.isFile && file.name.contains(".jar")) {
                     println(file.name)
-                    val dscript = load(file.name) ?: continue
-                    debugScripts[file.name] = dscript
+
+                    debugScripts[file.name] = ScriptInformation(load(file.name)!!)
                 }
             }
         } else {
@@ -88,5 +79,4 @@ class LoadDebugScripts {
 
 fun main() {
     val debug = LoadDebugScripts()
-
 }

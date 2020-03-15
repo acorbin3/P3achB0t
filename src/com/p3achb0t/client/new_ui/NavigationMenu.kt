@@ -1,14 +1,17 @@
 package com.p3achb0t.client.new_ui
 
+import com.p3achb0t.client.managers.scripts.ScriptInformation
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
 
 class NavigationMenu: JMenuBar() {
+
     init {
         add(testMenu())
+        add(debugMenu())
+        add(botUltra())
     }
-
 
     private fun testMenu(): JMenu {
         val menu = JMenu("Client")
@@ -23,56 +26,42 @@ class NavigationMenu: JMenuBar() {
             GlobalStructs.botTabBar.KillIndex()
         }
 
-        val start = JMenuItem("Start")
-        start.addActionListener {
+        menu.add(add)
+        menu.add(remove)
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        return menu
+    }
 
+    var isMouseDebug = false
+    private fun debugMenu(): JMenu {
+        val menu = JMenu("Debug")
 
+        for (dscript in GlobalStructs.loadDebugScripts.debugScripts.keys) {
+
+            val mouseDebug = JMenuItem(GlobalStructs.loadDebugScripts.debugScripts[dscript]!!.name)
+            mouseDebug.addActionListener {
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(dscript)
+            }
+            menu.add(mouseDebug)
         }
 
-        val stop = JMenuItem("Stop")
-        stop.addActionListener {
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        return menu
+    }
 
-        }
+    private fun botUltra(): JMenu {
+        val menu = JMenu("Ultra")
 
-        val resume = JMenuItem("Resume")
-        resume.addActionListener {
-
-        }
-
-        val suspend = JMenuItem("Suspend")
-        suspend.addActionListener {
-
-        }
-
-        val keyboardEnable = JMenuItem("Toggle Keyboard")
-        keyboardEnable.addActionListener {
-
-
-
-        }
-
-        val mouseDisable= JMenuItem("Toggle Mouse")
-        mouseDisable.addActionListener {
-
-        }
-
-        val getMouseCoords = JMenuItem("Mouse POS")
-        getMouseCoords.addActionListener {
-            val g = GlobalStructs.botTabBar.getCurrentIndex()
-            if (g.scriptManager?.getMouse() == null) {
-                println("Mouse is null")
+        val add = JMenuItem("Add")
+        add.addActionListener {
+            for (x in 0..5) {
+                val bot = BotInstance()
+                bot.initBot()
+                bot.getInstanceManager().addDebugScript("SexyMouse")
             }
         }
 
         menu.add(add)
-        menu.add(remove)
-        menu.add(start)
-        menu.add(stop)
-        menu.add(suspend)
-        menu.add(resume)
-        menu.add(keyboardEnable)
-        menu.add(mouseDisable)
-        menu.add(getMouseCoords)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         return menu
