@@ -78,9 +78,16 @@ class Mouse(obj: Any) {
     }
 
     fun doAction(doActionParams: DoActionParams){
-        this.overrideDoActionParams = true
-        this.doActionParams = doActionParams
-        instantclick(Point(0,0))
+        try {
+            this.overrideDoActionParams = true
+            this.doActionParams = doActionParams
+            instantclick(Point(0, 0))
+        }catch(e: Exception){
+            println("Error: Doaction threw an error")
+            e.stackTrace.iterator().forEach {
+                println(it)
+            }
+        }
     }
 
     fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
