@@ -36,6 +36,7 @@ object PriceCheck {
     }
 
     fun getPrice(name: String): ItemPrice? {
+        prices.size
         if (prices.size == 0) {
             reload()
         }
@@ -44,6 +45,7 @@ object PriceCheck {
     }
 
     fun getPrice(id: Int): ItemPrice {
+        println(prices.size)
         if (prices.size == 0) {
             println("Doing another reload")
             reload()
@@ -69,6 +71,9 @@ object PriceCheck {
                 val name = price.name!!.toLowerCase()
                 itemNameMapping.remove(name)
                 itemNameMapping[name] = id
+                if(id  == 13190){
+                    println(price.buy_average)
+                }
                 if( id in prices && price.buy_average > 0) {
                     prices.remove(id)
                     prices[id] = price

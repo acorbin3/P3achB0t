@@ -1,17 +1,17 @@
-package com.p3achb0t.client.util
-
-//import com.p3achb0t.scripts_private.Mule.Main
-import org.zeromq.ZMQ
-
-class Server{
-fun main(mule: String) {
-    val context = ZMQ.context(1)
-
-    val socket = context.socket(ZMQ.REP)
-    println("Starting the server...")
-
-    socket.bind("tcp://*:5897")
-
+//package com.p3achb0t.client.util
+//
+////import com.p3achb0t.scripts_private.Mule.Main
+//import org.zeromq.ZMQ
+//
+//class Server{
+//fun main(mule: String) {
+//    val context = ZMQ.context(1)
+//
+//    val socket = context.socket(ZMQ.REP)
+//    println("Starting the server...")
+//
+//    socket.bind("tcp://*:5897")
+//
 //    while (true) {
 //        if(Utils.getElapsedSeconds(Main.mulewatch.time) == 0) {
 //            val rawRequest = socket.recv(0)
@@ -36,5 +36,5 @@ fun main(mule: String) {
 //            Thread.sleep(500)
 //        }
 //    }
-}
-}
+//}
+//}

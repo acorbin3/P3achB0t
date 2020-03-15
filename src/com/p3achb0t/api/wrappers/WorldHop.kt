@@ -52,6 +52,10 @@ class WorldHop(val ctx: Context) {
         }
     }
 
+    fun getMembershipDays(): Int{
+        return ctx.vars.getVarbit(1780)
+    }
+
     suspend fun hopRandomP2P(region: World){
         try {
             val Worlds = ctx.client.getWorlds()
