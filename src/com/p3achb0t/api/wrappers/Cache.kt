@@ -30,7 +30,7 @@ class Cache {
         // Update Cache
         if(!cacheUpdated) {
             try {
-                cacheUpdated = true
+
                 NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
@@ -38,6 +38,7 @@ class Cache {
                         println("Complete: Cache updated")
                     }
                 }
+                cacheUpdated = true
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -51,7 +52,10 @@ class Cache {
     }
 
     fun getItemName(id: Int): String{
-        return itemCacheInfo[id]?.name ?: id.toString()
+        return if(cacheUpdated && id in itemCacheInfo)
+            itemCacheInfo[id]?.name ?: id.toString()
+        else
+            ""
     }
     fun getItemID(name: String): IntArray{
         //Find all items with the same name. Return

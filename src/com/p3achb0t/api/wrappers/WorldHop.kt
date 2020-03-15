@@ -75,25 +75,9 @@ class WorldHop(val ctx: Context) {
     suspend fun hopRandomF2p(reverse: Boolean = false){
         val curWorld = ctx.client.getWorldId()
 
-        var mainWorldArray = freeWorldNoTotalRequirement
-        if(reverse){
-            mainWorldArray = mainWorldArray.reversedArray()
-        }
-
-        if (curWorld == mainWorldArray.last()) {
-            hopWorld(mainWorldArray.first())
-        } else {
-            var useNextWorld = false
-            mainWorldArray.forEach worldLoop@{
-                if (useNextWorld) {
-                    hopWorld(it)
-                    return@worldLoop
-                }
-                if (it == curWorld) {
-                    useNextWorld = true
-                }
-            }
-        }
+        val mainWorldArray = freeWorldNoTotalRequirement
+        val randWorld = mainWorldArray.random()
+        hopWorld(randWorld)
     }
 
     suspend fun logout(){
@@ -139,8 +123,11 @@ class WorldHop(val ctx: Context) {
         delay(1000)
         try {
             //click yes
-            //argument0:1, argument1:14352385, argument2:30, argument3:0, action:Continue, targetName:, mouseX:261, mouseY:488, argument8:0
-            //this.ctx.mouse.doAction(DoActionParams(1, 14352385, 30, 1, "Continue", "", 0, 0))
+            val yesConponent = ctx.widgets.find(219,"Yes")
+            if(yesConponent != null) {
+                //argument0:1, argument1:14352385, argument2:30, argument3:0, action:Continue, targetName:, mouseX:261, mouseY:488, argument8:0
+                this.ctx.mouse.doAction(DoActionParams(1, 14352385, 30, 1, "Continue", "", 0, 0))
+            }
         }catch (e: Exception) {
             println("World Exception")
         }
