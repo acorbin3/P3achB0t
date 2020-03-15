@@ -7,13 +7,13 @@ import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
 import com.p3achb0t.client.new_ui.GlobalStructs
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import java.applet.Applet
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
 import java.util.*
-import kotlin.concurrent.thread
+import java.util.concurrent.ConcurrentHashMap
 
 class InstanceManager(val client: Any) {
 
@@ -22,11 +22,15 @@ class InstanceManager(val client: Any) {
 
     // Scripts vars
     var script: AbstractScript = com.p3achb0t.scripts.NullScript()
-    val debugScripts = mutableMapOf<String, DebugScript>()
-    val backgroundScripts = mutableListOf<BackgroundScript>() // TODO Higher precedence
+    var isScriptRunning: Boolean = false
+
+    val debugScripts = ConcurrentHashMap<String, DebugScript>()
+    val backgroundScripts =ConcurrentHashMap<String, BackgroundScript>() // TODO Higher precedence
 
     //control fps
     var fps = 50
+
+    // script execution
 
 
     // For future remote client TODO need renaming
@@ -40,9 +44,8 @@ class InstanceManager(val client: Any) {
     // Dont delete this. Its used within the injected functions
     var blockFocus = false
 
-
-
-
+    private var abstractScriptLoop: Job? = null
+    private var backgroundLoop: Job? = null
 
 
     // fix
@@ -63,17 +66,58 @@ class InstanceManager(val client: Any) {
 
 
     init {
-        // TODO fail after 1 sec see if it can be GlobalScope.launch
-        thread(start = true) {
+        // TODO fail after 1 sec need to be thread
+        GlobalScope.launch {
             while ((client as Applet).componentCount == 0 ) {
-                sleep(20)
+                delay(20)
             }
             ctx = Context(client)
             script.initialize(ctx)
             isContextLoaded = true
         }
+
     }
 
+    fun runBackgroundScripts() {
+        backgroundLoop = GlobalScope.launch {
+            while (true) {
+                loopBackgroundScript()
+                delay(200)
+                //delay(1000/fps.toLong())
+            }
+        }
+    }
+
+    fun addAbstractScript(scriptFileName: String) {
+        val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
+        waitOnContext()
+        abstractScript.initialize(ctx)
+        script = abstractScript
+    }
+
+    fun removeAbstractScript(scriptFileName: String) {
+
+    }
+
+    fun startScript() {
+        isScriptRunning = true
+        abstractScriptLoop = GlobalScope.launch {
+            while (true) {
+                script.loop()
+                delay(1000/fps.toLong())
+            }
+        }
+        if (!backgroundLoop?.isActive!!)
+            runBackgroundScripts()
+    }
+
+    fun stopScript() {
+        isScriptRunning = false
+
+            abstractScriptLoop?.cancel()
+
+            backgroundLoop?.cancel()
+    }
 
     // Rs Canvas debug scripts TODO race conditions for removing
     fun paintDebugScripts(g: Graphics) {
@@ -91,7 +135,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun addDebugScript(scriptFileName: String) {
-        val debugScript = GlobalStructs.loadDebugScripts.scripts[scriptFileName]!!.load() as DebugScript
+        val debugScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as DebugScript
         waitOnContext()
         debugScript.initialize(ctx)
         debugScripts[scriptFileName] = debugScript
@@ -101,20 +145,23 @@ class InstanceManager(val client: Any) {
         debugScripts.remove(scriptFileName)
     }
 
-    // RS Canvas Background script
+    // Background script
     suspend fun loopBackgroundScript() {
-        for (script in backgroundScripts) {
+        for (script in backgroundScripts.values) {
             script.loop()
         }
     }
 
-    fun addBackgroundScript(debugScript: DebugScript) {
+    fun addBackgroundScript(scriptFileName: String) {
+        val backgroundScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as BackgroundScript
         waitOnContext()
+        backgroundScript.initialize(ctx)
+        backgroundScripts[scriptFileName] = backgroundScript
 
     }
 
-    fun removeBackgroundScript(debugScript: DebugScript) {
-
+    fun removeBackgroundScript(scriptFileName: String) {
+        backgroundScripts.remove(scriptFileName)
     }
 
     private fun waitOnContext() {

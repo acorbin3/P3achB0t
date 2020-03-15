@@ -16,6 +16,7 @@ class NavigationMenu: JMenuBar() {
         instanceMenu()
         scriptMenu()
         botUltra()
+        ioHandle()
     }
 
     private fun instanceMenu() {
@@ -33,14 +34,35 @@ class NavigationMenu: JMenuBar() {
 
         val reloadScripts = JMenuItem("Reload scripts")
         reloadScripts.addActionListener {
-            GlobalStructs.loadDebugScripts.refresh()
+            GlobalStructs.scripts.refresh()
             refreshScriptMenu()
+
+        }
+
+        val startScripts = JMenuItem("Run script")
+        startScripts.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startScript()
+
+        }
+
+        val stopScripts = JMenuItem("Stop script")
+        stopScripts.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
+
+        }
+
+        val startBackgroundScript = JMenuItem("Start background")
+        startBackgroundScript.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().runBackgroundScripts()
 
         }
 
         menu.add(add)
         menu.add(remove)
         menu.add(reloadScripts)
+        menu.add(startScripts)
+        menu.add(stopScripts)
+        menu.add(startBackgroundScript)
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
     }
@@ -52,7 +74,7 @@ class NavigationMenu: JMenuBar() {
         background.removeAll()
 
 
-        for (script in GlobalStructs.loadDebugScripts.scripts.values) {
+        for (script in GlobalStructs.scripts.scripts.values) {
             val currentItem = JMenuItem("${script.name} ${script.version}")
             if (script.type == ScriptType.DebugScript) {
                 currentItem.addActionListener {
@@ -61,12 +83,12 @@ class NavigationMenu: JMenuBar() {
                 debug.add(currentItem)
             } else if (script.type == ScriptType.AbstractScript) {
                 currentItem.addActionListener {
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(script.fileName)
+                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(script.fileName)
                 }
                 abstract.add(currentItem)
             } else if (script.type == ScriptType.BackgroundScript) {
                 currentItem.addActionListener {
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(script.fileName)
+                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addBackgroundScript(script.fileName)
                 }
                 background.add(currentItem)
             }
@@ -81,6 +103,9 @@ class NavigationMenu: JMenuBar() {
         refreshScriptMenu()
 
         debug.popupMenu.isLightWeightPopupEnabled = false
+        abstract.popupMenu.isLightWeightPopupEnabled = false
+        background.popupMenu.isLightWeightPopupEnabled = false
+
         add(debug)
         add(abstract)
         add(background)
@@ -91,9 +116,9 @@ class NavigationMenu: JMenuBar() {
     private fun backgroundMenu(): JMenu {
         val menu = JMenu("Background")
 
-        for (dscript in GlobalStructs.loadDebugScripts.scripts.keys) {
+        for (dscript in GlobalStructs.scripts.scripts.keys) {
 
-            val mouseDebug = JMenuItem(GlobalStructs.loadDebugScripts.scripts[dscript]!!.name)
+            val mouseDebug = JMenuItem(GlobalStructs.scripts.scripts[dscript]!!.name)
             mouseDebug.addActionListener {
                 println(dscript)
                 GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(dscript)
@@ -108,9 +133,9 @@ class NavigationMenu: JMenuBar() {
     private fun abstractMenu(): JMenu {
         val menu = JMenu("Abstract")
 
-        for (dscript in GlobalStructs.loadDebugScripts.scripts.keys) {
+        for (dscript in GlobalStructs.scripts.scripts.keys) {
 
-            val mouseDebug = JMenuItem(GlobalStructs.loadDebugScripts.scripts[dscript]!!.name)
+            val mouseDebug = JMenuItem(GlobalStructs.scripts.scripts[dscript]!!.name)
             mouseDebug.addActionListener {
                 println(dscript)
                 GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(dscript)
@@ -138,6 +163,30 @@ class NavigationMenu: JMenuBar() {
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
+    }
 
+    private fun ioHandle() {
+        val menu = JMenu("Input")
+
+        val mouse = JMenuItem("Toggle mouse")
+        mouse.addActionListener {
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getMouse().inputBlocked()
+            GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getMouse().inputBlocked(!f)
+
+        }
+
+        val keyboard = JMenuItem("Toggle Keyboard")
+        keyboard.addActionListener {
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getKeyboard().inputBlocked()
+            GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getKeyboard().inputBlocked(!f)
+
+        }
+
+
+        menu.add(mouse)
+        menu.add(keyboard)
+
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        add(menu)
     }
 }

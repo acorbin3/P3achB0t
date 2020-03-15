@@ -58,7 +58,7 @@ class TabManager(var manager: Manager) : JTabbedPane() {
         //Load the script based on config
         if(account.script.isNotEmpty()) {
             println("Account: ${account.username} setting script: ${account.script}" )
-            gameTab.client.setScript(manager.loadedScripts.getScript(account.script))
+            //gameTab.client.setScript(manager.loadedScripts.getScript(account.script))
         }else{
             gameTab.client.setScript(NullScript())
         }

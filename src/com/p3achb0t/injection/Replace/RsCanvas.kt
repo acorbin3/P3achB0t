@@ -25,9 +25,10 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
 
 
         if (instanceManager.isContextLoaded) {
-            //scriptManager.paintScript(g)
+            if (instanceManager.isScriptRunning)
+                instanceManager.script.draw(g)
+
             instanceManager.paintDebugScripts(g)
-            //g.drawString("o", instanceManager.ctx.mouse.getX(), instanceManager.ctx.mouse.getY())
         }
 
         // screen shot logic
@@ -38,7 +39,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
         }
         count++
 
-        Thread.sleep(1000/ instanceManager.fps.toLong())
+        //Thread.sleep(1000/ instanceManager.fps.toLong())
         try {
             super.getGraphics().drawImage(gameCanvas, 0, 0, null)
         }catch (e: Exception){ }

@@ -9,7 +9,7 @@ import java.io.File
 import java.util.jar.JarFile
 
 
-class LoadDebugScripts {
+class LoadScripts {
 
     val scripts = mutableMapOf<String, ScriptInformation>()
 
@@ -75,5 +75,5 @@ class LoadDebugScripts {
 }
 
 fun main() {
-    val debug = LoadDebugScripts()
+    val debug = LoadScripts()
 }

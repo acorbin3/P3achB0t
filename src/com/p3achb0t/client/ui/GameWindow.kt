@@ -69,7 +69,7 @@ class GameWindow : JFrame() {
                 }
             }
             println("Loading $scriptName")
-            manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
+            //manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
         }
         val scripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts")
         scripts.forEach {
@@ -91,7 +91,7 @@ class GameWindow : JFrame() {
                 }
             }
             println("Loading $scriptName")
-            manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
+            //manager.loadedScripts.addScript(scriptName, it.newInstance() as AbstractScript)
         }
 
         //Load each account in a different tab
