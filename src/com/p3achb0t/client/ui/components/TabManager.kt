@@ -3,6 +3,7 @@ package com.p3achb0t.client.ui.components
 import com.p3achb0t.api.Context
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
+import com.p3achb0t.client.new_ui.GlobalStructs
 import com.p3achb0t.client.util.JarLoader
 import com.p3achb0t.scripts.NullScript
 import com.p3achb0t.scripts_debug.WidgetExplorerDebug

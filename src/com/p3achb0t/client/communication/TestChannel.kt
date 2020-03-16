@@ -4,7 +4,10 @@ import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
 class TestChannel(val id: String) : ChannelInterface {
-
+    override fun setChannel(id: String, room: Room) {
+        TODO("Not yet implemented")
+    }
+/*
     private var message: String = ""
     lateinit var  room1: Room
 
@@ -24,12 +27,12 @@ class TestChannel(val id: String) : ChannelInterface {
 
     override fun send(message: String) {
         room1.notifySubscribers(message)
-    }
+    }*/
 }
 
 
 fun main() {
-
+/*
     val com = Communication()
 
     //com.addChannel("12345")
@@ -67,4 +70,6 @@ fun main() {
 
 
     sleep(2000)
+
+ */
 }

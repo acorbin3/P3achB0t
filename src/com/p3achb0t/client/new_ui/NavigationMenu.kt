@@ -1,5 +1,7 @@
 package com.p3achb0t.client.new_ui
 
+import ComScript
+import com.p3achb0t.client.communication.ComScript2
 import com.p3achb0t.client.managers.scripts.ScriptType
 import javax.swing.JMenu
 import javax.swing.JMenuBar
@@ -57,12 +59,27 @@ class NavigationMenu: JMenuBar() {
 
         }
 
+        val addScript = JMenuItem("Add ComScript")
+        addScript.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(ComScript())
+            println("ComScript")
+
+        }
+        val addScript2 = JMenuItem("Add ComScript2")
+        addScript2.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(ComScript2())
+            println("ComScript2")
+
+        }
+
         menu.add(add)
         menu.add(remove)
         menu.add(reloadScripts)
         menu.add(startScripts)
         menu.add(stopScripts)
         menu.add(startBackgroundScript)
+        menu.add(addScript)
+        menu.add(addScript2)
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
     }

@@ -95,6 +95,13 @@ class InstanceManager(val client: Any) {
         script = abstractScript
     }
 
+    fun addAbstractScript(abstractScript: AbstractScript) {
+        waitOnContext()
+        abstractScript.initialize(ctx)
+        ctx.communication.setComScript(GlobalStructs.communication, abstractScript as ChannelInterface1)
+        script = abstractScript
+    }
+
     fun removeAbstractScript(scriptFileName: String) {
 
     }
@@ -107,8 +114,9 @@ class InstanceManager(val client: Any) {
                 delay(1000/fps.toLong())
             }
         }
+        /*
         if (!backgroundLoop?.isActive!!)
-            runBackgroundScripts()
+            runBackgroundScripts()*/
     }
 
     fun stopScript() {
@@ -220,6 +228,7 @@ class InstanceManager(val client: Any) {
     // TODO make sure current script is not running
     fun setAbstractScript(abstractScript: AbstractScript) {
         abstractScript.initialize(ctx)
+
         this.script = abstractScript
     }
 

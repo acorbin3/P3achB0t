@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.p3achb0t.api.Context;
 import com.p3achb0t.api.wrappers.VarbitData;
+import com.p3achb0t.client.new_ui.GlobalStructs;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -154,7 +155,7 @@ public class VarBitExplorer {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("VarBitExplorer");
-        frame.setContentPane(new VarBitExplorer(new Context(1)).panel1);
+        //frame.setContentPane(new VarBitExplorer(new Context(1 )).panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

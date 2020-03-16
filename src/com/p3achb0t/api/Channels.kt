@@ -1,21 +1,20 @@
 package com.p3achb0t.api
 
-
-import com.p3achb0t.client.communication.ChannelInterface
 import com.p3achb0t.client.communication.Communication
 import com.p3achb0t.client.communication.Room
-import java.util.*
 import kotlin.collections.HashMap
 
-class Channels(val communication: Communication) : SubInterface {
+class Channels() : SubInterface {
 
     private val channels = HashMap<String, Room>()
+    private lateinit var communication: Communication
+    private lateinit var script: ChannelInterface1
 
     /**
      * subscribe to IPC
      */
     fun subscribe(id: String) {
-        communication.subscribeChannel(id, this)
+        communication.subscribeChannel(id, this, script)
     }
 
     /**
@@ -33,12 +32,8 @@ class Channels(val communication: Communication) : SubInterface {
         channels[id] = room
     }
 
-    override fun receive(id: String, message: String) {
-        messages[id]?.add(message)
+    fun setComScript(communication: Communication, script: ChannelInterface1) {
+        this.communication = communication
+        this.script = script
     }
-
-    override fun send(message: String) {
-        TODO("Not yet implemented")
-    }
-
 }

@@ -1,25 +1,24 @@
+package com.p3achb0t.client.communication
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.ChannelInterface1
 import kotlinx.coroutines.delay
 import java.awt.Color
-
 import java.awt.Graphics
 import kotlin.random.Random
 
-class ComScript : AbstractScript(), ChannelInterface1 {
+class ComScript2 : AbstractScript(), ChannelInterface1 {
 
     var isSub = false
-    var m = ""
     var r = Random.nextInt(1000)
-
+    var m = ""
     override suspend fun loop() {
         if (!isSub) {
             ctx.communication.subscribe("1234")
             isSub = true
         }
         delay(200)
-        ctx.communication.send1("1234", "id: $r, ComScript")
+        ctx.communication.send1("1234", "id: $r, ComScript2")
     }
 
     override suspend fun start() {
@@ -43,5 +42,7 @@ class ComScript : AbstractScript(), ChannelInterface1 {
             m = message
             //println("received from [ room: $id, $message ]")
         }
+
+
     }
 }
