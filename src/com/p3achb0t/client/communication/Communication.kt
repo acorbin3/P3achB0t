@@ -4,32 +4,27 @@ import java.util.concurrent.ConcurrentHashMap
 
 class Communication {
 
-    private val channels = ConcurrentHashMap<String, Channel>()
-
-    init {
-        //channels["1234"] = Channel()
-    }
+    private val mutex = Any()
+    private val channels = ConcurrentHashMap<String, Room>()
 
     fun subscribeChannel(id: String, channelInterface: ChannelInterface) {
 
-        if (!channels.containsKey(id)) {
-            addChannel(id)
+        synchronized(mutex) {
+            if (!channels.containsKey(id)) {
+                println("added channel")
+                channels[id] = Room(id)
+            }
         }
 
-        val chan: Channel = channels[id]!!
-        println("subscribeChannel: $id $chan")
-        channelInterface.setChannel(chan)
-        chan.subscribe(channelInterface)
-
-
+        val room: Room = channels[id]!!
+        channelInterface.setChannel(id, room)
+        room.subscribe(channelInterface)
+        println("subscribeChannel: $id $room")
     }
 
-    fun addChannel(id: String) {
-        channels[id] = Channel()
-    }
 
     // TODO remove when channel is empty
-    fun unsubscribeChannel(channelInterface: ChannelInterface) {
+    fun unsubscribeChannel(id: String, channelInterface: ChannelInterface) {
 
     }
 }

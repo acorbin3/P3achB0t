@@ -4,7 +4,7 @@ import java.util.*
 
 
 
-class Channel {
+class Room(val id: String) {
 
     private val mutex = Any()
 
@@ -31,7 +31,7 @@ class Channel {
         }
 
         for (observer in copyChannelInterfaces) {
-            observer.receive(message)
+            observer.receive(id, message)
         }
     }
 

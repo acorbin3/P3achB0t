@@ -6,10 +6,10 @@ import kotlin.concurrent.thread
 class TestChannel(val id: String) : ChannelInterface {
 
     private var message: String = ""
-    lateinit var  channel1: Channel
+    lateinit var  room1: Room
 
-    override fun setChannel(channel: Channel) {
-        this.channel1 = channel
+    override fun setChannel(id: String, room: Room) {
+        this.room1 = room
     }
 
     fun getMessage() : String {
@@ -17,13 +17,13 @@ class TestChannel(val id: String) : ChannelInterface {
     }
 
 
-    override fun receive(message: String) {
+    override fun receive(id: String, message: String) {
         println("$id $message")
         this.message = message
     }
 
     override fun send(message: String) {
-        channel1.notifySubscribers(message)
+        room1.notifySubscribers(message)
     }
 }
 
@@ -32,7 +32,7 @@ fun main() {
 
     val com = Communication()
 
-    com.addChannel("12345")
+    //com.addChannel("12345")
 
 
 
