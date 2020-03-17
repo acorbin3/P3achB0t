@@ -4,8 +4,8 @@ import com.p3achb0t.Main
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
-import com.p3achb0t.injection.class_generation.cleanType
-import com.p3achb0t.injection.class_generation.isBaseType
+import com.p3achb0t.analyser.class_generation.cleanType
+import com.p3achb0t.analyser.class_generation.isBaseType
 import org.objectweb.asm.*
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
@@ -645,7 +645,7 @@ class Analyser{
     }
 
     private fun injectCanvas(classNode: ClassNode) {
-        classNode.superName = "com/p3achb0t/injection/Replace/RsCanvas"
+        classNode.superName = "com/p3achb0t/client/injection/RsCanvas"
         for (method in classNode.methods) {
             if (method.name == "<init>") {
                 val i: InsnList = method.instructions
@@ -653,7 +653,7 @@ class Analyser{
                     if (insn.opcode == Opcodes.INVOKESPECIAL) {
                         if (insn is MethodInsnNode) {
                             val mnode = insn
-                            mnode.owner = "com/p3achb0t/injection/Replace/RsCanvas"
+                            mnode.owner = "com/p3achb0t/client/injection/RsCanvas"
                             mnode.desc = "(Lcom/p3achb0t/client/injection/InstanceManager;)V"
                             val ins = InsnList()
                             ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))

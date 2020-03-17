@@ -7,10 +7,6 @@ abstract class AbstractScript {
     lateinit var ctx: Context
     var validate: Boolean = false
 
-    fun initialize(ctx: Context) {
-        this.ctx = ctx
-    }
-
     abstract suspend fun loop()
 
     abstract suspend fun start()
@@ -18,4 +14,6 @@ abstract class AbstractScript {
     abstract fun stop()
 
     open fun draw(g: Graphics) {}
+
+    open fun receive(id: String, message: String) {}
 }

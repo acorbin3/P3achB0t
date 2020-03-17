@@ -1,9 +1,7 @@
 package com.test
 
-import com.p3achb0t.client.Bot
-import java.awt.Dimension
-import javax.swing.JFrame
 
+/*
 class SingleWindow(val bot: Bot) {
     val frame: JFrame
     init {
@@ -23,4 +21,4 @@ class SingleWindow(val bot: Bot) {
         Thread.sleep(1000)
         frame.dispose()
     }
-}
+}*/

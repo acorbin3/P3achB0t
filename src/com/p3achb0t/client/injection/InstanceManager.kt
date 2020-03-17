@@ -3,16 +3,13 @@ package com.p3achb0t.client.injection
 import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.utils.Time
-import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.client.managers.accounts.Account
-import com.p3achb0t.client.managers.loginhandler.LoginHandler
-import com.p3achb0t.client.new_ui.GlobalStructs
+import com.p3achb0t.client.configs.GlobalStructs
+import com.p3achb0t.client.scripts.NullScript
 import kotlinx.coroutines.*
 import java.applet.Applet
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class InstanceManager(val client: Any) {
@@ -21,7 +18,7 @@ class InstanceManager(val client: Any) {
     var isContextLoaded: Boolean = false
 
     // Scripts vars
-    var script: AbstractScript = com.p3achb0t.scripts.NullScript()
+    var script: AbstractScript = NullScript()
     var isScriptRunning: Boolean = false
 
     val debugScripts = ConcurrentHashMap<String, DebugScript>()
@@ -48,12 +45,7 @@ class InstanceManager(val client: Any) {
     private var backgroundLoop: Job? = null
 
 
-    // fix
 
-    companion object {
-        var mule = false
-    }
-    var loginHandler = LoginHandler() // move to background script
     private var isRunning = false
     private var paused = false
     lateinit var thread: Job
@@ -72,7 +64,8 @@ class InstanceManager(val client: Any) {
                 delay(20)
             }
             ctx = Context(client)
-            script.initialize(ctx)
+            script::ctx.set(ctx)
+            //script.initialize(ctx)
             isContextLoaded = true
         }
 
@@ -91,13 +84,14 @@ class InstanceManager(val client: Any) {
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
         waitOnContext()
-        abstractScript.initialize(ctx)
+        abstractScript::ctx.set(ctx)
         script = abstractScript
     }
 
     fun addAbstractScript(abstractScript: AbstractScript) {
         waitOnContext()
-        abstractScript.initialize(ctx)
+        abstractScript::ctx.set(ctx)
+
         ctx.communication.setComScript(GlobalStructs.communication, abstractScript as ChannelInterface1)
         script = abstractScript
     }
@@ -145,7 +139,7 @@ class InstanceManager(val client: Any) {
     fun addDebugScript(scriptFileName: String) {
         val debugScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as DebugScript
         waitOnContext()
-        debugScript.initialize(ctx)
+        debugScript::ctx.set(ctx)
         debugScripts[scriptFileName] = debugScript
     }
 
@@ -163,7 +157,7 @@ class InstanceManager(val client: Any) {
     fun addBackgroundScript(scriptFileName: String) {
         val backgroundScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as BackgroundScript
         waitOnContext()
-        backgroundScript.initialize(ctx)
+        backgroundScript::ctx.set(ctx)
         backgroundScripts[scriptFileName] = backgroundScript
 
     }
@@ -178,87 +172,6 @@ class InstanceManager(val client: Any) {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    var breaking = false
-    var breakReturnTime = 0L
-
-    // TODO make sure current script is not running
-    fun setAbstractScript(abstractScript: AbstractScript) {
-        abstractScript.initialize(ctx)
-
-        this.script = abstractScript
-    }
-
-
-    fun setUpScript(abstractScript: AbstractScript) {
-        //scriptName = s::class.java.name.split(".").last()
-        //println("Setting up script: $scriptName")
-        script.initialize(Context(client))
-        //s.initialize(this.ctx)
-        //this.script = s
-    }
-
-    // TODO move to a GlobalScript Manager
-    fun setLoginHandlerAccount(account: Account){
-        //loginHandler.account = account
-    }
-
-    suspend fun loop() {
-        /*
-        if (isRunning) {
-            try {
-                script.loop()
-            } catch (e: Error) {
-                println(e.localizedMessage)
-                for (el in e.stackTrace) {
-                    println(el.toString())
-                }
-            }
-        }*/
-    }
 
     fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
         if (this.script is ChatListener) {
@@ -293,182 +206,6 @@ class InstanceManager(val client: Any) {
         }*/
     }
 
-    // TODO move to background task
-    val prevXP = EnumMap<Stats.Skill,Int>(Stats.Skill::class.java)
-    val prevTotalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
-    suspend fun dbUpdater(){
-        /*
-        Stats.Skill.values().iterator().forEach {
-            prevXP[it] = 0
-        }
-        while(isRunning){
-            if(ctx.worldHop.isLoggedIn) {
-
-                //Do stats tracking
-                //Initialize previous db
-                if (ctx.stats.curXP.get(Stats.Skill.ATTACK) == 0) {
-                    Stats.Skill.values().iterator().forEach {
-                        prevXP[it] = ctx.stats.curXP[it]
-                    }
-
-                } else {
-                    Stats.Skill.values().iterator().forEach { skill ->
-                        val diff = ctx.stats.curXP[skill]?.minus(prevXP[skill]!!)
-                        val wasPrevZero = prevXP[skill] == 0
-                        prevXP[skill] = ctx.stats.curXP[skill]
-                        //Skip the initial load
-                        if(!wasPrevZero) {
-                            if (diff != null && diff > 0) {
-                                println("Updating ${skill.name} wiht diff: $diff")
-                                Manager.db.updateStat(loginHandler.account.username, sessionID, skill, diff)
-                            }
-                        }
-                    }
-                }
-
-                //Do inventory Tracking
-                ctx.inventory.totalTrackedItemCount.forEach { itemID, count ->
-                    var diff: Int = 0
-                    if(itemID in prevTotalTrackedItemCount){
-                        diff = count.minus(prevTotalTrackedItemCount[itemID]!!)
-                        prevTotalTrackedItemCount[itemID] = count
-                    }else{
-                        diff = count
-                        prevTotalTrackedItemCount[itemID] = count
-                    }
-                    if(diff > 0) {
-                        Manager.db.updateItemCount(
-                                loginHandler.account.username,
-                                sessionID,
-                                ctx.cache.getItemName(itemID),
-                                diff
-                        )
-                    }
-                }
-            }
-
-            //Only delay long if we have initialized
-            if(ctx.worldHop.isLoggedIn && prevXP[Stats.Skill.ATTACK]!! > 0) {
-                delay(Time.getMinInMils(30))
-            }else{
-                delay(1000)
-            }
-        }*/
-    }
-
-    // TODO refactor
-    fun start() {
-        /*
-        if(script.validate){
-            Main.validationKey
-            val annotations = script::class.findAnnotation<ScriptManifest>()
-            println("name: ${annotations?.name} author: ${annotations?.author} ")
-            if(Manager.db.validateScript(annotations?.name ?:"", Main.validationKey)){
-                println("Validation success for script:${annotations?.name} key: ${Main.validationKey}")
-            }else{
-                println("Failed to provide a validation key. Be sure to pass in they key from the" +
-                        " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")
-                return
-            }
-
-
-        }
-        if(loginHandler.account.username.isEmpty()){
-            loginHandler.account.username = UUID.randomUUID().toString().substring(0,10)
-        }
-        if(loginHandler.account.script.isEmpty()){
-            loginHandler.account.script = scriptName
-        }
-
-        sessionID = UUID.randomUUID().toString()
-//        mouse.inputBlocked(true)
-        Manager.db.initalScriptLoad(loginHandler.account.username, sessionID, loginHandler.account.script)
-        isRunning = true
-        //This the script thread.
-
-        statsThread = GlobalScope.launch {
-            trackStats()
-        }
-        dbUpdaterThread = GlobalScope.launch {
-            dbUpdater()
-        }
-        thread = GlobalScope.launch {
-            ctx.stats.runtime.reset()
-            runtime.reset()
-            lastCheck.reset()
-
-            script.start()
-            while (isRunning) {
-                // Check to see if we have a good loaded account
-                // Every 5 min check to see if we need to logout
-                val timeTillBreak = (fiveMin - lastCheck.elapsed) / 1000
-                if(loginHandler.account.userBreaks && timeTillBreak< 0){
-                    //Are we in the runtime range
-                    if(runtime.elapsedSec > Random.nextInt(loginHandler.account.minRuntimeSec,loginHandler.account.maxRuntimeSec)){
-                        val breakTime = Random.nextInt(loginHandler.account.minBreakTimeSec,loginHandler.account.maxBreakTimeSec)
-                        println("Hit our break handler. Logging out")
-                        delay(5000) // Some times its good to add a little delay
-                        ctx.worldHop.logout()
-                        println("Delaying ${1000*breakTime.toLong()}ms")
-                        breakReturnTime = System.currentTimeMillis() + 1000*breakTime.toLong()
-                        breaking = true
-                        delay(1000*breakTime.toLong())
-                        runtime.reset()
-                        breaking = false
-
-                    }
-                    lastCheck.reset()
-                }
-                if (!paused && !mule
-                        && loginHandler.account.username.isNotEmpty()
-                        && loginHandler.isAtHomeScreen(ctx)) {
-                    println("Account: " + loginHandler.account)
-                    loginHandler.login(ctx)
-                }
-
-                if(loginHandler.isLoggedIn(ctx)){
-                    if(ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode){
-                        //Open options
-                        //argument0:-1, argument1:10747944, argument2:57, argument3:1, action:Options, targetName:, mouseX:712, mouseY:585, argument8:-1223904486
-                        ctx.mouse.doAction(DoActionParams(-1, 35913765, 57, 1, "Options", "", 0, 0))
-                        delay(1000)
-                        //set re-size mode
-                        //argument0:-1, argument1:17104930, argument2:57, argument3:1, action:Resizable mode, targetName:, mouseX:688, mouseY:362, argument8:-1223904486
-                        ctx.mouse.doAction(DoActionParams(-1, 17104930, 57, 1, "World Switcher", "", 0, 0))
-                        delay(1000)
-                    }
-                }
-                while (paused) {
-                    delay(100)
-                }
-                loop()
-            }
-        }*/
-    }
-
-    fun pause() {
-        println("Pausing script")
-        isRunning = true
-        paused = true
-
-    }
-
-    fun resume() {
-        println("Pausing script")
-        isRunning = true
-        paused = false
-    }
-
-    fun stop() {
-        isRunning = false
-        script.stop()
-//        thread.cancel()
-//        statsThread.cancel()
-//        GlobalScope.launch {
-//            thread.join()
-//            statsThread.join()
-//        }
-    }
 
     fun setGameImage(buffer: BufferedImage) {
         image = buffer
@@ -478,24 +215,6 @@ class InstanceManager(val client: Any) {
         return image
     }
 
-    fun paintScript(g: Graphics) {
-        /*
-        if(breaking) {
-            g.color = Color.RED
-            val timeLeftInSec = (breakReturnTime - System.currentTimeMillis()) / 1000
-            g.drawString("Breaking. Will return in $timeLeftInSec", 280, 225)
-        }else{
-            if(loginHandler.account.userBreaks) {
-                val timeTillBreak = loginHandler.account.maxRuntimeSec - runtime.elapsedSec
-                val nextCheck = ((fiveMin - lastCheck.elapsed) / 1000).toInt()
-                val estTimeToBreak = if(timeTillBreak>nextCheck) timeTillBreak else nextCheck
-                g.drawString("Estimated Time till break: ~$estTimeToBreak", 100, 100)
-//                g.drawString("${runtime.elapsedSec}  ${loginHandler.account.maxRuntimeSec}", 100,110)
-            }
-        }
-
-        script.draw(g)*/
-    }
 }
 
 /* for the game loop lock at 100/75 tick a second

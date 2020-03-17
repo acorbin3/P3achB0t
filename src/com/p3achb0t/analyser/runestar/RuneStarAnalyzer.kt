@@ -2,8 +2,8 @@ package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
 import com.p3achb0t.Main
-import com.p3achb0t.injection.class_generation.isBaseType
-import com.p3achb0t.injection.class_generation.isFieldNameUnique
+import com.p3achb0t.analyser.class_generation.isBaseType
+import com.p3achb0t.analyser.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
