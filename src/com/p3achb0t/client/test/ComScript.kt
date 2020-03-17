@@ -1,6 +1,5 @@
 
 import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.ChannelInterface1
 import kotlinx.coroutines.delay
 import java.awt.Color
 
@@ -15,13 +14,13 @@ class ComScript : AbstractScript() {
 
     override suspend fun loop() {
         if (!isSub) {
-            ctx.communication.subscribe("42", ::callback)
+            ctx.ipc.subscribe("42", ::callback)
             //ctx.communication.subscribe("1234")
             isSub = true
         }
         delay(200)
         //ctx.communication.send("1234", "id: $r, ComScript")
-        ctx.communication.send("42", "id: $r, ComScript")
+        ctx.ipc.send("42", "id: $r, ComScript")
         //println("send ComScript")
     }
 

@@ -28,4 +28,12 @@ class WidgetExplorerDebug : DebugScript() {
             selectedWidgetItem?.area?.let { g.drawRect(it.x, it.y, it.width, it.height) }
         }
     }
+
+    override suspend fun start() {
+        TODO("Not yet implemented")
+    }
+
+    override fun stop() {
+        TODO("Not yet implemented")
+    }
 }

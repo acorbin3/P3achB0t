@@ -90,9 +90,7 @@ class InstanceManager(val client: Any) {
     fun addAbstractScript(abstractScript: AbstractScript) {
         waitOnContext()
         abstractScript::ctx.set(ctx)
-
-        ctx.communication::communication.set(GlobalStructs.communication)
-        //ctx.communication.setComScript(GlobalStructs.communication)
+        ctx.ipc::communication.set(GlobalStructs.communication)
         script = abstractScript
     }
 
@@ -159,7 +157,13 @@ class InstanceManager(val client: Any) {
         waitOnContext()
         backgroundScript::ctx.set(ctx)
         backgroundScripts[scriptFileName] = backgroundScript
+    }
 
+    fun addBackgroundScript(backgroundScript: BackgroundScript) {
+        waitOnContext()
+        backgroundScript::ctx.set(ctx)
+        ctx.ipc::communication.set(GlobalStructs.communication)
+        backgroundScripts["scriptFileName"] = backgroundScript
     }
 
     fun removeBackgroundScript(scriptFileName: String) {

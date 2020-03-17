@@ -27,7 +27,7 @@ class TutorialIsland: AbstractScript()  {
     val stopwatch = StopWatch()
     var currentJob = ""
     init {
-        validate = true
+        //validate = true
     }
     override suspend fun loop() {
 

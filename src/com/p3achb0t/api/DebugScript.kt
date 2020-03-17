@@ -7,4 +7,6 @@ abstract class DebugScript {
     lateinit var ctx: Context
 
     abstract fun draw(g: Graphics)
+    abstract suspend fun start()
+    abstract fun stop()
 }

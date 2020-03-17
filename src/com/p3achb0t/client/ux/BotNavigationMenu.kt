@@ -68,7 +68,7 @@ class BotNavigationMenu: JMenuBar() {
         }
         val addScript2 = JMenuItem("Add ComScript2")
         addScript2.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(ComScript2())
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addBackgroundScript(ComScript2())
             println("ComScript2")
 
         }

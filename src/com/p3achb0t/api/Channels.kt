@@ -4,7 +4,7 @@ import com.p3achb0t.api.interfaces.CommunicationInterface
 import com.p3achb0t.api.interfaces.RoomInterface
 import kotlin.collections.HashMap
 
-class Channels() : SubInterface {
+class Channels() {
 
     private val channels = HashMap<String, RoomInterface>()
     lateinit var communication: CommunicationInterface
@@ -14,7 +14,7 @@ class Channels() : SubInterface {
      * subscribe to IPC
      */
     fun subscribe(id: String, callback: (id: String, message: String) -> Unit) {
-        communication.subscribeChannel(id, this, callback)
+        communication.subscribeChannel(id, ::setChannel, callback)
         //this.callback = callback
     }
 
@@ -22,14 +22,14 @@ class Channels() : SubInterface {
      * unsubscribe from IPC
      */
     fun unsubscribe(id: String) {
-        //communication.unsubscribeChannel(id, this)
+        //communication.unsubscribeChannel(id, channels[id]!!)
     }
 
     fun send(id: String, message: String) {
         channels[id]?.notifySubscribers(message)
     }
 
-    override fun setChannel(id: String, room: RoomInterface) {
+     private fun setChannel(id: String, room: RoomInterface) {
         channels[id] = room
     }
 

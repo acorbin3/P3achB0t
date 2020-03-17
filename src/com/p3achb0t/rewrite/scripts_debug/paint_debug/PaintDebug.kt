@@ -119,4 +119,12 @@ class PaintDebug: DebugScript() {
             }
         }
     }
+
+    override suspend fun start() {
+        TODO("Not yet implemented")
+    }
+
+    override fun stop() {
+        TODO("Not yet implemented")
+    }
 }
