@@ -10,9 +10,10 @@ class Room(val id: String) : RoomInterface {
 
     private val mutex = Any()
 
-    private val observers  = ArrayList<ChannelInterface1>()
+    private val observers  = ArrayList<(String, String) -> Unit>()
 
-    override fun subscribe(channelInterface: ChannelInterface1) {
+
+    override fun subscribe(channelInterface: (String, String) -> Unit) {
         synchronized (mutex) {
             observers.add(channelInterface)
         }
@@ -20,20 +21,19 @@ class Room(val id: String) : RoomInterface {
 
     override fun unsubscribe(channelInterface: ChannelInterface1) {
         synchronized (mutex) {
-            observers.remove(channelInterface)
+            //observers.remove(channelInterface)
         }
     }
 
     override fun notifySubscribers(message: String) {
-
-        val copyChannelInterfaces: ArrayList<ChannelInterface1>
+        val copyChannelInterfaces: ArrayList<(String, String) -> Unit>
 
         synchronized(mutex) {
-            copyChannelInterfaces = ArrayList<ChannelInterface1>(observers)
+            copyChannelInterfaces = ArrayList<(String, String) -> Unit>(observers)
         }
 
         for (observer in copyChannelInterfaces) {
-            observer.receive(id, message)
+            observer(id, message)
         }
     }
 

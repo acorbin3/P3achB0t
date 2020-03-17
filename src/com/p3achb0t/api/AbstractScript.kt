@@ -15,5 +15,4 @@ abstract class AbstractScript {
 
     open fun draw(g: Graphics) {}
 
-    open fun receive(id: String, message: String) {}
 }

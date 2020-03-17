@@ -65,7 +65,6 @@ class InstanceManager(val client: Any) {
             }
             ctx = Context(client)
             script::ctx.set(ctx)
-            //script.initialize(ctx)
             isContextLoaded = true
         }
 
@@ -92,7 +91,8 @@ class InstanceManager(val client: Any) {
         waitOnContext()
         abstractScript::ctx.set(ctx)
 
-        ctx.communication.setComScript(GlobalStructs.communication, abstractScript as ChannelInterface1)
+        ctx.communication::communication.set(GlobalStructs.communication)
+        //ctx.communication.setComScript(GlobalStructs.communication)
         script = abstractScript
     }
 

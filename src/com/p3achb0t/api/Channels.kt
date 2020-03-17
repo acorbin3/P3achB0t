@@ -7,21 +7,22 @@ import kotlin.collections.HashMap
 class Channels() : SubInterface {
 
     private val channels = HashMap<String, RoomInterface>()
-    private lateinit var communication: CommunicationInterface
-    private lateinit var script: ChannelInterface1
+    lateinit var communication: CommunicationInterface
+    //private lateinit var callback: ((String, String) -> Unit)
 
     /**
      * subscribe to IPC
      */
-    fun subscribe(id: String) {
-        communication.subscribeChannel(id, this, script)
+    fun subscribe(id: String, callback: (id: String, message: String) -> Unit) {
+        communication.subscribeChannel(id, this, callback)
+        //this.callback = callback
     }
 
     /**
      * unsubscribe from IPC
      */
     fun unsubscribe(id: String) {
-        communication.unsubscribeChannel(id, this)
+        //communication.unsubscribeChannel(id, this)
     }
 
     fun send(id: String, message: String) {
@@ -32,8 +33,4 @@ class Channels() : SubInterface {
         channels[id] = room
     }
 
-    fun setComScript(communication: CommunicationInterface, script: ChannelInterface1) {
-        this.communication = communication
-        this.script = script
-    }
 }

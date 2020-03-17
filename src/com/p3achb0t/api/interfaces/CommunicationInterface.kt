@@ -5,6 +5,6 @@ import com.p3achb0t.api.SubInterface
 
 interface CommunicationInterface {
 
-    fun subscribeChannel(id: String, channelInterface: SubInterface, callback: ChannelInterface1)
-    fun unsubscribeChannel(id: String, channelInterface: SubInterface)
+    fun subscribeChannel(id: String, channelInterface: SubInterface, callback: (String, String) -> Unit)
+    fun unsubscribeChannel(id: String, channelInterface: SubInterface, callback: (String, String) -> Unit)
 }

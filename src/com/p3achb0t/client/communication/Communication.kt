@@ -1,6 +1,5 @@
 package com.p3achb0t.client.communication
 
-import com.p3achb0t.api.ChannelInterface1
 import com.p3achb0t.api.SubInterface
 import com.p3achb0t.api.interfaces.CommunicationInterface
 import java.util.concurrent.ConcurrentHashMap
@@ -10,7 +9,7 @@ class Communication : CommunicationInterface {
     private val mutex = Any()
     private val channels = ConcurrentHashMap<String, Room>()
 
-    override fun subscribeChannel(id: String, channelInterface: SubInterface, callback: ChannelInterface1) {
+    override fun subscribeChannel(id: String, channelInterface: SubInterface, callback: (id: String, message: String) -> Unit) {
 
         synchronized(mutex) {
             if (!channels.containsKey(id)) {
@@ -27,7 +26,7 @@ class Communication : CommunicationInterface {
 
 
     // TODO remove when channel is empty
-    override fun unsubscribeChannel(id: String, channelInterface: SubInterface) {
+    override fun unsubscribeChannel(id: String, channelInterface: SubInterface, callback: (String, String) -> Unit) {
 
     }
 }
