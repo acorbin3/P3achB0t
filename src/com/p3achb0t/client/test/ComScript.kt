@@ -14,13 +14,11 @@ class ComScript : AbstractScript() {
 
     override suspend fun loop() {
         if (!isSub) {
-            ctx.ipc.subscribe("42", ::callback)
-            //ctx.communication.subscribe("1234")
+            ctx.ipc.subscribe(ctx.ipc.uuid, ::callback)
             isSub = true
         }
         delay(200)
-        //ctx.communication.send("1234", "id: $r, ComScript")
-        ctx.ipc.send("42", "id: $r, ComScript")
+        ctx.ipc.send(ctx.ipc.uuid, "id: ${ctx.ipc.scriptUUID}, ComScript")
         //println("send ComScript")
     }
 
@@ -33,9 +31,9 @@ class ComScript : AbstractScript() {
 
     override fun draw(g: Graphics) {
         g.color = Color.CYAN
-        g.drawString("Received: $m",50,50)
-        g.drawString("Own id: $r", 50, 65)
-        g.drawString(ctx.UUID, 50,85)
+        g.drawString("Channel id ${ctx.ipc.uuid}", 50,50)
+        g.drawString("Script uuid ${ctx.ipc.scriptUUID}", 50,70)
+
     }
 
 

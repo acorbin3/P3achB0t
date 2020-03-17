@@ -14,7 +14,6 @@ import java.applet.Applet
 
 class Context(val obj: Any) {
 
-    lateinit var UUID: String // UUID of the instance
     val applet: Applet
     var selectedWidget: Component? = null
     val client: Client = obj as Client

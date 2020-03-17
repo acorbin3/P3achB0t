@@ -1,9 +1,9 @@
 package com.p3achb0t.client.ux
 
 import ComScript
-import com.p3achb0t.client.test.ComScript2
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
+import com.p3achb0t.client.test.ComScript2
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -68,9 +68,14 @@ class BotNavigationMenu: JMenuBar() {
         }
         val addScript2 = JMenuItem("Add ComScript2")
         addScript2.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addBackgroundScript(ComScript2())
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(ComScript2())
             println("ComScript2")
 
+        }
+
+        val ipcHelper = JMenuItem("ipcHelper")
+        ipcHelper.addActionListener {
+            IpcHelper(GlobalStructs.communication)
         }
 
         menu.add(add)
@@ -81,6 +86,7 @@ class BotNavigationMenu: JMenuBar() {
         menu.add(startBackgroundScript)
         menu.add(addScript)
         menu.add(addScript2)
+        menu.add(ipcHelper)
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
     }

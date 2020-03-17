@@ -28,7 +28,7 @@ class InstanceManager(val client: Any) {
     var isScriptRunning: Boolean = false
 
     val debugScripts = ConcurrentHashMap<String, DebugScript>()
-    val backgroundScripts =ConcurrentHashMap<String, BackgroundScript>() // TODO Higher precedence
+    val backgroundScripts = ConcurrentHashMap<String, BackgroundScript>() // TODO Higher precedence
 
     //control fps
     var fps = 50
@@ -50,8 +50,6 @@ class InstanceManager(val client: Any) {
     private var abstractScriptLoop: Job? = null
     private var backgroundLoop: Job? = null
 
-
-
     init {
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
@@ -59,8 +57,7 @@ class InstanceManager(val client: Any) {
                 delay(20)
             }
             // setup context
-            ctx = Context(client)
-            ctx::UUID.set(instanceUUID)
+            ctx = setupContext(client)
             script::ctx.set(ctx)
 
             isContextLoaded = true
@@ -81,14 +78,13 @@ class InstanceManager(val client: Any) {
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
         waitOnContext()
-        abstractScript::ctx.set(ctx)
+        abstractScript::ctx.set(setupContext(client))
         script = abstractScript
     }
 
     fun addAbstractScript(abstractScript: AbstractScript) {
         waitOnContext()
-        abstractScript::ctx.set(ctx)
-        ctx.ipc::broker.set(GlobalStructs.communication)
+        abstractScript::ctx.set(setupContext(client))
         script = abstractScript
     }
 
@@ -135,8 +131,14 @@ class InstanceManager(val client: Any) {
     fun addDebugScript(scriptFileName: String) {
         val debugScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as DebugScript
         waitOnContext()
-        debugScript::ctx.set(ctx)
+        debugScript::ctx.set(setupContext(client))
         debugScripts[scriptFileName] = debugScript
+    }
+
+    fun addDebugScript(debugScript: DebugScript) {
+        waitOnContext()
+        debugScript::ctx.set(setupContext(client))
+        debugScripts["scriptFileName"] = debugScript
     }
 
     fun removeDebugScript(scriptFileName: String) {
@@ -153,14 +155,13 @@ class InstanceManager(val client: Any) {
     fun addBackgroundScript(scriptFileName: String) {
         val backgroundScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as BackgroundScript
         waitOnContext()
-        backgroundScript::ctx.set(ctx)
+        backgroundScript::ctx.set(setupContext(client))
         backgroundScripts[scriptFileName] = backgroundScript
     }
 
     fun addBackgroundScript(backgroundScript: BackgroundScript) {
         waitOnContext()
-        backgroundScript::ctx.set(ctx)
-        ctx.ipc::broker.set(GlobalStructs.communication)
+        backgroundScript::ctx.set(setupContext(client))
         backgroundScripts["scriptFileName"] = backgroundScript
     }
 
@@ -172,6 +173,13 @@ class InstanceManager(val client: Any) {
         while (!isContextLoaded) {
             sleep(20)
         }
+    }
+
+    private fun setupContext(client: Any) : Context {
+        val ctx = Context(client)
+        ctx.ipc::broker.set(GlobalStructs.communication)
+        ctx.ipc::uuid.set(instanceUUID)
+        return ctx
     }
 
 

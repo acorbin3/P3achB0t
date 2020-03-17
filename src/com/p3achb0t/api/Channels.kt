@@ -2,18 +2,21 @@ package com.p3achb0t.api
 
 import com.p3achb0t.api.interfaces.BrokerInterface
 import com.p3achb0t.api.interfaces.ChannelInterface
+import java.util.*
+import kotlin.collections.HashMap
 
 class Channels() {
 
-    private val channels = HashMap<String, ChannelInterface>()
+    lateinit var uuid: String // UUID of the instance
     lateinit var broker: BrokerInterface
-    //private lateinit var callback: ((String, String) -> Unit)
+    private val channels = HashMap<String, ChannelInterface>()
+    val scriptUUID: String = UUID.randomUUID().toString()
 
     /**
      * subscribe to IPC
      */
     fun subscribe(id: String, callback: (id: String, message: String) -> Unit) {
-        broker.subscribeChannel(id, ::setChannel, callback)
+        broker.subscribeChannel(id, ::setChannel, scriptUUID, callback)
         //this.callback = callback
     }
 
@@ -21,7 +24,7 @@ class Channels() {
      * unsubscribe from IPC
      */
     fun unsubscribe(id: String) {
-        //communication.unsubscribeChannel(id, channels[id]!!)
+        broker.unsubscribeChannel(id, scriptUUID)
     }
 
     /**

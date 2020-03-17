@@ -1,26 +1,28 @@
 package com.p3achb0t.client.test
 
-import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.BackgroundScript
-import kotlinx.coroutines.delay
+import com.p3achb0t.api.DebugScript
 import java.awt.Color
 import java.awt.Graphics
 import kotlin.random.Random
 
-class ComScript2 : BackgroundScript() {
+class ComScript2 : DebugScript() {
 
     var isSub = false
     var r = Random.nextInt(1000)
     var m = ""
-    override suspend fun loop() {
+
+    override fun draw(g: Graphics) {
         if (!isSub) {
             //ctx.communication.subscribe("1234")
-            ctx.ipc.subscribe("42", ::callback)
+            ctx.ipc.subscribe(ctx.ipc.uuid, ::callback)
             isSub = true
         }
-        delay(200)
-        ctx.ipc.send("42", "id: $r, ComScript2")
-        //println("send ComScript2")
+
+        //ctx.ipc.send("42", "id: $r, ComScript2")
+        g.color = Color.CYAN
+        g.drawString("Channel id ${ctx.ipc.uuid}", 50, 100)
+        g.drawString("Script uuid ${ctx.ipc.scriptUUID}", 50,120)
+        g.drawString(m, 50, 140)
     }
 
     override suspend fun start() {
@@ -39,11 +41,12 @@ class ComScript2 : BackgroundScript() {
 
 
     private fun callback(id: String, message: String) {
-        if (message.contains("$r")) {
+        /*if (message.contains("$r")) {
 
         } else {
             m = message
-            println("received from [ room: $id, $message ]")
-        }
+            //println("received from [ room: $id, $message ]")
+        }*/
+        m = message
     }
 }
