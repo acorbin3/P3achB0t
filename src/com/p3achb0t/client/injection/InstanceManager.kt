@@ -106,9 +106,9 @@ class InstanceManager(val client: Any) {
                 delay(1000/fps.toLong())
             }
         }
-        /*
-        if (!backgroundLoop?.isActive!!)
-            runBackgroundScripts()*/
+        // TODO needs change
+        if (backgroundLoop != null && backgroundLoop?.isActive!!)
+            runBackgroundScripts()
     }
 
     fun stopScript() {
