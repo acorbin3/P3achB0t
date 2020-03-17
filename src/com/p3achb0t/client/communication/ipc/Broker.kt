@@ -1,4 +1,4 @@
-package com.p3achb0t.client.communication
+package com.p3achb0t.client.communication.ipc
 
 import com.p3achb0t.api.interfaces.BrokerInterface
 import com.p3achb0t.api.interfaces.ChannelInterface

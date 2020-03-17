@@ -1,4 +1,4 @@
-package com.p3achb0t.client.server
+package com.p3achb0t.client.communication.server
 
 import com.p3achb0t.client.configs.GlobalStructs
 import org.java_websocket.WebSocket

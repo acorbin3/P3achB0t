@@ -2,7 +2,6 @@ package com.p3achb0t.api
 
 import com.p3achb0t.api.interfaces.BrokerInterface
 import com.p3achb0t.api.interfaces.ChannelInterface
-import kotlin.collections.HashMap
 
 class Channels() {
 
@@ -25,6 +24,9 @@ class Channels() {
         //communication.unsubscribeChannel(id, channels[id]!!)
     }
 
+    /**
+     * Send a message to the channel
+     */
     fun send(id: String, message: String) {
         channels[id]?.notifySubscribers(message)
     }

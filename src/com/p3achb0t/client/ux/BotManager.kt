@@ -56,6 +56,8 @@ fun setup() {
         Analyser().createInjectedJar(gamePackJar, runeStar)
     }
 
+    lookAndFeel()
+
 }
 
 fun lookAndFeel() {

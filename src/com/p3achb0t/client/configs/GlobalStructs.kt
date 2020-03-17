@@ -1,8 +1,8 @@
 package com.p3achb0t.client.configs
 
-import com.p3achb0t.client.communication.Broker
-import com.p3achb0t.client.ux.BotTabBar
+import com.p3achb0t.client.communication.ipc.Broker
 import com.p3achb0t.client.scripts.loading.LoadScripts
+import com.p3achb0t.client.ux.BotTabBar
 
 class GlobalStructs {
 
