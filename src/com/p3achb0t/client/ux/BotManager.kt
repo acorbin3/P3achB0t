@@ -18,7 +18,6 @@ import javax.swing.plaf.FontUIResource
 class BotManager : JFrame() {
 
     init {
-
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
 

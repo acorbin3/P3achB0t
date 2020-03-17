@@ -6,8 +6,8 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
 import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.ConfigReader
-import com.p3achb0t.client.loader.RSAppletStub
 import com.p3achb0t.client.loader.JarLoader
+import com.p3achb0t.client.loader.RSAppletStub
 import java.applet.Applet
 import java.awt.Dimension
 import java.util.*
@@ -40,7 +40,8 @@ class BotInstance : JPanel() {
         applet = loadedClient as Applet
 
         instanceManager = loadedClient as InstanceManagerInterface
-
+        // add uuid to the bot
+        instanceManager?.getManager()?.instanceUUID = sessionToken
 
         add(applet) // add the game to the JPanel
 
@@ -53,8 +54,6 @@ class BotInstance : JPanel() {
         applet!!.setStub(appletStub)
         applet!!.preferredSize = Dimension(GlobalStructs.width, GlobalStructs.height)
         applet!!.init()
-
-
     }
 
     fun kill() {

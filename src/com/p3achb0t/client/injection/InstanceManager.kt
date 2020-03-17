@@ -1,10 +1,16 @@
 package com.p3achb0t.client.injection
 
-import com.p3achb0t.api.*
+import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.BackgroundScript
+import com.p3achb0t.api.Context
+import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.applet.Applet
 import java.awt.Graphics
 import java.awt.image.BufferedImage
@@ -15,6 +21,7 @@ class InstanceManager(val client: Any) {
 
     lateinit var ctx: Context
     var isContextLoaded: Boolean = false
+    lateinit var instanceUUID: String
 
     // Scripts vars
     var script: AbstractScript = NullScript()
@@ -51,8 +58,11 @@ class InstanceManager(val client: Any) {
             while ((client as Applet).componentCount == 0 ) {
                 delay(20)
             }
+            // setup context
             ctx = Context(client)
+            ctx::UUID.set(instanceUUID)
             script::ctx.set(ctx)
+
             isContextLoaded = true
         }
 

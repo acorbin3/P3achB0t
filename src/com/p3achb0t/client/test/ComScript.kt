@@ -35,6 +35,7 @@ class ComScript : AbstractScript() {
         g.color = Color.CYAN
         g.drawString("Received: $m",50,50)
         g.drawString("Own id: $r", 50, 65)
+        g.drawString(ctx.UUID, 50,85)
     }
 
 
