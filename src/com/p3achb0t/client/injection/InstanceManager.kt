@@ -2,7 +2,6 @@ package com.p3achb0t.client.injection
 
 import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
-import com.p3achb0t.api.utils.Time
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import kotlinx.coroutines.*
@@ -46,17 +45,6 @@ class InstanceManager(val client: Any) {
 
 
 
-    private var isRunning = false
-    private var paused = false
-    lateinit var thread: Job
-    lateinit var statsThread: Job
-    lateinit var dbUpdaterThread: Job
-    val runtime = StopWatch()
-    val lastCheck = StopWatch()
-    val fiveMin = Time.getMinInMils(5)
-    var gameLoopI = 0
-
-
     init {
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
@@ -90,7 +78,7 @@ class InstanceManager(val client: Any) {
     fun addAbstractScript(abstractScript: AbstractScript) {
         waitOnContext()
         abstractScript::ctx.set(ctx)
-        ctx.ipc::communication.set(GlobalStructs.communication)
+        ctx.ipc::broker.set(GlobalStructs.communication)
         script = abstractScript
     }
 
@@ -162,7 +150,7 @@ class InstanceManager(val client: Any) {
     fun addBackgroundScript(backgroundScript: BackgroundScript) {
         waitOnContext()
         backgroundScript::ctx.set(ctx)
-        ctx.ipc::communication.set(GlobalStructs.communication)
+        ctx.ipc::broker.set(GlobalStructs.communication)
         backgroundScripts["scriptFileName"] = backgroundScript
     }
 

@@ -1,9 +1,9 @@
 package com.p3achb0t.client.communication
 
-import com.p3achb0t.api.interfaces.RoomInterface
+import com.p3achb0t.api.interfaces.ChannelInterface
 import java.util.*
 
-class Room(val id: String) : RoomInterface {
+class Channel(val id: String) : ChannelInterface {
 
     private val mutex = Any()
 
