@@ -2,6 +2,7 @@ package com.p3achb0t.client.communication.ipc
 
 import com.p3achb0t.api.interfaces.BrokerInterface
 import com.p3achb0t.api.interfaces.ChannelInterface
+import com.p3achb0t.client.communication.peer.PeerClient
 import java.util.concurrent.ConcurrentHashMap
 
 class Broker : BrokerInterface {
@@ -14,7 +15,9 @@ class Broker : BrokerInterface {
         synchronized(mutex) {
             if (!channels.containsKey(id)) {
                 println("added channel")
-                channels[id] = Channel(id)
+                val channel = Channel(id) // add broker to channel for cross com
+                channel.subscribe("Broker", ::brokerCallback)
+                channels[id] = channel
             }
         }
 
@@ -28,6 +31,10 @@ class Broker : BrokerInterface {
     override fun unsubscribeChannel(id: String, uuid: String) {
         val channel = channels[id]
         channel?.unsubscribe(uuid)
+    }
+
+    private fun brokerCallback(id: String, message: String) {
+        PeerClient.callback(id, message)
     }
 }
 

@@ -20,7 +20,6 @@ class BotManager : JFrame() {
     init {
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
-
         jMenuBar = BotNavigationMenu()
         add(GlobalStructs.botTabBar)
 
@@ -28,6 +27,8 @@ class BotManager : JFrame() {
         pack()
         isVisible = true
     }
+
+
 
 }
 

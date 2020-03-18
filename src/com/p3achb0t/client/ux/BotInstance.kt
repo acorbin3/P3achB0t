@@ -9,6 +9,7 @@ import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.JarLoader
 import com.p3achb0t.client.loader.RSAppletStub
 import java.applet.Applet
+import java.awt.BorderLayout
 import java.awt.Dimension
 import java.util.*
 import javax.swing.JPanel
@@ -20,11 +21,12 @@ class BotInstance : JPanel() {
     private var client: Client? = null
     var instanceManager: InstanceManagerInterface? = null
     val sessionToken: String = UUID.randomUUID().toString()
+    var isRefreshed = false
 
     init {
         // JPanel setup
         minimumSize = Dimension(GlobalStructs.width, GlobalStructs.height)
-
+        this.layout = BorderLayout()
     }
 
     fun initBot() {
@@ -64,7 +66,6 @@ class BotInstance : JPanel() {
     fun getInstanceManager(): InstanceManager {
         return instanceManager!!.getManager()
     }
-
 
     override fun getMinimumSize(): Dimension {
         return Dimension(765, 503)

@@ -31,7 +31,7 @@ class Channels() {
      * Send a message to the channel
      */
     fun send(id: String, message: String) {
-        channels[id]?.notifySubscribers(message)
+        channels[id]?.notifySubscribers("$scriptUUID;$message")
     }
 
      private fun setChannel(id: String, channel: ChannelInterface) {

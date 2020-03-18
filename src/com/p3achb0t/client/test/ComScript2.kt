@@ -41,12 +41,12 @@ class ComScript2 : DebugScript() {
 
 
     private fun callback(id: String, message: String) {
-        /*if (message.contains("$r")) {
+        if (message.contains(ctx.ipc.scriptUUID)) {
 
         } else {
             m = message
+            ctx.ipc.send(ctx.ipc.uuid, "callback from ${ctx.ipc.scriptUUID})")
             //println("received from [ room: $id, $message ]")
-        }*/
-        m = message
+        }
     }
 }

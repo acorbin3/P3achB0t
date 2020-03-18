@@ -6,12 +6,20 @@ import java.awt.Dimension
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
 
+
 class BotTabBar : JTabbedPane() {
 
     val botInstances = HashMap<String, BotInstance>()
+    private var lastSelectedIndex = 0
 
     init {
         preferredSize =  Dimension(GlobalStructs.width, GlobalStructs.height)
+
+        this.addChangeListener {
+            this.setEnabledAt(lastSelectedIndex, true)
+            this.setEnabledAt(this.selectedIndex, false)
+            lastSelectedIndex = this.selectedIndex
+        }
     }
 
     fun addBotInstance(id: String, botInstance: BotInstance) {

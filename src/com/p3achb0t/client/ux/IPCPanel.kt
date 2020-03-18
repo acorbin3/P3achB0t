@@ -20,10 +20,16 @@ class IpcHelper(val broker: Broker) : JFrame() {
     val textInputField = JTextField()
     val sendButton = JButton()
     val refreshButton = JButton()
-    val channelMessages = JList<Any?>()
+
     private val channelsView = DefaultMutableTreeNode("IPC Channels")
     private val treeModel = DefaultTreeModel(channelsView)
     private lateinit var channel: ChannelInterface
+    var l1 = DefaultListModel<String>()
+    val channelMessages = JList(l1)
+
+    private val channels = HashMap<String, ChannelInterface>()
+
+
     init {
 
 
@@ -48,6 +54,7 @@ class IpcHelper(val broker: Broker) : JFrame() {
 
         sendButton.addActionListener {
             channel.notifySubscribers(textInputField.text)
+
         }
 
 
@@ -68,10 +75,13 @@ class IpcHelper(val broker: Broker) : JFrame() {
     private fun channelCallback(channelId: String, channel: ChannelInterface) {
         println("subbed $channel")
         this.channel = channel
+        channels[channelId] = channel
     }
 
     private fun receiveCallback(id: String, message: String) {
         println("ROOM: $id, $message")
+        //channelMessages.set
+        l1.addElement(message)
     }
 
     private fun fill() {

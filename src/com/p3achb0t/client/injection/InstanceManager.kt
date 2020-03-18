@@ -19,7 +19,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 class InstanceManager(val client: Any) {
 
-    lateinit var ctx: Context
+    //lateinit var ctx: Context
+    var ctx: Context? = null
+
     var isContextLoaded: Boolean = false
     lateinit var instanceUUID: String
 
@@ -58,7 +60,7 @@ class InstanceManager(val client: Any) {
             }
             // setup context
             ctx = setupContext(client)
-            script::ctx.set(ctx)
+            script::ctx.set(ctx!!)
 
             isContextLoaded = true
         }
