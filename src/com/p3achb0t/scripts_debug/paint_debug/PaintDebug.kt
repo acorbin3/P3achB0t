@@ -10,7 +10,7 @@ import java.awt.Rectangle
 
 class PaintDebug: DebugScript() {
     companion object {
-        var isDebugTextOn = true
+        var isDebugTextOn = false
         var isPlayerPaintOn = false
         var isNPCPaintOn = false
         var isGroundItemsOn = false
@@ -32,7 +32,7 @@ class PaintDebug: DebugScript() {
 
 
             val debugX = 50
-            val debugY = 10
+            val debugY = 25
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
             g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",debugX,debugY)
