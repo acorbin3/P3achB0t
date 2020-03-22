@@ -139,4 +139,8 @@ class WorldHop(val ctx: Context) {
         })
 
     }
+
+    fun isMember(): Boolean {
+        return ctx.client.getIsMembersWorld()
+    }
 }

@@ -12,6 +12,10 @@ class Magic(val ctx: Context) {
         private const val FILTER_BUTTON_ID = 187
         enum class Spells(val widgetID: Int, val arg1: Int) {
             WIND_STRIKE(6,14286854),
+            WATER_STRIKE(9,14286857),
+            EARTH_STRIKE(11,14286859),
+            FIRE_STRIKE(13,14286861),
+            LOW_LEVEL_ALCHEMY(18,14286866),
             CRUMBLE_UNDEAD(27, 14286875),
             HIGH_LEVEL_ALCHEMY(39, 14286887),
             HOME_TELEPORT(5, 14286853)

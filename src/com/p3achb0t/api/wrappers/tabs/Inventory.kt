@@ -21,8 +21,12 @@ class Inventory(val ctx: Context? = null) {
     //The concept here is to track items that are picked up from the ground. The addItemToTrack will
     // only be called when an item is trying to be picked up
     data class Item(val id: Int, val name: String)
-    val isfull : Boolean get() {return this.getCount() == 28}
-    val  itemsToTrack = ArrayList<Item>()
+
+    val isfull: Boolean
+        get() {
+            return this.getCount() == 28
+        }
+    val itemsToTrack = ArrayList<Item>()
     val totalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
     val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory
     fun addItemToTrack(id: Int) {
@@ -53,7 +57,8 @@ class Inventory(val ctx: Context? = null) {
             }
         }
     }
-    fun trackedItemPerHour(id: Int): String{
+
+    fun trackedItemPerHour(id: Int): String {
         val df = DecimalFormat("###,###,###")
         val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed!! * 3_600_000
         return df.format(itemsPerHour)
@@ -79,6 +84,7 @@ class Inventory(val ctx: Context? = null) {
             }
         })
     }
+
     suspend fun waitTillNotedItemChanges(notedItemID: Int, waitTime: Int = 10) {
         val oldNotedSize = getCount(notedItemID, useStack = true)
         Utils.waitFor(waitTime, object : Utils.Condition {
@@ -131,7 +137,7 @@ class Inventory(val ctx: Context? = null) {
         if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
             val ids = inventory.getItemIds()
             ids.forEach {
-                if(it != 996 && it > 0) {
+                if (it != 996 && it > 0) {
                     items.add(it - 1)
                 }
             }
@@ -246,7 +252,7 @@ class Inventory(val ctx: Context? = null) {
 
     fun hasDivineMagics(): Boolean {
         var HasItems = false
-        val ItemsNeeded: IntArray = intArrayOf(23754,23751 ,23748,23745)
+        val ItemsNeeded: IntArray = intArrayOf(23754, 23751, 23748, 23745)
         ItemsNeeded.forEach {
             if (getCount(it) > 0) {
                 HasItems = true
@@ -279,27 +285,27 @@ class Inventory(val ctx: Context? = null) {
 
     fun containsAny(itemid: ArrayList<WidgetItem>): Boolean {
         var contains = false
-            var items = getAll()
-            items.forEachIndexed { index, widgetItem ->
-                itemid.forEach {
-                    if (widgetItem.id == it.id && widgetItem.id != 995) {
-                        contains = true
-                    }
+        var items = getAll()
+        items.forEachIndexed { index, widgetItem ->
+            itemid.forEach {
+                if (widgetItem.id == it.id && widgetItem.id != 995) {
+                    contains = true
                 }
             }
+        }
         return contains
     }
 
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
-            var items = getAll()
-            items.forEachIndexed { index, widgetItem ->
-                itemid.forEach {
-                    if (widgetItem.id == it) {
-                        contains = true
-                    }
+        var items = getAll()
+        items.forEachIndexed { index, widgetItem ->
+            itemid.forEach {
+                if (widgetItem.id == it) {
+                    contains = true
                 }
             }
+        }
         return contains
     }
 
@@ -410,26 +416,24 @@ class Inventory(val ctx: Context? = null) {
 
     fun ContainsAll(id: ArrayList<Int>): Boolean {
         var Contains = true
-            id.forEach {
-                if(!Contains(it)){
-                    Contains = false
-                }
-        }
-        return Contains
-    }
-
-    fun ContainsAnyExcept(id: ArrayList<Int>): Boolean {
-        var Contains = false
         id.forEach {
-            if(Contains(it)){
-                Contains = true
+            if (!Contains(it)) {
+                Contains = false
             }
         }
         return Contains
     }
 
+    fun ContainsOnly(id: ArrayList<Int>): Boolean {
+        var Contains = false
+        if (ContainsAll(id) && getCount() == id.size) {
+            Contains = true
+        }
+        return Contains
+    }
 
-    fun getItemCount(itemid: ArrayList<Int>): Int {
+
+    fun getItemCount(itemid: IntArray): Int {
         var count = 0
         if (isOpen()) {
             val items = getAll()

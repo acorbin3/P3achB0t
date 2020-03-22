@@ -154,4 +154,6 @@ class Equipment(val ctx: Context) {
             null
         }
     }
+
+
 }
