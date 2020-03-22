@@ -121,6 +121,16 @@ class Stats(val ctx: Context) {
         return getRuntimeString(millsecsRemaining.toLong())
     }
 
+    fun timeTillLevel(skill: Skill, level: Int): String{
+        val xpPerMills = xpPerMills(skill)
+
+        val xpTillNextLevel = experienceForLevel(level) - currentXP(skill)
+        val millsecsRemaining = xpTillNextLevel / xpPerMills
+
+
+        return getRuntimeString(millsecsRemaining.toLong())
+    }
+
     fun getRuntimeString(elapsed: Long): String {
         val days = elapsed.toInt() / 86400000
         var remainder = elapsed % 86400000
