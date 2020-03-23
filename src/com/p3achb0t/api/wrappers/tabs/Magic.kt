@@ -5,6 +5,7 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class Magic(val ctx: Context) {
     companion object {
@@ -18,7 +19,8 @@ class Magic(val ctx: Context) {
             LOW_LEVEL_ALCHEMY(18,14286866),
             CRUMBLE_UNDEAD(27, 14286875),
             HIGH_LEVEL_ALCHEMY(39, 14286887),
-            HOME_TELEPORT(5, 14286853)
+            HOME_TELEPORT(5, 14286853),
+            LEVEL_ONE_ENCHANT(10, 14286858)
         }
     }
 
@@ -26,6 +28,10 @@ class Magic(val ctx: Context) {
 
 
     suspend fun castSpell(spell: Spells) {
+        if(ctx.tabs.getOpenTab() != Tabs.Tab_Types.Magic){
+            ctx.tabs.openTab(Tabs.Tab_Types.Magic)
+            delay(Random.nextLong(600,2000))
+        }
         try {
             if (Utils.cleanColorText(
                             ctx.client.getSelectedSpellName()
