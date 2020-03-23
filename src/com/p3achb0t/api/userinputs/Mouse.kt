@@ -36,7 +36,7 @@ class Mouse(obj: Any) {
     var overrideDoActionParams = false
     var doActionParams: DoActionParams = DoActionParams()
     private val component: Component = (obj as Applet).getComponent(0)
-    private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createFastGamerMotionFactory(obj)
+    private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
     private val mouseHopping: MouseHop = MouseHop(obj as IOHandler, obj as Applet)
     private val ioMouse: Mouse = (obj as IOHandler).getMouse()
 

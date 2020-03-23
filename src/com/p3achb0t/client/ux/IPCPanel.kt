@@ -29,21 +29,13 @@ class IpcHelper(val broker: Broker) : JFrame() {
 
     private val channels = HashMap<String, ChannelInterface>()
 
-
     init {
-
-
-
         channelsTree.addTreeSelectionListener {
-
             if (it.paths.size > 1) {
-
                 println("${it.paths[0].getPathComponent(1)}")
                 broker.subscribeChannel(it.paths[0].getPathComponent(1).toString(), ::channelCallback, "IPC Helper", ::receiveCallback)
-
             }
         }
-
 
         refreshButton.addActionListener {
             channelsView.removeAllChildren()
@@ -54,17 +46,10 @@ class IpcHelper(val broker: Broker) : JFrame() {
 
         sendButton.addActionListener {
             channel.notifySubscribers(textInputField.text)
-
         }
-
-
 
         setup()
         fill()
-
-
-
-
 
         channelsTree.model = treeModel
         add(ipcHelperPanel)

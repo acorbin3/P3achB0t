@@ -17,7 +17,7 @@ import javax.swing.JPanel
 class BotInstance : JPanel() {
     // add the canvas to this JPanel
 
-    private var applet: Applet? = null
+    var applet: Applet? = null
     private var client: Client? = null
     var instanceManager: InstanceManagerInterface? = null
     val sessionToken: String = UUID.randomUUID().toString()

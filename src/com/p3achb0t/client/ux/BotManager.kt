@@ -7,6 +7,7 @@ import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.util.Util
+import java.awt.BorderLayout
 import java.awt.Font
 import java.io.File
 import java.nio.file.Paths
@@ -20,6 +21,7 @@ class BotManager : JFrame() {
     init {
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
+        this.layout = BorderLayout()
         jMenuBar = BotNavigationMenu()
         add(GlobalStructs.botTabBar)
 
@@ -27,8 +29,6 @@ class BotManager : JFrame() {
         pack()
         isVisible = true
     }
-
-
 
 }
 

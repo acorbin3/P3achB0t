@@ -3,18 +3,20 @@ package com.p3achb0t.client.ux
 
 import com.p3achb0t.client.configs.GlobalStructs
 import java.awt.Dimension
+import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
 
 
-class BotTabBar : JTabbedPane() {
+class BotTabBar : JTabbedPane(), MouseListener {
 
     val botInstances = HashMap<String, BotInstance>()
     private var lastSelectedIndex = 0
 
     init {
         preferredSize =  Dimension(GlobalStructs.width, GlobalStructs.height)
-
+        this.addMouseListener(this)
         this.addChangeListener {
             this.setEnabledAt(lastSelectedIndex, true)
             this.setEnabledAt(this.selectedIndex, false)
@@ -45,6 +47,27 @@ class BotTabBar : JTabbedPane() {
 
     fun getCurrentIndex(): BotInstance {
         return selectedComponent as BotInstance
+    }
+
+    override fun mouseReleased(p0: MouseEvent?) {
+
+    }
+
+    override fun mouseEntered(p0: MouseEvent?) {
+        if (selectedComponent != null) {
+            //val t= getCurrentIndex().applet?.requestFocus()
+
+            //println("requestFocusInWindow $t")
+        }
+    }
+
+    override fun mouseClicked(p0: MouseEvent?) {
+    }
+
+    override fun mouseExited(p0: MouseEvent?) {
+    }
+
+    override fun mousePressed(p0: MouseEvent?) {
     }
 
 }
