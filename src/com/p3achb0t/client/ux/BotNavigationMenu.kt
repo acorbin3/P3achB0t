@@ -4,6 +4,7 @@ import ComScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
+import com.p3achb0t.rewrite.scripts_debug.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -20,6 +21,7 @@ class BotNavigationMenu: JMenuBar() {
         scriptMenu()
         botUltra()
         ioHandle()
+        test()
     }
 
     private fun instanceMenu() {
@@ -209,6 +211,22 @@ class BotNavigationMenu: JMenuBar() {
 
         menu.add(mouse)
         menu.add(keyboard)
+
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        add(menu)
+    }
+
+    private fun test() {
+        val menu = JMenu("Tests")
+
+        val widget = JMenuItem("Widget")
+        widget.addActionListener {
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getManager().ctx
+           WidgetExplorerV3(f!!)
+
+        }
+
+        menu.add(widget)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
