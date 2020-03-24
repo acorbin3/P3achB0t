@@ -1,18 +1,19 @@
-[
-  {
-    "id": "34f8ed14-c20e-4e57-829b-758c59736e2e",
-    "username": "",
-    "password": "",
+ [
+   {
+    "id": "f756051c-e507-4241-9045-3c0a667505b7",
+    "username": "Zaksmithcomputing+84821@gmail.com",
+    "password": "F1WFP475XKB",
     "pin": "",
-    "script": "",
-    "minRuntimeSec": 0,
-    "maxRuntimeSec": 0,
-    "userBreaks": false,
-    "minBreakTimeSec": 0,
-    "maxBreakTimeSec": 0,
+    "script": "OneClickZulrah",
+    "minRuntimeSec": 14400,
+    "maxRuntimeSec": 20000,
+    "userBreaks": true,
+    "minBreakTimeSec": 2000,
+    "maxBreakTimeSec": 9000,
     "banned": false,
-    "proxy": "none",
-    "world": 80,
-    "startAutomatically": true
+    "proxy": "SOCKS5;38.127.135.48:58185",
+    "world": 195,
+    "startAutomatically": true,
+	"fps": 20
   }
 ]
