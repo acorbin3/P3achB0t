@@ -25,6 +25,15 @@ class Utils {
             return false
         }
 
+        suspend fun sleepUntil(condition: Boolean, time: Int){
+            waitFor(time, object : Condition {
+                override suspend fun accept(): Boolean {
+                    delay(100)
+                    return condition
+                }
+            })
+        }
+
         suspend fun waitFor(time: Long, condition: Condition): Boolean {
             var t = Timer(time)
             while (t.isRunning()) {
