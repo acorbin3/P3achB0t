@@ -2,7 +2,6 @@ package com.p3achb0t.scripts_debug.paint_debug
 
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
-import com.p3achb0t.api.wrappers.utils.Calculations
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -17,6 +16,7 @@ class PaintDebug: DebugScript() {
         var isGameObjectOn = false
         var isCanWalkDebug = false
         var isProjectileDebug = false
+        var isInventoryPaintingDebug = false
         val scriptName = "PaintDebug"
         var isZulrah = true
         var fps = 15
@@ -37,7 +37,7 @@ class PaintDebug: DebugScript() {
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
             g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",debugX,debugY)
             g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",debugX,debugY +10)
-            g.drawString("               ctrl-7 projectile:$isProjectileDebug,",debugX,debugY + 20)
+            g.drawString("               ctrl-7 projectile:$isProjectileDebug, ctrl-9 inventory: $isInventoryPaintingDebug",debugX,debugY + 20)
 
             if(isCanWalkDebug)
                 canWalkDebug(g,ctx)
@@ -83,7 +83,8 @@ class PaintDebug: DebugScript() {
 
 //
 //                rightClickMenuPaint(g, ctx)
-//                inventoryPaint(g, ctx)
+                if(isInventoryPaintingDebug)
+                    inventoryPaint(g, ctx)
 //                equipmentPaint(g, ctx)
 
                 // Paint minimap circle

@@ -78,6 +78,10 @@ open abstract class Keyboard : KeyListener {
                     println("Swapping projectiles")
                     PaintDebug.isProjectileDebug = !PaintDebug.isProjectileDebug
                 }
+                '9' -> {
+                    println("Swapping inventory")
+                    PaintDebug.isInventoryPaintingDebug = !PaintDebug.isInventoryPaintingDebug
+                }
             }
         }
         if (!inputBlocked) {
