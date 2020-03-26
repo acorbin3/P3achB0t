@@ -4,6 +4,7 @@ import com.p3achb0t.Main
 import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.user_inputs.DoActionParams
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.ClientMode
 import com.p3achb0t.api.wrappers.Stats
@@ -21,7 +22,7 @@ import java.util.*
 import kotlin.random.Random
 import kotlin.reflect.full.findAnnotation
 
-class ScriptManager(val client: Any) {
+class ScriptManager(val client: Any): Logging() {
 
     companion object {
         var mule = false
@@ -90,7 +91,7 @@ class ScriptManager(val client: Any) {
     }
 
     fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
-        println("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
+        logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 
     fun getModelCallback(argument1: Int) {
