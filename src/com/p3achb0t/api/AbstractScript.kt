@@ -1,8 +1,9 @@
 package com.p3achb0t.api
 
+import com.p3achb0t.api.utils.Logging
 import java.awt.Graphics
 
-abstract class AbstractScript {
+abstract class AbstractScript: Logging() {
 
     lateinit var ctx: Context
     var validate: Boolean = false
