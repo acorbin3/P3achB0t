@@ -11,10 +11,10 @@ interface WorldMapManager {
     fun getRegions(): Array<Array<WorldMapRegion>>
     fun get__h(): Int
     fun get__n(): Int
-    fun get__v(): Int
-    fun get__x(): Int
-    fun get__d(): Any
-    fun get__j(): AbstractArchive
-    fun get__m(): AbstractArchive
-    fun get__w(): Int
+    fun get__p(): Int
+    fun get__u(): Int
+    fun get__q(): Any
+    fun get__e(): AbstractArchive
+    fun get__t(): AbstractArchive
+    fun get__g(): Int
 }

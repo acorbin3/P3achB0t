@@ -9,13 +9,13 @@ interface Instrument {
     fun getOscillatorDelays(): IntArray
     fun getOscillatorPitch(): IntArray
     fun getOscillatorVolume(): IntArray
-    fun get__c(): SoundEnvelope
     fun get__d(): SoundEnvelope
-    fun get__e(): SoundEnvelope
-    fun get__g(): SoundEnvelope
-    fun get__i(): SoundEnvelope
-    fun get__l(): SoundEnvelope
-    fun get__o(): SoundEnvelope
-    fun get__t(): SoundEnvelope
+    fun get__h(): SoundEnvelope
+    fun get__k(): SoundEnvelope
+    fun get__m(): SoundEnvelope
+    fun get__q(): SoundEnvelope
+    fun get__v(): SoundEnvelope
+    fun get__w(): SoundEnvelope
     fun get__x(): SoundEnvelope
+    fun get__z(): SoundEnvelope
 }

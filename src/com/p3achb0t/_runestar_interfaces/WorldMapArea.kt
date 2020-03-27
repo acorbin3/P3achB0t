@@ -12,5 +12,5 @@ interface WorldMapArea {
     fun getOrigin0(): Coord
     fun getSections(): Any
     fun getZoom0(): Int
-    fun get__e(): Int
+    fun get__d(): Int
 }

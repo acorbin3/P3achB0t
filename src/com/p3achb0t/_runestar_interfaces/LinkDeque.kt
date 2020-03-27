@@ -1,6 +1,6 @@
 package com.p3achb0t._runestar_interfaces
 
 interface LinkDeque {
-    fun get__c(): Link
-    fun get__t(): Link
+    fun get__m(): Link
+    fun get__x(): Link
 }
