@@ -28,11 +28,11 @@ interface Model : Entity {
     fun getYMidOffset(): Int
     fun getZMid(): Int
     fun getZMidOffset(): Int
-    fun get__y(): Byte
-    fun get__q(): ByteArray
-    fun get__w(): ByteArray
-    fun get__f(): Int
-    fun get__b(): IntArray
-    fun get__r(): IntArray
-    fun get__s(): IntArray
+    fun get__l(): Byte
+    fun get__a(): ByteArray
+    fun get__g(): ByteArray
+    fun get__r(): Int
+    fun get__c(): IntArray
+    fun get__j(): IntArray
+    fun get__o(): IntArray
 }

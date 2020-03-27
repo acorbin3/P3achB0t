@@ -6,7 +6,7 @@ interface WorldMapRegion {
     fun getIconsMap(): Any
     fun getX(): Int
     fun getY(): Int
-    fun get__m(): Int
-    fun get__p(): Int
-    fun get__j(): Any
+    fun get__e(): Int
+    fun get__s(): Int
+    fun get__t(): Any
 }

@@ -16,9 +16,8 @@ interface GameShell {
     fun getIsCanvasInvalid(): Boolean
     fun getMouseWheelHandler(): MouseWheelHandler
     fun getStopTimeMs(): Long
-    fun get__ak(): Boolean
-    fun get__af(): Int
-    fun get__az(): Int
-    fun get__aa(): Boolean
-    fun focusLost(arg0: Boolean)
+    fun get__am(): Boolean
+    fun get__ai(): Int
+    fun get__an(): Int
+    fun get__at(): Boolean
 }

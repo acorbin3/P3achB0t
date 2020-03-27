@@ -9,8 +9,8 @@ interface NetSocket : AbstractSocket {
     fun getSocket(): Any
     fun getTask(): Task
     fun getTaskHandler(): TaskHandler
-    fun get__j(): Int
-    fun get__l(): Int
-    fun get__h(): Int
+    fun get__t(): Int
+    fun get__z(): Int
     fun get__p(): Int
+    fun get__s(): Int
 }
