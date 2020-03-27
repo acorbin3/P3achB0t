@@ -7,7 +7,7 @@ class Constants {
         // URLs
         const val GAME_BASE_URL = "runescape.com"
         const val GAME_SUB_RUTE = "oldschool"
-        const val GAME_WORLD = 83
+        const val GAME_WORLD = 80
         const val GAME_WORLD_URL = "http://$GAME_SUB_RUTE" + GAME_WORLD + ".$GAME_BASE_URL"
         const val GAME_WORLD_BASE = GAME_SUB_RUTE + GAME_WORLD + ".$GAME_BASE_URL"
 
@@ -24,7 +24,7 @@ class Constants {
 
 
         // Other constants
-        val REVISION = 188
+        val REVISION = 189
         var INJECTED_JAR_NAME = "gamepack-$REVISION-injected.jar"
 
         val GAMESIZE = Dimension(800,600)
