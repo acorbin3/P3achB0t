@@ -31,7 +31,17 @@ class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context,
         }
     }
 
-
+    fun getCombatStyle(): Int {
+        return try {
+            return ctx!!.vars.getVarbit(43)
+        } catch (e: Exception) {
+            println("getCombatStyle threw an exception")
+            e.stackTrace.iterator().forEach {
+                println(it)
+            }
+            -1
+        }
+    }
 
     fun getPrayer(): Int {
         return try {

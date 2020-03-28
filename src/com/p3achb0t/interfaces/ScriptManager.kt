@@ -11,6 +11,7 @@ import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.managers.Manager
 import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.managers.loginhandler.LoginHandler
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -178,10 +179,11 @@ class ScriptManager(val client: Any): Logging() {
     fun start() {
         if(script.validate){
             Main.validationKey
+            PaintDebug.key
             val annotations = script::class.findAnnotation<ScriptManifest>()
             println("name: ${annotations?.name} author: ${annotations?.author} ")
-            if(Manager.db.validateScript(annotations?.name ?:"", Main.validationKey)){
-                println("Validation success for script:${annotations?.name} key: ${Main.validationKey}")
+            if(Manager.db.validateScript(annotations?.name ?:"",  PaintDebug.key)){
+                println("Validation success for script:${annotations?.name} key: ${ PaintDebug.key}")
             }else{
                 println("Failed to provide a validation key. Be sure to pass in they key from the" +
                         " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")

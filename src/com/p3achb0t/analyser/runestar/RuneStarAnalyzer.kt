@@ -2,6 +2,7 @@ package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
 import com.p3achb0t.Main
+import com.p3achb0t.injection.class_generation.createRunestarInterfaces
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.injection.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
@@ -63,7 +64,7 @@ class RuneStarAnalyzer {
 
         val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
-//            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
+            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "./$hookDir/$hookFileName"
     }
 

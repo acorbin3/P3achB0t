@@ -20,6 +20,8 @@ class PaintDebug: DebugScript() {
         val scriptName = "PaintDebug"
         var isZulrah = true
         var fps = 15
+        var args = ""
+        var key = ""
         fun drawRect(g: Graphics, rect: Rectangle) {
             g.drawRect(rect.x, rect.y, rect.width, rect.height)
         }

@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.private_api.hopWorld
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
@@ -117,6 +118,16 @@ class WorldHop(val ctx: Context) {
             //Pick world
             //argument0:326, argument1:4522000, argument2:57, argument3:1, action:Switch, targetName:<col=ff9040>326</col>, mouseX:620, mouseY:427, argument8:0
             this.ctx.mouse.doAction(DoActionParams(worldNum, 4522000, 57, 1, "Switch", "", 0, 0))
+        }catch (e: Exception) {
+            println("World Exception")
+        }
+        delay(1000)
+        try {
+            if(ctx.dialog.isContinueAvailable()){
+                //argument0:-1, argument1:15007746, argument2:30, argument3:0, action:Continue, targetName:, mouseX:264, mouseY:549, argument8:1565406540
+                this.ctx.mouse.doAction(DoActionParams(-1, 15007746, 30, 0, "Switch", "", 0, 0))
+                delay(1000)
+            }
         }catch (e: Exception) {
             println("World Exception")
         }

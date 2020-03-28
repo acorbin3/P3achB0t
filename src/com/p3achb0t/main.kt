@@ -3,6 +3,7 @@ package com.p3achb0t
 import com.formdev.flatlaf.FlatDarkLaf
 import com.p3achb0t.client.ui.GameWindow
 import com.p3achb0t.client.ui.setup
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,14 +15,14 @@ import javax.swing.plaf.FontUIResource
 
 object Main {
 
-    var validationKey = ""
+    var validationKey = PaintDebug.key
     @JvmStatic
     fun main(args: Array<String>) {
 
         var getNextKey = false
         args.iterator().forEach {
             if(getNextKey){
-                validationKey = it
+                validationKey = PaintDebug.key
             }
             if(it == "-key"){
                 getNextKey = true

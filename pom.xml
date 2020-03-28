@@ -188,7 +188,7 @@
             <resource>
                 <directory>hooks</directory>
                 <includes>
-                    <include>hooks_188.json</include>
+                    <include>hooks_189.json</include>
                 </includes>
             </resource>
             <resource>

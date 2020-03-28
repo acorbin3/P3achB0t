@@ -34,6 +34,8 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
     init {
         var proxy = "none"
         PaintDebug.fps = account.fps
+        PaintDebug.args = account.args
+        PaintDebug.key = account.key
         if(account.world > 0) {
             world = account.world
         }

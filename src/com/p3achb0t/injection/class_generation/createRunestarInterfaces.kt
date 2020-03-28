@@ -15,7 +15,8 @@ fun createRunestarInterfaces(
     // Delete files
     val folder = File(path)
 //    folder.deleteRecursively()
-    folder.mkdir()
+    println("making dir")
+    folder.mkdirs()
     for (clazz in analyzers) {
         val fn = path + clazz.value.`class` + ".kt"
         val file = File(fn)

@@ -17,10 +17,12 @@ class Account {
     var world: Int = 80
     var startAutomatically: Boolean = true
     var fps: Int = 15
+    var args: String = ""
+    var key: String = ""
 
     override fun toString(): String {
         return "$id [$username, pass:$password, pin:$pin, script:$script, minRuntime:$minRuntimeSec, maxRuntime:$maxRuntimeSec," +
                 "useBreaks:$userBreaks, minBreakTime:$minBreakTimeSec,maxBreakTime:$maxBreakTimeSec, banned:$banned, " +
-                "proxy:$proxy, world:$world], fps:$fps]"
+                "proxy:$proxy, world:$world], fps:$fps, args:$args, , key:$key]"
     }
 }
