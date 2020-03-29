@@ -79,14 +79,14 @@ class Calculations {
          */
         fun worldToScreen(regionX: Int, regionY: Int, modelHeight: Int, ctx: Context): Point {
             var x = regionX
-            var z = regionY
-            if (x < 128 || z < 128 || x > 13056 || z > 13056) {
+            var y = regionY
+            if (x < 128 || y < 128 || x > 13056 || y > 13056) {
                 return Point(-1, -1)
             }
-            var y = getTileHeight(ctx, ctx.client.getPlane(), x, z) - modelHeight
+            var z = getTileHeight(ctx, ctx.client.getPlane(), x, y) - modelHeight
             x -= ctx.client.getCameraX()
-            y -= ctx.client.getCameraY()
             z -= ctx.client.getCameraZ()
+            y -= ctx.client.getCameraY()
 
             val yaw = ctx.client.getCameraYaw()
             val pitch = ctx.client.getCameraPitch()
@@ -96,20 +96,20 @@ class Calculations {
             val sinCurveX = SINE[yaw]
             val cosCurveX = COSINE[yaw]
 
-            var _angle = (z * sinCurveX + x * cosCurveX) shr 16
+            var _angle = (y * sinCurveX + x * cosCurveX) shr 16
 
-            z = ((z * cosCurveX) - (x * sinCurveX)) shr 16
+            y = ((y * cosCurveX) - (x * sinCurveX)) shr 16
             x = _angle
 
-            _angle = (y * cosCurveY - z * sinCurveY) shr 16
-            z = (y * sinCurveY + z * cosCurveY) shr 16
-            y = _angle
+            _angle = (z * cosCurveY - y * sinCurveY) shr 16
+            y = (z * sinCurveY + y * cosCurveY) shr 16
+            z = _angle
 
 
-            return if (z >= 50) {
+            return if (y >= 50) {
 
-                val screenX = x * ctx.client.getViewportZoom() / z + ctx.applet.size.width / 2
-                val screenY = y * ctx.client.getViewportZoom() / z + ctx.applet.size.height / 2
+                val screenX = x * ctx.client.getViewportZoom() / y + ctx.applet.size.width / 2
+                val screenY = z * ctx.client.getViewportZoom() / y + ctx.applet.size.height / 2
                 Point(screenX, screenY)
             } else Point(-1, -1)
         }
