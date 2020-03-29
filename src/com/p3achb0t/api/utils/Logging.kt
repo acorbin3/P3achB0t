@@ -1,8 +1,6 @@
 package com.p3achb0t.api.utils
 
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 open class Logging {
@@ -13,15 +11,14 @@ open class Logging {
         fun debug(s: String){
             val location = getLocation()
             val timeStamp = SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(Date())
-            val time = timeStamp
             val threadName = Thread.currentThread().name
-            println("$time [$threadName] DEBUG - $location $s")
+            println("$timeStamp [$threadName] DEBUG - $location $s")
         }
         fun info(s: String){
 
             val location = getLocation()
-            val time = DateTimeFormatter.ISO_INSTANT.format(Instant.now()) ?: ""
-            println("$time INFO - $location $s")
+            val timeStamp = SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(Date())
+            println("$timeStamp INFO - $location $s")
         }
 
         private fun getLocation(): String {
