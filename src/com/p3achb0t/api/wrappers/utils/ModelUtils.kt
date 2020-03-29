@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers.utils
 
-import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t._runestar_interfaces.Npc
-import com.p3achb0t._runestar_interfaces.Player
+import com.p3achb0t.api.interfaces.Actor
+import com.p3achb0t.api.interfaces.Model
+import com.p3achb0t.api.interfaces.Npc
+import com.p3achb0t.api.interfaces.Player
 import com.p3achb0t.api.Context
 import java.awt.Point
 import java.awt.Polygon

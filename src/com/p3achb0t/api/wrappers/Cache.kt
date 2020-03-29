@@ -1,14 +1,14 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.client.configs.Constants
-import org.runestar.cache.content.config.ConfigType
-import org.runestar.cache.content.config.NPCType
-import org.runestar.cache.content.config.ObjType
-import org.runestar.cache.content.config.VarBitType
-import org.runestar.cache.format.Cache
-import org.runestar.cache.format.disk.DiskCache
-import org.runestar.cache.format.net.NetCache
-import org.runestar.cache.tools.MemCache
+import com.p3achb0t.api.APIConstants
+import com.p3achb0t.api.cache.content.config.ConfigType
+import com.p3achb0t.api.cache.content.config.NPCType
+import com.p3achb0t.api.cache.content.config.ObjType
+import com.p3achb0t.api.cache.content.config.VarBitType
+import com.p3achb0t.api.cache.format.Cache
+import com.p3achb0t.api.cache.format.disk.DiskCache
+import com.p3achb0t.api.cache.format.net.NetCache
+import com.p3achb0t.api.cache.tools.MemCache
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.file.Path
@@ -30,7 +30,7 @@ class Cache {
         // Update Cache
         if(!cacheUpdated) {
             try {
-
+                cacheUpdated = true
                 NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
@@ -38,7 +38,6 @@ class Cache {
                         println("Complete: Cache updated")
                     }
                 }
-                cacheUpdated = true
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -52,10 +51,7 @@ class Cache {
     }
 
     fun getItemName(id: Int): String{
-        return if(cacheUpdated && id in itemCacheInfo)
-            itemCacheInfo[id]?.name ?: id.toString()
-        else
-            ""
+        return itemCacheInfo[id]?.name ?: id.toString()
     }
     fun getItemID(name: String): IntArray{
         //Find all items with the same name. Return

@@ -1,8 +1,8 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Actor
-import com.p3achb0t._runestar_interfaces.Headbar
-import com.p3achb0t._runestar_interfaces.HeadbarUpdate
+import com.p3achb0t.api.interfaces.Actor
+import com.p3achb0t.api.interfaces.Headbar
+import com.p3achb0t.api.interfaces.HeadbarUpdate
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable

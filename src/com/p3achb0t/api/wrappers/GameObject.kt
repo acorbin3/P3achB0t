@@ -1,17 +1,13 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.FloorDecoration
-import com.p3achb0t._runestar_interfaces.Model
-import com.p3achb0t._runestar_interfaces.Scenery
-import com.p3achb0t._runestar_interfaces.Wall
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.interfaces.*
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
 import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
-import com.p3achb0t.scripts_debug.paint_debug.getObjectComposite
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -179,6 +175,32 @@ class GameObject(
             wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model, ctx!!)
             else -> Polygon()
         }
+    }
+
+    private fun getObjectComposite(
+            objectCache: EvictingDualNodeHashTable,
+            gameObjectId: Int
+    ): LocType? {
+        var desiredGameObject1: LocType? = null
+        objectCache.getHashTable().getBuckets().iterator().forEach { bucketItem ->
+            if (bucketItem != null) {
+
+                var objectComposite = bucketItem.getNext()
+                while (objectComposite != null
+                        && objectComposite is LocType
+                        && objectComposite != bucketItem
+                ) {
+                    if (objectComposite.getKey() > 0
+                            && objectComposite.getKey().toInt() == gameObjectId
+                    ) {
+                        desiredGameObject1 = objectComposite
+                        break
+                    }
+                    objectComposite = objectComposite.getNext()
+                }
+            }
+        }
+        return desiredGameObject1
     }
 
 }

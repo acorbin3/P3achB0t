@@ -1,10 +1,7 @@
 package com.test
 
-import com.p3achb0t.client.Bot
-import java.awt.Dimension
-import java.awt.event.WindowEvent
-import javax.swing.JFrame
 
+/*
 class SingleWindow2(val bot: Bot) {
     val frame: JFrame
     init {
@@ -26,4 +23,4 @@ class SingleWindow2(val bot: Bot) {
     fun destroy() {
         frame.dispatchEvent(WindowEvent(frame, WindowEvent.WINDOW_CLOSING))
     }
-}
+}*/

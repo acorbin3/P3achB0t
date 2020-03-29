@@ -1,8 +1,6 @@
 package com.p3achb0t.client.util
 
-import com.google.gson.GsonBuilder
 import com.p3achb0t.client.configs.Constants
-import com.p3achb0t.client.managers.accounts.Account
 import com.p3achb0t.client.util.Util.Companion.createDefaultConfig
 import java.io.File
 import java.io.InputStream
@@ -56,6 +54,8 @@ class Util {
         }
 
         fun createDefaultConfig(path: String){
+
+            /*
             val file = File(path)
             println("Parth: " + file.path)
             println("Parent: " + file.parent)
@@ -74,7 +74,7 @@ class Util {
             readme.appendText("Anything that is not provided in the json will be defaulted to the following:")
             readme.appendText(jsonAccountPretty)
 
-
+            */
         }
     }
 

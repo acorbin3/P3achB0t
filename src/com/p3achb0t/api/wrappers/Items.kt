@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t._runestar_interfaces.Inventory
+import com.p3achb0t.api.interfaces.Inventory
 
 // This class is used to find the inventory items
-class Items(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Items(val client: com.p3achb0t.api.interfaces.Client) {
     data class Item(val id: Int, val stackSize: Int)
 
     fun getItemComposite(id: Int) {

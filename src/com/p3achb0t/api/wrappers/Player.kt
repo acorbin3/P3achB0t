@@ -1,14 +1,13 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Point
 
 
-class Player(var player: com.p3achb0t._runestar_interfaces.Player, ctx: Context, val menuIndex: Int) : Actor(player, ctx) {
+class Player(var player: com.p3achb0t.api.interfaces.Player, ctx: Context, val menuIndex: Int) : Actor(player, ctx) {
 
 
     override fun getNamePoint(): Point {

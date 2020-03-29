@@ -22,7 +22,6 @@ class Constants {
         const val ACCOUNTS_DIR = "user"
         const val ACCOUNTS_FILE = "accounts.json"
 
-
         // Other constants
         val REVISION = 189
         var INJECTED_JAR_NAME = "gamepack-$REVISION-injected.jar"

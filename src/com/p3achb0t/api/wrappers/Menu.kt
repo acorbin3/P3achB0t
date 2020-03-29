@@ -5,7 +5,7 @@ import java.awt.Point
 import java.awt.Rectangle
 import kotlin.random.Random
 
-class Menu(val client: com.p3achb0t._runestar_interfaces.Client) {
+class Menu(val client: com.p3achb0t.api.interfaces.Client) {
     fun getRect(): Rectangle {
         val mX = client.getMenuX()
         val mY = client.getMenuY()

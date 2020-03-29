@@ -1,22 +1,21 @@
 package com.p3achb0t.api
 
-import com.p3achb0t._runestar_interfaces.Client
-import com.p3achb0t._runestar_interfaces.Component
-import com.p3achb0t.api.user_inputs.Camera
-import com.p3achb0t.api.user_inputs.Keyboard
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.interfaces.Client
+import com.p3achb0t.api.interfaces.Component
+import com.p3achb0t.api.userinputs.Camera
+import com.p3achb0t.api.userinputs.Keyboard
+import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.*
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
 import com.p3achb0t.api.wrappers.widgets.Widgets
+
 import java.applet.Applet
 
 class Context(val obj: Any) {
 
-
     val applet: Applet
     var selectedWidget: Component? = null
-
     val client: Client = obj as Client
     val players: Players
     val groundItems: GroundItems
@@ -46,6 +45,7 @@ class Context(val obj: Any) {
     val worldHop: WorldHop
     val grandExchange: GrandExchange
     val trade: Trade
+    val ipc: Channels
 
     init {
         mouse = Mouse(obj)
@@ -77,7 +77,7 @@ class Context(val obj: Any) {
         worldHop = WorldHop(this)
         grandExchange = GrandExchange(this)
         trade = Trade(this)
-
+        ipc = Channels()
     }
 }
 

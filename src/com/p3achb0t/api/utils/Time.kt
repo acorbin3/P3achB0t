@@ -16,4 +16,8 @@ object Time {
     fun getTimeInMils(hour: Int, min: Int, sec: Int): Long{
         return getHoursInMils(hour) + getMinInMils(min) + getSecInMils(sec)
     }
+
+    suspend fun sleep(time: Long) {
+        kotlinx.coroutines.delay(time)
+    }
 }

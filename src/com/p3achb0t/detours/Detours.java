@@ -1,9 +1,10 @@
 package com.p3achb0t.detours;
 
-import com.p3achb0t._runestar_interfaces.Client;
+import com.p3achb0t.api.interfaces.Client;
 import com.p3achb0t.api.AbstractScript;
 import com.p3achb0t.api.Context;
-import com.p3achb0t.interfaces.ScriptManager;
+import com.p3achb0t.client.injection.InstanceManager;
+
 
 public class Detours {
     public static void doAction(int actionParam,
@@ -15,7 +16,7 @@ public class Detours {
                                 int mouseX,
                                 int mouseY,
                                 int dummy,
-                                ScriptManager scriptManager){
+                                InstanceManager scriptManager){
 
         AbstractScript script = scriptManager.getScript();
         Context ctx = script.getCtx();

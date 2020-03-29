@@ -1,13 +1,12 @@
 package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.user_inputs.Mouse
+import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.*
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.math.abs
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 abstract class Interactable(var ctx: Context?) {
     abstract fun getInteractPoint(): Point
