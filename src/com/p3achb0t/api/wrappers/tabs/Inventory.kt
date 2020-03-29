@@ -250,6 +250,39 @@ class Inventory(val ctx: Context? = null) {
         return HasItems
     }
 
+    fun hasPassage(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(21146, 21149, 21151, 21153, 21155)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
+    fun hasGlory(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(1706, 1708, 1710, 1712, 11976,11978)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
+    fun hasGamesNeck(): Boolean {
+        var HasItems = false
+        val ItemsNeeded: IntArray = intArrayOf(3853, 3855, 3857, 3859, 3861, 3863,3865,3867)
+        ItemsNeeded.forEach {
+            if (getCount(it) > 0) {
+                HasItems = true
+            }
+        }
+        return HasItems
+    }
+
     fun hasDivineMagics(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(23754, 23751, 23748, 23745)

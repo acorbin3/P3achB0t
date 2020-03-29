@@ -2,9 +2,11 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.private_api.hopWorld
+import com.p3achb0t.api.private_api.selectionOptiondoAction
 import com.p3achb0t.api.user_inputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class WorldHop(val ctx: Context) {
     companion object {
@@ -126,7 +128,7 @@ class WorldHop(val ctx: Context) {
             if(ctx.dialog.isContinueAvailable()){
                 //argument0:-1, argument1:15007746, argument2:30, argument3:0, action:Continue, targetName:, mouseX:264, mouseY:549, argument8:1565406540
                 this.ctx.mouse.doAction(DoActionParams(-1, 15007746, 30, 0, "Switch", "", 0, 0))
-                delay(1000)
+                delay(2000)
             }
         }catch (e: Exception) {
             println("World Exception")
@@ -134,10 +136,19 @@ class WorldHop(val ctx: Context) {
         delay(1000)
         try {
             //click yes
-            val yesConponent = ctx.widgets.find(219,"Yes")
-            if(yesConponent != null) {
-                //argument0:1, argument1:14352385, argument2:30, argument3:0, action:Continue, targetName:, mouseX:261, mouseY:488, argument8:0
-                this.ctx.mouse.doAction(DoActionParams(1, 14352385, 30, 1, "Continue", "", 0, 0))
+            if (ctx.dialog.isDialogOptionsOpen()) {
+                ctx.dialog.selectionOptiondoAction("Yes")
+                delay(Random.nextLong(1333, 1777))
+            }
+        }catch (e: Exception) {
+            println("World Exception")
+        }
+        delay(2000)
+        try {
+            //click yes
+            if (ctx.dialog.isDialogOptionsOpen()) {
+                ctx.dialog.selectionOptiondoAction("Yes")
+                delay(Random.nextLong(1333, 1777))
             }
         }catch (e: Exception) {
             println("World Exception")
