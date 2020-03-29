@@ -4,7 +4,7 @@
   <groupId>com.p3achb0t</groupId>
   <artifactId>P3achB0t</artifactId>
   <name>client</name>
-  <version>0.188.2-SNAPSHOT</version>
+  <version>0.189-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -196,7 +196,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <runescape.gamepack.revision>188</runescape.gamepack.revision>
+    <runescape.gamepack.revision>189</runescape.gamepack.revision>
     <maven.compiler.target>1.7</maven.compiler.target>
     <main.class>com.p3achb0t.Main</main.class>
     <version.asm>7.1</version.asm>
