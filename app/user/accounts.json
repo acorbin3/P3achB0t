@@ -1,11 +1,10 @@
 [
   {
-    "id": "34f8ed14-c20e-4e57-829b-758c59736e2e",
-    "username": "rsbond60+232@gmail.com",
-
-    "password": "Power1234",
+    "id": "f756051c-e507-4241-9045-3c0a667505b7",
+    "username": "",
+    "password": "",
     "pin": "",
-    "script": "Chicken Killer",
+    "script": "",
     "minRuntimeSec": 0,
     "maxRuntimeSec": 0,
     "userBreaks": false,
@@ -13,7 +12,10 @@
     "maxBreakTimeSec": 0,
     "banned": false,
     "proxy": "none",
-    "world": 80,
-    "startAutomatically": true
+    "world": 205,
+    "startAutomatically": false,
+    "fps": 20,
+    "args": "",
+    "key": ""
   }
 ]

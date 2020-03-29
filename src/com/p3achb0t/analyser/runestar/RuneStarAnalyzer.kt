@@ -2,7 +2,6 @@ package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
 import com.p3achb0t.Main
-import com.p3achb0t.injection.class_generation.createRunestarInterfaces
 import com.p3achb0t.injection.class_generation.isBaseType
 import com.p3achb0t.injection.class_generation.isFieldNameUnique
 import org.objectweb.asm.ClassReader
@@ -28,33 +27,6 @@ class RuneStarAnalyzer {
         }
 //        val json = file.readText() // your json value here
         val topic = Gson().fromJson(json, Array<ClassHook>::class.java)
-        //RuneStar has the Y and Z flipped from how our client works. Need to update the field name
-        val yTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0].copy()
-        val zTemp = topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0].copy()
-
-        //Update by swapping names of the field
-        topic.iterator().forEach {
-            if(it.`class` == "Client"){
-                it.fields.iterator().forEach { fieldHook ->
-                    if(fieldHook.field == "cameraY"){
-                        println("Updating CameraY from ${fieldHook.name}->$zTemp")
-                        fieldHook.name = zTemp.name
-                        fieldHook.owner = zTemp.owner
-                        fieldHook.decoder = zTemp.decoder
-
-                    }
-                    if(fieldHook.field == "cameraZ"){
-                        println("Updating CameraZ from ${fieldHook.name}->${yTemp}")
-                        fieldHook.name = yTemp.name
-                        fieldHook.owner = yTemp.owner
-                        fieldHook.decoder = yTemp.decoder
-                    }
-                }
-            }
-        }
-
-        println("cameraZ = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraZ" }[0]}")
-        println("cameraY = ${topic.filter { it.`class` == "Client" }[0].fields.filter { it.field =="cameraY" }[0]}")
 
         for (clazz in topic) {
 
@@ -64,7 +36,7 @@ class RuneStarAnalyzer {
 
         val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
         val _package = "com.p3achb0t._runestar_interfaces"
-            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
+//            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
         return "./$hookDir/$hookFileName"
     }
 

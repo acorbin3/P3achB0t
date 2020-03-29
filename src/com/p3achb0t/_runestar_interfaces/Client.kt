@@ -671,7 +671,6 @@ interface Client : GameShell {
     fun get__ap_m(): WorldMapSectionType
     fun get__ap_x(): WorldMapSectionType
     fun get__ar_rt(): Int
-    fun get__al_lt(): Int
     fun get__al_no(): Int
     fun get__al_bh(): Array<IndexedSprite>
     fun get__as_al(): Any
@@ -681,8 +680,6 @@ interface Client : GameShell {
     fun get__ak_al(): Bounds
     fun get__ax_sq(): Int
     fun get__az_aq(): String
-    fun get__ac_lq(): Int
-    fun get__ah_lo(): Int
     fun get__ag_sr(): ShortArray
     fun get__aw_n(): Font
     fun get__aw_h(): Array<Array<IntArray>>
@@ -1219,7 +1216,6 @@ interface Client : GameShell {
     fun get__gb_m(): LoginProt
     fun get__gb_v(): LoginProt
     fun get__gb_z(): Array<LoginProt>
-    fun get__gq_lc(): Int
     fun get__gq_v(): Int
     fun get__gs_x(): IntArray
     fun get__gl_lr(): Component
