@@ -35,6 +35,17 @@ fun createRunestarInterfaces(
             else {
                 out.println("interface ${clazz.value.`class`} {")
             }
+
+            //Adding injected callbacks
+            if(clazz.value.`class` == "Client"){
+                out.println("    fun getVarbit(id: Int): Int")
+                out.println("    fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int, dummy: Int=0)")
+            }
+            else if(clazz.value.`class` == "Entity"){
+                out.println("    fun getModel(): Model")
+            }
+
+
             for (field in clazz.value.fields) {
 
                 val arrayCount = field.descriptor.count { it == '[' }
