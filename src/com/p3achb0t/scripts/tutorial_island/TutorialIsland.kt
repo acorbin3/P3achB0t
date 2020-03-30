@@ -3,7 +3,10 @@ package com.p3achb0t.scripts.tutorial_island
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.Area
+import com.p3achb0t.api.wrappers.Interact
+import com.p3achb0t.api.wrappers.Tile
+import com.p3achb0t.api.wrappers.Walking
 import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
@@ -839,7 +842,8 @@ class TutorialIsland: AbstractScript()  {
         }
 
         override suspend fun execute() {
-            Run(ctx).activateRun()
+            ctx.run.clickRunButton()
+            ctx.run.activateRun()
             delay(Random.nextLong(1500, 2500))
         }
 
@@ -1086,7 +1090,7 @@ class TutorialIsland: AbstractScript()  {
 
         override suspend fun execute() {
             //Find Anvil
-            val anvil = ctx.gameObjects.find("Anvil", sortByDistance = true)
+            val anvil = ctx.gameObjects.find("Anvil")
             if (anvil.size > 0) {
 
                 val index = (0..1).random()
