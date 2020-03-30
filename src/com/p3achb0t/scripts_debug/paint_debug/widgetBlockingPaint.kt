@@ -1,7 +1,7 @@
-package com.p3achb0t.rewrite.scripts_debug.paint_debug
+package com.p3achb0t.scripts_debug.paint_debug
 
 import com.p3achb0t.api.wrappers.utils.Calculations
-import com.p3achb0t.rewrite.scripts_debug.paint_debug.PaintDebug.Companion.drawRect
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug.Companion.drawRect
 import java.awt.Color
 import java.awt.Graphics
 

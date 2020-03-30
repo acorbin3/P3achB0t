@@ -38,7 +38,11 @@ public interface Cache {
                 var sim = sm[i];
                 var dim = i >= dm.length ? null : dm[i];
                 if (!sim.equals(dim)) {
+                    System.out.println("Updating " + i + "/" + sm.length );
                     fs.add(updateArchive(src, dst, i, sim, dim));
+                    Float percentComplete = Float.valueOf(i/sm.length);
+                    System.out.println("Completed " + i + " %complete:" + percentComplete);
+
                 }
             }
             return IO.allOf(fs);

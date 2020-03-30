@@ -19,6 +19,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 class InstanceManager(val client: Any) {
 
+    companion object {
+        var mule = false
+    }
     //lateinit var ctx: Context
     var ctx: Context? = null
 
@@ -77,6 +80,21 @@ class InstanceManager(val client: Any) {
         }
     }
 
+    fun setAbstractScript(name:String){
+        if(name in GlobalStructs.scripts.scripts) {
+            waitOnContext()
+            GlobalStructs.scripts.scripts[name]!!.abstractScript?.ctx = setupContext(client)
+            script = GlobalStructs.scripts.scripts[name]!!.abstractScript!!
+        }else{
+            println("ERROR: Count not find script $name")
+        }
+    }
+    fun addAbstractScript(name:String, abstractScript: AbstractScript){
+        GlobalStructs.scripts.scripts[name]?.abstractScript = abstractScript
+        waitOnContext()
+        abstractScript::ctx.set(setupContext(client))
+        script = abstractScript
+    }
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
         waitOnContext()

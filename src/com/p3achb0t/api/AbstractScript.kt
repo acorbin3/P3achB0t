@@ -6,6 +6,7 @@ import java.awt.Graphics
 abstract class AbstractScript: Logging() {
 
     lateinit var ctx: Context
+    var validate: Boolean = false
 
     abstract suspend fun loop()
     abstract suspend fun start()

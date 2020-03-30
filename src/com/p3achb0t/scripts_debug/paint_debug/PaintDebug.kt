@@ -1,4 +1,4 @@
-package com.p3achb0t.rewrite.scripts_debug.paint_debug
+package com.p3achb0t.scripts_debug.paint_debug
 
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
@@ -42,7 +42,7 @@ class PaintDebug: DebugScript() {
             g.drawString("               ctrl-7 projectile:$isProjectileDebug, ctrl-9 inventory: $isInventoryPaintingDebug",debugX,debugY + 20)
 
             if(isCanWalkDebug)
-                canWalkDebug(g,ctx)
+                canWalkDebug(g, ctx)
 
             if (isDebugTextOn)
                 drawDebugText(g, ctx)
@@ -62,7 +62,7 @@ class PaintDebug: DebugScript() {
                     if (isNPCPaintOn)
                         paintNPCs(g, ctx)
                     if(isProjectileDebug)
-                        projectilePaint(g,ctx)
+                        projectilePaint(g, ctx)
                     widgetBlockingPaint(g)
                     ///////Object paint//////////
 //                        gameObjectPaint(g)
@@ -112,7 +112,7 @@ class PaintDebug: DebugScript() {
 //                    g.fillRect(point.x, point.y, 4, 4)
 //                }
 
-            Thread.sleep(1000/fps.toLong())
+            Thread.sleep(1000/ fps.toLong())
             }
 
 

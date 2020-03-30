@@ -1,10 +1,12 @@
 package com.p3achb0t.client.ux
 
 import ComScript
+import com.p3achb0t.analyser.ScriptClasses
+import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
-import com.p3achb0t.rewrite.scripts_debug.widgetexplorer.WidgetExplorerV3
+import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
 import javax.swing.JMenu
 import javax.swing.JMenuBar
 import javax.swing.JMenuItem
@@ -20,6 +22,7 @@ class BotNavigationMenu: JMenuBar() {
         instanceMenu()
         scriptMenu()
         botUltra()
+        updateAbstractMenu()
         ioHandle()
         test()
     }
@@ -156,21 +159,45 @@ class BotNavigationMenu: JMenuBar() {
         return menu
     }
 
-    private fun abstractMenu(): JMenu {
-        val menu = JMenu("Abstract")
+    private fun updateAbstractMenu() {
+        addScriptsMenus("com/p3achb0t/scripts_private", abstract)
+        addScriptsMenus("com/p3achb0t/scripts", abstract)
+    }
+    private fun addScriptsMenus(scriptsPath: String, menu: JMenu) {
+        println("looming at path  $scriptsPath")
+        val classes: ArrayList<Class<*>> = ArrayList()
 
-        for (dscript in GlobalStructs.scripts.scripts.keys) {
+        classes.addAll(ScriptClasses.findAllClasses(scriptsPath))
+        //        println("Classes: ")
 
-            val mouseDebug = JMenuItem(GlobalStructs.scripts.scripts[dscript]!!.name)
-            mouseDebug.addActionListener {
-                println(dscript)
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(dscript)
+        classes.forEach { clazz ->
+            println("class: ${clazz.name}")
+            clazz.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+               // println(manifest)
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    println("Looking at manifest: $manifest")
+                    val splitManifest = manifest.split(",")
+                    val category = splitManifest[1].replace("category=", "")
+                    val scriptName = splitManifest[2].replace("name=", "").strip()
+                    val author = splitManifest[3].replace("author=", "")
+                    println("Adding menu Item: $scriptName")
+                    val menuItem1 = JMenuItem("$scriptName")
+                    val localClazz = clazz
+                    menuItem1.addActionListener {
+                        //val game = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager
+                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(localClazz.newInstance() as AbstractScript)
+
+                       // GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().setAbstractScript(scriptName)
+                    }
+                    menu.add(menuItem1)
+                }
             }
-            menu.add(mouseDebug)
         }
-
-        menu.popupMenu.isLightWeightPopupEnabled = false
-        return menu
     }
 
     private fun botUltra() {
@@ -222,7 +249,7 @@ class BotNavigationMenu: JMenuBar() {
         val widget = JMenuItem("Widget")
         widget.addActionListener {
             val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getManager().ctx
-           WidgetExplorerV3(f!!)
+            WidgetExplorerV3(f!!)
 
         }
 

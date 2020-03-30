@@ -10,8 +10,9 @@ deob/
 .idea/
 /target/
 /cache/
-src/com/p3achb0t/UserDetails.kt
+src/com/p3achb0t/api/UserDetails.kt
 #app/
 gamepacks/
 /app/gamepack/
 /app/user/accounts.json
+/app/gamepack-189-injected.jar

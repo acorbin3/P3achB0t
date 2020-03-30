@@ -1,6 +1,5 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.APIConstants
 import com.p3achb0t.api.cache.content.config.ConfigType
 import com.p3achb0t.api.cache.content.config.NPCType
 import com.p3achb0t.api.cache.content.config.ObjType
@@ -9,6 +8,7 @@ import com.p3achb0t.api.cache.format.Cache
 import com.p3achb0t.api.cache.format.disk.DiskCache
 import com.p3achb0t.api.cache.format.net.NetCache
 import com.p3achb0t.api.cache.tools.MemCache
+import com.p3achb0t.client.configs.Constants
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.file.Path
@@ -26,11 +26,12 @@ class Cache {
         lateinit var itemCacheInfo: Map<Int,ItemCacheType>
     }
 
-    suspend fun updateCache(){
+    fun updateCache(){
         // Update Cache
         if(!cacheUpdated) {
             try {
                 cacheUpdated = true
+                println("Connecting to websocket")
                 NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
@@ -43,10 +44,10 @@ class Cache {
             }
             println("loading NPC info from cache")
             npcCacheInfo = getNPCInfo()
-            println("Complete loading NPC info from cache")
+            println("Complete loading ${npcCacheInfo.size} NPCs info from cache")
             println("Loading item info from cache")
             itemCacheInfo = getItemInfo()
-            println("Complete item info from cache")
+            println("Complete ${itemCacheInfo.size} items info from cache")
         }
     }
 

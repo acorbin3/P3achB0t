@@ -1,7 +1,7 @@
-package com.p3achb0t.rewrite.scripts_debug
+package com.p3achb0t.scripts_debug
 
-import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Color
 import java.awt.Graphics

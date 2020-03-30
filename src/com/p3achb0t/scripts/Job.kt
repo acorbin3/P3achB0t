@@ -1,6 +1,7 @@
-package com.p3achb0t.rewrite.scripts
+package com.p3achb0t.scripts
 
 import com.p3achb0t.api.interfaces.Client
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 
 

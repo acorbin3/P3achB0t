@@ -1,4 +1,4 @@
-package com.p3achb0t.rewrite.scripts_debug.varbitexplorer;
+package com.p3achb0t.scripts_debug.varbitexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;

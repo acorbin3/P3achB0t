@@ -1,4 +1,4 @@
-package com.p3achb0t.rewrite.scripts
+package com.p3achb0t.scripts
 
 import java.awt.Graphics
 

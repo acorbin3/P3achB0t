@@ -1,17 +1,25 @@
 package com.p3achb0t.client.ux
 
 import com.formdev.flatlaf.FlatDarkLaf
+import com.p3achb0t.Main
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
+import com.p3achb0t.api.wrappers.Cache
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.util.Util
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.awt.BorderLayout
 import java.awt.Font
 import java.io.File
+import java.lang.Thread.sleep
 import java.nio.file.Paths
 import java.util.jar.JarFile
+import javax.imageio.ImageIO
+import javax.swing.ImageIcon
 import javax.swing.JFrame
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
@@ -19,6 +27,12 @@ import javax.swing.plaf.FontUIResource
 class BotManager : JFrame() {
 
     init {
+        iconImage = if( File("resources\\icons\\toppng.com-download-peach-690x523.png").exists()) {
+            ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
+        }else{
+            val stream = Main.javaClass.getResourceAsStream("/toppng.com-download-peach-690x523.png")
+            ImageIO.read(stream)
+        }
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         this.layout = BorderLayout()
@@ -57,6 +71,40 @@ fun setup() {
     }
 
     lookAndFeel()
+
+    GlobalScope.launch { BotInstance().initBot() }
+
+    while (GlobalStructs.botTabBar.botInstances.size == 0){
+        sleep(50)
+    }
+
+    // Check if there is a .cache up 1 directory, if so copy it down
+    // Otherwise create a new one
+    var botInstanceKey = ""
+    GlobalScope.launch {
+        var cacheLoaded = false
+        GlobalStructs.botTabBar.botInstances.iterator().forEach {
+            if (!cacheLoaded) {
+                botInstanceKey = it.key
+
+                //Wait till the ctx is initialized
+                while(it.value.instanceManager?.getManager()?.ctx == null){
+                    delay(50)
+                }
+                println("About to update cache")
+                it.value.instanceManager?.getManager()?.ctx?.cache?.updateCache()
+                cacheLoaded = true
+            }
+        }
+    }
+    while(botInstanceKey.isEmpty()){
+        sleep(50)
+    }
+    print("Waiting till Cache is updated")
+    while(!Cache.cacheUpdated){
+        sleep(50)
+    }
+
 
 }
 

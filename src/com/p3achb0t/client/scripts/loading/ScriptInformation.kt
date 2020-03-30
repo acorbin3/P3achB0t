@@ -1,5 +1,6 @@
 package com.p3achb0t.client.scripts.loading
 
+import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.configs.Constants
 import java.io.File
 import java.net.URL
@@ -12,16 +13,29 @@ enum class ScriptType {
     None
 }
 
-class ScriptInformation(val fileName: String, val category: String, val name: String, val author: String, val version: String, val type: ScriptType, val main: String) {
+class ScriptInformation(
+        val fileName: String,
+        val category: String,
+        val name: String,
+        val author: String,
+        val version: String,
+        val type: ScriptType,
+        val main: String,
+        var abstractScript: AbstractScript? = null
+) {
 
     private val path = "${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}"
 
 
     fun load(): Any? {
-        val file = File("$path/$fileName")
-        val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
-        val classLoader = URLClassLoader(urlArray)
-        return classLoader.loadClass(main).newInstance()
+        return if(this.abstractScript != null){
+            abstractScript
+        }else {
+            val file = File("$path/$fileName")
+            val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })
+            val classLoader = URLClassLoader(urlArray)
+            classLoader.loadClass(main).newInstance()
+        }
     }
 
 
