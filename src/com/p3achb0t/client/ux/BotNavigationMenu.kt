@@ -9,9 +9,7 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
-import javax.swing.JMenu
-import javax.swing.JMenuBar
-import javax.swing.JMenuItem
+import javax.swing.*
 
 class BotNavigationMenu: JMenuBar() {
 
@@ -28,6 +26,7 @@ class BotNavigationMenu: JMenuBar() {
         updateDebugMenu()
         ioHandle()
         test()
+        scriptManagerButtons()
     }
 
     private fun instanceMenu() {
@@ -47,18 +46,6 @@ class BotNavigationMenu: JMenuBar() {
         reloadScripts.addActionListener {
             GlobalStructs.scripts.refresh()
             refreshScriptMenu()
-
-        }
-
-        val startScripts = JMenuItem("Run script")
-        startScripts.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startScript()
-
-        }
-
-        val stopScripts = JMenuItem("Stop script")
-        stopScripts.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
 
         }
 
@@ -89,8 +76,6 @@ class BotNavigationMenu: JMenuBar() {
         menu.add(add)
         menu.add(remove)
         menu.add(reloadScripts)
-        menu.add(startScripts)
-        menu.add(stopScripts)
         menu.add(startBackgroundScript)
         menu.add(addScript)
         menu.add(addScript2)
@@ -277,5 +262,46 @@ class BotNavigationMenu: JMenuBar() {
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
+    }
+
+    private fun scriptManagerButtons(){
+        //This should be only used as a temporary solution till the bot gets good enough
+        //Then the UI will need a proper rework, to allow for better looks
+        val startScriptButton = JButton("Start")
+        val pauseScriptButton = JButton("Pause")
+        val stopScriptButton = JButton("Stop")
+
+        stopScriptButton.addActionListener{
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
+            pauseScriptButton.text = "Pause"
+            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+        }
+
+        pauseScriptButton.addActionListener{
+            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isScriptRunning) {
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseScript()
+                pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isPaused()) "UnPause" else "Pause"
+            }
+            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+        }
+
+        startScriptButton.addActionListener{
+            if(!GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isScriptRunning){
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startScript()
+            }
+            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+        }
+
+        add(Box.createHorizontalGlue())
+        add(startScriptButton)
+        add(Box.createHorizontalStrut(3))
+        add(pauseScriptButton)
+        add(Box.createHorizontalStrut(3))
+        add(stopScriptButton)
+        add(Box.createHorizontalStrut(2))
+        //Weird behaviour with buttons in a Jmenu, so we need to remove the focus, has to be called twice or it still stays in focus
+        for(i in 1..2){
+            this.grabFocus()
+        }
     }
 }

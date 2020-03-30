@@ -338,12 +338,19 @@ class InstanceManager(val client: Any) {
         script.draw(g)
     }
 
+    fun isPaused() : Boolean{
+        return paused
+    }
+
+    fun pauseScript(){
+        paused = !paused
+    }
+
     fun stopScript() {
         isScriptRunning = false
-
-            abstractScriptLoop?.cancel()
-
-            backgroundLoop?.cancel()
+        paused = false
+        abstractScriptLoop?.cancel()
+        backgroundLoop?.cancel()
     }
 
     // Rs Canvas debug scripts TODO race conditions for removing
