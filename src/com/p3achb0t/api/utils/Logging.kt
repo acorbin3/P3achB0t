@@ -10,15 +10,15 @@ open class Logging {
 
         fun debug(s: String){
             val location = getLocation()
-            val timeStamp = SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(Date())
+            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
             val threadName = Thread.currentThread().name
             println("$timeStamp [$threadName] DEBUG - $location $s")
         }
         fun info(s: String){
 
             val location = getLocation()
-            val timeStamp = SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(Date())
-            println("$timeStamp INFO - $location $s")
+            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
+            println("$timeStamp - INFO - $location $s")
         }
 
         private fun getLocation(): String {

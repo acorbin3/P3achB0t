@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts_debug
+package com.p3achb0t.scripts_debug.widgetexplorer
 
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.interfaces.Component
@@ -30,10 +30,9 @@ class WidgetExplorerDebug : DebugScript() {
     }
 
     override suspend fun start() {
-        TODO("Not yet implemented")
+        WidgetExplorerV3.createWidgetExplorer(ctx)
     }
 
     override fun stop() {
-        TODO("Not yet implemented")
     }
 }

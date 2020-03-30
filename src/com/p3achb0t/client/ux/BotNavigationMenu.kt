@@ -2,7 +2,9 @@ package com.p3achb0t.client.ux
 
 import ComScript
 import com.p3achb0t.analyser.ScriptClasses
+import com.p3achb0t.analyser.ScriptClasses.findAllDebugClasses
 import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.DebugScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
@@ -23,6 +25,7 @@ class BotNavigationMenu: JMenuBar() {
         scriptMenu()
         botUltra()
         updateAbstractMenu()
+        updateDebugMenu()
         ioHandle()
         test()
     }
@@ -73,7 +76,7 @@ class BotNavigationMenu: JMenuBar() {
         }
         val addScript2 = JMenuItem("Add ComScript2")
         addScript2.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(ComScript2())
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript("comScript2", ComScript2())
             println("ComScript2")
 
         }
@@ -159,6 +162,22 @@ class BotNavigationMenu: JMenuBar() {
         return menu
     }
 
+    private fun updateDebugMenu(){
+        val classes: ArrayList<Class<*>> = ArrayList()
+        classes.addAll(findAllDebugClasses("com/p3achb0t/scripts_debug"))
+        classes.forEach { clazz ->
+            val scriptName = clazz.name.split(".").last()
+            println("Adding menu Item: $scriptName")
+            val menuItem1 = JMenuItem("$scriptName")
+            val localClazz = clazz
+            menuItem1.addActionListener {
+
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName,localClazz.newInstance() as DebugScript)
+            }
+            debug.add(menuItem1)
+        }
+    }
+
     private fun updateAbstractMenu() {
         addScriptsMenus("com/p3achb0t/scripts_private", abstract)
         addScriptsMenus("com/p3achb0t/scripts", abstract)
@@ -189,10 +208,7 @@ class BotNavigationMenu: JMenuBar() {
                     val menuItem1 = JMenuItem("$scriptName")
                     val localClazz = clazz
                     menuItem1.addActionListener {
-                        //val game = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager
                         GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(localClazz.newInstance() as AbstractScript)
-
-                       // GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().setAbstractScript(scriptName)
                     }
                     menu.add(menuItem1)
                 }

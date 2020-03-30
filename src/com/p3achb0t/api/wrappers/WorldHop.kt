@@ -38,7 +38,6 @@ class WorldHop(val ctx: Context) {
     }
 
 
-
     suspend fun logout(){
         this.ctx.mouse.doAction(DoActionParams(-1, 11927560, 57, 1, "Logout", "", 0, 0))
         delay(400)

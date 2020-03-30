@@ -24,7 +24,8 @@ class Constants {
 
         // Other constants
         val REVISION = 189
-        var INJECTED_JAR_NAME = "gamepack-$REVISION-injected.jar"
+        val REVISION_WITH_SUBVERSION = 189.1 // Update this if we want to force a new injected jar
+        var INJECTED_JAR_NAME = "gamepack-$REVISION_WITH_SUBVERSION-injected.jar"
 
         val GAMESIZE = Dimension(800,600)
 

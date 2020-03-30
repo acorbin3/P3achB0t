@@ -9,7 +9,12 @@ import java.util.jar.JarFile
 object ScriptClasses {
     val defaultScripts = arrayListOf("TemplateScript", "NullScript")
 
-    fun findAllClasses(packageName: String): ArrayList<Class<*>>{
+    fun findAllDebugClasses(packageName: String): ArrayList<Class<*>>{
+        println("Looking at package: $packageName")
+        return findAllClasses(packageName, "DebugScript")
+    }
+
+    fun findAllClasses(packageName: String, desiredSuperClass: String = "AbstractScript"): ArrayList<Class<*>>{
         println("Looking at package: $packageName")
         val classes: ArrayList<Class<*>> = ArrayList()
         val classLoader = Thread.currentThread().contextClassLoader
@@ -30,7 +35,7 @@ object ScriptClasses {
                             val classNode = ClassNode()
                             classReader.accept(classNode, 0)
                             if(classNode.superName != null
-                                    && classNode.superName.contains("AbstractScript")
+                                    && classNode.superName.contains(desiredSuperClass)
                                     && classNode.name.replace(".class", "")
                                             .split("/").last() !in defaultScripts) {
 
@@ -59,11 +64,11 @@ object ScriptClasses {
             dirs.add(dir)
         }
         dirs.forEach { dir ->
-            classes.addAll(findClasses(dir, packageName))
+            classes.addAll(findClasses(dir, packageName,desiredSuperClass))
         }
         return classes
     }
-    private fun findClasses(directory: File, packageName: String): ArrayList<Class<*>> {
+    private fun findClasses(directory: File, packageName: String, desiredSuperClass: String): ArrayList<Class<*>> {
         val classes: ArrayList<Class<*>> = ArrayList()
         if (!directory.exists()) {
             return classes
@@ -73,14 +78,14 @@ object ScriptClasses {
 
             if (file.isDirectory) {
                 assert(!file.name.contains("."))
-                classes.addAll(findClasses(file, packageName + "/" + file.name))
+                classes.addAll(findClasses(file, packageName + "/" + file.name, desiredSuperClass))
             } else if (file.name.endsWith(".class")) {
                 val classReader = ClassReader(file.inputStream())
                 val classNode = ClassNode()
                 classReader.accept(classNode, 0)
                 //Looking for all scripts that extend the abstract class and are not default scripts
                 if(classNode.superName != null
-                        && classNode.superName.contains("AbstractScript")
+                        && classNode.superName.contains(desiredSuperClass)
                         && file.name.replace(".class", "") !in defaultScripts) {
 //                    println("Adding: $packageName/${file.name}")
                     classes.add(Class.forName(packageName.replace("/", ".")

@@ -112,7 +112,7 @@ public class VarBitExplorer {
         }
 
         private void updatedVar(int i, String oldVal, String newVal, String varDetail) {
-            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(new Date());
             String newLine = timeStamp + " " + varDetail + " (" + i + ")\t" + oldVal + "\t->\t" + newVal + "\n";
             SimpleAttributeSet attributes = new SimpleAttributeSet();
             try {

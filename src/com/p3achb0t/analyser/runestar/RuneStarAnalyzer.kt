@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.p3achb0t.Main
 import com.p3achb0t.analyser.class_generation.isBaseType
 import com.p3achb0t.analyser.class_generation.isFieldNameUnique
+import com.p3achb0t.client.configs.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -15,7 +16,7 @@ class RuneStarAnalyzer {
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
-        val hookFileName = "hooks_189.json"
+        val hookFileName = "hooks_${Constants.REVISION}.json"
         var json = ""
 
         //Depending on if we are running within IntelliJ or from Jar the hooks file might be in a different location

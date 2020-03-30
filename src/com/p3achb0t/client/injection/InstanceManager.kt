@@ -15,6 +15,8 @@ import java.applet.Applet
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class InstanceManager(val client: Any) {
@@ -155,10 +157,12 @@ class InstanceManager(val client: Any) {
         debugScripts[scriptFileName] = debugScript
     }
 
-    fun addDebugScript(debugScript: DebugScript) {
+    fun addDebugScript(scriptName: String, debugScript: DebugScript) {
         waitOnContext()
         debugScript::ctx.set(setupContext(client))
-        debugScripts["scriptFileName"] = debugScript
+        debugScripts[scriptName] = debugScript
+        GlobalScope.launch { debugScripts[scriptName]?.start() }
+
     }
 
     fun removeDebugScript(scriptFileName: String) {
@@ -211,7 +215,8 @@ class InstanceManager(val client: Any) {
     }
 
     fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
-        println("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
+        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
+        println("$timeStamp - Info - argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 
     fun getModelCallback(argument1: Int) {

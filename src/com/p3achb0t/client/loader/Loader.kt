@@ -78,7 +78,7 @@ class Loader {
         for (line in res.split("\n")) {
             if (line.contains("archive=")) {
                 val strReplace = "g.*.jar"
-                val gamePack = getRegSelection(strReplace, line).replace(".jar", "__v${Constants.REVISION }.jar")
+                val gamePack = getRegSelection(strReplace, line).replace(".jar", "__v${Constants.REVISION_WITH_SUBVERSION }.jar")
                 println("Current game pack: $gamePack")
                 return gamePack
             }

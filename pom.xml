@@ -12,7 +12,7 @@
         <version.kotlin>1.3.50</version.kotlin>
         <version.asm>7.1</version.asm>
         <version.java>11</version.java>
-        <runescape.gamepack.revision>189</runescape.gamepack.revision>
+        <runescape.gamepack.revision>189.1</runescape.gamepack.revision>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <kotlin.version>1.3.61</kotlin.version>
