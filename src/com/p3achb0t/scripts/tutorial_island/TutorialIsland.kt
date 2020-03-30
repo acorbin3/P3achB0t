@@ -7,13 +7,13 @@ import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.Walking
-import com.p3achb0t.api.wrappers.tabs.Equipment
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
+import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.scripts.Job
 import kotlinx.coroutines.delay
@@ -1193,7 +1193,8 @@ class TutorialIsland: AbstractScript()  {
 
         override suspend fun execute() {
             ctx.equipment.open()
-            ctx.equipment.clickButton(Equipment.Companion.Slot.EquiptmentStats)
+            WidgetItem(ctx.widgets.find(WidgetID.EQUIPMENT_GROUP_ID, 1), ctx=ctx).click()
+            //ctx.equipment.clickButton(Equipment.Companion.Slot.EquiptmentStats)
             delay(Random.nextLong(1500, 2637))
         }
 

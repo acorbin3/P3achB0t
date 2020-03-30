@@ -26,10 +26,10 @@ class Equipment(val ctx: Context) {
             Boots(WidgetID.Equipment.BOOTS, 10, 25362454),
             Ring(WidgetID.Equipment.RING, 12, 25362455),
             Quiver(WidgetID.Equipment.AMMO, 13, 25362456),
-            EquiptmentStats(17),
-            PriceChecker(19),
-            ItemsKeptOnDeath(21),
-            CallFollower(23),
+            EquiptmentStats(1),
+            PriceChecker(3),
+            ItemsKeptOnDeath(5),
+            CallFollower(7),
         }
     }
 
