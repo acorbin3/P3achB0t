@@ -29,6 +29,42 @@ class PaintDebug: DebugScript() {
     fun drawRect(g: Graphics, rect: Rectangle) {
         g.drawRect(rect.x, rect.y, rect.width, rect.height)
     }
+
+    fun drawDebugOptions(g: Graphics,debugX: Int,  debugY: Int){
+        val debugOptionsArr = arrayOf(
+                "ctrl-1 debug text: $isDebugTextOn",
+                "ctrl-2 NPCs: $isNPCPaintOn",
+                "ctrl-3 players: $isPlayerPaintOn",
+                "ctrl-4 gameobject: $isGameObjectOn",
+                "ctrl-5 GndItems: $isGroundItemsOn",
+                "ctrl-6 can walk: $isCanWalkDebug",
+                "ctrl-7 projectile: $isProjectileDebug",
+                "ctrl-9 inventory: $isInventoryPaintingDebug"
+        )
+
+        val vertical = true //could add a hotkey to toggle this on/off
+        var debugOptionsY = 25
+        var debugOptionsX = if(vertical) debugX + 500 else debugX //change this whatever positions u like
+        g.drawString("Debug options",debugOptionsX,debugY)
+        val itemsPerRow = 2
+        var currRow = 0
+        debugOptionsArr.forEachIndexed{i,debugOption ->
+            var yOffset = 20
+            if(vertical){
+                debugOptionsY+=20
+            }else{
+                val metrics = g.getFontMetrics(g.font)
+                debugOptionsX+= metrics.stringWidth(debugOption) + 30 //you can add padding here, if you want the rows to look nice and clean
+                if(i % itemsPerRow == 0){
+                    currRow+=1
+                    debugOptionsX = debugX
+                }
+                yOffset = 20 * currRow
+            }
+            g.drawString(debugOption,debugOptionsX,debugOptionsY + yOffset)
+        }
+    }
+
     override fun draw(g: Graphics) {
         try {
 
@@ -37,9 +73,8 @@ class PaintDebug: DebugScript() {
             val debugY = 25
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
-            g.drawString("               Debug options: ctrl-1 debug text:$isDebugTextOn, ctrl-2 NPCs:$isNPCPaintOn, ctrl-3 players:$isPlayerPaintOn",debugX,debugY)
-            g.drawString("               ctrl-4 gameobject:$isGameObjectOn,ctrl-5 GndItems:$isGroundItemsOn, ctrl-6 can walk:$isCanWalkDebug",debugX,debugY +10)
-            g.drawString("               ctrl-7 projectile:$isProjectileDebug, ctrl-9 inventory: $isInventoryPaintingDebug",debugX,debugY + 20)
+            drawDebugOptions(g,debugX,debugY)
+
 
             if(isCanWalkDebug)
                 canWalkDebug(g,ctx)
