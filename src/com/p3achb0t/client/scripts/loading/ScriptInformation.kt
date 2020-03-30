@@ -14,13 +14,13 @@ enum class ScriptType {
 }
 
 class ScriptInformation(
-        val fileName: String,
-        val category: String,
-        val name: String,
-        val author: String,
-        val version: String,
+        val fileName: String = "",
+        val category: String = "",
+        val name: String = "",
+        val author: String = "",
+        val version: String = "",
         val type: ScriptType,
-        val main: String,
+        val main: String = "",
         var abstractScript: AbstractScript? = null
 ) {
 

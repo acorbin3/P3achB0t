@@ -1,8 +1,10 @@
 package com.p3achb0t.client.configs
 
+import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.communication.ipc.Broker
 import com.p3achb0t.client.communication.peer.PeerClient
 import com.p3achb0t.client.scripts.loading.LoadScripts
+import com.p3achb0t.client.tracker.FBDataBase
 import com.p3achb0t.client.ux.BotTabBar
 
 class GlobalStructs {
@@ -16,6 +18,8 @@ class GlobalStructs {
         val scripts = LoadScripts()
 
         val communication = Broker()
-        val peerClient = PeerClient();
+        val peerClient = PeerClient()
+        val accountManager = AccountManager()
+        val db : FBDataBase = FBDataBase()
     }
 }

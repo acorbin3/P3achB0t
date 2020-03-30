@@ -167,14 +167,18 @@ class BotNavigationMenu: JMenuBar() {
         classes.addAll(findAllDebugClasses("com/p3achb0t/scripts_debug"))
         classes.forEach { clazz ->
             val scriptName = clazz.name.split(".").last()
-            println("Adding menu Item: $scriptName")
-            val menuItem1 = JMenuItem("$scriptName")
-            val localClazz = clazz
-            menuItem1.addActionListener {
+            if(scriptName.contains("PaintDebug")){
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, clazz.newInstance() as DebugScript)
+            }else {
+                println("Adding menu Item: $scriptName")
+                val menuItem1 = JMenuItem("$scriptName")
+                val localClazz = clazz
+                menuItem1.addActionListener {
 
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName,localClazz.newInstance() as DebugScript)
+                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, localClazz.newInstance() as DebugScript)
+                }
+                debug.add(menuItem1)
             }
-            debug.add(menuItem1)
         }
     }
 

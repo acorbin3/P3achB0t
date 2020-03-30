@@ -1,5 +1,7 @@
 package com.p3achb0t.client.scripts.loading
 
+import com.p3achb0t.analyser.ScriptClasses
+import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
 import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
 import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
@@ -17,6 +19,7 @@ class LoadScripts {
 
     init {
         loadAll()
+        loadBuildInScripts()
     }
 
     fun refresh() {
@@ -68,6 +71,54 @@ class LoadScripts {
             }
         } else {
             println("No scripts to load")
+        }
+    }
+
+    private fun loadBuildInScripts(){
+        println("About to load scripts")
+        val privateScripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts_private")
+        privateScripts.forEach {
+            var scriptName = ""
+            var category = ""
+            var author = ""
+            it.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    println("Looking at manifest: $manifest")
+                    val splitManifest = manifest.split(",")
+                    category = splitManifest[1].replace("category=", "")
+                    scriptName = splitManifest[2].replace("name=", "").strip()
+                    author = splitManifest[3].replace("author=", "")
+                }
+            }
+            println("Loading $scriptName")
+            scripts[scriptName] = ScriptInformation(name = scriptName, author = author,abstractScript = it.newInstance() as AbstractScript, type=ScriptType.AbstractScript)
+        }
+        val publicScripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts")
+        publicScripts.forEach {
+            var scriptName = ""
+            var category = ""
+            var author = ""
+            it.annotations.iterator().forEach {
+                var manifest = it.toString()
+
+                if(it.toString().contains("ScriptManifest")){
+                    manifest = manifest.replace("@com.p3achb0t.api.ScriptManifest(","")
+                    manifest = manifest.replace(")","")
+                    manifest = manifest.replace("\"","")
+                    println("Looking at manifest: $manifest")
+                    val splitManifest = manifest.split(",")
+                    category = splitManifest[1].replace("category=", "")
+                    scriptName = splitManifest[2].replace("name=", "").strip()
+                    author = splitManifest[3].replace("author=", "")
+                }
+            }
+            println("Loading $scriptName")
+            scripts[scriptName] = ScriptInformation(name = scriptName, author = author,abstractScript = it.newInstance() as AbstractScript, type=ScriptType.AbstractScript)
         }
     }
 

@@ -1,6 +1,5 @@
 package com.p3achb0t.client.injection
 
-import com.p3achb0t.client.injection.InstanceManager
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
@@ -28,6 +27,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
             if (instanceManager.isScriptRunning)
                 instanceManager.script.draw(g)
 
+            instanceManager.paintScript(g)
             instanceManager.paintDebugScripts(g)
         }
 

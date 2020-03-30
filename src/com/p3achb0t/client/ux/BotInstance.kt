@@ -1,6 +1,7 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.api.interfaces.Client
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
@@ -8,6 +9,7 @@ import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.JarLoader
 import com.p3achb0t.client.loader.RSAppletStub
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.applet.Applet
 import java.awt.BorderLayout
 import java.awt.Dimension
@@ -29,14 +31,20 @@ class BotInstance : JPanel() {
         this.layout = BorderLayout()
     }
 
-    fun initBot() {
-        val configReader = ConfigReader(80)
+    fun initBot(account: Account = Account()) {
+        PaintDebug.fps = account.fps
+        PaintDebug.args = account.args
+        PaintDebug.key = account.key
+        val configReader = ConfigReader(account.world)
         val map = configReader.read()
-
+        var proxy = "none"
+        if(account.proxy.isNotEmpty()) {
+            proxy = account.proxy
+        }
         val loadedClient = JarLoader.load(
                 "./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}",
                 "client",
-                "none"
+                proxy
         )
         client = loadedClient as Client
         applet = loadedClient as Applet
@@ -44,6 +52,14 @@ class BotInstance : JPanel() {
         instanceManager = loadedClient as InstanceManagerInterface
         // add uuid to the bot
         instanceManager?.getManager()?.instanceUUID = sessionToken
+        instanceManager?.getManager()?.setLoginHandlerAccount(account)
+        if(account.script.isNotEmpty()) {
+            if(account.script in GlobalStructs.scripts.scripts) {
+                instanceManager?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.abstractScript!!
+            }else{
+                println("ERROR: Could not find script ${account.script}. Please report to P3aches")
+            }
+        }
 
         add(applet) // add the game to the JPanel
 

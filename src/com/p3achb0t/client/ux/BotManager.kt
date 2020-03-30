@@ -72,7 +72,33 @@ fun setup() {
 
     lookAndFeel()
 
-    GlobalScope.launch { BotInstance().initBot() }
+    //fire up accounts
+    if(GlobalStructs.accountManager.accounts.isNotEmpty()) {
+        GlobalStructs.accountManager.accounts.forEach {
+            GlobalScope.launch { BotInstance().initBot(it) }
+            sleep(1000*3) // Wait 3 seconds for tab to open up
+            //Now wait for instance thats related to this account to be loaded.
+            GlobalStructs.botTabBar.botInstances.forEach { key, instance ->
+                if(instance.getInstanceManager().loginHandler.account.username == it.username){
+                    println("Waiting to game state is 10")
+                    while (instance.getInstanceManager().ctx?.client?.getGameState() != 10){
+                        print(" ${instance.getInstanceManager().ctx?.client?.getGameState()}")
+                        sleep(50)
+                    }
+                    //Start script
+                    if(it.script.isNotEmpty() && it.startAutomatically){
+                        instance.instanceManager?.getManager()?.startScript()
+                        sleep(5000) // Wait 5 seconds between scripts
+                    }
+                }
+            }
+
+
+        }
+    }else{
+        GlobalScope.launch { BotInstance().initBot() }
+    }
+
 
     while (GlobalStructs.botTabBar.botInstances.size == 0){
         sleep(50)
