@@ -15,13 +15,12 @@ fun drawDebugText(g: Graphics, ctx: Context) {
     if (true) {
 
         g.color = Color.white
-        debugText.add(DebugText("hasFocus? x:${ctx.client.getHasFocus()}"))
-        debugText.add(DebugText("Mouse x:${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
+        debugText.add(DebugText("hasFocus? x: ${ctx.client.getHasFocus()}"))
+        debugText.add(DebugText("Mouse x: ${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
         debugText.add(DebugText("fps :${PaintDebug.fps}"))
-
 
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
 //        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
@@ -91,7 +90,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.forEach {
             g.color = it.color
             g.drawString(it.text, x, y)
-            y += 10
+            y += 20
         }
     }
 
