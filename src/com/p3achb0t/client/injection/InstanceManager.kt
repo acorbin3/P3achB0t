@@ -330,7 +330,8 @@ class InstanceManager(val client: Any) {
                 val timeTillBreak = loginHandler.account.maxRuntimeSec - runtime.elapsedSec
                 val nextCheck = ((fiveMin - lastCheck.elapsed) / 1000).toInt()
                 val estTimeToBreak = if(timeTillBreak>nextCheck) timeTillBreak else nextCheck
-                g.drawString("Estimated Time till break: ~$estTimeToBreak", 100, 100)
+                val timeLeft = ctx?.stats?.getRuntimeString((estTimeToBreak*1000).toLong())
+                g.drawString("Estimated Time till break: ~$timeLeft", 100, 100)
 //                g.drawString("${runtime.elapsedSec}  ${loginHandler.account.maxRuntimeSec}", 100,110)
             }
         }
