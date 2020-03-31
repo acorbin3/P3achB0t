@@ -81,6 +81,7 @@ class LoadScripts {
             var scriptName = ""
             var category = ""
             var author = ""
+            var version = ""
             it.annotations.iterator().forEach {
                 var manifest = it.toString()
 
@@ -90,13 +91,21 @@ class LoadScripts {
                     manifest = manifest.replace("\"","")
                     println("Looking at manifest: $manifest")
                     val splitManifest = manifest.split(",")
+                    version = splitManifest[0].replace("version=", "")
                     category = splitManifest[1].replace("category=", "")
                     scriptName = splitManifest[2].replace("name=", "").strip()
                     author = splitManifest[3].replace("author=", "")
                 }
             }
             println("Loading $scriptName")
-            scripts[scriptName] = ScriptInformation(name = scriptName, author = author,abstractScript = it.newInstance() as AbstractScript, type=ScriptType.AbstractScript)
+            scripts[scriptName] = ScriptInformation(
+                    name = scriptName,
+                    author = author,
+                    abstractScript = it.newInstance() as AbstractScript,
+                    type=ScriptType.AbstractScript,
+                    version = version,
+                    category = category
+            )
         }
         val publicScripts = ScriptClasses.findAllClasses("com/p3achb0t/scripts")
         publicScripts.forEach {
