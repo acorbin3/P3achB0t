@@ -34,15 +34,24 @@ class LoadScripts {
     private fun loadJars(path: String) {
         // Load classes
         findInternalScripts(path)
+        //loopOverInternalScriptClasses(path)
         // Load Jars
-        val files = File(path).listFiles()
-        if (files != null) {
+        loopJarFiles(path)
 
-            for (file in files) {
+    }
 
-                if (file.isFile && file.name.contains(".jar")) {
+
+    private fun loopJarFiles(path: String) {
+        val files = File(path).listFiles() ?: return
+        for (file in files) {
+
+            if (file.isDirectory) {
+                loopJarFiles(file.absolutePath)
+            }
+            else {
+                if(file.isFile && file.name.contains(".jar")) {
                     val jar = JarFile(file)
-                    println(file.name)
+                    //println(file.name)
                     val enumeration = jar.entries()
                     while(enumeration.hasMoreElements()) {
                         val entry = enumeration.nextElement()
@@ -54,40 +63,6 @@ class LoadScripts {
                         }
                     }
                 }
-            }
-        } else {
-            println("No jars to load")
-        }
-    }
-
-    private fun addJarScriptToScripts(file: File, classNode: ClassNode) {
-
-        if (classNode.visibleAnnotations == null)
-            return
-
-        for (x in classNode.visibleAnnotations) {
-            if (x.desc.contains("ScriptManifest")) {
-
-                println("${x.values[1]}, ${x.values[3]} ${x.values[5]} ${x.values[7]}")
-
-                val type = when {
-                    classNode.superName.contains("DebugScript") -> {
-                        ScriptType.DebugScript
-                    }
-                    classNode.superName.contains("BackgroundScript") -> {
-                        ScriptType.BackgroundScript
-
-                    }
-                    classNode.superName.contains("AbstractScript") -> {
-                        ScriptType.AbstractScript
-                    }
-                    else -> ScriptType.None
-                }
-                val information = ScriptInformation(file.name, file.path, "${x.values[1]}", "${x.values[3]}", "${x.values[5]}", "${x.values[7]}", type, classNode.name)
-
-                println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
-
-                scripts[file.name] = information
             }
         }
     }
@@ -103,8 +78,8 @@ class LoadScripts {
     }
 
     private fun loopOverInternalScriptClasses(file: File) {
-
-        for (x in file.listFiles()) {
+        val files = file.listFiles() ?: return
+        for (x in files) {
             if (x.isDirectory) {
                 loopOverInternalScriptClasses(x)
             } else {
@@ -117,6 +92,35 @@ class LoadScripts {
             }
         }
     }
+
+    private fun addJarScriptToScripts(file: File, classNode: ClassNode) {
+
+        if (classNode.visibleAnnotations == null)
+            return
+
+        for (x in classNode.visibleAnnotations) {
+            if (x.desc.contains("ScriptManifest")) {
+
+                //println("${x.values[1]}, ${x.values[3]} ${x.values[5]} ${x.values[7]}")
+
+                val type = when {
+                    classNode.superName.contains("DebugScript") -> {
+                        ScriptType.DebugScript
+                    }
+                    classNode.superName.contains("BackgroundScript") -> {
+                        ScriptType.BackgroundScript
+                    }
+                    classNode.superName.contains("AbstractScript") -> {
+                        ScriptType.AbstractScript
+                    }
+                    else -> ScriptType.None
+                }
+                val information = ScriptInformation(file.name, file.path, "${x.values[1]}", "${x.values[3]}", "${x.values[5]}", "${x.values[7]}", type, classNode.name)
+                //println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
+                scripts[file.name] = information
+            }
+        }
+    }
 }
 
 // for tests
@@ -125,6 +129,11 @@ fun main() {
     debug.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
     debug.loadPath("com/p3achb0t/scripts")
     debug.loadPath("com/p3achb0t/scripts_private")
+    for (x in debug.scripts.keys) {
+        println(x)
+    }
+    debug.removePath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
+    println("----------- REMOVED FOLDER -----------")
     for (x in debug.scripts.keys) {
         println(x)
     }
