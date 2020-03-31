@@ -26,7 +26,8 @@ import kotlin.reflect.full.findAnnotation
 class ScriptManager(val client: Any): Logging() {
 
     companion object {
-        var mule = false
+        var breaking = false
+        var breakReturnTime = 0L
     }
 
     private val mouse = (client as IScriptManager).getMouse()
@@ -56,8 +57,8 @@ class ScriptManager(val client: Any): Logging() {
     lateinit var ctx: Context
 
 
-    var breaking = false
-    var breakReturnTime = 0L
+
+
 
     fun setUpScript(s: AbstractScript) {
         scriptName = s::class.java.name.split(".").last()
@@ -238,7 +239,7 @@ class ScriptManager(val client: Any): Logging() {
                     }
                     lastCheck.reset()
                 }
-                if (!paused && !mule
+                if (!paused && !com.p3achb0t.scripts_private.Mule.Main.scriptMule
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen(ctx)) {
                     println("Account: " + loginHandler.account)
