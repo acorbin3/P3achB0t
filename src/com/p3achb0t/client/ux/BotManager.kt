@@ -87,7 +87,7 @@ fun setup() {
                     }
                     //Start script
                     if(it.script.isNotEmpty() && it.startAutomatically){
-                        instance.instanceManager?.getManager()?.startScript()
+                        instance.instanceManagerInterface?.getManager()?.startScript()
                         sleep(5000) // Wait 5 seconds between scripts
                     }
                 }
@@ -114,11 +114,11 @@ fun setup() {
                 botInstanceKey = it.key
 
                 //Wait till the ctx is initialized
-                while(it.value.instanceManager?.getManager()?.ctx == null){
+                while(it.value.instanceManagerInterface?.getManager()?.ctx == null){
                     delay(50)
                 }
                 println("About to update cache")
-                it.value.instanceManager?.getManager()?.ctx?.cache?.updateCache()
+                it.value.instanceManagerInterface?.getManager()?.ctx?.cache?.updateCache()
                 cacheLoaded = true
             }
         }

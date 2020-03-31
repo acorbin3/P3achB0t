@@ -21,7 +21,7 @@ class BotInstance : JPanel() {
 
     var applet: Applet? = null
     private var client: Client? = null
-    var instanceManager: InstanceManagerInterface? = null
+    var instanceManagerInterface: InstanceManagerInterface? = null
     val sessionToken: String = UUID.randomUUID().toString()
     var isRefreshed = false
 
@@ -49,13 +49,13 @@ class BotInstance : JPanel() {
         client = loadedClient as Client
         applet = loadedClient as Applet
 
-        instanceManager = loadedClient as InstanceManagerInterface
+        instanceManagerInterface = loadedClient as InstanceManagerInterface
         // add uuid to the bot
-        instanceManager?.getManager()?.instanceUUID = sessionToken
-        instanceManager?.getManager()?.setLoginHandlerAccount(account)
+        instanceManagerInterface?.getManager()?.instanceUUID = sessionToken
+        instanceManagerInterface?.getManager()?.setLoginHandlerAccount(account)
         if(account.script.isNotEmpty()) {
             if(account.script in GlobalStructs.scripts.scripts) {
-                instanceManager?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.abstractScript!!
+                instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.abstractScript!!
             }else{
                 println("ERROR: Could not find script ${account.script}. Please report to P3aches")
             }
@@ -80,7 +80,7 @@ class BotInstance : JPanel() {
     }
 
     fun getInstanceManager(): InstanceManager {
-        return instanceManager!!.getManager()
+        return instanceManagerInterface!!.getManager()
     }
 
     override fun getMinimumSize(): Dimension {

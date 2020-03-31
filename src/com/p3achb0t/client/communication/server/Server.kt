@@ -31,7 +31,7 @@ class Server : WebSocketServer {
             for (s in GlobalStructs.botTabBar.botInstances) {
 
                 val baos = ByteArrayOutputStream()
-                ImageIO.write(s.value.instanceManager!!.getManager().takeScreenShot(), "png", baos)
+                ImageIO.write(s.value.instanceManagerInterface!!.getManager().takeScreenShot(), "png", baos)
                 baos.flush()
                 val imageInByte = baos.toByteArray()
 

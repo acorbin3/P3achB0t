@@ -22,7 +22,7 @@ class BotNavigationMenu: JMenuBar() {
         instanceMenu()
         scriptMenu()
         botUltra()
-        updateAbstractMenu()
+//        updateAbstractMenu()
         updateDebugMenu()
         ioHandle()
         test()
@@ -228,15 +228,15 @@ class BotNavigationMenu: JMenuBar() {
 
         val mouse = JMenuItem("Toggle mouse")
         mouse.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getMouse().inputBlocked()
-            GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getMouse().inputBlocked(!f)
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked()
+            GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked(!f)
 
         }
 
         val keyboard = JMenuItem("Toggle Keyboard")
         keyboard.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getKeyboard().inputBlocked()
-            GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getKeyboard().inputBlocked(!f)
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked()
+            GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked(!f)
 
         }
 
@@ -253,7 +253,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val widget = JMenuItem("Widget")
         widget.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManager!!.getManager().ctx
+            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getManager().ctx
             WidgetExplorerV3(f!!)
 
         }
