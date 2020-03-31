@@ -4,7 +4,7 @@ import ComScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
-import com.p3achb0t.scripts.scripts_loader.ScriptLoaderUI
+import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
@@ -254,7 +254,7 @@ class BotNavigationMenu: JMenuBar() {
                 scriptLoaderUI = ScriptLoaderUI(startScriptButton)
                 scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
                     override fun windowClosing(e: WindowEvent?) {
-                        scriptLoaderUI?.DisposeAndRemoveReferences()
+                        scriptLoaderUI?.disposeAndRemoveReferences()
                         scriptLoaderUI = null
                     }
                 })

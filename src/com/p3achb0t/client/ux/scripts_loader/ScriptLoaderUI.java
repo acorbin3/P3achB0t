@@ -2,7 +2,7 @@
  * Created by JFormDesigner on Tue Mar 31 19:05:36 NZDT 2020
  */
 
-package com.p3achb0t.scripts.scripts_loader;
+package com.p3achb0t.client.ux.scripts_loader;
 
 import com.p3achb0t.client.configs.GlobalStructs;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
@@ -47,10 +47,10 @@ public class ScriptLoaderUI extends JFrame {
         if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().isScriptRunning()){
             startScriptButton.setEnabled(false);
         }
-        DisposeAndRemoveReferences();
+        disposeAndRemoveReferences();
     }
 
-    public void DisposeAndRemoveReferences(){
+    public void disposeAndRemoveReferences(){
         startScriptButton.removeActionListener(this::startButtonActionPerformed);
         searchTextField.removeKeyListener(keyTypedListener);
         this.dispose();
@@ -69,7 +69,7 @@ public class ScriptLoaderUI extends JFrame {
 
         this.setResizable(false);
         addColumns();
-        LoadScripts();
+        loadScripts();
 
 
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -145,12 +145,12 @@ public class ScriptLoaderUI extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    private void LoadScripts() {
+    private void loadScripts() {
        LoadScripts scripts = GlobalStructs.Companion.getScripts();
        if(scripts != null){
            for (String key : scripts.getScripts().keySet()) {
                ScriptInformation script = scripts.getScripts().get(key);
-               if(script != null && script.getCategory().equals("Abstract")){
+               if(script != null && script.getType().name().equals("AbstractScript")){
                    addRow(script.getName(),script.getAuthor(),script.getCategory(),script.getVersion());
                    scriptsIdentifierMap.put(script.getName() + script.getAuthor() + script.getVersion(),script.getFileName());
                }
