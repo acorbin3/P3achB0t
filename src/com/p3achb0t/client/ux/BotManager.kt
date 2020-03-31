@@ -36,12 +36,20 @@ class BotManager : JFrame() {
         title = "P3achb0t"
         defaultCloseOperation = EXIT_ON_CLOSE
         this.layout = BorderLayout()
-        jMenuBar = BotNavigationMenu()
+
+        val navMenu = BotNavigationMenu()
+        jMenuBar = navMenu
         add(GlobalStructs.botTabBar)
 
         setLocationRelativeTo(null)
         pack()
         isVisible = true
+
+        // load scripts
+        GlobalStructs.scripts.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
+        GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
+        GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
+        navMenu.refreshScriptMenu() // lazy fix should be callback instead
     }
 
 }

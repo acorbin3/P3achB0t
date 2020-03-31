@@ -106,6 +106,7 @@ class InstanceManager(val client: Any) {
         }
     }
 
+/*
     fun setAbstractScript(name:String){
         if(name in GlobalStructs.scripts.scripts) {
             waitOnContext()
@@ -115,12 +116,17 @@ class InstanceManager(val client: Any) {
             println("ERROR: Count not find script $name")
         }
     }
+
+
     fun addAbstractScript(name:String, abstractScript: AbstractScript){
         GlobalStructs.scripts.scripts[name]?.abstractScript = abstractScript
         waitOnContext()
         abstractScript::ctx.set(setupContext(client))
         script = abstractScript
     }
+*/
+
+
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
         waitOnContext()

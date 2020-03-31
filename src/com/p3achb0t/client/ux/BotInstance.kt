@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ux
 
+import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.Constants
@@ -52,14 +53,28 @@ class BotInstance : JPanel() {
         instanceManagerInterface = loadedClient as InstanceManagerInterface
         // add uuid to the bot
         instanceManagerInterface?.getManager()?.instanceUUID = sessionToken
+
+
+
+
+
         instanceManagerInterface?.getManager()?.setLoginHandlerAccount(account)
         if(account.script.isNotEmpty()) {
             if(account.script in GlobalStructs.scripts.scripts) {
-                instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.abstractScript!!
+                instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.load() as AbstractScript
             }else{
                 println("ERROR: Could not find script ${account.script}. Please report to P3aches")
             }
         }
+
+
+
+
+
+
+
+
+
 
         add(applet) // add the game to the JPanel
 

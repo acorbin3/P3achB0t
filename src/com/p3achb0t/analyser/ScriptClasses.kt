@@ -6,6 +6,7 @@ import java.io.File
 import java.util.*
 import java.util.jar.JarFile
 
+// TODO if script loading works correct then remove this class :-)
 object ScriptClasses {
     val defaultScripts = arrayListOf("TemplateScript", "NullScript")
 

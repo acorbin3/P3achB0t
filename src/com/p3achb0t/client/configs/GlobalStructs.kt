@@ -22,4 +22,5 @@ class GlobalStructs {
         val accountManager = AccountManager()
         val db : FBDataBase = FBDataBase()
     }
+
 }
