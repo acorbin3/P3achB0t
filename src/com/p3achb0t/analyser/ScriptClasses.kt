@@ -44,10 +44,17 @@ object ScriptClasses {
                                 val fullClassSplit = classNode.name.split("/")
                                 val desiredClassSplit = packageName . split("/")
                                 var goodPackage = true
-                                desiredClassSplit.forEachIndexed { index, s ->
-                                    if(s != fullClassSplit[index]){
-                                        goodPackage = false
+                                println("fullClassSplit: $fullClassSplit")
+                                println("desiredClassSplit: $desiredClassSplit")
+                                if( fullClassSplit.size >= desiredClassSplit.size) {
+                                    desiredClassSplit.forEachIndexed { index, s ->
+                                        println("i: $index   s != fullClassSplit[index]   $s != ${fullClassSplit[index]}")
+                                        if (goodPackage && s != fullClassSplit[index]) {
+                                            goodPackage = false
+                                        }
                                     }
+                                }else {
+                                    goodPackage = false
                                 }
 
                                 if(goodPackage) {

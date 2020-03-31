@@ -2,6 +2,7 @@ package com.p3achb0t.scripts_debug.paint_debug
 
 import com.p3achb0t.api.DebugScript
 import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.api.wrappers.ClientMode
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -86,6 +87,11 @@ class PaintDebug: DebugScript() {
 
 
             if (ctx.client.getGameState() == 30) {
+
+                if(ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode){
+                    g.color = Color.RED
+                    g.drawString("Make sure you switch to re-size mode!!!!", 200,200)
+                }
                 if(isGameObjectOn)
                     gameObjectPaint(g, ctx)
 
