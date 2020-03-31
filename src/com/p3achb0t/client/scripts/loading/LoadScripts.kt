@@ -1,8 +1,6 @@
 package com.p3achb0t.client.scripts.loading
 
-import com.p3achb0t.client.configs.Constants.Companion.APPLICATION_CACHE_DIR
-import com.p3achb0t.client.configs.Constants.Companion.SCRIPTS_DIR
-import com.p3achb0t.client.configs.Constants.Companion.USER_DIR
+import com.p3achb0t.client.configs.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
@@ -119,6 +117,9 @@ class LoadScripts {
 // for tests
 fun main() {
     val debug = LoadScripts()
+    debug.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
+    debug.loadPath("com/p3achb0t/scripts")
+    debug.loadPath("com/p3achb0t/scripts_private")
     for (x in debug.scripts.keys) {
         println(x)
     }

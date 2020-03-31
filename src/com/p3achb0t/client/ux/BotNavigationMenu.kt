@@ -1,10 +1,6 @@
 package com.p3achb0t.client.ux
 
 import ComScript
-import com.p3achb0t.analyser.ScriptClasses
-import com.p3achb0t.analyser.ScriptClasses.findAllDebugClasses
-import com.p3achb0t.api.AbstractScript
-import com.p3achb0t.api.DebugScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
@@ -90,7 +86,6 @@ class BotNavigationMenu: JMenuBar() {
         abstract.removeAll()
         background.removeAll()
 
-
         for (script in GlobalStructs.scripts.scripts.values) {
             val currentItem = JMenuItem("${script.name} ${script.version}")
             if (script.type == ScriptType.DebugScript) {
@@ -110,7 +105,6 @@ class BotNavigationMenu: JMenuBar() {
                 }
                 background.add(currentItem)
             }
-
         }
     }
 
