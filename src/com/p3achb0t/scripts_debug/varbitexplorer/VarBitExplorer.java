@@ -81,14 +81,16 @@ public class VarBitExplorer {
                     //Get latest VarBit data
                     for (VarbitData varBitDataItem : varBitDataList) {
                         int i = varBitDataItem.getId();
-                        int oldVarBitVal = varBitValues.get(i);
-                        int varp = ctx.getVars().getVarp(varBitDataItem.getBaseVar());
-                        int newVarBitVal = varBitDataItem.getVarbitValue(varp);
-                        if (oldVarBitVal != newVarBitVal) {
+                        if (i < varBitValues.size()) {
+                            int oldVarBitVal = varBitValues.get(i);
+                            int varp = ctx.getVars().getVarp(varBitDataItem.getBaseVar());
+                            int newVarBitVal = varBitDataItem.getVarbitValue(varp);
+                            if (oldVarBitVal != newVarBitVal) {
 
-                            varBitValues.replace(i, newVarBitVal);
-                            updatedVar(i, Integer.toString(oldVarBitVal), Integer.toString(newVarBitVal), "[Varbit]");
+                                varBitValues.replace(i, newVarBitVal);
+                                updatedVar(i, Integer.toString(oldVarBitVal), Integer.toString(newVarBitVal), "[Varbit]");
 
+                            }
                         }
                     }
 
@@ -127,7 +129,7 @@ public class VarBitExplorer {
 
     public VarBitExplorer(Context ctx) {
         JFrame frame = new JFrame("VarBitExplorer");
-        createUIComponents();
+        $$$setupUI$$$();
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
@@ -140,7 +142,7 @@ public class VarBitExplorer {
             }
         });
         this.ctx = ctx;
-        $$$setupUI$$$();
+
         getVarbitButton.addActionListener(e -> {
             int varBit = Integer.parseInt(varBitEntry.getText());
             int varBitResult = ctx.getClient().getVarbit(varBit);
