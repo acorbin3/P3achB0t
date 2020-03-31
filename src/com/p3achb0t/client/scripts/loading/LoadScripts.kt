@@ -61,6 +61,10 @@ class LoadScripts {
     }
 
     private fun addJarScriptToScripts(file: File, classNode: ClassNode) {
+
+        if (classNode.visibleAnnotations == null)
+            return
+
         for (x in classNode.visibleAnnotations) {
             if (x.desc.contains("ScriptManifest")) {
 
@@ -99,6 +103,7 @@ class LoadScripts {
     }
 
     private fun loopOverInternalScriptClasses(file: File) {
+
         for (x in file.listFiles()) {
             if (x.isDirectory) {
                 loopOverInternalScriptClasses(x)
