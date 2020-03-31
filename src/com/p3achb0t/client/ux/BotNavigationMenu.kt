@@ -4,7 +4,10 @@ import ComScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.test.ComScript2
+import com.p3achb0t.scripts.scripts_loader.ScriptLoaderUI
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import javax.swing.*
 
 class BotNavigationMenu: JMenuBar() {
@@ -13,7 +16,7 @@ class BotNavigationMenu: JMenuBar() {
     val debug = JMenu("Debug")
     val abstract = JMenu("Abstract")
     val background = JMenu("Background")
-
+    var scriptLoaderUI: ScriptLoaderUI? = null
     init {
         instanceMenu()
         scriptMenu()
@@ -86,6 +89,7 @@ class BotNavigationMenu: JMenuBar() {
         abstract.removeAll()
         background.removeAll()
 
+
         for (script in GlobalStructs.scripts.scripts.values) {
             val currentItem = JMenuItem("${script.name} ${script.version}")
             if (script.type == ScriptType.DebugScript) {
@@ -105,6 +109,7 @@ class BotNavigationMenu: JMenuBar() {
                 }
                 background.add(currentItem)
             }
+
         }
     }
 
@@ -141,27 +146,27 @@ class BotNavigationMenu: JMenuBar() {
         menu.popupMenu.isLightWeightPopupEnabled = false
         return menu
     }
-/*
-    private fun updateDebugMenu(){
-        val classes: ArrayList<Class<*>> = ArrayList()
-        classes.addAll(findAllDebugClasses("com/p3achb0t/scripts_debug"))
-        classes.forEach { clazz ->
-            val scriptName = clazz.name.split(".").last()
-            if(scriptName.contains("PaintDebug")){
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, clazz.newInstance() as DebugScript)
-            }else {
-                println("Adding menu Item: $scriptName")
-                val menuItem1 = JMenuItem("$scriptName")
-                val localClazz = clazz
-                menuItem1.addActionListener {
+    /*
+        private fun updateDebugMenu(){
+            val classes: ArrayList<Class<*>> = ArrayList()
+            classes.addAll(findAllDebugClasses("com/p3achb0t/scripts_debug"))
+            classes.forEach { clazz ->
+                val scriptName = clazz.name.split(".").last()
+                if(scriptName.contains("PaintDebug")){
+                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, clazz.newInstance() as DebugScript)
+                }else {
+                    println("Adding menu Item: $scriptName")
+                    val menuItem1 = JMenuItem("$scriptName")
+                    val localClazz = clazz
+                    menuItem1.addActionListener {
 
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, localClazz.newInstance() as DebugScript)
+                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, localClazz.newInstance() as DebugScript)
+                    }
+                    debug.add(menuItem1)
                 }
-                debug.add(menuItem1)
             }
         }
-    }
-*/
+    */
     private fun botUltra() {
         val menu = JMenu("Ultra")
 
@@ -231,6 +236,7 @@ class BotNavigationMenu: JMenuBar() {
         stopScriptButton.addActionListener{
             GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
             pauseScriptButton.text = "Pause"
+            startScriptButton.isEnabled = true
             this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
         }
 
@@ -242,13 +248,24 @@ class BotNavigationMenu: JMenuBar() {
             this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
         }
 
+
         startScriptButton.addActionListener{
-            if(!GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isScriptRunning){
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startScript()
+            if(scriptLoaderUI == null){
+                scriptLoaderUI = ScriptLoaderUI(startScriptButton)
+                scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
+                    override fun windowClosing(e: WindowEvent?) {
+                        scriptLoaderUI?.DisposeAndRemoveReferences()
+                        scriptLoaderUI = null
+                    }
+                })
+                val parentWindowLocation = this.locationOnScreen
+                scriptLoaderUI?.setLocation(parentWindowLocation.x ,parentWindowLocation.y )
+                scriptLoaderUI?.isVisible = true
+                scriptLoaderUI?.isAlwaysOnTop = true
             }
+
             this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
         }
-
         add(Box.createHorizontalGlue())
         add(startScriptButton)
         add(Box.createHorizontalStrut(3))
