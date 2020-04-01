@@ -10,7 +10,6 @@ import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.ConfigReader
 import com.p3achb0t.client.loader.JarLoader
 import com.p3achb0t.client.loader.RSAppletStub
-import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.applet.Applet
 import java.awt.BorderLayout
 import java.awt.Dimension
@@ -33,9 +32,7 @@ class BotInstance : JPanel() {
     }
 
     fun initBot(account: Account = Account()) {
-        PaintDebug.fps = account.fps
-        PaintDebug.args = account.args
-        PaintDebug.key = account.key
+
         val configReader = ConfigReader(account.world)
         val map = configReader.read()
         var proxy = "none"

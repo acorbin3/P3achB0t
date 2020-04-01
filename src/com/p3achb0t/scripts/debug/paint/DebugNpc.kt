@@ -1,6 +1,8 @@
-package com.p3achb0t.scripts_debug.paint_debug
+package com.p3achb0t.scripts.debug.paint
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -9,15 +11,18 @@ import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Color
 import java.awt.Graphics
 
-fun paintNPCs(g: Graphics, ctx: Context) {
-    try {
-        ///////NPC paint//////////
-        var count = 0
-        count = 0
-        val localNpcs = ctx.client.getNpcs()
-        var npc: Npc? = null
-        localNpcs.forEachIndexed { index, npci ->
-            if (npci != null) {
+@ScriptManifest("Debug","NPC Helper","Bot Team", "0.1")
+class DebugNpc : DebugScript() {
+
+    override fun draw(g: Graphics) {
+        if (ctx.client.getGameState() == 30) {
+
+
+            var count = 0
+            val localNpcs = ctx.client.getNpcs()
+
+            var npc: Npc? = null
+            localNpcs.forEachIndexed { index, npci ->
                 npc = npci
                 val newNPC = NPC(npci, ctx,index)
 
@@ -25,7 +30,7 @@ fun paintNPCs(g: Graphics, ctx: Context) {
                 count += 1
 
                 val tile =
-                    Calculations.getCanvasTileAreaPoly(ctx, npci.getX(), npci.getY())
+                        Calculations.getCanvasTileAreaPoly(ctx, npci.getX(), npci.getY())
                 g.color = Color.CYAN
                 g.drawPolygon(tile)
                 g.color = Color(0, 0, 0, 50)
@@ -58,13 +63,32 @@ fun paintNPCs(g: Graphics, ctx: Context) {
                 if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(ctx,namePoint )) {
                     g.color = Color.GREEN
                     g.drawString(
-                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()}",
-                        namePoint.x,
-                        namePoint.y
+                            "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()}",
+                            namePoint.x,
+                            namePoint.y
                     )
                 }
             }
+        } else {
+            g.drawString("Please Login to use ${ctx.client.getGameState()}", 50, 50)
         }
+    }
+
+    override fun start() {
+    }
+
+    override fun stop() {
+
+    }
+
+}
+
+
+
+fun paintNPCs(g: Graphics, ctx: Context) {
+    try {
+        ///////NPC paint//////////
+
     } catch (e: Exception) {
         println("Error: NPC Paint " + e.message)
         e.stackTrace.iterator().forEach {

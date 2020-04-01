@@ -7,7 +7,7 @@ class VarBitExplorerDebug: DebugScript() {
     override fun draw(g: Graphics) {
     }
 
-    override suspend fun start() {
+    override fun start() {
         VarBitExplorer(ctx)
     }
 

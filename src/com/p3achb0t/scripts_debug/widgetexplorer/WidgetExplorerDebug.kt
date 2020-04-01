@@ -29,7 +29,7 @@ class WidgetExplorerDebug : DebugScript() {
         }
     }
 
-    override suspend fun start() {
+    override fun start() {
         WidgetExplorerV3.createWidgetExplorer(ctx)
     }
 

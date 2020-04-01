@@ -1,6 +1,5 @@
 package com.p3achb0t.client.injection
 
-import com.p3achb0t.Main
 import com.p3achb0t.api.*
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.api.userinputs.DoActionParams
@@ -11,7 +10,6 @@ import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.accounts.LoginHandler
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
-import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,7 +23,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.random.Random
-import kotlin.reflect.full.findAnnotation
 
 class InstanceManager(val client: Any) {
 
@@ -44,7 +41,7 @@ class InstanceManager(val client: Any) {
     private var paused = false
 
     val debugScripts = ConcurrentHashMap<String, DebugScript>()
-    val backgroundScripts = ConcurrentHashMap<String, BackgroundScript>() // TODO Higher precedence
+    val serviceScripts = ConcurrentHashMap<String, ServiceScript>() // TODO Higher precedence
     var loginHandler = LoginHandler()
     var sessionID = UUID.randomUUID().toString()
 
@@ -86,7 +83,6 @@ class InstanceManager(val client: Any) {
             // setup context
             ctx = setupContext(client)
             script::ctx.set(ctx!!)
-
             isContextLoaded = true
         }
 
@@ -106,27 +102,6 @@ class InstanceManager(val client: Any) {
         }
     }
 
-/*
-    fun setAbstractScript(name:String){
-        if(name in GlobalStructs.scripts.scripts) {
-            waitOnContext()
-            GlobalStructs.scripts.scripts[name]!!.abstractScript?.ctx = setupContext(client)
-            script = GlobalStructs.scripts.scripts[name]!!.abstractScript!!
-        }else{
-            println("ERROR: Count not find script $name")
-        }
-    }
-
-
-    fun addAbstractScript(name:String, abstractScript: AbstractScript){
-        GlobalStructs.scripts.scripts[name]?.abstractScript = abstractScript
-        waitOnContext()
-        abstractScript::ctx.set(setupContext(client))
-        script = abstractScript
-    }
-*/
-
-
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
         waitOnContext()
@@ -134,15 +109,14 @@ class InstanceManager(val client: Any) {
         script = abstractScript
     }
 
+    // THIS SHOULD BE REMOVED
     fun addAbstractScript(abstractScript: AbstractScript) {
-        scriptName = abstractScript::class.java.name.split(".").last()
-        println("Setting up script: $scriptName")
         waitOnContext()
         abstractScript::ctx.set(setupContext(client))
         script = abstractScript
     }
 
-    fun removeAbstractScript(scriptFileName: String) {
+    fun removeAbstractScript() {
 
     }
 
@@ -223,9 +197,9 @@ class InstanceManager(val client: Any) {
 
     fun startScript() {
         if(script.validate){
-            Main.validationKey
-            PaintDebug.key
-            val annotations = script::class.findAnnotation<ScriptManifest>()
+            //Main.validationKey
+            //PaintDebug.key
+            /*val annotations = script::class.findAnnotation<ScriptManifest>()
             println("name: ${annotations?.name} author: ${annotations?.author} ")
             if(GlobalStructs.db.validateScript(annotations?.name ?:"",  PaintDebug.key)){
                 println("Validation success for script:${annotations?.name} key: ${ PaintDebug.key}")
@@ -233,7 +207,7 @@ class InstanceManager(val client: Any) {
                 println("Failed to provide a validation key. Be sure to pass in they key from the" +
                         " commandline. Example 'java -jar <jarname>.jar -key <entered_key>'")
                 return
-            }
+            }*/
 
 
         }
@@ -379,43 +353,45 @@ class InstanceManager(val client: Any) {
         val debugScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as DebugScript
         waitOnContext()
         debugScript::ctx.set(setupContext(client))
+        debugScript.start()
         debugScripts[scriptFileName] = debugScript
     }
 
-    fun addDebugScript(scriptName: String, debugScript: DebugScript) {
-        waitOnContext()
-        debugScript::ctx.set(setupContext(client))
-        debugScripts[scriptName] = debugScript
-        GlobalScope.launch { debugScripts[scriptName]?.start() }
-
-    }
 
     fun removeDebugScript(scriptFileName: String) {
+        val debugScript = debugScripts[scriptFileName]
         debugScripts.remove(scriptFileName)
+        debugScript?.stop()
     }
 
     // Background script
     suspend fun loopBackgroundScript() {
-        for (script in backgroundScripts.values) {
+        for (script in serviceScripts.values) {
             script.loop()
         }
     }
 
-    fun addBackgroundScript(scriptFileName: String) {
-        val backgroundScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as BackgroundScript
+    fun addServiceScript(scriptFileName: String) {
+        val serviceScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as ServiceScript
         waitOnContext()
-        backgroundScript::ctx.set(setupContext(client))
-        backgroundScripts[scriptFileName] = backgroundScript
+        serviceScript::ctx.set(setupContext(client))
+        serviceScript.start()
+        serviceScripts[scriptFileName] = serviceScript
     }
 
-    fun addBackgroundScript(backgroundScript: BackgroundScript) {
-        waitOnContext()
-        backgroundScript::ctx.set(setupContext(client))
-        backgroundScripts["scriptFileName"] = backgroundScript
+    fun removeServiceScript(scriptFileName: String) {
+        val serviceScript = serviceScripts[scriptFileName]
+        serviceScripts.remove(scriptFileName)
+        serviceScript?.stop()
+
     }
 
-    fun removeBackgroundScript(scriptFileName: String) {
-        backgroundScripts.remove(scriptFileName)
+    fun toggleServiceScript(scriptFileName: String) {
+        if (serviceScripts[scriptFileName] == null) {
+            addServiceScript(scriptFileName)
+        } else {
+            removeServiceScript(scriptFileName)
+        }
     }
 
     private fun waitOnContext() {

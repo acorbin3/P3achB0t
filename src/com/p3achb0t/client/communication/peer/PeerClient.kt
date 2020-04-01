@@ -6,7 +6,7 @@ class PeerClient {
 
     companion object {
         fun callback(id: String, message: String) {
-            println("callback --> $id, $message")
+            println("From PeerClient callback --> $id, $message")
         }
     }
 

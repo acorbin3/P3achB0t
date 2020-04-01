@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts_debug.paint_debug
+package com.p3achb0t.scripts.debug.paint
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -20,7 +20,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("fps :${PaintDebug.fps}"))
+        //debugText.add(DebugText("fps :${PaintDebug.fps}"))
 
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
 //        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))

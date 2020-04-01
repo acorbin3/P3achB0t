@@ -7,7 +7,7 @@ import java.net.URLClassLoader
 enum class ScriptType {
     DebugScript,
     AbstractScript,
-    BackgroundScript,
+    ServiceScript,
     None
 }
 

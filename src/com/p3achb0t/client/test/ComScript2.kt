@@ -25,7 +25,7 @@ class ComScript2 : DebugScript() {
         g.drawString(m, 50, 140)
     }
 
-    override suspend fun start() {
+    override fun start() {
     }
 
     override fun stop() {

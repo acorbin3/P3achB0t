@@ -11,13 +11,13 @@ class Channel(val id: String) : ChannelInterface {
 
     override fun subscribe(subscriberId: String, channelCallback: (String, String) -> Unit) {
         //synchronized (mutex) {
-            observers[subscriberId] = channelCallback
+        observers[subscriberId] = channelCallback
         //}
     }
 
     override fun unsubscribe(subscriberId: String) {
         //synchronized (mutex) {
-            observers.remove(subscriberId)
+        observers.remove(subscriberId)
         //}
     }
 

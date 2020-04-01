@@ -3,7 +3,6 @@ package com.p3achb0t.client.ux
 import ComScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
-import com.p3achb0t.client.test.ComScript2
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
 import java.awt.event.WindowAdapter
@@ -15,7 +14,7 @@ class BotNavigationMenu: JMenuBar() {
     // only because they needs to be refreshed
     val debug = JMenu("Debug")
     val abstract = JMenu("Abstract")
-    val background = JMenu("Background")
+    val service = JMenu("Background")
     var scriptLoaderUI: ScriptLoaderUI? = null
     init {
         instanceMenu()
@@ -62,7 +61,7 @@ class BotNavigationMenu: JMenuBar() {
         }
         val addScript2 = JMenuItem("Add ComScript2")
         addScript2.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript("comScript2", ComScript2())
+            //GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript("comScript2", ComScript2())
             println("ComScript2")
 
         }
@@ -87,7 +86,7 @@ class BotNavigationMenu: JMenuBar() {
 
         debug.removeAll()
         abstract.removeAll()
-        background.removeAll()
+        service.removeAll()
 
 
         for (script in GlobalStructs.scripts.scripts.values) {
@@ -103,11 +102,11 @@ class BotNavigationMenu: JMenuBar() {
                     GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(script.fileName)
                 }
                 abstract.add(currentItem)
-            } else if (script.type == ScriptType.BackgroundScript) {
+            } else if (script.type == ScriptType.ServiceScript) {
                 currentItem.addActionListener {
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addBackgroundScript(script.fileName)
+                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleServiceScript(script.fileName)
                 }
-                background.add(currentItem)
+                service.add(currentItem)
             }
 
         }
@@ -121,17 +120,17 @@ class BotNavigationMenu: JMenuBar() {
 
         debug.popupMenu.isLightWeightPopupEnabled = false
         abstract.popupMenu.isLightWeightPopupEnabled = false
-        background.popupMenu.isLightWeightPopupEnabled = false
+        service.popupMenu.isLightWeightPopupEnabled = false
 
         add(debug)
         add(abstract)
-        add(background)
+        add(service)
 
 
     }
 
     private fun backgroundMenu(): JMenu {
-        val menu = JMenu("Background")
+        val menu = JMenu("Service")
 
         for (dscript in GlobalStructs.scripts.scripts.keys) {
 

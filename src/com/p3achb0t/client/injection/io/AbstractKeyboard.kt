@@ -1,7 +1,6 @@
 package com.p3achb0t.client.injection.io
 
 import com.p3achb0t.api.interfaces.Keyboard
-import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 
@@ -49,6 +48,7 @@ abstract class AbstractKeyboard : KeyListener, Keyboard {
 
     override fun keyPressed(e: KeyEvent) {
 //        println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
+        /*
         if(e.isControlDown && e.keyChar.isDigit()){
             when (e.keyChar) {
                 '1' -> {
@@ -84,7 +84,7 @@ abstract class AbstractKeyboard : KeyListener, Keyboard {
                     PaintDebug.isInventoryPaintingDebug = !PaintDebug.isInventoryPaintingDebug
                 }
             }
-        }
+        }*/
         if (!inputBlocked) {
             _keyPressed(e)
         }

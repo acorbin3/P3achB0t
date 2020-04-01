@@ -14,7 +14,7 @@ class Broker : BrokerInterface {
 
         synchronized(mutex) {
             if (!channels.containsKey(id)) {
-                println("added channel")
+                //println("added channel")
                 val channel = Channel(id) // add broker to channel for cross com
                 channel.subscribe("Broker", ::brokerCallback)
                 channels[id] = channel
@@ -24,13 +24,19 @@ class Broker : BrokerInterface {
         val channel: Channel = channels[id]!!
         roomCallback(id, channel)
         channel.subscribe(uuid, callback)
-        println("subscribeChannel: $id $channel")
+        //println("subscribeChannel: $id $channel")
     }
 
     // TODO remove when channel is empty
     override fun unsubscribeChannel(id: String, uuid: String) {
-        val channel = channels[id]
-        channel?.unsubscribe(uuid)
+        synchronized(mutex) {
+            val channel = channels[id]
+            channel?.unsubscribe(uuid)
+            // this is one because the broker is the only one left
+            if (channel?.observers?.size == 1) {
+                channels.remove(id)
+            }
+        }
     }
 
     private fun brokerCallback(id: String, message: String) {

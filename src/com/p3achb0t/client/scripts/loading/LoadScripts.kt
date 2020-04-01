@@ -29,17 +29,12 @@ class LoadScripts {
         refresh()
     }
 
-
-    // TODO big ass ugly function
     private fun loadJars(path: String) {
         // Load classes
         findInternalScripts(path)
-        //loopOverInternalScriptClasses(path)
         // Load Jars
         loopJarFiles(path)
-
     }
-
 
     private fun loopJarFiles(path: String) {
         val files = File(path).listFiles() ?: return
@@ -107,8 +102,8 @@ class LoadScripts {
                     classNode.superName.contains("DebugScript") -> {
                         ScriptType.DebugScript
                     }
-                    classNode.superName.contains("BackgroundScript") -> {
-                        ScriptType.BackgroundScript
+                    classNode.superName.contains("ServiceScript") -> {
+                        ScriptType.ServiceScript
                     }
                     classNode.superName.contains("AbstractScript") -> {
                         ScriptType.AbstractScript

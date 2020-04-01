@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts.tutorial_island
+package com.p3achb0t.scripts.action.tutorial_island
 
 import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.Context
@@ -15,7 +15,6 @@ import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.scripts.Job
 import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color

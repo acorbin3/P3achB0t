@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts_debug.paint_debug
+package com.p3achb0t.scripts.debug.paint
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
