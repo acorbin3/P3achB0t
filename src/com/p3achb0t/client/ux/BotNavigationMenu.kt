@@ -209,7 +209,7 @@ class BotNavigationMenu: JMenuBar() {
             if(scriptLoaderUI == null){
                 scriptLoaderUI = ScriptLoaderUI(startScriptButton)
                 scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
-                    override fun windowClosing(e: WindowEvent?) {
+                    override fun windowClosed(e: WindowEvent?) {
                         scriptLoaderUI?.disposeAndRemoveReferences()
                         scriptLoaderUI = null
                     }
