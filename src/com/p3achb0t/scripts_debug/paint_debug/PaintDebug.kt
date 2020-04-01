@@ -17,6 +17,7 @@ class PaintDebug: DebugScript() {
         var isCanWalkDebug = false
         var isProjectileDebug = false
         var isInventoryPaintingDebug = false
+        var isBankPaintDebug = false
         val scriptName = "PaintDebug"
         var isZulrah = true
         var fps = 15
@@ -104,17 +105,19 @@ class PaintDebug: DebugScript() {
 
                 }
 
-                if (Bank(ctx).isOpen()) {
-                    val items = Bank(ctx).getAll()
-                    items.forEach {
-                        g.color = Color.WHITE
-                        var area: Rectangle = Rectangle(60, 70, 440, 315)
-                        if(area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
-                            g.font = g.font.deriveFont(9.5f)
-                            g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
-                        }
+                if(isBankPaintDebug) {
+                    if (Bank(ctx).isOpen()) {
+                        val items = Bank(ctx).getAll()
+                        items.forEach {
+                            g.color = Color.WHITE
+                            var area: Rectangle = Rectangle(60, 70, 440, 315)
+                            if (area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
+                                g.font = g.font.deriveFont(9.5f)
+                                g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
+                            }
 //                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
 
+                        }
                     }
                 }
 

@@ -1,21 +1,21 @@
-[
-  {
+ [
+   {
     "id": "f756051c-e507-4241-9045-3c0a667505b7",
-    "username": "",
-    "password": "",
+    "username": "Zaksmithcomputing+304400@gmail.com",
+    "password": "UL2TQM4HY94",
     "pin": "",
-    "script": "",
+    "script": "OneClickZulrah",
     "minRuntimeSec": 0,
     "maxRuntimeSec": 0,
     "userBreaks": false,
     "minBreakTimeSec": 0,
     "maxBreakTimeSec": 0,
     "banned": false,
-    "proxy": "none",
-    "world": 205,
-    "startAutomatically": false,
-    "fps": 20,
-    "args": "",
-    "key": ""
+    "proxy": "SOCKS5;38.125.89.100:63618",
+    "world": 204,
+    "startAutomatically": true,
+	"fps": 20,
+	"args": "Powerdrag316",
+	"key": "Djwic7j3ibz"
   }
 ]
