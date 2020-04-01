@@ -33,7 +33,7 @@ class LoginServices : ServiceScript() {
         if (channel == ctx.ipc.uuid) {
             val parts = message.split(";")
             if (parts[0]?.contains("login")) {
-
+                println("login packet")
             }
 
         }

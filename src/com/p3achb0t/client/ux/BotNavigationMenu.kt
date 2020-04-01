@@ -1,6 +1,5 @@
 package com.p3achb0t.client.ux
 
-import ComScript
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
@@ -14,14 +13,13 @@ class BotNavigationMenu: JMenuBar() {
     // only because they needs to be refreshed
     val debug = JMenu("Debug")
     val abstract = JMenu("Abstract")
-    val service = JMenu("Background")
+    val service = JMenu("Services")
     var scriptLoaderUI: ScriptLoaderUI? = null
     init {
+        this.layout
         instanceMenu()
         scriptMenu()
         botUltra()
-//        updateAbstractMenu()
-//        updateDebugMenu()
         ioHandle()
         test()
         scriptManagerButtons()
@@ -53,30 +51,17 @@ class BotNavigationMenu: JMenuBar() {
 
         }
 
-        val addScript = JMenuItem("Add ComScript")
-        addScript.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(ComScript())
-            println("ComScript")
-
-        }
-        val addScript2 = JMenuItem("Add ComScript2")
-        addScript2.addActionListener {
-            //GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript("comScript2", ComScript2())
-            println("ComScript2")
-
-        }
-
         val ipcHelper = JMenuItem("ipcHelper")
         ipcHelper.addActionListener {
             IpcHelper(GlobalStructs.communication)
         }
 
+
+
         menu.add(add)
         menu.add(remove)
         menu.add(reloadScripts)
         menu.add(startBackgroundScript)
-        menu.add(addScript)
-        menu.add(addScript2)
         menu.add(ipcHelper)
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
@@ -129,43 +114,6 @@ class BotNavigationMenu: JMenuBar() {
 
     }
 
-    private fun backgroundMenu(): JMenu {
-        val menu = JMenu("Service")
-
-        for (dscript in GlobalStructs.scripts.scripts.keys) {
-
-            val mouseDebug = JMenuItem(GlobalStructs.scripts.scripts[dscript]!!.name)
-            mouseDebug.addActionListener {
-                println(dscript)
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(dscript)
-            }
-            menu.add(mouseDebug)
-        }
-
-        menu.popupMenu.isLightWeightPopupEnabled = false
-        return menu
-    }
-    /*
-        private fun updateDebugMenu(){
-            val classes: ArrayList<Class<*>> = ArrayList()
-            classes.addAll(findAllDebugClasses("com/p3achb0t/scripts_debug"))
-            classes.forEach { clazz ->
-                val scriptName = clazz.name.split(".").last()
-                if(scriptName.contains("PaintDebug")){
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, clazz.newInstance() as DebugScript)
-                }else {
-                    println("Adding menu Item: $scriptName")
-                    val menuItem1 = JMenuItem("$scriptName")
-                    val localClazz = clazz
-                    menuItem1.addActionListener {
-
-                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addDebugScript(scriptName, localClazz.newInstance() as DebugScript)
-                    }
-                    debug.add(menuItem1)
-                }
-            }
-        }
-    */
     private fun botUltra() {
         val menu = JMenu("Ultra")
 
@@ -174,7 +122,7 @@ class BotNavigationMenu: JMenuBar() {
             for (x in 0..5) {
                 val bot = BotInstance()
                 bot.initBot()
-                bot.getInstanceManager().addDebugScript("SexyMouse.jar")
+                //bot.getInstanceManager().addDebugScript("SexyMouse.jar")
             }
         }
 
@@ -219,7 +167,14 @@ class BotNavigationMenu: JMenuBar() {
 
         }
 
+        val TEST = JMenuItem("TEST")
+        TEST.addActionListener {
+            val g =GlobalStructs.botTabBar.getCurrentIndex()
+            g.getInstanceManager()
+        }
+
         menu.add(widget)
+        menu.add(TEST)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
@@ -236,7 +191,8 @@ class BotNavigationMenu: JMenuBar() {
             GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
             pauseScriptButton.text = "Pause"
             startScriptButton.isEnabled = true
-            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            this.requestFocus(false)
         }
 
         pauseScriptButton.addActionListener{
@@ -244,7 +200,8 @@ class BotNavigationMenu: JMenuBar() {
                 GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseScript()
                 pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isPaused()) "UnPause" else "Pause"
             }
-            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            this.requestFocus(false)
         }
 
 
@@ -263,7 +220,8 @@ class BotNavigationMenu: JMenuBar() {
                 scriptLoaderUI?.isAlwaysOnTop = true
             }
 
-            this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
+            this.requestFocus(false)
         }
         add(Box.createHorizontalGlue())
         add(startScriptButton)
@@ -274,7 +232,8 @@ class BotNavigationMenu: JMenuBar() {
         add(Box.createHorizontalStrut(2))
         //Weird behaviour with buttons in a Jmenu, so we need to remove the focus, has to be called twice or it still stays in focus
         for(i in 1..2){
-            this.grabFocus()
+            //this.grabFocus()
+            this.requestFocus(false)
         }
     }
 }

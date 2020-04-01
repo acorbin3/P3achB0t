@@ -1,11 +1,11 @@
 package com.p3achb0t.analyser
 
 import com.p3achb0t.Main
+import com.p3achb0t.analyser.class_generation.cleanType
+import com.p3achb0t.analyser.class_generation.isBaseType
 import com.p3achb0t.analyser.runestar.ClassHook
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.client.configs.Constants
-import com.p3achb0t.analyser.class_generation.cleanType
-import com.p3achb0t.analyser.class_generation.isBaseType
 import org.objectweb.asm.*
 import org.objectweb.asm.Opcodes.*
 import org.objectweb.asm.tree.*
@@ -816,13 +816,18 @@ class Analyser{
                 val il = InsnList()
                 val labelNode = LabelNode(Label())
 
+
                 il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
+
+
                 il.add(JumpInsnNode(IFEQ,labelNode))
                 il.add(labelNode)
-                il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
-                il.add(LdcInsnNode("#####Blocked lost focus"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
+                //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
+                //il.add(LdcInsnNode("#####Blocked lost focus"))
+                //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
+
+
                 il.add(InsnNode(RETURN))
                 method.instructions.insert(il)
             }
@@ -833,15 +838,21 @@ class Analyser{
 
                 il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
+
                 il.add(JumpInsnNode(IFNE,labelNode))
                 //Jump to return
                 il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(InsnNode(ICONST_1))
                 il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "setBlockFocus","(Z)V"))
                 il.add(labelNode)
-                il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
-                il.add(LdcInsnNode("#####Blocked gained focus"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
+                //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
+                //il.add(LdcInsnNode("#####Blocked gained focus"))
+                //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
+
+
+
+
+
                 il.add(InsnNode(RETURN))
                 method.instructions.insert(il)
             }

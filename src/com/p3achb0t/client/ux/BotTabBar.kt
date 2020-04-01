@@ -16,15 +16,19 @@ class BotTabBar : JTabbedPane(), MouseListener {
 
     init {
         preferredSize =  Dimension(GlobalStructs.width, GlobalStructs.height)
-        this.addMouseListener(this)
         this.addChangeListener {
             this.setEnabledAt(lastSelectedIndex, true)
             this.setEnabledAt(this.selectedIndex, false)
             lastSelectedIndex = this.selectedIndex
         }
+        //this.addMouseListener(this)
+
     }
 
     fun addBotInstance(id: String, botInstance: BotInstance) {
+        botInstance.applet?.components?.iterator()?.forEach {
+            println(it.name)
+        }
         botInstances[id] = botInstance
         addTab("Bot", botInstance)
         selectedIndex = if (tabCount == 0) 0 else tabCount-1
@@ -50,24 +54,23 @@ class BotTabBar : JTabbedPane(), MouseListener {
     }
 
     override fun mouseReleased(p0: MouseEvent?) {
-
     }
 
     override fun mouseEntered(p0: MouseEvent?) {
-        if (selectedComponent != null) {
-            //val t= getCurrentIndex().applet?.requestFocus()
+        println("in panel")
 
-            //println("requestFocusInWindow $t")
-        }
     }
 
     override fun mouseClicked(p0: MouseEvent?) {
     }
 
     override fun mouseExited(p0: MouseEvent?) {
+        println("out of panel")
     }
 
     override fun mousePressed(p0: MouseEvent?) {
     }
+
+
 
 }

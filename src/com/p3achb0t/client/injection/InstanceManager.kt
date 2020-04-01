@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.applet.Applet
 import java.awt.Color
+import java.awt.Frame
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
@@ -59,6 +60,7 @@ class InstanceManager(val client: Any) {
     // script execution
 
 
+
     // For future remote client TODO need renaming
     var canvasWidth = GlobalStructs.width
     var canvasHeight = GlobalStructs.height
@@ -74,6 +76,10 @@ class InstanceManager(val client: Any) {
     private var abstractScriptLoop: Job? = null
     private var backgroundLoop: Job? = null
 
+
+    // testing
+    var frame: Frame? = null
+
     init {
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
@@ -82,9 +88,12 @@ class InstanceManager(val client: Any) {
             }
             // setup context
             ctx = setupContext(client)
+
             script::ctx.set(ctx!!)
             isContextLoaded = true
         }
+
+
 
     }
 
@@ -104,13 +113,6 @@ class InstanceManager(val client: Any) {
 
     fun addAbstractScript(scriptFileName: String) {
         val abstractScript = GlobalStructs.scripts.scripts[scriptFileName]!!.load() as AbstractScript
-        waitOnContext()
-        abstractScript::ctx.set(setupContext(client))
-        script = abstractScript
-    }
-
-    // THIS SHOULD BE REMOVED
-    fun addAbstractScript(abstractScript: AbstractScript) {
         waitOnContext()
         abstractScript::ctx.set(setupContext(client))
         script = abstractScript

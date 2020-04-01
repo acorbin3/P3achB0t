@@ -43,6 +43,8 @@ class BotManager : JFrame() {
         add(GlobalStructs.botTabBar)
 
         setLocationRelativeTo(null)
+        extendedState = JFrame.NORMAL;
+
         pack()
         isVisible = true
 

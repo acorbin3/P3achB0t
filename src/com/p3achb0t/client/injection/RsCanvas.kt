@@ -1,12 +1,15 @@
 package com.p3achb0t.client.injection
 
+
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
+import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import java.awt.image.BufferedImage
 
 
-open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
+open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener {
 
     private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
     private val screen: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
@@ -16,6 +19,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
     init {
         super.setFocusable(true)
         instanceManager.setGameImage(screen)
+        this.addMouseListener(this)
     }
 
     override fun getGraphics() : Graphics {
@@ -46,4 +50,21 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas() {
 
         return g
     }
+
+    override fun mouseReleased(p0: MouseEvent?) {
+    }
+
+    override fun mouseEntered(p0: MouseEvent?) {
+        requestFocusInWindow()
+    }
+
+    override fun mouseClicked(p0: MouseEvent?) {
+    }
+
+    override fun mouseExited(p0: MouseEvent?) {
+    }
+
+    override fun mousePressed(p0: MouseEvent?) {
+    }
+
 }
