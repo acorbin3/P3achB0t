@@ -239,12 +239,13 @@ class ScriptManager(val client: Any): Logging() {
                     }
                     lastCheck.reset()
                 }
+                /* SirScript not everybody has private scripts haha XD
                 if (!paused && !com.p3achb0t.scripts_private.Mule.Main.scriptMule
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen(ctx)) {
                     println("Account: " + loginHandler.account)
                     loginHandler.login(ctx)
-                }
+                }*/
 
                 if(loginHandler.isLoggedIn(ctx)){
                     if(ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode){
