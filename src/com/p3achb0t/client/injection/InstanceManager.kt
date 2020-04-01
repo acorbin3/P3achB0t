@@ -198,6 +198,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun startScript() {
+        script.start()
         //if(script.validate){
             //Main.validationKey
             //PaintDebug.key
@@ -240,12 +241,13 @@ class InstanceManager(val client: Any) {
         }
 
         abstractScriptLoop = GlobalScope.launch {
+
             while (true) {
                 ctx?.stats?.runtime?.reset()
                 runtime.reset()
                 lastCheck.reset()
 
-                script.start()
+                //
 
                 while (isScriptRunning) {
                     // Check to see if we have a good loaded account
