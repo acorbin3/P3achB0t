@@ -198,7 +198,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun startScript() {
-        if(script.validate){
+        //if(script.validate){
             //Main.validationKey
             //PaintDebug.key
             /*val annotations = script::class.findAnnotation<ScriptManifest>()
@@ -212,7 +212,7 @@ class InstanceManager(val client: Any) {
             }*/
 
 
-        }
+        //}
 
         if(loginHandler.account.username.isNotEmpty()){
             fps = loginHandler.account.fps

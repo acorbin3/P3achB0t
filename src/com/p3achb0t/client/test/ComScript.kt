@@ -22,7 +22,7 @@ class ComScript : AbstractScript() {
         //println("send ComScript")
     }
 
-    override suspend fun start() {
+    override fun start() {
     }
 
     override fun stop() {

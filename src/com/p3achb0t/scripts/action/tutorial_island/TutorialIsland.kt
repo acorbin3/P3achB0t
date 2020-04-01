@@ -39,7 +39,7 @@ class TutorialIsland: AbstractScript()  {
 
     }
 
-    override suspend fun start() {
+    override fun start() {
         try {
             stopwatch.start()
         } catch (e: Exception) {

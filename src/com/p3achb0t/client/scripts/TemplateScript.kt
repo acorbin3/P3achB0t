@@ -11,7 +11,7 @@ class TemplateScript: AbstractScript()  {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun start() {
+    override fun start() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

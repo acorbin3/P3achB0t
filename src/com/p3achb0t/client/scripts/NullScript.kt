@@ -9,7 +9,7 @@ class NullScript : AbstractScript() {
         delay(5000)
     }
 
-    override suspend fun start() {
+    override fun start() {
         println("Started")
     }
 
