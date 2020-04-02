@@ -196,6 +196,7 @@ class BotNavigationMenu: JMenuBar() {
         }
 
         pauseScriptButton.addActionListener{
+            //TODO Replace isactionscript paused with is script running
             if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) {
                 GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
                 pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) "UnPause" else "Pause"

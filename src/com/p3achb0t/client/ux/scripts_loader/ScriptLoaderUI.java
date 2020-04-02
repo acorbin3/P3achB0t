@@ -7,6 +7,7 @@ package com.p3achb0t.client.ux.scripts_loader;
 import com.p3achb0t.client.configs.GlobalStructs;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
 import com.p3achb0t.client.scripts.loading.ScriptInformation;
+import com.p3achb0t.client.scripts.loading.ScriptType;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -48,8 +49,8 @@ public class ScriptLoaderUI extends JFrame {
         String version = (String)tableModel.getValueAt(scriptsTableView.getSelectedRow(),3);
         String scriptKey = scriptsIdentifierMap.get(scriptName+author+version);
         GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript(scriptKey);
-        //GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript();
         scriptsIdentifierMap.clear();
+        //TODO Replace isactionscript paused with is script running
         if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().isActionScriptPaused()){
             startScriptButton.setEnabled(false);
         }
@@ -156,7 +157,7 @@ public class ScriptLoaderUI extends JFrame {
        if(scripts != null){
            for (String key : scripts.getScriptsInformation().keySet()) {
                ScriptInformation script = scripts.getScriptsInformation().get(key);
-               if(script != null && script.getType().name().equals("AbstractScript")){
+               if(script != null && script.getType() == ScriptType.ActionScript){
                    addRow(script.getName(),script.getAuthor(),script.getCategory(),script.getVersion());
                    scriptsIdentifierMap.put(script.getName() + script.getAuthor() + script.getVersion(),script.getFileName());
                }
