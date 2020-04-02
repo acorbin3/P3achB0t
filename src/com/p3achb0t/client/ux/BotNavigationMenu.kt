@@ -115,8 +115,6 @@ class BotNavigationMenu: JMenuBar() {
 
 
     private fun scriptMenu() {
-
-
         refreshScriptMenu()
 
         paint.popupMenu.isLightWeightPopupEnabled = false

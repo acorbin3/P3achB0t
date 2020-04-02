@@ -73,19 +73,13 @@ class InstanceManager(val client: Any) {
         actionScript.start()
 
         isActionScriptPaused = false
-        if (actionScriptLoop == null) {
-            actionScriptLoop = GlobalScope.launch {
-                while (true) {
-                    actionScript.loop()
-                    delay(600)
-                    //delay(1000/fps.toLong())
-                }
-            }
-        }
+        actionScriptState(true)
     }
 
     fun stopActionScript() {
 
+        isActionScriptPaused = true
+        actionScriptState(false)
         actionScript.stop()
         GlobalStructs.communication.unsubscribeAllChannels(actionScript.ctx.ipc.channels.keys, actionScript.ctx.ipc.scriptUUID)
 
@@ -93,10 +87,6 @@ class InstanceManager(val client: Any) {
         waitOnContext()
         nullScript::ctx.set(setupContext(client))
         actionScript = nullScript
-
-        isActionScriptPaused = true
-        actionScriptLoop?.cancel()
-        actionScriptLoop = null
     }
 
 
@@ -104,21 +94,29 @@ class InstanceManager(val client: Any) {
 
         if (!isActionScriptPaused) {
             actionScript.pause()
-            actionScriptLoop?.cancel()
-            actionScriptLoop = null
+            actionScriptState(false)
         } else {
             actionScript.resume()
+            actionScriptState(true)
+        }
+        isActionScriptPaused = !isActionScriptPaused
+    }
+
+    private fun actionScriptState(loopRunning: Boolean) {
+        if (loopRunning) {
             if (actionScriptLoop == null) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
                         actionScript.loop()
-                        delay(600)
+                        delay(50)
                         //delay(1000/fps.toLong())
                     }
                 }
             }
+        } else {
+            actionScriptLoop?.cancel()
+            actionScriptLoop = null
         }
-        isActionScriptPaused = !isActionScriptPaused
     }
 
     fun togglePaintScript(scriptFileName: String) {
