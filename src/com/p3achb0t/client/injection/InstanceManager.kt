@@ -19,6 +19,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
+enum class ScriptState {
+    Running,
+    Stopped,
+    Paused,
+}
+
 class InstanceManager(val client: Any) {
 
     // Client candy
@@ -29,7 +35,8 @@ class InstanceManager(val client: Any) {
     // Action script vars
     var actionScript: ActionScript = NullScript()
     private var actionScriptLoop: Job? = null
-    var isActionScriptPaused = false
+    //var isActionScriptPaused = false
+    var scriptState = ScriptState.Stopped
 
     // Service script
     private var serviceLoop: Job? = null
@@ -72,13 +79,13 @@ class InstanceManager(val client: Any) {
         actionScript = actionScriptLoaded
         actionScript.start()
 
-        isActionScriptPaused = false
+        scriptState = ScriptState.Running
         actionScriptState(true)
     }
 
     fun stopActionScript() {
 
-        isActionScriptPaused = true
+        scriptState = ScriptState.Stopped
         actionScriptState(false)
         actionScript.stop()
         GlobalStructs.communication.unsubscribeAllChannels(actionScript.ctx.ipc.channels.keys, actionScript.ctx.ipc.scriptUUID)
@@ -92,14 +99,15 @@ class InstanceManager(val client: Any) {
 
     fun pauseActionScript() {
 
-        if (!isActionScriptPaused) {
+        if (scriptState == ScriptState.Running) {
             actionScript.pause()
+            scriptState = ScriptState.Paused
             actionScriptState(false)
         } else {
             actionScript.resume()
             actionScriptState(true)
+            scriptState = ScriptState.Running
         }
-        isActionScriptPaused = !isActionScriptPaused
     }
 
     private fun actionScriptState(loopRunning: Boolean) {

@@ -5,6 +5,7 @@
 package com.p3achb0t.client.ux.scripts_loader;
 
 import com.p3achb0t.client.configs.GlobalStructs;
+import com.p3achb0t.client.injection.ScriptState;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
 import com.p3achb0t.client.scripts.loading.ScriptInformation;
 import com.p3achb0t.client.scripts.loading.ScriptType;
@@ -51,7 +52,7 @@ public class ScriptLoaderUI extends JFrame {
         GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript(scriptKey);
         scriptsIdentifierMap.clear();
         //TODO Replace isactionscript paused with is script running
-        if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().isActionScriptPaused()){
+        if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().getScriptState() == ScriptState.Running){
             startScriptButton.setEnabled(false);
         }
         disposeAndRemoveReferences();

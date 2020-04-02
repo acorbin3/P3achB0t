@@ -1,6 +1,7 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.client.configs.GlobalStructs
+import com.p3achb0t.client.injection.ScriptState
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
 import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
@@ -191,18 +192,19 @@ class BotNavigationMenu: JMenuBar() {
             GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
             pauseScriptButton.text = "Pause"
             startScriptButton.isEnabled = true
-            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            //this.requestFocus(false)
+
         }
 
         pauseScriptButton.addActionListener{
             //TODO Replace isactionscript paused with is script running
-            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) {
+            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Running) {
+                pauseScriptButton.text = "Resume"
                 GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
-                pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) "UnPause" else "Pause"
+            } else if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Paused){
+                pauseScriptButton.text = "Paused"
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
             }
-            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            //this.requestFocus(false)
+
         }
 
 
@@ -221,8 +223,6 @@ class BotNavigationMenu: JMenuBar() {
                 scriptLoaderUI?.isAlwaysOnTop = true
             }
 
-            //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            //this.requestFocus(false)
         }
         add(Box.createHorizontalGlue())
         add(startScriptButton)
@@ -231,10 +231,5 @@ class BotNavigationMenu: JMenuBar() {
         add(Box.createHorizontalStrut(3))
         add(stopScriptButton)
         add(Box.createHorizontalStrut(2))
-        //Weird behaviour with buttons in a Jmenu, so we need to remove the focus, has to be called twice or it still stays in focus
-        for(i in 1..2){
-            //this.grabFocus()
-            //this.requestFocus(false)
-        }
     }
 }
