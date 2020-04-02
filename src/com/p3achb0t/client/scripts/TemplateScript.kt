@@ -1,12 +1,12 @@
 package com.p3achb0t.client.scripts
 
-import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.ActionScript
 import com.p3achb0t.api.ScriptManifest
 import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("category","name","author", "0.1")
-class TemplateScript: AbstractScript()  {
+class TemplateScript: ActionScript()  {
     override suspend fun loop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

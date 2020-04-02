@@ -1,13 +1,13 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.tabs.Tabs
 import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","Inventory Helper","Bot Team", "0.1")
-class DebugInventory : DebugScript() {
+class PaintInventory : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
             if(ctx.tabs.getOpenTab() == Tabs.Tab_Types.Inventory) {

@@ -9,15 +9,14 @@ class Channels() {
 
     lateinit var uuid: String // UUID of the instance
     lateinit var broker: BrokerInterface
-    private val channels = HashMap<String, ChannelInterface>()
+    val channels = HashMap<String, ChannelInterface>()
     val scriptUUID: String = UUID.randomUUID().toString()
 
     /**
      * subscribe to IPC
      */
     fun subscribe(id: String, callback: (id: String, message: String) -> Unit) {
-        broker.subscribeChannel(id, ::setChannel, scriptUUID, callback)
-        //this.callback = callback
+        broker.subscribeChannel(id, ::setChannelCallback, scriptUUID, callback)
     }
 
     /**
@@ -34,7 +33,7 @@ class Channels() {
         channels[id]?.notifySubscribers("$scriptUUID;$message")
     }
 
-     private fun setChannel(id: String, channel: ChannelInterface) {
+    private fun setChannelCallback(id: String, channel: ChannelInterface) {
         channels[id] = channel
     }
 

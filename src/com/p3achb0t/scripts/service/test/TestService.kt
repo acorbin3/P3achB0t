@@ -1,11 +1,11 @@
-package com.p3achb0t.scripts.service.login
+package com.p3achb0t.scripts.service.test
 
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.ServiceScript
 import com.p3achb0t.api.utils.Script
 
-@ScriptManifest(Script.SERVICE,"Login Service","Løhde", "0.1")
-class LoginServices : ServiceScript() {
+@ScriptManifest(Script.SERVICE,"Test Service","Løhde", "0.1")
+class TestService : ServiceScript() {
 
     val gameWorld = -1
     val password = ""

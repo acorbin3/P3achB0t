@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.utils.Calculations

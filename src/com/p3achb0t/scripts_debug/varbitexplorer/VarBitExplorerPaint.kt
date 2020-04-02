@@ -1,9 +1,9 @@
 package com.p3achb0t.scripts_debug.varbitexplorer
 
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import java.awt.Graphics
 
-class VarBitExplorerDebug: DebugScript() {
+class VarBitExplorerPaint: PaintScript() {
     override fun draw(g: Graphics) {
     }
 

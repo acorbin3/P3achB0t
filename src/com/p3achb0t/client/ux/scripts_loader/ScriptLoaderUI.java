@@ -8,11 +8,17 @@ import com.p3achb0t.client.configs.GlobalStructs;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
 import com.p3achb0t.client.scripts.loading.ScriptInformation;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.HashMap;
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 /**
  * @author unknown
@@ -41,10 +47,10 @@ public class ScriptLoaderUI extends JFrame {
         String author = (String)tableModel.getValueAt(scriptsTableView.getSelectedRow(),1);
         String version = (String)tableModel.getValueAt(scriptsTableView.getSelectedRow(),3);
         String scriptKey = scriptsIdentifierMap.get(scriptName+author+version);
-        GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().addAbstractScript(scriptKey);
-        GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startScript();
+        GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript(scriptKey);
+        //GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript();
         scriptsIdentifierMap.clear();
-        if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().isScriptRunning()){
+        if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().isActionScriptPaused()){
             startScriptButton.setEnabled(false);
         }
         disposeAndRemoveReferences();
@@ -148,8 +154,8 @@ public class ScriptLoaderUI extends JFrame {
     private void loadScripts() {
        LoadScripts scripts = GlobalStructs.Companion.getScripts();
        if(scripts != null){
-           for (String key : scripts.getScripts().keySet()) {
-               ScriptInformation script = scripts.getScripts().get(key);
+           for (String key : scripts.getScriptsInformation().keySet()) {
+               ScriptInformation script = scripts.getScriptsInformation().get(key);
                if(script != null && script.getType().name().equals("AbstractScript")){
                    addRow(script.getName(),script.getAuthor(),script.getCategory(),script.getVersion());
                    scriptsIdentifierMap.put(script.getName() + script.getAuthor() + script.getVersion(),script.getFileName());

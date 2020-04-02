@@ -1,6 +1,5 @@
 package com.p3achb0t.client.ux
 
-import com.p3achb0t.api.AbstractScript
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.Constants
@@ -55,10 +54,13 @@ class BotInstance : JPanel() {
 
 
 
-        instanceManagerInterface?.getManager()?.setLoginHandlerAccount(account)
+        //instanceManagerInterface?.getManager()?.setLoginHandlerAccount(account)
         if(account.script.isNotEmpty()) {
-            if(account.script in GlobalStructs.scripts.scripts) {
-                instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.load() as AbstractScript
+            if(account.script in GlobalStructs.scripts.scriptsInformation) {
+                // nooooooooooooooooo uses the classes
+                //instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.load() as ActionScript
+
+                instanceManagerInterface?.getManager()?.startActionScript(GlobalStructs.scripts.scriptsInformation[account.script]!!.fileName)
             }else{
                 println("ERROR: Could not find script ${account.script}. Please report to P3aches")
             }

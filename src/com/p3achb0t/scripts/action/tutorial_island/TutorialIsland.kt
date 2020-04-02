@@ -1,6 +1,6 @@
 package com.p3achb0t.scripts.action.tutorial_island
 
-import com.p3achb0t.api.AbstractScript
+import com.p3achb0t.api.ActionScript
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.Area
@@ -25,7 +25,7 @@ import kotlin.random.Random
 private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches", "0.1")
-class TutorialIsland: AbstractScript()  {
+class TutorialIsland: ActionScript()  {
     val stopwatch = StopWatch()
     var currentJob = ""
     init {

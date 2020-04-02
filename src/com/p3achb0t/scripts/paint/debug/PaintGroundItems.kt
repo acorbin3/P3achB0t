@@ -1,14 +1,14 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","Ground Items Helper","Bot Team", "0.1")
-class DebugGroundItems : DebugScript() {
+class PaintGroundItems : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
             val loot: IntArray = intArrayOf(2363, 1127, 1079, 1303, 1347, 4087, 4180, 4585, 1149, 892, 21880, 562, 560, 212, 208, 3052, 220, 19580, 9381, 1616, 452, 19582,

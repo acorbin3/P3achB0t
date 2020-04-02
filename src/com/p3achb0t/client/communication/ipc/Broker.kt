@@ -39,6 +39,12 @@ class Broker : BrokerInterface {
         }
     }
 
+    fun unsubscribeAllChannels(channels: MutableSet<String>, scriptUUID: String) {
+        for (channel in channels) {
+            unsubscribeChannel(channel, scriptUUID)
+        }
+    }
+
     private fun brokerCallback(id: String, message: String) {
         PeerClient.callback(id, message)
     }

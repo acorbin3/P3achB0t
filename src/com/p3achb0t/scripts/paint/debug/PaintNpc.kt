@@ -1,7 +1,7 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.wrappers.NPC
@@ -12,7 +12,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","NPC Helper","Bot Team", "0.1")
-class DebugNpc : DebugScript() {
+class PaintNpc : PaintScript() {
 
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {

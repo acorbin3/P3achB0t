@@ -1,13 +1,13 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.utils.VisibilityMap
 import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","Walk Helper","Bot Team", "0.1")
-class DebugWalkHelper : DebugScript() {
+class PaintWalkHelper : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
             for(tile in VisibilityMap(ctx).visibleTiles()){

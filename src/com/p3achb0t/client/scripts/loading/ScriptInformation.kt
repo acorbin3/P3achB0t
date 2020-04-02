@@ -5,8 +5,8 @@ import java.net.URL
 import java.net.URLClassLoader
 
 enum class ScriptType {
-    DebugScript,
-    AbstractScript,
+    PaintScript,
+    ActionScript,
     ServiceScript,
     None
 }

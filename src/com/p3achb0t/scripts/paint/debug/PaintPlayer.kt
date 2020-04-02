@@ -1,6 +1,6 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getActorTriangles
@@ -9,7 +9,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","Player Helper","Bot Team", "0.1")
-class DebugPlayer : DebugScript() {
+class PaintPlayer : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
             g.color = Color.GREEN

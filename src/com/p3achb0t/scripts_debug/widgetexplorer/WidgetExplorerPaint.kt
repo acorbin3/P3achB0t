@@ -1,12 +1,12 @@
 package com.p3achb0t.scripts_debug.widgetexplorer
 
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import java.awt.Color
 import java.awt.Graphics
 
-class WidgetExplorerDebug : DebugScript() {
+class WidgetExplorerPaint : PaintScript() {
     companion object{
         val scriptName = "widgetExplorer"
     }

@@ -98,7 +98,7 @@ fun setup() {
                     }
                     //Start script
                     if(it.script.isNotEmpty() && it.startAutomatically){
-                        instance.instanceManagerInterface?.getManager()?.startScript()
+                        //instance.instanceManagerInterface?.getManager()?.startActionScript()
                         sleep(5000) // Wait 5 seconds between scripts
                     }
                 }

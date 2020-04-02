@@ -1,7 +1,7 @@
-package com.p3achb0t.scripts.debug.paint
+package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.DebugScript
+import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.interfaces.EvictingDualNodeHashTable
 import com.p3achb0t.api.interfaces.LocType
@@ -17,7 +17,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 @ScriptManifest("Debug","GameObject Helper","Bot Team", "0.1")
-class DebugGameObject : DebugScript() {
+class PaintGameObject : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
             gameObjectPaint(g, ctx)

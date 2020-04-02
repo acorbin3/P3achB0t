@@ -8,7 +8,6 @@ import java.io.ByteArrayOutputStream
 import java.lang.Thread.sleep
 import java.net.InetSocketAddress
 import java.util.*
-import javax.imageio.ImageIO
 
 
 class Server : WebSocketServer {
@@ -31,7 +30,7 @@ class Server : WebSocketServer {
             for (s in GlobalStructs.botTabBar.botInstances) {
 
                 val baos = ByteArrayOutputStream()
-                ImageIO.write(s.value.instanceManagerInterface!!.getManager().takeScreenShot(), "png", baos)
+                //ImageIO.write(s.value.instanceManagerInterface!!.getManager().takeScreenShot(), "png", baos)
                 baos.flush()
                 val imageInByte = baos.toByteArray()
 

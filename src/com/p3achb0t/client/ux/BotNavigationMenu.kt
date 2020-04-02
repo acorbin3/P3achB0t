@@ -11,13 +11,14 @@ import javax.swing.*
 class BotNavigationMenu: JMenuBar() {
 
     // only because they needs to be refreshed
-    val debug = JMenu("Debug")
-    val abstract = JMenu("Abstract")
+    val paint = JMenu("Paint")
+    val action = JMenu("Action")
     val service = JMenu("Services")
     var scriptLoaderUI: ScriptLoaderUI? = null
     init {
         this.layout
         instanceMenu()
+        scriptControl()
         scriptMenu()
         botUltra()
         ioHandle()
@@ -42,13 +43,6 @@ class BotNavigationMenu: JMenuBar() {
         reloadScripts.addActionListener {
             GlobalStructs.scripts.refresh()
             refreshScriptMenu()
-
-        }
-
-        val startBackgroundScript = JMenuItem("Start background")
-        startBackgroundScript.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().runBackgroundScripts()
-
         }
 
         val ipcHelper = JMenuItem("ipcHelper")
@@ -56,42 +50,64 @@ class BotNavigationMenu: JMenuBar() {
             IpcHelper(GlobalStructs.communication)
         }
 
-
-
         menu.add(add)
         menu.add(remove)
         menu.add(reloadScripts)
-        menu.add(startBackgroundScript)
         menu.add(ipcHelper)
+
+        menu.popupMenu.isLightWeightPopupEnabled = false
+        add(menu)
+    }
+
+    private fun scriptControl() {
+
+        val menu = JMenu("Script")
+
+        val stop = JMenuItem("Stop")
+        stop.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
+        }
+
+        val pause = JMenuItem("Pause/Resume")
+        pause.addActionListener {
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
+        }
+
+        menu.add(stop)
+        menu.add(pause)
+
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
     }
 
     fun refreshScriptMenu() {
 
-        debug.removeAll()
-        abstract.removeAll()
+        paint.removeAll()
+        action.removeAll()
         service.removeAll()
 
-
-        for (script in GlobalStructs.scripts.scripts.values) {
+        for (script in GlobalStructs.scripts.scriptsInformation.values) {
             val currentItem = JMenuItem("${script.name} ${script.version}")
-            if (script.type == ScriptType.DebugScript) {
-                currentItem.addActionListener {
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleDebugScript(script.fileName)
+            when (script.type) {
+                ScriptType.PaintScript -> {
+                    currentItem.addActionListener {
+                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().togglePaintScript(script.fileName)
+                    }
+                    paint.add(currentItem)
                 }
-                debug.add(currentItem)
-            } else if (script.type == ScriptType.AbstractScript) {
-                currentItem.addActionListener {
-                    println(script.fileName)
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().addAbstractScript(script.fileName)
+                ScriptType.ActionScript -> {
+                    currentItem.addActionListener {
+                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startActionScript(script.fileName)
+                    }
+                    action.add(currentItem)
                 }
-                abstract.add(currentItem)
-            } else if (script.type == ScriptType.ServiceScript) {
-                currentItem.addActionListener {
-                    GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleServiceScript(script.fileName)
+                ScriptType.ServiceScript -> {
+                    currentItem.addActionListener {
+                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleServiceScript(script.fileName)
+                    }
+                    service.add(currentItem)
                 }
-                service.add(currentItem)
+                else -> {}
             }
 
         }
@@ -103,26 +119,23 @@ class BotNavigationMenu: JMenuBar() {
 
         refreshScriptMenu()
 
-        debug.popupMenu.isLightWeightPopupEnabled = false
-        abstract.popupMenu.isLightWeightPopupEnabled = false
+        paint.popupMenu.isLightWeightPopupEnabled = false
+        action.popupMenu.isLightWeightPopupEnabled = false
         service.popupMenu.isLightWeightPopupEnabled = false
 
-        add(debug)
-        add(abstract)
+        add(paint)
+        add(action)
         add(service)
-
-
     }
 
     private fun botUltra() {
-        val menu = JMenu("Ultra")
+        val menu = JMenu("Monster Spawner")
 
-        val add = JMenuItem("Add")
+        val add = JMenuItem("Kidding just adds 5 tabs XD")
         add.addActionListener {
-            for (x in 0..5) {
+            for (x in 1..5) {
                 val bot = BotInstance()
                 bot.initBot()
-                //bot.getInstanceManager().addDebugScript("SexyMouse.jar")
             }
         }
 
@@ -139,16 +152,13 @@ class BotNavigationMenu: JMenuBar() {
         mouse.addActionListener {
             val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked()
             GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked(!f)
-
         }
 
         val keyboard = JMenuItem("Toggle Keyboard")
         keyboard.addActionListener {
             val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked()
             GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked(!f)
-
         }
-
 
         menu.add(mouse)
         menu.add(keyboard)
@@ -164,17 +174,9 @@ class BotNavigationMenu: JMenuBar() {
         widget.addActionListener {
             val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getManager().ctx
             WidgetExplorerV3(f!!)
-
-        }
-
-        val TEST = JMenuItem("TEST")
-        TEST.addActionListener {
-            val g =GlobalStructs.botTabBar.getCurrentIndex()
-            g.getInstanceManager()
         }
 
         menu.add(widget)
-        menu.add(TEST)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
@@ -188,20 +190,20 @@ class BotNavigationMenu: JMenuBar() {
         val stopScriptButton = JButton("Stop")
 
         stopScriptButton.addActionListener{
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopScript()
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
             pauseScriptButton.text = "Pause"
             startScriptButton.isEnabled = true
             //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            this.requestFocus(false)
+            //this.requestFocus(false)
         }
 
         pauseScriptButton.addActionListener{
-            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isScriptRunning) {
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseScript()
-                pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isPaused()) "UnPause" else "Pause"
+            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) {
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
+                pauseScriptButton.text = if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().isActionScriptPaused) "UnPause" else "Pause"
             }
             //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            this.requestFocus(false)
+            //this.requestFocus(false)
         }
 
 
@@ -221,7 +223,7 @@ class BotNavigationMenu: JMenuBar() {
             }
 
             //this.grabFocus() //Weird behaviour with buttons in a Jmenu, so we need to remove the focus
-            this.requestFocus(false)
+            //this.requestFocus(false)
         }
         add(Box.createHorizontalGlue())
         add(startScriptButton)
@@ -233,7 +235,7 @@ class BotNavigationMenu: JMenuBar() {
         //Weird behaviour with buttons in a Jmenu, so we need to remove the focus, has to be called twice or it still stays in focus
         for(i in 1..2){
             //this.grabFocus()
-            this.requestFocus(false)
+            //this.requestFocus(false)
         }
     }
 }

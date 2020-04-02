@@ -12,13 +12,9 @@ import java.awt.image.BufferedImage
 open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener {
 
     private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
-    private val screen: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
-
-    private var count = 0
 
     init {
         super.setFocusable(true)
-        instanceManager.setGameImage(screen)
         this.addMouseListener(this)
     }
 
@@ -26,22 +22,11 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
         val g = gameCanvas.createGraphics()
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
-
         if (instanceManager.isContextLoaded) {
-            if (instanceManager.isScriptRunning)
-                instanceManager.script.draw(g)
-
-            instanceManager.paintScript(g)
-            instanceManager.paintDebugScripts(g)
+            //if (!instanceManager.isActionScriptPaused)
+            instanceManager.actionScript.draw(g)
+            instanceManager.drawPaintScripts(g)
         }
-
-        // screen shot logic
-        if (instanceManager.captureScreen && count > instanceManager.captureScreenFrame) {
-            val noob = screen.createGraphics()
-            noob.drawImage(gameCanvas, 0, 0, null)
-            count = 0
-        }
-        count++
 
         //Thread.sleep(1000/ instanceManager.fps.toLong())
         try {
@@ -66,5 +51,18 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
 
     override fun mousePressed(p0: MouseEvent?) {
     }
-
 }
+
+/*
+
+        private val screen: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
+        private var count = 0
+        instanceManager.setGameImage(screen)
+// screen shot logic
+if (instanceManager.captureScreen && count > instanceManager.captureScreenFrame) {
+    val noob = screen.createGraphics()
+    noob.drawImage(gameCanvas, 0, 0, null)
+    count = 0
+}
+count++
+ */

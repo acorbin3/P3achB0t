@@ -6,14 +6,13 @@ import org.objectweb.asm.tree.ClassNode
 import java.io.File
 import java.util.jar.JarFile
 
-
 class LoadScripts {
 
-    val scripts = mutableMapOf<String, ScriptInformation>()
+    val scriptsInformation = mutableMapOf<String, ScriptInformation>()
     val loadedFolders = mutableSetOf<String>()
 
     fun refresh() {
-        scripts.clear()
+        scriptsInformation.clear()
         for (x in loadedFolders) {
             loadJars(x)
         }
@@ -99,20 +98,20 @@ class LoadScripts {
                 //println("${x.values[1]}, ${x.values[3]} ${x.values[5]} ${x.values[7]}")
 
                 val type = when {
-                    classNode.superName.contains("DebugScript") -> {
-                        ScriptType.DebugScript
+                    classNode.superName.contains("PaintScript") -> {
+                        ScriptType.PaintScript
                     }
                     classNode.superName.contains("ServiceScript") -> {
                         ScriptType.ServiceScript
                     }
-                    classNode.superName.contains("AbstractScript") -> {
-                        ScriptType.AbstractScript
+                    classNode.superName.contains("ActionScript") -> {
+                        ScriptType.ActionScript
                     }
                     else -> ScriptType.None
                 }
                 val information = ScriptInformation(file.name, file.path, "${x.values[1]}", "${x.values[3]}", "${x.values[5]}", "${x.values[7]}", type, classNode.name)
                 //println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
-                scripts[file.name] = information
+                scriptsInformation[file.name] = information
             }
         }
     }
@@ -124,12 +123,12 @@ fun main() {
     debug.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
     debug.loadPath("com/p3achb0t/scripts")
     debug.loadPath("com/p3achb0t/scripts_private")
-    for (x in debug.scripts.keys) {
+    for (x in debug.scriptsInformation.keys) {
         println(x)
     }
     debug.removePath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
     println("----------- REMOVED FOLDER -----------")
-    for (x in debug.scripts.keys) {
+    for (x in debug.scriptsInformation.keys) {
         println(x)
     }
 }
