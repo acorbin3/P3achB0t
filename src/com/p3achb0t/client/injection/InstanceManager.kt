@@ -108,7 +108,7 @@ class InstanceManager(val client: Any) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
                         actionScript.loop()
-                        delay(50)
+                        delay(10)
                         //delay(1000/fps.toLong())
                     }
                 }
