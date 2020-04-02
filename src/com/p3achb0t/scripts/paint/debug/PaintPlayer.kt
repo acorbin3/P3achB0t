@@ -73,11 +73,4 @@ class PaintPlayer : PaintScript() {
             }
         }
     }
-
-    override fun start() {
-    }
-
-    override fun stop() {
-    }
-
 }

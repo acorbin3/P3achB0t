@@ -12,6 +12,7 @@ class ActionTest : ActionScript() {
     var isPaused = false
     var isStarted = false
     var counter = 0
+    var lastMessage = ""
 
     override suspend fun loop() {
         counter++
@@ -21,10 +22,14 @@ class ActionTest : ActionScript() {
         g.color = Color.cyan
         g.drawString("ActionTest isPaused: $isPaused, isStarted $isStarted", 50,50)
         g.drawString("Counter: $counter", 50,70)
+        g.drawString("Last Message: $lastMessage", 50,90)
     }
 
     override fun start() {
         isStarted = true
+        ctx.ipc.subscribe(ctx.ipc.uuid, ::callback)
+        ctx.ipc.subscribe("Login Channel", ::callback)
+        ctx.ipc.subscribe(":---O", ::callback)
     }
 
     override fun stop() {
@@ -37,5 +42,9 @@ class ActionTest : ActionScript() {
 
     override fun resume() {
         isPaused = false
+    }
+
+    private fun callback(channel: String, message: String) {
+        lastMessage = message
     }
 }

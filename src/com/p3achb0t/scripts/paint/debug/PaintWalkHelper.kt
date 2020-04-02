@@ -22,12 +22,5 @@ class PaintWalkHelper : PaintScript() {
         }
     }
 
-    override fun start() {
-
-    }
-
-    override fun stop() {
-
-    }
 }
 

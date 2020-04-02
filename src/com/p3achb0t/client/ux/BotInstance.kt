@@ -49,31 +49,7 @@ class BotInstance : JPanel() {
         instanceManagerInterface = loadedClient as InstanceManagerInterface
         // add uuid to the bot
         instanceManagerInterface?.getManager()?.instanceUUID = sessionToken
-
-
-
-
-
-        //instanceManagerInterface?.getManager()?.setLoginHandlerAccount(account)
-        if(account.script.isNotEmpty()) {
-            if(account.script in GlobalStructs.scripts.scriptsInformation) {
-                // nooooooooooooooooo uses the classes
-                //instanceManagerInterface?.getManager()?.script = GlobalStructs.scripts.scripts[account.script]?.load() as ActionScript
-
-                instanceManagerInterface?.getManager()?.startActionScript(GlobalStructs.scripts.scriptsInformation[account.script]!!.fileName)
-            }else{
-                println("ERROR: Could not find script ${account.script}. Please report to P3aches")
-            }
-        }
-
-
-
-
-
-
-
-
-
+        
 
         add(applet) // add the game to the JPanel
 

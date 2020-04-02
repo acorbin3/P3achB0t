@@ -48,14 +48,6 @@ class PaintGroundItems : PaintScript() {
         }
     }
 
-    override fun start() {
-        TODO("Not yet implemented")
-    }
-
-    override fun stop() {
-        TODO("Not yet implemented")
-    }
-
 }
 
 fun groundItemsPaint(g: Graphics, ctx: Context) {

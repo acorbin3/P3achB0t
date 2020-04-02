@@ -33,12 +33,5 @@ class PaintWidgetBlocking : PaintScript() {
         }
     }
 
-    override fun start() {
-
-    }
-
-    override fun stop() {
-
-    }
 
 }

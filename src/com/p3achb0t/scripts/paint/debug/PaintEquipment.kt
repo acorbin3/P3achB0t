@@ -31,12 +31,4 @@ class PaintEquipment: PaintScript() {
             }
         }
     }
-
-    override fun start() {
-
-    }
-
-    override fun stop() {
-    }
-
 }

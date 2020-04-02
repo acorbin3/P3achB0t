@@ -24,14 +24,6 @@ class PaintGameObject : PaintScript() {
         }
     }
 
-    override fun start() {
-
-    }
-
-    override fun stop() {
-
-    }
-
     fun gameObjectPaint(g: Graphics, ctx: Context) {
         if (true) {
             val sceneData = ctx.client.getObjType_cachedModels()
