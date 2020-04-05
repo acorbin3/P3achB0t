@@ -9,10 +9,17 @@ class Widgets(val ctx: Context) {
     fun find(parent: Int, child: Int): Component? {
         var widget: Component? = null
         try {
-            widget = ctx.client.getInterfaceComponents()[parent][child]
-
+            val components = ctx.client.getInterfaceComponents()
+            val parentW = components[parent]
+            if (parentW != null) {
+                val childW = parentW[child]
+                if(childW != null) {
+                    widget = childW
+                }
+            }
         } catch (e: Exception) {
-            return null
+            e.printStackTrace()
+            return widget
         }
         return widget
     }

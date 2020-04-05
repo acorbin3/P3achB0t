@@ -62,9 +62,11 @@ class Equipment(val ctx: Context) {
         var Contains = false
         Slot.values().forEach {
             for (i in id) {
+                if(isEquipmentSlotEquipted(it)){
                 if(getItemAtSlot(it)?.id == i){
                     Contains = true
                 }
+                    }
             }
 
         }

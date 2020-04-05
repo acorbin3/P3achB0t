@@ -69,7 +69,10 @@ class PaintDebug: DebugScript() {
     override fun draw(g: Graphics) {
         try {
 
-
+        if(Runtime.getRuntime().freeMemory() < 6000000){
+            println("running gc")
+            System.gc()
+        }
             val debugX = 50
             val debugY = 25
             g.color = Color.white

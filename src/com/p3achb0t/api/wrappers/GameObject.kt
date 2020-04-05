@@ -177,6 +177,7 @@ class GameObject(
         return when {
             sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model, ctx!!)
             wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model, ctx!!)
+            floorDecoration != null -> getConvexHullFromModel(positionInfo, floorDecoration.getEntity() as Model, ctx!!)
             else -> Polygon()
         }
     }
