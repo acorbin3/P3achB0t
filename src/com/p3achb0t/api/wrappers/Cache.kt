@@ -26,9 +26,9 @@ class Cache {
         lateinit var itemCacheInfo: Map<Int,ItemCacheType>
     }
 
-    fun updateCache(){
+    fun updateCache(forceReload: Boolean = false){
         // Update Cache
-        if(!cacheUpdated) {
+        if(!cacheUpdated || forceReload) {
             try {
                 cacheUpdated = true
                 println("Connecting to websocket")
