@@ -28,7 +28,7 @@ enum class ScriptState {
 class InstanceManager(val client: Any) {
 
     // Client candy
-    var ctx: Context? = null
+    lateinit var ctx: Context
     var isContextLoaded = false
     lateinit var instanceUUID: String
 
@@ -60,8 +60,9 @@ class InstanceManager(val client: Any) {
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
             while ((client as Applet).componentCount == 0 ) { delay(20) }
-            ctx = setupContext(client)
-            actionScript::ctx.set(ctx!!)
+            delay(1000)
+            ctx = Context(client)
+            actionScript::ctx.set(ctx)
             isContextLoaded = true
         }
     }
@@ -211,7 +212,7 @@ class InstanceManager(val client: Any) {
     }
 
     private fun setupContext(client: Any) : Context {
-        val ctx = Context(client)
+        val ctx = ctx
         ctx.ipc::broker.set(GlobalStructs.communication)
         ctx.ipc::uuid.set(instanceUUID)
         return ctx

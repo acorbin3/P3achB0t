@@ -1,21 +1,25 @@
 package com.p3achb0t.client.injection
 
 
+import com.p3achb0t.api.PaintScript
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import java.awt.image.BufferedImage
 
 
-open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener {
+open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener, KeyListener {
 
     private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
 
     init {
         super.setFocusable(true)
         this.addMouseListener(this)
+        this.addKeyListener(this)
     }
 
     override fun getGraphics() : Graphics {
@@ -51,6 +55,45 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
     }
 
     override fun mousePressed(p0: MouseEvent?) {
+    }
+
+    override fun keyTyped(e: KeyEvent?) {
+        if (instanceManager.isContextLoaded) {
+            instanceManager.paintScripts.forEach { t: String, u: PaintScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyTyped(e)
+                }
+            }
+            if(instanceManager.actionScript is KeyListener){
+                (instanceManager.actionScript as KeyListener).keyTyped(e)
+            }
+        }
+    }
+
+    override fun keyPressed(e: KeyEvent?) {
+        if (instanceManager.isContextLoaded) {
+            instanceManager.paintScripts.forEach { t: String, u: PaintScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyPressed(e)
+                }
+            }
+            if(instanceManager.actionScript is KeyListener){
+                (instanceManager.actionScript as KeyListener).keyPressed(e)
+            }
+        }
+    }
+
+    override fun keyReleased(e: KeyEvent?) {
+        if (instanceManager.isContextLoaded) {
+            instanceManager.paintScripts.forEach { t: String, u: PaintScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyReleased(e)
+                }
+            }
+            if(instanceManager.actionScript is KeyListener){
+                (instanceManager.actionScript as KeyListener).keyReleased(e)
+            }
+        }
     }
 }
 
