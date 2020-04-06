@@ -4,7 +4,6 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.ScriptState
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
-import com.p3achb0t.scripts.paint.widgetexplorer.WidgetExplorerV3
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.*
@@ -26,7 +25,6 @@ class BotNavigationMenu: JMenuBar() {
         scriptMenu()
         botUltra()
         ioHandle()
-        test()
         scriptManagerButtons()
     }
 
@@ -164,21 +162,6 @@ class BotNavigationMenu: JMenuBar() {
 
         menu.add(mouse)
         menu.add(keyboard)
-
-        menu.popupMenu.isLightWeightPopupEnabled = false
-        add(menu)
-    }
-
-    private fun test() {
-        val menu = JMenu("Tests")
-
-        val widget = JMenuItem("Widget")
-        widget.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getManager().ctx
-            WidgetExplorerV3(f!!)
-        }
-
-        menu.add(widget)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
