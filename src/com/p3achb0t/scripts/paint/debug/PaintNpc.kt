@@ -1,6 +1,5 @@
 package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.Context
 import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.interfaces.Npc
@@ -79,20 +78,6 @@ class PaintNpc : PaintScript() {
             }
         } else {
             g.drawString("Please Login to use ${ctx.client.getGameState()}", 50, 50)
-        }
-    }
-
-}
-
-
-fun paintNPCs(g: Graphics, ctx: Context) {
-    try {
-        ///////NPC paint//////////
-
-    } catch (e: Exception) {
-        println("Error: NPC Paint " + e.message)
-        e.stackTrace.iterator().forEach {
-            println(it)
         }
     }
 }

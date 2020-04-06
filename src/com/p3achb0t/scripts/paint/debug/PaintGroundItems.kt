@@ -1,6 +1,5 @@
 package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.Context
 import com.p3achb0t.api.PaintScript
 import com.p3achb0t.api.ScriptManifest
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
@@ -48,15 +47,4 @@ class PaintGroundItems : PaintScript() {
         }
     }
 
-}
-
-fun groundItemsPaint(g: Graphics, ctx: Context) {
-    try {
-
-    } catch (e: Exception) {
-        println("Error: GroundItems Paint " + e.message)
-        e.stackTrace.iterator().forEach {
-            println(it)
-        }
-    }
 }
