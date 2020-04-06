@@ -4,7 +4,7 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.ScriptState
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
-import com.p3achb0t.scripts_debug.widgetexplorer.WidgetExplorerV3
+import com.p3achb0t.scripts.paint.widgetexplorer.WidgetExplorerV3
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.*

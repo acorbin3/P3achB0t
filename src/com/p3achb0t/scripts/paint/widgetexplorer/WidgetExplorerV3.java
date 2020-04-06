@@ -1,4 +1,4 @@
-package com.p3achb0t.scripts_debug.widgetexplorer;
+package com.p3achb0t.scripts.paint.widgetexplorer;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
