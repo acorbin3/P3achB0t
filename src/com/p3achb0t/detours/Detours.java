@@ -1,6 +1,6 @@
 package com.p3achb0t.detours;
 
-import com.p3achb0t.api.ActionScript;
+import com.p3achb0t.api.script.ActionScript;
 import com.p3achb0t.api.Context;
 import com.p3achb0t.api.interfaces.Client;
 import com.p3achb0t.client.injection.InstanceManager;

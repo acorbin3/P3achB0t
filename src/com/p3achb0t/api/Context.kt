@@ -2,6 +2,7 @@ package com.p3achb0t.api
 
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.api.interfaces.Component
+import com.p3achb0t.api.script.communication.Channels
 import com.p3achb0t.api.userinputs.Camera
 import com.p3achb0t.api.userinputs.Keyboard
 import com.p3achb0t.api.userinputs.Mouse

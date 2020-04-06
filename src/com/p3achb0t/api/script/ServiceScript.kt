@@ -1,4 +1,6 @@
-package com.p3achb0t.api
+package com.p3achb0t.api.script
+
+import com.p3achb0t.api.script.SuperScript
 
 abstract class ServiceScript: SuperScript() {
     abstract suspend fun loop()

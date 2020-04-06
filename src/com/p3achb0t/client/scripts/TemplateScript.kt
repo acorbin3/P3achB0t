@@ -1,7 +1,7 @@
 package com.p3achb0t.client.scripts
 
-import com.p3achb0t.api.ActionScript
-import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.script.ActionScript
+import com.p3achb0t.api.script.ScriptManifest
 import java.awt.Color
 import java.awt.Graphics
 

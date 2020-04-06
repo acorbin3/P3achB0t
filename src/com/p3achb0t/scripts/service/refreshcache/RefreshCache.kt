@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.service.refreshcache
 
-import com.p3achb0t.api.ScriptManifest
-import com.p3achb0t.api.ServiceScript
+import com.p3achb0t.api.script.ScriptManifest
+import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.utils.Script
 import java.io.File
 

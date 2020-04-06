@@ -1,9 +1,9 @@
 package com.p3achb0t.client.injection
 
-import com.p3achb0t.api.ActionScript
+import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.PaintScript
-import com.p3achb0t.api.ServiceScript
+import com.p3achb0t.api.script.PaintScript
+import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.listeners.ChatListener
 import com.p3achb0t.client.accounts.LoginHandler
 import com.p3achb0t.client.configs.GlobalStructs

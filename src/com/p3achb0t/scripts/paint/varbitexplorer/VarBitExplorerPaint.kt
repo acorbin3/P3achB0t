@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.paint.varbitexplorer
 
-import com.p3achb0t.api.PaintScript
-import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.script.PaintScript
+import com.p3achb0t.api.script.ScriptManifest
 import java.awt.Graphics
 
 @ScriptManifest("Debug","VarBit Explorer","P3aches", "0.1")

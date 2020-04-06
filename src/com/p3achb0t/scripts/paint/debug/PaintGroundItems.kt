@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.paint.debug
 
-import com.p3achb0t.api.PaintScript
-import com.p3achb0t.api.ScriptManifest
+import com.p3achb0t.api.script.PaintScript
+import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.utils.ObjectPositionInfo
 import java.awt.Color
 import java.awt.Graphics

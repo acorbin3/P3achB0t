@@ -1,6 +1,6 @@
 package com.p3achb0t.client.scripts
 
-import com.p3achb0t.api.ActionScript
+import com.p3achb0t.api.script.ActionScript
 import kotlinx.coroutines.delay
 
 class NullScript : ActionScript() {

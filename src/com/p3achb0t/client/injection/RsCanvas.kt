@@ -1,8 +1,8 @@
 package com.p3achb0t.client.injection
 
 
-import com.p3achb0t.api.PaintScript
-import com.p3achb0t.api.ServiceScript
+import com.p3achb0t.api.script.PaintScript
+import com.p3achb0t.api.script.ServiceScript
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
