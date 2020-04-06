@@ -2,6 +2,7 @@ package com.p3achb0t.client.injection
 
 
 import com.p3achb0t.api.PaintScript
+import com.p3achb0t.api.ServiceScript
 import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.RenderingHints
@@ -64,6 +65,11 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     (u as KeyListener).keyTyped(e)
                 }
             }
+            instanceManager.serviceScripts.forEach { t: String, u: ServiceScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyTyped(e)
+                }
+            }
             if(instanceManager.actionScript is KeyListener){
                 (instanceManager.actionScript as KeyListener).keyTyped(e)
             }
@@ -77,6 +83,11 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     (u as KeyListener).keyPressed(e)
                 }
             }
+            instanceManager.serviceScripts.forEach { t: String, u: ServiceScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyPressed(e)
+                }
+            }
             if(instanceManager.actionScript is KeyListener){
                 (instanceManager.actionScript as KeyListener).keyPressed(e)
             }
@@ -86,6 +97,11 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
     override fun keyReleased(e: KeyEvent?) {
         if (instanceManager.isContextLoaded) {
             instanceManager.paintScripts.forEach { t: String, u: PaintScript ->
+                if(u is KeyListener){
+                    (u as KeyListener).keyReleased(e)
+                }
+            }
+            instanceManager.serviceScripts.forEach { t: String, u: ServiceScript ->
                 if(u is KeyListener){
                     (u as KeyListener).keyReleased(e)
                 }
