@@ -15,8 +15,9 @@ import com.p3achb0t.api.wrappers.utils.getConvexHullFromModel
 import com.p3achb0t.api.wrappers.utils.getTrianglesFromModel
 import java.awt.Color
 import java.awt.Graphics
+import java.awt.Point
 
-@ScriptManifest("Debug","GameObject Helper","Bot Team", "0.1")
+@ScriptManifest("Debug", "GameObject Helper", "Bot Team", "0.1")
 class PaintGameObject : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
@@ -55,40 +56,45 @@ class PaintGameObject : PaintScript() {
                                                         0
                                                 )
 
-                                        val modelTriangles =
-                                                getTrianglesFromModel(
-                                                        positionInfo,
-                                                        floorModel,
-                                                        ctx
 
-                                                )
                                         g.color = Color.pink
-                                        modelTriangles.forEach {
-                                            g.drawPolygon(it)
+                                        if (go_fd.isMouseOverObj()) {
+                                            val modelTriangles =
+                                                    getTrianglesFromModel(
+                                                            positionInfo,
+                                                            floorModel,
+                                                            ctx
+
+                                                    )
+
+                                            modelTriangles.forEach {
+                                                g.drawPolygon(it)
+                                            }
+
+                                            val hull = getConvexHullFromModel(
+                                                    positionInfo,
+                                                    floorModel,
+                                                    ctx
+
+                                            )
+                                            g.color = Color.darkGray
+                                            g.drawPolygon(hull)
+
+                                            g.color = Color.YELLOW
+                                            val point2 =
+                                                    Calculations.worldToScreen(
+                                                            floorDecoration.getX(),
+                                                            floorDecoration.getY(),
+                                                            floorDecoration.getEntity().getHeight(),
+                                                            ctx
+                                                    )
+                                            val objectComposite =
+                                                    getObjectComposite(sceneData, go_fd.id)
+                                            g.drawString(
+                                                    objectComposite?.getName() + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}",
+                                                    point2.x,
+                                                    point2.y)
                                         }
-                                        val hull = getConvexHullFromModel(
-                                                positionInfo,
-                                                floorModel,
-                                                ctx
-
-                                        )
-                                        g.color = Color.darkGray
-                                        g.drawPolygon(hull)
-
-                                        g.color = Color.green
-                                        val point2 =
-                                                Calculations.worldToScreen(
-                                                        floorDecoration.getX(),
-                                                        floorDecoration.getY(),
-                                                        floorDecoration.getEntity().getHeight(),
-                                                        ctx
-                                                )
-                                        val objectComposite =
-                                                getObjectComposite(sceneData, go_fd.id)
-                                        g.drawString(
-                                                objectComposite?.getName() + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}",
-                                                point2.x,
-                                                point2.y)
                                     }
                                 }
 
@@ -144,67 +150,68 @@ class PaintGameObject : PaintScript() {
                                                                     it.getOrientation()
                                                             )
 
-                                                    val modelTriangles =
-                                                            getTrianglesFromModel(
-                                                                    positionInfo,
-                                                                    model,
-                                                                    ctx
-
-                                                            )
-                                                    g.color = Color.RED
-                                                    modelTriangles.forEach {
-                                                        g.drawPolygon(it)
-                                                    }
+                                                    val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY()
+                                                            ?: -1)
                                                     val hull = getConvexHullFromModel(
                                                             positionInfo,
                                                             model,
                                                             ctx
 
                                                     )
-                                                    g.color = Color.CYAN
-                                                    g.drawPolygon(hull)
+                                                    if(hull.contains(mousePoint)) {
+                                                        val modelTriangles =
+                                                                getTrianglesFromModel(
+                                                                        positionInfo,
+                                                                        model,
+                                                                        ctx
 
+                                                                )
+                                                        g.color = Color.CYAN
+                                                        g.drawPolygon(hull)
+                                                        g.color = Color.RED
+                                                        modelTriangles.forEach {
+                                                            g.drawPolygon(it)
+                                                        }
+                                                        // PAint the name
+                                                        if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
+                                                                        ctx, point
+                                                                )
+                                                        ) {
+                                                            g.color = Color.GREEN
+                                                            val id = it.getTag().shr(17).and(0x7fff).toInt()
+                                                            val rawID = it.getTag().shr(14).and(0x7fff)
+                                                            //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
+                                                            val objectComposite =
+                                                                    getObjectComposite(sceneData, id)
+                                                            val point2 =
+                                                                    Calculations.worldToScreen(
+                                                                            it.getCenterX(),
+                                                                            it.getCenterY(),
+                                                                            it.getEntity().getHeight(),
+                                                                            ctx
 
+                                                                    )
+                                                            val localPos = go.getLocalLocation()
+
+                                                            //Add offset on the Y so Things on the same tile do not stack
+                                                            val offsetY = (count - 1) * 30
+                                                            //For now only filter objects near m
+                                                            if (localPlayer.distanceTo(globalPos) < 5
+                                                                    && planeInt == ctx.players.getLocal().player.getPlane())
+                                                                g.drawString(
+                                                                        objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
+                                                                        point2.x,
+                                                                        point2.y + offsetY
+                                                                )
+
+                                                            //Filter only near me: if(abs(globalPos.x - localPlayer.getGlobalLocation().x) <5 && abs(globalPos.y - localPlayer.getGlobalLocation().y) < 5)
+                                                        }
+                                                    }
                                                 }
-                                            }
-
-                                            if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                            ctx, point
-                                                    )
-                                            ) {
-                                                g.color = Color.GREEN
-                                                val id = it.getTag().shr(17).and(0x7fff).toInt()
-                                                val rawID = it.getTag().shr(14).and(0x7fff)
-                                                //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
-                                                val objectComposite =
-                                                        getObjectComposite(sceneData, id)
-                                                val point2 =
-                                                        Calculations.worldToScreen(
-                                                                it.getCenterX(),
-                                                                it.getCenterY(),
-                                                                it.getEntity().getHeight(),
-                                                                ctx
-
-                                                        )
-                                                val localPos = go.getLocalLocation()
-
-                                                //Add offset on the Y so Things on the same tile do not stack
-                                                val offsetY = (count - 1) * 30
-                                                //For now only filter objects near m
-                                                if (localPlayer.distanceTo(globalPos) < 5
-                                                        && planeInt == ctx.players.getLocal().player.getPlane())
-                                                    g.drawString(
-                                                            objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
-                                                            point2.x,
-                                                            point2.y + offsetY
-                                                    )
-
-                                                //Filter only near me: if(abs(globalPos.x - localPlayer.getGlobalLocation().x) <5 && abs(globalPos.y - localPlayer.getGlobalLocation().y) < 5)
                                             }
                                         }
                                     }
                                 }
-
 
                                 val globalPos =
                                         Tile(
@@ -225,9 +232,9 @@ class PaintGameObject : PaintScript() {
                                                     wallDecoration.getY(),
                                                     wallDecoration.getOrientation()
                                             )
-                                    if(wallDecoration != null
+                                    if (wallDecoration != null
                                             && wallDecoration.getEntity1() != null) {
-                                        if(wallDecoration.getEntity1() is Model) {
+                                        if (wallDecoration.getEntity1() is Model) {
                                             val model = wallDecoration.getEntity1() as Model
                                             val modelTriangles =
                                                     getTrianglesFromModel(
@@ -251,36 +258,38 @@ class PaintGameObject : PaintScript() {
                                     val wall = tile.getWall()
                                     val wo = GameObject(wallObject = wall, ctx = ctx)
 
-                                    g.color = Color.GREEN
-                                    val id = wall.getTag().shr(17).and(0x7fff).toInt()
-                                    //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
-                                    val objectComposite =
-                                            getObjectComposite(sceneData, id)
+                                    if (wo.isMouseOverObj()) {
+                                        g.color = Color.CYAN
+                                        val id = wall.getTag().shr(17).and(0x7fff).toInt()
+                                        //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
+                                        val objectComposite =
+                                                getObjectComposite(sceneData, id)
 
-                                    if (wall.getEntity1() != null) {
-                                        val model = wall.getEntity1().getModel()
-                                        if (model != null)
-                                            paintWallModel(wall, model, ctx, g)
+                                        if (wall.getEntity1() != null) {
+                                            val model = wall.getEntity1().getModel()
+                                            if (model != null)
+                                                paintWallModel(wall, model, ctx, g)
+                                        }
+
+                                        if (wall.getEntity2() != null) {
+                                            val model2 = wall.getEntity2().getModel()
+                                            if (model2 != null)
+                                                paintWallModel(wall, model2, ctx, g)
+                                        }
+
+                                        val point2 =
+                                                Calculations.worldToScreen(
+                                                        wall.getX(),
+                                                        wall.getY(),
+                                                        wall.getEntity1().getHeight(),
+                                                        ctx
+                                                )
+                                        g.drawString(
+                                                objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y}",
+                                                point2.x,
+                                                point2.y
+                                        )
                                     }
-
-                                    if (wall.getEntity2() != null) {
-                                        val model2 = wall.getEntity2().getModel()
-                                        if (model2 != null)
-                                            paintWallModel(wall, model2, ctx, g)
-                                    }
-
-                                    val point2 =
-                                            Calculations.worldToScreen(
-                                                    wall.getX(),
-                                                    wall.getY(),
-                                                    wall.getEntity1().getHeight(),
-                                                    ctx
-                                            )
-                                    g.drawString(
-                                            objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y}",
-                                            point2.x,
-                                            point2.y
-                                    )
                                 }
                             }
                         }
@@ -307,9 +316,7 @@ class PaintGameObject : PaintScript() {
 
                 )
         g.color = Color.RED
-        modelTriangles.forEach {
-            g.drawPolygon(it)
-        }
+        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
         val hull = getConvexHullFromModel(
                 positionInfo,
                 model,
@@ -317,7 +324,13 @@ class PaintGameObject : PaintScript() {
 
         )
         g.color = Color.CYAN
-        g.drawPolygon(hull)
+        if(hull.contains(mousePoint)) {
+            modelTriangles.forEach {
+                g.drawPolygon(it)
+            }
+            g.color = Color.CYAN
+            g.drawPolygon(hull)
+        }
     }
 
     fun getObjectComposite(

@@ -25,7 +25,9 @@ class Dialog(val ctx: Context) {
 
 
     fun isDialogUp(): Boolean {
-        return getDialogContinue().widget != null
+        if(isDialogUp()) {
+            return getDialogContinue().containsText("continue") || getDialogContinue().containsText("Please wait")
+        } else return false
     }
 
     fun isContinueAvailable(): Boolean{
