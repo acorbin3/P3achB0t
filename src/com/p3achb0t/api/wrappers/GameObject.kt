@@ -171,8 +171,16 @@ class GameObject(
     fun getConvexHull(): Polygon {
         val positionInfo = objectPositionInfo
         return when {
-            sceneryObject != null -> getConvexHullFromModel(positionInfo, sceneryObject.getEntity() as Model, ctx!!)
+            sceneryObject != null -> {
+
+                var model = sceneryObject.getEntity()
+                if (!(model is Model)) {
+                    model = model.getModel()
+                }
+                getConvexHullFromModel(positionInfo, model as Model, ctx!!)
+            }
             wallObject != null -> getConvexHullFromModel(positionInfo, wallObject.getEntity1() as Model, ctx!!)
+            floorDecoration != null -> getConvexHullFromModel(positionInfo, floorDecoration.getEntity() as Model, ctx!!)
             else -> Polygon()
         }
     }
