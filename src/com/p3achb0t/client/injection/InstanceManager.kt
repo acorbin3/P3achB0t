@@ -1,13 +1,14 @@
 package com.p3achb0t.client.injection
 
-import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
-import com.p3achb0t.api.listeners.ChatListener
-import com.p3achb0t.client.accounts.LoginHandler
+import com.p3achb0t.api.script.listeners.ChatListener
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
+import com.p3achb0t.client.scripts.loading.ScriptInformation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -39,6 +40,9 @@ class InstanceManager(val client: Any) {
     var scriptState = ScriptState.Stopped
 
     // Service script
+    // Many different kinds of services scripts could use the loaded account info such as the following:
+    // BankPinHandler, LoginHandler, break Handler
+    var account = Account()
     private var serviceLoop: Job? = null
     val serviceScripts = ConcurrentHashMap<String, ServiceScript>()
 
@@ -50,13 +54,11 @@ class InstanceManager(val client: Any) {
     var canvasWidth = GlobalStructs.width
     var canvasHeight = GlobalStructs.height
 
-    // remove section
-    var loginHandler = LoginHandler()
-
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
     init {
+
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
             while ((client as Applet).componentCount == 0 ) { delay(20) }
@@ -73,7 +75,10 @@ class InstanceManager(val client: Any) {
             stopActionScript()
 
 
-        val script = GlobalStructs.scripts.scriptsInformation[scriptFileName] ?: return
+        //Look for script file name or the script name. Script name would be used for account loading from JSON
+        val script: ScriptInformation = GlobalStructs.scripts.findLoadedScript(scriptFileName) ?: return
+
+        println("Setting up Action Script: ${script.name}")
         val actionScriptLoaded = script.load() as ActionScript
         waitOnContext()
         actionScriptLoaded::ctx.set(setupContext(client))
@@ -82,6 +87,7 @@ class InstanceManager(val client: Any) {
 
         scriptState = ScriptState.Running
         actionScriptState(true)
+        account.sessionStartTime = System.currentTimeMillis()
     }
 
     fun stopActionScript() {
@@ -97,7 +103,7 @@ class InstanceManager(val client: Any) {
     }
 
 
-    fun pauseActionScript() {
+    fun togglePauseActionScript() {
 
         if (scriptState == ScriptState.Running) {
             actionScript.pause()
@@ -117,7 +123,6 @@ class InstanceManager(val client: Any) {
                     while (true) {
                         actionScript.loop()
                         delay(10)
-                        //delay(1000/fps.toLong())
                     }
                 }
             }
@@ -136,7 +141,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun addPaintScript(scriptFileName: String) {
-        val script = GlobalStructs.scripts.scriptsInformation[scriptFileName] ?: return
+        val script: ScriptInformation = GlobalStructs.scripts.findLoadedScript(scriptFileName) ?: return
         val paintScript = script.load() as PaintScript
         waitOnContext()
         paintScript::ctx.set(setupContext(client))
@@ -159,7 +164,7 @@ class InstanceManager(val client: Any) {
 
     // Service script
     fun addServiceScript(scriptFileName: String) {
-        val script = GlobalStructs.scripts.scriptsInformation[scriptFileName] ?: return
+        val script: ScriptInformation = GlobalStructs.scripts.findLoadedScript(scriptFileName) ?: return
         val serviceScript = script.load() as ServiceScript
         waitOnContext()
         serviceScript::ctx.set(setupContext(client))
@@ -171,7 +176,6 @@ class InstanceManager(val client: Any) {
                 while (true) {
                     loopServiceScripts()
                     delay(200)
-                    //delay(1000/fps.toLong())
                 }
             }
         }
@@ -200,7 +204,19 @@ class InstanceManager(val client: Any) {
 
     suspend fun loopServiceScripts() {
         for (script in serviceScripts.values) {
-            script.loop()
+            if(script.isValidToRun(account)) {
+                /*
+                Only pause the script if it needs to be paused based on the Service script conditions and when
+                ActionScript is running
+                */
+                if(script.shouldStopActionScript && scriptState == ScriptState.Running){
+                    togglePauseActionScript()
+                }
+                script.loop(account)
+                if(script.shouldStopActionScript && scriptState == ScriptState.Paused){
+                    togglePauseActionScript()
+                }
+            }
         }
     }
 

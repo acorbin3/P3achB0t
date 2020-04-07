@@ -1,7 +1,6 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.api.interfaces.Client
-import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
@@ -21,7 +20,7 @@ class BotInstance : JPanel() {
     var applet: Applet? = null
     private var client: Client? = null
     var instanceManagerInterface: InstanceManagerInterface? = null
-    val sessionToken: String = UUID.randomUUID().toString()
+    var sessionToken: String = ""
     var isRefreshed = false
 
     init {
@@ -30,14 +29,11 @@ class BotInstance : JPanel() {
         this.layout = BorderLayout()
     }
 
-    fun initBot(account: Account = Account()) {
 
-        val configReader = ConfigReader(account.world)
+    fun initBot(username: String = "Bot", proxy: String="none", world: Int = 80, sessionID: String = UUID.randomUUID().toString()) {
+        sessionToken = sessionID
+        val configReader = ConfigReader(world)
         val map = configReader.read()
-        var proxy = "none"
-        if(account.proxy.isNotEmpty()) {
-            proxy = account.proxy
-        }
         val loadedClient = JarLoader.load(
                 "./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}",
                 "client",
@@ -53,7 +49,7 @@ class BotInstance : JPanel() {
 
         add(applet) // add the game to the JPanel
 
-        GlobalStructs.botTabBar.addBotInstance(sessionToken, this)
+        GlobalStructs.botTabBar.addBotInstance("$username-$proxy",sessionToken, this)
 
         val appletStub = RSAppletStub(map)
         appletStub.appletContext.setApplet(applet!!)

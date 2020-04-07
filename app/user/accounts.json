@@ -1,21 +1,36 @@
 [
   {
-    "id": "f756051c-e507-4241-9045-3c0a667505b7",
+    "uuid": "",
+    "sessionStartTime": -1,
+    "useBreaks": false,
+    "minimumSessionTime": 0,
+    "maximumSessionTime": 0,
+    "minimumBreakTime": 0,
+    "maximumBreakTime": 0,
+    "minimumBreakOverSession": 0,
+    "maximumBreakOverSession": 0,
+    "lastBreakTime": 0,
+    "useWindowTime": false,
+    "windowStartTime": 1080,
+    "windowEndHourTime": 360,
+    "sessionToken": "",
+    "actionScript": "",
+    "debugScripts": [
+      "Total Debug Paint"
+    ],
+    "serviceScripts": [
+      "Login Handler"
+    ],
+    "proxy": "none",
     "username": "",
     "password": "",
     "pin": "",
-    "script": "",
-    "minRuntimeSec": 0,
-    "maxRuntimeSec": 0,
-    "userBreaks": false,
-    "minBreakTimeSec": 0,
-    "maxBreakTimeSec": 0,
     "banned": false,
-    "proxy": "none",
-    "world": 205,
-    "startAutomatically": false,
-    "fps": 20,
-    "args": "",
-    "key": ""
+    "gameWorld": 80,
+    "gameFps": 15,
+    "startActionScriptAutomatically": false,
+    "isOnBreak": false,
+    "key": "",
+    "args": ""
   }
 ]

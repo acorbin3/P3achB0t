@@ -1,4 +1,4 @@
-package com.p3achb0t.api.listeners
+package com.p3achb0t.api.script.listeners
 
 interface ChatListener {
 

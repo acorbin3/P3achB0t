@@ -20,6 +20,16 @@ class LoadScripts {
         }
     }
 
+    fun findLoadedScript(scriptNameOrFileName: String): ScriptInformation?{
+        var script: ScriptInformation? = null
+        scriptsInformation.forEach { t, scriptInformation ->
+            if(t == scriptNameOrFileName || scriptNameOrFileName == scriptInformation.name){
+                script = scriptInformation
+            }
+        }
+        return script
+    }
+
     fun loadPath(path: String) {
         loadedFolders.add(path)
         loadJars(path)

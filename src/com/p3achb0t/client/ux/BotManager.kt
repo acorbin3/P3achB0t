@@ -17,6 +17,7 @@ import java.awt.Font
 import java.io.File
 import java.lang.Thread.sleep
 import java.nio.file.Paths
+import java.util.*
 import java.util.jar.JarFile
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
@@ -56,8 +57,31 @@ class BotManager : JFrame() {
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
         navMenu.refreshScriptMenu() // lazy fix should be callback instead
+        startScripts()
     }
 
+}
+
+fun startScripts(){
+    println("Starting scripts")
+    if(GlobalStructs.accountManager.accounts.isNotEmpty()) {
+        GlobalStructs.accountManager.accounts.forEach {
+            GlobalStructs.botTabBar.botInstances.forEach { key, instance ->
+                if (instance.sessionToken == instance.sessionToken) {
+                    //Update the Account to the Instance manager
+                    if(it.startActionScriptAutomatically) {
+                        instance.getInstanceManager().startActionScript(it.actionScript)
+                    }
+                    it.debugScripts.forEach {debugScript ->
+                        instance.getInstanceManager().addPaintScript(debugScript)
+                    }
+                    it.serviceScripts.forEach {serviceScript ->
+                        instance.getInstanceManager().addServiceScript(serviceScript)
+                    }
+                }
+            }
+        }
+    }
 }
 
 fun setup() {
@@ -86,25 +110,32 @@ fun setup() {
 
     lookAndFeel()
 
-    //fire up accounts
+    //Set the account for things needed in the InstanceManager
     if(GlobalStructs.accountManager.accounts.isNotEmpty()) {
         GlobalStructs.accountManager.accounts.forEach {
-            GlobalScope.launch { BotInstance().initBot(it) }
-            sleep(1000*3) // Wait 3 seconds for tab to open up
-            //Now wait for instance thats related to this account to be loaded.
+            val proxy = it.proxy
+            val world = it.gameWorld
+            val sessionID = UUID.randomUUID().toString()
+            it.sessionToken = sessionID
+            GlobalScope.launch { BotInstance().initBot(it.username, proxy, world, sessionID) }
+            sleep(1000*1) // Wait 3 seconds for tab to open up
             GlobalStructs.botTabBar.botInstances.forEach { key, instance ->
-                if(instance.getInstanceManager().loginHandler.account.username == it.username){
-                    println("Waiting to game state is 10")
-                    while (instance.getInstanceManager().ctx?.client?.getGameState() != 10){
-                        print(" ${instance.getInstanceManager().ctx?.client?.getGameState()}")
-                        sleep(50)
-                    }
-                    //Start script
-                    if(it.script.isNotEmpty() && it.startAutomatically){
-                        //instance.instanceManagerInterface?.getManager()?.startActionScript()
-                        sleep(5000) // Wait 5 seconds between scripts
-                    }
+                if(instance.sessionToken == sessionID){
+                    //Update the Account to the Instance manager
+                    instance.getInstanceManager().account = it
                 }
+//                if(instance.getInstanceManager().loginHandler.account.username == it.username){
+//                    println("Waiting to game state is 10")
+//                    while (instance.getInstanceManager().ctx?.client?.getGameState() != 10){
+//                        print(" ${instance.getInstanceManager().ctx?.client?.getGameState()}")
+//                        sleep(50)
+//                    }
+//                    //Start script
+//                    if(it.script.isNotEmpty() && it.startAutomatically){
+//                        //instance.instanceManagerInterface?.getManager()?.startActionScript()
+//                        sleep(5000) // Wait 5 seconds between scripts
+//                    }
+//                }
             }
 
 
@@ -118,7 +149,7 @@ fun setup() {
         sleep(50)
     }
 
-    // Check if there is a .cache up 1 directory, if so copy it down
+    // TODO - Check if there is a .cache up 1 directory, if so copy it down
     // Otherwise create a new one
     var botInstanceKey = ""
     GlobalScope.launch {
@@ -128,7 +159,7 @@ fun setup() {
                 botInstanceKey = it.key
 
                 //Wait till the ctx is initialized
-                while(it.value.instanceManagerInterface?.getManager()?.ctx == null){
+                while(it.value.instanceManagerInterface?.getManager()?.isContextLoaded == false){
                     delay(50)
                 }
                 println("About to update cache")

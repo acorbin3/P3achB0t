@@ -27,13 +27,15 @@ class BotTabBar : JTabbedPane(), MouseListener {
 
     }
 
-    fun addBotInstance(id: String, botInstance: BotInstance) {
+    fun addBotInstance(tabLabel: String = "Bot",id: String, botInstance: BotInstance) {
         // Components size always 0 ?
         /*botInstance.applet?.components?.iterator()?.forEach {
+    fun addBotInstance(tabLabel: String = "Bot", id: String, botInstance: BotInstance) {
+        botInstance.applet?.components?.iterator()?.forEach {
             println(it.name)
         }*/
         botInstances[id] = botInstance
-        addTab("Bot", botInstance)
+        addTab(tabLabel, botInstance)
         selectedIndex = if (tabCount == 0) 0 else tabCount-1
     }
 

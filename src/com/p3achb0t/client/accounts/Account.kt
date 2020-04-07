@@ -1,41 +1,16 @@
 package com.p3achb0t.client.accounts
 
+
 class Account {
 
-    var id: String = ""
-    //var username: String = ""
-    //var password: String = ""
-    //var pin: String = ""
-    var script: String = ""
-    var minRuntimeSec: Int = 0 // Units: Seconds
-    var maxRuntimeSec: Int = 0 // Units: Seconds
-    var userBreaks: Boolean = false
-    var minBreakTimeSec: Int = 0 // Units: Seconds
-    var maxBreakTimeSec: Int = 0 // Units: Seconds
-    //var banned: Boolean = false
-    //var proxy: String = "none"  // SOCKS5;185.244.192.119:7670 or none
-    var world: Int = 80
-    var startAutomatically: Boolean = true
-    var fps: Int = 15
-    var args: String = ""
-    var key: String = ""
-
-
-
-
-    override fun toString(): String {
-        return "$id [$username, pass:$password, pin:$pin, script:$script, minRuntime:$minRuntimeSec, maxRuntime:$maxRuntimeSec," +
-                "useBreaks:$userBreaks, minBreakTime:$minBreakTimeSec,maxBreakTime:$maxBreakTimeSec, banned:$banned, " +
-                "proxy:$proxy, world:$world], fps:$fps, args:$args, , key:$key]"
-    }
 
     // Identifier
     var uuid: String = ""
 
     // UNIX time
-    var totalRunningTime: Int = 0
-    var sessionRunningTime: Int = 0
+    var sessionStartTime: Long = -1
 
+    var useBreaks: Boolean = false
     var minimumSessionTime: Int = 0
     var maximumSessionTime: Int = 0
     var minimumBreakTime: Int = 0
@@ -44,8 +19,17 @@ class Account {
     var maximumBreakOverSession: Int = 0
     var lastBreakTime: Int = 0
 
+    // Window time is a concept were the script will only run between 7pm to 5am or something like that
+    // Reference would be that cambridge is GMT+1
+    // Time will be in minutes and converted to when the script would start or stop.
+    // Example 60 would equal 1h or 1AM where 875 would be 14:35 or 2:25PM
+    var useWindowTime: Boolean = false
+    var windowStartTime: Int = 1_080 // range [0,1440] in minutes. 1080 == 6pm or 18:00
+    var windowEndHourTime: Int = 360 // range [0,1440] in minutes 360 = 6AM
+
     // Scripts
-    var actionScripts: String = ""
+    var sessionToken: String = ""
+    var actionScript: String = ""
     var debugScripts = arrayListOf<String>()
     var serviceScripts = arrayListOf<String>()
 
@@ -63,6 +47,8 @@ class Account {
     var gameFps: Int = 15
     var startActionScriptAutomatically: Boolean = false
     var isOnBreak: Boolean = false
+    var key: String = ""
+    var args: String = ""
 
 
 

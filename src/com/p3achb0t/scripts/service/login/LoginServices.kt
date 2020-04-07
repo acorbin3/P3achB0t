@@ -3,6 +3,7 @@ package com.p3achb0t.scripts.service.login
 import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.utils.Script
+import com.p3achb0t.client.accounts.Account
 
 @ScriptManifest(Script.SERVICE,"Login Service","Løhde", "0.1")
 class LoginServices : ServiceScript() {
@@ -13,7 +14,7 @@ class LoginServices : ServiceScript() {
     val shouldLogin = false
     val logout = false
 
-    override suspend fun loop() {
+    override suspend fun loop(account: Account) {
 
     }
 
