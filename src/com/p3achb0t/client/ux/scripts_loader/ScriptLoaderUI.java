@@ -9,27 +9,28 @@ import com.p3achb0t.client.injection.ScriptState;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
 import com.p3achb0t.client.scripts.loading.ScriptInformation;
 import com.p3achb0t.client.scripts.loading.ScriptType;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.HashMap;
 
 /**
  * @author unknown
  */
 public class ScriptLoaderUI extends JFrame {
-    JButton startScriptButton;
-    public ScriptLoaderUI(JButton button) {
+
+    TableRowSorter<TableModel> sorter;
+    HashMap<String,String> scriptsIdentifierMap = new HashMap<>();
+    KeyListener keyTypedListener;
+
+    public ScriptLoaderUI() {
+        setTitle("Script Selector");
         initComponents();
-        this.startScriptButton = button;
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void searchTextFieldKeyTyped(KeyEvent e) {
@@ -51,22 +52,20 @@ public class ScriptLoaderUI extends JFrame {
         String scriptKey = scriptsIdentifierMap.get(scriptName+author+version);
         GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript(scriptKey);
         scriptsIdentifierMap.clear();
-        //TODO Replace isactionscript paused with is script running
+
         if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().getScriptState() == ScriptState.Running){
-            startScriptButton.setEnabled(false);
+            GlobalStructs.Companion.getBotManager().getNavMenu().updateScriptManagerButtons();
         }
-        disposeAndRemoveReferences();
+
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
-    public void disposeAndRemoveReferences(){
-        startScriptButton.removeActionListener(this::startButtonActionPerformed);
+    @Override
+    public void dispose() {
         searchTextField.removeKeyListener(keyTypedListener);
-        this.dispose();
+        super.dispose();
     }
 
-    TableRowSorter<TableModel> sorter;
-    HashMap<String,String> scriptsIdentifierMap = new HashMap<>();
-    KeyListener keyTypedListener;
     private void initComponents() {
         tableModel = new DefaultTableModel(){
             @Override
@@ -154,16 +153,16 @@ public class ScriptLoaderUI extends JFrame {
     }
 
     private void loadScripts() {
-       LoadScripts scripts = GlobalStructs.Companion.getScripts();
-       if(scripts != null){
-           for (String key : scripts.getScriptsInformation().keySet()) {
-               ScriptInformation script = scripts.getScriptsInformation().get(key);
-               if(script != null && script.getType() == ScriptType.ActionScript){
-                   addRow(script.getName(),script.getAuthor(),script.getCategory(),script.getVersion());
-                   scriptsIdentifierMap.put(script.getName() + script.getAuthor() + script.getVersion(),script.getFileName());
-               }
-           }
-       }
+        GlobalStructs.Companion.getScripts().refresh();
+        LoadScripts scripts = GlobalStructs.Companion.getScripts();
+
+        for (String key : scripts.getScriptsInformation().keySet()) {
+            ScriptInformation script = scripts.getScriptsInformation().get(key);
+            if(script != null && script.getType() == ScriptType.ActionScript){
+                addRow(script.getName(),script.getAuthor(),script.getCategory(),script.getVersion());
+                scriptsIdentifierMap.put(script.getName() + script.getAuthor() + script.getVersion(),script.getFileName());
+            }
+        }
     }
 
     private void customTableViewRenderer(){
@@ -186,14 +185,9 @@ public class ScriptLoaderUI extends JFrame {
     }
 
     private void addColumns(){
-        String[] columns = {
-                "Name",
-                "Author",
-                "Category",
-                "Version"
-        };
-        for(int i=0;i<columns.length;++i){
-            addColumn(columns[i]);
+        String[] columns = {"Name", "Author", "Category", "Version"};
+        for (String column : columns) {
+            addColumn(column);
         }
     }
 

@@ -85,7 +85,6 @@ class InstanceManager(val client: Any) {
     }
 
     fun stopActionScript() {
-
         scriptState = ScriptState.Stopped
         actionScriptState(false)
         actionScript.stop()

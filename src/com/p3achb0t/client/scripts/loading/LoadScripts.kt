@@ -4,6 +4,8 @@ import com.p3achb0t.client.configs.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.jar.JarFile
 
 class LoadScripts {
@@ -119,7 +121,13 @@ class LoadScripts {
 
 // for tests
 fun main() {
-    val debug = LoadScripts()
+    val scripts = LoadScripts::class.java.classLoader.getResources("com/p3achb0t/scripts").toList()
+
+    scripts.forEach { println(File(it.file).absolutePath) }
+
+    //Files.walk(Paths.get("C:/Users/Laurence/Desktop/Coding Projects/P3achB0t/target/classes/com/p3achb0t/scripts")).forEach(::println)
+
+    /*val debug = LoadScripts()
     debug.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
     debug.loadPath("com/p3achb0t/scripts")
     debug.loadPath("com/p3achb0t/scripts_private")
@@ -130,5 +138,5 @@ fun main() {
     println("----------- REMOVED FOLDER -----------")
     for (x in debug.scriptsInformation.keys) {
         println(x)
-    }
+    }*/
 }

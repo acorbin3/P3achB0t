@@ -27,6 +27,8 @@ import javax.swing.plaf.FontUIResource
 
 class BotManager : JFrame() {
 
+    val navMenu: BotNavigationMenu
+
     init {
         iconImage = if( File("resources\\icons\\toppng.com-download-peach-690x523.png").exists()) {
             ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
@@ -38,12 +40,13 @@ class BotManager : JFrame() {
         defaultCloseOperation = EXIT_ON_CLOSE
         this.layout = BorderLayout()
 
-        val navMenu = BotNavigationMenu()
-        jMenuBar = navMenu
+        this.navMenu = BotNavigationMenu()
+        jMenuBar = this.navMenu
+
         add(GlobalStructs.botTabBar)
 
         setLocationRelativeTo(null)
-        extendedState = JFrame.NORMAL;
+        extendedState = NORMAL
 
         pack()
         isVisible = true

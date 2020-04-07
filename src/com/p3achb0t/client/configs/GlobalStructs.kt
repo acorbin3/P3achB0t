@@ -5,11 +5,15 @@ import com.p3achb0t.client.communication.ipc.Broker
 import com.p3achb0t.client.communication.peer.PeerClient
 import com.p3achb0t.client.scripts.loading.LoadScripts
 import com.p3achb0t.client.tracker.FBDataBase
+import com.p3achb0t.client.ux.BotManager
 import com.p3achb0t.client.ux.BotTabBar
 
 class GlobalStructs {
 
     companion object {
+
+        var botManager: BotManager? = null
+
         val botTabBar = BotTabBar()
         // minimum [765,503]
         val width = 800

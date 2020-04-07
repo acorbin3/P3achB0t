@@ -1,5 +1,6 @@
 package com.p3achb0t
 
+import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.ux.BotManager
 import com.p3achb0t.client.ux.setup
 
@@ -23,7 +24,7 @@ object Main {
         //println("validation key: $validationKey")
 
         setup()
-        BotManager()
 
+        GlobalStructs.botManager = BotManager()
     }
 }

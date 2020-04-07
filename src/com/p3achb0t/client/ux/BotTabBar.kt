@@ -2,6 +2,7 @@ package com.p3achb0t.client.ux
 
 
 import com.p3achb0t.client.configs.GlobalStructs
+import com.p3achb0t.client.configs.GlobalStructs.Companion.botManager
 import java.awt.Dimension
 import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
@@ -17,6 +18,7 @@ class BotTabBar : JTabbedPane(), MouseListener {
     init {
         preferredSize =  Dimension(GlobalStructs.width, GlobalStructs.height)
         this.addChangeListener {
+            botManager?.navMenu?.updateScriptManagerButtons()
             this.setEnabledAt(lastSelectedIndex, true)
             this.setEnabledAt(this.selectedIndex, false)
             lastSelectedIndex = this.selectedIndex
@@ -26,9 +28,10 @@ class BotTabBar : JTabbedPane(), MouseListener {
     }
 
     fun addBotInstance(id: String, botInstance: BotInstance) {
-        botInstance.applet?.components?.iterator()?.forEach {
+        // Components size always 0 ?
+        /*botInstance.applet?.components?.iterator()?.forEach {
             println(it.name)
-        }
+        }*/
         botInstances[id] = botInstance
         addTab("Bot", botInstance)
         selectedIndex = if (tabCount == 0) 0 else tabCount-1
@@ -39,9 +42,9 @@ class BotTabBar : JTabbedPane(), MouseListener {
         botInstances.remove(id)
     }
 
-    fun KillIndex() {
-        val currentIndex = selectedIndex;
-        selectedIndex = if (currentIndex == 0) 0 else currentIndex-1
+    fun killSelectedIndex() {
+        val currentIndex = selectedIndex
+        selectedIndex = if (currentIndex == 0) 0 else currentIndex - 1
         thread(start = true) {
             val current = getComponentAt(currentIndex) as BotInstance
             removeTabAt(currentIndex)

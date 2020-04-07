@@ -15,7 +15,10 @@ class BotNavigationMenu: JMenuBar() {
     val paint = JMenu("Paint")
     val action = JMenu("Action")
     val service = JMenu("Services")
+    private val startScriptButton = JButton("Start")
+    private val pauseScriptButton = JButton("Pause")
     var scriptLoaderUI: ScriptLoaderUI? = null
+
     init {
         this.layout
         instanceMenu()
@@ -37,7 +40,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val remove = JMenuItem("Remove")
         remove.addActionListener {
-            GlobalStructs.botTabBar.KillIndex()
+            GlobalStructs.botTabBar.killSelectedIndex()
         }
 
         val reloadScripts = JMenuItem("Reload scripts")
@@ -181,46 +184,59 @@ class BotNavigationMenu: JMenuBar() {
         add(menu)
     }
 
+    fun updateScriptManagerButtons() {
+        val tabState = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState
+        println("Updating buttons | TabState: $tabState")
+        when (tabState) {
+            ScriptState.Stopped -> {
+                startScriptButton.text = "Start"
+                pauseScriptButton.isEnabled = false
+            }
+            ScriptState.Running -> {
+                startScriptButton.text = "Stop"
+                pauseScriptButton.isEnabled = true
+                pauseScriptButton.text = "Pause"
+            }
+            ScriptState.Paused -> {
+                startScriptButton.text = "Stop"
+                pauseScriptButton.isEnabled = true
+                pauseScriptButton.text = "Resume"
+            }
+        }
+    }
+
     private fun scriptManagerButtons(){
         //This should be only used as a temporary solution till the bot gets good enough
         //Then the UI will need a proper rework, to allow for better looks
-        val startScriptButton = JButton("Start")
-        val pauseScriptButton = JButton("Pause")
-        val stopScriptButton = JButton("Stop")
 
-        stopScriptButton.addActionListener{
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
-            pauseScriptButton.text = "Pause"
-            startScriptButton.isEnabled = true
+        updateScriptManagerButtons()
 
-        }
 
         pauseScriptButton.addActionListener{
             //TODO Replace isactionscript paused with is script running
-            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Running) {
-                pauseScriptButton.text = "Resume"
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
-            } else if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Paused){
-                pauseScriptButton.text = "Paused"
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
-            }
-
+            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().pauseActionScript()
+            updateScriptManagerButtons()
         }
 
 
         startScriptButton.addActionListener{
-            if(scriptLoaderUI == null){
-                scriptLoaderUI = ScriptLoaderUI(startScriptButton)
-                scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
-                    override fun windowClosed(e: WindowEvent?) {
-                        scriptLoaderUI?.disposeAndRemoveReferences()
-                        scriptLoaderUI = null
-                    }
-                })
-                val parentWindowLocation = this.locationOnScreen
-                scriptLoaderUI?.setLocation(parentWindowLocation.x ,parentWindowLocation.y )
-                scriptLoaderUI?.isVisible = true
-                scriptLoaderUI?.isAlwaysOnTop = true
+            if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Stopped) {
+                if(scriptLoaderUI == null){
+                    scriptLoaderUI = ScriptLoaderUI()
+                    scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
+                        override fun windowClosing(e: WindowEvent?) {
+                            scriptLoaderUI = null
+                        }
+                    })
+                    val parentWindowLocation = this.locationOnScreen
+                    scriptLoaderUI?.setLocation(parentWindowLocation.x, parentWindowLocation.y)
+                    scriptLoaderUI?.isVisible = true
+                    scriptLoaderUI?.isAlwaysOnTop = true
+                }
+            }
+            else {
+                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
+                updateScriptManagerButtons()
             }
 
         }
@@ -229,7 +245,5 @@ class BotNavigationMenu: JMenuBar() {
         add(Box.createHorizontalStrut(3))
         add(pauseScriptButton)
         add(Box.createHorizontalStrut(3))
-        add(stopScriptButton)
-        add(Box.createHorizontalStrut(2))
     }
 }

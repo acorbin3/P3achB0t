@@ -26,11 +26,16 @@ private val SHRIMP_ID = 2514
 private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches", "0.1")
 class TutorialIsland: ActionScript()  {
+
+    var isInititilized = false
+    val jobs = ArrayList<Job>()
     val stopwatch = StopWatch()
     var currentJob = ""
+
     init {
         //validate = true
     }
+
     override suspend fun loop() {
 
         run()
@@ -59,12 +64,7 @@ class TutorialIsland: ActionScript()  {
         super.draw(g)
     }
 
-
-
-    var isInititilized = false
-    val jobs = ArrayList<Job>()
     fun init() {
-
         jobs.add(ICantReachThatDialog(ctx))
         jobs.add(PickName(ctx))
         jobs.add(SelectCharOutfit(ctx))
@@ -250,7 +250,7 @@ class TutorialIsland: ActionScript()  {
 
     }
 
-    class SelectCharOutfit(val ctx: Context)  : Job(ctx.client) {
+    class SelectCharOutfit(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             return ctx.widgets.isWidgetAvaliable(269, 0)
         }
@@ -315,7 +315,7 @@ class TutorialIsland: ActionScript()  {
 
     }
 
-    class OpenOptions(val ctx: Context)  : Job(ctx.client) {
+    class OpenOptions(val ctx: Context) : Job(ctx.client) {
         override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
             val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
             val text = "Options menu"
