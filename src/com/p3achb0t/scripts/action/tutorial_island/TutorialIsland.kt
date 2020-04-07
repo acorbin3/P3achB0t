@@ -1,7 +1,7 @@
 package com.p3achb0t.scripts.action.tutorial_island
 
-import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Interact
@@ -56,6 +56,11 @@ class TutorialIsland: ActionScript()  {
         g.color = Color.black
         g.drawString("Current Runtime: $stopwatch", 10, 450)
         g.drawString(currentJob, 10, 460)
+
+        if(!ctx.worldHop.isLoggedIn){
+            g.color = Color.red
+            g.drawString("Please Login", 250, 252)
+        }
         super.draw(g)
     }
 
@@ -137,13 +142,15 @@ class TutorialIsland: ActionScript()  {
     suspend fun run() {
         if (!isInititilized) init()
 //        if (!LoggingIntoClient.loggedIn) return
-        jobs.forEach {
-            val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
-            if (it.isValidToRun(chatBox)) {
-                println("Running: ${it.javaClass.name}")
-                currentJob = it.javaClass.name
-                it.execute()
-                println("Completed: ${it.javaClass.name}")
+        if(ctx.worldHop.isLoggedIn) {
+            jobs.forEach {
+                val chatBox = WidgetItem(ctx.widgets.find(263, 1), ctx = ctx)
+                if (it.isValidToRun(chatBox)) {
+                    println("Running: ${it.javaClass.name}")
+                    currentJob = it.javaClass.name
+                    it.execute()
+                    println("Completed: ${it.javaClass.name}")
+                }
             }
         }
     }
