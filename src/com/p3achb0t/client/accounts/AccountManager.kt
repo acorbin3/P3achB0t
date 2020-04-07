@@ -32,8 +32,8 @@ class AccountManager {
         //Check to see if we need to add a UUID for the account ID
         var updatedID = false
         accounts.forEach {
-            if(it.id == ""){
-                it.id = UUID.randomUUID().toString()
+            if(it.uuid == ""){
+                it.uuid = UUID.randomUUID().toString()
                 updatedID = true
             }
         }
@@ -49,6 +49,6 @@ class AccountManager {
 
     fun createAccount() {
         val account = Account()
-        account.id = UUID.randomUUID().toString()
+        account.uuid = UUID.randomUUID().toString()
     }
 }
