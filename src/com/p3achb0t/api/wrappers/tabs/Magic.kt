@@ -11,20 +11,22 @@ class Magic(val ctx: Context) {
     companion object {
         private const val PARENT = WidgetID.SPELLBOOK_GROUP_ID
         private const val FILTER_BUTTON_ID = 187
-        enum class Spells(val widgetID: Int, val arg1: Int) {
-            WIND_STRIKE(6,14286854),
-            WATER_STRIKE(9,14286857),
-            EARTH_STRIKE(11,14286859),
-            FIRE_STRIKE(13,14286861),
-            LOW_LEVEL_ALCHEMY(18,14286866),
-            CRUMBLE_UNDEAD(27, 14286875),
-            HIGH_LEVEL_ALCHEMY(39, 14286887),
-            HOME_TELEPORT(5, 14286853),
-            LEVEL_ONE_ENCHANT(10, 14286858)
+        enum class Spells(val widgetID: Int, val arg1: Int, val autoCastVarp: Int, val autoCastVal: Int) {
+            WIND_STRIKE(6,14286854, 3, 1),
+            WATER_STRIKE(9,14286857, 5, 2),
+            EARTH_STRIKE(11,14286859, 7, 3),
+            FIRE_STRIKE(13,14286861, 9, 4),
+            LOW_LEVEL_ALCHEMY(18,14286866, 0, 0),
+            CRUMBLE_UNDEAD(27, 14286875, 0, 0),
+            HIGH_LEVEL_ALCHEMY(39, 14286887, 0, 0),
+            HOME_TELEPORT(5, 14286853,0, 0),
+            LEVEL_ONE_ENCHANT(10, 14286858, 0,0 )
         }
     }
 
-
+    suspend fun getAutoCastSpell(): Int {
+        return ctx.vars.getVarp(108)
+    }
 
 
     suspend fun castSpell(spell: Spells) {

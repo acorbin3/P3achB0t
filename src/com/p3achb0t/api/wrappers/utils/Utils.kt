@@ -25,13 +25,17 @@ class Utils {
             return false
         }
 
-        suspend fun sleepUntil(condition: Boolean, time: Int){
-            waitFor(time, object : Condition {
-                override suspend fun accept(): Boolean {
-                    delay(100)
-                    return condition
+        suspend fun sleepUntil(condition:() -> Boolean, time: Int): Boolean{
+            var istrue = false
+            for (i in 1..time*10){
+                println("condition is true? " + condition)
+                if(condition()){
+                    istrue = true
+                    break
                 }
-            })
+                delay(100)
+            }
+            return istrue
         }
 
         suspend fun waitFor(time: Long, condition: Condition): Boolean {

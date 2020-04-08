@@ -42,9 +42,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:11-ea+19" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:11-ea+19" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:11-ea+19" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.20" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.3.61" level="project" />
@@ -68,11 +65,11 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test:1.3.61" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test-common:1.3.61" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:11-ea+19" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:11-ea+19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:11-ea+19" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:11-ea+19" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:11-ea+19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:11-ea+19" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:11-ea+19" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:11-ea+19" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:11-ea+19" level="project" />
     <orderEntry type="library" name="Maven: com.intellij:forms_rt:7.0.3" level="project" />
     <orderEntry type="library" name="Maven: asm:asm-commons:3.0" level="project" />
     <orderEntry type="library" name="Maven: asm:asm-tree:3.0" level="project" />

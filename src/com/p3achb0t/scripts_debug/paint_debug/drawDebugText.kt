@@ -38,6 +38,8 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("maxmemory :${formatSize(heapMaxSize)}"))
         debugText.add(DebugText("freemmeory :${formatSize(heapFreeSize)}"))
         debugText.add(DebugText("freemmeory :${heapFreeSize}"))
+        debugText.add(DebugText("Selected item id :${ctx.client.getSelectedItemId()}"))
+        debugText.add(DebugText("is item selected? :${ctx.client.getIsItemSelected()}"))
 
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
 //        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))

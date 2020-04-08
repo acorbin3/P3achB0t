@@ -270,7 +270,7 @@ fun gameObjectPaint(g: Graphics, ctx: Context) {
                                         )
                                 if(wo.isMouseOverObj()) {
                                     g.drawString(
-                                            "(ID:${wo.id})(${globalPos.x},${globalPos.y})",
+                                            "(${wo.name})(ID:${wo.id})(${globalPos.x},${globalPos.y})",
                                             point2.x,
                                             point2.y
                                     )

@@ -109,8 +109,8 @@ class ScriptManager(val client: Any): Logging() {
         //Track stats
         while(isRunning) {
             if (ctx.worldHop.isLoggedIn) {
-                ctx.stats.updateStats()
-                ctx.inventory.updateTrackedItems()
+//                ctx.stats.updateStats()
+//                ctx.inventory.updateTrackedItems()
             }
             delay(300)
         }
@@ -206,9 +206,9 @@ class ScriptManager(val client: Any): Logging() {
         isRunning = true
         //This the script thread.
 
-        statsThread = GlobalScope.launch {
-            trackStats()
-        }
+//        statsThread = GlobalScope.launch {
+//            trackStats()
+//        }
         dbUpdaterThread = GlobalScope.launch {
             dbUpdater()
         }
@@ -239,13 +239,12 @@ class ScriptManager(val client: Any): Logging() {
                     }
                     lastCheck.reset()
                 }
-                /* SirScript not everybody has private scripts haha XD
                 if (!paused && !com.p3achb0t.scripts_private.Mule.Main.scriptMule
                         && loginHandler.account.username.isNotEmpty()
                         && loginHandler.isAtHomeScreen(ctx)) {
                     println("Account: " + loginHandler.account)
                     loginHandler.login(ctx)
-                }*/
+                }
 
                 if(loginHandler.isLoggedIn(ctx)){
                     if(ctx.clientMode.getMode() == ClientMode.Companion.ModeType.FixedMode){

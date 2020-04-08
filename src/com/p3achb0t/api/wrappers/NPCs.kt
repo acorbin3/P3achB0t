@@ -20,6 +20,7 @@ class NPCs(val ctx: Context) {
         return foundNPCs
     }
 
+
     fun findNpc(npcId: Int): ArrayList<NPC> {
         val foundNPCs = ArrayList<NPC>()
         try {
