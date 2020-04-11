@@ -1,12 +1,12 @@
 package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.script.PaintScript
-import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.interfaces.EvictingDualNodeHashTable
 import com.p3achb0t.api.interfaces.LocType
 import com.p3achb0t.api.interfaces.Model
 import com.p3achb0t.api.interfaces.Wall
+import com.p3achb0t.api.script.PaintScript
+import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -136,7 +136,7 @@ class PaintGameObject : PaintScript() {
 
 
                                             //Printing out the model and the hull
-                                            if (localPlayer.distanceTo(globalPos) < 5
+                                            if (localPlayer.distanceTo(globalPos) < 10
                                                     && planeInt == ctx.players.getLocal().player.getPlane()) {
                                                 var model = it.getEntity()
                                                 if (!(model is Model)) {
@@ -196,7 +196,7 @@ class PaintGameObject : PaintScript() {
                                                             //Add offset on the Y so Things on the same tile do not stack
                                                             val offsetY = (count - 1) * 30
                                                             //For now only filter objects near m
-                                                            if (localPlayer.distanceTo(globalPos) < 5
+                                                            if (localPlayer.distanceTo(globalPos) < 10
                                                                     && planeInt == ctx.players.getLocal().player.getPlane())
                                                                 g.drawString(
                                                                         objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
