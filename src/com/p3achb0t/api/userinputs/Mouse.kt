@@ -76,7 +76,6 @@ class Mouse(obj: Any) {
     //////
     //The default position is current position
     suspend fun click(destPoint: Point = getPosition(), clickType: ClickType = ClickType.Left): Boolean {
-        ioMouse.inputBlocked(true)
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 
