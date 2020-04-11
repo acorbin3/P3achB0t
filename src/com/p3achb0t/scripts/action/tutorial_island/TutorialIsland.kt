@@ -27,7 +27,6 @@ private val LOGS_ID_2511 = 2511
 @ScriptManifest("Quests","TutorialIsland","P3aches", "0.1")
 class TutorialIsland: ActionScript()  {
     val stopwatch = StopWatch()
-    var currentJob = ""
     init {
         //validate = true
     }
