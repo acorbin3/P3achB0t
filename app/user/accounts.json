@@ -19,7 +19,8 @@
       "Total Debug Paint"
     ],
     "serviceScripts": [
-      "Login Handler"
+      "Login Handler",
+      "XP Tracker"
     ],
     "proxy": "none",
     "username": "",
