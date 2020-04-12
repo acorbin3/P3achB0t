@@ -31,7 +31,9 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
             //if (!instanceManager.isActionScriptPaused)
             // priority painting is lowest to highest. Where the action scripts have the highest priority of painting
             instanceManager.drawPaintScripts(g)
+            instanceManager.drawsServiceScripts(g)
             instanceManager.actionScript.draw(g)
+
         }
 
         //Thread.sleep(1000/ instanceManager.fps.toLong())

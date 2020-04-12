@@ -162,6 +162,12 @@ class InstanceManager(val client: Any) {
         }
     }
 
+    fun drawsServiceScripts(g: Graphics) {
+        for (script in serviceScripts.values) {
+            script.draw(g)
+        }
+    }
+
     // Service script
     fun addServiceScript(scriptFileName: String) {
         val script: ScriptInformation = GlobalStructs.scripts.findLoadedScript(scriptFileName) ?: return
