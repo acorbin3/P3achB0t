@@ -37,12 +37,16 @@ class Stats(val ctx: Context) {
 
     val startXP = EnumMap<Skill,Int>(Skill::class.java)
     val curXP = EnumMap<Skill,Int>(Skill::class.java)
+    val startLevel = EnumMap<Skill,Int>(Skill::class.java)
+    val curLevel = EnumMap<Skill,Int>(Skill::class.java)
     var runtime = StopWatch()
 
     init {
         Skill.values().iterator().forEach {
             startXP[it] = 0
             curXP[it] = 0
+            startLevel[it] = 0
+            curLevel[it] = 0
         }
 
         try {
@@ -111,6 +115,9 @@ class Stats(val ctx: Context) {
         return df.format(xpPerHour(skill))
     }
 
+    fun levelsGained(skill: Skill): Int{
+        return currentLevel(skill) - (startLevel[skill] ?: 1)
+    }
     fun timeTillNextLevel(skill: Skill): String{
         val xpPerMills = xpPerMills(skill)
 
@@ -155,8 +162,10 @@ class Stats(val ctx: Context) {
         Skill.values().iterator().forEach {
             if(startXP[it] == 0 && ctx.worldHop.isLoggedIn) {
                 startXP[it] = currentXP(it)
+                startLevel[it] = currentLevel(it)
             }
             curXP[it] = currentXP(it)
+            curLevel[it] = currentLevel(it)
         }
     }
 
