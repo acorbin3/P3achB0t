@@ -169,7 +169,7 @@ class BotNavigationMenu: JMenuBar() {
 
     fun updateScriptManagerButtons() {
         val tabState = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState
-        println("Updating buttons | TabState: $tabState")
+        //println("Updating buttons | TabState: $tabState")
         when (tabState) {
             ScriptState.Stopped -> {
                 startScriptButton.text = "Start"

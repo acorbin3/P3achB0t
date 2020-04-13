@@ -3,8 +3,10 @@ package com.p3achb0t.client.injection
 
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
+import com.p3achb0t.client.configs.Constants
 import java.awt.Canvas
 import java.awt.Graphics
+import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -15,15 +17,33 @@ import java.awt.image.BufferedImage
 
 open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener, KeyListener {
 
-    private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
+    //private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
 
     init {
         super.setFocusable(true)
         this.addMouseListener(this)
         this.addKeyListener(this)
+        minimumSize = Constants.MIN_GAME_SIZE
     }
 
-    override fun getGraphics() : Graphics {
+    override fun getGraphics(): Graphics? {
+        if (instanceManager.drawCanvas) {
+            try {
+                bufferStrategy?.let {
+                    val g2 = it.drawGraphics as Graphics2D
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+                    instanceManager.drawPaintScripts(g2)
+                    instanceManager.actionScript.draw(g2)
+                    it.show()
+                    return g2
+                } ?: createBufferStrategy(2)
+            } catch (e: Exception) { }
+        }
+        return null
+    }
+
+    //Replaced implementation
+    /*override fun getGraphics() : Graphics {
         val g = gameCanvas.createGraphics()
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
@@ -42,7 +62,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
         }catch (e: Exception){ }
 
         return g
-    }
+    }*/
 
     override fun mouseReleased(p0: MouseEvent?) {
     }

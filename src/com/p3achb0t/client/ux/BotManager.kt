@@ -31,25 +31,27 @@ class BotManager : JFrame() {
     val navMenu: BotNavigationMenu
 
     init {
-        iconImage = if( File("resources\\icons\\toppng.com-download-peach-690x523.png").exists()) {
-            ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
-        }else{
-            val stream = Main.javaClass.getResourceAsStream("/toppng.com-download-peach-690x523.png")
-            ImageIO.read(stream)
-        }
-        title = "P3achb0t"
+        title = "P3achB0t"
+        extendedState = NORMAL
+        layout = BorderLayout()
         defaultCloseOperation = EXIT_ON_CLOSE
-        this.layout = BorderLayout()
+        iconImage =
+            if( File("resources\\icons\\toppng.com-download-peach-690x523.png").exists()) {
+                ImageIcon("resources\\icons\\toppng.com-download-peach-690x523.png").image
+            } else {
+                val stream = Main.javaClass.getResourceAsStream("/toppng.com-download-peach-690x523.png")
+                ImageIO.read(stream)
+            }
 
         this.navMenu = BotNavigationMenu()
         jMenuBar = this.navMenu
 
         add(GlobalStructs.botTabBar)
 
-        setLocationRelativeTo(null)
-        extendedState = NORMAL
-
         pack()
+        // TODO("correctly resize main window when tab bar changes size")
+        minimumSize = size // Set the minimum size after packing to fit child components.
+        setLocationRelativeTo(null) // Set location after packing to correctly center.
         isVisible = true
 
         // load scripts
@@ -107,8 +109,6 @@ fun setup() {
         runeStar.parseJar(gamePackJar)
         Analyser().createInjectedJar(gamePackJar, runeStar)
     }
-
-    lookAndFeel()
 
     //Set the account for things needed in the InstanceManager
     if(GlobalStructs.accountManager.accounts.isNotEmpty()) {
@@ -175,8 +175,6 @@ fun setup() {
     while(!Cache.cacheUpdated){
         sleep(50)
     }
-
-
 }
 
 fun lookAndFeel() {

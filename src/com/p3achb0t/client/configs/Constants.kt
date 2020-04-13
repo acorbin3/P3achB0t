@@ -6,10 +6,10 @@ class Constants {
     companion object {
         // URLs
         const val GAME_BASE_URL = "runescape.com"
-        const val GAME_SUB_RUTE = "oldschool"
+        const val GAME_SUB_ROUTE = "oldschool"
         const val GAME_WORLD = 80
-        const val GAME_WORLD_URL = "http://$GAME_SUB_RUTE" + GAME_WORLD + ".$GAME_BASE_URL"
-        const val GAME_WORLD_BASE = GAME_SUB_RUTE + GAME_WORLD + ".$GAME_BASE_URL"
+        const val GAME_WORLD_BASE = "$GAME_SUB_ROUTE$GAME_WORLD.$GAME_BASE_URL"
+        const val GAME_WORLD_URL = "http://$GAME_WORLD_BASE"
 
         //Paths
         val USER_DIR = System.getProperty("user.dir")
@@ -24,10 +24,10 @@ class Constants {
 
         // Other constants
         val REVISION = 189
-        val REVISION_WITH_SUBVERSION = 189.1 // Update this if we want to force a new injected jar
+        val REVISION_WITH_SUBVERSION = 189.2 // Update this if we want to force a new injected jar
         var INJECTED_JAR_NAME = "gamepack-$REVISION_WITH_SUBVERSION-injected.jar"
 
-        val GAMESIZE = Dimension(800,600)
+        val MIN_GAME_SIZE = Dimension(765,503)
 
         //Icons
         const val RESOURCE_DIR = "resources"

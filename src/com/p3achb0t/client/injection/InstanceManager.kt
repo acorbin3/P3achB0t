@@ -51,8 +51,7 @@ class InstanceManager(val client: Any) {
 
     //Util
     var fps = 50
-    var canvasWidth = GlobalStructs.width
-    var canvasHeight = GlobalStructs.height
+    var drawCanvas = true
 
     // Don't delete this. Its used within the injected functions
     var blockFocus = false

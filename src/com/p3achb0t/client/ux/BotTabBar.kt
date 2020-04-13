@@ -1,6 +1,5 @@
 package com.p3achb0t.client.ux
 
-
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.configs.GlobalStructs.Companion.botManager
 import java.awt.Dimension
@@ -9,31 +8,24 @@ import java.awt.event.MouseListener
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
 
-
 class BotTabBar : JTabbedPane(), MouseListener {
 
     val botInstances = HashMap<String, BotInstance>()
     private var lastSelectedIndex = 0
 
     init {
-        preferredSize =  Dimension(GlobalStructs.width, GlobalStructs.height)
         this.addChangeListener {
             botManager?.navMenu?.updateScriptManagerButtons()
+            (getComponentAt(lastSelectedIndex) as BotInstance).getInstanceManager().drawCanvas = false
+            (getCurrentIndex().getInstanceManager()).drawCanvas = true
             this.setEnabledAt(lastSelectedIndex, true)
             this.setEnabledAt(this.selectedIndex, false)
             lastSelectedIndex = this.selectedIndex
         }
         //this.addMouseListener(this)
-
     }
 
     fun addBotInstance(tabLabel: String = "Bot",id: String, botInstance: BotInstance) {
-        // Components size always 0 ?
-        /*botInstance.applet?.components?.iterator()?.forEach {
-    fun addBotInstance(tabLabel: String = "Bot", id: String, botInstance: BotInstance) {
-        botInstance.applet?.components?.iterator()?.forEach {
-            println(it.name)
-        }*/
         botInstances[id] = botInstance
         addTab(tabLabel, botInstance)
         selectedIndex = if (tabCount == 0) 0 else tabCount-1
@@ -75,7 +67,4 @@ class BotTabBar : JTabbedPane(), MouseListener {
 
     override fun mousePressed(p0: MouseEvent?) {
     }
-
-
-
 }

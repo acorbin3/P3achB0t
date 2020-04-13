@@ -25,39 +25,32 @@ class BotInstance : JPanel() {
 
     init {
         // JPanel setup
-        minimumSize = Dimension(GlobalStructs.width, GlobalStructs.height)
         this.layout = BorderLayout()
     }
 
 
     fun initBot(username: String = "Bot", proxy: String="none", world: Int = 80, sessionID: String = UUID.randomUUID().toString()) {
         sessionToken = sessionID
-        val configReader = ConfigReader(world)
-        val map = configReader.read()
-        val loadedClient = JarLoader.load(
-                "./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}",
-                "client",
-                proxy
-        )
-        client = loadedClient as Client
-        applet = loadedClient as Applet
 
-        instanceManagerInterface = loadedClient as InstanceManagerInterface
-        // add uuid to the bot
-        instanceManagerInterface?.getManager()?.instanceUUID = sessionToken
-        
+        client = JarLoader.load("./${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}",
+            "client", proxy) as Client
 
-        add(applet) // add the game to the JPanel
-
-        GlobalStructs.botTabBar.addBotInstance("$username-$proxy",sessionToken, this)
-
-        val appletStub = RSAppletStub(map)
+        applet = client as Applet
+        val appletStub = RSAppletStub(ConfigReader(world).read())
         appletStub.appletContext.setApplet(applet!!)
-        appletStub.appletResize(GlobalStructs.width, GlobalStructs.height) // size of the game
+
+        appletStub.appletResize(Constants.MIN_GAME_SIZE.getWidth().toInt(),
+            Constants.MIN_GAME_SIZE.getHeight().toInt()) // size of the game
 
         applet!!.setStub(appletStub)
-        applet!!.preferredSize = Dimension(GlobalStructs.width, GlobalStructs.height)
         applet!!.init()
+        add(applet) // add the game to the JPanel
+
+        instanceManagerInterface = client as InstanceManagerInterface
+        // add uuid to the bot
+        instanceManagerInterface?.getManager()?.instanceUUID = sessionToken
+
+        GlobalStructs.botTabBar.addBotInstance("$username-$proxy", sessionToken, this)
     }
 
     fun kill() {
@@ -68,13 +61,4 @@ class BotInstance : JPanel() {
     fun getInstanceManager(): InstanceManager {
         return instanceManagerInterface!!.getManager()
     }
-
-    override fun getMinimumSize(): Dimension {
-        return Dimension(765, 503)
-    }
-
-    override fun getPreferredSize(): Dimension {
-        return Dimension(GlobalStructs.width, GlobalStructs.height)
-    }
-
 }
