@@ -33,6 +33,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     val g2 = it.drawGraphics as Graphics2D
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
                     instanceManager.drawPaintScripts(g2)
+                    instanceManager.drawsServiceScripts(g2)
                     instanceManager.actionScript.draw(g2)
                     it.show()
                     return g2
