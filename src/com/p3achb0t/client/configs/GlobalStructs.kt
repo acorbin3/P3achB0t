@@ -15,9 +15,6 @@ class GlobalStructs {
         var botManager: BotManager? = null
 
         val botTabBar = BotTabBar()
-        // minimum [765,503]
-        val width = 800
-        val height = 600
 
         // Loading the scripts just makes the script available for each tab. Each tab has its own instance of the script
         // and will be handled by the InstanceManager

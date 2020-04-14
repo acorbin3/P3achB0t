@@ -9,6 +9,7 @@ import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.util.Util
+import com.p3achb0t.client.ux.prefs.FrameMonitor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -52,6 +53,8 @@ class BotManager : JFrame() {
         // TODO("correctly resize main window when tab bar changes size")
         minimumSize = size // Set the minimum size after packing to fit child components.
         setLocationRelativeTo(null) // Set location after packing to correctly center.
+        //Load window size/loc prefs
+        FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height)
         isVisible = true
 
         // load scripts
