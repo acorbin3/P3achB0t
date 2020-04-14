@@ -16,6 +16,7 @@ class BotNavigationMenu: JMenuBar() {
     val service = JMenu("Services")
     private val startScriptButton = JButton("Start")
     private val pauseScriptButton = JButton("Pause")
+    private val drawCanvasToggleButton = JButton("Disable Canvas")
     var scriptLoaderUI: ScriptLoaderUI? = null
 
     init {
@@ -168,9 +169,9 @@ class BotNavigationMenu: JMenuBar() {
     }
 
     fun updateScriptManagerButtons() {
-        val tabState = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState
+        val instance = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager()
         //println("Updating buttons | TabState: $tabState")
-        when (tabState) {
+        when (instance.scriptState) {
             ScriptState.Stopped -> {
                 startScriptButton.text = "Start"
                 pauseScriptButton.isEnabled = false
@@ -186,6 +187,10 @@ class BotNavigationMenu: JMenuBar() {
                 pauseScriptButton.text = "Resume"
             }
         }
+        if (instance.drawCanvas)
+            drawCanvasToggleButton.text = "Disable Canvas"
+        else
+            drawCanvasToggleButton.text = "Enable Canvas"
     }
 
     private fun scriptManagerButtons(){
@@ -229,10 +234,17 @@ class BotNavigationMenu: JMenuBar() {
             }
 
         }
+        drawCanvasToggleButton.addActionListener {
+            val instance = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager()
+            instance.drawCanvas = !instance.drawCanvas
+            updateScriptManagerButtons()
+        }
         add(Box.createHorizontalGlue())
         add(startScriptButton)
         add(Box.createHorizontalStrut(3))
         add(pauseScriptButton)
+        add(Box.createHorizontalStrut(3))
+        add(drawCanvasToggleButton)
         add(Box.createHorizontalStrut(3))
     }
 }

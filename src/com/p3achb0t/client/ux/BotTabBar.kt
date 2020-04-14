@@ -15,12 +15,12 @@ class BotTabBar : JTabbedPane(), MouseListener {
 
     init {
         this.addChangeListener {
-            botManager?.navMenu?.updateScriptManagerButtons()
             (getComponentAt(lastSelectedIndex) as BotInstance).getInstanceManager().drawCanvas = false
             (getCurrentIndex().getInstanceManager()).drawCanvas = true
             this.setEnabledAt(lastSelectedIndex, true)
             this.setEnabledAt(this.selectedIndex, false)
             lastSelectedIndex = this.selectedIndex
+            botManager?.navMenu?.updateScriptManagerButtons()
         }
         //this.addMouseListener(this)
     }
