@@ -9,6 +9,7 @@ import com.p3achb0t.client.injection.ScriptState;
 import com.p3achb0t.client.scripts.loading.LoadScripts;
 import com.p3achb0t.client.scripts.loading.ScriptInformation;
 import com.p3achb0t.client.scripts.loading.ScriptType;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -29,8 +30,9 @@ public class ScriptLoaderUI extends JFrame {
 
     public ScriptLoaderUI() {
         setTitle("Script Selector");
-        initComponents();
+        setIconImage(GlobalStructs.botManager.getIconImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        initComponents();
     }
 
     private void searchTextFieldKeyTyped(KeyEvent e) {
@@ -50,11 +52,11 @@ public class ScriptLoaderUI extends JFrame {
         String author = (String)tableModel.getValueAt(scriptsTableView.getSelectedRow(),1);
         String version = (String)tableModel.getValueAt(scriptsTableView.getSelectedRow(),3);
         String scriptKey = scriptsIdentifierMap.get(scriptName+author+version);
-        GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().startActionScript(scriptKey);
+        GlobalStructs.botManager.getSelectedInstanceManager().startActionScript(scriptKey);
         scriptsIdentifierMap.clear();
 
-        if(GlobalStructs.Companion.getBotTabBar().getCurrentIndex().getInstanceManager().getScriptState() == ScriptState.Running){
-            GlobalStructs.Companion.getBotManager().getNavMenu().updateScriptManagerButtons();
+        if(GlobalStructs.botManager.getSelectedInstanceManager().getScriptState() == ScriptState.Running){
+            GlobalStructs.Companion.getBotManager().getBotNavMenu().updateScriptManagerButtons();
         }
 
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));

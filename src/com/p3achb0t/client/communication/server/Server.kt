@@ -27,7 +27,7 @@ class Server : WebSocketServer {
     override fun onMessage(socket: WebSocket?, message: String?) {
         println("onMessage")
         for (i in 0..2) {
-            for (s in GlobalStructs.botTabBar.botInstances) {
+            for (s in GlobalStructs.botManager.botTabBar.botInstances) {
 
                 val baos = ByteArrayOutputStream()
                 //ImageIO.write(s.value.instanceManagerInterface!!.getManager().takeScreenShot(), "png", baos)

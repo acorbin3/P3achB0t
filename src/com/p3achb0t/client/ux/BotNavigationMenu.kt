@@ -39,7 +39,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val remove = JMenuItem("Remove")
         remove.addActionListener {
-            GlobalStructs.botTabBar.killSelectedIndex()
+            GlobalStructs.botManager.botTabBar.killSelectedIndex()
         }
 
         val reloadScripts = JMenuItem("Reload scripts")
@@ -68,12 +68,12 @@ class BotNavigationMenu: JMenuBar() {
 
         val stop = JMenuItem("Stop")
         stop.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
+            GlobalStructs.botManager.getSelectedInstanceManager().stopActionScript()
         }
 
         val pause = JMenuItem("Pause/Resume")
         pause.addActionListener {
-            GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().togglePauseActionScript()
+            GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
         }
 
         menu.add(stop)
@@ -94,19 +94,19 @@ class BotNavigationMenu: JMenuBar() {
             when (script.type) {
                 ScriptType.PaintScript -> {
                     currentItem.addActionListener {
-                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().togglePaintScript(script.fileName)
+                        GlobalStructs.botManager.getSelectedInstanceManager().togglePaintScript(script.fileName)
                     }
                     paint.add(currentItem)
                 }
                 ScriptType.ActionScript -> {
                     currentItem.addActionListener {
-                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().startActionScript(script.fileName)
+                        GlobalStructs.botManager.getSelectedInstanceManager().startActionScript(script.fileName)
                     }
                     action.add(currentItem)
                 }
                 ScriptType.ServiceScript -> {
                     currentItem.addActionListener {
-                        GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().toggleServiceScript(script.fileName)
+                        GlobalStructs.botManager.getSelectedInstanceManager().toggleServiceScript(script.fileName)
                     }
                     service.add(currentItem)
                 }
@@ -115,7 +115,6 @@ class BotNavigationMenu: JMenuBar() {
 
         }
     }
-
 
     private fun scriptMenu() {
         refreshScriptMenu()
@@ -151,14 +150,14 @@ class BotNavigationMenu: JMenuBar() {
 
         val mouse = JMenuItem("Toggle mouse")
         mouse.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked()
-            GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getMouse().inputBlocked(!f)
+            val f = GlobalStructs.botManager.getSelectedInstanceInterface().getMouse().inputBlocked()
+            GlobalStructs.botManager.getSelectedInstanceInterface().getMouse().inputBlocked(!f)
         }
 
         val keyboard = JMenuItem("Toggle Keyboard")
         keyboard.addActionListener {
-            val f = GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked()
-            GlobalStructs.botTabBar.getCurrentIndex().instanceManagerInterface!!.getKeyboard().inputBlocked(!f)
+            val f = GlobalStructs.botManager.getSelectedInstanceInterface().getKeyboard().inputBlocked()
+            GlobalStructs.botManager.getSelectedInstanceInterface().getKeyboard().inputBlocked(!f)
         }
 
         menu.add(mouse)
@@ -169,7 +168,7 @@ class BotNavigationMenu: JMenuBar() {
     }
 
     fun updateScriptManagerButtons() {
-        val instance = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager()
+        val instance = GlobalStructs.botManager.getSelectedInstanceManager()
         //println("Updating buttons | TabState: $tabState")
         when (instance.scriptState) {
             ScriptState.Stopped -> {
@@ -197,24 +196,24 @@ class BotNavigationMenu: JMenuBar() {
         //This should be only used as a temporary solution till the bot gets good enough
         //Then the UI will need a proper rework, to allow for better looks
 
-        updateScriptManagerButtons()
+        //updateScriptManagerButtons()
 
 
         pauseScriptButton.addActionListener{
             //TODO Replace isactionscript paused with is script running
-            if(GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Running) {
+            if(GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Running) {
                 pauseScriptButton.text = "Resume"
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().togglePauseActionScript()
-            } else if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Paused){
+                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
+            } else if (GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Paused){
                 pauseScriptButton.text = "Paused"
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().togglePauseActionScript()
+                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
             }
             updateScriptManagerButtons()
         }
 
 
         startScriptButton.addActionListener{
-            if (GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().scriptState == ScriptState.Stopped) {
+            if (GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Stopped) {
                 if(scriptLoaderUI == null){
                     scriptLoaderUI = ScriptLoaderUI()
                     scriptLoaderUI?.addWindowListener(object : WindowAdapter() {
@@ -229,13 +228,13 @@ class BotNavigationMenu: JMenuBar() {
                 }
             }
             else {
-                GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager().stopActionScript()
+                GlobalStructs.botManager.getSelectedInstanceManager().stopActionScript()
                 updateScriptManagerButtons()
             }
 
         }
         drawCanvasToggleButton.addActionListener {
-            val instance = GlobalStructs.botTabBar.getCurrentIndex().getInstanceManager()
+            val instance = GlobalStructs.botManager.getSelectedInstanceManager()
             instance.drawCanvas = !instance.drawCanvas
             updateScriptManagerButtons()
         }

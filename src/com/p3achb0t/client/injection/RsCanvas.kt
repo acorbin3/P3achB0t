@@ -23,7 +23,6 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
         super.setFocusable(true)
         this.addMouseListener(this)
         this.addKeyListener(this)
-        minimumSize = Constants.MIN_GAME_SIZE
     }
 
     override fun getGraphics(): Graphics? {

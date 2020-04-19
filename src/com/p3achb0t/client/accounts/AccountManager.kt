@@ -8,7 +8,7 @@ import com.p3achb0t.client.util.Util
 import java.io.File
 import java.util.*
 
-class AccountManager {
+object AccountManager {
 
     var accounts: List<Account>
 

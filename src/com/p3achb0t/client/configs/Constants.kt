@@ -1,7 +1,5 @@
 package com.p3achb0t.client.configs
 
-import java.awt.Dimension
-
 class Constants {
     companion object {
         // URLs
@@ -27,7 +25,8 @@ class Constants {
         val REVISION_WITH_SUBVERSION = 189.2 // Update this if we want to force a new injected jar
         var INJECTED_JAR_NAME = "gamepack-$REVISION_WITH_SUBVERSION-injected.jar"
 
-        val MIN_GAME_SIZE = Dimension(765,503)
+        const val MIN_GAME_WIDTH = 765
+        const val MIN_GAME_HEIGHT = 503
 
         //Icons
         const val RESOURCE_DIR = "resources"

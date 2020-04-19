@@ -1,28 +1,23 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.client.configs.GlobalStructs
-import com.p3achb0t.client.configs.GlobalStructs.Companion.botManager
-import java.awt.Dimension
-import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
 import javax.swing.JTabbedPane
 import kotlin.concurrent.thread
 
-class BotTabBar : JTabbedPane(), MouseListener {
+class BotTabBar : JTabbedPane() {
 
     val botInstances = HashMap<String, BotInstance>()
     private var lastSelectedIndex = 0
 
     init {
-        this.addChangeListener {
+        addChangeListener {
+            setEnabledAt(lastSelectedIndex, true)
+            setEnabledAt(selectedIndex, false)
             (getComponentAt(lastSelectedIndex) as BotInstance).getInstanceManager().drawCanvas = false
-            (getCurrentIndex().getInstanceManager()).drawCanvas = true
-            this.setEnabledAt(lastSelectedIndex, true)
-            this.setEnabledAt(this.selectedIndex, false)
-            lastSelectedIndex = this.selectedIndex
-            botManager?.navMenu?.updateScriptManagerButtons()
+            (selectedComponent as BotInstance).getInstanceManager().drawCanvas = true
+            lastSelectedIndex = selectedIndex
+            GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
         }
-        //this.addMouseListener(this)
     }
 
     fun addBotInstance(tabLabel: String = "Bot",id: String, botInstance: BotInstance) {
@@ -44,27 +39,5 @@ class BotTabBar : JTabbedPane(), MouseListener {
             removeTabAt(currentIndex)
             current.kill()
         }
-    }
-
-    fun getCurrentIndex(): BotInstance {
-        return selectedComponent as BotInstance
-    }
-
-    override fun mouseReleased(p0: MouseEvent?) {
-    }
-
-    override fun mouseEntered(p0: MouseEvent?) {
-        println("in panel")
-
-    }
-
-    override fun mouseClicked(p0: MouseEvent?) {
-    }
-
-    override fun mouseExited(p0: MouseEvent?) {
-        println("out of panel")
-    }
-
-    override fun mousePressed(p0: MouseEvent?) {
     }
 }
