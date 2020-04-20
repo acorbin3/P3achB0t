@@ -30,10 +30,12 @@ class XPTracker : ServiceScript() {
         Stats.Skill.values().iterator().forEach {
             if (ctx.stats.xpGained(it) > 0) {
                 val name = it.name.padEnd(11, ' ')
-                debugText.add(DebugText( name
-                        + "(+${ctx.stats.levelsGained(it).toString().padEnd(2)}) : "
-                        + ctx.stats.xpPerHourFormatted(it).padStart(7) + " xp/h "
-                        + " TTL(${ctx.stats.currentLevel(it).toString().padStart(2)}->${(ctx.stats.currentLevel(it)+1).toString().padStart(2)}):" + ctx.stats.timeTillNextLevel(it)))
+                debugText.add(DebugText(name
+                        + " XP: " + ctx.stats.xpGained(it).toString().padStart(7)
+                        + " (+${ctx.stats.levelsGained(it).toString().padEnd(2)}) "
+                        + "TTL(${ctx.stats.currentLevel(it).toString().padStart(2)}->${(ctx.stats.currentLevel(it) + 1).toString().padStart(2)}) "
+                        + ctx.stats.timeTillNextLevel(it)
+                        + ctx.stats.xpPerHourFormatted(it).padStart(7) + " xp/h "))
             }
         }
         val x = 10
