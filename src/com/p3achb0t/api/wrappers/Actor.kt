@@ -106,7 +106,7 @@ open class Actor(
     /**
      * Health percent between `0.0` and `1.0` of limited precision. `null` if the health-bar is not visible.
      */
-    val health: Double? get(){
+    val health: Double get(){
         val headBars = raw.getHeadbars()
         val headbar = headBars.getSentinel().getNext()
         if(headbar is Headbar){
@@ -116,7 +116,7 @@ open class Actor(
                 return update.getHealth().toDouble() / def.getWidth()
             }
         }
-        return null
+        return 1.0
     }
 
     override fun isOnScreen(): Boolean {

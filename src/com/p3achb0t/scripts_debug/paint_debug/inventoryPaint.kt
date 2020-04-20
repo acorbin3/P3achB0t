@@ -11,15 +11,17 @@ fun inventoryPaint(g: Graphics, ctx: Context) {
         if(ctx.tabs.getOpenTab() == Tabs.Tab_Types.Inventory) {
             val items = ctx.inventory.getAll()
             // Look at inventory
-            if (items.size > 0) {
-                items.forEach {
-                    g.color = Color.YELLOW
-                    g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y-1)
-                    g.color = Color.yellow
-                    g.drawString("${it.stackSize}", it.getBasePoint().x , it.getBasePoint().y + 20)
+            if (!items.isNullOrEmpty()) {
+                if (items.size > 0) {
+                    items.forEach {
+                        g.color = Color.YELLOW
+                        g.drawString("${it.id}", it.getBasePoint().x, it.getBasePoint().y - 1)
+                        g.color = Color.yellow
+                        g.drawString("${it.stackSize}", it.getBasePoint().x, it.getBasePoint().y + 20)
 
-                    g.color = Color.RED
-                    g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                        g.color = Color.RED
+                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
+                    }
                 }
             }
         }

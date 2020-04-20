@@ -28,6 +28,8 @@ class ScriptManager(val client: Any): Logging() {
     companion object {
         var breaking = false
         var breakReturnTime = 0L
+        var loginHandler = LoginHandler()
+        var sessionID = UUID.randomUUID().toString()
     }
 
     private val mouse = (client as IScriptManager).getMouse()
@@ -37,8 +39,6 @@ class ScriptManager(val client: Any): Logging() {
     var blockFocus = false // Dont delete this. Its used within the injected functions
     val debugScripts = mutableListOf<DebugScript>()
 
-    var loginHandler = LoginHandler()
-    var sessionID = UUID.randomUUID().toString()
 
     var x = 800
     var y = 600
@@ -109,8 +109,8 @@ class ScriptManager(val client: Any): Logging() {
         //Track stats
         while(isRunning) {
             if (ctx.worldHop.isLoggedIn) {
-//                ctx.stats.updateStats()
-//                ctx.inventory.updateTrackedItems()
+                ctx.stats.updateStats()
+                ctx.inventory.updateTrackedItems()
             }
             delay(300)
         }
@@ -206,9 +206,9 @@ class ScriptManager(val client: Any): Logging() {
         isRunning = true
         //This the script thread.
 
-//        statsThread = GlobalScope.launch {
-//            trackStats()
-//        }
+        statsThread = GlobalScope.launch {
+            trackStats()
+        }
         dbUpdaterThread = GlobalScope.launch {
             dbUpdater()
         }
@@ -244,6 +244,7 @@ class ScriptManager(val client: Any): Logging() {
                         && loginHandler.isAtHomeScreen(ctx)) {
                     println("Account: " + loginHandler.account)
                     loginHandler.login(ctx)
+
                 }
 
                 if(loginHandler.isLoggedIn(ctx)){

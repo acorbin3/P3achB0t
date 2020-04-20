@@ -11,7 +11,7 @@
     "minBreakTimeSec": 0,
     "maxBreakTimeSec": 0,
     "banned": false,
-    "proxy": "SOCKS5;38.125.89.100:63618",
+    "proxy": "SOCKS5;38.125.89.220:63618",
     "world": 204,
     "startAutomatically": true,
 	"fps": 20,

@@ -139,41 +139,6 @@ class GrandExchange(val ctx: Context) {
     }
 
 
-
-    fun getAll(): ArrayList<WidgetItem> {
-        val items = ArrayList<WidgetItem>()
-        val inventory = ctx.inventory.getWidget()
-        // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
-        if (inventory != null && Widget.getDrawableRect(inventory, ctx).x > 0) {
-            val ids = inventory.getItemIds()
-            val stacks = inventory.getItemQuantities()
-            val columns = inventory.getWidth()
-            val rows = inventory.getHeight()
-            val baseX = Widget.getWidgetX(inventory, ctx)
-            val baseY = Widget.getWidgetY(inventory, ctx)
-            for (i in 0 until (columns * rows)) {
-                if (ids[i] > 0 && stacks[i] > 0) {
-                    val row = i / columns
-                    val col = i % columns
-                    val _x = baseX + ((32 + 10) * col)
-                    val _y = baseY + ((32 + 4) * row)
-                    val area = Rectangle(_x, _y, 32, 32)
-                    items.add(
-                            WidgetItem(
-                                    widget = inventory,
-                                    area = area,
-                                    id = ids[i] - 1,
-                                    stackSize = stacks[i],
-                                    type = WidgetItem.Type.INVENTORY,
-                                    ctx = ctx
-                            )
-                    )
-                }
-            }
-        }
-        return items
-    }
-
     fun getfirstIndex(id: Int): Int{
         var count = 0
         var index = 0

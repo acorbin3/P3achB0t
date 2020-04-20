@@ -99,39 +99,34 @@ class Inventory(val ctx: Context? = null) {
         })
     }
 
-    fun getAll(): ArrayList<WidgetItem> {
-        val items = ArrayList<WidgetItem>()
-        val inventory = getWidget()
-        // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
-        if (inventory != null) {
-            val ids = inventory.getItemIds()
-            val stacks = inventory.getItemQuantities()
-            val columns = inventory.getWidth()
-            val rows = inventory.getHeight()
-            val baseX = Widget.getWidgetX(inventory, ctx!!)
-            val baseY = Widget.getWidgetY(inventory, ctx)
-            for (i in 0 until (columns * rows)) {
-                if (ids[i] > 0 && stacks[i] > 0) {
-                    val row = i / columns
-                    val col = i % columns
-                    val _x = baseX + ((32 + 10) * col)
-                    val _y = baseY + ((32 + 4) * row)
-                    val area = Rectangle(_x, _y, 32, 32)
-                    items.add(
-                            WidgetItem(
-                                    widget = inventory,
-                                    area = area,
-                                    id = ids[i] - 1,
-                                    index = i,
-                                    stackSize = stacks[i],
-                                    type = WidgetItem.Type.INVENTORY,
-                                    ctx = ctx
-                            )
-                    )
+    fun getAll(): ArrayList<WidgetItem>? {
+        try {
+            val items = ArrayList<WidgetItem>()
+            val inventory = getWidget()
+            // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
+            if (inventory != null) {
+                val ids = inventory.getItemIds()
+                val stacks = inventory.getItemQuantities()
+                for (i in 0 until ids.size) {
+                    if (ids[i] > 0 && stacks[i] > 0) {
+                        items.add(
+                                WidgetItem(
+                                        widget = inventory,
+                                        id = ids[i] - 1,
+                                        index = i,
+                                        stackSize = stacks[i],
+                                        type = WidgetItem.Type.INVENTORY,
+                                        ctx = ctx
+                                )
+                        )
+                    }
                 }
             }
+            return items
+        } catch (e: Exception)  {
+            println("getall exception")
+            return null
         }
-        return items
     }
 
     fun getAllIds(): ArrayList<Int> {
@@ -323,7 +318,7 @@ class Inventory(val ctx: Context? = null) {
     fun containsAny(itemid: ArrayList<WidgetItem>): Boolean {
         var contains = false
         var items = getAll()
-        items.forEachIndexed { index, widgetItem ->
+        items?.forEachIndexed { index, widgetItem ->
             itemid.forEach {
                 if (widgetItem.id == it.id && widgetItem.id != 995) {
                     contains = true
@@ -336,7 +331,7 @@ class Inventory(val ctx: Context? = null) {
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
         var items = getAll()
-        items.forEachIndexed { index, widgetItem ->
+        items?.forEachIndexed { index, widgetItem ->
             itemid.forEach {
                 if (widgetItem.id == it) {
                     contains = true
@@ -387,7 +382,7 @@ class Inventory(val ctx: Context? = null) {
 
             println("Looking for Item $id")
             val items = getAll()
-            items.forEach {
+            items?.forEach {
                 if (it.id == id) {
                     println("Found Item! $id")
                     return it
@@ -402,6 +397,7 @@ class Inventory(val ctx: Context? = null) {
         try {
             widget = ctx?.client!!.getInterfaceComponents()[149][0]
         } catch (e: Exception) {
+            println("get widget exception")
         }
         return widget
     }
@@ -432,8 +428,11 @@ class Inventory(val ctx: Context? = null) {
 
     fun getCount(itemID: Int, useStack: Boolean = false): Int {
         var count = 0
-        for (widget in getAll()) {
-            if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
+        val items = getAll()
+        if(!items.isNullOrEmpty()) {
+            for (widget in items) {
+                if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
+            }
         }
         return count
     }
@@ -445,8 +444,11 @@ class Inventory(val ctx: Context? = null) {
 
     fun Contains(id: Int): Boolean {
         var Contains = false
-        for (widget in getAll()) {
-            if (widget.id == id) Contains = true
+        val items = getAll()
+        if(!items.isNullOrEmpty()) {
+            for (widget in items) {
+                if (widget.id == id) Contains = true
+            }
         }
         return Contains
     }
@@ -474,7 +476,7 @@ class Inventory(val ctx: Context? = null) {
         var count = 0
         if (isOpen()) {
             val items = getAll()
-            items.forEachIndexed { index, widgetItem ->
+            items?.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
                         count = widgetItem.stackSize + count

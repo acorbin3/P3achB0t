@@ -221,7 +221,6 @@ class Bank(val ctx: Context) {
         bank?.getChildren()?.iterator()?.forEach {
             if (itemCount > maxItemCount) return@forEach
             if (it.getItemId() > 0 && it.getItemId() != 6512) {
-
                 itemWidgets.add(
                         WidgetItem(
 

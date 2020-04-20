@@ -10,7 +10,9 @@ import com.p3achb0t.interfaces.IScriptManager
 import kotlinx.coroutines.delay
 import java.applet.Applet
 import java.awt.Component
+import java.awt.GraphicsEnvironment
 import java.awt.Point
+import java.awt.Rectangle
 import java.awt.event.MouseEvent
 
 
@@ -81,7 +83,9 @@ class Mouse(obj: Any) {
         try {
             this.overrideDoActionParams = true
             this.doActionParams = doActionParams
-            instantclick(Point(0, 0))
+            if(isLocationInScreenBounds(Point(0,0))) {
+                instantclick(Point(0, 0))
+            }
         }catch(e: Exception){
             println("Error: Doaction threw an error")
             e.stackTrace.iterator().forEach {
@@ -90,48 +94,87 @@ class Mouse(obj: Any) {
         }
     }
 
-    fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left): Boolean {
+    fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left) {
 
-
+        if(isLocationInScreenBounds(destPoint)) {
+            try {
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
-        mouseHopping.setMousePosition(destPoint)
+                mouseHopping.setMousePosition(destPoint)
+                if (click) {
+                    val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
+                    val mousePress =
+                            MouseEvent(
+                                    component,
+                                    MouseEvent.MOUSE_PRESSED,
+                                    System.currentTimeMillis(),
+                                    clickMask,
+                                    destPoint.x,
+                                    destPoint.y,
+                                    0,
+                                    clickType == ClickType.Right
+                            )
 
-        if (click) {
-            val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
-            val mousePress =
-                    MouseEvent(
-                            component,
-                            MouseEvent.MOUSE_PRESSED,
-                            System.currentTimeMillis(),
-                            clickMask,
-                            destPoint.x,
-                            destPoint.y,
-                            0,
-                            clickType == ClickType.Right
-                    )
+                    ioMouse.sendEvent(mousePress)
 
-            ioMouse.sendEvent(mousePress)
-
-            val mouseRelease =
-                    MouseEvent(
-                            component,
-                            MouseEvent.MOUSE_RELEASED,
-                            System.currentTimeMillis(),
-                            clickMask,
-                            destPoint.x,
-                            destPoint.y,
+                    val mouseRelease =
+                            MouseEvent(
+                                    component,
+                                    MouseEvent.MOUSE_RELEASED,
+                                    System.currentTimeMillis(),
+                                    clickMask,
+                                    destPoint.x,
+                                    destPoint.y,
 //                                if(Random.nextLong(1000, 20000) < 2000){
 //                                    1
 //                                }
 //                                else 0,
-                            0,
-                            clickType == ClickType.Right
-                    )
-            ioMouse.sendEvent(mouseRelease)
+                                    0,
+                                    clickType == ClickType.Right
+                            )
+                    ioMouse.sendEvent(mouseRelease)
+                }
+            } catch (e: Exception) {
+                println("Error: mouse through an exception")
+                e.stackTrace.iterator().forEach {
+                    println(it)
+                }
+            }
         }
-        return true
     }
 
+    /**
+     * Verifies if the given point is visible on the screen.
+     *
+     * @param   location     The given location on the screen.
+     * @return           True if the location is on the screen, false otherwise.
+     */
+    fun isLocationInScreenBounds(location: Point): Boolean {
+
+        // Check if the location is in the bounds of one of the graphics devices.
+        val graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        val graphicsDevices = graphicsEnvironment.screenDevices
+        val graphicsConfigurationBounds = Rectangle()
+
+        // Iterate over the graphics devices.
+        for (j in graphicsDevices.indices) {
+
+            // Get the bounds of the device.
+            val graphicsDevice = graphicsDevices[j]
+            graphicsConfigurationBounds.setRect(graphicsDevice.defaultConfiguration.bounds)
+
+            // Is the location in this bounds?
+            graphicsConfigurationBounds.setRect(graphicsConfigurationBounds.x.toDouble(), graphicsConfigurationBounds.y.toDouble(),
+                    graphicsConfigurationBounds.width.toDouble(), graphicsConfigurationBounds.height.toDouble())
+            if (graphicsConfigurationBounds.contains(location.x, location.y)) {
+
+                // The location is in this screengraphics.
+                return true
+            }
+        }
+
+        // We could not find a device that contains the given point.
+        return false
+    }
 
     suspend fun instaMove(destPoint: Point){
         mouseHopping.move(destPoint)

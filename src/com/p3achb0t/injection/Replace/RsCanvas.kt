@@ -34,18 +34,19 @@ open class RsCanvas(val scriptManager: ScriptManager) : Canvas(), MouseListener 
 
 
 
-        // screen shot logic
-        if (scriptManager.captureScreen && count > scriptManager.captureScreenFrame) {
-            val noob = screen.createGraphics()
-            noob.drawImage(gameCanvas, 0, 0, null)
-            count = 0
-        }
-        count++
+//        // screen shot logic
+//        if (scriptManager.captureScreen && count > scriptManager.captureScreenFrame) {
+//            val noob = screen.createGraphics()
+//            noob.drawImage(gameCanvas, 0, 0, null)
+//            count = 0
+//        }
+//        count++
 
         try {
             super.getGraphics().drawImage(gameCanvas, 0, 0, null)
         }catch (e: Exception){
-
+            println("exception in canvas")
+            e.printStackTrace()
         }
 
         return g

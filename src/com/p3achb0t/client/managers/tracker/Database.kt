@@ -8,6 +8,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
+import com.p3achb0t.scripts_debug.paint_debug.PaintDebug.Companion.scriptName
 import java.io.File
 import java.io.FileInputStream
 import java.sql.Timestamp
@@ -60,10 +62,24 @@ class FBDataBase {
         val lastUpdated = mutableMapOf<String,String>()
         val stamp = Timestamp(System.currentTimeMillis())
         val date = Date(stamp.time)
+        lastUpdated["ip"] = java.net.InetAddress.getLocalHost().hostAddress
         lastUpdated["startTime"] = date.toString()
         lastUpdated["script"] = script
+        lastUpdated["user"] = PaintDebug.key
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
     }
+    fun setBanned(accountID: String, sessionID: String){
+        if (accountID !in userDocs) {
+            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        }
+        val lastUpdated = mutableMapOf<String,String>()
+        val stamp = Timestamp(System.currentTimeMillis())
+        val date = Date(stamp.time)
+        lastUpdated["Banned:"] = "True: " + date.toString()
+        println("setting banned")
+        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+    }
+
     fun setLastUpdated(accountID: String, sessionID: String){
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
@@ -88,6 +104,8 @@ class FBDataBase {
                 ?.document(messageID)?.set(StatInfo(date.toString(),xp))
 
     }
+
+
 
     fun updateItemCount(accountID: String, sessionID: String, itemName: String, count: Int) {
         if (accountID !in userDocs) {

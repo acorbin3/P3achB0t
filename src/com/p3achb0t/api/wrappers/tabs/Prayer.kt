@@ -105,6 +105,14 @@ class Prayer(val ctx: Context) {
         return ctx.vars.getVarp(375) == 1
     }
 
+    fun getActiveProtectPrayer():String {
+        var prayer = "Dummy"
+        if(ctx.vars.getVarbit(4118) == 1) prayer = "PROTECT_FROM_MELEE"
+        if(ctx.vars.getVarbit(4117) == 1) prayer = "PROTECT_FROM_MISSILES"
+        if(ctx.vars.getVarbit(4116) == 1) prayer = "PROTECT_FROM_MAGIC"
+        return prayer
+    }
+
     suspend fun disable(kind: PrayerKind) {
         if (!isOpen()) open()
 

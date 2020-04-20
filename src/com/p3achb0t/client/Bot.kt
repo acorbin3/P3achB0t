@@ -55,7 +55,6 @@ class Bot(var world: Int, var clientManager: Manager, account: Account = Account
         iScriptManager = clientClazz as IScriptManager
         iScriptManager.getManager().setLoginHandlerAccount(account)
         println("Tab:$account)")
-        println("Account: ${iScriptManager.getManager().loginHandler.account}")
 
         val appletStub = RSAppletStub(map)
         appletStub.appletContext.setApplet(applet)
