@@ -25,7 +25,7 @@ class Widgets(val ctx: Context) {
     }
 
     suspend fun waitTillWidgetNotNull(parent: Int, child: Int) {
-        Utils.waitFor(2, object : Utils.Condition {
+        Utils.waitFor(10, object : Utils.Condition {
             override suspend fun accept(): Boolean {
                 delay(100)
                 return find(parent, child) != null

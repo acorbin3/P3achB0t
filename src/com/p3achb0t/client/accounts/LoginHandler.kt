@@ -53,21 +53,32 @@ class LoginHandler(var account: Account = Account()) {
             override suspend fun accept(): Boolean {
                 delay(100)
                 println("Current game state " + GameState.currentState(ctx).name)
-                return GameState.currentState(ctx) == GameState.LOGGED_IN
+                return GameState.currentState(ctx) == GameState.LOGGED_IN || (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
+                        (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)
             }
         })
-        println("Game state == ${ctx.client.getGameState()}")
-        delay(2000)
+        if ((LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
+                (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
+            if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED){
+                Manager.db.setBanned(ScriptManager.loginHandler.account.username, ScriptManager.sessionID)
+            }
+        println("account banned or invalid credentials")
+        val game = manager.tabManager.getInstance(manager.tabManager.getSelectedIndexx())
+        val manager = game.client.getScriptManager()
+        manager.stop()
+    }
+    println("Game state == ${ctx.client.getGameState()}")
+    delay(2000)
 
 //        val ctx = Context(client)
-        //Press red button
-        ctx.widgets.waitTillWidgetNotNull(378,87)
+    //Press red button
+    ctx.widgets.waitTillWidgetNotNull(378,87)
 
-        println("Clicking button")
-        WidgetItem(ctx.widgets.find(378,87),ctx = ctx).click()
+    println("Clicking button")
+    WidgetItem(ctx.widgets.find(378,87),ctx = ctx).click()
+        Utils.sleepUntil({!ctx.widgets.isWidgetAvaliable(378, 87)} , 5)
 
 
-
-    }
+}
 
 }

@@ -28,7 +28,7 @@ class Utils {
         suspend fun sleepUntil(condition:() -> Boolean, time: Int): Boolean{
             var istrue = false
             for (i in 1..time*10){
-                println("condition is true? " + condition)
+                println("condition is true? " + condition())
                 if(condition()){
                     istrue = true
                     break

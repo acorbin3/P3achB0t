@@ -1,6 +1,7 @@
 package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.LoginResponse
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import java.awt.Color
@@ -54,8 +55,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("maxmemory :${formatSize(heapMaxSize)}"))
         debugText.add(DebugText("freemmeory :${formatSize(heapFreeSize)}"))
         debugText.add(DebugText("freemmeory :${heapFreeSize}"))
-        debugText.add(DebugText("Selected item id :${ctx.client.getSelectedItemId()}"))
-        debugText.add(DebugText("is item selected? :${ctx.client.getIsItemSelected()}"))
+        debugText.add(DebugText("Loginresponse :${LoginResponse.getLoginResponse(ctx)}"))
 
 //        debugText.add(DebugText("antifire timer :${Utils.getElapsedSeconds(VorkathMain.Antifiretimer.time)}"))
 //        debugText.add(DebugText("divine pot timer :${Utils.getElapsedSeconds(VorkathMain.Divinepottimer.time)}"))
@@ -74,9 +74,6 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 //                debugText.add(DebugText("Spell: ${ctx.client.getSelectedSpellName()}"))
 //                debugText.add(DebugText("Animation: ${ctx.client.getLocalPlayer().getSequence()}"))
 //                debugText.add(DebugText("Mode: ${ctx.clientMode.getMode().name}"))
-                var chatText =
-                        ctx.widgets.find(WidgetID.CHATBOX_GROUP_ID, WidgetID.Chatbox.FULL_INPUT)
-                var text = chatText?.getText()
 //                debugText.add(DebugText("Bank search Text: ${text}"))
 //                debugText.add(DebugText("idle timer: ${Utils.getElapsedSeconds(VorkathMain.IdleTimer.time)}"))
                 debugText.add(
