@@ -11,8 +11,8 @@ import java.io.File
 import java.util.jar.JarFile
 
 class RuneStarAnalyzer {
-    val analyzers = mutableMapOf<String, ClassHook>()
-    val classRefObs = mutableMapOf<String, ClassHook>()
+    val analyzers = mutableMapOf<String, ClassHook>()   // key is the obfuscated class name
+    val classRefObs = mutableMapOf<String, ClassHook>() // Key is the identified class name
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
