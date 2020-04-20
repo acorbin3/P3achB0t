@@ -2,6 +2,7 @@ package com.p3achb0t.client.tracker
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
+import java.io.File
 import java.io.UnsupportedEncodingException
 import java.security.InvalidKeyException
 import java.security.NoSuchAlgorithmException
@@ -90,5 +91,14 @@ class AESEncryptor {
         }
 
         return null
+    }
+}
+
+object Main2 {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val lines = File("").readText()
+        val encrupted_string = AESEncryptor().encrypt(lines,"")
+        println(encrupted_string)
     }
 }

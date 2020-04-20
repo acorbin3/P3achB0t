@@ -97,8 +97,14 @@ class Camera(val ctx: Context) {
 
     suspend fun setHighPitch() {
         CoroutineScope(IO).launch {
-            if (pitch < 100)
+            if (pitch < 80)
                 setPitch(90 + Random.nextInt(-5, 7))
+        }
+    }
+
+    suspend fun rotateRandomCamera() {
+        CoroutineScope(IO).launch {
+           rotateRandom()
         }
     }
 
@@ -150,6 +156,25 @@ class Camera(val ctx: Context) {
         return Math.abs(_pitch - pitch) <= 5
     }
 
+    suspend fun rotateRandom() {
+        var dir = -1
+
+        if (Random.nextInt(0,2) == 0) {
+            dir = KeyEvent.VK_LEFT
+        } else {
+            dir = KeyEvent.VK_RIGHT
+        }
+
+            // Figure out where we
+        var random = Random.nextInt(1, 30)
+            println("rotating camera for " + random + " ms" + " rotating dir " + dir)
+            ctx.keyboard.pressDownKey(dir)
+            for (i in 0..random) {
+                sleep(100, 200)
+            }
+            ctx.keyboard.release(dir)
+            println("Finished moving camera Left or right")
+        }
     /**
      * @param angle to change
      * @return true if done else false

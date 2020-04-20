@@ -8,6 +8,14 @@ class Players(val ctx: Context) {
     fun getLocal(): Player {
         return Player(ctx.client.getLocalPlayer(), ctx, 0)
     }
+
+    fun getBaseX(): Int {
+       return ctx.client.getLocalPlayer().getX() / 128 + ctx.client.getBaseX()
+    }
+
+    fun getBaseY(): Int {
+        return ctx.client.getLocalPlayer().getY() / 128 + ctx.client.getBaseY()
+    }
        // This function will return a list of NPCs with closes distance to you
     fun findPlayers(playerName: String, sortByDist: Boolean = false): ArrayList<Player> {
            val players = ArrayList<Player>()

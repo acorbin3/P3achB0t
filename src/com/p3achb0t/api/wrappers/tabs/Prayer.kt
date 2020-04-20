@@ -82,7 +82,7 @@ class Prayer(val ctx: Context) {
 
     fun isProtectMeleActive(): Boolean {
 
-        return ctx.players.getLocal().player.getHeadIconPrayer() == 0
+        return ctx.vars.getVarbit(4118) == 1
     }
 
     fun isProtectRangeActive(): Boolean {

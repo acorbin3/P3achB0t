@@ -33,6 +33,14 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     }
 
+    fun getBaseX(): Int {
+        return this.npc.getX() / 128 + ctx!!.client.getBaseX()
+    }
+
+    fun getBaseY(): Int {
+        return this.npc.getY() / 128 + ctx!!.client.getBaseY()
+    }
+
 
     override fun getInteractPoint(): Point {
         return getRandomPoint(getConvexHull())

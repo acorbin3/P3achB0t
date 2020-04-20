@@ -46,7 +46,7 @@ class Calculations {
             }
         }
 
-        fun getTileHeight(ctx: Context, tile: Tile): Int{
+        fun getTileHeight(ctx: Context, tile: Tile): Int {
             return getTileHeight(ctx, tile.plane, tile.x, tile.y)
         }
 
@@ -306,10 +306,10 @@ class Calculations {
             }
 
             val poly = Polygon()
-            poly.addPoint(p1.x,p1.y)
-            poly.addPoint(p2.x,p2.y)
-            poly.addPoint(p3.x,p3.y)
-            poly.addPoint(p4.x,p4.y)
+            poly.addPoint(p1.x, p1.y)
+            poly.addPoint(p2.x, p2.y)
+            poly.addPoint(p3.x, p3.y)
+            poly.addPoint(p4.x, p4.y)
 
             //Covert polygon to an Area and each rectangle to an Area. With the area class you can use subtract
             // as an easy way to computer the masked section.

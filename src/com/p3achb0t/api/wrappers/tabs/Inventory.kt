@@ -39,6 +39,10 @@ class Inventory(val ctx: Context? = null) {
         }
     }
 
+    fun getSelectedItemID(): Int? {
+        if(ctx?.client?.getIsItemSelected() == 0) return 0 else return ctx?.client?.getSelectedItemId()
+    }
+
     fun updateTrackedItems() {
         itemsToTrack.forEach {
             val curCount = getCount(it.id)
@@ -99,12 +103,12 @@ class Inventory(val ctx: Context? = null) {
         val items = ArrayList<WidgetItem>()
         val inventory = getWidget()
         // Weird hack check to ensure inventory widget has correct x position. On logon I have seen it return zero
-        if (inventory != null && Widget.getDrawableRect(inventory, ctx!!).x > 0) {
+        if (inventory != null) {
             val ids = inventory.getItemIds()
             val stacks = inventory.getItemQuantities()
             val columns = inventory.getWidth()
             val rows = inventory.getHeight()
-            val baseX = Widget.getWidgetX(inventory, ctx)
+            val baseX = Widget.getWidgetX(inventory, ctx!!)
             val baseY = Widget.getWidgetY(inventory, ctx)
             for (i in 0 until (columns * rows)) {
                 if (ids[i] > 0 && stacks[i] > 0) {

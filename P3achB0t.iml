@@ -99,7 +99,6 @@
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-client:9.4.20.v20190813" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.4.20.v20190813" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.26" level="project" />
-    <orderEntry type="library" name="Maven: org.zeromq:jeromq:0.5.2" level="project" />
     <orderEntry type="library" name="Maven: eu.neilalexander:jnacl:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.formdev:flatlaf:0.27" level="project" />
     <orderEntry type="library" name="Maven: com.google.firebase:firebase-admin:6.12.2" level="project" />

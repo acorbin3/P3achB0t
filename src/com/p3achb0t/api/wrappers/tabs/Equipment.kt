@@ -67,6 +67,7 @@ class Equipment(val ctx: Context) {
                         Contains = true
                     }
                 }
+                    }
             }
 
         }
