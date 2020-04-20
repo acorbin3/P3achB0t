@@ -5,10 +5,10 @@ import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.utils.Script
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.accounts.LoginHandler
-import java.awt.Graphics
+import kotlinx.coroutines.delay
 
-@ScriptManifest(Script.SERVICE,"Login Handler","P3aches", "0.1")
-class LoginAndBreakHandlerHandler: ServiceScript(shouldStopActionScript=true) {
+@ScriptManifest(Script.SERVICE, "Login Handler", "P3aches", "0.1")
+class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true) {
     var loginHandler = LoginHandler()
     var status = ""
     override suspend fun isValidToRun(account: Account): Boolean {
@@ -16,17 +16,21 @@ class LoginAndBreakHandlerHandler: ServiceScript(shouldStopActionScript=true) {
     }
 
     override suspend fun loop(account: Account) {
-        if(loginHandler.account.username.isEmpty()){
+        if (loginHandler.account.username.isEmpty()) {
             loginHandler.account = account
         }
         if(account.startActionScriptAutomatically && loginHandler.isAtHomeScreen(ctx)) {
             status = "Logging in"
-            loginHandler.login(ctx)
+            val failedLogin = !loginHandler.login(ctx)
+            if (failedLogin) {
+                logger.error("Failed to login. Login handler will now execute an infinite loop to prevent future logins")
+                while (failedLogin) {
+
+                    delay(1000 * 60)
+                }
+            }
         }
 
     }
 
-    override fun draw(g: Graphics) {
-        super.draw(g)
-    }
 }

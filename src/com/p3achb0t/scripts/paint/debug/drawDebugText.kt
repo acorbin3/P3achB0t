@@ -3,7 +3,6 @@ package com.p3achb0t.scripts.paint.debug
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoginResponse
 import com.p3achb0t.api.wrappers.utils.Calculations
-import com.p3achb0t.api.wrappers.widgets.WidgetID
 import java.awt.Color
 import java.awt.Graphics
 
@@ -22,23 +21,6 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
         //debugText.add(DebugText("fps :${PaintDebug.fps}"))
-        val heapSize = Runtime.getRuntime().totalMemory()
-
-        // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-
-        // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.
-        val heapMaxSize = Runtime.getRuntime().maxMemory()
-
-        // Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
-
-        // Get amount of free memory within the heap in bytes. This size will increase // after garbage collection and decrease as new objects are created.
-        val heapFreeSize = Runtime.getRuntime().freeMemory()
-
-        debugText.add(DebugText("totalmemory :${formatSize(heapSize)}"))
-        debugText.add(DebugText("maxmemory :${formatSize(heapMaxSize)}"))
-        debugText.add(DebugText("freemmeory :${formatSize(heapFreeSize)}"))
-        debugText.add(DebugText("freemmeory :${heapFreeSize}"))
-
         val heapSize = Runtime.getRuntime().totalMemory()
 
         // Get maximum size of heap in bytes. The heap cannot grow beyond this size.// Any attempt will result in an OutOfMemoryException.

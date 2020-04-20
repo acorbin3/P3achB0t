@@ -14,11 +14,18 @@ open class Logging {
             val threadName = Thread.currentThread().name
             println("$timeStamp [$threadName] DEBUG - $location $s")
         }
-        fun info(s: String){
+
+        fun info(s: String) {
 
             val location = getLocation()
             val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
             println("$timeStamp - INFO - $location $s")
+        }
+
+        fun error(s: String) {
+            val location = getLocation()
+            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
+            println("$timeStamp - ERROR - $location $s")
         }
 
         private fun getLocation(): String {

@@ -10,7 +10,10 @@ import com.p3achb0t.client.accounts.Account
 *
 * Note: Service Scripts will always be running in the background
 * */
-abstract class ServiceScript(var shouldStopActionScript:Boolean = false): SuperScript() {
-    open suspend fun isValidToRun(account: Account): Boolean {return true}
+abstract class ServiceScript(var shouldPauseActionScript: Boolean = false) : SuperScript() {
+    open suspend fun isValidToRun(account: Account): Boolean {
+        return true
+    }
+
     abstract suspend fun loop(account: Account)
 }

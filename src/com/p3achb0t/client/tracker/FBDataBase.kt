@@ -8,8 +8,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.scripts_debug.paint_debug.PaintDebug
-import com.p3achb0t.scripts_debug.paint_debug.PaintDebug.Companion.scriptName
 import java.io.File
 import java.io.FileInputStream
 import java.sql.Timestamp
@@ -65,7 +63,7 @@ class FBDataBase {
         lastUpdated["ip"] = java.net.InetAddress.getLocalHost().hostAddress
         lastUpdated["startTime"] = date.toString()
         lastUpdated["script"] = script
-        lastUpdated["user"] = PaintDebug.key
+        lastUpdated["user"] = accountID
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
     }
     fun setBanned(accountID: String, sessionID: String){

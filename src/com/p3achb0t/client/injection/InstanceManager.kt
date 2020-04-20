@@ -14,6 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.applet.Applet
+import java.awt.Color
 import java.awt.Graphics
 import java.lang.Thread.sleep
 import java.text.SimpleDateFormat
@@ -120,6 +121,9 @@ class InstanceManager(val client: Any) {
             if (actionScriptLoop == null) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
+                        while (!ctx.worldHop.isLoggedIn) {
+                            delay(100)
+                        }
                         actionScript.loop()
                         delay(10)
                     }
@@ -158,6 +162,16 @@ class InstanceManager(val client: Any) {
     fun drawPaintScripts(g: Graphics) {
         for (script in paintScripts.values) {
             script.draw(g)
+        }
+
+        if (!ctx.worldHop.isLoggedIn && scriptState == ScriptState.Running) {
+            val oldFont = g.font
+            val olcColor = g.color
+            g.font = g.font.deriveFont(30F)
+            g.color = Color.RED
+            g.drawString("Must login before script starts", 300, 300)
+            g.font = oldFont
+            g.color = olcColor
         }
     }
 
@@ -214,11 +228,11 @@ class InstanceManager(val client: Any) {
                 Only pause the script if it needs to be paused based on the Service script conditions and when
                 ActionScript is running
                 */
-                if(script.shouldStopActionScript && scriptState == ScriptState.Running){
+                if (script.shouldPauseActionScript && scriptState == ScriptState.Running) {
                     togglePauseActionScript()
                 }
                 script.loop(account)
-                if(script.shouldStopActionScript && scriptState == ScriptState.Paused){
+                if (script.shouldPauseActionScript && scriptState == ScriptState.Paused) {
                     togglePauseActionScript()
                 }
             }

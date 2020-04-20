@@ -1,13 +1,12 @@
 package com.p3achb0t.api.wrappers.tabs
 
-import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import java.awt.Rectangle
 import java.text.DecimalFormat
 import kotlin.random.Random
 
@@ -99,7 +98,7 @@ class Inventory(val ctx: Context? = null) {
         })
     }
 
-    fun getAll(): ArrayList<WidgetItem>? {
+    fun getAll(): ArrayList<WidgetItem> {
         try {
             val items = ArrayList<WidgetItem>()
             val inventory = getWidget()
@@ -125,7 +124,7 @@ class Inventory(val ctx: Context? = null) {
             return items
         } catch (e: Exception)  {
             println("getall exception")
-            return null
+            return ArrayList()
         }
     }
 
@@ -318,7 +317,7 @@ class Inventory(val ctx: Context? = null) {
     fun containsAny(itemid: ArrayList<WidgetItem>): Boolean {
         var contains = false
         var items = getAll()
-        items?.forEachIndexed { index, widgetItem ->
+        items.forEachIndexed { index, widgetItem ->
             itemid.forEach {
                 if (widgetItem.id == it.id && widgetItem.id != 995) {
                     contains = true
@@ -331,7 +330,7 @@ class Inventory(val ctx: Context? = null) {
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
         var items = getAll()
-        items?.forEachIndexed { index, widgetItem ->
+        items.forEachIndexed { index, widgetItem ->
             itemid.forEach {
                 if (widgetItem.id == it) {
                     contains = true
@@ -382,7 +381,7 @@ class Inventory(val ctx: Context? = null) {
 
             println("Looking for Item $id")
             val items = getAll()
-            items?.forEach {
+            items.forEach {
                 if (it.id == id) {
                     println("Found Item! $id")
                     return it
@@ -476,7 +475,7 @@ class Inventory(val ctx: Context? = null) {
         var count = 0
         if (isOpen()) {
             val items = getAll()
-            items?.forEachIndexed { index, widgetItem ->
+            items.forEachIndexed { index, widgetItem ->
                 itemid.forEach {
                     if (widgetItem.id == it) {
                         count = widgetItem.stackSize + count

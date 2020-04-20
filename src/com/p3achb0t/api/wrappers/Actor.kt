@@ -1,9 +1,9 @@
 package com.p3achb0t.api.wrappers
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.interfaces.Actor
 import com.p3achb0t.api.interfaces.Headbar
 import com.p3achb0t.api.interfaces.HeadbarUpdate
-import com.p3achb0t.api.Context
 import com.p3achb0t.api.wrappers.interfaces.Interactable
 import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
@@ -104,7 +104,7 @@ open class Actor(
     }
 
     /**
-     * Health percent between `0.0` and `1.0` of limited precision. `null` if the health-bar is not visible.
+     * Health percent between `0.0` and `1.0` of limited precision. `1` if the health-bar is not visible.
      */
     val health: Double get(){
         val headBars = raw.getHeadbars()

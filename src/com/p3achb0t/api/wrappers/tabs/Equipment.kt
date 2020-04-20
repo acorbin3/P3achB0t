@@ -18,7 +18,7 @@ class Equipment(val ctx: Context) {
             Head(WidgetID.Equipment.HELMET, 0, 25362446),
             Cape(WidgetID.Equipment.CAPE, 1, 25362447),
             Neck(WidgetID.Equipment.AMULET, 2, 25362448),
-            Weapon(WidgetID.Equipment.WEAPON, 3,25362449),
+            Weapon(WidgetID.Equipment.WEAPON, 3, 25362449),
             Body(WidgetID.Equipment.BODY, 4, 25362450),
             Shield(WidgetID.Equipment.SHIELD, 5, 25362451),
             Legs(WidgetID.Equipment.LEGS, 7, 25362452),
@@ -37,10 +37,10 @@ class Equipment(val ctx: Context) {
         return ctx.tabs.getOpenTab() == Tabs.Tab_Types.Equiptment
     }
 
-    fun getEquippeditems():ArrayList<Int>{
+    fun getEquippeditems(): ArrayList<Int> {
         val itemids = ArrayList<Int>()
         Slot.values().forEach {
-            if(isEquipmentSlotEquipted(it)){
+            if (isEquipmentSlotEquipted(it)) {
                 println("Item equipped = " + getItemAtSlot(it)!!.id)
                 itemids.add(getItemAtSlot(it)!!.id)
             }
@@ -51,8 +51,8 @@ class Equipment(val ctx: Context) {
     fun Contains(id: Int): Boolean {
         var Contains = false
         Slot.values().forEach {
-            if(getItemAtSlot(it)?.id == id ){
-               Contains = true
+            if (getItemAtSlot(it)?.id == id) {
+                Contains = true
             }
         }
         return Contains
@@ -62,22 +62,21 @@ class Equipment(val ctx: Context) {
         var Contains = false
         Slot.values().forEach {
             for (i in id) {
-                if(isEquipmentSlotEquipted(it)) {
+                if (isEquipmentSlotEquipted(it)) {
                     if (getItemAtSlot(it)?.id == i) {
                         Contains = true
                     }
                 }
-                    }
             }
-
         }
+
         return Contains
     }
 
     fun ContainsAll(id: ArrayList<Int>): Boolean {
         var Contains = true
         id.forEach {
-            if(!Contains(it)){
+            if (!Contains(it)) {
                 println("Can't find " + it + " in inv")
                 Contains = false
             }
@@ -116,10 +115,10 @@ class Equipment(val ctx: Context) {
     }
 
     suspend fun interactWithSlot(slot: Slot, interaction: String) {
-        if(!isOpen()){
+        if (!isOpen()) {
             open()
         }
-        if(isOpen()) {
+        if (isOpen()) {
             val item = getItemAtSlot(slot)
             println("Interacting with item ${slot.name} ${item?.area}" + " " + interaction)
             item?.interact(interaction)
@@ -129,7 +128,7 @@ class Equipment(val ctx: Context) {
     }
 
 
-    fun isEquipmentSlotEquipted(slot: Slot): Boolean {
+    fun isEquipmentSlotEquipted(slot: Equipment.Companion.Slot): Boolean {
         try {
             val item = ctx.items.getItemInfo(
                     NODE_ID,
@@ -142,7 +141,6 @@ class Equipment(val ctx: Context) {
         }
         return false
     }
-
 
 
     fun getItemAtSlot(slot: Slot): WidgetItem? {
