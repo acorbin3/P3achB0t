@@ -7,6 +7,7 @@ import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.api.wrappers.Tile
+import kotlinx.coroutines.delay
 import org.apache.commons.lang.time.StopWatch
 import java.awt.Color
 import java.awt.Graphics
@@ -37,6 +38,11 @@ class WoodCuttingScript() : ActionScript() {
         g.drawString(status,0,0)
         g.drawString("Current Runtime: $stopwatch", 10, 350)
         g.drawString("Status:$currentJob   itemSelected: ${ctx.client.getIsItemSelected()}", 10, 360)
+        ctx.gameObjects.find(10820).forEach {
+            val point = it.getMiniMapPoint()
+            g.color = Color.BLUE
+            g.drawRect(point.x, point.y,2,2)
+        }
         super.draw(g)
     }
 
@@ -44,15 +50,22 @@ class WoodCuttingScript() : ActionScript() {
 
 class ChopTree(ctx: Context) : LeafTask(ctx) {
     val areaGoodWCLocation:Area = Area(
-            Tile(3177, 3264, 0),
-            Tile(3175, 3241, 0),
-            Tile(3203, 3234, 0),
-            Tile(3211, 3252, 0),
-            Tile(3202, 3257, 0),
+            Tile(3171, 3253, 0),
+            Tile(3170, 3262, 0),
+            Tile(3183, 3268, 0),
+            Tile(3190, 3261, 0),
+            Tile(3195, 3255, 0),
+            Tile(3200, 3257, 0),
+            Tile(3208, 3252, 0),
+            Tile(3208, 3237, 0),
+            Tile(3202, 3237, 0),
+            Tile(3199, 3232, 0),
+            Tile(3189, 3232, 0),
             ctx=ctx
     )
     val TREE_IDs = intArrayOf(1278,1276)
     val OAK_TREE_ID = 10820
+
     override suspend fun isValidToRun(): Boolean {
         //Inventory not full && in the wc area
         return !ctx.inventory.isfull
@@ -70,17 +83,22 @@ class ChopTree(ctx: Context) : LeafTask(ctx) {
             val trees = ctx.gameObjects.findinArea(treeID,area=areaGoodWCLocation)
             if (trees.isNotEmpty()) {
 
-                var randIndex = Random.nextInt(0, 3)
+                var randIndex = if (ctx.stats.level(Stats.Skill.WOODCUTTING)< 15) Random.nextInt(0, 3) else 0
                 if(!trees[randIndex].isOnScreen()){
-                    trees[randIndex].turnTo()
-                    if(!trees[randIndex].isOnScreen()){
-                        !trees[randIndex].clickOnMiniMap()
+                    if(trees[randIndex].distanceTo() > 10){
+                        trees[randIndex].clickOnMiniMap()
                         ctx.players.getLocal().waitTillIdle()
+                    }
+                    if(!trees[randIndex].isOnScreen()) {
+                        trees[randIndex].turnTo()
+                        delay(Random.nextLong(600, 1000))
                     }
                 }
                 trees[randIndex].interact("Chop down")
                 ctx.players.getLocal().waitTillIdle(30)
             }
+        }else{
+            ctx.players.getLocal().waitTillIdle(30)
         }
     }
 
