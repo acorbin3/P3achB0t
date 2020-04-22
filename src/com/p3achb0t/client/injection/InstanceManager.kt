@@ -88,6 +88,7 @@ class InstanceManager(val client: Any) {
         scriptState = ScriptState.Running
         actionScriptState(true)
         account.sessionStartTime = System.currentTimeMillis()
+        GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
     }
 
     fun stopActionScript() {
@@ -114,6 +115,7 @@ class InstanceManager(val client: Any) {
             actionScriptState(true)
             scriptState = ScriptState.Running
         }
+        GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
     }
 
     private fun actionScriptState(loopRunning: Boolean) {
