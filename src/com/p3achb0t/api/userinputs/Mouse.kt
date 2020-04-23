@@ -41,7 +41,7 @@ class Mouse(obj: Any) {
     private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
     private val mouseHopping: MouseHop = MouseHop(obj as IOHandler, obj as Applet)
     private val ioMouse: Mouse = (obj as IOHandler).getMouse()
-
+    private var lastDoAction = System.currentTimeMillis()
     companion object {
        var x = 0
         var y = 0
@@ -86,6 +86,12 @@ class Mouse(obj: Any) {
             this.overrideDoActionParams = true
             this.doActionParams = doActionParams
             if(isLocationInScreenBounds(Point(0,0))) {
+                val timeDiff = System.currentTimeMillis() - lastDoAction
+                println("Time since last Action: $timeDiff")
+                if (timeDiff < 300) {
+                    println("Warning, fast action!")
+                }
+                lastDoAction = System.currentTimeMillis()
                 instantclick(Point(0, 0))
             }
         }catch(e: Exception){
