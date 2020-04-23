@@ -174,6 +174,7 @@ class Analyser{
                 classes[obsClass]?.interfaces?.add(classInterface)
             }
 
+            //Injecting all the fields
             val getterList = ArrayList<GetterData>()
             clazzData.fields.forEach {
                 if (it.owner != "broken" && !it.field.contains("getLocalUser")) {

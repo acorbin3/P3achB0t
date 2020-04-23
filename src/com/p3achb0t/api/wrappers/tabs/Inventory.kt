@@ -7,6 +7,7 @@ import com.p3achb0t.api.wrappers.widgets.Widget
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import java.awt.Rectangle
 import java.text.DecimalFormat
 import kotlin.random.Random
 
@@ -106,8 +107,17 @@ class Inventory(val ctx: Context? = null) {
             if (inventory != null) {
                 val ids = inventory.getItemIds()
                 val stacks = inventory.getItemQuantities()
+                val columns = inventory.getWidth()
+                val rows = inventory.getHeight()
+                val baseX = Widget.getWidgetX(inventory, ctx!!)
+                val baseY = Widget.getWidgetY(inventory, ctx)
                 for (i in 0 until ids.size) {
                     if (ids[i] > 0 && stacks[i] > 0) {
+                        val row = i / columns
+                        val col = i % columns
+                        val _x = baseX + ((32 + 10) * col)
+                        val _y = baseY + ((32 + 4) * row)
+                        val area = Rectangle(_x, _y, 32, 32)
                         items.add(
                                 WidgetItem(
                                         widget = inventory,
@@ -115,6 +125,7 @@ class Inventory(val ctx: Context? = null) {
                                         index = i,
                                         stackSize = stacks[i],
                                         type = WidgetItem.Type.INVENTORY,
+                                        area = area,
                                         ctx = ctx
                                 )
                         )

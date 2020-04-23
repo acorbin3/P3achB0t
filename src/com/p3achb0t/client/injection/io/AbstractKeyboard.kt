@@ -47,44 +47,7 @@ abstract class AbstractKeyboard : KeyListener, Keyboard {
     }
 
     override fun keyPressed(e: KeyEvent) {
-//        println("${e} | ${e.getModifiers()} / ${e.getModifiersEx()}")
-        /*
-        if(e.isControlDown && e.keyChar.isDigit()){
-            when (e.keyChar) {
-                '1' -> {
-                    println("Swapping debug text")
-                    PaintDebug.isDebugTextOn = !PaintDebug.isDebugTextOn
-                }
-                '2' -> {
-                    println("Swapping NPC paint")
-                    PaintDebug.isNPCPaintOn = !PaintDebug.isNPCPaintOn
-                }
-                '3' -> {
-                    println("Swapping players")
-                    PaintDebug.isPlayerPaintOn = !PaintDebug.isPlayerPaintOn
-                }
-                '4' -> {
-                    println("Swapping gameobjects")
-                    PaintDebug.isGameObjectOn = !PaintDebug.isGameObjectOn
-                }
-                '5' -> {
-                    println("Swapping gounditems")
-                    PaintDebug.isGroundItemsOn = !PaintDebug.isGroundItemsOn
-                }
-                '8' -> {
-                    println("Swapping can walk")
-                    PaintDebug.isCanWalkDebug = !PaintDebug.isCanWalkDebug
-                }
-                '7' -> {
-                    println("Swapping projectiles")
-                    PaintDebug.isProjectileDebug = !PaintDebug.isProjectileDebug
-                }
-                '9' -> {
-                    println("Swapping inventory")
-                    PaintDebug.isInventoryPaintingDebug = !PaintDebug.isInventoryPaintingDebug
-                }
-            }
-        }*/
+
         if (!inputBlocked) {
             _keyPressed(e)
         }
