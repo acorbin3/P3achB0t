@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "9ea2f969-2986-42f8-9190-b9e8f3ceb21f",
+    "uuid": "",
     "sessionStartTime": -1,
     "useBreaks": false,
     "minimumSessionTime": 0,
@@ -14,7 +14,7 @@
     "windowStartTime": 1080,
     "windowEndHourTime": 360,
     "sessionToken": "",
-    "actionScript": "Woodcutting DoAction",
+    "actionScript": "",
     "debugScripts": [
       "Total Debug Paint"
     ],
@@ -23,8 +23,8 @@
       "XP Tracker"
     ],
     "proxy": "none",
-    "username": "rsbond60+277@gmail.com",
-    "password": "Power1234",
+    "username": "",
+    "password": "",
     "pin": "",
     "banned": false,
     "gameWorld": 80,
