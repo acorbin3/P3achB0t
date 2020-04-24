@@ -52,7 +52,7 @@ class BotManager : JFrame() {
         // TODO("correctly resize main window when tab bar changes size")
         minimumSize = size // Set the minimum size after packing to fit child components.
         setLocationRelativeTo(null) // Set location after packing to correctly center.
-        //FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
+        FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
         isVisible = true
     }
 
