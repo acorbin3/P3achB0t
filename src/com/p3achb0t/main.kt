@@ -26,8 +26,8 @@ object Main {
         args.iterator().forEach {
             if(getNextKey){
                 //validationKey = PaintDebug.key
+                if(it == "-key"){
             }
-            if(it == "-key"){
                 getNextKey = true
             }
             println(it)
@@ -40,7 +40,6 @@ object Main {
         val botManager = BotManager()
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
-        botManager.initFrame()
         botManager.updateCache()
         botManager.startScripts()
     }

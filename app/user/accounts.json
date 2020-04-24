@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "",
+    "uuid": "6cb90bfd-698b-410f-aef8-ba2dad7503cc",
     "sessionStartTime": -1,
     "useBreaks": false,
     "minimumSessionTime": 0,
@@ -14,7 +14,7 @@
     "windowStartTime": 1080,
     "windowEndHourTime": 360,
     "sessionToken": "",
-    "actionScript": "",
+    "actionScript": "Zulrah",
     "debugScripts": [
       "Total Debug Paint"
     ],
@@ -23,12 +23,12 @@
       "XP Tracker"
     ],
     "proxy": "none",
-    "username": "",
-    "password": "",
+    "username": "cookii_montr@hotmail.com",
+    "password": "jkennedy1",
     "pin": "",
     "banned": false,
-    "gameWorld": 80,
-    "gameFps": 15,
+    "gameWorld": 215,
+    "gameFps": 20,
     "startActionScriptAutomatically": true,
     "isOnBreak": false,
     "key": "",

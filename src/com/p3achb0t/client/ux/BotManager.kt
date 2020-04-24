@@ -40,20 +40,18 @@ class BotManager : JFrame() {
         jMenuBar = botNavMenu
         add(botTabBar)
 
+        pack()
+        // TODO("correctly resize main window when tab bar changes size")
+        minimumSize = size // Set the minimum size after packing to fit child components.
+        setLocationRelativeTo(null) // Set location after packing to correctly center.
+        FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
+        isVisible = true
+
         // load scripts
         GlobalStructs.scripts.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
         botNavMenu.refreshScriptMenu() // lazy fix should be callback instead
-    }
-
-    fun initFrame() {
-        pack()
-        // TODO("correctly resize main window when tab bar changes size")
-        minimumSize = size // Set the minimum size after packing to fit child components.
-        setLocationRelativeTo(null) // Set location after packing to correctly center.
-        //FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
-        isVisible = true
     }
 
     fun getSelectedBotInstance(): BotInstance {
@@ -73,8 +71,7 @@ class BotManager : JFrame() {
         if(AccountManager.accounts.isNotEmpty()) {
             AccountManager.accounts.forEach { acc ->
                 GlobalScope.launch { BotInstance(acc) }
-                if (AccountManager.accounts.size > 1)
-                    sleep(1000*3) // Wait 3 seconds for tab to open up
+                sleep(1000*3) // Wait 3 seconds for tab to open up
             }
         } else{
             GlobalScope.launch { BotInstance() }

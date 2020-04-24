@@ -54,11 +54,12 @@ class TotalDebugPaint: PaintScript(), KeyListener {
     
     override fun draw(g: Graphics) {
         try {
+
             val debugX = 50
             val debugY = 25
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
-            drawDebugOptions(g,debugX,debugY)
+            // drawDebugOptions(g,debugX,debugY)
 
 
             if(isCanWalkDebug)
