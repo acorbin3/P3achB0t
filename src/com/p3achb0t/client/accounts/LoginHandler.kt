@@ -27,10 +27,7 @@ class LoginHandler(var account: Account = Account()) {
      */
     suspend fun login(ctx: Context): Boolean {
         println("Logging in")
-        println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
-        ctx.mouse.moveMouse(Point(409, 310), true, Mouse.ClickType.Left)
-        delay(500)
-        ctx.mouse.moveMouse(Point(466, 294), true, Mouse.ClickType.Left)
+        ctx.keyboard.pressDownKey(KeyEvent.VK_ENTER)
         println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
         if (ctx.client.getLogin_username() != account.username) {
             //Delete user name and replace
