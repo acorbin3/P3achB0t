@@ -11,12 +11,16 @@ enum class ScriptType {
     None
 }
 
-class ScriptInformation(val fileName: String, val path: String, val category: String, val name: String, val author: String, val version: String, val type: ScriptType, val main: String) {
+class ScriptInformation(val fileName: String, val path: String, val category: String, val name: String, val author: String, val version: String, val type: ScriptType, val main: String, val clazz: Class<*>? = null) {
 
     fun load(): Any? {
         return if (path.contains(".class")) {
-            val loadedClass = Class.forName(main.replace("/","."), true, this.javaClass.classLoader)
-            loadedClass.newInstance()
+            if (clazz != null) {
+                clazz.newInstance()
+            } else {
+                val loadedClass = Class.forName(main.replace("/", "."), true, this.javaClass.classLoader)
+                loadedClass.newInstance()
+            }
         } else {
             val file = File(path)
             val urlArray: Array<URL> = Array(1, init = { file.toURI().toURL() })

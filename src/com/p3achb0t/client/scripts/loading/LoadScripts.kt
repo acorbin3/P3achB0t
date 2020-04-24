@@ -1,11 +1,8 @@
 package com.p3achb0t.client.scripts.loading
 
-import com.p3achb0t.client.configs.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 import java.util.jar.JarFile
 
 class LoadScripts {
@@ -76,24 +73,64 @@ class LoadScripts {
     private fun findInternalScripts(packageName: String) {
         val classLoader = this.javaClass.classLoader
         val resources = classLoader.getResources(packageName)
+        val defaultScripts = arrayListOf("TemplateScript", "NullScript")
 
         resources.asIterator().forEach {
-            val file = File(it.file)
-            loopOverInternalScriptClasses(file)
+            if (File(it.file).exists()) {
+                val file = File(it.file)
+                loopOverInternalScriptClasses(file)
+            } else {
+                //Open jar, loop over all classes to find abstract class.
+                if (it.file.contains("!")) {
+
+                    val jarFilePath = JarFile(it.file.split("!")[0].replace("file:", ""))
+
+                    println("Lookin at this path: $jarFilePath")
+                    jarFilePath.entries().asIterator().forEach { jarEntry ->
+                        if (jarEntry.name.endsWith(".class")) {
+                            val classReader = ClassReader(jarFilePath.getInputStream(jarEntry))
+                            val classNode = ClassNode()
+                            classReader.accept(classNode, 0)
+
+                            if (classNode.superName != null
+                                    && (classNode.superName.contains("ActionScript")
+                                            || classNode.superName.contains("PaintScript")
+                                            || classNode.superName.contains("ServiceScript"))
+                                    && classNode.name.replace(".class", "")
+                                            .split("/").last() !in defaultScripts) {
+                                //We want to make sure we are looking at the right package. So we compare each director
+                                // structure to make sure it matches given the diresred class path
+                                val fullClassSplit = classNode.name.split("/")
+                                val desiredClassSplit = packageName.split("/")
+                                var goodPackage = true
+                                desiredClassSplit.forEachIndexed { index, s ->
+                                    if (s != fullClassSplit[index]) {
+                                        goodPackage = false
+                                    }
+                                }
+
+                                if (goodPackage) {
+                                    addJarScriptToScripts(File(jarEntry.name), classNode)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun loopOverInternalScriptClasses(file: File) {
         val files = file.listFiles() ?: return
-        for (x in files) {
-            if (x.isDirectory) {
-                loopOverInternalScriptClasses(x)
+        for (possibleScript in files) {
+            if (possibleScript.isDirectory) {
+                loopOverInternalScriptClasses(possibleScript)
             } else {
-                if (x.isFile && x.name.endsWith(".class")) {
-                    val classReader = ClassReader(x!!.inputStream())
+                if (possibleScript.isFile && possibleScript.name.endsWith(".class")) {
+                    val classReader = ClassReader(possibleScript!!.inputStream())
                     val classNode = ClassNode()
                     classReader.accept(classNode, 0)
-                    addJarScriptToScripts(x, classNode)
+                    addJarScriptToScripts(possibleScript, classNode)
                 }
             }
         }
@@ -121,9 +158,30 @@ class LoadScripts {
                     }
                     else -> ScriptType.None
                 }
-                val information = ScriptInformation(file.name, file.path, "${x.values[1]}", "${x.values[3]}", "${x.values[5]}", "${x.values[7]}", type, classNode.name)
-                //println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
-                scriptsInformation[file.name] = information
+                scriptsInformation[file.name] = if (!file.name.contains(".jar")) {
+                    //Adding the class for internally compiled scripts
+                    ScriptInformation(
+                            file.name,
+                            file.path,
+                            "${x.values[1]}",
+                            "${x.values[3]}",
+                            "${x.values[5]}",
+                            "${x.values[7]}",
+                            type,
+                            classNode.name,
+                            Class.forName(classNode.name.replace("/", ".")))
+                } else {
+                    ScriptInformation(
+                            file.name,
+                            file.path,
+                            "${x.values[1]}",
+                            "${x.values[3]}",
+                            "${x.values[5]}",
+                            "${x.values[7]}",
+                            type,
+                            classNode.name)
+                }
+                println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
             }
         }
     }
