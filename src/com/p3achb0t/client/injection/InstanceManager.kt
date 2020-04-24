@@ -9,6 +9,7 @@ import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import com.p3achb0t.client.scripts.loading.ScriptInformation
+import com.p3achb0t.api.ClientContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -121,7 +122,7 @@ class InstanceManager(val client: Any) {
     private fun actionScriptState(loopRunning: Boolean) {
         if (loopRunning) {
             if (actionScriptLoop == null) {
-                actionScriptLoop = GlobalScope.launch {
+                actionScriptLoop = GlobalScope.launch(ClientContext(ctx)) {
                     while (true) {
                         while (!ctx.worldHop.isLoggedIn) {
                             delay(100)

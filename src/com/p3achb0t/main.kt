@@ -40,6 +40,7 @@ object Main {
         val botManager = BotManager()
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
+        botManager.initFrame()
         botManager.updateCache()
         botManager.startScripts()
     }
