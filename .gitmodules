@@ -5,3 +5,7 @@
 [submodule "src/com/p3achb0t/api/private_api"]
 	path = src/com/p3achb0t/api/private_api
 	url = https://github.com/acorbin3/P3achB0t-API.git
+
+[submodule "src/com/p3achb0t/scripts_private_shared"]
+	path = src/com/p3achb0t/scripts_private_shared
+	url = https://github.com/acorbin3/P3achBot-Scripts-Shared.git
