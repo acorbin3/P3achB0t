@@ -1,11 +1,13 @@
 package com.p3achb0t.client.accounts
 
+import java.util.*
+
 
 class Account {
 
 
     // Identifier
-    var uuid: String = ""
+    var uuid: String = UUID.randomUUID().toString()
 
     // UNIX time
     var sessionStartTime: Long = -1
@@ -50,10 +52,7 @@ class Account {
     var key: String = ""
     var args: String = ""
 
-
-
-
-
-
-
+    fun getRandomDat(): String {
+        return if (username == "") "random.dat" else "$username.dat"
+    }
 }

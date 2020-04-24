@@ -34,7 +34,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val add = JMenuItem("Add")
         add.addActionListener {
-            BotInstance().initBot()
+            BotInstance()
         }
 
         val remove = JMenuItem("Remove")
@@ -134,13 +134,11 @@ class BotNavigationMenu: JMenuBar() {
         val add = JMenuItem("Kidding just adds 5 tabs XD")
         add.addActionListener {
             for (x in 1..5) {
-                val bot = BotInstance()
-                bot.initBot()
+                BotInstance()
             }
         }
 
         menu.add(add)
-
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
     }

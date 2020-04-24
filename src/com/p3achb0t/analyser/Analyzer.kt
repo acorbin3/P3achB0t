@@ -445,6 +445,51 @@ class Analyser{
             }
         }
 
+        // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
+        val garbageCollectClass = "gx"
+        val garbageCollectMethod = "ay"
+        var gcInjected = false
+        gcRoot@for (method in classes[garbageCollectClass]!!.methods) {
+            if (method.name == garbageCollectMethod) {
+                val instructions = method.instructions.iterator()
+                while (instructions.hasNext()) {
+                    if (instructions.next().opcode == IRETURN && instructions.previous().previous.opcode == ILOAD) {
+                        println("Injecting GC check return.")
+                        method.instructions.set(instructions.previous(), InsnNode(ICONST_0))
+                        gcInjected = true
+                        break@gcRoot
+                    }
+                }
+            }
+        }
+        if (!gcInjected) println("Failed to inject GC duration bypass.")
+
+        val createRandDatClass = "hb"
+        val createRandDatMethod = "k"
+        var datInjected = 0
+        randRoot@for (method in classes[createRandDatClass]!!.methods) {
+            if (method.name == createRandDatMethod) {
+                val instructions = method.instructions.iterator()
+                while (instructions.hasNext()) {
+                    val i = instructions.next()
+                    if (i is LdcInsnNode && i.cst.toString() == "random.dat") {
+                        val ni = FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;")
+                        method.instructions.set(i, ni)
+                        val il = InsnList()
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getAccount", "()Lcom/p3achb0t/client/accounts/Account;"))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/accounts/Account", "getRandomDat", "()Ljava/lang/String;"))
+                        method.instructions.insert(ni, il)
+                        datInjected += 1
+                        if (datInjected == 2) {
+                            println("Replaced random.dat references.")
+                            break@randRoot
+                        }
+                    }
+                }
+            }
+        }
+        if (datInjected < 2) println("Failed to inject random.dat bypass.")
+
         val path = System.getProperty("user.dir")
         val out = JarOutputStream(FileOutputStream(File("$path/${Constants.APPLICATION_CACHE_DIR}/${Constants.INJECTED_JAR_NAME}")))
         for (classNode in classes.values) {

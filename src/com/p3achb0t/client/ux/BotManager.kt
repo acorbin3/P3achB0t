@@ -70,31 +70,11 @@ class BotManager : JFrame() {
         //Set the account for things needed in the InstanceManager
         if(AccountManager.accounts.isNotEmpty()) {
             AccountManager.accounts.forEach { acc ->
-                GlobalScope.launch { BotInstance().initBot(acc.username, acc.proxy, acc.gameWorld, acc.uuid) }
+                GlobalScope.launch { BotInstance(acc) }
                 sleep(1000*3) // Wait 3 seconds for tab to open up
-                botTabBar.botInstances.forEach { key, instance ->
-                    if(instance.sessionToken == acc.uuid){
-                        //Update the Account to the Instance manager
-                        instance.getInstanceManager().account = acc
-                    }
-//                if(instance.getInstanceManager().loginHandler.account.username == it.username){
-//                    println("Waiting to game state is 10")
-//                    while (instance.getInstanceManager().ctx?.client?.getGameState() != 10){
-//                        print(" ${instance.getInstanceManager().ctx?.client?.getGameState()}")
-//                        sleep(50)
-//                    }
-//                    //Start script
-//                    if(it.script.isNotEmpty() && it.startAutomatically){
-//                        //instance.instanceManagerInterface?.getManager()?.startActionScript()
-//                        sleep(5000) // Wait 5 seconds between scripts
-//                    }
-//                }
-                }
-
-
             }
-        }else{
-            GlobalScope.launch { BotInstance().initBot() }
+        } else{
+            GlobalScope.launch { BotInstance() }
         }
 
 

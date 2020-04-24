@@ -1,5 +1,6 @@
 package com.p3achb0t.client.ux
 
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
 import com.p3achb0t.client.injection.InstanceManagerInterface
@@ -10,7 +11,7 @@ import java.util.*
 import javax.swing.JPanel
 
 
-class BotInstance : JPanel() {
+class BotInstance(account: Account = Account()) : JPanel() {
     // add the canvas to this JPanel
 
     var sessionToken: String = ""
@@ -18,23 +19,13 @@ class BotInstance : JPanel() {
     lateinit var instanceManagerInterface: InstanceManagerInterface
 
     init {
-        // JPanel setup
         this.layout = BorderLayout()
-    }
-
-
-    fun initBot(username: String = "Bot", proxy: String="none", world: Int = 80, sessionID: String = UUID.randomUUID().toString()) {
-        sessionToken = sessionID
-
-        JarLoader.load(world, proxy)?.let {
+        JarLoader.load(account)?.let {
             applet = it
-            add(applet) // add the game to the JPanel
-
+            sessionToken = account.uuid
             instanceManagerInterface = applet as InstanceManagerInterface
-            // add uuid to the bot
-            instanceManagerInterface.getManager().instanceUUID = sessionToken
-
-            GlobalStructs.botManager.botTabBar.addBotInstance("$username-$proxy", sessionToken, this)
+            add(applet) // add the game to the JPanel
+            GlobalStructs.botManager.botTabBar.addBotInstance("${account.username}-${account.proxy}", sessionToken, this)
         }
     }
 
