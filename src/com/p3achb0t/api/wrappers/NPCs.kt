@@ -3,7 +3,6 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.api.Context
 import kotlin.math.abs
 import kotlin.math.max
-import kotlin.math.min
 
 class NPCs(val ctx: Context) {
     fun findNpc(npcName: String, sortByDist: Boolean = true): ArrayList<NPC> {
@@ -148,13 +147,9 @@ class NPCs(val ctx: Context) {
                 }
             }
             if (sortByDist) {
-                npcs.sortBy {
+                npcs.sortedBy {
                     // Sort closest to player
-                    val localPlayer = ctx.client.getLocalPlayer()
-                    min(
-                            abs(localPlayer.getX() - it.npc.getX()),
-                            abs(localPlayer.getY() - it.npc.getY())
-                    )
+                    it.distanceTo()
                 }
             }
         } catch (e: Exception) {

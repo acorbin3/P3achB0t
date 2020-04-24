@@ -154,7 +154,7 @@ class GameObjects(val ctx: Context) {
         return gameObjects
     }
 
-    fun findinArea(id: Int, area: Area, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
+    fun findinArea(id: Int, area: Area, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
         val region = ctx.client.getScene()
 
@@ -198,7 +198,7 @@ class GameObjects(val ctx: Context) {
         }
         if (sortByDistance) {
             val local = ctx.players.getLocal()
-            gameObjects.sortBy { it.distanceTo(local) }
+            gameObjects.sortedBy { it.distanceTo(local) }
         }
         return gameObjects
     }
