@@ -16,6 +16,7 @@ class GlobalStructs {
         // and will be handled by the InstanceManager
         val scripts = LoadScripts()
 
+        val commPort = 8274
         val communication = Broker()
         val peerClient = PeerClient()
         val db : FBDataBase = FBDataBase()
