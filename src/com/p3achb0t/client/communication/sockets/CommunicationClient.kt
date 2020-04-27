@@ -14,7 +14,7 @@ class CommunicationClient(serverUri: URI?) : WebSocketClient(serverUri) {
     }
 
     override fun onMessage(p0: String?) {
-        println("Client recieved: $p0")
+        println("Client recieved message: $p0")
     }
 
     override fun onError(p0: Exception?) {

@@ -15,6 +15,11 @@ class ScriptIPCServer : ActionScript() {
         server = Server(GlobalStructs.commPort, callbacks)
     }
 
+    override fun start() {
+        super.start()
+        ctx.coms.addCallback(::receiveMessage)
+    }
+
     private fun receiveMessage(message: String) {
         println("Callback: $message")
     }

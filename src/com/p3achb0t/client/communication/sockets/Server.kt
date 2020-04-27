@@ -15,6 +15,10 @@ class Server(port: Int, var callbacks: ArrayList<(String) -> Unit>) : WebSocketS
         this.start()
     }
 
+    fun addCallback(callback: (String) -> Unit) {
+        callbacks.add(callback)
+    }
+
     override fun onOpen(p0: WebSocket?, p1: ClientHandshake?) {
         println("Server onOpen")
     }
@@ -24,9 +28,9 @@ class Server(port: Int, var callbacks: ArrayList<(String) -> Unit>) : WebSocketS
     }
 
     override fun onMessage(socket: WebSocket?, message: String?) {
-        println("onMessage $message")
+        println("Server onMessage $message")
         callbacks.forEach {
-            it(message ?: "")
+            it("$message")
         }
     }
 

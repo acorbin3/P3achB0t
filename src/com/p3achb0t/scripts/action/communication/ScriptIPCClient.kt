@@ -12,6 +12,7 @@ class ScriptIPCClient : ActionScript() {
     override fun start() {
         super.start()
         tasks.add(SendMessage(ctx))
+        ctx.coms.addCallback(::callback)
     }
 
     class SendMessage(ctx: Context) : LeafTask(ctx) {
@@ -28,5 +29,9 @@ class ScriptIPCClient : ActionScript() {
             }
         }
 
+    }
+
+    fun callback(message: String) {
+        println("Received a message: $message")
     }
 }
