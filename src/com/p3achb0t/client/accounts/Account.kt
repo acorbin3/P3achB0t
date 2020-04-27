@@ -46,7 +46,7 @@ class Account {
     var gameWorld: Int = 80
 
     // Utilities
-    var gameFps: Int = 15
+    var gameFps: Int = 30
     var startActionScriptAutomatically: Boolean = false
     var isOnBreak: Boolean = false
     var key: String = ""

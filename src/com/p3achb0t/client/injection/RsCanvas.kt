@@ -3,6 +3,7 @@ package com.p3achb0t.client.injection
 
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.Constants
 import java.awt.Canvas
 import java.awt.Graphics
@@ -35,6 +36,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     instanceManager.drawsServiceScripts(g2)
                     instanceManager.actionScript.draw(g2)
                     it.show()
+                    Thread.sleep(1000/ Account().gameFps.toLong())
                     return g2
                 } ?: createBufferStrategy(2)
             } catch (e: Exception) { }

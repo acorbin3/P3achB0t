@@ -30,10 +30,12 @@ object Coms {
         communicationClient.send(message)
     }
 
-    private fun broadcast(message: String) {
+    fun broadcast(message: String) {
         println("Sending broadcast back")
         server?.connections?.forEach {
             it.send("$message")
         }
     }
+
+
 }

@@ -51,7 +51,6 @@ class InstanceManager(val client: Any) {
     val paintScripts = ConcurrentHashMap<String, PaintScript>()
 
     //Util
-    var fps = 50
     var drawCanvas = true
 
     // Don't delete this. Its used within the injected functions

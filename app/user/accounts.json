@@ -18,14 +18,15 @@
     "debugScripts": [
     ],
     "serviceScripts": [
+	      "Login Handler"
     ],
     "proxy": "none",
-    "username": "cookii_montr@hotmail.com",
-    "password": "jkennedy1",
+    "username": "zaksmithcomputing+112@gmail.com",
+    "password": "sirsmith3",
     "pin": "",
     "banned": false,
-    "gameWorld": 215,
-    "gameFps": 20,
+    "gameWorld": 45,
+    "gameFps": 50,
     "startActionScriptAutomatically": true,
     "isOnBreak": false,
     "key": "",

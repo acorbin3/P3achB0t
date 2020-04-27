@@ -5,6 +5,10 @@ import org.java_websocket.handshake.ServerHandshake
 import java.net.URI
 
 class CommunicationClient(serverUri: URI?) : WebSocketClient(serverUri) {
+
+    companion object{
+        var BroadcastString = ""
+    }
     override fun onOpen(p0: ServerHandshake?) {
         println("Client onOpen")
     }
@@ -15,6 +19,7 @@ class CommunicationClient(serverUri: URI?) : WebSocketClient(serverUri) {
 
     override fun onMessage(p0: String?) {
         println("Client recieved message: $p0")
+        if(p0 != null) BroadcastString = p0
     }
 
     override fun onError(p0: Exception?) {
