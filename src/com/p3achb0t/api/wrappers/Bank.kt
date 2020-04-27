@@ -114,6 +114,7 @@ class Bank(val ctx: Context) {
         })
     }
 
+
     fun itemVisible(itemRect: Rectangle): Boolean {
         return WidgetItem(getBankWidget(), ctx = ctx).area.intersects(itemRect)
     }
