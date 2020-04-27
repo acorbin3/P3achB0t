@@ -117,7 +117,7 @@ class BotManager : JFrame() {
         if(AccountManager.accounts.isNotEmpty()) {
             AccountManager.accounts.forEach {
                 botTabBar.botInstances.forEach { key, instance ->
-                    if (instance.sessionToken == instance.sessionToken) {
+                    if (it.uuid == instance.sessionToken) {
                         //Update the Account to the Instance manager
                         if(it.startActionScriptAutomatically) {
                             instance.getInstanceManager().startActionScript(it.actionScript)

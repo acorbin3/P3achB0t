@@ -3,6 +3,7 @@ package com.p3achb0t.api
 import com.p3achb0t.api.interfaces.Client
 import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.script.communication.Channels
+import com.p3achb0t.api.script.communication.Coms
 import com.p3achb0t.api.userinputs.Camera
 import com.p3achb0t.api.userinputs.Keyboard
 import com.p3achb0t.api.userinputs.Mouse
@@ -47,6 +48,7 @@ class Context(val obj: Any) {
     val grandExchange: GrandExchange
     val trade: Trade
     val ipc: Channels
+    val coms: Coms
 
     init {
         mouse = Mouse(obj)
@@ -79,6 +81,7 @@ class Context(val obj: Any) {
         grandExchange = GrandExchange(this)
         trade = Trade(this)
         ipc = Channels()
+        coms = Coms
     }
 }
 
