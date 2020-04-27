@@ -27,7 +27,12 @@ object Coms {
     }
 
     fun sendMessage(message: String) {
-        communicationClient.send(message)
+        try {
+            communicationClient.send(message)
+        } catch (e: Exception) {
+        e.printStackTrace()
+        println("ERROR - probably Server is already created")
+    }
     }
 
     fun broadcast(message: String) {
