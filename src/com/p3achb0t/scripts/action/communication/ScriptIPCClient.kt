@@ -32,6 +32,6 @@ class ScriptIPCClient : ActionScript() {
     }
 
     fun callback(message: String) {
-        println("Received a message: $message")
+        println("3nd: Received a message: $message")
     }
 }

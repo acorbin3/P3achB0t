@@ -6,10 +6,10 @@ import org.java_websocket.server.WebSocketServer
 import java.lang.Thread.sleep
 import java.net.InetSocketAddress
 import java.net.URI
-import java.util.*
 
 
-class Server(port: Int, var callbacks: ArrayList<(String) -> Unit>) : WebSocketServer(InetSocketAddress(port)) {
+class Server(port: Int) : WebSocketServer(InetSocketAddress(port)) {
+    var callbacks: ArrayList<(String) -> Unit> = ArrayList()
 
     init {
         this.start()
@@ -49,7 +49,7 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         val port = 8274
-        val server = Server(port, ArrayList<(String) -> Unit>())
+        val server = Server(port)
         sleep(1000)
 
         val client = CommunicationClient(URI("ws://localhost:$port"))

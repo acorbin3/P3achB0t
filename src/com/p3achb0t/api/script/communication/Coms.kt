@@ -7,15 +7,13 @@ import java.net.URI
 
 object Coms {
     private val communicationClient = CommunicationClient(URI("ws://localhost:${GlobalStructs.commPort}"))
-    val callbacks = ArrayList<(String) -> Unit>()
     private var server: Server? = null
-
 
     init {
         communicationClient.connect()
         try {
-            callbacks.add(::broadcast)
-            server = Server(GlobalStructs.commPort, callbacks)
+            server = Server(GlobalStructs.commPort)
+            addCallback(::broadcast)
         } catch (e: Exception) {
             e.printStackTrace()
             println("ERROR - probably Server is already created")
@@ -24,6 +22,7 @@ object Coms {
 
     fun addCallback(callback: (String) -> Unit) {
         server?.addCallback(callback)
+        communicationClient.addCallback(callback)
     }
 
     fun sendMessage(message: String) {

@@ -7,13 +7,7 @@ import com.p3achb0t.client.configs.GlobalStructs
 
 @ScriptManifest("Skills", "ScriptIPCServer", "P3aches", "0.1")
 class ScriptIPCServer : ActionScript() {
-    var server: Server
-
-    init {
-        val callbacks = ArrayList<(String) -> Unit>()
-        callbacks.add(::receiveMessage)
-        server = Server(GlobalStructs.commPort, callbacks)
-    }
+    var server: Server = Server(GlobalStructs.commPort)
 
     override fun start() {
         super.start()
