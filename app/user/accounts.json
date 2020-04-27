@@ -16,11 +16,8 @@
     "sessionToken": "",
     "actionScript": "Zulrah",
     "debugScripts": [
-      "Total Debug Paint"
     ],
     "serviceScripts": [
-      "Login Handler",
-      "XP Tracker"
     ],
     "proxy": "none",
     "username": "cookii_montr@hotmail.com",

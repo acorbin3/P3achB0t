@@ -123,9 +123,9 @@ class InstanceManager(val client: Any) {
             if (actionScriptLoop == null) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
-                        while (!ctx.worldHop.isLoggedIn) {
-                            delay(100)
-                        }
+//                        while (!ctx.worldHop.isLoggedIn) {
+//                            delay(100)
+//                        }
                         actionScript.loop()
                         delay(10)
                     }
