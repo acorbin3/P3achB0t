@@ -1,6 +1,6 @@
 [
   {
-    "uuid": "6cb90bfd-698b-410f-aef8-ba2dad7503cc",
+    "uuid": "",
     "sessionStartTime": -1,
     "useBreaks": false,
     "minimumSessionTime": 0,
@@ -14,19 +14,21 @@
     "windowStartTime": 1080,
     "windowEndHourTime": 360,
     "sessionToken": "",
-    "actionScript": "Zulrah",
+    "actionScript": "",
     "debugScripts": [
+      "Total Debug Paint"
     ],
     "serviceScripts": [
-	      "Login Handler"
+      "Login Handler",
+      "XP Tracker"
     ],
     "proxy": "none",
-    "username": "zaksmithcomputing+113@gmail.com",
-    "password": "george600111",
+    "username": "",
+    "password": "",
     "pin": "",
     "banned": false,
-    "gameWorld": 45,
-    "gameFps": 50,
+    "gameWorld": 80,
+    "gameFps": 15,
     "startActionScriptAutomatically": true,
     "isOnBreak": false,
     "key": "",
