@@ -17,7 +17,7 @@ https://discord.gg/kcepXFP
 Make sure you have Java 11
 
 # How to setup & build the project
-Its recommended that you use InteliJ IDEA for the development environment. Currently we are using Java 11
+Its recommended that you use InteliJ IDEA for the development environment. Currently, we are using Java 11
 
 ## Importing Steps
 1. Clone the repo from the commandline, GitHub desktop GUI or even within InteliJ
@@ -44,10 +44,8 @@ At this point you should have all the external Libraries loaded in the project p
 # Script loading
 Currently the scripts live in the follow location: src/com/p3achb0t/scripts
 The TutorialIsland.kt script should have an extensive working version on a script. 
+As long as you set up the Manifest the scripts should automatically be loaded
 
-1. Create main file - To create your own clone an existing script in this directory or create a new file. Just make sure you extend your class from an AbstractScript.
-2. Add it to the menu - In the following file you can add a new menuItem for your script: src/com/p3achb0t/client/ui/components/GameMenu.kt
-3. Starting - Rebuild and run the application. After these steps you should see your script in the Debug menu. Select it and then in the Client dropdown press Start
 
 ## Fast Debugging
 If you use the Kotlin template building method you can recompile files and "Hot swap" the class files while the client is working. All you need to do is be sure you are in debug mode and you can do that by pressing the Bug button as long as you have the correct build configurations selected
