@@ -6,6 +6,7 @@ import com.p3achb0t.api.Context;
 import com.p3achb0t.api.wrappers.VarbitData;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import java.awt.*;
@@ -22,8 +23,8 @@ public class VarBitExplorer {
     private JTextField varBitEntry;
     private JButton getVarbitButton;
     private JLabel varBitValueLable;
-    private Context ctx;
-    private VarBitRunnable varBitMonitoringThread;
+    private final Context ctx;
+    private final VarBitRunnable varBitMonitoringThread;
 
     public class VarBitRunnable implements Runnable {
 
@@ -176,7 +177,7 @@ public class VarBitExplorer {
     private void $$$setupUI$$$() {
         createUIComponents();
         panel1.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
-        panel1.setBorder(BorderFactory.createTitledBorder("VarBit Log"));
+        panel1.setBorder(BorderFactory.createTitledBorder(null, "VarBit Log", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JScrollPane scrollPane1 = new JScrollPane();
         panel1.add(scrollPane1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         editorPane1 = new JEditorPane();

@@ -51,6 +51,7 @@ class BotManager : JFrame() {
         GlobalStructs.scripts.loadPath("${Constants.USER_DIR}/${Constants.APPLICATION_CACHE_DIR}/${Constants.SCRIPTS_DIR}")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
+        GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private_shared")
         botNavMenu.refreshScriptMenu() // lazy fix should be callback instead
     }
 
