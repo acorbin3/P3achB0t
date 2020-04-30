@@ -25,11 +25,11 @@ class Utils {
             return false
         }
 
-        suspend fun sleepUntil(condition:() -> Boolean, time: Int): Boolean{
+        suspend fun sleepUntil(condition: () -> Boolean, time: Int = 5): Boolean {
             var istrue = false
-            for (i in 1..time*10){
+            for (i in 1..time * 10) {
                 println("condition is true? " + condition())
-                if(condition()){
+                if (condition()) {
                     istrue = true
                     break
                 }

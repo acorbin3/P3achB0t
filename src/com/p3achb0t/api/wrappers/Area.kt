@@ -151,11 +151,15 @@ class Area {
         }
     }
 
-    fun isPlayerInArea(): Boolean{
-        if(ctx == null){
+    fun isPlayerInArea(ignorePlane: Boolean = false): Boolean {
+        if (ctx == null) {
             println("ERROR: ctx is null, distance to player cant be computed. Please provide the ctx")
+            Thread.currentThread().stackTrace.forEach {
+                println(it.toString())
+            }
         }
-        return ctx?.players?.getLocal()?.getGlobalLocation()?.let { this.containsOrIntersects(it) } ?: false
+        return ctx?.players?.getLocal()?.getGlobalLocation()?.let { this.containsOrIntersects(it, ignorePlane = ignorePlane) }
+                ?: false
     }
 
     fun contains(vararg locatables: Locatable): Boolean {
@@ -168,10 +172,11 @@ class Area {
         return true
     }
 
-    fun containsOrIntersects(vararg locatables: Locatable): Boolean {
+    fun containsOrIntersects(vararg locatables: Locatable, ignorePlane: Boolean = false): Boolean {
         for (locatable in locatables) {
             val tile = locatable.getGlobalLocation()
-            if (tile.z != plane || !polygon.contains(tile.x, tile.y) && !polygon.intersects(
+            val planeCheck = ignorePlane || tile.z != plane
+            if (planeCheck || !polygon.contains(tile.x, tile.y) && !polygon.intersects(
                             tile.x + 0.5,
                             tile.y + 0.5,
                             1.0,

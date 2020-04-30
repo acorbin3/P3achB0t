@@ -26,10 +26,21 @@ class Path(val tiles: ArrayList<Tile>, var ctx: Context?=null) {
     }
 
 
-    fun distanceToEndTile(): Int{
+    fun distanceToEndTile(): Int {
         return tiles.last().distanceTo()
     }
-    fun distanceToFirstTile(): Int{
+
+    fun distanceToFirstTile(): Int {
         return tiles.first().distanceTo()
+    }
+
+    fun isOnPath(): Boolean {
+
+        tiles.forEach {
+            if (it.distanceTo() < 10) {
+                return true
+            }
+        }
+        return false
     }
 }

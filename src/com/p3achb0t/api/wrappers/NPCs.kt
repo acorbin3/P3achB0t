@@ -90,12 +90,7 @@ class NPCs(val ctx: Context) {
         }
         if (sortByDist) {
             npcs.sortBy {
-                // Sort closest to player
-                val localPlayer = ctx.client.getLocalPlayer()
-                max(
-                        abs(localPlayer.getX() - it.npc.getX()),
-                        abs(localPlayer.getY() - it.npc.getY())
-                )
+                it.distanceTo()
             }
         }
         return npcs

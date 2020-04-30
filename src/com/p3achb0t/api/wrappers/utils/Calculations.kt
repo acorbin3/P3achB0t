@@ -206,7 +206,7 @@ class Calculations {
 
 
         // This will convert the regional coordinates to the miniMap
-        fun worldToMiniMap(x: Int, y: Int, ctx: Context): Point {
+        fun worldToMiniMap(x: Int, y: Int, ctx: Context, checkInMapArea: Boolean = true): Point {
 
             // Note: Multiply by tile size before converting to local coordinates to preserve precision
             val tilePX = ((x - ctx.client.getBaseX()) * Constants.MAP_TILE_SIZE) shr Constants.REGION_SHIFT
@@ -234,7 +234,7 @@ class Calculations {
 
             val screenX = calcCenterX + Widget.getWidgetX(miniMapWidget, ctx) + miniMapWidget.getWidth() / 2
             val screenY = calcCenterY + Widget.getWidgetY(miniMapWidget, ctx) + miniMapWidget.getHeight() / 2
-            return if (ctx.miniMap.getMapArea().contains(Point(screenX, screenY))) {
+            return if (ctx.miniMap.getMapArea().contains(Point(screenX, screenY)) || checkInMapArea) {
                 Point(screenX - 2, screenY - 1)
             } else Point(-1, -1)
         }
