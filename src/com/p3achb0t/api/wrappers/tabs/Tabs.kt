@@ -11,20 +11,20 @@ class Tabs(val ctx: Context) {
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
-        ClanChat(31, WidgetID.ResizableViewport.CLAN_CHAT_TAB),
-        AccountManagement(32, WidgetID.ResizableViewport.ACCOUNT_MANAGEMENT_TAB),
-        FriendsList(33, WidgetID.ResizableViewport.FRIENDS_TAB),
+        ClanChat(37, WidgetID.ResizableViewport.CLAN_CHAT_TAB),
+        AccountManagement(38, WidgetID.ResizableViewport.ACCOUNT_MANAGEMENT_TAB),
+        FriendsList(39, WidgetID.ResizableViewport.FRIENDS_TAB),
         Logout(34),
-        Options(35, WidgetID.ResizableViewport.OPTIONS_TAB),
-        Emotes(36, WidgetID.ResizableViewport.EMOTES_TAB),
-        Music(37, WidgetID.ResizableViewport.MUSIC_TAB),
-        Combat(48, WidgetID.ResizableViewport.COMBAT_TAB),
-        Skills(49, WidgetID.ResizableViewport.STATS_TAB),
-        QuestList(50, WidgetID.ResizableViewport.QUESTS_TAB),
-        Inventory(51, WidgetID.ResizableViewport.INVENTORY_TAB),
-        Equiptment(52, WidgetID.ResizableViewport.EQUIPMENT_TAB),
-        Prayer(53, WidgetID.ResizableViewport.PRAYER_TAB),
-        Magic(54, WidgetID.ResizableViewport.MAGIC_TAB);
+        Options(40, WidgetID.ResizableViewport.OPTIONS_TAB),
+        Emotes(41, WidgetID.ResizableViewport.EMOTES_TAB),
+        Music(42, WidgetID.ResizableViewport.MUSIC_TAB),
+        Combat(52, WidgetID.ResizableViewport.COMBAT_TAB),
+        Skills(53, WidgetID.ResizableViewport.STATS_TAB),
+        QuestList(54, WidgetID.ResizableViewport.QUESTS_TAB),
+        Inventory(55, WidgetID.ResizableViewport.INVENTORY_TAB),
+        Equiptment(56, WidgetID.ResizableViewport.EQUIPMENT_TAB),
+        Prayer(57, WidgetID.ResizableViewport.PRAYER_TAB),
+        Magic(58, WidgetID.ResizableViewport.MAGIC_TAB);
 
         companion object {
             fun valueOf(id: Int, ctx: Context): Tab_Types? = values().find {
