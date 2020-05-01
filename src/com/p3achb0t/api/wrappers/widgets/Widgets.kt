@@ -143,8 +143,10 @@ class Widgets(val ctx: Context) {
             var i = 0
             if(widget.getChildren() != null && widget.getChildren().isNotEmpty()) {
                 widget.getChildren().iterator().forEach {
-                    result += getWidgetDetails(it, i)
-                    i += 1
+                    if(it != null) {
+                        result += getWidgetDetails(it, i)
+                        i += 1
+                    }
                 }
             }
 //                if (widget.getChildren().isNotEmpty()) {
