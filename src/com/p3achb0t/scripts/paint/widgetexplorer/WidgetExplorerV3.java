@@ -215,9 +215,10 @@ public class WidgetExplorerV3 {
         DefaultMutableTreeNode currentParentNode = null;
         for (Integer parentID = 0; parentID < components.length; parentID++) {
             if (components[parentID] != null) {
+                Component[] parent =   components[parentID];
 //                System.out.println("Parent:" + parentID);
-                for (Integer childID = 0; childID < components[parentID].length; childID++) {
-                    if (components[parentID][childID] != null) {
+                for (Integer childID = 0; childID < parent.length; childID++) {
+                    if (parent[childID] != null) {
 //                        System.out.println("Child:" + childID);
                         //Check to see if and component has the string, if so at least add the parent
                         String result = ctx.getWidgets().getWidgetDetails(components[parentID][childID], 0);
@@ -228,7 +229,7 @@ public class WidgetExplorerV3 {
 
                             DefaultMutableTreeNode child = new DefaultMutableTreeNode(childID);
                             //Add Children, of Children ids if the string matches
-                            Component[] childChildren = components[parentID][childID].getChildren();
+                            Component[] childChildren = parent[childID].getChildren();
                             if (childChildren != null) {
 //                                    System.out.println("Children children len: " + childChildren.length + "(" + parentID + "," + childID + ")");
 
