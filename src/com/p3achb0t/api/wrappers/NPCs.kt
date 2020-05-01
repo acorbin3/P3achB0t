@@ -142,7 +142,7 @@ class NPCs(val ctx: Context) {
                 }
             }
             if (sortByDist) {
-                npcs.sortedBy {
+                npcs.sortBy {
                     // Sort closest to player
                     it.distanceTo()
                 }
