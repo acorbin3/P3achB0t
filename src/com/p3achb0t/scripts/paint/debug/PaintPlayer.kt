@@ -59,7 +59,7 @@ class PaintPlayer : PaintScript() {
                     ) {
                         g.color = Color.GREEN
                         g.drawString(
-                                _player.getUsername().getCleanName() + " seq:${_player.getSequence()}  targ:${_player.getTargetIndex()} mov:${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}  ${_player.getX()} ${_player.getY()}",
+                                _player.getUsername().getCleanName() + " seq:${_player.getSequence()}  targ:${_player.getTargetIndex()} mov:${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}  ${_player.getX()} ${_player.getY()} spot: ${_player.getSpotAnimation()}",
                                 namePoint.x,
                                 namePoint.y
                         )

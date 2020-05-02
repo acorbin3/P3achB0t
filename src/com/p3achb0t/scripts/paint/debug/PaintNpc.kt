@@ -64,8 +64,9 @@ class PaintNpc : PaintScript() {
 
                             if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(ctx, namePoint)) {
                                 g.color = Color.GREEN
+
                                 g.drawString(
-                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()}",
+                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()} spot: ${newNPC.npc.getSpotAnimation()}",
                                         namePoint.x,
                                         namePoint.y
                                 )
