@@ -5,6 +5,7 @@ import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.script.listeners.ChatListener
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
@@ -27,7 +28,7 @@ enum class ScriptState {
     Paused,
 }
 
-class InstanceManager(val client: Any) {
+class InstanceManager(val client: Any): Logging() {
 
     // Client candy
     lateinit var ctx: Context
@@ -262,8 +263,7 @@ class InstanceManager(val client: Any) {
     }
 
     fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
-        val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-        println("$timeStamp - Info - argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
+        logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 
     fun getModelCallback(argument1: Int) {

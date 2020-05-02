@@ -1,10 +1,26 @@
 package com.p3achb0t.api.utils
 
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 open class Logging {
+
     val logger = LogInternal()
+
+    companion object{
+
+        val path = ".logs/"
+        val folder = File( path)
+        init {
+            folder.mkdirs()
+        }
+
+        val date = SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(Date())
+        val fn = "$path$date.txt"
+        val file = File(fn)
+
+    }
 
     class LogInternal{
 
@@ -12,20 +28,39 @@ open class Logging {
             val location = getLocation()
             val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
             val threadName = Thread.currentThread().name
-            println("$timeStamp [$threadName] DEBUG - $location $s")
+            val outputString = "$timeStamp [$threadName] DEBUG - $location $s"
+            println(outputString)
+            file.appendText(outputString + "\n")
+//            file.printWriter().use { out ->
+//                out.println(outputString)
+//                out.flush()
+//            }
         }
 
         fun info(s: String) {
 
             val location = getLocation()
             val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-            println("$timeStamp - INFO - $location $s")
+
+            val outputString = "$timeStamp - INFO - $location $s"
+            println(outputString)
+            file.appendText(outputString + "\n")
+//            file.printWriter().use { out ->
+//                out.println(outputString)
+//                out.flush()
+//            }
+
         }
 
         fun error(s: String) {
             val location = getLocation()
             val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-            println("$timeStamp - ERROR - $location $s")
+            val outputString = "$timeStamp - ERROR - $location $s"
+            file.appendText(outputString + "\n")
+//            file.printWriter().use { out ->
+//                out.println(outputString)
+//                out.flush()
+//            }
         }
 
         private fun getLocation(): String {

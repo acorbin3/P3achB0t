@@ -51,7 +51,7 @@ class Tile(
 
     override suspend fun clickOnMiniMap(): Boolean {
         if(ctx == null){
-            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            logger.error("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
             return false
         }
         val regional = getRegionalLocation()
@@ -62,7 +62,7 @@ class Tile(
     suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
         // translation
         if(ctx == null){
-            println("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
+            logger.error("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
             return false
         }
         val regional = getRegionalLocation()
@@ -72,7 +72,7 @@ class Tile(
 
     override fun getInteractPoint(): Point {
         if(ctx == null){
-            println("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
+            logger.error("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
             return Point(-1,-1)
         }
         val regional = getRegionalLocation()
@@ -82,7 +82,7 @@ class Tile(
 
     override fun isOnScreen(): Boolean {
         return if(ctx == null){
-            println("ERROR: ctx is null, isOnScreen cant be computed. Please provide the ctx")
+            logger.error("ERROR: ctx is null, isOnScreen cant be computed. Please provide the ctx")
             false
         }else{
             val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
@@ -102,7 +102,7 @@ class Tile(
     // This is distance to local player
     override fun distanceTo(): Int {
         if(ctx == null){
-            println("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
+            logger.error("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
             for(stack in Thread.currentThread().stackTrace){
                 println(stack)
             }

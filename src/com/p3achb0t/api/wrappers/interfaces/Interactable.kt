@@ -2,13 +2,14 @@ package com.p3achb0t.api.wrappers.interfaces
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.userinputs.Mouse
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.*
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-abstract class Interactable(var ctx: Context?) {
+abstract class Interactable(var ctx: Context?): Logging()  {
     abstract fun getInteractPoint(): Point
     abstract fun isMouseOverObj(): Boolean
 

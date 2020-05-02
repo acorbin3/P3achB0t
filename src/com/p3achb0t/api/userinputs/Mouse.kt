@@ -5,6 +5,7 @@ import com.p3achb0t.api.interfaces.IOHandler
 import com.p3achb0t.api.interfaces.Mouse
 import com.p3achb0t.api.userinputs.naturalmouse.api.MouseMotionFactory
 import com.p3achb0t.api.userinputs.naturalmouse.custom.RuneScapeFactoryTemplates
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.GroundItem
 import com.p3achb0t.api.wrappers.NPC
@@ -33,7 +34,7 @@ data class DoActionParams(
 // This class was replicated based on the mouse movement from:
 // https://github.com/cfoust/jane/blob/master/src/automata/tools/input/Mouse.java
 
-class Mouse(obj: Any) {
+class Mouse(obj: Any): Logging() {
 
     var overrideDoActionParams = false
     var doActionParams: DoActionParams = DoActionParams()
@@ -87,15 +88,15 @@ class Mouse(obj: Any) {
             this.doActionParams = doActionParams
             if(isLocationInScreenBounds(Point(0,0))) {
                 val timeDiff = System.currentTimeMillis() - lastDoAction
-                println("Time since last Action: $timeDiff")
+                logger.info("Time since last Action: $timeDiff")
                 if (timeDiff < 300) {
-                    println("Warning, fast action!")
+                    logger.info("Warning, fast action!")
                 }
                 lastDoAction = System.currentTimeMillis()
                 instantclick(Point(0, 0))
             }
         }catch(e: Exception){
-            println("Error: Doaction threw an error")
+            logger.error("Error: Doaction threw an error")
             e.stackTrace.iterator().forEach {
                 println(it)
             }
@@ -142,7 +143,7 @@ class Mouse(obj: Any) {
                     ioMouse.sendEvent(mouseRelease)
                 }
             } catch (e: Exception) {
-                println("Error: mouse through an exception")
+                logger.error("Error: mouse through an exception")
                 e.stackTrace.iterator().forEach {
                     println(it)
                 }
