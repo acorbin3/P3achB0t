@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.utils.Timer
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
@@ -8,7 +9,7 @@ import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-class Dialog(val ctx: Context) {
+class Dialog(val ctx: Context): Logging() {
     companion object {
         private const val PARENT = WidgetID.DIALOG_NPC_GROUP_ID
         private const val CONTINUE = WidgetID.DialogNPC.CONTINUE
