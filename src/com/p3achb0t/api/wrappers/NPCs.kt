@@ -100,7 +100,7 @@ class NPCs(val ctx: Context) {
     fun findNpcs(npcName: String, area: Area, sortByDist: Boolean = false): ArrayList<NPC> {
         val npcs = ArrayList<NPC>()
         ctx.client.getNpcs().forEachIndexed { index, npc ->
-            if (npc != null && npc.getType().getName().contentEquals(npcName) && area.containsOrIntersects(Tile(npc.getX(), npc.getY()).getGlobalLocation())) {
+            if (npc != null && npc.getType().getName().contentEquals(npcName) && area.contains(NPC(npc, ctx, index))) {
                 npcs.add(NPC(npc, ctx, index))
             }
         }
