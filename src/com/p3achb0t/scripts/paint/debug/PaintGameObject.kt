@@ -91,7 +91,7 @@ class PaintGameObject : PaintScript() {
                                             val objectComposite =
                                                     getObjectComposite(sceneData, go_fd.id)
                                             g.drawString(
-                                                    objectComposite?.getName() + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}",
+                                                    objectComposite?.getName() + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})",
                                                     point2.x,
                                                     point2.y)
                                         }
@@ -285,7 +285,7 @@ class PaintGameObject : PaintScript() {
                                                         ctx
                                                 )
                                         g.drawString(
-                                                objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y}",
+                                                objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
                                                 point2.x,
                                                 point2.y
                                         )
