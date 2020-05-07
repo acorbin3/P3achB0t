@@ -3,6 +3,7 @@ package com.p3achb0t.api.wrappers
 import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.userinputs.Mouse
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -10,7 +11,7 @@ import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Rectangle
 
-class Bank(val ctx: Context) {
+class Bank(val ctx: Context): Logging() {
     //DONE - open bank
     //DONE - deposit all items
     //TODO - deposit all items from a list
