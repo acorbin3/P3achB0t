@@ -21,7 +21,10 @@ class Tile(
         var y: Int = -1,
         val z: Int = 0,
         ctx: Context? = null,
-        override var loc_ctx: Context? = ctx
+        override var loc_ctx: Context? = ctx,
+        // This flag is intended for random path walking. some tiles you dont want to randomize due to
+        // tight corridors
+        var randomize: Boolean = false
 ) : Locatable, Interactable(ctx) {
     val plane get() = z
     companion object {
