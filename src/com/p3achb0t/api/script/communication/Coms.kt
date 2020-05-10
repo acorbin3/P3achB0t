@@ -8,6 +8,7 @@ import java.net.URI
 object Coms {
     private val communicationClient = CommunicationClient(URI("ws://localhost:${GlobalStructs.commPort}"))
     private var server: Server? = null
+    private var lastMessage = ""
 
     init {
         communicationClient.connect()
@@ -36,8 +37,11 @@ object Coms {
 
     fun broadcast(message: String) {
         println("Sending broadcast back")
-        server?.connections?.forEach {
-            it.send("$message")
+        if(lastMessage != message) {
+            server?.connections?.forEach {
+                it.send("$message")
+            }
+            lastMessage = message
         }
     }
 
