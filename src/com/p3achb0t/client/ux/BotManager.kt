@@ -121,7 +121,7 @@ class BotManager : JFrame() {
                     if (it.uuid == instance.sessionToken) {
                         //Update the Account to the Instance manager
                         if(it.startActionScriptAutomatically) {
-                            instance.getInstanceManager().startActionScript(it.actionScript)
+                            instance.getInstanceManager().startActionScript(it.actionScript, it)
                         }
                         it.debugScripts.forEach {debugScript ->
                             instance.getInstanceManager().addPaintScript(debugScript)

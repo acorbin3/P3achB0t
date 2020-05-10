@@ -18,8 +18,6 @@ import java.applet.Applet
 import java.awt.Color
 import java.awt.Graphics
 import java.lang.Thread.sleep
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 enum class ScriptState {
@@ -68,8 +66,11 @@ class InstanceManager(val client: Any): Logging() {
             isContextLoaded = true
         }
     }
-
     fun startActionScript(scriptFileName: String) {
+        startActionScript(scriptFileName, Account())
+    }
+
+    fun startActionScript(scriptFileName: String, account: Account = Account()) {
 
         if (actionScriptLoop != null)
             stopActionScript()
@@ -82,12 +83,13 @@ class InstanceManager(val client: Any): Logging() {
         val actionScriptLoaded = script.load() as ActionScript
         waitOnContext()
         actionScriptLoaded::ctx.set(setupContext(client))
+        actionScriptLoaded::account.set(account)
         actionScript = actionScriptLoaded
         actionScript.start()
 
         scriptState = ScriptState.Running
         actionScriptState(true)
-        account.sessionStartTime = System.currentTimeMillis()
+        this.account.sessionStartTime = System.currentTimeMillis()
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
     }
 
@@ -270,6 +272,7 @@ class InstanceManager(val client: Any): Logging() {
 //        val arg1 = argument1 * -1917052667
 //        println("getModel Callback arg1: $argument1 $arg1")
     }
+
 }
 
 /* for the game loop lock at 100/75 tick a second
