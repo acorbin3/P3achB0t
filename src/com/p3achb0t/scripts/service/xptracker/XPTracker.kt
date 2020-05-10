@@ -33,7 +33,7 @@ class XPTracker : ServiceScript() {
                 debugText.add(DebugText(name
                         + " XP: " + ctx.stats.xpGained(it).toString().padStart(7)
                         + " (+${ctx.stats.levelsGained(it).toString().padEnd(2)}) "
-                        + "TTL(${ctx.stats.currentLevel(it).toString().padStart(2)}->${(ctx.stats.currentLevel(it) + 1).toString().padStart(2)}) "
+                        + "TTL(${ctx.stats.level(it).toString().padStart(2)}->${(ctx.stats.level(it) + 1).toString().padStart(2)}) "
                         + ctx.stats.timeTillNextLevel(it)
                         + ctx.stats.xpPerHourFormatted(it).padStart(7) + " xp/h "))
             }
