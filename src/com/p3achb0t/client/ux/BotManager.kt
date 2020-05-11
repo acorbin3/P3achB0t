@@ -132,7 +132,7 @@ class BotManager : JFrame() {
                     }
                 }
 
-                sleep(1000*15) // 15 sec per account wait
+                sleep(1000*10) // 10 sec per account wait
             }
         }
     }
