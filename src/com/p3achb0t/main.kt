@@ -3,6 +3,7 @@ package com.p3achb0t
 import com.formdev.flatlaf.FlatDarkLaf
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
+import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.loader.Loader
@@ -14,6 +15,7 @@ import java.nio.file.Paths
 import java.util.jar.JarFile
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
+import kotlin.system.exitProcess
 
 
 object Main {
@@ -23,6 +25,7 @@ object Main {
     fun main(args: Array<String>) {
 
         var getNextKey = false
+        var getAccountPath = false
         args.iterator().forEach {
             if(getNextKey){
                 //validationKey = PaintDebug.key
@@ -30,10 +33,20 @@ object Main {
             }
                 getNextKey = true
             }
+            if(getAccountPath){
+                AccountManager.accountsJsonFileName = it
+                println("Account path: $it")
+                getAccountPath = false
+            }
+            if(it.contains("-accounts")){
+                getAccountPath = true
+
+            }
             println(it)
         }
-        //println("validation key: $validationKey")
 
+        AccountManager.loadAccounts()
+        //println("validation key: $validationKey")
         // Todo: Temp solution
         update()
         lookAndFeel()

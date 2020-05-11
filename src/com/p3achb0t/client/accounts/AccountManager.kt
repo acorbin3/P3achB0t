@@ -10,21 +10,19 @@ import java.util.*
 
 object AccountManager {
 
-    var accounts: List<Account>
+    lateinit var accounts: List<Account>
 
-    val accountsJsonFileName = "./" + Constants.APPLICATION_CACHE_DIR + "/" + Constants.ACCOUNTS_DIR + "/" + Constants.ACCOUNTS_FILE
+    var accountsJsonFileName = "./" + Constants.APPLICATION_CACHE_DIR + "/" + Constants.ACCOUNTS_DIR + "/" + Constants.ACCOUNTS_FILE
 
     init {
-        accounts = loadAccounts()
-        for (r in accounts) {
-            println(r)
-        }
+
     }
 
-    fun loadAccounts() : MutableList<Account> {
+    fun loadAccounts()  {
         val content = Util.readConfig(accountsJsonFileName)
         if(content.isEmpty()){
-            return MutableList(0,{Account()})
+            println("ERROR: couldnt find accounts file: $accountsJsonFileName")
+            return
         }
         val gson = Gson()
         val accounts: MutableList<Account> = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
@@ -44,7 +42,10 @@ object AccountManager {
             file.writeText(jsonAccountPretty)
         }
 
-        return gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
+        AccountManager.accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
+        for (r in AccountManager.accounts) {
+            println(r)
+        }
     }
 
     fun createAccount() {
