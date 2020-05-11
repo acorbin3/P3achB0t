@@ -131,6 +131,8 @@ class BotManager : JFrame() {
                         }
                     }
                 }
+
+                sleep(1000*15) // 15 sec per account wait
             }
         }
     }
