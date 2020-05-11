@@ -9,6 +9,7 @@ import com.p3achb0t.api.cache.format.disk.DiskCache
 import com.p3achb0t.api.cache.format.net.NetCache
 import com.p3achb0t.api.cache.tools.MemCache
 import com.p3achb0t.client.configs.Constants
+import java.io.File
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.nio.file.Path
@@ -27,8 +28,14 @@ class Cache {
     }
 
     fun updateCache(forceReload: Boolean = false){
+
+        //Only update cache if folder is not there
         // Update Cache
-        if(!cacheUpdated || forceReload) {
+        val file = File(cachePath)
+        if(file.exists()){
+            cacheUpdated = true
+        }
+        if((!cacheUpdated || forceReload) && !file.exists()) {
             try {
                 cacheUpdated = true
                 println("Connecting to websocket")
