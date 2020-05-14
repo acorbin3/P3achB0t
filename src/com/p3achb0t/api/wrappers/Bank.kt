@@ -105,7 +105,7 @@ class Bank(val ctx: Context): Logging() {
 
 
     suspend fun depositAll() {
-        val depositAllWidget = WidgetItem(ctx.widgets.find(12, 40), ctx = ctx)
+        val depositAllWidget = WidgetItem(ctx.widgets.find(12, 41), ctx = ctx)
         depositAllWidget.click()
         Utils.waitFor(3, object : Utils.Condition {
             override suspend fun accept(): Boolean {
@@ -202,12 +202,12 @@ class Bank(val ctx: Context): Logging() {
     }
 
     fun getBankWidget(): Component? {
-        return ctx.widgets.find(12,11)
+        return ctx.widgets.find(12,12)
     }
 
     fun getSize(): Int {
         if (isOpen()) {
-            val widget = ctx.widgets.find(12, 4)
+            val widget = ctx.widgets.find(12, 5)
             if (widget?.getText() != null && widget.getText().trim().isNotEmpty()) {
                 return widget.getText().trim().toInt()
             }
