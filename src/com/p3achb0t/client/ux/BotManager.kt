@@ -25,7 +25,8 @@ class BotManager : JFrame() {
     val botNavMenu = BotNavigationMenu()
 
     init {
-        title = "P3achB0t"
+        val accountsName = AccountManager.accountsJsonFileName.replace(".json","").split("\\").last()
+        title = "P3achB0t - $accountsName"
         extendedState = NORMAL
         layout = BorderLayout()
         defaultCloseOperation = EXIT_ON_CLOSE
