@@ -22,11 +22,12 @@ class Players(val ctx: Context) {
            return try {
                ctx.client.getPlayers().forEachIndexed { index, player ->
                    if(player != null){
-                       println("player username = " + player.getUsername().getCleanName().replace("_", " ") + " length: " + player.getUsername().getCleanName().replace("_", " ").toString().length)
-                       println("Target name = " + playerName + " length " + playerName.length)
+
                    }
                    if (player != null && player.getUsername().toString().contains(playerName, true)) {
-                       println("Found matched username = " +player.getUsername().getCleanName().replace("_", " "))
+                       players.add(Player(player, ctx, index))
+                   }
+                   if (player != null && player.getUsername().getCleanName().replace("_", " ").toString().contains(playerName, true)) {
                        players.add(Player(player, ctx, index))
                    }
                }
