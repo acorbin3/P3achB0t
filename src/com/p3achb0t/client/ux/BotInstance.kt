@@ -25,7 +25,8 @@ class BotInstance(account: Account = Account()) : JPanel() {
             sessionToken = account.uuid
             instanceManagerInterface = applet as InstanceManagerInterface
             add(applet) // add the game to the JPanel
-            GlobalStructs.botManager.botTabBar.addBotInstance("${account.username}-${account.proxy}", sessionToken, this)
+            val tab_count =  GlobalStructs.botManager.botTabBar.tabCount
+            GlobalStructs.botManager.botTabBar.addBotInstance("$tab_count - ${account.username}-${account.proxy}", sessionToken, this)
         }
     }
 
