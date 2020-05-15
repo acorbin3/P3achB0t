@@ -14,6 +14,8 @@ abstract class ActionScript(val tasks: ArrayList<LeafTask> = ArrayList(),var cur
                             logger.debug("Child - Completed: ${it.javaClass.name}")
                         }
                     }
+                }else{
+                    it.execute()
                 }
                 logger.debug("Completed: ${it.javaClass.name}")
             }

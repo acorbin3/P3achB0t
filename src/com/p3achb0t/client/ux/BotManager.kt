@@ -120,16 +120,21 @@ class BotManager : JFrame() {
             AccountManager.accounts.forEach {
                 botTabBar.botInstances.forEach { key, instance ->
                     if (it.uuid == instance.sessionToken) {
+
+                        it.serviceScripts.forEach {serviceScript ->
+                            instance.getInstanceManager().addServiceScript(serviceScript)
+
+                        }
+
                         //Update the Account to the Instance manager
                         if(it.startActionScriptAutomatically) {
+                            println("Starting ${it.actionScript} for ${it.username}")
                             instance.getInstanceManager().startActionScript(it.actionScript, it)
                         }
                         it.debugScripts.forEach {debugScript ->
                             instance.getInstanceManager().addPaintScript(debugScript)
                         }
-                        it.serviceScripts.forEach {serviceScript ->
-                            instance.getInstanceManager().addServiceScript(serviceScript)
-                        }
+
                     }
                 }
 

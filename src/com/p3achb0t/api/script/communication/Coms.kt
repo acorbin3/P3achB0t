@@ -11,14 +11,14 @@ object Coms {
     private var lastMessage = ""
 
     init {
-        communicationClient.connect()
-        try {
-            server = Server(GlobalStructs.commPort)
-            addCallback(::broadcast)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("ERROR - probably Server is already created")
-        }
+//        communicationClient.connect()
+//        try {
+//            server = Server(GlobalStructs.commPort)
+//            addCallback(::broadcast)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            println("ERROR - probably Server is already created")
+//        }
     }
 
     fun addCallback(callback: (String) -> Unit) {
