@@ -5,10 +5,65 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.userinputs.DoActionParams
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
+import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 class Trade(val ctx: Context) {
+
+    val PARENT_OFFER = 335
+    val CHILD_YOUR_OFFER = 25
+    val CHILD_THEIR_OFFER = 28
+    // look at item_id
+
+    fun doesYourOffContain(ids: IntArray):Boolean{
+        val items = getYourOfferItems()
+        return areAllItemsFound(items, ids)
+    }
+
+
+    fun doesTheirOfferContain(ids: IntArray): Boolean{
+        val items = getTheirOfferItems()
+        return areAllItemsFound(items, ids)
+    }
+
+    // This function will loop over the offer making sure all items are in
+    // the trade window
+    private fun areAllItemsFound(items: ArrayList<WidgetItem>, ids: IntArray): Boolean {
+        var matchingItemCount = 0
+        items.forEach {
+            if (it.id in ids) {
+                matchingItemCount += 1
+            }
+        }
+        return matchingItemCount == ids.size
+    }
+
+    fun getYourOfferItems(): ArrayList<WidgetItem>{
+        val childID = CHILD_YOUR_OFFER
+        return getOfferItems(childID)
+    }
+
+    fun getTheirOfferItems(): ArrayList<WidgetItem>{
+        val childID = CHILD_THEIR_OFFER
+        return getOfferItems(childID)
+    }
+
+    private fun getOfferItems(childID: Int): ArrayList<WidgetItem> {
+        val list = ArrayList<WidgetItem>()
+        if (isTradeOpen()) {
+            val yourItems = ctx.widgets.find(PARENT_OFFER, childID)
+            yourItems?.getChildren()?.iterator()?.forEach {
+                if (it != null) {
+                    if (it.getItemId() > 0) {
+                        list.add(WidgetItem(widget = it))
+                    }
+                }
+            }
+        }
+        return list
+    }
+
 
     fun firstTradeWidget(): Component? {
         return ctx.widgets.find(335, 1)
