@@ -44,6 +44,7 @@ class Inventory(val ctx: Context? = null) {
     }
 
     fun updateTrackedItems() {
+
         itemsToTrack.forEach {
             val curCount = getCount(it.id)
             val stackedCount = getCount(it.id, true)
@@ -55,16 +56,16 @@ class Inventory(val ctx: Context? = null) {
                 diff = curCount - curTrackedItemCount[it.id]!!
                 curTrackedItemCount[it.id] = curCount
             }
-            //We could have negative if the player is banking, just ignore that
-            if (diff > 0) {
+            //ingnore any changes if banking
+            if (ctx?.bank?.isOpen() != true) {
                 totalTrackedItemCount[it.id] = totalTrackedItemCount[it.id]!! + diff
             }
         }
     }
 
     fun trackedItemPerHour(id: Int): String {
-        val df = DecimalFormat("###,###,###")
-        val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed!! * 3_600_000
+        val df = DecimalFormat("###,###,###.##")
+        val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed?.toDouble()!! * 3_600_000.0
         return df.format(itemsPerHour)
     }
 
