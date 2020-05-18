@@ -13,8 +13,6 @@ class BotTabBar : JTabbedPane() {
         addChangeListener {
             setEnabledAt(lastSelectedIndex, true)
             setEnabledAt(selectedIndex, false)
-            (getComponentAt(lastSelectedIndex) as BotInstance).getInstanceManager().drawCanvas = false
-            (selectedComponent as BotInstance).getInstanceManager().drawCanvas = true
             lastSelectedIndex = selectedIndex
             GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
         }
