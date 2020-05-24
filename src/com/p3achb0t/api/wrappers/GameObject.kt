@@ -33,8 +33,7 @@ class GameObject(
         }
     val name: String
         get() {
-            val sceneData = ctx?.client?.getLocType_cached()
-            val objectComposite = sceneData?.let { getObjectComposite(it, id) }
+            val objectComposite =  getObjectComposite( id)
             return objectComposite?.getName().toString()
         }
     private val objectPositionInfo: ObjectPositionInfo
@@ -185,30 +184,50 @@ class GameObject(
         }
     }
 
+    fun transform(definition: LocType): LocType? {
+        var var1 = -1
+        val transforms = definition.getMulti()
+
+        if (definition.getMultiVarbit() != -1) {
+            var1 = this.ctx?.client?.getVarbit(definition.getMultiVarbit())!!
+        } else if (definition.getMultiVar() != -1) {
+            var1 = this.ctx?.client?.getVarps_main()!![definition.getMultiVar()]
+        }
+
+        val var2 = if (var1 >= 0 && var1 < transforms.lastIndex) {
+            transforms[var1]
+        } else {
+            transforms[transforms.lastIndex]
+        }
+
+        return if (var2 == -1)
+            null
+        else
+            getObjectComposite(var2)
+    }
+
     private fun getObjectComposite(
-            objectCache: EvictingDualNodeHashTable,
             gameObjectId: Int
     ): LocType? {
-        var desiredGameObject1: LocType? = null
-        objectCache.getHashTable().getBuckets().iterator().forEach { bucketItem ->
+        this.ctx!!.client.getLocType_cached().getHashTable().getBuckets().iterator().forEach { bucketItem ->
             if (bucketItem != null) {
-
-                var objectComposite = bucketItem.getNext()
-                while (objectComposite != null
-                        && objectComposite is LocType
-                        && objectComposite != bucketItem
-                ) {
-                    if (objectComposite.getKey() > 0
-                            && objectComposite.getKey().toInt() == gameObjectId
-                    ) {
-                        desiredGameObject1 = objectComposite
-                        break
+                var locType = bucketItem.getNext()
+                while (locType != null && locType is LocType) {
+                    if (locType.getKey().toInt() == gameObjectId) {
+                        var definition = locType as LocType?
+                        if (locType.getMulti() != null) {
+                            definition = transform(locType)
+                            println("Found Object Transform | ${definition?.getName()} | Actions: ${definition?.getOp()?.contentToString()}")
+                        } else {
+                            println("Found Object Definition | ${locType.getName()} | Actions: ${locType.getOp().contentToString()}")
+                        }
+                        return definition
                     }
-                    objectComposite = objectComposite.getNext()
+                    locType = locType.getNext()
                 }
             }
         }
-        return desiredGameObject1
+        return null
     }
 
 }
