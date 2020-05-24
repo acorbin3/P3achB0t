@@ -61,6 +61,7 @@ class Stats(val ctx: Context) {
     fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]
     fun currentLevel(skill: Skill): Int = ctx.client.getLevels()[skill.statID]
     fun currentXP(skill: Skill): Int = ctx.client.getExperience()[skill.statID]
+    fun totalLevel(): Int = ctx.client.getLevels().sum()
 
     fun experienceForLevel(level: Int): Int {
         var total = 0.0

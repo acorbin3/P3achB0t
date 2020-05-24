@@ -88,10 +88,8 @@ class PaintGameObject : PaintScript() {
                                                             floorDecoration.getEntity().getHeight(),
                                                             ctx
                                                     )
-                                            val objectComposite =
-                                                    getObjectComposite(sceneData, go_fd.id)
                                             g.drawString(
-                                                    objectComposite?.getName() + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})",
+                                                    go_fd.name + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})",
                                                     point2.x,
                                                     point2.y)
                                         }
@@ -178,11 +176,6 @@ class PaintGameObject : PaintScript() {
                                                                 )
                                                         ) {
                                                             g.color = Color.GREEN
-                                                            val id = it.getTag().shr(17).and(0x7fff).toInt()
-                                                            val rawID = it.getTag().shr(14).and(0x7fff)
-                                                            //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
-                                                            val objectComposite =
-                                                                    getObjectComposite(sceneData, id)
                                                             val point2 =
                                                                     Calculations.worldToScreen(
                                                                             it.getCenterX(),
@@ -199,7 +192,7 @@ class PaintGameObject : PaintScript() {
                                                             if (localPlayer.distanceTo(globalPos) < 10
                                                                     && planeInt == ctx.players.getLocal().player.getPlane())
                                                                 g.drawString(
-                                                                        objectComposite?.getName() + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
+                                                                        go.name+ "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
                                                                         point2.x,
                                                                         point2.y + offsetY
                                                                 )
@@ -261,9 +254,6 @@ class PaintGameObject : PaintScript() {
                                     if (wo.isMouseOverObj()) {
                                         g.color = Color.CYAN
                                         val id = wall.getTag().shr(17).and(0x7fff).toInt()
-                                        //                                            println("${it.getWidgetID()},$rawID,$widgetID,${it.getRenderable().getWidgetID()}")
-                                        val objectComposite =
-                                                getObjectComposite(sceneData, id)
 
                                         if (wall.getEntity1() != null) {
                                             val model = wall.getEntity1().getModel()
@@ -285,7 +275,7 @@ class PaintGameObject : PaintScript() {
                                                         ctx
                                                 )
                                         g.drawString(
-                                                objectComposite?.getName() + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
+                                                wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
                                                 point2.x,
                                                 point2.y
                                         )

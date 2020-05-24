@@ -25,7 +25,7 @@ class Utils {
             return false
         }
 
-        suspend fun sleepUntil(condition: () -> Boolean, time: Int = 5, delayTimeMS: Long = 100): Boolean {
+        suspend fun sleepUntil(condition: suspend () -> Boolean, time: Int = 5, delayTimeMS: Long = 100): Boolean  {
             var istrue = false
             for (i in 1..time * 10) {
                 if (condition()) {

@@ -49,6 +49,7 @@ class Context(val obj: Any) {
     val trade: Trade
     val ipc: Channels
     val coms: Coms
+    val combat: Combat
 
     init {
         mouse = Mouse(obj)
@@ -82,6 +83,7 @@ class Context(val obj: Any) {
         trade = Trade(this)
         ipc = Channels()
         coms = Coms
+        combat = Combat(this)
     }
 }
 

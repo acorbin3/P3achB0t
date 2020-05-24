@@ -26,6 +26,11 @@ class Inventory(val ctx: Context? = null) {
         get() {
             return this.getCount() == 28
         }
+
+    val isShiftClickEnabled : Boolean
+    get(){
+        return ctx?.vars?.getVarbit(5542) == 1
+    }
     val itemsToTrack = ArrayList<Item>()
     val totalTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the item picked up count
     val curTrackedItemCount = HashMap<Int, Int>() // Key is an item ID, value is the current item count in inventory
@@ -57,18 +62,20 @@ class Inventory(val ctx: Context? = null) {
                 curTrackedItemCount[it.id] = curCount
             }
             //ingnore any changes if banking
-            if (ctx?.bank?.isOpen() != true) {
+            if (ctx?.bank?.isOpen() != true && diff > 0) {
                 totalTrackedItemCount[it.id] = totalTrackedItemCount[it.id]!! + diff
             }
         }
     }
 
-    fun trackedItemPerHour(id: Int): String {
+    fun trackedItemPerHourFormatted(id: Int): String {
         val df = DecimalFormat("###,###,###.##")
         val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed?.toDouble()!! * 3_600_000.0
         return df.format(itemsPerHour)
     }
-
+    fun trackedItemPerHour(id: Int): Double {
+        return totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed?.toDouble()!! * 3_600_000.0
+    }
 
     suspend fun open() {
 
@@ -352,6 +359,19 @@ class Inventory(val ctx: Context? = null) {
         return contains
     }
 
+    fun containsAny(itemid: IntArray): Boolean {
+        var contains = false
+        var items = getAll()
+        items.forEachIndexed { index, widgetItem ->
+            itemid.forEach {
+                if (widgetItem.id == it) {
+                    contains = true
+                }
+            }
+        }
+        return contains
+    }
+
     fun hasDueling(): Boolean {
         var HasItems = false
         val ItemsNeeded: IntArray = intArrayOf(2552, 2554, 2556, 2558, 2560, 2562, 2564, 2566)
@@ -409,6 +429,7 @@ class Inventory(val ctx: Context? = null) {
             widget = ctx?.client!!.getInterfaceComponents()[149][0]
         } catch (e: Exception) {
             println("get widget exception")
+            e.printStackTrace()
         }
         return widget
     }

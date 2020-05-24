@@ -53,7 +53,7 @@ class Area {
     private fun computeAreaTiles() {
         //Create a polygon from the tiles
         for (tile in inputTiles) {
-            polygon.addPoint(tile.x + 1, tile.y + 1)
+            polygon.addPoint(tile.x , tile.y)
         }
         //Convert the polygon to all tiles that would be associated with this area
         val r = polygon.bounds
@@ -64,7 +64,7 @@ class Area {
                 val _x = r.x + x
                 val _y = r.y + y
                 if (polygon.contains(_x, _y)) {
-                    lTiles[c++] = Tile(_x, _y, plane, ctx = ctx)
+                    lTiles[c++] = Tile(_x , _y, plane, ctx = ctx)
                 }
             }
         }
@@ -177,8 +177,8 @@ class Area {
             val tile = locatable.getGlobalLocation()
             val planeCheck = ignorePlane || tile.z != plane
             if (planeCheck || !polygon.contains(tile.x, tile.y) && !polygon.intersects(
-                            tile.x + 0.5,
-                            tile.y + 0.5,
+                            tile.x.toDouble() ,
+                            tile.y.toDouble(),
                             1.0,
                             1.0
                     )
