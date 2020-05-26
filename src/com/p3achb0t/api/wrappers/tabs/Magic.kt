@@ -1,6 +1,7 @@
 package com.p3achb0t.api.wrappers.tabs
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -22,7 +23,10 @@ class Magic(val ctx: Context) {
             HOME_TELEPORT(5, 14286853,0, 0),
             LEVEL_ONE_ENCHANT(10, 14286858, 0,0 )
         }
+
     }
+
+    val LOCATION_HOME_TELEPORT = Tile(3236,3220,0,ctx=ctx)
 
     suspend fun getAutoCastSpell(): Int {
         return ctx.vars.getVarp(108)

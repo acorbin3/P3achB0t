@@ -217,9 +217,9 @@ class GameObject(
                         var definition = locType as LocType?
                         if (locType.getMulti() != null) {
                             definition = transform(locType)
-                            println("Found Object Transform | ${definition?.getName()} | Actions: ${definition?.getOp()?.contentToString()}")
+//                            println("Found Object Transform | ${definition?.getName()} | Actions: ${definition?.getOp()?.contentToString()}")
                         } else {
-                            println("Found Object Definition | ${locType.getName()} | Actions: ${locType.getOp().contentToString()}")
+//                            println("Found Object Definition | ${locType.getName()} | Actions: ${locType.getOp().contentToString()}")
                         }
                         return definition
                     }
