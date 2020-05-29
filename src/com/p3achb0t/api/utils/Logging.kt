@@ -16,7 +16,9 @@ open class Logging {
             folder.mkdirs()
         }
 
-        val date = SimpleDateFormat("yyyy_MM_dd__HH_mm_ss").format(Date())
+        val fileFormatter = SimpleDateFormat("yyyy_MM_dd__HH_mm_ss")
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val date = formatter.format(Date())
         val fn = "$path$date.txt"
         val file = File(fn)
 
@@ -25,12 +27,9 @@ open class Logging {
     class LogInternal{
 
         fun debug(s: String){
-            val location = getLocation()
-            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-            val threadName = Thread.currentThread().name
-            val outputString = "$timeStamp [$threadName] DEBUG - $location $s"
+            val outputString = "${formatter.format(Date())} [${Thread.currentThread().name}] DEBUG - ${getLocation()} $s"
             println(outputString)
-            file.appendText(outputString + "\n")
+//            file.appendText(outputString + "\n")
 //            file.printWriter().use { out ->
 //                out.println(outputString)
 //                out.flush()
@@ -39,12 +38,9 @@ open class Logging {
 
         fun info(s: String) {
 
-            val location = getLocation()
-            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-
-            val outputString = "$timeStamp - INFO - $location $s"
+            val outputString = "${formatter.format(Date())} - INFO - ${getLocation()} $s"
             println(outputString)
-            file.appendText(outputString + "\n")
+//            file.appendText(outputString + "\n")
 //            file.printWriter().use { out ->
 //                out.println(outputString)
 //                out.flush()
@@ -53,10 +49,9 @@ open class Logging {
         }
 
         fun error(s: String) {
-            val location = getLocation()
-            val timeStamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(Date())
-            val outputString = "$timeStamp - ERROR - $location $s"
-            file.appendText(outputString + "\n")
+            val outputString = "${formatter.format(Date())} - ERROR - ${getLocation()} $s"
+            println(outputString)
+//            file.appendText(outputString + "\n")
 //            file.printWriter().use { out ->
 //                out.println(outputString)
 //                out.flush()

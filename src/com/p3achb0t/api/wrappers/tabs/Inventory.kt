@@ -17,6 +17,7 @@ class Inventory(val ctx: Context? = null) {
         private const val PARENT_ID = WidgetID.INVENTORY_GROUP_ID
         private const val CHILD_ID = 0
     }
+    val df = DecimalFormat("###,###,###.##")
 
     //The concept here is to track items that are picked up from the ground. The addItemToTrack will
     // only be called when an item is trying to be picked up
@@ -69,7 +70,6 @@ class Inventory(val ctx: Context? = null) {
     }
 
     fun trackedItemPerHourFormatted(id: Int): String {
-        val df = DecimalFormat("###,###,###.##")
         val itemsPerHour = totalTrackedItemCount[id]?.toDouble()!! / ctx?.stats?.runtime?.elapsed?.toDouble()!! * 3_600_000.0
         return df.format(itemsPerHour)
     }
@@ -460,10 +460,12 @@ class Inventory(val ctx: Context? = null) {
 
     fun getCount(itemID: Int, useStack: Boolean = false): Int {
         var count = 0
-        val items = getAll()
-        if(!items.isNullOrEmpty()) {
-            for (widget in items) {
-                if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
+        if(ctx?.worldHop?.isLoggedIn == true) {
+            val items = getAll()
+            if (!items.isNullOrEmpty()) {
+                for (widget in items) {
+                    if (widget.id == itemID) count += if (useStack) widget.stackSize else 1
+                }
             }
         }
         return count

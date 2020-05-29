@@ -11,7 +11,7 @@ import java.util.*
 import javax.swing.JPanel
 
 
-class BotInstance(account: Account = Account()) : JPanel() {
+class BotInstance(account: Account = Account(), tabBarTextInfo: String = "") : JPanel() {
     // add the canvas to this JPanel
 
     var sessionToken: String = ""
@@ -25,8 +25,7 @@ class BotInstance(account: Account = Account()) : JPanel() {
             sessionToken = account.uuid
             instanceManagerInterface = applet as InstanceManagerInterface
             add(applet) // add the game to the JPanel
-            val tab_count =  GlobalStructs.botManager.botTabBar.tabCount
-            GlobalStructs.botManager.botTabBar.addBotInstance("$tab_count - ${account.username}-${account.proxy}", sessionToken, this)
+            GlobalStructs.botManager.botTabBar.addBotInstance("$tabBarTextInfo - ${account.username}-${account.proxy}", sessionToken, this)
         }
     }
 

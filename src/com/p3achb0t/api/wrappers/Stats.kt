@@ -35,6 +35,7 @@ class Stats(val ctx: Context) {
         CONSTRUCTION(22),
     }
 
+    val df = DecimalFormat("###,###,###")
     val startXP = EnumMap<Skill,Int>(Skill::class.java)
     val curXP = EnumMap<Skill,Int>(Skill::class.java)
     val startLevel = EnumMap<Skill,Int>(Skill::class.java)
@@ -112,7 +113,6 @@ class Stats(val ctx: Context) {
         }
     }
     fun xpPerHourFormatted(skill: Skill): String{
-        val df = DecimalFormat("###,###,###")
         return df.format(xpPerHour(skill))
     }
 

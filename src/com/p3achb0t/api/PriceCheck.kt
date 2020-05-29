@@ -21,7 +21,6 @@ object PriceCheck {
         val timer: Job = startCoroutineTimer(0, 1000 * 60 * 30) {
             reload()
         }
-        timer.start()
     }
 
     fun startCoroutineTimer(delayMillis: Long = 0, repeatMillis: Long = 0, action: () -> Unit) = GlobalScope.launch {

@@ -71,9 +71,9 @@ class BotManager : JFrame() {
     fun startAccounts() {
         //Set the account for things needed in the InstanceManager
         if(AccountManager.accounts.isNotEmpty()) {
-            AccountManager.accounts.forEach { acc ->
-                GlobalScope.launch { BotInstance(acc) }
-                sleep(1000*3) // Wait 3 seconds for tab to open up
+            AccountManager.accounts.forEachIndexed { index, acc ->
+                GlobalScope.launch { BotInstance(acc, index.toString()) }
+                sleep(1000) // Wait 100ms for tab to open up
             }
         } else{
             GlobalScope.launch { BotInstance() }
@@ -138,7 +138,7 @@ class BotManager : JFrame() {
                     }
                 }
 
-                sleep(1000*10) // 10 sec per account wait
+                sleep(1000*2) // 2 sec per account wait
             }
         }
     }
