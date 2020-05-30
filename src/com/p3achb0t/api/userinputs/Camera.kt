@@ -73,7 +73,9 @@ class Camera(val ctx: Context) {
 
     suspend fun turnWest() {
         CoroutineScope(IO).launch {
-            setAngle(270 + Random.nextInt(-10, 10))
+            if(angle !in (270-15)..(270+15)) {
+                setAngle(270 + Random.nextInt(-10, 10))
+            }
         }
     }
 
