@@ -8,10 +8,10 @@ import java.awt.Graphics
 /*
     This class is the base set of functionality a script should have
 */
-abstract class SuperScript: Logging() {
+abstract class SuperScript: Drawable,Logging() {
     lateinit var ctx: Context
     var account: Account = Account()
     open fun start() {}
     open fun stop() {}
-    open fun draw(g: Graphics) {}
+    override fun draw(g: Graphics) {}
 }

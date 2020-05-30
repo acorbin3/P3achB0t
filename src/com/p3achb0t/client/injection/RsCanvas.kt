@@ -1,6 +1,8 @@
 package com.p3achb0t.client.injection
 
 
+import com.p3achb0t.api.script.Drawable
+import com.p3achb0t.api.script.GroupTask
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.client.accounts.Account
@@ -34,7 +36,21 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
                     instanceManager.drawPaintScripts(g2)
                     instanceManager.drawsServiceScripts(g2)
+                    //Draw all tasks or children of groups tasks if they have drawable
+                    instanceManager.actionScript.tasks.forEach { task ->
+                        if(task is Drawable){
+                            task.draw(g2)
+                            if(task is GroupTask){
+                                task.children.forEach { childTask ->
+                                    if(childTask is Drawable){
+                                        childTask.draw(g2)
+                                    }
+                                }
+                            }
+                        }
+                    }
                     instanceManager.actionScript.draw(g2)
+
                     it.show()
                     if(instanceManager.ctx.worldHop.isLoggedIn) {
                         Thread.sleep(1000 / instanceManager.account.gameFps.toLong())
