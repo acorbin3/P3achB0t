@@ -69,13 +69,19 @@ class BotManager : JFrame() {
     }
 
     fun startAccounts() {
+        var count = 0
         //Set the account for things needed in the InstanceManager
         if(AccountManager.accounts.isNotEmpty()) {
             AccountManager.accounts.forEachIndexed { index, acc ->
-                GlobalScope.launch { BotInstance(acc, index.toString()) }
-                sleep(1000) // Wait 100ms for tab to open up
+                if(!acc.banned) {
+                    count += 1
+                    GlobalScope.launch { BotInstance(acc, index.toString()) }
+                    sleep(1000) // Wait 100ms for tab to open up
+                }
             }
-        } else{
+        }
+
+        if(count == 0){
             GlobalScope.launch { BotInstance() }
         }
 
