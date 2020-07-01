@@ -7,11 +7,10 @@ import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
 import java.awt.Rectangle
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
+import java.awt.event.*
 
 @ScriptManifest("Debug","Total Debug Paint","P3aches", "0.1")
-class TotalDebugPaint: PaintScript(), KeyListener {
+class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseListener {
     var isDebugTextOn = false
     var isPlayerPaintOn = false
     var isNPCPaintOn = false
@@ -227,4 +226,37 @@ class TotalDebugPaint: PaintScript(), KeyListener {
 
     override fun keyReleased(e: KeyEvent?) {
     }
+
+    override fun mouseWheelMoved(e: MouseWheelEvent?) {
+        if (e != null && e.getWheelRotation() < 0)
+        {
+            println("mouse wheel Up");
+        }
+        else
+        {
+            println("mouse wheel Down");
+        }
+    }
+
+    override fun mouseReleased(e: MouseEvent?) {
+        println("mouseReleased $e")
+    }
+
+    override fun mouseEntered(e: MouseEvent?) {
+        println("mouseEntered $e")
+    }
+
+    override fun mouseClicked(e: MouseEvent?) {
+        println("mouseClicked $e")
+    }
+
+    override fun mouseExited(e: MouseEvent?) {
+        println("mouseExited $e")
+    }
+
+    override fun mousePressed(e: MouseEvent?) {
+        println("mousePressed $e")
+    }
+
+
 }

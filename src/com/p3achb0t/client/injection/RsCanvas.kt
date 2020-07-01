@@ -11,14 +11,11 @@ import java.awt.Canvas
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.RenderingHints
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
+import java.awt.event.*
 import java.awt.image.BufferedImage
 
 
-open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener, KeyListener {
+open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListener, MouseWheelListener, KeyListener {
 
     //private val gameCanvas: BufferedImage = BufferedImage(instanceManager.canvasWidth, instanceManager.canvasHeight, BufferedImage.TYPE_INT_RGB)
 
@@ -151,6 +148,18 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
             if(instanceManager.actionScript is KeyListener){
                 (instanceManager.actionScript as KeyListener).keyReleased(e)
             }
+        }
+    }
+
+    override fun mouseWheelMoved(e: MouseWheelEvent?) {
+        println("mouseWheelMoved $e");
+        if (e != null && e.getWheelRotation() < 0)
+        {
+            println("mouse wheel Up $e");
+        }
+        else
+        {
+            println("mouse wheel Down $e");
         }
     }
 }

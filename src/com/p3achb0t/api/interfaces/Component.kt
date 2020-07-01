@@ -122,27 +122,27 @@ interface Component : Node {
     fun getXAlignment(): Int
     fun getY(): Int
     fun getYAlignment(): Int
-    fun get__bf(): Boolean
-    fun get__cz(): Boolean
-    fun get__fg(): Boolean
-    fun get__fk(): Boolean
-    fun get__fp(): Boolean
-    fun get__fw(): Boolean
-    fun get__cb(): Array<ByteArray>
-    fun get__cy(): Array<ByteArray>
-    fun get__ag(): Int
-    fun get__am(): Int
+    fun get__bk(): Boolean
+    fun get__cq(): Boolean
+    fun get__fe(): Boolean
+    fun get__fi(): Boolean
+    fun get__fn(): Boolean
+    fun get__fy(): Boolean
+    fun get__ca(): Array<ByteArray>
+    fun get__co(): Array<ByteArray>
+    fun get__ad(): Int
     fun get__as(): Int
-    fun get__bj(): Int
-    fun get__bw(): Int
-    fun get__by(): Int
+    fun get__au(): Int
+    fun get__br(): Int
+    fun get__bs(): Int
+    fun get__bt(): Int
+    fun get__fc(): Int
     fun get__fd(): Int
-    fun get__ff(): Int
-    fun get__fl(): Int
-    fun get__fy(): Int
-    fun get__cj(): IntArray
-    fun get__cp(): IntArray
-    fun get__fv(): IntArray
-    fun get__ej(): Any
-    fun get__ev(): Any
+    fun get__fr(): Int
+    fun get__ft(): Int
+    fun get__cd(): IntArray
+    fun get__cy(): IntArray
+    fun get__fk(): IntArray
+    fun get__em(): Any
+    fun get__ex(): Any
 }

@@ -2,6 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.StopWatch
+import com.p3achb0t.api.utils.Time.getRuntimeString
 import java.lang.Math.pow
 import java.text.DecimalFormat
 import java.util.*
@@ -60,7 +61,7 @@ class Stats(val ctx: Context) {
     }
 
     fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]
-    fun currentLevel(skill: Skill): Int = ctx.client.getLevels()[skill.statID]
+    fun currentLevel(skill: Skill): Int = ctx.client.getCurrentLevels()[skill.statID]
     fun currentXP(skill: Skill): Int = ctx.client.getExperience()[skill.statID]
     fun totalLevel(): Int = ctx.client.getLevels().sum()
 
@@ -117,12 +118,12 @@ class Stats(val ctx: Context) {
     }
 
     fun levelsGained(skill: Skill): Int{
-        return currentLevel(skill) - (startLevel[skill] ?: 1)
+        return level(skill) - (startLevel[skill] ?: 1)
     }
     fun timeTillNextLevel(skill: Skill): String{
         val xpPerMills = xpPerMills(skill)
 
-        val xpTillNextLevel = experienceForLevel(currentLevel(skill) + 1) - currentXP(skill)
+        val xpTillNextLevel = experienceForLevel(level(skill) + 1) - currentXP(skill)
         val millsecsRemaining = xpTillNextLevel / xpPerMills
 
 
@@ -139,21 +140,6 @@ class Stats(val ctx: Context) {
         return getRuntimeString(millsecsRemaining.toLong())
     }
 
-    fun getRuntimeString(elapsed: Long): String {
-        val days = elapsed.toInt() / 86400000
-        var remainder = elapsed % 86400000
-        val hours = remainder.toInt() / 3600000
-        remainder = elapsed % 3600000
-        val minutes = remainder.toInt() / 60000
-        remainder = remainder % 60000
-        val seconds = remainder.toInt() / 1000
-        val dd = if (days < 10) "0$days" else Integer.toString(days)
-        val hh = if (hours < 10) "0$hours" else Integer.toString(hours)
-        val mm = if (minutes < 10) "0$minutes" else Integer.toString(minutes)
-        val ss = if (seconds < 10) "0$seconds" else Integer.toString(seconds)
-        return "$dd:$hh:$mm:$ss"
-    }
-
     fun updateStats(){
 //        println("Updating stats")
         //Weird case where we might be logged in but the stats havent been loaded yet.
@@ -163,10 +149,10 @@ class Stats(val ctx: Context) {
         Skill.values().iterator().forEach {
             if(startXP[it] == 0 && ctx.worldHop.isLoggedIn) {
                 startXP[it] = currentXP(it)
-                startLevel[it] = currentLevel(it)
+                startLevel[it] = level(it)
             }
             curXP[it] = currentXP(it)
-            curLevel[it] = currentLevel(it)
+            curLevel[it] = level(it)
         }
     }
 

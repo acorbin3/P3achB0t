@@ -21,8 +21,8 @@ class Constants {
         const val ACCOUNTS_FILE = "accounts.json"
 
         // Other constants
-        val REVISION = 189
-        val REVISION_WITH_SUBVERSION = 189.2 // Update this if we want to force a new injected jar
+        val REVISION = 190
+        val REVISION_WITH_SUBVERSION = 190.1 // Update this if we want to force a new injected jar
         var INJECTED_JAR_NAME = "gamepack-$REVISION_WITH_SUBVERSION-injected.jar"
 
         const val MIN_GAME_WIDTH = 765

@@ -39,7 +39,7 @@ fun createRunestarInterfaces(
             //Adding injected callbacks
             if(clazz.value.`class` == "Client"){
                 out.println("    fun getVarbit(id: Int): Int")
-                out.println("    fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int, dummy: Int=0)")
+                out.println("    fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int, dummy: Byte=0)")
             }
             else if(clazz.value.`class` == "Entity"){
                 out.println("    fun getModel(): Model")

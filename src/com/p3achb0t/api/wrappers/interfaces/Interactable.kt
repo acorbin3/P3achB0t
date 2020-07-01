@@ -4,6 +4,8 @@ import com.p3achb0t.api.Context
 import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.utils.Utils
+import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Polygon
 import kotlin.math.abs
@@ -170,6 +172,24 @@ abstract class Interactable(var ctx: Context?): Logging()  {
             ctx?.mouse?.moveMouse(getInteractPoint(), click = true) ?: false
         }
     }
+
+    suspend fun clickUntil(condition: suspend () -> Boolean,time: Int = 5, delayTimeMS: Long = 10){
+        val point = getInteractPoint()
+        if ((point.x == -1 && point.y == -1) || (point.x == 0 && point.y == 0)) {
+            logger.error("Couldnt find interaction point")
+        } else {
+
+            for (i in 1..time * 100) {
+                if (condition()) {
+                    break
+                }
+                ctx?.mouse?.moveMouse(point, click = true)
+                delay(delayTimeMS)
+            }
+
+        }
+    }
+
 
     suspend fun clickGroundObject(groundItem: GroundItem): Boolean {
         val point = getInteractPoint()

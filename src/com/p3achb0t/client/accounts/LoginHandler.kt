@@ -28,24 +28,26 @@ class LoginHandler(var account: Account = Account()) {
     suspend fun login(ctx: Context): Boolean {
         println("Logging in")
         println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
-        ctx.mouse.moveMouse(Point(ctx.client.get__dv_r(), 310), true, Mouse.ClickType.Left)
+        //TODO - try to find login center
+        ctx.keyboard.sendKeys(" ",sendReturn = true)
+//        ctx.mouse.moveMouse(Point(ctx.client.get__dv_r(), 310), true, Mouse.ClickType.Left)
         delay(500)
-        ctx.mouse.moveMouse(Point(ctx.client.get__dv_r()+55, 294), true, Mouse.ClickType.Left)
+//        ctx.mouse.moveMouse(Point(ctx.client.get__dv_r()+55, 294), true, Mouse.ClickType.Left)
         println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
         if (ctx.client.getLogin_username() != account.username) {
             //Delete user name and replace
-            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__dv_r() - 50, ctx.client.get__dv_r() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
+//            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__dv_r() - 50, ctx.client.get__dv_r() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
             while (ctx.client.getLogin_username().isNotEmpty() == true) {
                 ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
             }
             ctx.keyboard.release(KeyEvent.VK_DOWN)
 
-            ctx.keyboard.sendKeys(account.username, false, true)
+            ctx.keyboard.sendKeys(account.username, true, true)
 
         }
 
         //Move to password
-        ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__dv_r() - 50, ctx.client.get__dv_r() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
+//        ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__dv_r() - 50, ctx.client.get__dv_r() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
         if (ctx.client.getLogin_password().isNotEmpty() == true) {
             //Clear password
             while (ctx.client.getLogin_password().isNotEmpty() == true) {
@@ -65,6 +67,12 @@ class LoginHandler(var account: Account = Account()) {
         if ((LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
                 (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
             if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) {
+                AccountManager.accounts.forEach {
+                    if(it.username == account.username){
+                        it.banned = true
+                    }
+                    AccountManager.updateJSONFile()
+                }
                 GlobalStructs.db.setBanned(account.username, account.sessionToken)
             }
             println("account banned or invalid credentials")

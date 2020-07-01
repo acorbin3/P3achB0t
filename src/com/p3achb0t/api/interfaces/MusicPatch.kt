@@ -2,11 +2,11 @@ package com.p3achb0t.api.interfaces
 
 interface MusicPatch : Node {
     fun getRawSounds(): Array<RawSound>
-    fun get__d(): ByteArray
-    fun get__q(): ByteArray
-    fun get__w(): ByteArray
-    fun get__v(): Array<MusicPatchNode2>
-    fun get__x(): Int
-    fun get__z(): IntArray
-    fun get__k(): ShortArray
+    fun get__j(): ByteArray
+    fun get__n(): ByteArray
+    fun get__p(): ByteArray
+    fun get__g(): Array<MusicPatchNode2>
+    fun get__m(): Int
+    fun get__u(): IntArray
+    fun get__q(): ShortArray
 }

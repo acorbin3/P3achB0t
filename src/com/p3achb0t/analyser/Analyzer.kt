@@ -433,7 +433,7 @@ class Analyser{
 //                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
                                     val il = InsnList()
                                     il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/client/injection/InstanceManager;)V", false))
+                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIBLcom/p3achb0t/client/injection/InstanceManager;)V", false))
                                     //doAction
                                     methodNode.instructions.insertBefore(mn, il)
                                     methodNode.instructions.remove(mn)
@@ -446,8 +446,9 @@ class Analyser{
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "gx"
-        val garbageCollectMethod = "ay"
+        val garbageCollectClass = "if"
+        val garbageCollectMethod = "ac"
+        //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@for (method in classes[garbageCollectClass]!!.methods) {
             if (method.name == garbageCollectMethod) {
@@ -464,8 +465,8 @@ class Analyser{
         }
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
-        val createRandDatClass = "hb"
-        val createRandDatMethod = "k"
+        val createRandDatClass = "hm"
+        val createRandDatMethod = "p"
         var datInjected = 0
         randRoot@for (method in classes[createRandDatClass]!!.methods) {
             if (method.name == createRandDatMethod) {
@@ -771,8 +772,7 @@ class Analyser{
 
         val label = LabelNode(Label())
 
-        //                script.ctx.mouse.overrideDoActionParams
-        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
+        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIB)V", null, null)
         val il = InsnList()
         
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))

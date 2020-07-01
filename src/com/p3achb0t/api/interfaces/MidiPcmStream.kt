@@ -6,26 +6,26 @@ interface MidiPcmStream : PcmStream {
     fun getPatchStream(): MusicPatchPcmStream
     fun getTrack(): Int
     fun getTrackLength(): Int
-    fun get__ai(): Boolean
-    fun get__ae(): Array<Array<MusicPatchNode>>
+    fun get__ao(): Boolean
+    fun get__ah(): Array<Array<MusicPatchNode>>
     fun get__f(): Array<Array<MusicPatchNode>>
-    fun get__k(): Int
-    fun get__m(): Int
+    fun get__o(): Int
+    fun get__q(): Int
+    fun get__a(): IntArray
+    fun get__b(): IntArray
     fun get__c(): IntArray
-    fun get__d(): IntArray
     fun get__e(): IntArray
+    fun get__g(): IntArray
+    fun get__i(): IntArray
     fun get__j(): IntArray
     fun get__l(): IntArray
     fun get__n(): IntArray
-    fun get__o(): IntArray
     fun get__p(): IntArray
-    fun get__q(): IntArray
-    fun get__r(): IntArray
-    fun get__s(): IntArray
     fun get__t(): IntArray
-    fun get__v(): IntArray
+    fun get__u(): IntArray
+    fun get__x(): IntArray
     fun get__y(): IntArray
     fun get__z(): IntArray
-    fun get__af(): Long
-    fun get__ar(): Long
+    fun get__ab(): Long
+    fun get__ag(): Long
 }

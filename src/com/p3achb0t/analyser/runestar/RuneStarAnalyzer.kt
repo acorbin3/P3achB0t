@@ -2,12 +2,14 @@ package com.p3achb0t.analyser.runestar
 
 import com.google.gson.Gson
 import com.p3achb0t.Main
+import com.p3achb0t.analyser.class_generation.createRunestarInterfaces
 import com.p3achb0t.analyser.class_generation.isBaseType
 import com.p3achb0t.analyser.class_generation.isFieldNameUnique
 import com.p3achb0t.client.configs.Constants
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
+import java.lang.System.exit
 import java.util.jar.JarFile
 
 class RuneStarAnalyzer {
@@ -35,9 +37,10 @@ class RuneStarAnalyzer {
             classRefObs[clazz.name] = clazz
         }
 
-        val folder = "./src/com/p3achb0t/_runestar_interfaces2/"
-        val _package = "com.p3achb0t.api._runestar_interfaces"
+        val folder = "./src/com/p3achb0t/api/interfaces2/"
+        val _package = "com.p3achb0t.api.interfaces"
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
+//        exit(0)
         return "./$hookDir/$hookFileName"
     }
 

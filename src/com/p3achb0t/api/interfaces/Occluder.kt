@@ -12,11 +12,11 @@ interface Occluder {
     fun getMinY(): Int
     fun getMinZ(): Int
     fun getType(): Int
-    fun get__a(): Int
-    fun get__g(): Int
+    fun get__c(): Int
     fun get__h(): Int
-    fun get__i(): Int
-    fun get__n(): Int
-    fun get__p(): Int
-    fun get__u(): Int
+    fun get__k(): Int
+    fun get__r(): Int
+    fun get__s(): Int
+    fun get__v(): Int
+    fun get__y(): Int
 }

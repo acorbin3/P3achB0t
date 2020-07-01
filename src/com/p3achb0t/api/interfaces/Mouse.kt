@@ -1,6 +1,7 @@
 package com.p3achb0t.api.interfaces
 
 import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
 
 interface Mouse {
 
@@ -9,4 +10,5 @@ interface Mouse {
     fun inputBlocked(value: Boolean)
     fun inputBlocked(): Boolean
     fun sendEvent(e: MouseEvent)
+    fun sendScrollEvent(e: MouseWheelEvent)
 }

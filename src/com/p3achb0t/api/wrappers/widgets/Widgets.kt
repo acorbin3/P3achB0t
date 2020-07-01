@@ -55,6 +55,35 @@ class Widgets(val ctx: Context) {
 
     }
 
+    fun find(text:String): ArrayList<Component>{
+        val components = ArrayList<Component>()
+
+        try {
+            ctx.client.getInterfaceComponents().withIndex().forEach {
+                if(it.value != null){
+                    it.value.withIndex().forEach {comp ->
+                        if(comp.value != null){
+                            val tempWidget = WidgetItem(comp.value, ctx = ctx)
+                            if (tempWidget.containsText(text)) {
+                                components.add(comp.value)
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+        } catch (e: Exception) {
+            e.stackTrace.iterator().forEach {
+                println(it.toString())
+            }
+
+        }
+        return components
+
+    }
+
     fun isWidgetAvaliable(parent: Int, child: Int): Boolean {
         return find(parent, child) != null
     }
@@ -76,11 +105,14 @@ class Widgets(val ctx: Context) {
             result += "\n"
             result += "Type: ${widget.getType()}"
             result += "Text:" + widget.getText() + "\n"
+            result += "Text2:" + widget.getText2() + "\n"
             var actions = "["
             if (widget.getItemActions() != null) {
                 widget.getItemActions().iterator().forEach { actions += "$it," }
             }
             result += "Actions:$actions]\n"
+            result += "cycle:" + widget.getCycle() + "\n"
+            result += "model frame cycle:" + widget.getModelFrameCycle() + "\n"
             result += "Sprite ID:" + widget.getSpriteId() + "\n"
             result += "Sprite2 ID:" + widget.getSpriteId2() + "\n"
             result += "Item ID:" + widget.getItemId() + "\n"
