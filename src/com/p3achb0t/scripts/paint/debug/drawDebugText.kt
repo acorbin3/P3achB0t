@@ -20,7 +20,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("login center pos = :${ctx.client.get__dv_r()}"))
+//        debugText.add(DebugText("login center pos = :${ctx.client.get__dv_r()}"))
         //debugText.add(DebugText("fps :${PaintDebug.fps}"))
         val heapSize = Runtime.getRuntime().totalMemory()
 
@@ -48,6 +48,9 @@ fun drawDebugText(g: Graphics, ctx: Context) {
             if(ctx.client.getGameState() == 30) {
                 debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
                 debugText.add(DebugText("World: ${ctx.client.getWorldId()}  Host: ${ctx.client.getWorldHost()}"))
+                debugText.add(DebugText("visible: 301=${ctx.worldHop.isWorldVisible(301)} 413=${ctx.worldHop.isWorldVisible(413)} 505=${ctx.worldHop.isWorldVisible(505)}"))
+                debugText.add(DebugText("Is logout dialog open = ${ctx.worldHop.isLogoutMenuOpen}  isworld list open = ${ctx.worldHop.isWorldListOpened}"))
+
 
 //                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
@@ -82,7 +85,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                         )
                 )
 //                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
-//                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
+                debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
 //                debugText.add(DebugText(ctx.menu.getHoverAction()))
 //                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
 
