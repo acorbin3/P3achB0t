@@ -36,16 +36,20 @@ object AccountManager {
             }
         }
         if(updatedID){
-            val file = File(accountsJsonFileName)
-            val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-            val jsonAccountPretty = gsonPretty.toJson(accounts)
-            file.writeText(jsonAccountPretty)
+            updateJSONFile()
         }
 
         AccountManager.accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
         for (r in AccountManager.accounts) {
             println(r)
         }
+    }
+
+    fun updateJSONFile(){
+        val file = File(accountsJsonFileName)
+        val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+        val jsonAccountPretty = gsonPretty.toJson(accounts)
+        file.writeText(jsonAccountPretty)
     }
 
     fun createAccount() {
