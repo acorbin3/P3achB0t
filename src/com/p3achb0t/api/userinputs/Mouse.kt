@@ -1,6 +1,7 @@
 package com.p3achb0t.api.userinputs
 
 
+import com.p3achb0t.api.Context
 import com.p3achb0t.api.interfaces.IOHandler
 import com.p3achb0t.api.interfaces.Mouse
 import com.p3achb0t.api.userinputs.naturalmouse.api.MouseMotionFactory
@@ -17,6 +18,9 @@ import java.awt.GraphicsEnvironment
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
+import kotlin.math.sign
+import kotlin.random.Random
 
 
 // This class will be used to specify want will be requested do action params when doing a click from the mouse
@@ -27,8 +31,8 @@ data class DoActionParams(
         val id: Int = 0,
         val menuOption: String = "",
         val menuTarget: String = "",
-        val mouseX: Int = 0,
-        val mouseY: Int = 0
+        var mouseX: Int = 0,
+        var mouseY: Int = 0
 )
 
 // This class was replicated based on the mouse movement from:
@@ -82,9 +86,11 @@ class Mouse(obj: Any): Logging() {
         return moveMouse(destPoint = destPoint, click = true, clickType = clickType)
     }
 
-    fun doAction(doActionParams: DoActionParams){
+    suspend fun doAction(doActionParams: DoActionParams){
         try {
             this.overrideDoActionParams = true
+            doActionParams.mouseX = -1
+            doActionParams.mouseY = -1
             this.doActionParams = doActionParams
             if(isLocationInScreenBounds(Point(0,0))) {
                 val timeDiff = System.currentTimeMillis() - lastDoAction
@@ -93,7 +99,7 @@ class Mouse(obj: Any): Logging() {
                     logger.info("Warning, fast action!")
                 }
                 lastDoAction = System.currentTimeMillis()
-                instantclick(Point(0, 0))
+                instantclick(Point(-1, -1))
             }
         }catch(e: Exception){
             logger.error("Error: Doaction threw an error")
@@ -103,9 +109,29 @@ class Mouse(obj: Any): Logging() {
         }
     }
 
-    fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left) {
+    suspend fun doActionMousePoint(doActionParams: DoActionParams, ctx: Context){
+        try {
+            this.overrideDoActionParams = true
+            this.doActionParams = doActionParams
+            if(ctx.client.getViewportMouse_isInViewport()) {
+                val timeDiff = System.currentTimeMillis() - lastDoAction
+                println("Time since last Action: $timeDiff")
+                if (timeDiff < 300) {
+                    println("Warning, fast action!")
+                }
+                lastDoAction = System.currentTimeMillis()
+                instantclick(Point(ctx.mouse.getX(),  ctx.mouse.getY()))
+            }
+        }catch(e: Exception){
+            println("Error: Doaction threw an error")
+            e.stackTrace.iterator().forEach {
+                println(it)
+            }
+        }
+    }
+    suspend fun instantclick(destPoint: Point, click: Boolean = true, clickType: ClickType = ClickType.Left) {
 
-        if(isLocationInScreenBounds(destPoint)) {
+        if(isLocationInScreenBounds(destPoint)|| true) {
             try {
 //        mouseMotionFactory.move(destPoint.x, destPoint.y)
                 mouseHopping.setMousePosition(destPoint)
@@ -293,61 +319,6 @@ class Mouse(obj: Any): Logging() {
         }
 
 
-
-//        var retries = 0
-//        while(!npc.isMouseOverObj() && !hasclicked){
-//            println("Mouse not over object")
-//            println("retries = " + retries)
-//            val npcpoint = npc.getInteractPoint()
-//            mouseMotionFactory.move(npcpoint.x, npcpoint.y)
-//            if (click && npc.isMouseOverObj() && !hasclicked) {
-//                val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
-//                val mousePress =
-//                        MouseEvent(
-//                                component,
-//                                MouseEvent.MOUSE_PRESSED,
-//                                System.currentTimeMillis(),
-//                                clickMask,
-//                                destPoint.x,
-//                                destPoint.y,
-////                                if(Random.nextLong(1000, 20000) < 2000){
-////                                    1
-////                                }
-////                                else 0,
-//                                0,
-//                                clickType == ClickType.Right
-//                        )
-//
-//                ioMouse.sendEvent(mousePress)
-//
-//                // Create a random number 30-70 to delay between clicks
-//                var delayTime = Math.floor(Math.random() * 40 + 30)
-//                delay(delayTime.toLong())
-//                val mouseRelease =
-//                        MouseEvent(
-//                                component,
-//                                MouseEvent.MOUSE_RELEASED,
-//                                System.currentTimeMillis(),
-//                                clickMask,
-//                                destPoint.x,
-//                                destPoint.y,
-////                                if(Random.nextLong(1000, 20000) < 2000){
-////                                    1
-////                                }
-////                                else 0,
-//                                0,
-//                                clickType == ClickType.Right
-//                        )
-//                ioMouse.sendEvent(mouseRelease)
-////            delayTime = Math.floor(Math.random() * 50 + 100)
-////            delay(delayTime.toLong())
-//                hasclicked = true
-//            }
-//            retries = retries + 1
-//            if(npc.isMouseOverObj() || retries > 4 || hasclicked){
-//                break
-//            }
-//        }
         return true
     }
 
@@ -453,62 +424,9 @@ class Mouse(obj: Any): Logging() {
             hasclicked = true
         }
 
-//        var retries = 0
-//        while(!npc.isMouseOverObj() && !hasclicked){
-//            println("Mouse not over object")
-//            println("retries = " + retries)
-//            val npcpoint = npc.getInteractPoint()
-//            mouseMotionFactory.move(npcpoint.x, npcpoint.y)
-//            if (click && npc.isMouseOverObj() && !hasclicked) {
-//                val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
-//                val mousePress =
-//                        MouseEvent(
-//                                component,
-//                                MouseEvent.MOUSE_PRESSED,
-//                                System.currentTimeMillis(),
-//                                clickMask,
-//                                destPoint.x,
-//                                destPoint.y,
-////                                if(Random.nextLong(1000, 20000) < 2000){
-////                                    1
-////                                }
-////                                else 0,
-//                                0,
-//                                clickType == ClickType.Right
-//                        )
-//
-//                ioMouse.sendEvent(mousePress)
-//
-//                // Create a random number 30-70 to delay between clicks
-//                var delayTime = Math.floor(Math.random() * 40 + 30)
-//                delay(delayTime.toLong())
-//                val mouseRelease =
-//                        MouseEvent(
-//                                component,
-//                                MouseEvent.MOUSE_RELEASED,
-//                                System.currentTimeMillis(),
-//                                clickMask,
-//                                destPoint.x,
-//                                destPoint.y,
-////                                if(Random.nextLong(1000, 20000) < 2000){
-////                                    1
-////                                }
-////                                else 0,
-//                                0,
-//                                clickType == ClickType.Right
-//                        )
-//                ioMouse.sendEvent(mouseRelease)
-////            delayTime = Math.floor(Math.random() * 50 + 100)
-////            delay(delayTime.toLong())
-//                hasclicked = true
-//            }
-//            retries = retries + 1
-//            if(npc.isMouseOverObj() || retries > 4 || hasclicked){
-//                break
-//            }
-//        }
         return true
     }
+
 
     fun isMouseBlocked() : Boolean {
         return ioMouse.inputBlocked()
