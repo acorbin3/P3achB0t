@@ -86,6 +86,7 @@ abstract class AbstractMouse : MouseListener, MouseMotionListener, MouseWheelLis
     }
 
     override fun mouseWheelMoved(e: MouseWheelEvent) {
+        println("Scroll $e")
         if (!inputBlocked)
             _mouseWheelMoved(e)
         e.consume()
@@ -108,6 +109,15 @@ abstract class AbstractMouse : MouseListener, MouseMotionListener, MouseWheelLis
             ex.printStackTrace()
         }
 
+    }
+
+    override fun sendScrollEvent(e: MouseWheelEvent) {
+        try{
+            _mouseWheelMoved(e)
+            e.consume()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
 }
