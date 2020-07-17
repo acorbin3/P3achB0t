@@ -25,8 +25,7 @@ object AccountManager {
             return
         }
         val gson = Gson()
-        val accounts: MutableList<Account> = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
-
+        accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
         //Check to see if we need to add a UUID for the account ID
         var updatedID = false
         accounts.forEach {
@@ -39,8 +38,8 @@ object AccountManager {
             updateJSONFile()
         }
 
-        AccountManager.accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
-        for (r in AccountManager.accounts) {
+        accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
+        for (r in accounts) {
             println(r)
         }
     }
