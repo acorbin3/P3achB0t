@@ -58,7 +58,7 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
             val debugY = 25
             g.color = Color.white
             g.drawRect(ctx.mouse.getX(), ctx.mouse.getY(), 5, 5)
-            // drawDebugOptions(g,debugX,debugY)
+             drawDebugOptions(g,debugX,debugY)
 
 
             if(isCanWalkDebug)
@@ -106,7 +106,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
 //                rightClickMenuPaint(g, ctx)
                 if(isInventoryPaintingDebug)
                     paintInventory.draw(g)
-//                equipmentPaint(g, ctx)
+                if(isPaintEquipment)
+                    paintEquipment.draw(g)
 
                 // Paint minimap circle
 //                try {
@@ -185,40 +186,40 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
         if(e?.isControlDown == true && e.keyChar.isDigit()){
             when (e.keyChar) {
                 '1' -> {
-                    println("Swapping debug text")
                     isDebugTextOn = !isDebugTextOn
+                    println("Swapping debug text $isDebugTextOn")
                 }
                 '2' -> {
-                    println("Swapping NPC paint")
                     isNPCPaintOn = !isNPCPaintOn
+                    println("Swapping NPC paint $isNPCPaintOn")
                 }
                 '3' -> {
-                    println("Swapping players")
                     isPlayerPaintOn = !isPlayerPaintOn
+                    println("Swapping players $isPlayerPaintOn")
                 }
                 '4' -> {
-                    println("Swapping gameobjects")
                     isGameObjectOn = !isGameObjectOn
+                    println("Swapping gameobjects $isGameObjectOn")
                 }
                 '5' -> {
-                    println("Swapping gounditems")
                     isGroundItemsOn = !isGroundItemsOn
+                    println("Swapping gounditems")
                 }
                 '7' -> {
-                    println("Swapping projectiles")
                     isProjectileDebug = !isProjectileDebug
+                    println("Swapping projectiles $isProjectileDebug")
                 }
                 '8' -> {
-                    println("Swapping can walk")
                     isCanWalkDebug = !isCanWalkDebug
+                    println("Swapping can walk $isCanWalkDebug")
                 }
                 '9' -> {
-                    println("Swapping inventory")
                     isInventoryPaintingDebug = !isInventoryPaintingDebug
+                    println("Swapping inventory $isInventoryPaintingDebug")
                 }
                 '0' -> {
-                    println("Swapping Equipment")
                     isPaintEquipment = !isPaintEquipment
+                    println("Swapping Equipment $isPaintEquipment")
                 }
             }
         }
