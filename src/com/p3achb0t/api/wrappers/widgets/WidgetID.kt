@@ -320,14 +320,14 @@ class WidgetID {
     }
 
     internal object ResizableViewport {
-        const val CLAN_CHAT_TAB = 37
-        const val ACCOUNT_MANAGEMENT_TAB = 38
-        const val FRIENDS_TAB = 39
+        const val CLAN_CHAT_TAB = 38
+        const val ACCOUNT_MANAGEMENT_TAB = 39
+        const val FRIENDS_TAB = 40
         const val IGNORES_TAB = 37
         const val LOGOUT_TAB = 39
-        const val OPTIONS_TAB = 40
-        const val EMOTES_TAB = 41
-        const val MUSIC_TAB = 42
+        const val OPTIONS_TAB = 41
+        const val EMOTES_TAB = 42
+        const val MUSIC_TAB = 43
         const val CLAN_CHAT_ICON = 42
         const val ACCOUNT_MANAGEMENT_ICON = 43
         const val FRIENDS_ICON = 44
@@ -336,13 +336,13 @@ class WidgetID {
         const val OPTIONS_ICON = 45
         const val EMOTES_ICON = 46
         const val MUSIC_ICON = 47
-        const val COMBAT_TAB = 52
-        const val STATS_TAB = 53
-        const val QUESTS_TAB = 54
-        const val INVENTORY_TAB = 55
-        const val EQUIPMENT_TAB = 56
-        const val PRAYER_TAB = 57
-        const val MAGIC_TAB = 58
+        const val COMBAT_TAB = 53
+        const val STATS_TAB = 54
+        const val QUESTS_TAB = 55
+        const val INVENTORY_TAB = 56
+        const val EQUIPMENT_TAB = 57
+        const val PRAYER_TAB = 58
+        const val MAGIC_TAB = 59
         const val COMBAT_ICON = 58
         const val STATS_ICON = 59
         const val QUESTS_ICON = 60
@@ -355,7 +355,7 @@ class WidgetID {
     }
 
     internal object ResizableViewportBottomLine {
-        const val LOGOUT_BUTTON_OVERLAY = 30
+        const val LOGOUT_BUTTON_OVERLAY = 32
         const val CMB_TAB = 50
         const val CMB_ICON = 58
         const val SKILLS_TAB = 51
