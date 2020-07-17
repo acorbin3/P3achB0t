@@ -52,7 +52,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 debugText.add(DebugText("Is logout dialog open = ${ctx.worldHop.isLogoutMenuOpen}  isworld list open = ${ctx.worldHop.isWorldListOpened}"))
 
 
-//                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
+                debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
 //                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
 //                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))
@@ -108,7 +108,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.forEach {
             g.color = it.color
             g.drawString(it.text, x, y)
-            y += 20
+            y += 15
         }
     }
 
