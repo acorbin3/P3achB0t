@@ -12,6 +12,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.awt.BorderLayout
+import java.awt.Dimension
 import java.io.File
 import java.lang.Thread.sleep
 import javax.imageio.ImageIO
@@ -43,9 +44,11 @@ class BotManager : JFrame() {
 
         pack()
         // TODO("correctly resize main window when tab bar changes size")
-        minimumSize = size // Set the minimum size after packing to fit child components.
+        // Set the minimum size after packing to fit child components.
+        minimumSize = Dimension(com.p3achb0t.api.Constants.GAME_FIXED_WIDTH + 10, com.p3achb0t.api.Constants.GAME_FIXED_HEIGHT + 95)
         setLocationRelativeTo(null) // Set location after packing to correctly center.
         FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
+
         isVisible = true
 
         // load scripts
