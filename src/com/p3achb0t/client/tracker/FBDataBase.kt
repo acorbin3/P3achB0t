@@ -10,8 +10,12 @@ import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
 import java.io.File
 import java.io.FileInputStream
+import java.net.DatagramSocket
+import java.net.InetAddress
+import java.net.NetworkInterface
 import java.sql.Timestamp
 import java.util.*
+
 
 class FBDataBase {
     private val db: Firestore
@@ -57,14 +61,26 @@ class FBDataBase {
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
+
+
         val lastUpdated = mutableMapOf<String,String>()
         val stamp = Timestamp(System.currentTimeMillis())
         val date = Date(stamp.time)
-        lastUpdated["ip"] = java.net.InetAddress.getLocalHost().hostAddress
+        DatagramSocket().use { socket ->
+            socket.connect(InetAddress.getByName("google.com"), 80)
+            var ip = socket.localAddress.hostAddress
+            lastUpdated["ip"] = ip
+        }
+
         lastUpdated["startTime"] = date.toString()
         lastUpdated["script"] = script
         lastUpdated["user"] = accountID
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+
+        val userFields = mutableMapOf<String,String>()
+        userFields["latestStartTime"] = date.toString()
+        userRef.document(accountID).set(userFields as Map<String,Any>)
+
     }
     fun setBanned(accountID: String, sessionID: String){
         if (accountID !in userDocs) {
@@ -76,6 +92,10 @@ class FBDataBase {
         lastUpdated["Banned:"] = "True: " + date.toString()
         println("setting banned")
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+
+        val userFields = mutableMapOf<String,String>()
+        userFields["bannedTime"] = date.toString()
+        userRef.document(accountID).set(userFields as Map<String,Any>)
     }
 
     fun setLastUpdated(accountID: String, sessionID: String){
@@ -87,6 +107,10 @@ class FBDataBase {
         val date = Date(stamp.time)
         lastUpdated["lastUpdateTime"] = date.toString()
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+
+        val userFields = mutableMapOf<String,String>()
+        userFields["lastUpdateTime"] = date.toString()
+        userRef.document(accountID).set(userFields as Map<String,Any>)
     }
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: Int) {
         if (accountID !in userDocs) {

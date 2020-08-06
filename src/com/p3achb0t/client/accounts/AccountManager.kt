@@ -40,6 +40,7 @@ object AccountManager {
 
         accounts = gson.fromJson(content, object : TypeToken<List<Account>>() {}.type)
         for (r in accounts) {
+            r.sessionToken = UUID.randomUUID().toString()
             println(r)
         }
     }

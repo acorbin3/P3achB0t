@@ -96,6 +96,7 @@ class InstanceManager(val client: Any): Logging() {
         actionScriptState(true)
         this.account.sessionStartTime = System.currentTimeMillis()
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
+        GlobalStructs.db.initalScriptLoad(accountID = account.username,sessionID = account.sessionToken,script = account.actionScript)
     }
 
     fun stopActionScript() {
