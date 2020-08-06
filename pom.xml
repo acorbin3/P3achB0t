@@ -4,7 +4,7 @@
     <groupId>com.p3achb0t</groupId>
     <artifactId>P3achB0t</artifactId>
     <packaging>jar</packaging>
-    <version>0.189-SNAPSHOT</version>
+    <version>0.190-SNAPSHOT</version>
     <name>client</name>
 
     <properties>
@@ -12,7 +12,6 @@
         <version.kotlin>1.3.50</version.kotlin>
         <version.asm>7.1</version.asm>
         <version.java>11</version.java>
-        <runescape.gamepack.revision>189.1</runescape.gamepack.revision>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <kotlin.version>1.3.61</kotlin.version>
@@ -194,7 +193,7 @@
             <resource>
                 <directory>hooks</directory>
                 <includes>
-                    <include>hooks_189.json</include>
+                    <include>hooks_190.json</include>
                 </includes>
             </resource>
             <resource>
