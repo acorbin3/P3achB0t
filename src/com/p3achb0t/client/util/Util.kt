@@ -9,7 +9,14 @@ import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.security.MessageDigest
+import java.math.BigInteger
 
+
+fun String.sha256(): String {
+    val md = MessageDigest.getInstance("SHA-256")
+    return BigInteger(1, md.digest(toByteArray())).toString(16).padStart(32, '0')
+}
 
 class Util {
 
