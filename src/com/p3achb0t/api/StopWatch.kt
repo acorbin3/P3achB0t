@@ -9,6 +9,7 @@ class StopWatch {
     fun reset(){ starTime = System.currentTimeMillis()}
     val elapsed: Long get() { return System.currentTimeMillis() - starTime}
     val elapsedSec: Int get() { return ((System.currentTimeMillis() - starTime) / 1000).toInt()}
+    val elapsedMin: Int get() { return ((System.currentTimeMillis() - starTime) / 1000 / 60).toInt()}
 
     fun getRuntimeString(): String? {
         val days = elapsed.toInt() / 86400000

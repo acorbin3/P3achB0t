@@ -13,6 +13,12 @@ class Account {
     var sessionStartTime: Long = -1
 
     var useBreaks: Boolean = false
+
+
+    //All the times will be in units of minutes. Any time of zero will be ignored for evaluating
+    // A session is considered how long do you want the account to run before taking a break.
+    // The session run time will reset with a random value between the min and max once a break has finished
+
     var minimumSessionTime: Int = 0
     var maximumSessionTime: Int = 0
     var minimumBreakTime: Int = 0
