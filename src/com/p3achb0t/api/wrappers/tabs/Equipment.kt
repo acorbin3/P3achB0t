@@ -48,7 +48,7 @@ class Equipment(val ctx: Context) {
         return itemids
     }
 
-    fun Contains(id: Int): Boolean {
+    fun contains(id: Int): Boolean {
         var Contains = false
         Slot.values().forEach {
             if (getItemAtSlot(it)?.id == id) {
@@ -58,7 +58,20 @@ class Equipment(val ctx: Context) {
         return Contains
     }
 
-    fun ContainsAny(id: ArrayList<Int>): Boolean {
+    fun containsAny(ids: IntArray): Boolean {
+        var contains = false
+        Slot.values().forEach {
+//            println("Looking at slot: ${it.name} id: ${getItemAtSlot(it)?.id}")
+            if (isEquipmentSlotEquipted(it)) {
+                if(getItemAtSlot(it)?.id ?: -1 in ids) {
+                    contains = true
+                }
+            }
+        }
+
+        return contains
+    }
+    fun containsAny(id: ArrayList<Int>): Boolean {
         var Contains = false
         Slot.values().forEach {
             for (i in id) {
@@ -73,10 +86,10 @@ class Equipment(val ctx: Context) {
         return Contains
     }
 
-    fun ContainsAll(id: ArrayList<Int>): Boolean {
+    fun containsAll(id: ArrayList<Int>): Boolean {
         var Contains = true
         id.forEach {
-            if (!Contains(it)) {
+            if (!contains(it)) {
                 println("Can't find " + it + " in inv")
                 Contains = false
             }
