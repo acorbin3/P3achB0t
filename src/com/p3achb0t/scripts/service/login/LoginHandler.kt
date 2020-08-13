@@ -27,7 +27,10 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
     var sessionTimeInSec = 0
 
     override suspend fun isValidToRun(account: Account): Boolean {
-        return account.startActionScriptAutomatically && loginHandler.isAtHomeScreen(ctx)
+        return account.startActionScriptAutomatically
+                && (loginHandler.isAtHomeScreen(ctx)
+                    // Strange case where at the Click red button to start playing
+                    || ctx.widgets.isWidgetAvaliable(378, 87))
                 || isBreakTime()
                 || !isInValidWindowTime()
     }
@@ -91,7 +94,7 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
                 debugText.add(DebugText("Remaining session time before break $sessionTimeLeft"))
             }
         }
-        if(isBreakTime()){
+        if(this.account.useBreaks && isBreakTime()){
             val timeLeft = abs(breakTimeStopWatch.elapsed - breakDurationMils)
             val stringTimeLeft = Time.getRuntimeString(timeLeft)
             debugText.add(DebugText("Breaking... Time left: $stringTimeLeft", color = Color.red))
