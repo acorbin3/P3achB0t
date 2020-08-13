@@ -100,6 +100,7 @@ class BotManager : JFrame() {
         var botInstanceKey = ""
         GlobalScope.launch {
             var cacheLoaded = false
+            sleep(5000)
             botTabBar.botInstances.iterator().forEach {
                 if (!cacheLoaded) {
                     botInstanceKey = it.key
