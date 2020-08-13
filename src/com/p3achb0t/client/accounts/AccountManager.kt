@@ -10,7 +10,7 @@ import java.util.*
 
 object AccountManager {
 
-    lateinit var accounts: List<Account>
+    var accounts: List<Account> = listOf()
 
     var accountsJsonFileName = "./" + Constants.APPLICATION_CACHE_DIR + "/" + Constants.ACCOUNTS_DIR + "/" + Constants.ACCOUNTS_FILE
 

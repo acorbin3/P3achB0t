@@ -360,13 +360,14 @@ class Inventory(val ctx: Context? = null) {
     }
 
     fun containsAny(itemid: IntArray): Boolean {
+//        print("Looking for: any item in here: ")
+//        itemid.forEach { print("$it ") }
+//        println()
         var contains = false
         var items = getAll()
         items.forEachIndexed { index, widgetItem ->
-            itemid.forEach {
-                if (widgetItem.id == it) {
-                    contains = true
-                }
+            if(widgetItem.id in itemid){
+                contains = true
             }
         }
         return contains
@@ -426,7 +427,15 @@ class Inventory(val ctx: Context? = null) {
     fun getWidget(): Component? {
         var widget: Component? = null
         try {
-            widget = ctx?.client!!.getInterfaceComponents()[149][0]
+            if(ctx!= null && ctx.client != null
+                    && ctx?.client?.getInterfaceComponents() != null
+                    && ctx?.client?.getInterfaceComponents().size > 149
+                    && ctx.client.getInterfaceComponents()[149] != null
+                    && ctx.client.getInterfaceComponents()[149].isNotEmpty()
+                    && ctx.client.getInterfaceComponents()[149][0] != null
+                    ) {
+                widget = ctx.client.getInterfaceComponents()[149][0]
+            }
         } catch (e: Exception) {
             println("get widget exception")
             e.printStackTrace()
