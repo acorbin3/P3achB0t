@@ -106,6 +106,50 @@ class GameObjects(val ctx: Context) {
         return gameObjects
     }
 
+    fun findAny(ids: IntArray, sortByDistance: Boolean = true): ArrayList<GameObject>{
+        val gameObjects = ArrayList<GameObject>()
+        val region = ctx.client.getScene()
+
+        region.getTiles().iterator().forEach { plane ->
+            plane.iterator().forEach { row ->
+                row.iterator().forEach { colTile ->
+                    if (colTile != null) {
+                        if (colTile.getScenery().isNotEmpty()) {
+                            colTile.getScenery().iterator().forEach {
+                                if (it != null) {
+                                    val gmObj = GameObject(it, ctx = ctx)
+                                    if (gmObj.id in ids) {
+                                        gameObjects.add(gmObj)
+                                    }
+
+                                }
+                            }
+                        }
+                        if (colTile.getWall() != null) {
+                            val boundaryObject = colTile.getWall()
+                            val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
+                            if (gmObj.id in ids) {
+                                gameObjects.add(gmObj)
+                            }
+                        }
+                        if(colTile.getFloorDecoration() != null){
+                            val floorDecoration = colTile.getFloorDecoration()
+                            val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
+                            if (gmObj.id in ids) {
+                                gameObjects.add(gmObj)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (sortByDistance) {
+            val local = ctx.players.getLocal()
+            gameObjects.sortBy { it.distanceTo(local) }
+        }
+        return gameObjects
+    }
+
     fun findinArea(name: String, area: Area, tile: Tile = Tile(), sortByDistance: Boolean = false): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
         val region = ctx.client.getScene()
