@@ -34,20 +34,19 @@ class Cache {
         val file = File(cachePath)
 
         if((!cacheUpdated || forceReload)) {
-            if(!file.exists()) {
-                try {
-                    cacheUpdated = true
-                    println("Connecting to websocket")
-                    NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
-                        DiskCache.open(Path.of(cachePath)).use { disk ->
-                            println("Updating Cache")
-                            Cache.update(net, disk).join()
-                            println("Complete: Cache updated")
-                        }
+
+            try {
+                cacheUpdated = true
+                println("Connecting to websocket")
+                NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
+                    DiskCache.open(Path.of(cachePath)).use { disk ->
+                        println("Updating Cache")
+                        Cache.update(net, disk).join()
+                        println("Complete: Cache updated")
                     }
-                } catch (e: IOException) {
-                    e.printStackTrace()
                 }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
             println("loading NPC info from cache")
             npcCacheInfo = getNPCInfo()
