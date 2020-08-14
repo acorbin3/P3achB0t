@@ -36,7 +36,7 @@ class Account {
     var windowEndHourTime: Int = 360 // range [0,1440] in minutes 360 = 6AM
 
     // Scripts
-    var sessionToken: String = ""
+    var sessionToken: String = UUID.randomUUID().toString()
     var actionScript: String = ""
     var debugScripts = arrayListOf<String>()
     var serviceScripts = arrayListOf<String>()
@@ -45,7 +45,7 @@ class Account {
     var proxy: String = "none" // SOCKS5;185.244.192.119:7670 or none
 
     // Game config
-    var username: String = ""
+    var username: String = UUID.randomUUID().toString()
     var password: String = ""
     var pin: String = ""
     var banned: Boolean = false
