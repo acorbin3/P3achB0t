@@ -20,6 +20,7 @@ import java.applet.Applet
 import java.awt.Color
 import java.awt.Graphics
 import java.lang.Thread.sleep
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 enum class ScriptState {
@@ -96,8 +97,11 @@ class InstanceManager(val client: Any): Logging() {
         actionScriptState(true)
         this.account.sessionStartTime = System.currentTimeMillis()
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
-        val scriptName = if(account.actionScript.isEmpty()) script.name else account.actionScript
-        GlobalStructs.db.initalScriptLoad(accountID = account.username,sessionID = account.sessionToken,script = scriptName)
+        if(account.actionScript.isEmpty())  account.actionScript= script.name
+        if(account.username.isEmpty())  account.username=UUID.randomUUID().toString()
+        if(account.sessionToken.isEmpty())  account.sessionToken=UUID.randomUUID().toString()
+
+        GlobalStructs.db.initalScriptLoad(accountID = account.username,sessionID = account.sessionToken,script = account.actionScript)
     }
 
     fun stopActionScript() {

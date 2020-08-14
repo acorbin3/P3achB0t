@@ -59,16 +59,9 @@ class FBDataBase {
     }
 
     fun initalScriptLoad(accountID: String, sessionID: String, script: String){
-        var updatedAccountID = accountID
-        if(updatedAccountID.isEmpty()){
-            updatedAccountID = UUID.randomUUID().toString()
-        }
-        var updatedSessionID = sessionID
-        if(updatedSessionID.isEmpty()){
-            updatedSessionID = UUID.randomUUID().toString()
-        }
-        if (updatedAccountID !in userDocs) {
-            userDocs[updatedAccountID] = userRef.document(updatedAccountID).collection("Sessions").document(updatedSessionID)
+
+        if (accountID !in userDocs) {
+            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
 

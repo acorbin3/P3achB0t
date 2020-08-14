@@ -28,7 +28,7 @@ class Vars(val ctx: Context) {
         return try {
             ctx.client.getVarps_main()[id]
         } catch (e: Exception) {
-            println("getVarp threw an exception")
+            println("getVarp threw an exception for $id")
             e.stackTrace.iterator().forEach {
                 println(it)
             }
