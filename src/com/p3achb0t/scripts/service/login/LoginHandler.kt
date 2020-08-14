@@ -32,12 +32,12 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
                     // Strange case where at the Click red button to start playing
                     || ctx.widgets.isWidgetAvaliable(378, 87))
                 || isBreakTime()
-                || !isInValidWindowTime()
+//                || !isInValidWindowTime()
     }
 
 
     fun isBreakTime(): Boolean{
-        return runTimeStopWatch.elapsedSec >= sessionTimeInSec
+        return account.useBreaks && runTimeStopWatch.elapsedSec >= sessionTimeInSec
     }
 
     fun isInValidWindowTime(): Boolean{
