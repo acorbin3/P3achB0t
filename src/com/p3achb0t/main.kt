@@ -20,7 +20,6 @@ import kotlin.system.exitProcess
 
 object Main {
 
-    //var validationKey = PaintDebug.key
     @JvmStatic
     fun main(args: Array<String>) {
 
@@ -28,9 +27,11 @@ object Main {
         var getAccountPath = false
         args.iterator().forEach {
             if(getNextKey){
-                //validationKey = PaintDebug.key
-                if(it == "-key"){
+                GlobalStructs.db.validationKey = it
+
+                getNextKey = false
             }
+            if(it == "-key"){
                 getNextKey = true
             }
             if(getAccountPath){

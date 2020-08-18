@@ -216,7 +216,7 @@ class Inventory(val ctx: Context? = null) {
             }
             if (it == 143) {
                 if (getCount(it) > 0) {
-                    doses = doses + (getCount(it) * 3)
+                    doses = doses + (getCount(it) * 1)
                 }
             }
             if (it == 141) {
@@ -226,7 +226,7 @@ class Inventory(val ctx: Context? = null) {
             }
             if (it == 139) {
                 if (getCount(it) > 0) {
-                    doses = doses + getCount(it)
+                    doses = doses + getCount(it)*3
                 }
             }
 
