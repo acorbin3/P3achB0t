@@ -25,7 +25,10 @@ class BotInstance(account: Account = Account(), tabBarTextInfo: String = "") : J
             sessionToken = account.uuid
             instanceManagerInterface = applet as InstanceManagerInterface
             add(applet) // add the game to the JPanel
-            GlobalStructs.botManager.botTabBar.addBotInstance("$tabBarTextInfo - ${account.username}-${account.proxy}", sessionToken, this)
+            // Strip off any auth if there is any
+
+            val proxy = if(account.proxy == "none") account.proxy else account.proxy.split(";")[1]
+            GlobalStructs.botManager.botTabBar.addBotInstance("$tabBarTextInfo - ${account.username}-${proxy}", sessionToken, this)
         }
     }
 
