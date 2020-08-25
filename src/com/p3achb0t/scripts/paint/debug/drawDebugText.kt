@@ -86,6 +86,17 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 )
 //                debugText.add(DebugText("Tutorial Island % Complete: ${(TutorialIsland.getPercentComplete(ctx) * 100)}"))
                 debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
+
+                if(ctx.grandExchange.isOpen()){
+                    ctx.client.getGrandExchangeOffers().iterator().withIndex().forEach {
+
+                        debugText.add(DebugText("Slot ${it.index} State:${it.value.getState()} price:${it.value.getCurrentPrice()} " +
+                                "currentQty:${it.value.getCurrentQuantity()} totalQty:${it.value.getTotalQuantity()} unitPrice:${it.value.getUnitPrice()} " +
+                                "ID:${it.value.getId()}"))
+                    }
+
+
+                }
 //                debugText.add(DebugText(ctx.menu.getHoverAction()))
 //                debugText.add(DebugText("Cooks assistant var: " + Quest.COOKS_ASSISTANT.getVar(ctx).toString()))
 
