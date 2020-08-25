@@ -24,6 +24,7 @@ class WorldHop(val ctx: Context) {
         val worldListContainerIndex = Widget.WidgetIndex("69", "15")
         val worldListParentIndex = Widget.WidgetIndex("69", "16")
         val listScrollBar = Widget.WidgetIndex("69", "18")
+        val worldListSortAscendingButtonIndex = Widget.WidgetIndex("69", "11")
         val listUpButtonChildID = 4
         val listDownButtonChildID = 5
         val listScrollClickableAreaChildID = 0
@@ -31,6 +32,7 @@ class WorldHop(val ctx: Context) {
         val yellowXButton = Widget.WidgetIndex("164", "32")
         val worldSwitchButtonIndex = Widget.WidgetIndex("182", "7")
         val selectYesWorldHop = Widget.WidgetIndex("219", "1")
+
         val selectYesWorldHopChild = 1
         //[(182,8),(182,1),(182,0),(164,80),(164,69),(164,66),
     }
@@ -43,6 +45,10 @@ class WorldHop(val ctx: Context) {
     val worldListContainer: WidgetItem
         get() {
             return WidgetItem(ctx.widgets.find(worldListContainerIndex.parentID.toInt(), worldListContainerIndex.childID.toInt()), ctx = ctx)
+        }
+    val worldListSortAscendingButton: WidgetItem
+        get(){
+            return WidgetItem(ctx.widgets.find(worldListSortAscendingButtonIndex.parentID.toInt(), worldListSortAscendingButtonIndex.childID.toInt()), ctx = ctx)
         }
     val worldListScrollBar: WidgetItem
         get() {
@@ -131,6 +137,17 @@ class WorldHop(val ctx: Context) {
         if (isWorldListOpened) {
             var worldWidget = getWorldWidget(selectedWorld)
             var directionUp = false
+
+            //Make sure the world list is in the correct sorted order
+            if(ctx.vars.getVarbit(4596) != 0){
+                worldListSortAscendingButton.click()
+                Utils.sleepUntil({ctx.vars.getVarbit(4596) == 0})
+            }
+
+            if(ctx.vars.getVarbit(4596) == 0){
+                println("World list in correctly sorted order")
+            }
+
             //Check which direction to scroll
             directionUp = worldWidget.getBasePoint().y < worldListContainer.getBasePoint().y
             println("World widget ${worldWidget.getBasePoint()} Container = ${worldListContainer.getBasePoint()} up?: = $directionUp")

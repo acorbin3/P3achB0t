@@ -152,20 +152,24 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 "ctrl-6 can walk: $isCanWalkDebug",
                 "ctrl-7 projectile: $isProjectileDebug",
                 "ctrl-9 inventory: $isInventoryPaintingDebug",
-                "ctrl-0 equipment: $isPaintEquipment"
+                "ctrl-0 equipment: $isPaintEquipment",
+                "ctrl-q bank: $isBankPaintDebug"
 
         )
 
         val vertical = true //could add a hotkey to toggle this on/off
         var debugOptionsY = 25
         var debugOptionsX = if(vertical) debugX + 500 else debugX //change this whatever positions u like
+        val savedFont = g.font
+        g.font = g.font.deriveFont(10F)
+
         g.drawString("Debug options",debugOptionsX,debugY)
         val itemsPerRow = 2
         var currRow = 0
         debugOptionsArr.forEachIndexed{i,debugOption ->
             var yOffset = 20
             if(vertical){
-                debugOptionsY+=20
+                debugOptionsY+=10
             }else{
                 val metrics = g.getFontMetrics(g.font)
                 debugOptionsX+= metrics.stringWidth(debugOption) + 30 //you can add padding here, if you want the rows to look nice and clean
@@ -177,13 +181,15 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
             }
             g.drawString(debugOption,debugOptionsX,debugOptionsY + yOffset)
         }
+
+        g.font = savedFont
     }
 
     override fun keyTyped(e: KeyEvent?) {
     }
 
     override fun keyPressed(e: KeyEvent?) {
-        if(e?.isControlDown == true && e.keyChar.isDigit()){
+        if(e?.isControlDown == true ){
             when (e.keyChar) {
                 '1' -> {
                     isDebugTextOn = !isDebugTextOn
@@ -220,6 +226,10 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 '0' -> {
                     isPaintEquipment = !isPaintEquipment
                     println("Swapping Equipment $isPaintEquipment")
+                }
+                'q' ->{
+                    isBankPaintDebug != isBankPaintDebug
+                    println("Swapping Bank: $isBankPaintDebug")
                 }
             }
         }

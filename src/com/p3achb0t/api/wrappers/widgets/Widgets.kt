@@ -11,11 +11,13 @@ class Widgets(val ctx: Context) {
         try {
             if(ctx != null) {
                 val components = ctx.client.getInterfaceComponents()
-                val parentW = components[parent]
-                if (parentW != null) {
-                    val childW = parentW[child]
-                    if (childW != null) {
-                        widget = childW
+                if(components!= null) {
+                    val parentW = components[parent]
+                    if (parentW != null) {
+                        val childW = parentW[child]
+                        if (childW != null) {
+                            widget = childW
+                        }
                     }
                 }
             }

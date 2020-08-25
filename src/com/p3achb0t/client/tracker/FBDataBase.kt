@@ -8,12 +8,17 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.tracker.string_stuff.str
+import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileInputStream
 import java.net.DatagramSocket
+import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -24,6 +29,7 @@ class FBDataBase {
     private val userSkillOrItemCount: MutableMap<String, Int> = HashMap()
     private val fileHashRef: CollectionReference
     var validationKey: String = ""
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
 
     init {
 
@@ -60,29 +66,30 @@ class FBDataBase {
         return userSkillOrItemCount[id].toString()
     }
 
-    fun initalScriptLoad(accountID: String, sessionID: String, script: String){
-
+    fun initalScriptLoad(account: Account){
+        val accountID = account.username
+        val sessionID = account.sessionToken
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
 
         val lastUpdated = mutableMapOf<String,String>()
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
-        DatagramSocket().use { socket ->
-            socket.connect(InetAddress.getByName("google.com"), 80)
-            var ip = socket.localAddress.hostAddress
-            lastUpdated["ip"] = ip
-        }
 
-        lastUpdated["startTime"] = date.toString()
-        lastUpdated["script"] = script
+
+        val dateStr = LocalDateTime.now().format(formatter)
+        lastUpdated["startTime"] = dateStr
+        lastUpdated["script"] = account.actionScript
         lastUpdated["user"] = accountID
+        lastUpdated["ip"] = Jsoup.connect("https://api.ipify.org").get().toString()
+        lastUpdated["proxy"] = account.proxy
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
-        userFields["latestStartTime"] = date.toString()
+        userFields["latestStartTime"] = dateStr
+        userFields["script"] = account.actionScript
+        userFields["ip"] = Jsoup.connect("https://api.ipify.org").get().toString()
+        userFields["proxy"] = account.proxy
         userRef.document(accountID).set(userFields as Map<String,Any>)
 
     }
@@ -91,14 +98,13 @@ class FBDataBase {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
-        lastUpdated["Banned:"] = "True: " + date.toString()
+        val dateStr = LocalDateTime.now().format(formatter)
+        lastUpdated["Banned:"] = "True: $dateStr"
         println("setting banned")
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
-        userFields["bannedTime"] = date.toString()
+        userFields["bannedTime"] = dateStr
         userRef.document(accountID).set(userFields as Map<String,Any>)
     }
 
@@ -107,45 +113,43 @@ class FBDataBase {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
-        lastUpdated["lastUpdateTime"] = date.toString()
+        lastUpdated["lastUpdateTime"] = LocalDateTime.now().format(formatter)
         userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
-        userFields["lastUpdateTime"] = date.toString()
+        userFields["lastUpdateTime"] = LocalDateTime.now().format(formatter)
         userRef.document(accountID).set(userFields as Map<String,Any>)
     }
-    fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: Int) {
+    fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: String, xpPerHour: String) {
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
-        val messageID = getDocID(accountID, skill.name)
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
         val lastUpdated = mutableMapOf<String,String>()
-        lastUpdated["lastUpdated"] = date.toString()
+        lastUpdated["lastUpdated"] = LocalDateTime.now().format(formatter)
         userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
-        userDocs[accountID]?.collection("Skills")?.document(skill.name)?.collection("xp")
-                ?.document(messageID)?.set(StatInfo(date.toString(),xp))
+
+        val fields = mutableMapOf<String,String>()
+        fields["xp"] = xp
+        fields["xp_PerHour"] = xpPerHour
+        userDocs[accountID]?.collection("Skills")?.document(skill.name)?.set(fields as Map<String,Any>)
 
     }
 
 
 
-    fun updateItemCount(accountID: String, sessionID: String, itemName: String, count: Int) {
+    fun updateItemCount(accountID: String, sessionID: String, itemName: String, count: String, countPerHour: String) {
         if (accountID !in userDocs) {
             userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
-        val messageID = getDocID(accountID, itemName)
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
         val lastUpdated = mutableMapOf<String,String>()
-        lastUpdated["lastUpdated"] = date.toString()
+        lastUpdated["lastUpdated"] = LocalDateTime.now().format(formatter)
         userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
-        userDocs[accountID]?.collection("Items")?.document(itemName)?.collection("entry")
-                ?.document(messageID)?.set(ItemInfo(date.toString(),count))
+
+        val fields = mutableMapOf<String,String>()
+        fields["count"] = count
+        fields["count_PerHour"] = countPerHour
+        userDocs[accountID]?.collection("Items")?.document(itemName)?.set(fields as Map<String,Any>)
     }
 
     fun validateScript(scriptName: String, key: String):Boolean {
@@ -178,12 +182,10 @@ class FBDataBase {
 
         var fileContent = ""
         filePath.bufferedReader().lines().forEach { fileContent += "$it$$" }
-        val stamp = Timestamp(System.currentTimeMillis())
-        val date = Date(stamp.time)
         val fields = mutableMapOf<String,String>()
         fields["hash"] = sha256
         fields["file"] = fileContent
-        fields["date"] = date.toString()
+        fields["date"] = LocalDateTime.now().format(formatter)
 
         val name = filePath.toString().substringAfter("src\\")
         val fileDoc = fileHashRef.document(name)

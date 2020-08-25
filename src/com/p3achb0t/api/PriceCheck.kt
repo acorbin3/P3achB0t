@@ -35,22 +35,30 @@ object PriceCheck {
         }
     }
 
-    fun getPrice(name: String): ItemPrice? {
+    fun getPrice(name: String, backupPrice: Int=0): ItemPrice? {
         prices.size
         if (prices.size == 0) {
             reload()
         }
+        val backupItemPrice = ItemPrice()
+        backupItemPrice.buy_average = backupPrice
+        backupItemPrice.overall_average = backupPrice
+        backupItemPrice.sell_average = backupPrice
         val id = itemNameMapping.getOrDefault(name.toLowerCase(), -1)
-        return if (id == -1) null else getPrice(id)
+        return if (id == -1) backupItemPrice else getPrice(id, backupPrice)
     }
 
-    fun getPrice(id: Int): ItemPrice {
+    fun getPrice(id: Int, backupPrice: Int= 0): ItemPrice {
         println(prices.size)
         if (prices.size == 0) {
             println("Doing another reload")
             reload()
         }
-        return prices.getOrDefault(id, null)!!
+        val backupItemPrice = ItemPrice()
+        backupItemPrice.buy_average = backupPrice
+        backupItemPrice.overall_average = backupPrice
+        backupItemPrice.sell_average = backupPrice
+        return prices[id] ?: backupItemPrice
     }
 
     fun reload() {
@@ -94,12 +102,12 @@ object PriceCheck {
 
     class ItemPrice {
         val id: Int = 0
-        val name: String? = null
+        val name: String = ""
         val isMembers = false
-        val buy_average = 0
-        val sell_average = 0
-        val overall_average = 0
-        val overall_quantity = 0
+        var buy_average = 0
+        var sell_average = 0
+        var overall_average = 0
+        var overall_quantity = 0
 
     }
 }

@@ -168,6 +168,20 @@ class Bank(val ctx: Context): Logging() {
         return count
     }
 
+    fun containsAny(itemid: IntArray): Boolean {
+        var contains = false
+        if (isOpen()) {
+            var items = getAll()
+            items.forEachIndexed { index, widgetItem ->
+                itemid.forEach {
+                    if (widgetItem.id == it) {
+                        contains = true
+                    }
+                }
+            }
+        }
+        return contains
+    }
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
         if (isOpen()) {
@@ -191,6 +205,10 @@ class Bank(val ctx: Context): Logging() {
 
     fun isOpen(): Boolean {
         return getBankWidget() != null
+    }
+
+    fun isClosed(): Boolean{
+        return !isOpen()
     }
 
     fun isPinPanelOpen(): Boolean{

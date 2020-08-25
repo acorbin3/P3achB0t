@@ -29,6 +29,35 @@ class GrandExchange(val ctx: Context) {
         return ctx.widgets.find(465,1)
     }
 
+    fun isCollectButtonAvailable(): Boolean{
+        var hasAnyOffers = false
+        ctx.client.getGrandExchangeOffers().iterator().forEach {
+            if(it.getId() > 0){
+                hasAnyOffers = true
+            }
+        }
+
+        val parentContainer = ctx.widgets.find(465,6)
+
+        return hasAnyOffers
+                && parentContainer?.getChildren() != null
+                && parentContainer.getChildren().size >= 3
+                && parentContainer.getChildren()[1] != null
+                && !parentContainer.getChildren()[1].getIsHidden()
+    }
+
+    //This function is to return if there is already an offer with a given item ID
+    fun isOfferWithItemAlready(itemID: Int): Boolean{
+        ctx.client.getGrandExchangeOffers().iterator().forEach {
+            if(it.getId() == itemID){
+                println("Found GE offer for item: $itemID")
+                return true
+            }
+        }
+        print("Did not find offer for item: $itemID")
+        return false
+    }
+
 
     fun isOpen(): Boolean {
         return getExchangeWidget() != null

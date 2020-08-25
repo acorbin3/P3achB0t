@@ -101,7 +101,7 @@ class InstanceManager(val client: Any): Logging() {
         if(account.username.isEmpty())  account.username=UUID.randomUUID().toString()
         if(account.sessionToken.isEmpty())  account.sessionToken=UUID.randomUUID().toString()
 
-        GlobalStructs.db.initalScriptLoad(accountID = account.username,sessionID = account.sessionToken,script = account.actionScript)
+        GlobalStructs.db.initalScriptLoad(account)
     }
 
     fun stopActionScript() {
