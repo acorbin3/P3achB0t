@@ -1,10 +1,10 @@
 package com.p3achb0t.api.interfaces
 
 interface Isaac {
-    fun get__a(): Int
-    fun get__j(): Int
-    fun get__n(): Int
-    fun get__u(): Int
-    fun get__g(): IntArray
-    fun get__p(): IntArray
+    fun get__g(): Int
+    fun get__t(): Int
+    fun get__w(): Int
+    fun get__x(): Int
+    fun get__i(): IntArray
+    fun get__o(): IntArray
 }

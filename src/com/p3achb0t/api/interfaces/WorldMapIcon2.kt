@@ -2,9 +2,9 @@ package com.p3achb0t.api.interfaces
 
 interface WorldMapIcon2 : AbstractWorldMapIcon {
     fun getLabel0(): WorldMapLabel
-    fun get__g(): Int
-    fun get__p(): Int
-    fun get__q(): Int
-    fun get__o(): WorldMapRegion
-    fun get__m(): Int
+    fun get__i(): Int
+    fun get__o(): Int
+    fun get__s(): Int
+    fun get__k(): WorldMapRegion
+    fun get__z(): Int
 }

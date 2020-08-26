@@ -221,32 +221,33 @@ class Analyser{
             }
 
             //Inject doAction callback
-            if (clazzData.`class` == "Client") {
-                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
-//                println("MethodHook: $methodHook")
-                //Find the addMessage method, then inject the call back at the front
-//                println("looking at class ${methodHook?.owner}")
-                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
-//                    println("Looking at method: ${methodNode.name}")
-                    if (methodNode.name == methodHook?.name ) {
-//                        println("methodNode.desc: ${methodNode.desc}")
-//                        println("Time to insert instructions")
-                        val il = InsnList()
-                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-                        il.add(VarInsnNode(ILOAD, 0))
-                        il.add(VarInsnNode(ILOAD, 1))
-                        il.add(VarInsnNode(ILOAD, 2))
-                        il.add(VarInsnNode(ILOAD, 3))
-                        il.add(VarInsnNode(ALOAD, 4))
-                        il.add(VarInsnNode(ALOAD, 5))
-                        il.add(VarInsnNode(ILOAD, 6))
-                        il.add(VarInsnNode(ILOAD, 7))
-                        il.add(VarInsnNode(ILOAD, 8))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "doActionCallback", methodHook?.descriptor))
-                        methodNode.instructions.insert(il)
-                    }
-                }
-            }
+            //TODO - add doActionCallback
+//            if (clazzData.`class` == "Client") {
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
+////                println("MethodHook: $methodHook")
+//                //Find the addMessage method, then inject the call back at the front
+////                println("looking at class ${methodHook?.owner}")
+//                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
+////                    println("Looking at method: ${methodNode.name}")
+//                    if (methodNode.name == methodHook?.name ) {
+////                        println("methodNode.desc: ${methodNode.desc}")
+////                        println("Time to insert instructions")
+//                        val il = InsnList()
+//                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+//                        il.add(VarInsnNode(ILOAD, 0))
+//                        il.add(VarInsnNode(ILOAD, 1))
+//                        il.add(VarInsnNode(ILOAD, 2))
+//                        il.add(VarInsnNode(ILOAD, 3))
+//                        il.add(VarInsnNode(ALOAD, 4))
+//                        il.add(VarInsnNode(ALOAD, 5))
+//                        il.add(VarInsnNode(ILOAD, 6))
+//                        il.add(VarInsnNode(ILOAD, 7))
+//                        il.add(VarInsnNode(ILOAD, 8))
+//                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "doActionCallback", methodHook?.descriptor))
+//                        methodNode.instructions.insert(il)
+//                    }
+//                }
+//            }
 
             //Inject NPc Model callback
             if (clazzData.`class` == "Npc") {

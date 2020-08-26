@@ -9,12 +9,12 @@ interface WorldMapManager {
     fun getMapSceneSprites(): Array<IndexedSprite>
     fun getOverviewSprite(): Sprite
     fun getRegions(): Array<Array<WorldMapRegion>>
-    fun get__c(): Int
+    fun get__a(): Int
+    fun get__d(): Int
     fun get__h(): Int
-    fun get__k(): Int
-    fun get__y(): Int
-    fun get__n(): Any
-    fun get__a(): AbstractArchive
-    fun get__z(): AbstractArchive
-    fun get__r(): Int
+    fun get__q(): Int
+    fun get__x(): Any
+    fun get__g(): AbstractArchive
+    fun get__m(): AbstractArchive
+    fun get__c(): Int
 }

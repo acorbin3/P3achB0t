@@ -197,4 +197,9 @@ class Widgets(val ctx: Context) {
         }
         return result
     }
+
+    fun isWelcomeScreenButtonAvailable(): Boolean{
+        return ctx.widgets.isWidgetAvaliable(378, 78) &&
+            (ctx.widgets.find(378,78)?.getIsHidden() == true)
+    }
 }

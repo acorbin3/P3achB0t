@@ -58,6 +58,11 @@ object PriceCheck {
         backupItemPrice.buy_average = backupPrice
         backupItemPrice.overall_average = backupPrice
         backupItemPrice.sell_average = backupPrice
+
+        // REturn backup price if the buy average is zero and backup price is provided
+        if(id in prices && prices[id]?.overall_average == 0 && backupPrice > 0){
+            return backupItemPrice
+        }
         return prices[id] ?: backupItemPrice
     }
 

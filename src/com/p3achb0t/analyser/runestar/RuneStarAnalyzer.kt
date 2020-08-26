@@ -18,7 +18,7 @@ class RuneStarAnalyzer {
     fun loadHooks(): String {
         val hookDir = "/hooks/"
         val path = System.getProperty("user.dir")
-        val hookFileName = "hooks_${Constants.REVISION}.json"
+        val hookFileName = "hooks.json"
         var json = ""
 
         //Depending on if we are running within IntelliJ or from Jar the hooks file might be in a different location

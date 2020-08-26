@@ -4,7 +4,7 @@
     <groupId>com.p3achb0t</groupId>
     <artifactId>P3achB0t</artifactId>
     <packaging>jar</packaging>
-    <version>0.190-SNAPSHOT</version>
+    <version>0.191-SNAPSHOT</version>
     <name>client</name>
 
     <properties>
@@ -209,7 +209,7 @@
             <resource>
                 <directory>hooks</directory>
                 <includes>
-                    <include>hooks_190.json</include>
+                    <include>hooks.json</include>
                 </includes>
             </resource>
             <resource>
