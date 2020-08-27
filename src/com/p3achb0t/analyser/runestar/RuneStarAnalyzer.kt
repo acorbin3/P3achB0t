@@ -3,6 +3,7 @@ package com.p3achb0t.analyser.runestar
 import com.google.gson.Gson
 import com.p3achb0t.Main
 import com.p3achb0t.analyser.class_generation.createRunestarInterfaces
+import com.p3achb0t.analyser.class_generation.getType
 import com.p3achb0t.analyser.class_generation.isBaseType
 import com.p3achb0t.analyser.class_generation.isFieldNameUnique
 import com.p3achb0t.client.configs.Constants
@@ -39,6 +40,25 @@ class RuneStarAnalyzer {
 
         val folder = "./src/com/p3achb0t/api/interfaces2/"
         val _package = "com.p3achb0t.api.interfaces"
+
+        //get client debug text
+        for(clazz in analyzers){
+            if(clazz.value.`class` == "Client"){
+                for (field in clazz.value.fields) {
+                    var updatedDescriptor = field.descriptor
+                    if (isBaseType(updatedDescriptor)) {
+                        //Check to ensure that there are no fields with the same name in the super class
+                        //Filter all methods that dont have a renamed function
+                        //&& "get__+${field.owner}_${field.name}" == field.getterMethod
+                        "debugText.add(DebugText(\"hasFocus? x: \${ctx.client.getHasFocus()}\"))"
+                        if(updatedDescriptor == "I" && field.getterMethod.contains("get__")){
+                            println("debugText.add(DebugText(\"${field.getterMethod.padEnd(15)}: \${ctx.client.${field.getterMethod}()}\"))")
+                        }
+                    }
+                }
+            }
+        }
+
 //            createRunestarInterfaces(folder, _package, analyzers, classRefObs)
 //        exit(0)
         return "./$hookDir/$hookFileName"

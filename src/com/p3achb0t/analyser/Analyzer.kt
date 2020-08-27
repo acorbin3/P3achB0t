@@ -447,27 +447,31 @@ class Analyser{
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "if"
-        val garbageCollectMethod = "ac"
+        val garbageCollectClass = "aw"
+        val garbageCollectMethod = "ai"
         //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@for (method in classes[garbageCollectClass]!!.methods) {
             if (method.name == garbageCollectMethod) {
                 val instructions = method.instructions.iterator()
-                while (instructions.hasNext()) {
-                    if (instructions.next().opcode == IRETURN && instructions.previous().previous.opcode == ILOAD) {
+                instructions.forEach {
+                    if(it.opcode == IRETURN){
+                        println("Found IRETURN. Prev: ${it.previous.opcode}, prev.prev?: ${it.previous.previous.opcode}. prev prev prev: ${it.previous.previous.previous.opcode}")
+                    }
+                    if (!gcInjected
+                            && it.opcode == IRETURN
+                            && it.previous.opcode == ILOAD) {
                         println("Injecting GC check return.")
-                        method.instructions.set(instructions.previous(), InsnNode(ICONST_0))
+                        method.instructions.set(it.previous, InsnNode(ICONST_0))
                         gcInjected = true
-                        break@gcRoot
                     }
                 }
             }
         }
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
-        val createRandDatClass = "hm"
-        val createRandDatMethod = "p"
+        val createRandDatClass = "cm"
+        val createRandDatMethod = "s"
         var datInjected = 0
         randRoot@for (method in classes[createRandDatClass]!!.methods) {
             if (method.name == createRandDatMethod) {

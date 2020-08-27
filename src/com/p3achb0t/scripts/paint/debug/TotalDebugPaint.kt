@@ -21,6 +21,7 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
     var isInventoryPaintingDebug = false
     var isPaintEquipment = false
     var isBankPaintDebug = false
+    var isClientDebugging = false
 
     lateinit var paintEquipment: PaintEquipment
     lateinit var walkHelper: PaintWalkHelper
@@ -66,6 +67,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
 
             if (isDebugTextOn)
                 drawDebugText(g, ctx)
+            if(isClientDebugging)
+                drawClientDebugText(g,ctx)
 
 //
 
@@ -153,7 +156,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 "ctrl-7 projectile: $isProjectileDebug",
                 "ctrl-9 inventory: $isInventoryPaintingDebug",
                 "ctrl-0 equipment: $isPaintEquipment",
-                "ctrl-q bank: $isBankPaintDebug"
+                "ctrl-q bank: $isBankPaintDebug",
+                "ctrl-w client debugs:$isClientDebugging"
 
         )
 
@@ -190,46 +194,54 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
 
     override fun keyPressed(e: KeyEvent?) {
         if(e?.isControlDown == true ){
-            when (e.keyChar) {
-                '1' -> {
+            //In order to get other charcter keys to work we need to convert to the ascii decimal number and then use that
+            // as the string comparison. This seemed to get letters to work fine.
+            // NOTE: if you want to add more characters, they just need to be capitalized
+            when (e.keyCode.toString()) {
+                '1'.toInt().toString() -> {
                     isDebugTextOn = !isDebugTextOn
                     println("Swapping debug text $isDebugTextOn")
                 }
-                '2' -> {
+                '2'.toInt().toString() -> {
                     isNPCPaintOn = !isNPCPaintOn
                     println("Swapping NPC paint $isNPCPaintOn")
                 }
-                '3' -> {
+                '3'.toInt().toString() -> {
                     isPlayerPaintOn = !isPlayerPaintOn
                     println("Swapping players $isPlayerPaintOn")
                 }
-                '4' -> {
+                '4'.toInt().toString() -> {
                     isGameObjectOn = !isGameObjectOn
                     println("Swapping gameobjects $isGameObjectOn")
                 }
-                '5' -> {
+                '5'.toInt().toString() -> {
                     isGroundItemsOn = !isGroundItemsOn
                     println("Swapping gounditems")
                 }
-                '7' -> {
-                    isProjectileDebug = !isProjectileDebug
-                    println("Swapping projectiles $isProjectileDebug")
-                }
-                '8' -> {
+                '6'.toInt().toString() -> {
                     isCanWalkDebug = !isCanWalkDebug
                     println("Swapping can walk $isCanWalkDebug")
                 }
-                '9' -> {
+                '7'.toInt().toString() -> {
+                    isProjectileDebug = !isProjectileDebug
+                    println("Swapping projectiles $isProjectileDebug")
+                }
+
+                '9'.toInt().toString() -> {
                     isInventoryPaintingDebug = !isInventoryPaintingDebug
                     println("Swapping inventory $isInventoryPaintingDebug")
                 }
-                '0' -> {
+                '0'.toInt().toString() -> {
                     isPaintEquipment = !isPaintEquipment
                     println("Swapping Equipment $isPaintEquipment")
                 }
-                'q' ->{
-                    isBankPaintDebug != isBankPaintDebug
+                'Q'.toInt().toString() ->{
+                    isBankPaintDebug = !isBankPaintDebug
                     println("Swapping Bank: $isBankPaintDebug")
+                }
+                'W'.toInt().toString() ->{
+                    isClientDebugging = !isClientDebugging
+                    println("Swapping Bank: $isClientDebugging")
                 }
             }
         }
