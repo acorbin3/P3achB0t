@@ -254,8 +254,15 @@ class InstanceManager(val client: Any): Logging() {
                 if (script.shouldPauseActionScript && scriptState == ScriptState.Running) {
                     togglePauseActionScript()
                 }
-                script.loop(account)
-                if (script.shouldPauseActionScript && scriptState == ScriptState.Paused) {
+
+                if(scriptState == ScriptState.Running
+                        || ((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
+                                && script.runWhenActionScriptIsPausedOrStopped)) {
+                    script.loop(account)
+                }
+
+                if (script.shouldPauseActionScript
+                        && scriptState == ScriptState.Paused) {
                     togglePauseActionScript()
                 }
             }

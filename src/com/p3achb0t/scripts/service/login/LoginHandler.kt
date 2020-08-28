@@ -16,7 +16,7 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 @ScriptManifest(Script.SERVICE, "Login Handler", "P3aches", "0.1")
-class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true) {
+class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true, runWhenActionScriptIsPausedOrStopped = false) {
     var loginHandler = LoginHandler()
     var status = ""
     var startTime = 0
@@ -71,7 +71,9 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
         }
 
 
-        if (account.startActionScriptAutomatically && loginHandler.isAtHomeScreen(ctx)) {
+        if (account.startActionScriptAutomatically
+
+                && (loginHandler.isAtHomeScreen(ctx) || loginHandler.isRedButtonAvailable(ctx))) {
             status = "Logging in"
             val failedLogin = !loginHandler.login(ctx)
             if (failedLogin) {

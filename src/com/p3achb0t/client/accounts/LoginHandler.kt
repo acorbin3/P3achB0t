@@ -22,6 +22,10 @@ class LoginHandler(var account: Account = Account()) {
         return ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
     }
 
+    fun isRedButtonAvailable(ctx: Context): Boolean{
+        return ctx.widgets.find(378,78)?.getIsHidden() == false
+    }
+
     /**
      * @return - This will return if we failed to login
      */
