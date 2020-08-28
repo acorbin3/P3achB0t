@@ -124,6 +124,16 @@ class BotManager : JFrame() {
         }
     }
 
+    fun stopAllRunningAccounts(){
+        println("Stopping all scripts")
+        botTabBar.botInstances.forEach { key, instance ->
+            GlobalScope.launch {
+                instance.getInstanceManager().stoppingScriptAndLoggingOut()
+            }
+
+        }
+    }
+    
     fun startScripts() {
         println("Starting scripts")
         if(AccountManager.accounts.isNotEmpty()) {

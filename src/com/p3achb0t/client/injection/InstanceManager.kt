@@ -45,6 +45,8 @@ class InstanceManager(val client: Any): Logging() {
     var previousScriptState = ScriptState.Stopped
     var scriptState = ScriptState.Stopped
 
+
+
     // Service script
     // Many different kinds of services scripts could use the loaded account info such as the following:
     // BankPinHandler, LoginHandler, break Handler
@@ -290,6 +292,12 @@ class InstanceManager(val client: Any): Logging() {
                 }
             }
         }
+    }
+
+    suspend fun stoppingScriptAndLoggingOut(){
+        scriptState = ScriptState.Stopped
+        ctx.worldHop.logout()
+        stopActionScript()
     }
 
     private fun waitOnContext() {

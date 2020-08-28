@@ -14,8 +14,9 @@ class BotNavigationMenu: JMenuBar() {
     val paint = JMenu("Paint")
     val action = JMenu("Action")
     val service = JMenu("Services")
+    private val logoutAllAccounts = JButton("Logout of All Accounts")
     private val startScriptButton = JButton("Start")
-    private val pauseScriptButton = JButton("Pause")
+    private val pauseScriptButton = JButton("-----")
     private val drawCanvasToggleButton = JButton("Disable Canvas")
     var scriptLoaderUI: ScriptLoaderUI? = null
 
@@ -216,6 +217,10 @@ class BotNavigationMenu: JMenuBar() {
         }
 
 
+        logoutAllAccounts.addActionListener{
+            GlobalStructs.botManager.stopAllRunningAccounts()
+        }
+
         startScriptButton.addActionListener{
             if (GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Stopped) {
                 if(scriptLoaderUI == null){
@@ -243,6 +248,8 @@ class BotNavigationMenu: JMenuBar() {
             updateScriptManagerButtons()
         }
         add(Box.createHorizontalGlue())
+        add(logoutAllAccounts)
+        add(Box.createHorizontalStrut(3))
         add(startScriptButton)
         add(Box.createHorizontalStrut(3))
         add(pauseScriptButton)
