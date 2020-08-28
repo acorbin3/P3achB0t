@@ -74,7 +74,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val pause = JMenuItem("Pause/Resume")
         pause.addActionListener {
-            GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
+            GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
         }
 
         menu.add(stop)
@@ -208,10 +208,10 @@ class BotNavigationMenu: JMenuBar() {
             //TODO Replace isactionscript paused with is script running
             if(GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Running) {
                 pauseScriptButton.text = "Resume"
-                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
+                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
             } else if (GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Paused){
                 pauseScriptButton.text = "Paused"
-                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript()
+                GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
             }
             updateScriptManagerButtons()
         }

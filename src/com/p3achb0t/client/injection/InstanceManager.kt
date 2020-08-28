@@ -131,22 +131,30 @@ class InstanceManager(val client: Any): Logging() {
     }
 
 
-    fun togglePauseActionScript() {
+    fun togglePauseActionScript(isFromUI: Boolean = false) {
 
         previousScriptState = scriptState
         if (scriptState == ScriptState.Running) {
             actionScript.pause()
-            scriptState = ScriptState.Paused
+            scriptState = if(isFromUI) {
+                ScriptState.Paused
+            }else{
+                ScriptState.LoginScreenNotPaused
+            }
             actionScriptState(false)
         } else {
-            if(previousScriptState == ScriptState.Paused){
+            scriptState = if(previousScriptState == ScriptState.Paused){
                 if(!ctx.worldHop.isLoggedIn){
-                    scriptState = ScriptState.LoginScreenNotPaused
+                    ScriptState.LoginScreenNotPaused
+                }else{
+                    actionScript.resume()
+                    actionScriptState(true)
+                    ScriptState.Running
                 }
             }else {
                 actionScript.resume()
                 actionScriptState(true)
-                scriptState = ScriptState.Running
+                ScriptState.Running
             }
         }
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
@@ -296,6 +304,9 @@ class InstanceManager(val client: Any): Logging() {
 
     suspend fun stoppingScriptAndLoggingOut(){
         scriptState = ScriptState.Stopped
+        actionScriptState(false)
+        actionScript.stop()
+
         ctx.worldHop.logout()
         stopActionScript()
     }
