@@ -172,6 +172,7 @@ class BotNavigationMenu: JMenuBar() {
             ScriptState.Stopped -> {
                 startScriptButton.text = "Start"
                 pauseScriptButton.isEnabled = false
+                pauseScriptButton.text = "-----"
             }
             ScriptState.Running -> {
                 startScriptButton.text = "Stop"
@@ -182,6 +183,11 @@ class BotNavigationMenu: JMenuBar() {
                 startScriptButton.text = "Stop"
                 pauseScriptButton.isEnabled = true
                 pauseScriptButton.text = "Resume"
+            }
+            ScriptState.LoginScreenNotPaused ->{
+                startScriptButton.text = "Stop"
+                pauseScriptButton.isEnabled = false
+                pauseScriptButton.text = "Logging In"
             }
         }
         if (instance.drawCanvas)

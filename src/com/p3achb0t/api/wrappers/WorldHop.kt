@@ -108,6 +108,10 @@ class WorldHop(val ctx: Context) {
     val freeWorldNoTotalRequirement = intArrayOf(301, 308, 316, 326, 335, 379, 380, 382, 383, 384, 393, 394, 397, 398, 399, 417, 418, 425, 426, 430, 431,
             433, 434, 435, 436, 437, 438, 439, 440, 451, 452, 453, 454, 455, 456, 457, 458, 459, 469, 470, 471, 472, 473, 474, 475, 476, 497, 498, 499, 500, 591, 502, 503, 504)
 
+    fun isWelcomeRedButtonAvailable(): Boolean{
+        return ctx.widgets.find(378,78)?.getIsHidden() == false
+    }
+
     fun isWorldVisible(world: Int): Boolean {
 
 

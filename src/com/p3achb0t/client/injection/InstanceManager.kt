@@ -7,6 +7,7 @@ import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.script.listeners.ChatListener
 import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.wrappers.GameState
 import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
@@ -27,6 +28,7 @@ enum class ScriptState {
     Running,
     Stopped,
     Paused,
+    LoginScreenNotPaused
 }
 
 class InstanceManager(val client: Any): Logging() {
@@ -40,6 +42,7 @@ class InstanceManager(val client: Any): Logging() {
     var actionScript: ActionScript = NullScript()
     private var actionScriptLoop: Job? = null
     //var isActionScriptPaused = false
+    var previousScriptState = ScriptState.Stopped
     var scriptState = ScriptState.Stopped
 
     // Service script
@@ -93,7 +96,16 @@ class InstanceManager(val client: Any): Logging() {
         actionScript = actionScriptLoaded
         actionScript.start()
 
-        scriptState = ScriptState.Running
+        //Check to see if we need to login or handle welcome button
+        if(ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
+                || (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGGED_IN
+                        && ctx.worldHop.isWelcomeRedButtonAvailable())) {
+            scriptState = ScriptState.LoginScreenNotPaused
+        }else{
+            scriptState = ScriptState.Running
+        }
+
+
         actionScriptState(true)
         this.account.sessionStartTime = System.currentTimeMillis()
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
@@ -119,14 +131,21 @@ class InstanceManager(val client: Any): Logging() {
 
     fun togglePauseActionScript() {
 
+        previousScriptState = scriptState
         if (scriptState == ScriptState.Running) {
             actionScript.pause()
             scriptState = ScriptState.Paused
             actionScriptState(false)
         } else {
-            actionScript.resume()
-            actionScriptState(true)
-            scriptState = ScriptState.Running
+            if(previousScriptState == ScriptState.Paused){
+                if(!ctx.worldHop.isLoggedIn){
+                    scriptState = ScriptState.LoginScreenNotPaused
+                }
+            }else {
+                actionScript.resume()
+                actionScriptState(true)
+                scriptState = ScriptState.Running
+            }
         }
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
     }
@@ -255,15 +274,19 @@ class InstanceManager(val client: Any): Logging() {
                     togglePauseActionScript()
                 }
 
-                if(scriptState == ScriptState.Running
-                        || ((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
-                                && script.runWhenActionScriptIsPausedOrStopped)) {
-                    script.loop(account)
-                }
+                var runServiceScript = true
+                if((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
+                        && !script.runWhenActionScriptIsPausedOrStopped){
+                    runServiceScript = false
 
-                if (script.shouldPauseActionScript
-                        && scriptState == ScriptState.Paused) {
-                    togglePauseActionScript()
+                }
+                if(runServiceScript) {
+                    script.loop(account)
+                    if (script.shouldPauseActionScript
+                            && (scriptState == ScriptState.Paused
+                                    || scriptState == ScriptState.LoginScreenNotPaused)) {
+                        togglePauseActionScript()
+                    }
                 }
             }
         }
