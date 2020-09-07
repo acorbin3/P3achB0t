@@ -163,7 +163,7 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
 
         val vertical = true //could add a hotkey to toggle this on/off
         var debugOptionsY = 25
-        var debugOptionsX = if(vertical) debugX + 500 else debugX //change this whatever positions u like
+        var debugOptionsX = if(vertical) debugX + 650 else debugX //change this whatever positions u like
         val savedFont = g.font
         g.font = g.font.deriveFont(10F)
 
