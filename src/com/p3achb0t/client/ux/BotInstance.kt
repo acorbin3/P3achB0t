@@ -28,6 +28,7 @@ class BotInstance(account: Account = Account(), tabBarTextInfo: String = "") : J
             // Strip off any auth if there is any
 
             val proxy = if(account.proxy == "none") account.proxy else account.proxy.split(";")[1]
+            instanceManagerInterface.getManager().account = account
             GlobalStructs.botManager.botTabBar.addBotInstance("$tabBarTextInfo - ${account.username}-${proxy}", sessionToken, this)
         }
     }

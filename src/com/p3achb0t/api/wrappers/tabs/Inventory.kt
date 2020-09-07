@@ -17,7 +17,7 @@ class Inventory(val ctx: Context? = null) {
         private const val PARENT_ID = WidgetID.INVENTORY_GROUP_ID
         private const val CHILD_ID = 0
     }
-    val df = DecimalFormat("###,###,###.##")
+    val df = DecimalFormat("###,###,###")
 
     //The concept here is to track items that are picked up from the ground. The addItemToTrack will
     // only be called when an item is trying to be picked up
@@ -63,7 +63,7 @@ class Inventory(val ctx: Context? = null) {
                 curTrackedItemCount[it.id] = curCount
             }
             //ingnore any changes if banking
-            if (ctx?.bank?.isOpen() != true && diff > 0) {
+            if ((ctx?.bank?.isOpen() != true || ctx.grandExchange.isOpen()) && diff > 0) {
                 totalTrackedItemCount[it.id] = totalTrackedItemCount[it.id]!! + diff
             }
         }

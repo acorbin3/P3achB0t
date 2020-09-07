@@ -1,6 +1,6 @@
 package com.p3achb0t.api.script
 
-abstract class ActionScript(val tasks: ArrayList<LeafTask> = ArrayList(),var currentJob: String = ""): SuperScript() {
+abstract class ActionScript(val tasks: ArrayList<LeafTask> = ArrayList(),var currentJob: String = "", var currentJobSuspendable: Boolean = true): SuperScript() {
     open suspend fun loop(){
         tasks.forEach {
             if (it.isValidToRun()) {
@@ -10,12 +10,17 @@ abstract class ActionScript(val tasks: ArrayList<LeafTask> = ArrayList(),var cur
                     it.children.forEach {child ->
                         if(child.isValidToRun()){
                             logger.debug("Child - Running: ${it.javaClass.name}")
+                            currentJobSuspendable = child.canBeSuspended
                             child.execute()
                             logger.debug("Child - Completed: ${it.javaClass.name}")
+
                         }
+                        currentJobSuspendable = true
                     }
                 }else{
+                    currentJobSuspendable = it.canBeSuspended
                     it.execute()
+                    currentJobSuspendable = true
                 }
                 logger.debug("Completed: ${it.javaClass.name}")
             }

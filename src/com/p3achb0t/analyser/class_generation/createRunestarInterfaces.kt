@@ -40,6 +40,9 @@ fun createRunestarInterfaces(
             if(clazz.value.`class` == "Client"){
                 out.println("    fun getVarbit(id: Int): Int")
                 out.println("    fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int, dummy: Byte=0)")
+                out.println("    fun setScene_selectedX(x: Int)")
+                out.println("    fun setScene_selectedY(y: Int)")
+                out.println("    fun setViewportWalking()")
             }
             else if(clazz.value.`class` == "Entity"){
                 out.println("    fun getModel(): Model")

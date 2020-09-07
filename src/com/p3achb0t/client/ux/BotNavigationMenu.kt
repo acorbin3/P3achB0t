@@ -13,7 +13,10 @@ class BotNavigationMenu: JMenuBar() {
     // only because they needs to be refreshed
     val paint = JMenu("Paint")
     val action = JMenu("Action")
+    val actionAll = JMenu("ActionAll")
     val service = JMenu("Services")
+
+    private val toggleScene = JButton("Toggle Scene")
     private val logoutAllAccounts = JButton("Logout of All Accounts")
     private val startScriptButton = JButton("Start")
     private val pauseScriptButton = JButton("-----")
@@ -25,7 +28,7 @@ class BotNavigationMenu: JMenuBar() {
         instanceMenu()
         scriptControl()
         scriptMenu()
-        botUltra()
+//        botUltra()
         ioHandle()
         scriptManagerButtons()
     }
@@ -88,10 +91,12 @@ class BotNavigationMenu: JMenuBar() {
 
         paint.removeAll()
         action.removeAll()
+        actionAll.removeAll()
         service.removeAll()
 
         for (script in GlobalStructs.scripts.scriptsInformation.values) {
             val currentItem = JMenuItem("${script.name} ${script.version}")
+            val currentItemRestAll = JMenuItem("${script.name} ${script.version}")
             when (script.type) {
                 ScriptType.PaintScript -> {
                     currentItem.addActionListener {
@@ -103,7 +108,14 @@ class BotNavigationMenu: JMenuBar() {
                     currentItem.addActionListener {
                         GlobalStructs.botManager.getSelectedInstanceManager().startActionScript(script.fileName)
                     }
+                    //This is intended to switch all accounts open to this script
+                    currentItemRestAll.addActionListener {
+                        GlobalStructs.botManager.botTabBar.botInstances.forEach { t, u ->
+                            u.instanceManagerInterface.getManager().startActionScript(script.fileName)
+                        }
+                    }
                     action.add(currentItem)
+                    actionAll.add(currentItemRestAll)
                 }
                 ScriptType.ServiceScript -> {
                     currentItem.addActionListener {
@@ -122,11 +134,13 @@ class BotNavigationMenu: JMenuBar() {
 
         paint.popupMenu.isLightWeightPopupEnabled = false
         action.popupMenu.isLightWeightPopupEnabled = false
+        actionAll.popupMenu.isLightWeightPopupEnabled = false
         service.popupMenu.isLightWeightPopupEnabled = false
 
         add(paint)
         add(action)
         add(service)
+        add(actionAll)
     }
 
     private fun botUltra() {
@@ -134,9 +148,7 @@ class BotNavigationMenu: JMenuBar() {
 
         val add = JMenuItem("Kidding just adds 5 tabs XD")
         add.addActionListener {
-            for (x in 1..5) {
-                BotInstance()
-            }
+
         }
 
         menu.add(add)
@@ -217,6 +229,15 @@ class BotNavigationMenu: JMenuBar() {
         }
 
 
+        toggleScene.addActionListener {
+            GlobalStructs.botManager.botTabBar.botInstances.forEach { t, u ->
+                u.getInstanceManager().isDisableScenery = !u.getInstanceManager().isDisableScenery
+                println("u.getInstanceManager().isDisableScenery: ${u.getInstanceManager().isDisableScenery}")
+            }
+
+            println("GlobalStructs.botManager.getSelectedInstanceManager().isDisableScenery: ${GlobalStructs.botManager.getSelectedInstanceManager().isDisableScenery}")
+
+        }
         logoutAllAccounts.addActionListener{
             GlobalStructs.botManager.stopAllRunningAccounts()
         }
@@ -247,7 +268,10 @@ class BotNavigationMenu: JMenuBar() {
             instance.drawCanvas = !instance.drawCanvas
             updateScriptManagerButtons()
         }
+
         add(Box.createHorizontalGlue())
+        add(toggleScene)
+        add(Box.createHorizontalStrut(3))
         add(logoutAllAccounts)
         add(Box.createHorizontalStrut(3))
         add(startScriptButton)

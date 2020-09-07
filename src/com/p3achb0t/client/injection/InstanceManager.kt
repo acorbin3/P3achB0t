@@ -63,6 +63,8 @@ class InstanceManager(val client: Any): Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
+    var isDisableScenery = false
+
     var lastTile = Tile()
     val lastMoved = StopWatch()
 
@@ -216,7 +218,7 @@ class InstanceManager(val client: Any): Logging() {
             script.draw(g)
         }
 
-        if (!ctx.worldHop.isLoggedIn && scriptState == ScriptState.Running) {
+        if (this::ctx.isInitialized && !ctx.worldHop.isLoggedIn && scriptState == ScriptState.Running) {
             val oldFont = g.font
             val olcColor = g.color
             g.font = g.font.deriveFont(30F)
@@ -240,7 +242,9 @@ class InstanceManager(val client: Any): Logging() {
         waitOnContext()
         serviceScript::ctx.set(setupContext(client))
         serviceScript.start()
+        serviceScript.account = account
         serviceScripts[scriptFileName] = serviceScript
+
 
         if (serviceLoop == null) {
             serviceLoop = GlobalScope.launch {
@@ -276,6 +280,11 @@ class InstanceManager(val client: Any): Logging() {
     suspend fun loopServiceScripts() {
         for (script in serviceScripts.values) {
             if(script.isValidToRun(account)) {
+
+                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable){
+                    println("We are trying to suspend but current job(${actionScript.currentJob}) is not suspendable. Wait till next execution")
+                    continue
+                }
                 /*
                 Only pause the script if it needs to be paused based on the Service script conditions and when
                 ActionScript is running
@@ -283,6 +292,8 @@ class InstanceManager(val client: Any): Logging() {
                 if (script.shouldPauseActionScript && scriptState == ScriptState.Running) {
                     togglePauseActionScript()
                 }
+
+
 
                 var runServiceScript = true
                 if((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
@@ -332,7 +343,8 @@ class InstanceManager(val client: Any): Logging() {
         }
     }
 
-    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Byte) {
+    //.doActionCallback(int, int, int, int, java.lang.String, java.lang.String, int, int, int)'
+    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
         logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 

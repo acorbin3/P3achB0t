@@ -35,6 +35,19 @@ class Dialog(val ctx: Context): Logging() {
         } else return false
     }
 
+    fun isInCutscene(): Boolean{
+        return ctx.vars.getVarbit(542) == 1
+                && ctx.vars.getVarbit(4606) == 1
+    }
+
+    fun isInDialogue(): Boolean {
+        return (ctx.vars.getVarp(1021) and 1024 != 0
+                || ctx.vars.getVarp(1021) and 192 != 0
+//                || ctx.client.get__client_mq() != null
+//                || ctx.client.getWidgets().isPleaseWait()
+                || getDialogContinue().widget != null)
+    }
+
     fun getDialogContinue(): WidgetItem {
         var dialog = WidgetItem(ctx.widgets.find(PARENT, CONTINUE), ctx = ctx)
         if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
@@ -112,6 +125,7 @@ class Dialog(val ctx: Context): Logging() {
 
     fun isDialogOptionsOpen(): Boolean {
         return ctx.widgets.isWidgetAvaliable(219, 1)
+                && ctx.widgets.find(219,1)?.getWidth() ?:0 > 0
     }
 
     fun isSpiritDialogOpen(): Boolean {
@@ -124,6 +138,6 @@ class Dialog(val ctx: Context): Logging() {
         val childrenSize = dialog.widget?.getChildren()?.size ?: 0
         if (childrenSize == 0) return
         val randOptionIndex = Random.nextInt(1, childrenSize)
-        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), ctx =ctx).click()
+        WidgetItem(dialog.widget?.getChildren()?.get(randOptionIndex), ctx = ctx).click()
     }
 }

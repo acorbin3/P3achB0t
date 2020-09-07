@@ -7,12 +7,10 @@
     "maximumSessionTime": 0,
     "minimumBreakTime": 0,
     "maximumBreakTime": 0,
-    "minimumBreakOverSession": 0,
-    "maximumBreakOverSession": 0,
     "lastBreakTime": 0,
     "useWindowTime": false,
     "windowStartTime": 1080,
-    "windowEndHourTime": 360,
+    "windowEndTime": 360,
     "sessionToken": "",
     "actionScript": "",
     "debugScripts": [

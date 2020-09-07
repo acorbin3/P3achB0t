@@ -23,8 +23,6 @@ class Account {
     var maximumSessionTime: Int = 0
     var minimumBreakTime: Int = 0
     var maximumBreakTime: Int = 0
-    var minimumBreakOverSession: Int = 0
-    var maximumBreakOverSession: Int = 0
     var lastBreakTime: Int = 0
 
     // Window time is a concept were the script will only run between 7pm to 5am or something like that
@@ -33,7 +31,7 @@ class Account {
     // Example 60 would equal 1h or 1AM where 875 would be 14:35 or 2:25PM
     var useWindowTime: Boolean = false
     var windowStartTime: Int = 1_080 // range [0,1440] in minutes. 1080 == 6pm or 18:00
-    var windowEndHourTime: Int = 360 // range [0,1440] in minutes 360 = 6AM
+    var windowEndTime: Int = 360 // range [0,1440] in minutes 360 = 6AM
 
     // Scripts
     var sessionToken: String = ""

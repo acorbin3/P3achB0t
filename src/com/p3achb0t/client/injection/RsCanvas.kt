@@ -49,12 +49,14 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     instanceManager.actionScript.draw(g2)
 
                     it.show()
-                    if(instanceManager.ctx.worldHop.isLoggedIn) {
+                    if(instanceManager.isContextLoaded && instanceManager.ctx.worldHop.isLoggedIn) {
                         Thread.sleep(1000 / instanceManager.account.gameFps.toLong())
                     }
                     return g2
                 } ?: createBufferStrategy(2)
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
         return null
     }

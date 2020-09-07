@@ -61,7 +61,14 @@ class Cache {
     }
 
     fun getItemName(id: Int): String{
-        return itemCacheInfo[id]?.name ?: id.toString()
+        var name = itemCacheInfo[id]?.name ?: "null"
+        if(name == "null"){
+            name = itemCacheInfo[id-1]?.name ?: "null"
+        }
+        if(name == "null"){
+            name = id.toString()
+        }
+        return  name
     }
     fun getItemID(name: String): IntArray{
         //Find all items with the same name. Return

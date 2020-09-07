@@ -26,7 +26,7 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 
 
-class Analyser{
+class Analyser {
 
     val logger = LoggerFactory.getLogger(Analyser::class.java)
     val classes: MutableMap<String, ClassNode> = mutableMapOf()
@@ -36,9 +36,9 @@ class Analyser{
 
     fun createInjectedJar(jar: JarFile, runeStar: RuneStarAnalyzer?) {
         val enumeration = jar.entries()
-        while(enumeration.hasMoreElements()){
+        while (enumeration.hasMoreElements()) {
             val entry = enumeration.nextElement()
-            if(entry.name.endsWith(".class")){
+            if (entry.name.endsWith(".class")) {
                 val classReader = ClassReader(jar.getInputStream(entry))
                 val classNode = ClassNode()
                 classReader.accept(classNode, 0)
@@ -120,14 +120,14 @@ class Analyser{
 
         runeStar?.classRefObs?.forEach { obsClass, clazzData ->
 
-            if(clazzData.`class` == "Client") {
+            if (clazzData.`class` == "Client") {
                 injectScriptManagerField(classes[clazzData.name]!!)
                 injectFieldProxy(classes[clazzData.name]!!)
-                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/api/interfaces/IOHandler")
-                AsmUtil.addInterface(classes[clazzData.name]!!,"com/p3achb0t/client/injection/InstanceManagerInterface")
+                AsmUtil.addInterface(classes[clazzData.name]!!, "com/p3achb0t/api/interfaces/IOHandler")
+                AsmUtil.addInterface(classes[clazzData.name]!!, "com/p3achb0t/client/injection/InstanceManagerInterface")
                 injectCustomClient(classes[clazzData.name]!!)
-                clazzData.fields.forEach{
-                    if(it.field .contains("MouseHandler_instance")){
+                clazzData.fields.forEach {
+                    if (it.field.contains("MouseHandler_instance")) {
                         println("Found field MouseHandler_instance ${it.toString}")
                         AsmUtil.addStaticMethod(
                                 classes[clazzData.name]!!,
@@ -138,8 +138,7 @@ class Analyser{
                                 "L${it.owner};"
                         ) // MouseHandler_instance
 
-                    }
-                    else if(it.field.contains("KeyHandler_instance")){
+                    } else if (it.field.contains("KeyHandler_instance")) {
                         println("Found field KeyHandler_instance ${it.toString}")
                         AsmUtil.addStaticMethod(
                                 classes[clazzData.name]!!,
@@ -159,7 +158,7 @@ class Analyser{
 //                injectGameLoop(classes[clazzData.name]!!)
 //            }
 
-            if(clazzData.`class` == "TaskHandler") {
+            if (clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
             }
 
@@ -194,15 +193,14 @@ class Analyser{
                         }
                         getter = GetterData(it.descriptor, it.field, returnFieldDescription = returnType)
                     }
-                    if (!it.descriptor.contains("java")  ) {
+                    if (!it.descriptor.contains("java")) {
                         getterList.add(getter)
                         //println("\t\t$getter")
-                    }
-                    else{
-                        if(it.descriptor.contains("String")){
+                    } else {
+                        if (it.descriptor.contains("String")) {
                             getterList.add(getter)
                             //println("\t\t$getter")
-                        }else {
+                        } else {
                             //println("\t\t!@#$# ${it.descriptor}")
                         }
                     }
@@ -214,40 +212,39 @@ class Analyser{
             }
 
 
-
             //Inject doAction
-            if(clazzData.`class` == "Client") {
+            if (clazzData.`class` == "Client") {
                 injectDoActionHook(runeStar, clazzData, classes)
             }
 
             //Inject doAction callback
             //TODO - add doActionCallback
-//            if (clazzData.`class` == "Client") {
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
-////                println("MethodHook: $methodHook")
-//                //Find the addMessage method, then inject the call back at the front
-////                println("looking at class ${methodHook?.owner}")
-//                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
-////                    println("Looking at method: ${methodNode.name}")
-//                    if (methodNode.name == methodHook?.name ) {
-////                        println("methodNode.desc: ${methodNode.desc}")
-////                        println("Time to insert instructions")
-//                        val il = InsnList()
-//                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-//                        il.add(VarInsnNode(ILOAD, 0))
-//                        il.add(VarInsnNode(ILOAD, 1))
-//                        il.add(VarInsnNode(ILOAD, 2))
-//                        il.add(VarInsnNode(ILOAD, 3))
-//                        il.add(VarInsnNode(ALOAD, 4))
-//                        il.add(VarInsnNode(ALOAD, 5))
-//                        il.add(VarInsnNode(ILOAD, 6))
-//                        il.add(VarInsnNode(ILOAD, 7))
-//                        il.add(VarInsnNode(ILOAD, 8))
-//                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "doActionCallback", methodHook?.descriptor))
-//                        methodNode.instructions.insert(il)
-//                    }
-//                }
-//            }
+            if (clazzData.`class` == "Client") {
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "doAction" }
+                println("MethodHook: $methodHook")
+                //Find the addMessage method, then inject the call back at the front
+                println("looking at class ${methodHook?.owner}")
+                classes[methodHook?.owner]?.methods?.forEach { methodNode ->
+                    println("Looking at method: ${methodNode.name}")
+                    if (methodNode.name == methodHook?.name ) {
+                        println("methodNode.desc: ${methodNode.desc}")
+                        println("Time to insert instructions")
+                        val il = InsnList()
+                        il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                        il.add(VarInsnNode(ILOAD, 0))
+                        il.add(VarInsnNode(ILOAD, 1))
+                        il.add(VarInsnNode(ILOAD, 2))
+                        il.add(VarInsnNode(ILOAD, 3))
+                        il.add(VarInsnNode(ALOAD, 4))
+                        il.add(VarInsnNode(ALOAD, 5))
+                        il.add(VarInsnNode(ILOAD, 6))
+                        il.add(VarInsnNode(ILOAD, 7))
+                        il.add(VarInsnNode(ILOAD, 8))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "doActionCallback", methodHook?.descriptor))
+                        methodNode.instructions.insert(il)
+                    }
+                }
+            }
 
             //Inject NPc Model callback
             if (clazzData.`class` == "Npc") {
@@ -265,9 +262,9 @@ class Analyser{
                 }
             }
 
-            //Inject varBit
-            if(clazzData.`class` == "Client") {
-                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
+            //Inject client hooks
+            if (clazzData.`class` == "Client") {
+                var methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
 //                println("MethodHook: $methodHook")
                 val varBitMethodNode = MethodNode(ACC_PUBLIC, "getVarbit", "(I)I", null, null)
                 varBitMethodNode.visitVarInsn(ILOAD, 1)
@@ -278,13 +275,53 @@ class Analyser{
                 varBitMethodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(varBitMethodNode)
-            }
 
+
+                println("Adding viewport walking")
+
+                val fieldHook = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "getScene_selectedX" }
+                println("fieldHook: $fieldHook")
+
+                val methodNode = MethodNode(ACC_PUBLIC, "setScene_selectedX", "(I)V", null, null)
+                methodNode.visitVarInsn(ILOAD, 1)
+                methodNode.visitFieldInsn(PUTSTATIC, fieldHook?.owner, fieldHook?.name, fieldHook?.descriptor)
+
+                methodNode.visitInsn(Opcodes.RETURN)
+                methodNode.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+
+                val fieldHook2 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "getScene_selectedY" }
+                println("fieldHook: $fieldHook2")
+                val methodNode2 = MethodNode(ACC_PUBLIC, "setScene_selectedY", "(I)V", null, null)
+                methodNode2.visitVarInsn(ILOAD, 1)
+                methodNode2.visitFieldInsn(PUTSTATIC, fieldHook2?.owner, fieldHook2?.name, fieldHook2?.descriptor)
+
+                methodNode2.visitInsn(Opcodes.RETURN)
+                methodNode2.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode2)
+
+                //TO find this field you need to look at owners that are of the same Scene class as the above 2
+                // along with that they have a field description of a boolean(Z). Usually there is only 2.
+                //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
+                //they don't actually execute properly but they're related to the walking"
+                val viewportWalkingFieldName = "__ec_aq"
+                val fieldHook3 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
+                println("fieldHook: $fieldHook3")
+                val methodNode3 = MethodNode(ACC_PUBLIC, "setViewportWalking", "()V", null, null)
+                methodNode3.visitInsn(ICONST_1)
+                methodNode3.visitFieldInsn(PUTSTATIC, fieldHook3?.owner, fieldHook3?.name, fieldHook3?.descriptor)
+                methodNode3.visitInsn(Opcodes.RETURN)
+                methodNode3.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode3)
+            }
 
 
             // Inject getModel for the Entity
             val listOfModelInjections = listOf<String>("Entity")
-            if(clazzData.`class` in listOfModelInjections){
+            if (clazzData.`class` in listOfModelInjections) {
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getModel" }
                 println("${clazzData.`class`} MethodHook: $methodHook")
                 //The method descriptor from the hooks looks like this: "descriptor": "(IZI)[B"
@@ -303,7 +340,7 @@ class Analyser{
                 var loadFound = false
 
 
-                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()"+returnType, null, null)
+                val methodNode = MethodNode(ACC_PUBLIC, methodHook.method, "()" + returnType, null, null)
 
                 methodNode.visitVarInsn(ALOAD, 0)
                 methodNode.visitInsn(ICONST_0)
@@ -318,24 +355,23 @@ class Analyser{
             }
 
 
-
             //Inject addMessage
             if (clazzData.`class` == "ChatChannel") {
                 println("Adding chat listener callback")
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "addMessage" }
 //                println("MethodHook: $methodHook")
-                val list = methodHook?.descriptor?.split(")")!!
-                val argumentDescription = list[0] + ")" // Add back in the )
-                val returnDescriptor = list[1]
-                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+//                val list = methodHook?.descriptor?.split(")")!!
+//                val argumentDescription = list[0] + ")" // Add back in the )
+//                val returnDescriptor = list[1]
+//                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
 
-                val returnType = "L$classPath/$clazzName;"
+//                val returnType = "L$classPath/$clazzName;"
 //                println("Return type $returnType")
 
                 //Find the addMessage method, then inject the call back at the front
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
 //                    println("Looking at method: ${methodNode.name}")
-                    if (methodNode.name == methodHook.name && methodNode.desc.contains("ILjava/lang/String;Ljava/lang/String;Ljava/lang/String")) {
+                    if (methodNode.name == methodHook?.name && methodNode.desc.contains("ILjava/lang/String;Ljava/lang/String;Ljava/lang/String")) {
 //                        println("methodNode.desc: ${methodNode.desc}")
 //                        println("Time to insert instructions")
                         val il = InsnList()
@@ -352,9 +388,49 @@ class Analyser{
             }
 
 
+            // Adding rendering disabling
+            if (clazzData.`class` == "Scene") {
+                println("Adding rendering disabling")
+
+                val renderingDisabling = arrayOf("draw",
+                        //newScenery", "newWall", "newWallDecoration", "newFloorDecoration", "newObjStack", "drawActor2d", //"drawTile"
+                )
+
+                renderingDisabling.forEach {disabledItem ->
+                    val newSceneryMethodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == disabledItem }
+
+                    classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
+
+                        if (methodNode.name == newSceneryMethodHook?.name) {
+                            println("Found matching method for $disabledItem")
+                            val il = InsnList()
+                            val labelNode = LabelNode(Label())
+
+                            il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                            il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "isDisableScenery", "()Z"))
+
+                            il.add(JumpInsnNode(IFEQ, labelNode))
+                            //Jump to return
+                            //Some of the methods are void, some are boolean returns.
+                            if(methodNode.desc.endsWith("Z")) {
+
+                                il.add(InsnNode(ICONST_1))
+                                il.add(InsnNode(IRETURN))
+                            }else{
+                                il.add(InsnNode(RETURN))
+                            }
+                            il.add(labelNode)
+
+                            methodNode.instructions.insert(il)
+                        }
+                    }
+                }
+
+
+            }
 
             // Bypass focus events
-            if(clazzData.`class` == "GameShell"){
+            if (clazzData.`class` == "GameShell") {
                 println("Adding focus blocker")
                 injectFocusBlocker(classes[clazzData.name]!!)
             }
@@ -365,7 +441,7 @@ class Analyser{
 
 
             if (clazzData.`class` == "KeyHandler") {
-                AsmUtil.setSuper(classes[clazzData.name]!!,"java/lang/Object","com/p3achb0t/client/injection/io/AbstractKeyboard")
+                AsmUtil.setSuper(classes[clazzData.name]!!, "java/lang/Object", "com/p3achb0t/client/injection/io/AbstractKeyboard")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyPressed", "_keyPressed")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyReleased", "_keyReleased")
                 AsmUtil.renameMethod(classes[clazzData.name]!!, "keyTyped", "_keyTyped")
@@ -384,7 +460,7 @@ class Analyser{
 
                 // Find the correct fields for getX and getY within the Client and inject them into our MouseHandler class
                 runeStar.classRefObs.forEach { obsClass1, clazzData1 ->
-                    if(clazzData1.`class` == "Client") {
+                    if (clazzData1.`class` == "Client") {
                         clazzData1.fields.forEach {
                             if (it.field.contains("MouseHandler_x") && !it.field.contains("MouseHandler_x0")) {
                                 println("Found field MouseHandler_x ${it.toString}")
@@ -418,7 +494,7 @@ class Analyser{
         }
 
         // Find all doAction calls
-        if(true) {
+        if (true) {
             val doActionMethodHook = runeStar?.analyzers!!.get("Client")?.methods?.find { it.method == "doAction" }
             classes.forEach { clazz ->
                 clazz.value.methods.iterator().forEach { methodNode ->
@@ -451,11 +527,11 @@ class Analyser{
         val garbageCollectMethod = "ai"
         //OpenRS key search: getGcDuration
         var gcInjected = false
-        gcRoot@for (method in classes[garbageCollectClass]!!.methods) {
+        gcRoot@ for (method in classes[garbageCollectClass]!!.methods) {
             if (method.name == garbageCollectMethod) {
                 val instructions = method.instructions.iterator()
                 instructions.forEach {
-                    if(it.opcode == IRETURN){
+                    if (it.opcode == IRETURN) {
                         println("Found IRETURN. Prev: ${it.previous.opcode}, prev.prev?: ${it.previous.previous.opcode}. prev prev prev: ${it.previous.previous.previous.opcode}")
                     }
                     if (!gcInjected
@@ -473,7 +549,7 @@ class Analyser{
         val createRandDatClass = "cm"
         val createRandDatMethod = "s"
         var datInjected = 0
-        randRoot@for (method in classes[createRandDatClass]!!.methods) {
+        randRoot@ for (method in classes[createRandDatClass]!!.methods) {
             if (method.name == createRandDatMethod) {
                 val instructions = method.instructions.iterator()
                 while (instructions.hasNext()) {
@@ -558,36 +634,39 @@ class Analyser{
         return true
     }
 
-    val AbstractInsnNode.isConstantIntProducer: Boolean get() {
-        return when (opcode) {
-            Opcodes.LDC -> (this as LdcInsnNode).cst is Int
-            Opcodes.SIPUSH, Opcodes.BIPUSH, Opcodes.ICONST_0, Opcodes.ICONST_1, Opcodes.ICONST_2, Opcodes.ICONST_3, Opcodes.ICONST_4, Opcodes.ICONST_5, Opcodes.ICONST_M1 -> true
-            else -> false
+    val AbstractInsnNode.isConstantIntProducer: Boolean
+        get() {
+            return when (opcode) {
+                Opcodes.LDC -> (this as LdcInsnNode).cst is Int
+                Opcodes.SIPUSH, Opcodes.BIPUSH, Opcodes.ICONST_0, Opcodes.ICONST_1, Opcodes.ICONST_2, Opcodes.ICONST_3, Opcodes.ICONST_4, Opcodes.ICONST_5, Opcodes.ICONST_M1 -> true
+                else -> false
+            }
         }
-    }
 
-    val AbstractInsnNode.constantIntProduced: Int get() {
-        return when (opcode) {
-            Opcodes.LDC -> (this as LdcInsnNode).cst as Int
-            Opcodes.SIPUSH, Opcodes.BIPUSH -> (this as IntInsnNode).operand
-            Opcodes.ICONST_0 -> 0
-            Opcodes.ICONST_1 -> 1
-            Opcodes.ICONST_2 -> 2
-            Opcodes.ICONST_3 -> 3
-            Opcodes.ICONST_4 -> 4
-            Opcodes.ICONST_5 -> 5
-            Opcodes.ICONST_M1 -> -1
-            else -> error(this)
+    val AbstractInsnNode.constantIntProduced: Int
+        get() {
+            return when (opcode) {
+                Opcodes.LDC -> (this as LdcInsnNode).cst as Int
+                Opcodes.SIPUSH, Opcodes.BIPUSH -> (this as IntInsnNode).operand
+                Opcodes.ICONST_0 -> 0
+                Opcodes.ICONST_1 -> 1
+                Opcodes.ICONST_2 -> 2
+                Opcodes.ICONST_3 -> 3
+                Opcodes.ICONST_4 -> 4
+                Opcodes.ICONST_5 -> 5
+                Opcodes.ICONST_M1 -> -1
+                else -> error(this)
+            }
         }
-    }
 
-    private val MethodNode.lastParamIndex: Int get() {
-        val offset = if (Modifier.isStatic(access)) 1 else 0
-        return (Type.getArgumentsAndReturnSizes(desc) shr 2) - offset - 1
-    }
+    private val MethodNode.lastParamIndex: Int
+        get() {
+            val offset = if (Modifier.isStatic(access)) 1 else 0
+            return (Type.getArgumentsAndReturnSizes(desc) shr 2) - offset - 1
+        }
 
     private fun passingVal(pushed: Int, ifOpcode: Int): Int {
-        return when(ifOpcode) {
+        return when (ifOpcode) {
             IF_ICMPEQ -> pushed
             IF_ICMPGE,
             IF_ICMPGT -> pushed + 1
@@ -598,16 +677,18 @@ class Analyser{
         }
     }
 
-    private val AbstractInsnNode.isIf: Boolean get() {
-        return this is JumpInsnNode && opcode != Opcodes.GOTO
-    }
-
-    private val AbstractInsnNode.isReturn: Boolean get() {
-        return when (opcode) {
-            RETURN, ARETURN, DRETURN, FRETURN, IRETURN, LRETURN -> true
-            else -> false
+    private val AbstractInsnNode.isIf: Boolean
+        get() {
+            return this is JumpInsnNode && opcode != Opcodes.GOTO
         }
-    }
+
+    private val AbstractInsnNode.isReturn: Boolean
+        get() {
+            return when (opcode) {
+                RETURN, ARETURN, DRETURN, FRETURN, IRETURN, LRETURN -> true
+                else -> false
+            }
+        }
 
     private fun addInvokeMethods(clazzData: ClassHook, runeStar: RuneStarAnalyzer, classPath: String, classes: MutableMap<String, ClassNode>) {
         val invokeList = ArrayList<InvokerData>()
@@ -683,15 +764,16 @@ class Analyser{
     }
 
     private fun getLoadOpcode(description: String): Int {
-        return getOpcode(description,OpcodeType.LOAD)
+        return getOpcode(description, OpcodeType.LOAD)
     }
+
     private fun getOpcode(fieldDescription: String, opcodeType: OpcodeType): Int {
         return when (fieldDescription[0]) {
             'F' -> if (opcodeType == OpcodeType.LOAD) FLOAT else FRETURN
             'D' -> if (opcodeType == OpcodeType.LOAD) DLOAD else DRETURN
             'J' -> if (opcodeType == OpcodeType.LOAD) LLOAD else LRETURN
             'I', 'B', 'Z', 'S', 'C' -> if (opcodeType == OpcodeType.LOAD) ILOAD else IRETURN
-            'V'->  RETURN // void, method desc
+            'V' -> RETURN // void, method desc
             else -> if (opcodeType == OpcodeType.LOAD) ALOAD else ARETURN
         }
     }
@@ -708,7 +790,7 @@ class Analyser{
                             mnode.owner = "com/p3achb0t/client/injection/RsCanvas"
                             mnode.desc = "(Lcom/p3achb0t/client/injection/InstanceManager;)V"
                             val ins = InsnList()
-                            ins.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
+                            ins.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                             i.insert(insn.previous, ins)
                             method.maxStack += 3
                             return
@@ -761,13 +843,14 @@ class Analyser{
     private fun putClasses(name: String): ByteArray {
         println("Putting class $name")
 
-        val file1 = File("${Constants.USER_DIR}/src/"+name)
-        if(!file1.exists()){
+        val file1 = File("${Constants.USER_DIR}/src/" + name)
+        if (!file1.exists()) {
             File("${Constants.USER_DIR}/src/").mkdir()
             val input = URL("https://raw.githubusercontent.com/acorbin3/P3achB0t/master/src//$name").openStream()
-            Files.copy(input, Paths.get("${Constants.USER_DIR}/src/"+name), StandardCopyOption.REPLACE_EXISTING)
+            Files.copy(input, Paths.get("${Constants.USER_DIR}/src/" + name), StandardCopyOption.REPLACE_EXISTING)
         }
-        val file: InputStream? = Main.javaClass.getResourceAsStream(name) ?: return File("${Constants.USER_DIR}/src/"+name).readBytes()
+        val file: InputStream? = Main.javaClass.getResourceAsStream(name)
+                ?: return File("${Constants.USER_DIR}/src/" + name).readBytes()
         return file?.readBytes()!!
     }
 
@@ -779,18 +862,18 @@ class Analyser{
 
         val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIB)V", null, null)
         val il = InsnList()
-        
+
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getActionScript", "()Lcom/p3achb0t/api/script/ActionScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/script/ActionScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getOverrideDoActionParams","()Z",false))
-        il.add(JumpInsnNode(IFEQ,label)) // Jump to regular processing
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/userinputs/Mouse;", false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "getOverrideDoActionParams", "()Z", false))
+        il.add(JumpInsnNode(IFEQ, label)) // Jump to regular processing
         val label2 = LabelNode(Label())
         il.add(label2)
         il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
         il.add(LdcInsnNode("overriding DoAction params"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false))
 
         //reset override doAction back to
         val label3 = LabelNode(Label())
@@ -798,9 +881,9 @@ class Analyser{
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getActionScript", "()Lcom/p3achb0t/api/script/ActionScript;", false))
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/script/ActionScript", "getCtx", "()Lcom/p3achb0t/api/Context;", false))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse","()Lcom/p3achb0t/api/userinputs/Mouse;",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/Context", "getMouse", "()Lcom/p3achb0t/api/userinputs/Mouse;", false))
         il.add(InsnNode(ICONST_0))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "setOverrideDoActionParams","(Z)V",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/Mouse", "setOverrideDoActionParams", "(Z)V", false))
 //
 //        // load all the params
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
@@ -816,7 +899,7 @@ class Analyser{
 //        il.add(InsnNode(ICONST_0))
         il.add(VarInsnNode(ILOAD, 9))
 //        //Finally call the doAction internal method
-        il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor,false))
+        il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor, false))
         il.add(InsnNode(POP))
         il.add(InsnNode(RETURN))
 
@@ -825,7 +908,7 @@ class Analyser{
         il.add(label)
         il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
         il.add(LdcInsnNode("Normal DoAction params"))
-        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V",false))
+        il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false))
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         il.add(VarInsnNode(ILOAD, 1))
         il.add(VarInsnNode(ILOAD, 2))
@@ -837,7 +920,7 @@ class Analyser{
         il.add(VarInsnNode(ILOAD, 8))
         il.add(VarInsnNode(ILOAD, 9))
 //        il.add(InsnNode(ICONST_0))
-        il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor,false))
+        il.add(MethodInsnNode(INVOKESTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor, false))
         il.add(InsnNode(POP))
         il.add(InsnNode(RETURN))
 
@@ -858,21 +941,23 @@ class Analyser{
         il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/api/userinputs/DoActionParams", paramName, paramDescription, false))
     }
 
+
     //This method will inject a boolean check in for the scriptManager object for field blockFocus
     // the gain focus only set 1 time, then block all get focus events
     // Always block loseFocus events when blockFocus is true
-    private fun injectFocusBlocker(classNode: ClassNode){
+    private fun injectFocusBlocker(classNode: ClassNode) {
         for (method in classNode.methods) {
             if (method.name.contains("focusLost")) {
+                println("injecting Focus block")
                 val il = InsnList()
                 val labelNode = LabelNode(Label())
 
 
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus", "()Z"))
 
 
-                il.add(JumpInsnNode(IFEQ,labelNode))
+                il.add(JumpInsnNode(IFEQ, labelNode))
                 il.add(labelNode)
                 //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
                 //il.add(LdcInsnNode("#####Blocked lost focus"))
@@ -881,27 +966,23 @@ class Analyser{
 
                 il.add(InsnNode(RETURN))
                 method.instructions.insert(il)
-            }
-            else if (method.name.contains("focusGained")) {
+            } else if (method.name.contains("focusGained")) {
                 //create new label that just returns
                 val il = InsnList()
                 val labelNode = LabelNode(Label())
 
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus","()Z"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getBlockFocus", "()Z"))
 
-                il.add(JumpInsnNode(IFNE,labelNode))
+                il.add(JumpInsnNode(IFNE, labelNode))
                 //Jump to return
-                il.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(InsnNode(ICONST_1))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "setBlockFocus","(Z)V"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "setBlockFocus", "(Z)V"))
                 il.add(labelNode)
                 //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
                 //il.add(LdcInsnNode("#####Blocked gained focus"))
                 //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V"))
-
-
-
 
 
                 il.add(InsnNode(RETURN))
@@ -912,13 +993,13 @@ class Analyser{
     }
 
     private fun injectScriptManagerField(classNode: ClassNode) {
-        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/client/injection/InstanceManager;",null , null)
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "script", "Lcom/p3achb0t/client/injection/InstanceManager;", null, null)
         classNode.fields.add(node)
         //classNode.fields.add()
     }
 
     private fun injectFieldProxy(classNode: ClassNode) {
-        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "proxy", "LProxyConnection;",null , null)
+        val node = FieldNode(ACC_PUBLIC + ACC_STATIC, "proxy", "LProxyConnection;", null, null)
         classNode.fields.add(node)
     }
 
@@ -958,7 +1039,7 @@ class Analyser{
         val getter = MethodNode(ACC_PUBLIC, "getManager", "()Lcom/p3achb0t/client/injection/InstanceManager;", null, null)
         val lli = getter.instructions
         lli.add(VarInsnNode(Opcodes.ALOAD, 0)) // maybe
-        lli.add(FieldInsnNode(GETSTATIC, "client", "script","Lcom/p3achb0t/client/injection/InstanceManager;"))
+        lli.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
         lli.add(InsnNode(ARETURN))
         getter.maxStack = 2
         getter.maxLocals = 2
@@ -1004,7 +1085,7 @@ class Analyser{
             analyserClass: String,
             runeStar: RuneStarAnalyzer?
 
-    ){
+    ) {
         var isStatic = false
         val mArgsDescription = invokeData.argumentDescription
 
@@ -1024,61 +1105,46 @@ class Analyser{
                 null,
                 null
         )
-        if (!invokeData.isInterface)
-        {
+        if (!invokeData.isInterface) {
             isStatic = (mn.access and ACC_STATIC) !== 0
-            if (!Modifier.isPublic(mn.access))
-            {
-                if (Modifier.isPrivate(mn.access))
-                {
+            if (!Modifier.isPublic(mn.access)) {
+                if (Modifier.isPrivate(mn.access)) {
                     mn.access = mn.access and (ACC_PRIVATE.inv())
                 }
-                if (Modifier.isProtected(mn.access))
-                {
+                if (Modifier.isProtected(mn.access)) {
                     mn.access = mn.access and (ACC_PROTECTED.inv())
                 }
                 mn.access = mn.access or ACC_PUBLIC
                 //mn.access = mn.access | ACC_SYNCHRONIZED;
             }
         }
-        if(!isStatic || invokeData.isInterface){
-            m.visitVarInsn(ALOAD,0)
+        if (!isStatic || invokeData.isInterface) {
+            m.visitVarInsn(ALOAD, 0)
         }
-        if (invokeData.argumentDescription != "()")
-        {
+        if (invokeData.argumentDescription != "()") {
             val castArgs = if (invokeData.argsCheckCastDesc == null) null else Type.getArgumentTypes(invokeData.argsCheckCastDesc + "V")
             val methodArgs = Type.getArgumentTypes(invokeData.argumentDescription + "V")
-            for (i in methodArgs.indices)
-            {
+            for (i in methodArgs.indices) {
                 m.visitVarInsn(getLoadOpcode(methodArgs[i].descriptor), i + 1)
-                if (castArgs != null && !castArgs[i]?.descriptor.equals(methodArgs[i].descriptor))
-                {
+                if (castArgs != null && !castArgs[i]?.descriptor.equals(methodArgs[i].descriptor)) {
                     var cast = methodArgs[i].descriptor
-                    if (cast.startsWith("L"))
-                    {
+                    if (cast.startsWith("L")) {
                         cast = cast.substring(1).replace(";", "")
                     }
                     m.visitTypeInsn(CHECKCAST, cast)
                 }
             }
         }
-        if (invokeData.isInterface)
-        {
-            m.visitMethodInsn(INVOKEINTERFACE, invokeData.instanceCast, invokeData.invokeMethodName, invokeData.argumentDescription+invokeData.returnDescription)
-        }
-        else
-        {
+        if (invokeData.isInterface) {
+            m.visitMethodInsn(INVOKEINTERFACE, invokeData.instanceCast, invokeData.invokeMethodName, invokeData.argumentDescription + invokeData.returnDescription)
+        } else {
             m.visitMethodInsn(if (isStatic) INVOKESTATIC else INVOKEVIRTUAL, intoClazzNode?.name, mn.name, mn.desc)
         }
-        if (invokeData.returnDescription.contains("L"))
-        {
-            if (!invokeData.returnDescription.contains("["))
-            {
+        if (invokeData.returnDescription.contains("L")) {
+            if (!invokeData.returnDescription.contains("[")) {
                 m.visitTypeInsn(CHECKCAST, invokeData.returnDescription
                         .replaceFirst(("L").toRegex(), "").replace((";").toRegex(), ""))
-            }
-            else
-            {
+            } else {
                 m.visitTypeInsn(CHECKCAST, invokeData.returnDescription)
             }
         }
@@ -1138,14 +1204,14 @@ class Analyser{
 
         if (multiplier != null) {
             methodNode.visitMaxs(5, 1)
-        }else{
+        } else {
             methodNode.visitMaxs(3, 1)
         }
         methodNode.visitEnd()
-        if(!returnFieldDescription.contains("null") && runeStar?.analyzers?.get(analyserClass)?.name in classes) {
+        if (!returnFieldDescription.contains("null") && runeStar?.analyzers?.get(analyserClass)?.name in classes) {
 //                println("${classes[runeStar?.analyzers?.get(analyserClass)?.name]} ${runeStar?.analyzers?.get(analyserClass)?.name}")
             methodNode.accept(classes[runeStar?.analyzers?.get(analyserClass)?.name])
-        }else{
+        } else {
             //println("Error trying to insert $$normalizedFieldName. FieldDescriptor: $returnFieldDescription")
         }
 
