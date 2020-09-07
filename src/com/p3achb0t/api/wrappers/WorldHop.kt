@@ -54,6 +54,14 @@ class WorldHop(val ctx: Context) {
         get() {
             return WidgetItem(ctx.widgets.find(listScrollBar.parentID.toInt(), listScrollBar.childID.toInt())?.getChildren()?.get(listScrollClickableAreaChildID), ctx = ctx)
         }
+    val worldListLogoutDoor: WidgetItem
+    get(){
+        return WidgetItem(ctx.widgets.find(69, 23), ctx = ctx)
+    }
+    val redLogoutButton: WidgetItem
+        get(){
+            return WidgetItem(ctx.widgets.find(182, 12), ctx = ctx)
+        }
     val widgetYellowXButton: WidgetItem
         get() {
             return WidgetItem(ctx.widgets.find(yellowXButton.parentID.toInt(), yellowXButton.childID.toInt()), ctx = ctx)
@@ -224,17 +232,21 @@ class WorldHop(val ctx: Context) {
 
 
     suspend fun logout() {
-        this.ctx.mouse.doAction(DoActionParams(-1, 11927560, 57, 1, "Logout", "", 0, 0))
-        delay(400)
 
-        Utils.waitFor(10, object : Utils.Condition {
-            override suspend fun accept(): Boolean {
-                delay(50)
-                return GameState.currentState(ctx) == GameState.LOGIN_SCREEN
+        if(isLoggedIn){
+            if(isWorldListOpened){
+                worldListLogoutDoor.click()
+                sleep(Random.nextLong(600, 1200))
             }
-        })
-        if (GameState.currentState(ctx) == GameState.LOGGED_IN) {
-            logout()
+            else if (!isLogoutMenuOpen) {
+                println("Clicking on big yellow x")
+                widgetYellowXButton.click()
+                sleep(Random.nextLong(600, 1200))
+            }
+            if(isLogoutMenuOpen){
+                println("Pressing red logout button")
+                redLogoutButton.click()
+            }
         }
     }
 
