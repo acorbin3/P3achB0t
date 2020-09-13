@@ -281,7 +281,7 @@ class InstanceManager(val client: Any): Logging() {
         for (script in serviceScripts.values) {
             if(script.isValidToRun(account)) {
 
-                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable){
+                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable && ctx.worldHop.isLoggedIn){
                     println("We are trying to suspend but current job(${actionScript.currentJob}) is not suspendable. Wait till next execution")
                     continue
                 }

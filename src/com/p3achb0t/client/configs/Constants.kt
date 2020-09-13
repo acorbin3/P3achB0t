@@ -5,7 +5,7 @@ class Constants {
         // URLs
         const val GAME_BASE_URL = "runescape.com"
         const val GAME_SUB_ROUTE = "oldschool"
-        const val GAME_WORLD = 80
+        const val GAME_WORLD = 81
         const val GAME_WORLD_BASE = "$GAME_SUB_ROUTE$GAME_WORLD.$GAME_BASE_URL"
         const val GAME_WORLD_URL = "http://$GAME_WORLD_BASE"
 
