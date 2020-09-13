@@ -37,11 +37,11 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                     instanceManager.actionScript.tasks.forEach { task ->
                         if(task is Drawable){
                             task.draw(g2)
-                            if(task is GroupTask){
-                                task.children.forEach { childTask ->
-                                    if(childTask is Drawable){
-                                        childTask.draw(g2)
-                                    }
+                        }
+                        if(task is GroupTask){
+                            task.children.forEach { childTask ->
+                                if(childTask is Drawable){
+                                    childTask.draw(g2)
                                 }
                             }
                         }
