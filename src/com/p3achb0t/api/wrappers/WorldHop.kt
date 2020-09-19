@@ -195,6 +195,10 @@ class WorldHop(val ctx: Context) {
                 sleep(Random.nextLong(1_000, 2_000))
                 widgetSelectYesWorldHop.click()
                 sleep(Random.nextLong(8_000, 10_000))
+            }else{
+                println("Couldnt find world, lets pick a random point on the list so we can reset the scroll bar")
+                val position = Point(worldListScrollBar.area.x + Random.nextInt(0, worldListScrollBar.area.width), worldListScrollBar.area.y + Random.nextInt(worldListScrollBar.area.height))
+                ctx.mouse.click(position)
             }
         }
     }
