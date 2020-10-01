@@ -80,6 +80,10 @@ class Prayer(val ctx: Context) {
         return ctx.vars.getVarp(83) >= 67108864
     }
 
+    fun isMysticMight(): Boolean{
+        return ctx.vars.getVarbit(4127) == 1
+    }
+
     fun isProtectMeleActive(): Boolean {
 
         return ctx.vars.getVarbit(4118) == 1

@@ -34,6 +34,8 @@ class BotTabBar : JTabbedPane() {
         selectedIndex = if (currentIndex == 0) 0 else currentIndex - 1
         thread(start = true) {
             val current = getComponentAt(currentIndex) as BotInstance
+            current.getInstanceManager().stopActionScript()
+
             removeTabAt(currentIndex)
             current.kill()
         }

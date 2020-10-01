@@ -30,7 +30,7 @@ class LoginHandler(var account: Account = Account()) {
      * @return - This will return if we failed to login
      */
     suspend fun login(ctx: Context): Boolean {
-        if(!ctx.widgets.isWidgetAvaliable(378, 87)) {
+        if(!ctx.widgets.isWidgetAvaliable(378, 87) && !ctx.worldHop.isLoggedIn) {
             println("Logging in")
             println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             ctx.keyboard.sendKeys(" ", sendReturn = true)
