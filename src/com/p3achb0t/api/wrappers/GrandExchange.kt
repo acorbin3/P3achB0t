@@ -99,6 +99,29 @@ class GrandExchange(val ctx: Context) {
         return null
     }
 
+    fun isAnyOfferDoneSelling(): Boolean{
+        var isDoneSelling = false
+
+        Offers.values().iterator().forEach {
+            if(ctx.client.getGrandExchangeOffers()[it.index] .getState().toInt() == 13){
+                isDoneSelling = true
+
+            }
+        }
+        return isDoneSelling
+    }
+
+    fun isAnyOfferDoneBuying(): Boolean{
+        var isDoneSelling = false
+        Offers.values().iterator().forEach {
+            if(ctx.client.getGrandExchangeOffers()[it.index] .getState().toInt() == 5){
+                isDoneSelling = true
+
+            }
+        }
+        return isDoneSelling
+    }
+
     fun isOfferSlotFinishedSelling(offer: Offers): Boolean {
         var isFinished = false
         if (isOpen()) {
