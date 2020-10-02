@@ -20,7 +20,6 @@ class RestartIdle : ServiceScript() {
     val idleThresholdInMin = 10
 
     override suspend fun loop(account: Account) {
-        println("Running restart idel")
         if(!ctx.worldHop.isLoggedIn
                 || ctx.worldHop.isWelcomeRedButtonAvailable()
                 || (ctx.worldHop.isLoggedIn
