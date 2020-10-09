@@ -1,7 +1,15 @@
 package com.p3achb0t.client.ux
 
+import com.p3achb0t.api.private_api.Utils
+import com.p3achb0t.api.utils.Time.sleep
+import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.apache.commons.lang.time.StopWatch
+import java.util.*
 import javax.swing.JTabbedPane
+import kotlin.collections.HashMap
 import kotlin.concurrent.thread
 
 class BotTabBar : JTabbedPane() {
@@ -11,10 +19,16 @@ class BotTabBar : JTabbedPane() {
 
     init {
         addChangeListener {
-            setEnabledAt(lastSelectedIndex, true)
-            setEnabledAt(selectedIndex, false)
-            lastSelectedIndex = selectedIndex
-            GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
+
+            try {
+                if (this.tabCount > 0) {
+                    println("lastIndex: $lastSelectedIndex CurrentIndex:$selectedIndex")
+                    setEnabledAt(lastSelectedIndex, true)
+                    setEnabledAt(selectedIndex, false)
+                    lastSelectedIndex = selectedIndex
+                    GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
+                }
+            }catch (e:Exception){e.printStackTrace()}
         }
     }
 
@@ -29,11 +43,49 @@ class BotTabBar : JTabbedPane() {
         botInstances.remove(id)
     }
 
+    suspend fun restartBotInstance(id:String): String{
+        botInstances[id]?.getInstanceManager()?.stopActionScript()
+
+        //Create new tab
+        val account = botInstances[id]?.account ?: Account()
+        account.uuid = UUID.randomUUID().toString()
+        val previousTabCount = this.tabCount
+        val textBarInfo = botInstances[id]?.tabBarTextInfo ?: ""
+        GlobalScope.launch {
+            BotInstance(account, textBarInfo)
+
+        }
+
+        //WAit till we have a new tab
+        val timeout = StopWatch()
+        timeout.start()
+        while(this.tabCount == previousTabCount && timeout.time < 1000*5){
+            sleep(50)
+        }
+
+        timeout.reset()
+        timeout.start()
+        // WAit till that tabs context is loaded
+        while(botInstances[account.uuid]?.getInstanceManager()?.isContextLoaded == false && timeout.time < 1000*5){
+            sleep(50)
+        }
+
+
+        //remove old tab
+        try {
+            killBotInstance(id)
+        } catch (e: Exception){e.printStackTrace()}
+//        GlobalScope.launch { BotInstance(account, textBarInfo) }
+        return account.uuid
+    }
+
     fun killSelectedIndex() {
         val currentIndex = selectedIndex
         selectedIndex = if (currentIndex == 0) 0 else currentIndex - 1
         thread(start = true) {
             val current = getComponentAt(currentIndex) as BotInstance
+            current.getInstanceManager().stopActionScript()
+
             removeTabAt(currentIndex)
             current.kill()
         }

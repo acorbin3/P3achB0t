@@ -7,6 +7,8 @@ import kotlinx.coroutines.launch
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.jar.JarFile
 
 class LoadScripts {
@@ -85,20 +87,37 @@ class LoadScripts {
             }
         }else{
             GlobalScope.launch {
-                val curDir = System.getProperty("user.dir")
-                val fullPath = "$curDir/src/$packageName"
-                File(fullPath).walkTopDown().forEach {
-                    if (it.toString().endsWith(".kt") && !it.toString().contains("scripts_private")) {
-                        val fileContent = it.bufferedReader().readText()
-                        val sha256 = fileContent.sha256()
-                        val name = it.toString().substringAfter("src\\")
-                        val dbHash = GlobalStructs.db.getFileHash(name)
-                        if (dbHash.isNotEmpty() && dbHash != "null") {
-                            if(dbHash != sha256){
-                                GlobalStructs.db.pushFile(it,sha256)
+                val current = LocalDateTime.now()
+
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val formattedCurrentDate = current.format(formatter)
+                val lastChecked = File("lastChecked.txt")
+                var shouldCheck = true
+                if(lastChecked.exists()){
+                    val text = lastChecked.readText()
+                    if(text == formattedCurrentDate){
+                        shouldCheck = false
+                    }
+                }else{
+                    lastChecked.createNewFile()
+                    lastChecked.writeText(formattedCurrentDate)
+                }
+                if(shouldCheck) {
+                    val curDir = System.getProperty("user.dir")
+                    val fullPath = "$curDir/src/$packageName"
+                    File(fullPath).walkTopDown().forEach {
+                        if (it.toString().endsWith(".kt")) {
+                            val fileContent = it.bufferedReader().readText()
+                            val sha256 = fileContent.sha256()
+                            val name = it.toString().substringAfter("src\\")
+                            val dbHash = GlobalStructs.db.getFileHash(name)
+                            if (dbHash.isNotEmpty() && dbHash != "null") {
+                                if (dbHash != sha256) {
+                                    GlobalStructs.db.pushFile(it, sha256)
+                                }
+                            } else {
+                                GlobalStructs.db.pushFile(it, sha256)
                             }
-                        }else{
-                            GlobalStructs.db.pushFile(it,sha256)
                         }
                     }
                 }

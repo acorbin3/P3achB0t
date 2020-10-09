@@ -13,12 +13,14 @@ import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import com.p3achb0t.client.scripts.loading.ScriptInformation
+import com.p3achb0t.scripts.service.restart_action.RestartIdle
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.applet.Applet
 import java.awt.Color
+import java.awt.Font
 import java.awt.Graphics
 import java.lang.Thread.sleep
 import java.util.*
@@ -50,7 +52,9 @@ class InstanceManager(val client: Any): Logging() {
     // Service script
     // Many different kinds of services scripts could use the loaded account info such as the following:
     // BankPinHandler, LoginHandler, break Handler
+
     var account = Account()
+    var actionScriptFilename = ""
     private var serviceLoop: Job? = null
     val serviceScripts = ConcurrentHashMap<String, ServiceScript>()
 
@@ -63,7 +67,7 @@ class InstanceManager(val client: Any): Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
-    var isDisableScenery = false
+    var isDisableScenery = true
 
     var lastTile = Tile()
     val lastMoved = StopWatch()
@@ -84,6 +88,8 @@ class InstanceManager(val client: Any): Logging() {
     }
 
     fun startActionScript(scriptFileName: String, account: Account = Account()) {
+        this.actionScriptFilename = scriptFileName
+        this.account = account
 
         if (actionScriptLoop != null)
             stopActionScript()
@@ -214,6 +220,8 @@ class InstanceManager(val client: Any): Logging() {
     }
 
     fun drawPaintScripts(g: Graphics) {
+        g.font = Font("Consolas", Font.PLAIN, 12)
+
         for (script in paintScripts.values) {
             script.draw(g)
         }
@@ -230,6 +238,7 @@ class InstanceManager(val client: Any): Logging() {
     }
 
     fun drawsServiceScripts(g: Graphics) {
+        g.font = Font("Consolas", Font.PLAIN, 12)
         for (script in serviceScripts.values) {
             script.draw(g)
         }
@@ -281,7 +290,17 @@ class InstanceManager(val client: Any): Logging() {
         for (script in serviceScripts.values) {
             if(script.isValidToRun(account)) {
 
-                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable){
+                if(script is RestartIdle){
+                    if(script.shouldRestart){
+                        script.shouldRestart = false
+                        script.idleStopWatch.reset()
+                        this.stopActionScript()
+                        this.startActionScript(this.actionScriptFilename,this.account)
+
+                    }
+
+                }
+                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable && ctx.worldHop.isLoggedIn){
                     println("We are trying to suspend but current job(${actionScript.currentJob}) is not suspendable. Wait till next execution")
                     continue
                 }

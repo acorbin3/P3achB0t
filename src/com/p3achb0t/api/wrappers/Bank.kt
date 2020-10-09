@@ -151,6 +151,10 @@ class Bank(val ctx: Context): Logging() {
         return count
     }
 
+    fun contains(id: Int): Boolean{
+        return getItemCount(id) > 0
+    }
+
     fun containsNumberOfItems(itemid: ArrayList<Int>): Int {
         var count = 0
         if (isOpen()) {

@@ -5,7 +5,7 @@ import com.p3achb0t.api.Context
 /*
 * This class is responsible for grouping multiple LeafTasks in a collection where the children would only be run
 * if the Group Task was evaluated to be true*/
-abstract class GroupTask(ctx: Context, val children: ArrayList<LeafTask>): LeafTask(ctx) {
+abstract class GroupTask(ctx: Context, val children: ArrayList<LeafTask> = ArrayList()): LeafTask(ctx) {
 
     override suspend fun execute() {
         children.forEach {

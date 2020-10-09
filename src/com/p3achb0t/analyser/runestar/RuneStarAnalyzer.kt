@@ -51,7 +51,11 @@ class RuneStarAnalyzer {
                         //Filter all methods that dont have a renamed function
                         //&& "get__+${field.owner}_${field.name}" == field.getterMethod
                         "debugText.add(DebugText(\"hasFocus? x: \${ctx.client.getHasFocus()}\"))"
-                        if(updatedDescriptor == "I" && field.getterMethod.contains("get__")){
+//                        if(updatedDescriptor == "I" && field.getterMethod.contains("get__")){
+//                            println("debugText.add(DebugText(\"${field.getterMethod.padEnd(15)}: \${ctx.client.${field.getterMethod}()}\"))")
+//                        }
+
+                        if(updatedDescriptor.contains("String") && field.getterMethod.contains("get__")){
                             println("debugText.add(DebugText(\"${field.getterMethod.padEnd(15)}: \${ctx.client.${field.getterMethod}()}\"))")
                         }
                     }

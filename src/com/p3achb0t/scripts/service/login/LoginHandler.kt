@@ -169,7 +169,7 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
 
 
         val x = 300
-        var y = 535
+        var y = 350
         val savedColor = g.color
         debugText.forEach {
             g.color = it.color

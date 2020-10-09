@@ -2,6 +2,7 @@ package com.p3achb0t.client.accounts
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.LoginResponse
+import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.GameState
 import com.p3achb0t.api.wrappers.utils.Utils
@@ -30,7 +31,7 @@ class LoginHandler(var account: Account = Account()) {
      * @return - This will return if we failed to login
      */
     suspend fun login(ctx: Context): Boolean {
-        if(!ctx.widgets.isWidgetAvaliable(378, 87)) {
+        if(!ctx.widgets.isWidgetAvaliable(378, 87) && !ctx.worldHop.isLoggedIn) {
             println("Logging in")
             println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             ctx.keyboard.sendKeys(" ", sendReturn = true)
@@ -39,10 +40,12 @@ class LoginHandler(var account: Account = Account()) {
             delay(500)
             ctx.mouse.moveMouse(Point(ctx.client.get__lh_r() + 55, 294), true, Mouse.ClickType.Left)
             println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
+            val timeout = StopWatch()
             if (ctx.client.getLogin_username() != account.username) {
                 //Delete user name and replace
                 ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__lh_r() - 50, ctx.client.get__lh_r() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
-                while (ctx.client.getLogin_username().isNotEmpty() == true) {
+                while (ctx.client.getLogin_username().isNotEmpty()
+                        && timeout.elapsedSec < 5) {
                     ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
                 }
                 ctx.keyboard.release(KeyEvent.VK_DOWN)
@@ -51,11 +54,13 @@ class LoginHandler(var account: Account = Account()) {
 
             }
 
+            timeout.reset()
             //Move to password
             ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__lh_r() - 50, ctx.client.get__lh_r() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
             if (ctx.client.getLogin_password().isNotEmpty() == true) {
                 //Clear password
-                while (ctx.client.getLogin_password().isNotEmpty() == true) {
+                while (ctx.client.getLogin_password().isNotEmpty()
+                        && timeout.elapsedSec < 5) {
                     ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
                 }
                 ctx.keyboard.release(KeyEvent.VK_DOWN)
@@ -92,7 +97,11 @@ class LoginHandler(var account: Account = Account()) {
         ctx.widgets.waitTillWidgetNotNull(378, 87)
 
         println("Clicking button")
-        WidgetItem(ctx.widgets.find(378, 87), ctx = ctx).click()
+        try {
+            WidgetItem(ctx.widgets.find(378, 87), ctx = ctx).click()
+        }catch (e: Exception){
+
+        }
         Utils.sleepUntil({ !ctx.widgets.isWidgetAvaliable(378, 87) }, 5)
         return true
     }

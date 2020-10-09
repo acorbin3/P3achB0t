@@ -113,7 +113,8 @@ class WorldHop(val ctx: Context) {
         return WidgetItem(worldList?.getChildren()?.get(world), ctx = ctx)
     }
 
-    val freeWorldNoTotalRequirement = intArrayOf(301, 308, 316, 326, 335, 379, 380, 382, 383, 384, 393, 394, 397, 398, 399, 417, 418, 425, 426, 430, 431,
+    //417 this is PVP
+    val freeWorldNoTotalRequirement = intArrayOf(301, 308, 316, 326, 335, 379, 380, 382, 383, 384, 393, 394, 397, 398, 399, 418, 425, 426, 430, 431,
             433, 434, 435, 436, 437, 438, 439, 440, 451, 452, 453, 454, 455, 456, 457, 458, 459, 469, 470, 471, 472, 473, 474, 475, 476, 497, 498, 499, 500, 591, 502, 503, 504)
 
     fun isWelcomeRedButtonAvailable(): Boolean{
@@ -195,6 +196,10 @@ class WorldHop(val ctx: Context) {
                 sleep(Random.nextLong(1_000, 2_000))
                 widgetSelectYesWorldHop.click()
                 sleep(Random.nextLong(8_000, 10_000))
+            }else{
+                println("Couldnt find world, lets pick a random point on the list so we can reset the scroll bar")
+                val position = Point(worldListScrollBar.area.x + Random.nextInt(0, worldListScrollBar.area.width), worldListScrollBar.area.y + Random.nextInt(worldListScrollBar.area.height))
+                ctx.mouse.click(position)
             }
         }
     }

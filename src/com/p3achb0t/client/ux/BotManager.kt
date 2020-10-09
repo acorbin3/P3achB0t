@@ -7,6 +7,7 @@ import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
 import com.p3achb0t.client.injection.InstanceManagerInterface
+import com.p3achb0t.client.injection.ScriptState
 import com.p3achb0t.client.ux.prefs.FrameMonitor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -24,7 +25,6 @@ class BotManager : JFrame() {
 
     val botTabBar = BotTabBar()
     val botNavMenu = BotNavigationMenu()
-
     init {
         val accountsName = AccountManager.accountsJsonFileName.replace(".json","").split("\\").last()
         title = "P3achB0t - $accountsName"
@@ -86,6 +86,53 @@ class BotManager : JFrame() {
 
         if(count == 0){
             GlobalScope.launch { BotInstance() }
+        }
+
+        //Monitoring thread for each instance to see if it needs to be restarted
+        GlobalScope.launch {
+            sleep(1000*20)
+
+
+            while(true){
+                var i = 0
+                var shouldRestart = false
+                var uuidToRestart = ""
+
+                botTabBar.botInstances.forEach { t, u ->
+                    println("Looking at $t")
+                    if((u.getInstanceManager().isContextLoaded
+                                    && u.getInstanceManager().ctx.client.getGameState() == 1000)){
+                        println("Game state 1000, bad")
+                        uuidToRestart = u.getInstanceManager().account.uuid
+                        shouldRestart = true
+
+                    }
+                    if(u.getInstanceManager().isContextLoaded) {
+                        println("getGameState: ${u.getInstanceManager().ctx.client.getGameState()}")
+                    }
+
+                    i++
+                }
+                if(shouldRestart){
+
+                    val newUUID = botTabBar.restartBotInstance(uuidToRestart)
+                    println("Wating for old tab to be gone")
+                    while(uuidToRestart in botTabBar.botInstances){
+                        sleep(50)
+                    }
+                    sleep(5*1000)
+                    println("STarting up script again")
+                    //Need to start script back up
+                    botTabBar.botInstances.forEach { t, u ->
+                        if(u.getInstanceManager().scriptState == ScriptState.Stopped){
+                            println("Restarting: ${u.account.actionScript}")
+                            u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
+                        }
+                    }
+
+                }
+                sleep(10_000) // Only check every 10 seconds
+            }
         }
 
 

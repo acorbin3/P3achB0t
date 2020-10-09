@@ -13,10 +13,6 @@ import com.p3achb0t.client.tracker.string_stuff.str
 import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileInputStream
-import java.net.DatagramSocket
-import java.net.HttpURLConnection
-import java.net.InetAddress
-import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -24,8 +20,8 @@ import java.util.*
 
 class FBDataBase {
     val firestore: Firestore
-    private val userRef: CollectionReference
-    private val userDocs: MutableMap<String, DocumentReference>
+    val userRef: CollectionReference
+    private val userSession: MutableMap<String, DocumentReference>
     private val userSkillOrItemCount: MutableMap<String, Int> = HashMap()
     private val fileHashRef: CollectionReference
     var validationKey: String = ""
@@ -49,12 +45,12 @@ class FBDataBase {
 
         firestore = FirestoreClient.getFirestore()
         userRef = firestore.collection("users")
-        userDocs = HashMap()
+        userSession = HashMap()
         fileHashRef = firestore.collection("file_hashes")
     }
 
     data class StatInfo(val time: String, val xp: Int)
-    data class ItemInfo(val time: String, val count: Int)
+    data class ItemInfo(val name: String,  val count: String, val countPerHour: String)
 
     private fun getDocID(accountID: String, base: String): String {
         val id = accountID + "_" + base
@@ -69,8 +65,8 @@ class FBDataBase {
     fun initalScriptLoad(account: Account){
         val accountID = account.username
         val sessionID = account.sessionToken
-        if (accountID !in userDocs) {
-            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
 
@@ -79,78 +75,103 @@ class FBDataBase {
 
         val dateStr = LocalDateTime.now().format(formatter)
         lastUpdated["startTime"] = dateStr
+        lastUpdated["latestStartTime"] = dateStr
         lastUpdated["script"] = account.actionScript
         lastUpdated["user"] = accountID
-        lastUpdated["ip"] = Jsoup.connect("https://api.ipify.org").get().toString()
+        try {
+            lastUpdated["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+        }catch (e: Exception){
+
+        }
         lastUpdated["proxy"] = account.proxy
-        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+        userSession[accountID]?.set(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
         userFields["latestStartTime"] = dateStr
         userFields["script"] = account.actionScript
-        userFields["ip"] = Jsoup.connect("https://api.ipify.org").get().toString()
+        try {
+            userFields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+        }catch (e: Exception){
+
+        }
         userFields["proxy"] = account.proxy
         userRef.document(accountID).set(userFields as Map<String,Any>)
 
     }
     fun setBanned(accountID: String, sessionID: String){
-        if (accountID !in userDocs) {
-            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         val dateStr = LocalDateTime.now().format(formatter)
         lastUpdated["Banned:"] = "True: $dateStr"
         println("setting banned")
-        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+        userSession[accountID]?.update(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
         userFields["bannedTime"] = dateStr
-        userRef.document(accountID).set(userFields as Map<String,Any>)
+        userRef.document(accountID).update(userFields as Map<String,Any>)
     }
 
     fun setLastUpdated(accountID: String, sessionID: String){
-        if (accountID !in userDocs) {
-            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         lastUpdated["lastUpdateTime"] = LocalDateTime.now().format(formatter)
-        userDocs[accountID]?.set(lastUpdated  as Map<String, Any>)
+        userSession[accountID]?.update(lastUpdated  as Map<String, Any>)
 
         val userFields = mutableMapOf<String,String>()
         userFields["lastUpdateTime"] = LocalDateTime.now().format(formatter)
-        userRef.document(accountID).set(userFields as Map<String,Any>)
+        userRef.document(accountID).update(userFields as Map<String,Any>)
     }
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: String, xpPerHour: String) {
-        if (accountID !in userDocs) {
-            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         lastUpdated["lastUpdated"] = LocalDateTime.now().format(formatter)
-        userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
+        userSession[accountID]?.update(lastUpdated as Map<String, Any>)
 
         val fields = mutableMapOf<String,String>()
         fields["xp"] = xp
         fields["xp_PerHour"] = xpPerHour
-        userDocs[accountID]?.collection("Skills")?.document(skill.name)?.set(fields as Map<String,Any>)
+        userSession[accountID]?.collection("Skills")?.document(skill.name)?.update(fields as Map<String,Any>)
 
     }
 
 
 
-    fun updateItemCount(accountID: String, sessionID: String, itemName: String, count: String, countPerHour: String) {
-        if (accountID !in userDocs) {
-            userDocs[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+    fun updateItemCount(accountID: String, sessionID: String, itemInfo: ArrayList<ItemInfo>) {
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
-        val lastUpdated = mutableMapOf<String,String>()
-        lastUpdated["lastUpdated"] = LocalDateTime.now().format(formatter)
-        userDocs[accountID]?.set(lastUpdated as Map<String, Any>)
+        val fields = mutableMapOf<String,String>()
+        fields["lastUpdated"] = LocalDateTime.now().format(formatter)
+        userSession[accountID]?.update(fields as Map<String, Any>)
+        fields.clear()
+        for (item in itemInfo){
+            fields["${item.name}-count"] = item.count
+            userSession[accountID]?.update(fields as Map<String, Any>)
+            fields.clear()
+            fields["${item.name}-count_PerHour"] = item.countPerHour
+            userSession[accountID]?.update(fields as Map<String, Any>)
+            fields.clear()
+        }
+    }
+
+    fun updateField(accountID: String, sessionID: String, fieldName: String, value: String) {
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        }
 
         val fields = mutableMapOf<String,String>()
-        fields["count"] = count
-        fields["count_PerHour"] = countPerHour
-        userDocs[accountID]?.collection("Items")?.document(itemName)?.set(fields as Map<String,Any>)
+        fields[fieldName] = value
+        userSession[accountID]?.update(fields as Map<String, Any>)
+        fields.clear()
     }
+
 
     fun validateScript(scriptName: String, key: String):Boolean {
         try {
