@@ -53,7 +53,7 @@ open class RsCanvas(val instanceManager: InstanceManager) : Canvas(), MouseListe
                 } ?: createBufferStrategy(2)
             } catch (e: Exception) {
                 e.printStackTrace()
-                return bufferStrategy as Graphics2D
+                return bufferStrategy.drawGraphics
             }
         }
         return null

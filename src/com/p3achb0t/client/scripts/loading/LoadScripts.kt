@@ -106,7 +106,7 @@ class LoadScripts {
                     val curDir = System.getProperty("user.dir")
                     val fullPath = "$curDir/src/$packageName"
                     File(fullPath).walkTopDown().forEach {
-                        if (it.toString().endsWith(".kt") && !it.toString().contains("scripts_private")) {
+                        if (it.toString().endsWith(".kt")) {
                             val fileContent = it.bufferedReader().readText()
                             val sha256 = fileContent.sha256()
                             val name = it.toString().substringAfter("src\\")

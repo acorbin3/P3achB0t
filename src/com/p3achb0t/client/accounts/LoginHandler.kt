@@ -97,7 +97,11 @@ class LoginHandler(var account: Account = Account()) {
         ctx.widgets.waitTillWidgetNotNull(378, 87)
 
         println("Clicking button")
-        WidgetItem(ctx.widgets.find(378, 87), ctx = ctx).click()
+        try {
+            WidgetItem(ctx.widgets.find(378, 87), ctx = ctx).click()
+        }catch (e: Exception){
+
+        }
         Utils.sleepUntil({ !ctx.widgets.isWidgetAvaliable(378, 87) }, 5)
         return true
     }
