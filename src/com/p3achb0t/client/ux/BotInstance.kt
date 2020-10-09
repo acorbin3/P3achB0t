@@ -11,7 +11,7 @@ import java.util.*
 import javax.swing.JPanel
 
 
-class BotInstance(account: Account = Account(), tabBarTextInfo: String = "") : JPanel() {
+class BotInstance(var account: Account = Account(), var tabBarTextInfo: String = "") : JPanel() {
     // add the canvas to this JPanel
 
     var sessionToken: String = ""
