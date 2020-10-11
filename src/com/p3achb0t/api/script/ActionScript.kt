@@ -9,10 +9,11 @@ abstract class ActionScript(val tasks: ArrayList<LeafTask> = ArrayList(),var cur
                 if(it is GroupTask){
                     it.children.forEach {child ->
                         if(child.isValidToRun()){
-                            logger.debug("Child - Running: ${it.javaClass.name}")
+                            currentJob = child.javaClass.name.split(".").last()
+                            logger.debug("Child - Running: ${child.javaClass.name}")
                             currentJobSuspendable = child.canBeSuspended
                             child.execute()
-                            logger.debug("Child - Completed: ${it.javaClass.name}")
+                            logger.debug("Child - Completed: ${child.javaClass.name}")
 
                         }
                         currentJobSuspendable = true
