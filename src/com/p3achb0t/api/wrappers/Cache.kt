@@ -36,13 +36,14 @@ class Cache {
         if((!cacheUpdated || forceReload)) {
 
             try {
-                cacheUpdated = true
+
                 println("Connecting to websocket")
                 NetCache.connect(InetSocketAddress("oldschool83.runescape.com", NetCache.DEFAULT_PORT), Constants.REVISION).use { net ->
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
                         Cache.update(net, disk).join()
                         println("Complete: Cache updated")
+
                     }
                 }
             } catch (e: IOException) {
@@ -54,6 +55,7 @@ class Cache {
             println("Loading item info from cache")
             itemCacheInfo = getItemInfo()
             println("Complete ${itemCacheInfo.size} items info from cache")
+            cacheUpdated = true
             if(file.exists()){
                 cacheUpdated = true
             }

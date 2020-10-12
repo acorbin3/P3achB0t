@@ -2,11 +2,13 @@ package com.p3achb0t.api.userinputs
 
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.interfaces.IOHandler
 import com.p3achb0t.api.interfaces.Mouse
 import com.p3achb0t.api.userinputs.naturalmouse.api.MouseMotionFactory
 import com.p3achb0t.api.userinputs.naturalmouse.custom.RuneScapeFactoryTemplates
 import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.api.wrappers.GameObject
 import com.p3achb0t.api.wrappers.GroundItem
 import com.p3achb0t.api.wrappers.NPC
@@ -18,9 +20,7 @@ import java.awt.GraphicsEnvironment
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent
-import java.awt.event.MouseWheelEvent
-import kotlin.math.sign
-import kotlin.random.Random
+import javax.swing.SwingUtilities
 
 
 // This class will be used to specify want will be requested do action params when doing a click from the mouse
@@ -42,11 +42,12 @@ class Mouse(obj: Any): Logging() {
 
     var overrideDoActionParams = false
     var doActionParams: DoActionParams = DoActionParams()
-    private val component: Component = (obj as Applet).getComponent(0)
+    private var component: Component = (obj as Applet).getComponent(0)
     private val mouseMotionFactory: MouseMotionFactory = RuneScapeFactoryTemplates.createAverageComputerUserMotionFactory(obj)
     private val mouseHopping: MouseHop = MouseHop(obj as IOHandler, obj as Applet)
     private val ioMouse: Mouse = (obj as IOHandler).getMouse()
     private var lastDoAction = System.currentTimeMillis()
+    var mouseFail = false
     companion object {
        var x = 0
         var y = 0
@@ -133,45 +134,57 @@ class Mouse(obj: Any): Logging() {
 
         if(isLocationInScreenBounds(destPoint)|| true) {
             try {
-//        mouseMotionFactory.move(destPoint.x, destPoint.y)
-                mouseHopping.setMousePosition(destPoint)
-                if (click) {
-                    val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
-                    val mousePress =
-                            MouseEvent(
-                                    component,
-                                    MouseEvent.MOUSE_PRESSED,
-                                    System.currentTimeMillis(),
-                                    clickMask,
-                                    destPoint.x,
-                                    destPoint.y,
-                                    0,
-                                    clickType == ClickType.Right
-                            )
+                var isMouseEventCompleted = false
+                SwingUtilities.invokeLater {
+                    //        mouseMotionFactory.move(destPoint.x, destPoint.y)
+                    mouseHopping.setMousePosition(destPoint)
+                    if (click) {
+                        val clickMask = if (clickType == ClickType.Right) MouseEvent.BUTTON3_MASK else MouseEvent.BUTTON1_MASK
+                        val mousePress =
+                                MouseEvent(
+                                        component,
+                                        MouseEvent.MOUSE_PRESSED,
+                                        System.currentTimeMillis(),
+                                        clickMask,
+                                        destPoint.x,
+                                        destPoint.y,
+                                        0,
+                                        clickType == ClickType.Right
+                                )
 
-                    ioMouse.sendEvent(mousePress)
+                        ioMouse.sendEvent(mousePress)
 
-                    val mouseRelease =
-                            MouseEvent(
-                                    component,
-                                    MouseEvent.MOUSE_RELEASED,
-                                    System.currentTimeMillis(),
-                                    clickMask,
-                                    destPoint.x,
-                                    destPoint.y,
+                        val mouseRelease =
+                                MouseEvent(
+                                        component,
+                                        MouseEvent.MOUSE_RELEASED,
+                                        System.currentTimeMillis(),
+                                        clickMask,
+                                        destPoint.x,
+                                        destPoint.y,
 //                                if(Random.nextLong(1000, 20000) < 2000){
 //                                    1
 //                                }
 //                                else 0,
-                                    0,
-                                    clickType == ClickType.Right
-                            )
-                    ioMouse.sendEvent(mouseRelease)
+                                        0,
+                                        clickType == ClickType.Right
+                                )
+                        ioMouse.sendEvent(mouseRelease)
+                    }
+                    isMouseEventCompleted = true
+                }
+                val timeout = StopWatch()
+                while(!isMouseEventCompleted && timeout.elapsedSec < 30){
+                    sleep(50)
                 }
             } catch (e: Exception) {
                 logger.error("Error: mouse through an exception")
+                mouseFail = true
+                e.printStackTrace()
+                logger.error(e.localizedMessage)
+                e.message?.let { logger.error(it) }
                 e.stackTrace.iterator().forEach {
-                    println(it)
+                    logger.error(it.toString())
                 }
             }
         }

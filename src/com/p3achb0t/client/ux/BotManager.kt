@@ -1,6 +1,7 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.Cache
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
@@ -25,6 +26,7 @@ class BotManager : JFrame() {
 
     val botTabBar = BotTabBar()
     val botNavMenu = BotNavigationMenu()
+
     init {
         val accountsName = AccountManager.accountsJsonFileName.replace(".json","").split("\\").last()
         title = "P3achB0t - $accountsName"
@@ -99,16 +101,22 @@ class BotManager : JFrame() {
                 var uuidToRestart = ""
 
                 botTabBar.botInstances.forEach { t, u ->
-                    println("Looking at $t")
+//                    println("Looking at $t")
                     if((u.getInstanceManager().isContextLoaded
-                                    && u.getInstanceManager().ctx.client.getGameState() == 1000)){
+                                    && u.getInstanceManager().ctx.client.getGameState() == 1000)
+                            || u.getInstanceManager().ctx.mouse.mouseFail){
                         println("Game state 1000, bad")
+
+                        if(u.getInstanceManager().ctx.mouse.mouseFail){
+                            println("Mouse fail")
+                        }
+
                         uuidToRestart = u.getInstanceManager().account.uuid
                         shouldRestart = true
 
                     }
                     if(u.getInstanceManager().isContextLoaded) {
-                        println("getGameState: ${u.getInstanceManager().ctx.client.getGameState()}")
+//                        println("getGameState: ${u.getInstanceManager().ctx.client.getGameState()}")
                     }
 
                     i++

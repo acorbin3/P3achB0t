@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import org.apache.commons.lang.time.StopWatch
 import java.util.*
 import javax.swing.JTabbedPane
+import javax.swing.SwingUtilities
 import kotlin.collections.HashMap
 import kotlin.concurrent.thread
 
@@ -23,9 +24,11 @@ class BotTabBar : JTabbedPane() {
             try {
                 if (this.tabCount > 0) {
                     println("lastIndex: $lastSelectedIndex CurrentIndex:$selectedIndex")
-                    setEnabledAt(lastSelectedIndex, true)
-                    setEnabledAt(selectedIndex, false)
-                    lastSelectedIndex = selectedIndex
+                    SwingUtilities.invokeLater {
+                        setEnabledAt(lastSelectedIndex, true)
+                        setEnabledAt(selectedIndex, false)
+                        lastSelectedIndex = selectedIndex
+                    }
                     GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
                 }
             }catch (e:Exception){e.printStackTrace()}
@@ -35,7 +38,9 @@ class BotTabBar : JTabbedPane() {
     fun addBotInstance(tabLabel: String = "Bot",id: String, botInstance: BotInstance) {
         botInstances[id] = botInstance
         addTab(tabLabel, botInstance)
-        selectedIndex = if (tabCount == 0) 0 else tabCount-1
+        SwingUtilities.invokeLater {
+            selectedIndex = if (tabCount == 0) 0 else tabCount - 1
+        }
     }
 
     fun killBotInstance(id: String) {
@@ -75,13 +80,14 @@ class BotTabBar : JTabbedPane() {
         try {
             killBotInstance(id)
         } catch (e: Exception){e.printStackTrace()}
-//        GlobalScope.launch { BotInstance(account, textBarInfo) }
         return account.uuid
     }
 
     fun killSelectedIndex() {
         val currentIndex = selectedIndex
-        selectedIndex = if (currentIndex == 0) 0 else currentIndex - 1
+        SwingUtilities.invokeLater {
+            selectedIndex = if (currentIndex == 0) 0 else currentIndex - 1
+        }
         thread(start = true) {
             val current = getComponentAt(currentIndex) as BotInstance
             current.getInstanceManager().stopActionScript()
