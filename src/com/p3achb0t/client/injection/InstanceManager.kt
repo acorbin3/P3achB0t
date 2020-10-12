@@ -184,7 +184,14 @@ class InstanceManager(val client: Any): Logging() {
 //                        }else{
 //                            lastTile = ctx.players.getLocal().getGlobalLocation()
 //                        }
-                        actionScript.loop()
+                        try {
+                            actionScript.loop()
+                        }catch (e: Exception){
+                            logger.error(e.localizedMessage)
+                            e.stackTrace.forEach {
+                                logger.error(it.toString())
+                            }
+                        }
                         delay(10)
                     }
                 }

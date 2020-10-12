@@ -180,33 +180,35 @@ class BotNavigationMenu: JMenuBar() {
 
     fun updateScriptManagerButtons() {
         val instance = GlobalStructs.botManager.getSelectedInstanceManager()
-        //println("Updating buttons | TabState: $tabState")
-        when (instance.scriptState) {
-            ScriptState.Stopped -> {
-                startScriptButton.text = "Start"
-                pauseScriptButton.isEnabled = false
-                pauseScriptButton.text = "-----"
+        SwingUtilities.invokeLater {
+            //println("Updating buttons | TabState: $tabState")
+            when (instance.scriptState) {
+                ScriptState.Stopped -> {
+                    startScriptButton.text = "Start"
+                    pauseScriptButton.isEnabled = false
+                    pauseScriptButton.text = "-----"
+                }
+                ScriptState.Running -> {
+                    startScriptButton.text = "Stop"
+                    pauseScriptButton.isEnabled = true
+                    pauseScriptButton.text = "Pause"
+                }
+                ScriptState.Paused -> {
+                    startScriptButton.text = "Stop"
+                    pauseScriptButton.isEnabled = true
+                    pauseScriptButton.text = "Resume"
+                }
+                ScriptState.LoginScreenNotPaused -> {
+                    startScriptButton.text = "Stop"
+                    pauseScriptButton.isEnabled = false
+                    pauseScriptButton.text = "Logging In"
+                }
             }
-            ScriptState.Running -> {
-                startScriptButton.text = "Stop"
-                pauseScriptButton.isEnabled = true
-                pauseScriptButton.text = "Pause"
-            }
-            ScriptState.Paused -> {
-                startScriptButton.text = "Stop"
-                pauseScriptButton.isEnabled = true
-                pauseScriptButton.text = "Resume"
-            }
-            ScriptState.LoginScreenNotPaused ->{
-                startScriptButton.text = "Stop"
-                pauseScriptButton.isEnabled = false
-                pauseScriptButton.text = "Logging In"
-            }
+            if (instance.drawCanvas)
+                drawCanvasToggleButton.text = "Disable Canvas"
+            else
+                drawCanvasToggleButton.text = "Enable Canvas"
         }
-        if (instance.drawCanvas)
-            drawCanvasToggleButton.text = "Disable Canvas"
-        else
-            drawCanvasToggleButton.text = "Enable Canvas"
     }
 
     private fun scriptManagerButtons(){
@@ -219,10 +221,14 @@ class BotNavigationMenu: JMenuBar() {
         pauseScriptButton.addActionListener{
             //TODO Replace isactionscript paused with is script running
             if(GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Running) {
-                pauseScriptButton.text = "Resume"
+                SwingUtilities.invokeLater {
+                    pauseScriptButton.text = "Resume"
+                }
                 GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
             } else if (GlobalStructs.botManager.getSelectedInstanceManager().scriptState == ScriptState.Paused){
-                pauseScriptButton.text = "Paused"
+                SwingUtilities.invokeLater {
+                    pauseScriptButton.text = "Paused"
+                }
                 GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
             }
             updateScriptManagerButtons()
@@ -252,9 +258,11 @@ class BotNavigationMenu: JMenuBar() {
                         }
                     })
                     val parentWindowLocation = this.locationOnScreen
-                    scriptLoaderUI?.setLocation(parentWindowLocation.x, parentWindowLocation.y)
-                    scriptLoaderUI?.isVisible = true
-                    scriptLoaderUI?.isAlwaysOnTop = true
+                    SwingUtilities.invokeLater {
+                        scriptLoaderUI?.setLocation(parentWindowLocation.x, parentWindowLocation.y)
+                        scriptLoaderUI?.isVisible = true
+                        scriptLoaderUI?.isAlwaysOnTop = true
+                    }
                 }
             }
             else {

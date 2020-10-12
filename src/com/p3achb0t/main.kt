@@ -3,6 +3,8 @@ package com.p3achb0t
 import com.formdev.flatlaf.FlatDarkLaf
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
+import com.p3achb0t.api.StopWatch
+import com.p3achb0t.api.cache.format.Cache
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
@@ -11,6 +13,7 @@ import com.p3achb0t.client.util.Util
 import com.p3achb0t.client.ux.BotManager
 import java.awt.Font
 import java.io.File
+import java.lang.Thread.sleep
 import java.nio.file.Paths
 import java.util.jar.JarFile
 import javax.swing.UIManager
@@ -55,6 +58,10 @@ object Main {
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
         botManager.updateCache()
+        val timeout = StopWatch()
+        while(!com.p3achb0t.api.wrappers.Cache.cacheUpdated && timeout.elapsedSec < 30){
+            sleep(50)
+        }
         botManager.startScripts()
     }
 
