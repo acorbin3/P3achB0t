@@ -1,6 +1,7 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.Cache
 import com.p3achb0t.client.accounts.AccountManager
@@ -105,6 +106,7 @@ class BotManager : JFrame() {
                     if((u.getInstanceManager().isContextLoaded
                                     && u.getInstanceManager().ctx.client.getGameState() == 1000)
                             || u.getInstanceManager().ctx.mouse.mouseFail){
+
                         println("Game state 1000, bad")
 
                         if(u.getInstanceManager().ctx.mouse.mouseFail){
@@ -124,18 +126,35 @@ class BotManager : JFrame() {
                 if(shouldRestart){
 
                     val newUUID = botTabBar.restartBotInstance(uuidToRestart)
-                    println("Wating for old tab to be gone")
-                    while(uuidToRestart in botTabBar.botInstances){
+
+                    Logging.error("Wating for old tab to be gone")
+                    val timeout = StopWatch()
+                    while(uuidToRestart in botTabBar.botInstances && timeout.elapsedSec < 45){
                         sleep(50)
                     }
                     sleep(5*1000)
-                    println("STarting up script again")
+                    Logging.error("STarting up script again")
                     //Need to start script back up
                     botTabBar.botInstances.forEach { t, u ->
+
+                        u.account.serviceScripts.forEach {serviceScript ->
+                            u.getInstanceManager().addServiceScript(serviceScript)
+
+                        }
+
                         if(u.getInstanceManager().scriptState == ScriptState.Stopped){
-                            println("Restarting: ${u.account.actionScript}")
+                            Logging.error("Restarting: ${u.account.actionScript}")
                             u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
                         }
+                        u.account.debugScripts.forEach {debugScript ->
+                            u.getInstanceManager().addPaintScript(debugScript)
+                        }
+
+
+
+
+                        //Update the Account to the Instance manager
+
                     }
 
                 }
