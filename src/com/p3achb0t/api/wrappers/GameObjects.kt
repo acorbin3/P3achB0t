@@ -199,6 +199,9 @@ class GameObjects(val ctx: Context) {
     }
 
     fun findinArea(id: Int, area: Area, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
+        return findinArea(intArrayOf(id),area,tile,sortByDistance)
+    }
+    fun findinArea(ids: IntArray, area: Area, tile: Tile = Tile(), sortByDistance: Boolean = true): ArrayList<GameObject> {
         val gameObjects = ArrayList<GameObject>()
         val returnedGameObjects = ArrayList<GameObject>()
         val region = ctx.client.getScene()
@@ -214,7 +217,7 @@ class GameObjects(val ctx: Context) {
                                 colTile.getScenery().iterator().forEach {
                                     if (it != null) {
                                         val gmObj = GameObject(it, ctx = ctx)
-                                        if (gmObj.id ==id && area.containsOrIntersects(gmObj.getGlobalLocation()))
+                                        if (gmObj.id in ids && area.containsOrIntersects(gmObj.getGlobalLocation()))
                                             gameObjects.add(gmObj)
 
                                     }
@@ -223,14 +226,14 @@ class GameObjects(val ctx: Context) {
                             if (colTile.getWall() != null) {
                                 val boundaryObject = colTile.getWall()
                                 val gmObj = GameObject(wallObject = boundaryObject, ctx = ctx)
-                                if (gmObj.id ==id && area.containsOrIntersects(gmObj.getGlobalLocation()))
+                                if (gmObj.id in ids && area.containsOrIntersects(gmObj.getGlobalLocation()))
                                     gameObjects.add(gmObj)
                             }
 
                             if(colTile.getFloorDecoration() != null){
                                 val floorDecoration = colTile.getFloorDecoration()
                                 val gmObj = GameObject(floorDecoration = floorDecoration, ctx = ctx)
-                                if (gmObj.id ==id && area.containsOrIntersects(gmObj.getGlobalLocation()))
+                                if (gmObj.id in ids && area.containsOrIntersects(gmObj.getGlobalLocation()))
                                     gameObjects.add(gmObj)
                             }
                         }
