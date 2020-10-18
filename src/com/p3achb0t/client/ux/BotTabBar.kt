@@ -1,6 +1,5 @@
 package com.p3achb0t.client.ux
 
-import com.p3achb0t.api.private_api.Utils
 import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
@@ -23,10 +22,14 @@ class BotTabBar : JTabbedPane() {
 
             try {
                 if (this.tabCount > 0) {
+
                     println("lastIndex: $lastSelectedIndex CurrentIndex:$selectedIndex")
                     SwingUtilities.invokeLater {
-                        setEnabledAt(lastSelectedIndex, true)
-                        setEnabledAt(selectedIndex, false)
+                        for( i in 0..this.tabCount - 1){
+                            setEnabledAt(i, true)
+                        }
+//                        setEnabledAt(lastSelectedIndex, true)
+//                        setEnabledAt(selectedIndex, false)
                         lastSelectedIndex = selectedIndex
                     }
                     GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
