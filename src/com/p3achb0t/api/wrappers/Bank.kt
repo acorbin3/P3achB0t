@@ -242,12 +242,13 @@ class Bank(val ctx: Context): Logging() {
         val bank = getBankWidget()
         var itemCount = 0
         val maxItemCount = getSize()
+        var index = 0
         bank?.getChildren()?.iterator()?.forEach {
             if (itemCount > maxItemCount) return@forEach
             if (it.getItemId() > 0 && it.getItemId() != 6512) {
                 itemWidgets.add(
                         WidgetItem(
-
+                                index= index,
                                 widget = it,
                                 id = it.getItemId(),
                                 stackSize = it.getItemQuantity(),
@@ -257,6 +258,7 @@ class Bank(val ctx: Context): Logging() {
                 )
                 itemCount += 1
             }
+            index++
         }
         return itemWidgets
     }
