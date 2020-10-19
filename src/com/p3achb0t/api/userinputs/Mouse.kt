@@ -183,7 +183,9 @@ class Mouse(obj: Any) : Logging() {
                         logger.error("Error: mouse through an exception")
 
                         e.printStackTrace()
-                        logger.error(e.localizedMessage)
+                        if(e.localizedMessage != null) {
+                            logger.error(e.localizedMessage)
+                        }
                         e.message?.let { logger.error(it) }
                         e.stackTrace.iterator().forEach {
                             logger.error(it.toString())
