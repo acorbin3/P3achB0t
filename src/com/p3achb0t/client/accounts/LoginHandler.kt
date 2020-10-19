@@ -8,6 +8,7 @@ import com.p3achb0t.api.wrappers.GameState
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.client.configs.GlobalStructs
+import com.p3achb0t.client.googleauth.GoogleAuthenticator
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.event.KeyEvent
@@ -74,6 +75,14 @@ class LoginHandler(var account: Account = Account()) {
                             (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)
                 }
             })
+
+            if(GameState.currentState(ctx) == GameState.LOGIN_SCREEN_AUTHENTICATOR && account.googleAuthKey.isNotEmpty()){
+                val googleAuthenticator = GoogleAuthenticator(account.googleAuthKey)
+                val key = googleAuthenticator.generate()
+                ctx.keyboard.sendKeys(key, true, true)
+            }
+
+
             if ((LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
                     (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
                 if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) {
