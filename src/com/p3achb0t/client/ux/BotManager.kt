@@ -18,6 +18,8 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.io.File
 import java.lang.Thread.sleep
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 import javax.swing.JFrame
@@ -59,6 +61,11 @@ class BotManager : JFrame() {
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private_shared")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val current = LocalDateTime.now()
+        val formattedCurrentDate = current.format(formatter)
+        val lastChecked = File("lastChecked.txt")
+        lastChecked.writeText(formattedCurrentDate)
         botNavMenu.refreshScriptMenu() // lazy fix should be callback instead
     }
 
