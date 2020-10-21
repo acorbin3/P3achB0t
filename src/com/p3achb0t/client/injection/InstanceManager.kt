@@ -67,7 +67,7 @@ class InstanceManager(val client: Any): Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
-    var isDisableScenery = true
+    var isDisableScenery = false
 
     var lastTile = Tile()
     val lastMoved = StopWatch()
