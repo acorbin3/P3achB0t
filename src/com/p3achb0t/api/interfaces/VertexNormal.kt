@@ -1,8 +1,8 @@
 package com.p3achb0t.api.interfaces
 
 interface VertexNormal {
-    fun get__k(): Int
-    fun get__s(): Int
-    fun get__t(): Int
-    fun get__z(): Int
+    fun get__b(): Int
+    fun get__f(): Int
+    fun get__l(): Int
+    fun get__m(): Int
 }

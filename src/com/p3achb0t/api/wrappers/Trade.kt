@@ -138,9 +138,9 @@ class Trade(val ctx: Context) {
                                 return text?.equals("*") ?: false
                             }
                         })
-                        delay(Random.nextLong(189, 1076))
+                        delay(Random.nextLong(240, 1076))
                         ctx.keyboard.sendKeys(count.toString(), sendReturn = true)
-                        delay(Random.nextLong(189, 1076))
+                        delay(Random.nextLong(240, 1076))
                     }
 
                 }

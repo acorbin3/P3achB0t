@@ -16,6 +16,10 @@ class LoadScripts {
     val scriptsInformation = mutableMapOf<String, ScriptInformation>()
     val loadedFolders = mutableSetOf<String>()
 
+    //If this is empty, load all the scripts. If filled in, limt to only these scripts
+//    val limitedScripts = arrayListOf<String>("Zulrah","ZulrahMain","ZulrahMule","ZulrahGearer", "GEAlcher", "WalkToGEMain","WalkToGE")
+    val limitedScripts = arrayListOf<String>()
+
     fun refresh() {
         scriptsInformation.clear()
         for (x in loadedFolders) {

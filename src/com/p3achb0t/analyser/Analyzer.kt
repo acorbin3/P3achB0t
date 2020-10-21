@@ -302,11 +302,11 @@ class Analyser {
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode2)
 
-                //TO find this field you need to look at owners that are of the same Scene class as the above 2
+                // TO find this field you need to look at owners that are of the same Scene class as the above 2
                 // along with that they have a field description of a boolean(Z). Usually there is only 2.
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
-                val viewportWalkingFieldName = "__ec_aq"
+                val viewportWalkingFieldName = "__ef_ai"
                 val fieldHook3 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
                 val methodNode3 = MethodNode(ACC_PUBLIC, "setViewportWalking", "()V", null, null)
@@ -510,6 +510,7 @@ class Analyser {
 //                                println("\t\tFound invokestatic call ${mn.owner}.${mn.name}")
                                     val il = InsnList()
                                     il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                                                                                                                                            "(IIIILjava/lang/String;Ljava/lang/String;IIB)V"
                                     il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIBLcom/p3achb0t/client/injection/InstanceManager;)V", false))
                                     //doAction
                                     methodNode.instructions.insertBefore(mn, il)

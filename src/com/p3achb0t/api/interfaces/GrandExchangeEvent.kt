@@ -5,5 +5,5 @@ interface GrandExchangeEvent {
     fun getString1(): String
     fun getString2(): String
     fun getWorld(): Int
-    fun get__k(): Long
+    fun get__b(): Long
 }

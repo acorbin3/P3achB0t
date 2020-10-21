@@ -1,5 +1,5 @@
 package com.p3achb0t.api.interfaces
 
 interface FontName {
-    fun get__x(): String
+    fun get__k(): String
 }

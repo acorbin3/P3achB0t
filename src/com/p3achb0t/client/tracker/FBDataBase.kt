@@ -161,7 +161,7 @@ class FBDataBase {
         }
     }
 
-    fun updateField(accountID: String, sessionID: String, fieldName: String, value: String) {
+    fun updateSessionField(accountID: String, sessionID: String, fieldName: String, value: String) {
         if (accountID !in userSession) {
             userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
@@ -169,6 +169,39 @@ class FBDataBase {
         val fields = mutableMapOf<String,String>()
         fields[fieldName] = value
         userSession[accountID]?.update(fields as Map<String, Any>)
+
+        fields.clear()
+    }
+
+    fun updateSessionFields(accountID: String, sessionID: String,data: Map<String,String>){
+        if (accountID !in userSession) {
+            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        }
+
+        val fields = mutableMapOf<String,String>()
+        data.forEach { fieldName, value ->
+            fields[fieldName] = value
+        }
+
+        userSession[accountID]?.update(fields as Map<String, Any>)
+
+        fields.clear()
+    }
+
+    fun updateUserField(accountID: String, fieldName: String, fieldValue: String){
+
+        val fields = mutableMapOf<String,String>()
+        fields[fieldName] = fieldValue
+        userRef.document(accountID).update(fields as Map<String,Any>)
+        fields.clear()
+    }
+    fun updateUserFields(accountID: String, data: Map<String,String>){
+
+        val fields = mutableMapOf<String,String>()
+        data.forEach { (t, u) ->
+            fields[t] = u
+        }
+        userRef.document(accountID).update(fields as Map<String,Any>)
         fields.clear()
     }
 
