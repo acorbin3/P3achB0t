@@ -16,6 +16,10 @@ class LoadScripts {
     val scriptsInformation = mutableMapOf<String, ScriptInformation>()
     val loadedFolders = mutableSetOf<String>()
 
+    //If this is empty, load all the scripts. If filled in, limt to only these scripts
+//    val limitedScripts = arrayListOf<String>("Zulrah","ZulrahMain","ZulrahMule","ZulrahGearer", "GEAlcher", "WalkToGEMain","WalkToGE")
+    val limitedScripts = arrayListOf<String>()
+
     fun refresh() {
         scriptsInformation.clear()
         for (x in loadedFolders) {
@@ -100,7 +104,6 @@ class LoadScripts {
                     }
                 }else{
                     lastChecked.createNewFile()
-                    lastChecked.writeText(formattedCurrentDate)
                 }
                 if(shouldCheck) {
                     val curDir = System.getProperty("user.dir")
@@ -149,7 +152,7 @@ class LoadScripts {
                                     && classNode.name.replace(".class", "")
                                             .split("/").last() !in defaultScripts) {
                                 //We want to make sure we are looking at the right package. So we compare each director
-                                // structure to make sure it matches given the diresred class path
+                                // structure to make sure it matches given the desired class path
                                 val fullClassSplit = classNode.name.split("/")
                                 val desiredClassSplit = packageName.split("/")
                                 var goodPackage = true
@@ -157,6 +160,16 @@ class LoadScripts {
                                     if (s != fullClassSplit[index]) {
                                         goodPackage = false
                                     }
+                                }
+
+                                //Filtering out the non needed scripts
+                                if(limitedScripts.isNotEmpty()
+                                        && classNode.superName.contains("ActionScript")
+                                        && classNode.name.replace(".class", "")
+                                                .split("/").last() !in limitedScripts
+                                ){
+                                    goodPackage = false
+                                    println("Filtering out the non needed scripts: ${classNode.name}")
                                 }
 
                                 if (goodPackage) {
@@ -208,30 +221,39 @@ class LoadScripts {
                     }
                     else -> ScriptType.None
                 }
-                scriptsInformation[file.name] = if (!file.name.contains(".jar")) {
-                    //Adding the class for internally compiled scripts
-                    ScriptInformation(
-                            file.name,
-                            file.path,
-                            "${x.values[1]}",
-                            "${x.values[3]}",
-                            "${x.values[5]}",
-                            "${x.values[7]}",
-                            type,
-                            classNode.name,
-                            Class.forName(classNode.name.replace("/", ".")))
-                } else {
-                    ScriptInformation(
-                            file.name,
-                            file.path,
-                            "${x.values[1]}",
-                            "${x.values[3]}",
-                            "${x.values[5]}",
-                            "${x.values[7]}",
-                            type,
-                            classNode.name)
+
+                if(limitedScripts.isEmpty()
+                        //Limiting the action scripts
+                        || (limitedScripts.isNotEmpty()
+                                && type== ScriptType.ActionScript
+                                && x.values[3] in limitedScripts)
+                        ||(limitedScripts.isNotEmpty()
+                                && type != ScriptType.ActionScript)) {
+                    scriptsInformation[file.name] = if (!file.name.contains(".jar")) {
+                        //Adding the class for internally compiled scripts
+                        ScriptInformation(
+                                file.name,
+                                file.path,
+                                "${x.values[1]}",
+                                "${x.values[3]}",
+                                "${x.values[5]}",
+                                "${x.values[7]}",
+                                type,
+                                classNode.name,
+                                Class.forName(classNode.name.replace("/", ".")))
+                    } else {
+                        ScriptInformation(
+                                file.name,
+                                file.path,
+                                "${x.values[1]}",
+                                "${x.values[3]}",
+                                "${x.values[5]}",
+                                "${x.values[7]}",
+                                type,
+                                classNode.name)
+                    }
+                    println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
                 }
-                println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
             }
         }
     }

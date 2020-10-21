@@ -45,6 +45,9 @@ class Account {
     // Game config
     var username: String = ""
     var password: String = ""
+    //This is the google auth secret key used when enabling 2fa. This will allow for automatic login using auth.
+    var googleAuthKey: String = ""
+
     var pin: String = ""
     var banned: Boolean = false
     var gameWorld: Int = 80

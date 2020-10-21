@@ -53,6 +53,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
 
                 debugText.add(DebugText("OpenTab: ${ctx.tabs.getOpenTab()?.name}"))
+                debugText.add(DebugText("GE Open:: ${ctx.grandExchange.isOpen()} hidden: ${ctx.grandExchange.getExchangeWidget()?.getIsHidden()}"))
 //                debugText.add(DebugText("Bank Status: ${ctx.bank.isOpen()}"))
 //                debugText.add(DebugText("Run Enabled: ${ctx.vars.getVarp(173)}"))
 //                debugText.add(DebugText("Prayer Enabled(4101): ${ctx.vars.getVarbit(4101)}"))

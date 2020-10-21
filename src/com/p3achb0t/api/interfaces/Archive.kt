@@ -8,6 +8,6 @@ interface Archive : AbstractArchive {
     fun getMasterDisk(): ArchiveDisk
     fun getValidGroups(): BooleanArray
     fun get__ab(): Boolean
-    fun get__am(): Int
-    fun get__e(): Boolean
+    fun get__ar(): Int
+    fun get__i(): Boolean
 }

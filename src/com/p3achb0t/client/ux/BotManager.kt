@@ -1,6 +1,8 @@
 package com.p3achb0t.client.ux
 
 import com.p3achb0t.Main
+import com.p3achb0t.api.StopWatch
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.Cache
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
@@ -16,6 +18,8 @@ import java.awt.BorderLayout
 import java.awt.Dimension
 import java.io.File
 import java.lang.Thread.sleep
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 import javax.swing.JFrame
@@ -25,6 +29,7 @@ class BotManager : JFrame() {
 
     val botTabBar = BotTabBar()
     val botNavMenu = BotNavigationMenu()
+
     init {
         val accountsName = AccountManager.accountsJsonFileName.replace(".json","").split("\\").last()
         title = "P3achB0t - $accountsName"
@@ -56,6 +61,11 @@ class BotManager : JFrame() {
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private")
         GlobalStructs.scripts.loadPath("com/p3achb0t/scripts_private_shared")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val current = LocalDateTime.now()
+        val formattedCurrentDate = current.format(formatter)
+        val lastChecked = File("lastChecked.txt")
+        lastChecked.writeText(formattedCurrentDate)
         botNavMenu.refreshScriptMenu() // lazy fix should be callback instead
     }
 
@@ -99,16 +109,23 @@ class BotManager : JFrame() {
                 var uuidToRestart = ""
 
                 botTabBar.botInstances.forEach { t, u ->
-                    println("Looking at $t")
+//                    println("Looking at $t")
                     if((u.getInstanceManager().isContextLoaded
-                                    && u.getInstanceManager().ctx.client.getGameState() == 1000)){
+                                    && u.getInstanceManager().ctx.client.getGameState() == 1000)
+                            || u.getInstanceManager().ctx.mouse.mouseFail){
+
                         println("Game state 1000, bad")
+
+                        if(u.getInstanceManager().ctx.mouse.mouseFail){
+                            println("Mouse fail")
+                        }
+
                         uuidToRestart = u.getInstanceManager().account.uuid
                         shouldRestart = true
 
                     }
                     if(u.getInstanceManager().isContextLoaded) {
-                        println("getGameState: ${u.getInstanceManager().ctx.client.getGameState()}")
+//                        println("getGameState: ${u.getInstanceManager().ctx.client.getGameState()}")
                     }
 
                     i++
@@ -116,18 +133,35 @@ class BotManager : JFrame() {
                 if(shouldRestart){
 
                     val newUUID = botTabBar.restartBotInstance(uuidToRestart)
-                    println("Wating for old tab to be gone")
-                    while(uuidToRestart in botTabBar.botInstances){
+
+                    Logging.error("Wating for old tab to be gone")
+                    val timeout = StopWatch()
+                    while(uuidToRestart in botTabBar.botInstances && timeout.elapsedSec < 45){
                         sleep(50)
                     }
                     sleep(5*1000)
-                    println("STarting up script again")
+                    Logging.error("STarting up script again")
                     //Need to start script back up
                     botTabBar.botInstances.forEach { t, u ->
+
+                        u.account.serviceScripts.forEach {serviceScript ->
+                            u.getInstanceManager().addServiceScript(serviceScript)
+
+                        }
+
                         if(u.getInstanceManager().scriptState == ScriptState.Stopped){
-                            println("Restarting: ${u.account.actionScript}")
+                            Logging.error("Restarting: ${u.account.actionScript}")
                             u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
                         }
+                        u.account.debugScripts.forEach {debugScript ->
+                            u.getInstanceManager().addPaintScript(debugScript)
+                        }
+
+
+
+
+                        //Update the Account to the Instance manager
+
                     }
 
                 }

@@ -67,7 +67,7 @@ class InstanceManager(val client: Any): Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
-    var isDisableScenery = true
+    var isDisableScenery = false
 
     var lastTile = Tile()
     val lastMoved = StopWatch()
@@ -184,7 +184,14 @@ class InstanceManager(val client: Any): Logging() {
 //                        }else{
 //                            lastTile = ctx.players.getLocal().getGlobalLocation()
 //                        }
-                        actionScript.loop()
+                        try {
+                            actionScript.loop()
+                        }catch (e: Exception){
+                            logger.error(e.localizedMessage)
+                            e.stackTrace.forEach {
+                                logger.error(it.toString())
+                            }
+                        }
                         delay(10)
                     }
                 }
@@ -363,7 +370,7 @@ class InstanceManager(val client: Any): Logging() {
     }
 
     //.doActionCallback(int, int, int, int, java.lang.String, java.lang.String, int, int, int)'
-    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Int) {
+    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Byte) {
         logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
     }
 

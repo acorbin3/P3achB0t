@@ -8,6 +8,7 @@ import com.p3achb0t.api.wrappers.GameState
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import com.p3achb0t.client.configs.GlobalStructs
+import com.p3achb0t.client.googleauth.GoogleAuthenticator
 import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.event.KeyEvent
@@ -36,14 +37,14 @@ class LoginHandler(var account: Account = Account()) {
             println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             ctx.keyboard.sendKeys(" ", sendReturn = true)
             //OPENRS searhc loginBoxCenter
-            ctx.mouse.moveMouse(Point(ctx.client.get__lh_r(), 310), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(ctx.client.get__cd_v(), 310), true, Mouse.ClickType.Left)
             delay(500)
-            ctx.mouse.moveMouse(Point(ctx.client.get__lh_r() + 55, 294), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(ctx.client.get__cd_v() + 55, 294), true, Mouse.ClickType.Left)
             println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             val timeout = StopWatch()
             if (ctx.client.getLogin_username() != account.username) {
                 //Delete user name and replace
-                ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__lh_r() - 50, ctx.client.get__lh_r() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
+              ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cd_v() - 50, ctx.client.get__cd_v() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
                 while (ctx.client.getLogin_username().isNotEmpty()
                         && timeout.elapsedSec < 5) {
                     ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
@@ -56,7 +57,7 @@ class LoginHandler(var account: Account = Account()) {
 
             timeout.reset()
             //Move to password
-            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__lh_r() - 50, ctx.client.get__lh_r() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cd_v() - 50, ctx.client.get__cd_v() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
             if (ctx.client.getLogin_password().isNotEmpty() == true) {
                 //Clear password
                 while (ctx.client.getLogin_password().isNotEmpty()
@@ -74,6 +75,14 @@ class LoginHandler(var account: Account = Account()) {
                             (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)
                 }
             })
+
+            if(GameState.currentState(ctx) == GameState.LOGIN_SCREEN_AUTHENTICATOR && account.googleAuthKey.isNotEmpty()){
+                val googleAuthenticator = GoogleAuthenticator(account.googleAuthKey)
+                val key = googleAuthenticator.generate()
+                ctx.keyboard.sendKeys(key, true, true)
+            }
+
+
             if ((LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
                     (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
                 if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) {

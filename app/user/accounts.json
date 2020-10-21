@@ -23,6 +23,7 @@
     "proxy": "none",
     "username": "",
     "password": "",
+    "googleAuthKey": "",
     "pin": "",
     "banned": false,
     "gameWorld": 80,

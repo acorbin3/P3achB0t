@@ -1,5 +1,7 @@
 package com.p3achb0t.api.utils
 
+import kotlin.random.Random
+
 object Time {
     fun getHoursInMils(hours: Int): Long{
         return hours * 60 * 60 * 1000L
@@ -34,5 +36,8 @@ object Time {
 
     suspend fun sleep(time: Long) {
         kotlinx.coroutines.delay(time)
+    }
+    suspend fun sleep(timeMin: Long, timeMax: Long) {
+        kotlinx.coroutines.delay(Random.nextLong(timeMin,timeMax))
     }
 }

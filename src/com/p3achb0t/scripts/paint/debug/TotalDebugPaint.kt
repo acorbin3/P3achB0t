@@ -92,12 +92,16 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 if(isBankPaintDebug) {
                     if (ctx.bank.isOpen()) {
                         val items = Bank(ctx).getAll()
-                        items.forEach {
+                        var index = 0
+                        items.forEach { it ->
                             g.color = Color.WHITE
                             var area: Rectangle = Rectangle(60, 70, 440, 315)
                             if (area.contains(Point(it.getBasePoint().x, it.getBasePoint().y))) {
                                 g.font = g.font.deriveFont(9.5f)
                                 g.drawString("${it.id}", it.getBasePoint().x + 5, it.getBasePoint().y)
+                                g.drawString("${it.stackSize}", it.getBasePoint().x + 5, it.getBasePoint().y+10)
+                                g.drawString("${it.index}", it.getBasePoint().x + 5, it.getBasePoint().y+15)
+                                index++
                             }
 //                        g.drawRect(it.area.x, it.area.y, it.area.width, it.area.height)
 

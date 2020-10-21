@@ -164,7 +164,7 @@ class Inventory(val ctx: Context? = null) {
 
     fun getfirstIndex(id: Int): Int {
         var count = 0
-        var index = 0
+        var index = -1
         var founditem = false
         val inventory = getWidget()
         val items = inventory?.getItemIds()

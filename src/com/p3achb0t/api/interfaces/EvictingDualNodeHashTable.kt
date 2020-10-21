@@ -5,5 +5,5 @@ interface EvictingDualNodeHashTable {
     fun getDeque(): IterableDualNodeQueue
     fun getHashTable(): IterableNodeHashTable
     fun getRemainingCapacity(): Int
-    fun get__z(): DualNode
+    fun get__f(): DualNode
 }

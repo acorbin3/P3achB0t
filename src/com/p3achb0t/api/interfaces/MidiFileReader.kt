@@ -6,7 +6,7 @@ interface MidiFileReader {
     fun getTrackLengths(): IntArray
     fun getTrackPositions(): IntArray
     fun getTrackStarts(): IntArray
-    fun get__x(): Int
-    fun get__o(): IntArray
-    fun get__g(): Long
+    fun get__k(): Int
+    fun get__q(): IntArray
+    fun get__u(): Long
 }
