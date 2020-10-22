@@ -169,5 +169,16 @@ class Equipment(val ctx: Context) {
         }
     }
 
+    fun containsAll(id: IntArray): Boolean {
+        var Contains = true
+        id.forEach {
+            if (!contains(it)) {
+                println("Can't find " + it + " in inv")
+                Contains = false
+            }
+        }
+        return Contains
+    }
+
 
 }
