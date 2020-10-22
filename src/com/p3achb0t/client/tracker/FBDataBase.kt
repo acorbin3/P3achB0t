@@ -69,11 +69,20 @@ class FBDataBase {
             userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
         }
 
+        val dateStr = LocalDateTime.now().format(formatter)
+        val userFields = mutableMapOf<String,String>()
+        userFields["latestStartTime"] = dateStr
+        userFields["script"] = account.actionScript
+        try {
+            userFields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+        }catch (e: Exception){
+
+        }
+        userFields["proxy"] = account.proxy
+        userRef.document(accountID).set(userFields as Map<String,Any>)
+
 
         val lastUpdated = mutableMapOf<String,String>()
-
-
-        val dateStr = LocalDateTime.now().format(formatter)
         lastUpdated["startTime"] = dateStr
         lastUpdated["latestStartTime"] = dateStr
         lastUpdated["script"] = account.actionScript
@@ -86,16 +95,7 @@ class FBDataBase {
         lastUpdated["proxy"] = account.proxy
         userSession[accountID]?.set(lastUpdated  as Map<String, Any>)
 
-        val userFields = mutableMapOf<String,String>()
-        userFields["latestStartTime"] = dateStr
-        userFields["script"] = account.actionScript
-        try {
-            userFields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
-        }catch (e: Exception){
 
-        }
-        userFields["proxy"] = account.proxy
-        userRef.document(accountID).set(userFields as Map<String,Any>)
 
     }
     fun setBanned(accountID: String, sessionID: String){
