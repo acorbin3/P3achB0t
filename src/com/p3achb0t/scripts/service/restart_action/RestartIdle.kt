@@ -17,7 +17,7 @@ class RestartIdle : ServiceScript() {
     val idleStopWatch = StopWatch()
     val currentTile = Tile()
     var shouldRestart = false
-    val idleThresholdInMin = 10
+    val idleThresholdInMin = 20
 
     override suspend fun loop(account: Account) {
         if(!ctx.worldHop.isLoggedIn
