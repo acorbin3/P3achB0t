@@ -192,7 +192,7 @@ class Mouse(obj: Any) : Logging() {
                         }
 
                         mouseErrorCount += 1
-                        if(mouseErrorThreshold >= mouseErrorCount){
+                        if(mouseErrorThreshold <= mouseErrorCount){
                             mouseFail = true
                         }
                     }
