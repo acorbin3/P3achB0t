@@ -18,6 +18,7 @@ class Magic(val ctx: Context) {
             EARTH_STRIKE(11,14286859, 7, 3),
             FIRE_STRIKE(13,14286861, 9, 4),
             LOW_LEVEL_ALCHEMY(18,14286866, 0, 0),
+            VARROCK_TELEPORT(20, 14286868,0, 0),
             CRUMBLE_UNDEAD(27, 14286875, 0, 0),
             HIGH_LEVEL_ALCHEMY(39, 14286887, 0, 0),
             HOME_TELEPORT(5, 14286853,0, 0),
