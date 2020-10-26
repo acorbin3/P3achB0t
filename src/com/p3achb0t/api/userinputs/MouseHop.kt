@@ -1,6 +1,8 @@
 package com.p3achb0t.api.userinputs
 
 import com.p3achb0t.api.interfaces.IOHandler
+import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 import java.applet.Applet
 import java.awt.Point
@@ -23,7 +25,9 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
 
 
     }
-    fun setMousePosition(point: Point) {
+    suspend fun setMousePosition(point: Point) {
+        Utils.sleepUntil({applet != null}, time = 2)
+        Utils.sleepUntil({applet.getComponent(0) != null}, time = 2)
         val mouseMove = MouseEvent(
                 applet.getComponent(0),
                 MouseEvent.MOUSE_MOVED,
@@ -34,6 +38,10 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
                 0,
                 false
         )
+        Utils.sleepUntil({scriptManager.getMouse() != null}, time = 2)
+        if(scriptManager.getMouse() == null){
+            Logging.error("Mouse is null")
+        }
         scriptManager.getMouse().sendEvent(mouseMove)
     }
 
