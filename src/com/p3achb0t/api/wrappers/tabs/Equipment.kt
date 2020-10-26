@@ -41,7 +41,7 @@ class Equipment(val ctx: Context) {
         val itemids = ArrayList<Int>()
         Slot.values().forEach {
             if (isEquipmentSlotEquipted(it)) {
-                println("Item equipped = " + getItemAtSlot(it)!!.id)
+//                println("Item equipped = " + getItemAtSlot(it)!!.id)
                 itemids.add(getItemAtSlot(it)!!.id)
             }
         }
