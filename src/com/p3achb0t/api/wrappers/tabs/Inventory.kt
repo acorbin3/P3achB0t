@@ -359,6 +359,17 @@ class Inventory(val ctx: Context? = null) {
         return contains
     }
 
+    fun containsAll(itemid: IntArray): Boolean {
+        var Contains = true
+        itemid.forEach {
+            if (!contains(it)) {
+                println("Can't find " + it + " in inv")
+                Contains = false
+            }
+        }
+        return Contains
+    }
+
     fun containsAny(itemid: IntArray): Boolean {
 //        print("Looking for: any item in here: ")
 //        itemid.forEach { print("$it ") }
