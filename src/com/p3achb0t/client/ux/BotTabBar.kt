@@ -51,6 +51,10 @@ class BotTabBar : JTabbedPane() {
         botInstances.remove(id)
     }
 
+    fun stopScripts(id: String){
+        botInstances[id]?.getInstanceManager()?.stopActionScript()
+    }
+
     suspend fun restartBotInstance(id:String): String{
         botInstances[id]?.getInstanceManager()?.stopActionScript()
 

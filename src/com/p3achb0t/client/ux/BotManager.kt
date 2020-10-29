@@ -132,37 +132,36 @@ class BotManager : JFrame() {
                 }
                 if(shouldRestart){
 
-                    val newUUID = botTabBar.restartBotInstance(uuidToRestart)
+                    //We are just going to stop all the script
+                    botTabBar.stopScripts(uuidToRestart)
 
-                    Logging.error("Wating for old tab to be gone")
-                    val timeout = StopWatch()
-                    while(uuidToRestart in botTabBar.botInstances && timeout.elapsedSec < 45){
-                        sleep(50)
-                    }
-                    sleep(5*1000)
-                    Logging.error("STarting up script again")
-                    //Need to start script back up
-                    botTabBar.botInstances.forEach { t, u ->
-
-                        u.account.serviceScripts.forEach {serviceScript ->
-                            u.getInstanceManager().addServiceScript(serviceScript)
-
-                        }
-
-                        if(u.getInstanceManager().scriptState == ScriptState.Stopped){
-                            Logging.error("Restarting: ${u.account.actionScript}")
-                            u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
-                        }
-                        u.account.debugScripts.forEach {debugScript ->
-                            u.getInstanceManager().addPaintScript(debugScript)
-                        }
-
-
-
-
-                        //Update the Account to the Instance manager
-
-                    }
+//                    val newUUID = botTabBar.restartBotInstance(uuidToRestart)
+//
+//                    Logging.error("Wating for old tab to be gone")
+//                    val timeout = StopWatch()
+//                    while(uuidToRestart in botTabBar.botInstances && timeout.elapsedSec < 45){
+//                        sleep(50)
+//                    }
+//                    sleep(5*1000)
+//                    Logging.error("STarting up script again")
+//                    //Need to start script back up
+//                    botTabBar.botInstances.forEach { t, u ->
+//
+//                        u.account.serviceScripts.forEach {serviceScript ->
+//                            u.getInstanceManager().addServiceScript(serviceScript)
+//
+//                        }
+//
+//                        if(u.getInstanceManager().scriptState == ScriptState.Stopped){
+//                            Logging.error("Restarting: ${u.account.actionScript}")
+//                            u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
+//                        }
+//                        u.account.debugScripts.forEach {debugScript ->
+//                            u.getInstanceManager().addPaintScript(debugScript)
+//                        }
+//
+//                        //Update the Account to the Instance manager
+//                    }
 
                 }
                 sleep(10_000) // Only check every 10 seconds
