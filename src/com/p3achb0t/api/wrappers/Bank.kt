@@ -171,6 +171,16 @@ class Bank(val ctx: Context): Logging() {
         }
         return count
     }
+    fun containsAll(itemids: IntArray): Boolean {
+        var contains = true
+
+        itemids.iterator().forEach {
+            if(!ctx.bank.contains(it)){
+                contains = false
+            }
+        }
+        return contains
+    }
 
     fun containsAny(itemid: IntArray): Boolean {
         var contains = false
