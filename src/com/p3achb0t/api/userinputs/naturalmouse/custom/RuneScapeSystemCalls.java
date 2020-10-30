@@ -7,6 +7,7 @@ import com.p3achb0t.api.interfaces.Client;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 public class RuneScapeSystemCalls implements SystemCalls {
     private final Client ctx;
@@ -51,7 +52,11 @@ public class RuneScapeSystemCalls implements SystemCalls {
     @Override
     public void setMousePosition(int x, int y) {
         MouseEvent mouseMove = new MouseEvent(applet.getComponent(0), MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x,y,0,false);
-        manager.getMouse().sendEvent(mouseMove);
+        for(MouseMotionListener mml : applet.getComponent(0).getMouseMotionListeners()){
+            mml.mouseMoved(mouseMove);
+        }
+        mouseMove.consume();
+//        manager.getMouse().sendEvent(mouseMove);
         //robot.mouseMove(x, y);
     }
 }
