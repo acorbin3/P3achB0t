@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 import java.applet.Applet
 import java.awt.Point
 import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
 import kotlin.math.floor
 import kotlin.random.Random
 
@@ -42,7 +43,18 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
         if(scriptManager.getMouse() == null){
             Logging.error("Mouse is null")
         }
-        scriptManager.getMouse().sendEvent(mouseMove)
+
+        try {
+            applet.getComponent(0).mouseMotionListeners.forEach {
+                it.mouseMoved(mouseMove)
+//            mouseMove.consume()
+            }
+            mouseMove.consume()
+        } catch (ex: Exception) {
+
+            ex.printStackTrace()
+        }
+//        scriptManager.getMouse().sendEvent(mouseMove)
     }
 
 }
