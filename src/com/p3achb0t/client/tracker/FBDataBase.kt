@@ -238,19 +238,12 @@ class FBDataBase {
         filePath.bufferedReader().lines().forEach { fileContent += "$it$$" }
         val fields = mutableMapOf<String,String>()
         fields["hash"] = sha256
+        fields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
         fields["file"] = fileContent
         fields["date"] = LocalDateTime.now().format(formatter)
 
         val name = filePath.toString().substringAfter("src\\")
         val fileDoc = fileHashRef.document(name)
         fileDoc.set(fields as Map<String,Any>)
-    }
-}
-object Main {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val db = FBDataBase()
-        println("key found: " + db.validateScript("Zulrah","test"))
-        println("key found: " + db.validateScript("Zulrah","df83jf76dh"))
     }
 }
