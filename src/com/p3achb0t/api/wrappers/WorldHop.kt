@@ -37,6 +37,12 @@ class WorldHop(val ctx: Context) {
         //[(182,8),(182,1),(182,0),(164,80),(164,69),(164,66),
     }
 
+    val daysOfMembersLeft: Int
+    get(){
+        return ctx.vars.getVarp(1780)
+    }
+
+
     val isLoggedIn: Boolean
         get() {
             return GameState.currentState(ctx) == GameState.LOGGED_IN
@@ -98,8 +104,10 @@ class WorldHop(val ctx: Context) {
             try {
                 var worlds = ctx.client.getWorlds()
 
+//                println("ID\tProp\thost\tactv\tindex")
                 worlds.forEach {
-                    if (it.getProperties() == 1) {
+//                    println("${it.getId()}\t${it.getProperties()}\t${it.getHost()}\t${it.getActivity()}\t${it.getIndex()}\t")
+                    if (it.getProperties() == 1 && !it.getActivity().contains("Leagues")) {
                         MembersWorlds.add(it.getId())
                     }
                 }
@@ -114,8 +122,33 @@ class WorldHop(val ctx: Context) {
     }
 
     //417 this is PVP
-    val freeWorldNoTotalRequirement = intArrayOf(301, 308, 316, 326, 335, 379, 380, 382, 383, 384, 393, 394, 397, 398, 399, 418, 425, 426, 430, 431,
-            433, 434, 435, 436, 437, 438, 439, 440, 451, 452, 453, 454, 455, 456, 457, 458, 459, 469, 470, 471, 472, 473, 474, 475, 476, 497, 498, 499, 500, 591, 502, 503, 504)
+//    val freeWorldNoTotalRequirement = intArrayOf(301, 308, 316, 326, 335, 379, 380, 382, 383, 384, 393, 394, 397, 398, 399, 418, 425, 426, 430, 431,
+//            433, 434, 435, 436, 437,
+//            //438, 439, 440, leagues
+//            451, 452, 453, 454, 455, 456,
+//            // 457, 458, 459, leagues
+//            469, 470, 471, 472, 473,
+//            // 474, 475, 476, leagues
+//            497, 498, 499, 500, 501,
+//            //502, 503, 504, leagues
+//    )
+
+    val freeWorldNoTotalRequirement: ArrayList<Int>
+        get() {
+            val worldList = ArrayList<Int>()
+            try {
+                var worlds = ctx.client.getWorlds()
+
+                worlds.forEach {
+                    if (it.getProperties() == 0 && !it.getActivity().contains("Leagues")) {
+                        worldList.add(it.getId())
+                    }
+                }
+            } catch (e: Exception) {
+
+            }
+            return worldList
+        }
 
     fun isWelcomeRedButtonAvailable(): Boolean{
         return ctx.widgets.find(378,78)?.getIsHidden() == false
