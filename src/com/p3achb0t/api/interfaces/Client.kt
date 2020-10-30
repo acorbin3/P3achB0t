@@ -2,7 +2,6 @@ package com.p3achb0t.api.interfaces
 
 interface Client : GameShell {
     fun getVarbit(id: Int): Int
-    //"(IIIILjava/lang/String;Ljava/lang/String;IIB)V",
     fun doAction(actionParam: Int, widgetID: Int, menuAction: Int, id: Int, menuOption: String, menuTarget: String, mouseX: Int, mouseY: Int, dummy: Byte=0)
     fun setScene_selectedX(x: Int)
     fun setScene_selectedY(y: Int)
