@@ -8,23 +8,24 @@ import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 
 class Tabs(val ctx: Context) {
+    //Might be able to key off of Sprite2 ID:1180
     // Section of widgetID IDs for tabs
     enum class Tab_Types(val id: Int, val resizeID: Int = 0) {
         None(0),
-        ClanChat(37, WidgetID.ResizableViewport.CLAN_CHAT_TAB),
-        AccountManagement(38, WidgetID.ResizableViewport.ACCOUNT_MANAGEMENT_TAB),
-        FriendsList(39, WidgetID.ResizableViewport.FRIENDS_TAB),
+        ClanChat(38, WidgetID.ResizableViewport.CLAN_CHAT_TAB),
+        AccountManagement(39, WidgetID.ResizableViewport.ACCOUNT_MANAGEMENT_TAB),
+        FriendsList(40, WidgetID.ResizableViewport.FRIENDS_TAB),
         Logout(34),
-        Options(40, WidgetID.ResizableViewport.OPTIONS_TAB),
-        Emotes(41, WidgetID.ResizableViewport.EMOTES_TAB),
-        Music(42, WidgetID.ResizableViewport.MUSIC_TAB),
-        Combat(52, WidgetID.ResizableViewport.COMBAT_TAB),
-        Skills(53, WidgetID.ResizableViewport.STATS_TAB),
-        QuestList(54, WidgetID.ResizableViewport.QUESTS_TAB),
-        Inventory(55, WidgetID.ResizableViewport.INVENTORY_TAB),
-        Equiptment(56, WidgetID.ResizableViewport.EQUIPMENT_TAB),
-        Prayer(57, WidgetID.ResizableViewport.PRAYER_TAB),
-        Magic(58, WidgetID.ResizableViewport.MAGIC_TAB);
+        Options(41, WidgetID.ResizableViewport.OPTIONS_TAB),
+        Emotes(42, WidgetID.ResizableViewport.EMOTES_TAB),
+        Music(43, WidgetID.ResizableViewport.MUSIC_TAB),
+        Combat(53, WidgetID.ResizableViewport.COMBAT_TAB),
+        Skills(54, WidgetID.ResizableViewport.STATS_TAB),
+        QuestList(55, WidgetID.ResizableViewport.QUESTS_TAB),
+        Inventory(56, WidgetID.ResizableViewport.INVENTORY_TAB),
+        Equiptment(57, WidgetID.ResizableViewport.EQUIPMENT_TAB),
+        Prayer(58, WidgetID.ResizableViewport.PRAYER_TAB),
+        Magic(59, WidgetID.ResizableViewport.MAGIC_TAB);
 
         companion object {
             fun valueOf(id: Int, ctx: Context): Tab_Types? = values().find {
