@@ -52,7 +52,9 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
             mouseMove.consume()
         } catch (ex: Exception) {
 
-            ex.printStackTrace()
+            ex.stackTrace.forEach {
+                Logging.error(it.toString())
+            }
         }
 //        scriptManager.getMouse().sendEvent(mouseMove)
     }
