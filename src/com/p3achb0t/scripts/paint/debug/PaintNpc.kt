@@ -3,6 +3,7 @@ package com.p3achb0t.scripts.paint.debug
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.interfaces.Npc
+import com.p3achb0t.api.interfaces.ParamType
 import com.p3achb0t.api.wrappers.NPC
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getActorTriangles
@@ -64,9 +65,18 @@ class PaintNpc : PaintScript() {
 
                             if (namePoint.x != -1 && namePoint.y != -1 && Calculations.isOnscreen(ctx, namePoint)) {
                                 g.color = Color.GREEN
+                                var actions = ""
 
+
+                                if(npci.getType().getOp() != null){
+                                    npci.getType().getOp().iterator().forEach {
+                                        if(it != null){
+                                            actions += "$it, "
+                                        }
+                                    }
+                                }
                                 g.drawString(
-                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()} spot: ${newNPC.npc.getSpotAnimation()}",
+                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()} spot: ${newNPC.npc.getSpotAnimation()} menuIndex: ${newNPC.menuIndex} $actions",
                                         namePoint.x,
                                         namePoint.y
                                 )
