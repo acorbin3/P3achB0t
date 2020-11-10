@@ -173,6 +173,10 @@ class InstanceManager(val client: Any): Logging() {
             if (actionScriptLoop == null) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
+
+                        if(account.banned){
+                            stopActionScript()
+                        }
                         //TODO - test out maybe restarting script if a player has been idle for 1m or so
 //                        if(ctx.players.getLocal().getGlobalLocation().distanceTo(lastTile) == 0){
 //                            if(lastMoved.elapsedSec > 60){
