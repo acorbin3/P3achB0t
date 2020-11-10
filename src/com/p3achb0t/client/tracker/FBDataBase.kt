@@ -74,7 +74,7 @@ class FBDataBase {
         userFields["latestStartTime"] = dateStr
         userFields["script"] = account.actionScript
         try {
-            userFields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+            userFields["ip"] = cleanIP()
         }catch (e: Exception){
 
         }
@@ -88,7 +88,7 @@ class FBDataBase {
         lastUpdated["script"] = account.actionScript
         lastUpdated["user"] = accountID
         try {
-            lastUpdated["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+            lastUpdated["ip"] = cleanIP()
         }catch (e: Exception){
 
         }
@@ -238,12 +238,20 @@ class FBDataBase {
         filePath.bufferedReader().lines().forEach { fileContent += "$it$$" }
         val fields = mutableMapOf<String,String>()
         fields["hash"] = sha256
-        fields["ip"] = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+        fields["ip"] =  cleanIP()
         fields["file"] = fileContent
         fields["date"] = LocalDateTime.now().format(formatter)
 
         val name = filePath.toString().substringAfter("src\\")
         val fileDoc = fileHashRef.document(name)
         fileDoc.set(fields as Map<String,Any>)
+    }
+
+    fun cleanIP():String{
+        val ip = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+        ip.replace("<html> <head></head> <body>","")
+        ip.replace("</body></html>","")
+        ip.replace(" ", "")
+        return ip
     }
 }
