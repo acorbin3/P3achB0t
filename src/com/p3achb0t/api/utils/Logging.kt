@@ -48,6 +48,19 @@ open class Logging {
 //                }
             }
         }
+        fun info(s: String) {
+            createFile()
+            val outputString = "${formatter.format(Date())} - INFO - ${getLocation()} $s"
+            println(outputString)
+            if(dumpToAFile) {
+                file.appendText(outputString + "\n")
+//                file.printWriter().use { out ->
+//                    out.println(outputString)
+//                    out.flush()
+//                }
+            }
+
+        }
 
         fun getLocation(): String {
             val stElements = Thread.currentThread().stackTrace
