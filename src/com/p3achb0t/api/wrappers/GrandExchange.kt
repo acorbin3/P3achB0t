@@ -60,7 +60,7 @@ class GrandExchange(val ctx: Context) {
 
 
     fun isOpen(): Boolean {
-        return getExchangeWidget() != null
+        return getExchangeWidget() != null && getExchangeWidget()?.getWidth() ?: 0 > 0
     }
 
     fun offerIsOpen(): Boolean {
