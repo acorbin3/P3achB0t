@@ -12,8 +12,6 @@ import java.awt.Point
 import java.awt.Rectangle
 
 class Bank(val ctx: Context): Logging() {
-    //DONE - open bank
-    //DONE - deposit all items
     //TODO - deposit all items from a list
     companion object {
         private val BANK_OBJECTS = intArrayOf(
@@ -211,14 +209,8 @@ class Bank(val ctx: Context): Logging() {
         return contains
     }
 
-
-    /**
-     * added by sirscript
-     */
-
-
     fun isOpen(): Boolean {
-        return getBankWidget() != null
+        return getBankWidget() != null && getBankWidget()?.getWidth() ?: 0 > 0
     }
 
     fun isClosed(): Boolean{
