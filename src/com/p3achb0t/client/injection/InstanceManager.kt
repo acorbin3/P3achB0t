@@ -67,7 +67,7 @@ class InstanceManager(val client: Any): Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
-    var isDisableScenery = false
+    var isDisableScenery = true
 
     var lastTile = Tile()
     val lastMoved = StopWatch()
@@ -331,8 +331,12 @@ class InstanceManager(val client: Any): Logging() {
                     runServiceScript = false
 
                 }
-                if(runServiceScript) {
+                if(runServiceScript && !account.banned) {
                     script.loop(account)
+                    if(account.banned){
+                        Logging.error("Account got banned, we are now stopping all scripts")
+                        stopActionScript()
+                    }
                     if (script.shouldPauseActionScript
                             && (scriptState == ScriptState.Paused
                                     || scriptState == ScriptState.LoginScreenNotPaused)) {

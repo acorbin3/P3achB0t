@@ -112,11 +112,8 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
             status = "Logging in"
             val failedLogin = !loginHandler.login(ctx)
             if (failedLogin) {
-                logger.error("Failed to login. Login handler will now execute an infinite loop to prevent future logins")
-                while (failedLogin) {
-
-                    delay(1000 * 60)
-                }
+                logger.error("Failed to login. Login handler will now set account banned")
+                account.banned = true
             }
         }
     }
