@@ -28,9 +28,10 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
     }
     suspend fun setMousePosition(point: Point) {
         Utils.sleepUntil({applet != null}, time = 2)
-        Utils.sleepUntil({applet.getComponent(0) != null}, time = 2)
+        val component = applet.getComponent(0)
+        Utils.sleepUntil({component != null}, time = 2)
         val mouseMove = MouseEvent(
-                applet.getComponent(0),
+                component,
                 MouseEvent.MOUSE_MOVED,
                 System.currentTimeMillis(),
                 0,
@@ -45,7 +46,8 @@ class MouseHop(val scriptManager: IOHandler, val applet: Applet) {
         }
 
         try {
-            applet.getComponent(0).mouseMotionListeners.forEach {
+
+            component.mouseMotionListeners.forEach {
                 it.mouseMoved(mouseMove)
 //            mouseMove.consume()
             }

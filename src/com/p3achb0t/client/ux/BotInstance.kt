@@ -9,6 +9,7 @@ import java.applet.Applet
 import java.awt.BorderLayout
 import java.util.*
 import javax.swing.JPanel
+import javax.swing.SwingUtilities
 
 
 class BotInstance(var account: Account = Account(), var tabBarTextInfo: String = "") : JPanel() {
@@ -24,8 +25,10 @@ class BotInstance(var account: Account = Account(), var tabBarTextInfo: String =
             applet = it
             sessionToken = account.uuid
             instanceManagerInterface = applet as InstanceManagerInterface
-            add(applet) // add the game to the JPanel
-            // Strip off any auth if there is any
+            SwingUtilities.invokeLater {
+                add(applet) // add the game to the JPanel
+                // Strip off any auth if there is any
+            }
 
             val proxy = if(account.proxy == "none") account.proxy else account.proxy.split(";")[1]
             instanceManagerInterface.getManager().account = account
@@ -34,7 +37,9 @@ class BotInstance(var account: Account = Account(), var tabBarTextInfo: String =
     }
 
     fun kill() {
-        applet.destroy()
+        SwingUtilities.invokeLater {
+            applet.destroy()
+        }
         GlobalStructs.botManager.botTabBar.killBotInstance(sessionToken)
     }
 

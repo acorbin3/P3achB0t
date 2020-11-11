@@ -47,7 +47,9 @@ class BotTabBar : JTabbedPane() {
     }
 
     fun killBotInstance(id: String) {
-        remove(botInstances[id])
+        SwingUtilities.invokeLater {
+            remove(botInstances[id])
+        }
         botInstances.remove(id)
     }
 
