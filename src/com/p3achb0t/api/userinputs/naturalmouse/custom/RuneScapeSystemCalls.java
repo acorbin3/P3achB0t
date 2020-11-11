@@ -51,8 +51,9 @@ public class RuneScapeSystemCalls implements SystemCalls {
      */
     @Override
     public void setMousePosition(int x, int y) {
-        MouseEvent mouseMove = new MouseEvent(applet.getComponent(0), MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x,y,0,false);
-        for(MouseMotionListener mml : applet.getComponent(0).getMouseMotionListeners()){
+        Component component = applet.getComponent(0);
+        MouseEvent mouseMove = new MouseEvent(component, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x,y,0,false);
+        for(MouseMotionListener mml : component.getMouseMotionListeners()){
             mml.mouseMoved(mouseMove);
         }
         mouseMove.consume();
