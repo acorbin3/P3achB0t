@@ -7,7 +7,15 @@ import com.p3achb0t.api.utils.Logging
     This class is intended to define a list of tiles and interact to the destination. It will be smart enough to start
     in the middle of the path and walk towards the right direction.
  */
+
+
 class Path(val tiles: ArrayList<Tile>, var ctx: Context?=null):Logging() {
+    constructor(vararg tiles: Tile, ctx: Context?=null){
+        tiles.iterator().forEach {
+            this.tiles.add(it)
+        }
+        this.ctx = ctx
+    }
     init {
         if(ctx != null){
             tiles.forEach {
