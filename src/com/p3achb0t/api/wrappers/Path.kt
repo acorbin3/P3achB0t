@@ -10,12 +10,6 @@ import com.p3achb0t.api.utils.Logging
 
 
 class Path(val tiles: ArrayList<Tile>, var ctx: Context?=null):Logging() {
-    constructor(vararg tiles: Tile, ctx: Context?=null){
-        tiles.iterator().forEach {
-            this.tiles.add(it)
-        }
-        this.ctx = ctx
-    }
     init {
         if(ctx != null){
             tiles.forEach {
