@@ -135,11 +135,11 @@ class GroundItems(val ctx: Context) {
                     if (obj is Obj) {
                         try {
                             val stacksize = obj.getQuantity()
-                            var x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
-                            var y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
-                            x = x / 128 + ctx.client.getBaseX()
-                            y  = y / 128 + ctx.client.getBaseY()
-                            val LootTile =  Tile(x, y, ctx = ctx)
+                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            val xGlob = x / 128 + ctx.client.getBaseX()
+                            val yGlob  = y / 128 + ctx.client.getBaseY()
+                            val LootTile =  Tile(xGlob, yGlob, ctx = ctx)
 
                             println("GroundItem: ${LootTile.getGlobalLocation()}, ${LootTile.getLocalLocation()} ${LootTile.getRegionalLocation()}")
                             var id = obj.getId()
