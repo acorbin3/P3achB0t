@@ -120,6 +120,8 @@ class GroundItems(val ctx: Context) {
                 Tile(tile.x + 3, tile.y - 3, ctx = ctx), ctx = ctx
         )
 
+        println("Loot Tile: ${tile.getGlobalLocation()} ${tile.getLocalLocation()} ${tile.getRegionalLocation()}")
+
         groundItems.forEachIndexed { groundItemIndex, groundObjs ->
             groundObjs.forEachIndexed { planeIndex, groundObjPlanes ->
                 groundObjPlanes.forEachIndexed groundobjectplane@{ index, groundObjByPlane ->
@@ -133,9 +135,13 @@ class GroundItems(val ctx: Context) {
                     if (obj is Obj) {
                         try {
                             val stacksize = obj.getQuantity()
-                            val x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
-                            val y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            var x = tiles[groundItemIndex][planeIndex][index].getX() * 128 + 64
+                            var y = tiles[groundItemIndex][planeIndex][index].getY() * 128 + 64
+                            x = x / 128 + ctx.client.getBaseX()
+                            y  = y / 128 + ctx.client.getBaseY()
                             val LootTile =  Tile(x, y, ctx = ctx)
+
+                            println("GroundItem: ${LootTile.getGlobalLocation()}, ${LootTile.getLocalLocation()} ${LootTile.getRegionalLocation()}")
                             var id = obj.getId()
                             itemid.forEach {
                                 if (it == id && lootArea.containsOrIntersects(LootTile)) {
