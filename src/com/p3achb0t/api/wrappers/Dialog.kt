@@ -7,6 +7,7 @@ import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
+import kotlin.math.abs
 import kotlin.random.Random
 
 class Dialog(val ctx: Context): Logging() {
@@ -27,6 +28,7 @@ class Dialog(val ctx: Context): Logging() {
 
     fun isDialogUp(): Boolean {
         return getDialogContinue().widget != null
+                && abs(getDialogContinue().widget?.getCycle()?:0 - ctx.client.getCycle()) < 400
     }
 
     fun isContinueAvailable(): Boolean{
