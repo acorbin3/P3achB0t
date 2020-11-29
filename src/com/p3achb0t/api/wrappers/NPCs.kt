@@ -50,12 +50,27 @@ class NPCs(val ctx: Context) {
     }
 
 
+    fun nearestAttackableNpc(npcNames: ArrayList<String>): ArrayList<NPC> {
+        val foundNPCs = ArrayList<NPC>()
+        try {
+            val npcs = findNpcs(sortByDist = true)
+            npcs.forEach {
+                if (npcNames.indexOf(it.npc.getType().getName())!= -1 && (it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) || it.npc.getTargetIndex() == -1 && it.npc.getSequence() != 92)) {
+                    println("Found suitable npc")
+                    foundNPCs.add(it)
+                }
+            }
+        } catch (e: Exception) {
+        }
+        return foundNPCs
+    }
+
     fun nearestAttackableNpc(npcName: String): ArrayList<NPC> {
         val foundNPCs = ArrayList<NPC>()
         try {
             val npcs = findNpcs(sortByDist = true)
             npcs.forEach {
-                if (it.npc.getType().getName().contains(npcName) && it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) || it.npc.getTargetIndex() == -1 && it.npc.getSequence() != 92) {
+                if (it.npc.getType().getName().contains(npcName) && (it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) || it.npc.getTargetIndex() == -1 && it.npc.getSequence() != 92)) {
                     println("Found suitable npc")
                     foundNPCs.add(it)
                 }
@@ -117,11 +132,35 @@ class NPCs(val ctx: Context) {
         return npcs
     }
 
+    val randomEventNPCsNamesToIgnore = arrayListOf("Dr Jekyll", "Evil Bob", "Bee keeper", "Capt' Arnav", "Niles",
+    "Miles", "Giles", "Sergeant Damien", "Drunken Dwarf", "Freaky Forester", "Genie", "Leo", "Postie Pete", "Molly", "Mysterious Old Man",
+    "Pillory Guard", "Tilt", "Flippa", " Prison Pete", "Quiz Master", "Rick Turpentine", "Sandwich Lady", "Strange plant", "Dunce", "Mr.Mordaut")
+    val randomEventNPCsNamesToIgnoreLowercase = randomEventNPCsNamesToIgnore.map { it.toLowerCase() }
+
+
+    fun getTargetted(): NPC? {
+        val foundNPCs = ArrayList<NPC>()
+        val npcs = findNpcs(sortByDist = true)
+        npcs.forEach {
+            if (it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) && it.npc.getSequence() != 92
+                    && !randomEventNPCsNamesToIgnoreLowercase.contains(it.npc.getType().getName().toLowerCase())) {
+                foundNPCs.add(it)
+            }
+        }
+        when (foundNPCs.isEmpty()) {
+            true -> return null
+            false -> return foundNPCs[0]
+
+        }
+    }
+
     fun getTargetted(npcname: String): NPC? {
         val foundNPCs = ArrayList<NPC>()
         val npcs = findNpcs(npcname, sortByDist = true)
         npcs.forEach {
-            if (it.npc.getType().getName().contains(npcname) && it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) && it.npc.getSequence() != 92) {
+            if (it.npc.getType().getName().contains(npcname)
+                    && !randomEventNPCsNamesToIgnoreLowercase.contains(it.npc.getType().getName().toLowerCase())
+                    && it.npc.getTargetIndex() - 32768 == (ctx.players.getLocal().player.getIndex()) && it.npc.getSequence() != 92) {
                 foundNPCs.add(it)
             }
         }
