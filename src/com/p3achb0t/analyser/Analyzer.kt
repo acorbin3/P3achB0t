@@ -429,6 +429,48 @@ class Analyser {
 
             }
 
+
+            //Super disabling
+            if(clazzData.`class` == "Client"){
+                println("Adding SUPER rendering disabling")
+
+                val renderingDisabling = arrayOf("draw",
+                        //newScenery", "newWall", "newWallDecoration", "newFloorDecoration", "newObjStack", "drawActor2d", //"drawTile"
+                )
+
+                renderingDisabling.forEach {disabledItem ->
+                    val newSceneryMethodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == disabledItem }
+
+                    classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
+
+                        if (methodNode.name == newSceneryMethodHook?.name) {
+                            println("Found matching method for $disabledItem")
+                            val il = InsnList()
+                            val labelNode = LabelNode(Label())
+
+                            il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                            il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "isDisableScenery", "()Z"))
+
+                            il.add(JumpInsnNode(IFEQ, labelNode))
+                            //Jump to return
+                            //Some of the methods are void, some are boolean returns.
+                            if(methodNode.desc.endsWith("Z")) {
+
+                                il.add(InsnNode(ICONST_1))
+                                il.add(InsnNode(IRETURN))
+                            }else{
+                                il.add(InsnNode(RETURN))
+                            }
+                            il.add(labelNode)
+
+                            methodNode.instructions.insert(il)
+                        }
+                    }
+                }
+
+            }
+
+
             // Bypass focus events
             if (clazzData.`class` == "GameShell") {
                 println("Adding focus blocker")
