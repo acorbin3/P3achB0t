@@ -191,9 +191,13 @@ class InstanceManager(val client: Any): Logging() {
                         try {
                             actionScript.loop()
                         }catch (e: Exception){
-                            logger.error(e.localizedMessage)
-                            e.stackTrace.forEach {
-                                logger.error(it.toString())
+                            if(e.localizedMessage != null) {
+                                logger.error(e.localizedMessage)
+                            }
+                            if(e.stackTrace != null) {
+                                e.stackTrace.forEach {
+                                    logger.error(it.toString())
+                                }
                             }
                         }
                         delay(10)
