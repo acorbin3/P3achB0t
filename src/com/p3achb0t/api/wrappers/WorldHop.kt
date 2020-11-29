@@ -118,7 +118,7 @@ class WorldHop(val ctx: Context) {
         }
 
     fun getWorldWidget(world: Int): WidgetItem {
-        return WidgetItem(worldList?.getChildren()?.get(world), ctx = ctx)
+        return WidgetItem(worldList?.getChildren()?.get(world),index = world, ctx = ctx)
     }
 
     //417 this is PVP
