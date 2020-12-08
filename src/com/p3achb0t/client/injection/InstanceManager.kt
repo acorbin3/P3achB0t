@@ -3,6 +3,7 @@ package com.p3achb0t.client.injection
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.script.ActionScript
+import com.p3achb0t.api.script.GroupTask
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.script.listeners.ChatListener
@@ -375,9 +376,21 @@ class InstanceManager(val client: Any): Logging() {
 
 
     fun notifyMessage(flags: Int, name: String, message: String, prefix: String?) {
+        val updatedPrefix = prefix ?: ""
         if (this.actionScript is ChatListener) {
-            val updatedPrefix = prefix ?: ""
             (this.actionScript as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+        }
+        this.actionScript.tasks.forEach {
+            if( it is ChatListener){
+                (it as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+            }
+            if(it is GroupTask){
+                it.children.forEach { child ->
+                    if( child is ChatListener){
+                        (child as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+                    }
+                }
+            }
         }
     }
 
