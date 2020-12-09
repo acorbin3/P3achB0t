@@ -23,15 +23,19 @@ class Util {
     companion object {
         fun checkClientRevision(revision: Int, timeout: Int): Boolean {
 
-            val socket = Socket(Constants.GAME_WORLD_BASE, 43594)
-            socket.getOutputStream().write(byteArrayOf(15, (revision shr 24 and 0xFF).toByte(), (revision shr 16 and 0xFF).toByte(), (revision shr 8 and 0xFF).toByte(), (revision and 0xFF).toByte()))
-            socket.soTimeout = timeout
-            val response = socket.getInputStream().read()
-            socket.close()
-            if (response != 0) {
-                return false
+            try {
+                val socket = Socket(Constants.GAME_WORLD_BASE, 43594)
+                socket.getOutputStream().write(byteArrayOf(15, (revision shr 24 and 0xFF).toByte(), (revision shr 16 and 0xFF).toByte(), (revision shr 8 and 0xFF).toByte(), (revision and 0xFF).toByte()))
+                socket.soTimeout = timeout
+                val response = socket.getInputStream().read()
+                socket.close()
+                if (response != 0) {
+                    return false
+                }
+                return true
+            }catch (e: Exception){
+                return true
             }
-            return true
         }
 
         fun createDirIfNotExist(path: String) {

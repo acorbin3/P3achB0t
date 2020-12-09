@@ -50,9 +50,9 @@ class BotManager : JFrame() {
         pack()
         // TODO("correctly resize main window when tab bar changes size")
         // Set the minimum size after packing to fit child components.
-        minimumSize = Dimension(com.p3achb0t.api.Constants.GAME_FIXED_WIDTH + 10, com.p3achb0t.api.Constants.GAME_FIXED_HEIGHT + 95)
+        minimumSize = Dimension(com.p3achb0t.api.Constants.GAME_FIXED_WIDTH + 40, com.p3achb0t.api.Constants.GAME_FIXED_HEIGHT + 195)
         setLocationRelativeTo(null) // Set location after packing to correctly center.
-        FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
+//        FrameMonitor.registerFrame(this, BotManager::class.java.name, x, y, width, height) // Load window size/loc prefs
 
         isVisible = true
 

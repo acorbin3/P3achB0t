@@ -306,7 +306,7 @@ class Analyser {
                 // along with that they have a field description of a boolean(Z). Usually there is only 2.
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
-                val viewportWalkingFieldName = "__ef_ai"
+                val viewportWalkingFieldName = "__eo_ah"
                 val fieldHook3 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
                 val methodNode3 = MethodNode(ACC_PUBLIC, "setViewportWalking", "()V", null, null)
@@ -431,7 +431,7 @@ class Analyser {
 
 
             //Super disabling
-            if(clazzData.`class` == "Client"){
+            if(clazzData.`class` == "Client" && false){
                 println("Adding SUPER rendering disabling")
 
                 val renderingDisabling = arrayOf("draw",

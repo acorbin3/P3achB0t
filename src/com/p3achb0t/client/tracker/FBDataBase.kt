@@ -248,10 +248,18 @@ class FBDataBase {
     }
 
     fun cleanIP():String{
-        val ip = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
-        ip.replace("<html> <head></head> <body>","")
-        ip.replace("</body></html>","")
-        ip.replace(" ", "")
-        return ip
+        return try {
+            var ip = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+            ip = ip.replace("html", "")
+            ip = ip.replace("head", "")
+            ip = ip.replace("body", "")
+            ip = ip.replace("/", "")
+            ip = ip.replace("<", "")
+            ip = ip.replace(">", "")
+            ip = ip.replace(" ", "")
+            ip
+        }catch (e: Exception){
+            "na-"
+        }
     }
 }

@@ -16,6 +16,7 @@ import java.io.File
 import java.lang.Thread.sleep
 import java.nio.file.Paths
 import java.util.jar.JarFile
+import javax.swing.JFrame
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
 import kotlin.system.exitProcess
@@ -28,6 +29,7 @@ object Main {
 
         var getNextKey = false
         var getAccountPath = false
+        var minimized = false
         args.iterator().forEach {
             if(getNextKey){
                 GlobalStructs.db.validationKey = it
@@ -46,6 +48,9 @@ object Main {
                 getAccountPath = true
 
             }
+            if(it.contains("-m")){
+                minimized = true
+            }
             println(it)
         }
 
@@ -55,6 +60,9 @@ object Main {
         update()
         lookAndFeel()
         val botManager = BotManager()
+        if(minimized) {
+            botManager.state - JFrame.ICONIFIED
+        }
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
         botManager.updateCache()
@@ -82,7 +90,7 @@ object Main {
         System.setProperty("user.home", "cache")
         Util.createDirIfNotExist(Paths.get(Constants.APPLICATION_CACHE_DIR, Constants.JARS_DIR).toString())
         // check applet revision
-        val revision = Util.checkClientRevision(Constants.REVISION, 3000)
+        val revision = Util.checkClientRevision(Constants.REVISION, 5000)
         if (!revision) {
             error("New revision, need to update hooks")
         }

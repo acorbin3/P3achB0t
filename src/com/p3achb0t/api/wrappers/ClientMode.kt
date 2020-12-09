@@ -15,7 +15,8 @@ class ClientMode(val ctx: Context) {
     var modeType: ModeType = ModeType.ResizeMode
 
     fun getMode(): ModeType {
-        return if(ctx.client.getClientPreferences().getWindowMode() == 1){
+        //ctx.client.getClientPreferences().getWindowMode()
+        return if(ctx.client.getClientPreferences().get__t() == 1){
             ModeType.FixedMode
         }else{
             ModeType.ResizeMode

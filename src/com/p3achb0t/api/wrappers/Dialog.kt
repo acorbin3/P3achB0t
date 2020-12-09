@@ -27,8 +27,12 @@ class Dialog(val ctx: Context): Logging() {
 
 
     fun isDialogUp(): Boolean {
+//        val cycleDiff = abs(getDialogContinue().widget?.getCycle()?:0 - ctx.client.getCycle())
+//        logger.info("Cycle diff: $cycleDiff. ID: ${getDialogContinue().widget?.getId()}. " +
+//                "wCycle ${getDialogContinue().widget?.getCycle()} ClienctCycle ${ctx.client.getCycle()} ")
+
         return getDialogContinue().widget != null
-                && abs(getDialogContinue().widget?.getCycle()?:0 - ctx.client.getCycle()) < 400
+
     }
 
     fun isContinueAvailable(): Boolean{
@@ -80,6 +84,7 @@ class Dialog(val ctx: Context): Logging() {
     private suspend fun doConversation(sleep: Boolean) {
         val dialog = getDialogContinue()
         if (dialog.containsText("continue", false)) {
+            logger.info("Sending space bar")
 //            dialog.click()
             ctx.keyboard.sendKeys(" ")
             delay(Random.nextLong(200, 350))
