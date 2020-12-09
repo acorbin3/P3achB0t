@@ -4,7 +4,7 @@
     <groupId>com.p3achb0t</groupId>
     <artifactId>P3achB0t</artifactId>
     <packaging>jar</packaging>
-    <version>0.192-SNAPSHOT</version>
+    <version>0.193-SNAPSHOT</version>
     <name>client</name>
 
     <properties>
