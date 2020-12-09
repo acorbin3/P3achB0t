@@ -188,7 +188,7 @@ public class WidgetExplorerV3 {
         for (Widget.WidgetIndex index : rootNodes.keySet()) {
             DefaultMutableTreeNode rootNode = rootNodes.get(index);
             if (rootNode != null) {
-                if (ctx.getClient().getClientPreferences().getWindowMode() == 1) {// Fixed mode
+                if (ctx.getClient().getClientPreferences().get__t() == 1) {// Fixed mode
                     if (index.getParentID().equals("548")) {
                         node.add(rootNode);
                     }
