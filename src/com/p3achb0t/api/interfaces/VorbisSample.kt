@@ -7,11 +7,11 @@ interface VorbisSample : Node {
     fun getSampleRate(): Int
     fun getSamples(): ByteArray
     fun getStart(): Int
-    fun get__d(): Boolean
-    fun get__q(): Boolean
-    fun get__j(): Array<Float>
-    fun get__ah(): Int
-    fun get__ay(): Int
-    fun get__v(): Int
-    fun get__w(): Int
+    fun get__g(): Boolean
+    fun get__j(): Boolean
+    fun get__y(): Array<Float>
+    fun get__ac(): Int
+    fun get__ae(): Int
+    fun get__q(): Int
+    fun get__r(): Int
 }

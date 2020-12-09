@@ -8,11 +8,11 @@ interface PacketWriter {
     fun getServerPacket0(): ServerProt
     fun getServerPacket0Length(): Int
     fun getSocket0(): AbstractSocket
-    fun get__u(): Boolean
-    fun get__n(): ServerProt
-    fun get__o(): ServerProt
-    fun get__x(): ServerProt
-    fun get__e(): Int
-    fun get__l(): Int
-    fun get__t(): Int
+    fun get__l(): Boolean
+    fun get__c(): ServerProt
+    fun get__e(): ServerProt
+    fun get__m(): ServerProt
+    fun get__u(): Int
+    fun get__x(): Int
+    fun get__z(): Int
 }

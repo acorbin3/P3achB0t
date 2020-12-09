@@ -5,6 +5,6 @@ interface PlayerAppearance {
     fun getEquipment(): IntArray
     fun getIsFemale(): Boolean
     fun getNpcTransformId(): Int
-    fun get__q(): Long
-    fun get__z(): Long
+    fun get__j(): Long
+    fun get__t(): Long
 }

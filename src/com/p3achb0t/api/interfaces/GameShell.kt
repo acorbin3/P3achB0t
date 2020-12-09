@@ -18,6 +18,6 @@ interface GameShell {
     fun getMaxCanvasWidth(): Int
     fun getMouseWheelHandler(): MouseWheelHandler
     fun getStopTimeMs(): Long
-    fun get__au(): Boolean
-    fun get__ah(): Boolean
+    fun get__aq(): Boolean
+    fun get__ac(): Boolean
 }

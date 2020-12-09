@@ -22,11 +22,11 @@ interface Player : Actor {
     fun getTileX(): Int
     fun getTileY(): Int
     fun getUsername(): Username
-    fun get__ab(): Boolean
-    fun get__j(): Int
-    fun get__o(): Int
-    fun get__r(): Int
-    fun get__s(): Int
-    fun get__x(): Int
+    fun get__aj(): Boolean
+    fun get__a(): Int
+    fun get__b(): Int
+    fun get__c(): Int
+    fun get__e(): Int
+    fun get__f(): Int
     fun get__y(): Int
 }

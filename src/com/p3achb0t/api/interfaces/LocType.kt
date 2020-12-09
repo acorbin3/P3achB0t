@@ -43,5 +43,6 @@ interface LocType : DualNode {
     fun getRetex_s(): ShortArray
     fun getSharelight(): Boolean
     fun getWidth(): Int
-    fun get__al(): IntArray
+    fun get__az(): Boolean
+    fun get__ar(): IntArray
 }
