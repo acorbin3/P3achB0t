@@ -10,7 +10,6 @@ import com.google.firebase.cloud.FirestoreClient
 import com.p3achb0t.api.wrappers.Stats
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.tracker.string_stuff.str
-import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileInputStream
 import java.net.URL
