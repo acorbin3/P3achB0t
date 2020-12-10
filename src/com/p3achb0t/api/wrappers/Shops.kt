@@ -1,7 +1,6 @@
 package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
-import com.p3achb0t.api.private_api.buyItem
 import com.p3achb0t.api.utils.Time
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
