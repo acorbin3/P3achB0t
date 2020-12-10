@@ -566,8 +566,8 @@ class Analyser {
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "ih"
-        val garbageCollectMethod = "am"
+        val garbageCollectClass = "q"
+        val garbageCollectMethod = "af"
         //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@ for (method in classes[garbageCollectClass]!!.methods) {
@@ -589,59 +589,22 @@ class Analyser {
         }
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
-        var createRandDatClass = "fp"
-        var createRandDatMethod = "p"
-        var datInjected = 0
-        randRoot@ for (method in classes[createRandDatClass]!!.methods) {
-            if (method.name == createRandDatMethod) {
-                val instructions = method.instructions.iterator()
-                while (instructions.hasNext()) {
-                    val i = instructions.next()
-                    if (i is LdcInsnNode && i.cst.toString() == "random.dat") {
-                        val ni = FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;")
-                        method.instructions.set(i, ni)
-                        val il = InsnList()
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getAccount", "()Lcom/p3achb0t/client/accounts/Account;"))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/accounts/Account", "getRandomDat", "()Ljava/lang/String;"))
-                        method.instructions.insert(ni, il)
-                        datInjected += 1
-                        if (datInjected == 2) {
-                            println("Replaced random.dat references.")
-                            break@randRoot
-                        }
-                    }
-                }
-            }
-        }
-        if (datInjected < 2) println("Failed to inject random.dat bypass.")
+        //TODO - To find the random.dat methods go look at script to find "random.dat" in the class files
+        var createRandDatClass = "fu"
+        var createRandDatMethod = "j"
+        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
-        createRandDatClass = "gz"
-        createRandDatMethod = "m"
-        datInjected = 0
-        randRoot@ for (method in classes[createRandDatClass]!!.methods) {
-            if (method.name == createRandDatMethod) {
-                val instructions = method.instructions.iterator()
-                while (instructions.hasNext()) {
-                    val i = instructions.next()
-                    if (i is LdcInsnNode && i.cst.toString() == "random.dat") {
-                        val ni = FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;")
-                        method.instructions.set(i, ni)
-                        val il = InsnList()
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getAccount", "()Lcom/p3achb0t/client/accounts/Account;"))
-                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/accounts/Account", "getRandomDat", "()Ljava/lang/String;"))
-                        method.instructions.insert(ni, il)
-                        datInjected += 1
-                        if (datInjected == 2) {
-                            println("Replaced random.dat references.#2")
-                            break@randRoot
-                        }
-                    }
-                }
-            }
-        }
-        if (datInjected < 2) println("Failed to inject random.dat bypass # 2.")
+        // Hooks datFile
+        createRandDatClass = "fu"
+        createRandDatMethod = "n"
+        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
+        //second version of random.dat
+        // Hooks datFile
+        createRandDatClass = "k"
+        createRandDatMethod = "x"
+        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
 
         val path = System.getProperty("user.dir")
@@ -665,6 +628,33 @@ class Analyser {
 
         out.flush()
         out.close()
+    }
+
+    private fun injectRandomDat(classes: MutableMap<String, ClassNode>, createRandDatClass: String, createRandDatMethod: String) {
+        var datInjected1 = 0
+        datInjected1 = 0
+        randRoot@ for (method in classes[createRandDatClass]!!.methods) {
+            if (method.name == createRandDatMethod) {
+                val instructions = method.instructions.iterator()
+                while (instructions.hasNext()) {
+                    val i = instructions.next()
+                    if (i is LdcInsnNode && i.cst.toString() == "random.dat") {
+                        val ni = FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;")
+                        method.instructions.set(i, ni)
+                        val il = InsnList()
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "getAccount", "()Lcom/p3achb0t/client/accounts/Account;"))
+                        il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/accounts/Account", "getRandomDat", "()Ljava/lang/String;"))
+                        method.instructions.insert(ni, il)
+                        datInjected1 += 1
+                        if (datInjected1 == 2) {
+                            println("Replaced random.dat references")
+                            break@randRoot
+                        }
+                    }
+                }
+            }
+        }
+        if (datInjected1 < 2) println("Failed to inject random.dat bypass")
     }
 
 
