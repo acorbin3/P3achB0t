@@ -13,6 +13,7 @@ import com.p3achb0t.client.tracker.string_stuff.str
 import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileInputStream
+import java.net.URL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -249,7 +250,7 @@ class FBDataBase {
 
     fun cleanIP():String{
         return try {
-            var ip = Jsoup.connect("https://api.ipify.org?format=text").get().toString()
+            var ip = URL("https://api.ipify.org?format=text").readText()
             ip = ip.replace("html", "")
             ip = ip.replace("head", "")
             ip = ip.replace("body", "")
