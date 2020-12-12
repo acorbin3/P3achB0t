@@ -47,9 +47,7 @@ class BotTabBar : JTabbedPane() {
     }
 
     fun killBotInstance(id: String) {
-        SwingUtilities.invokeLater {
-            remove(botInstances[id])
-        }
+        remove(botInstances[id])
         botInstances.remove(id)
     }
 
@@ -59,8 +57,10 @@ class BotTabBar : JTabbedPane() {
 
     suspend fun restartBotInstance(id:String): String{
         botInstances[id]?.getInstanceManager()?.stopActionScript()
+        botInstances[id]?.getInstanceManager()?.stopServiceLoop()
 
         //Create new tab
+        println("Create new tab")
         val account = botInstances[id]?.account ?: Account()
         account.uuid = UUID.randomUUID().toString()
         val previousTabCount = this.tabCount
@@ -71,6 +71,7 @@ class BotTabBar : JTabbedPane() {
         }
 
         //WAit till we have a new tab
+        println("Wait till new tab")
         val timeout = StopWatch()
         timeout.start()
         while(this.tabCount == previousTabCount && timeout.time < 1000*5){
@@ -80,6 +81,7 @@ class BotTabBar : JTabbedPane() {
         timeout.reset()
         timeout.start()
         // WAit till that tabs context is loaded
+        println("Wait till tab's context is loaded")
         while(botInstances[account.uuid]?.getInstanceManager()?.isContextLoaded == false && timeout.time < 1000*5){
             sleep(50)
         }
@@ -87,6 +89,7 @@ class BotTabBar : JTabbedPane() {
 
         //remove old tab
         try {
+            println("killing old tab $id")
             killBotInstance(id)
         } catch (e: Exception){e.printStackTrace()}
         return account.uuid
