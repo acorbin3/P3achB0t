@@ -61,7 +61,7 @@ object Main {
         lookAndFeel()
         val botManager = BotManager()
         if(minimized) {
-            botManager.state - JFrame.ICONIFIED
+            botManager.state = JFrame.ICONIFIED
         }
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
