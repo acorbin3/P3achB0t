@@ -15,10 +15,7 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import com.p3achb0t.client.scripts.loading.ScriptInformation
 import com.p3achb0t.scripts.service.restart_action.RestartIdle
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.applet.Applet
 import java.awt.Color
 import java.awt.Font
@@ -137,6 +134,10 @@ class InstanceManager(val client: Any): Logging() {
         waitOnContext()
         nullScript::ctx.set(setupContext(client))
         actionScript = nullScript
+    }
+
+    suspend fun stopServiceLoop(){
+        serviceLoop?.cancelAndJoin()
     }
 
 
