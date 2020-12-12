@@ -174,6 +174,51 @@ class BotManager : JFrame() {
         }
     }
 
+    suspend fun restartSelectedTab(){
+        //u.getInstanceManager().account.uuid
+        val uuidToRestart = getSelectedBotInstance().getInstanceManager().account.uuid
+        //We are just going to stop all the script
+        botTabBar.stopScripts(uuidToRestart)
+        botTabBar.botInstances.forEach { key, instance ->
+            if(key == uuidToRestart) {
+                GlobalScope.launch {
+                    instance.getInstanceManager().stoppingScriptAndLoggingOut()
+                }
+            }
+
+        }
+
+
+        val newUUID = botTabBar.restartBotInstance(uuidToRestart)
+
+        Logging.info("Wating for old tab to be gone")
+        val timeout = StopWatch()
+        while(uuidToRestart in botTabBar.botInstances && timeout.elapsedSec < 45){
+            sleep(50)
+        }
+        sleep(5*1000)
+        Logging.info("STarting up script again")
+        //Need to start script back up
+        botTabBar.botInstances.forEach { t, u ->
+
+            if(t == newUUID) {
+                print("Starting  scripts for $t")
+                u.account.serviceScripts.forEach { serviceScript ->
+                    u.getInstanceManager().addServiceScript(serviceScript)
+                }
+
+                if (u.getInstanceManager().scriptState == ScriptState.Stopped) {
+                    Logging.error("Restarting: ${u.account.actionScript}")
+                    u.getInstanceManager().startActionScript(u.account.actionScript, u.account)
+                }
+                u.account.debugScripts.forEach { debugScript ->
+                    u.getInstanceManager().addPaintScript(debugScript)
+                }
+            }
+
+        }
+    }
+
     fun updateCache() {
         // TODO - Check if there is a .cache up 1 directory, if so copy it down
         // Otherwise create a new one

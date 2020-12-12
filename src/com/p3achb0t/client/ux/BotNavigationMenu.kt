@@ -4,6 +4,8 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.ScriptState
 import com.p3achb0t.client.scripts.loading.ScriptType
 import com.p3achb0t.client.ux.scripts_loader.ScriptLoaderUI
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.*
@@ -80,8 +82,15 @@ class BotNavigationMenu: JMenuBar() {
             GlobalStructs.botManager.getSelectedInstanceManager().togglePauseActionScript(isFromUI = true)
         }
 
+        val reloadTab = JMenuItem("Reload Tab")
+        reloadTab.addActionListener {
+            GlobalScope.launch { GlobalStructs.botManager.restartSelectedTab() }
+
+        }
+
         menu.add(stop)
         menu.add(pause)
+        menu.add(reloadTab)
 
         menu.popupMenu.isLightWeightPopupEnabled = false
         add(menu)
