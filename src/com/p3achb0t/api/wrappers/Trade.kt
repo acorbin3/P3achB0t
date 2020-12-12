@@ -78,11 +78,11 @@ class Trade(val ctx: Context) {
     }
 
     fun isFirstScreenOpen(): Boolean {
-        return firstTradeWidget() != null
+        return firstTradeWidget() != null && firstTradeWidget()?.getWidth() ?: 0 > 0
     }
 
     fun isSecondScreenOpen(): Boolean {
-        return secondTradeWidget() != null
+        return secondTradeWidget() != null && secondTradeWidget()?.getWidth() ?: 0 > 0
     }
 
 
