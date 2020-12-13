@@ -18,7 +18,8 @@ class BotNavigationMenu: JMenuBar() {
     val actionAll = JMenu("ActionAll")
     val service = JMenu("Services")
 
-    private val toggleScene = JButton("Toggle Scene")
+    private val toggleScene = JButton("D-Scene")
+    private val toggleAll = JButton("D-All")
     private val logoutAllAccounts = JButton("Logout of All Accounts")
     private val startScriptButton = JButton("Start")
     private val pauseScriptButton = JButton("-----")
@@ -246,6 +247,10 @@ class BotNavigationMenu: JMenuBar() {
 
         toggleScene.addActionListener {
             GlobalStructs.botManager.botTabBar.botInstances.forEach { t, u ->
+                //If you want to enable scene, you need to enable All
+                if(u.getInstanceManager().isDisableScenery && u.getInstanceManager().isDisableAll){
+                    u.getInstanceManager().isDisableAll = false
+                }
                 u.getInstanceManager().isDisableScenery = !u.getInstanceManager().isDisableScenery
                 println("u.getInstanceManager().isDisableScenery: ${u.getInstanceManager().isDisableScenery}")
             }
@@ -253,6 +258,17 @@ class BotNavigationMenu: JMenuBar() {
             println("GlobalStructs.botManager.getSelectedInstanceManager().isDisableScenery: ${GlobalStructs.botManager.getSelectedInstanceManager().isDisableScenery}")
 
         }
+
+        toggleAll.addActionListener {
+            GlobalStructs.botManager.botTabBar.botInstances.forEach { t, u ->
+                u.getInstanceManager().isDisableAll = !u.getInstanceManager().isDisableAll
+                println("u.getInstanceManager().isDisableScenery: ${u.getInstanceManager().isDisableAll}")
+            }
+
+            println("GlobalStructs.botManager.getSelectedInstanceManager().isDisableAll: ${GlobalStructs.botManager.getSelectedInstanceManager().isDisableAll}")
+
+        }
+
         logoutAllAccounts.addActionListener{
             GlobalStructs.botManager.stopAllRunningAccounts()
         }
@@ -287,6 +303,8 @@ class BotNavigationMenu: JMenuBar() {
         }
 
         add(Box.createHorizontalGlue())
+        add(toggleAll)
+        add(Box.createHorizontalStrut(3))
         add(toggleScene)
         add(Box.createHorizontalStrut(3))
         add(logoutAllAccounts)

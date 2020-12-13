@@ -67,6 +67,8 @@ class InstanceManager(val client: Any): Logging() {
 
     var isDisableScenery = true
 
+    var isDisableAll = true
+
     var lastTile = Tile()
     val lastMoved = StopWatch()
 

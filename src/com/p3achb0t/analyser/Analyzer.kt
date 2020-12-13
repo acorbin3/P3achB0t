@@ -431,7 +431,7 @@ class Analyser {
 
 
             //Super disabling
-            if(clazzData.`class` == "Client" && false){
+            if(clazzData.`class` == "Client"){
                 println("Adding SUPER rendering disabling")
 
                 val renderingDisabling = arrayOf("draw",
@@ -449,7 +449,7 @@ class Analyser {
                             val labelNode = LabelNode(Label())
 
                             il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-                            il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "isDisableScenery", "()Z"))
+                            il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "isDisableAll", "()Z"))
 
                             il.add(JumpInsnNode(IFEQ, labelNode))
                             //Jump to return
