@@ -61,4 +61,8 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
     suspend fun talkTo(): Boolean {
         return interact("Talk-to")
     }
+
+    fun isTargeted(): Boolean{
+        return npc.getTargetIndex() - 32768 == (ctx?.players?.getLocal()?.player?.getIndex())
+    }
 }
