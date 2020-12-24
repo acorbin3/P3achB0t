@@ -6,6 +6,7 @@ import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Point
 import java.awt.Polygon
+import kotlin.math.floor
 
 class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
@@ -64,5 +65,23 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     fun isTargeted(): Boolean{
         return npc.getTargetIndex() - 32768 == (ctx?.players?.getLocal()?.player?.getIndex())
+    }
+
+    fun getArea():Area{
+        val generatedTiles = arrayListOf<Tile>()
+        val maxOffset = floor(this.npc.getSize() / 2.0).toInt()
+        val x = getGlobalLocation().x
+        val y = getGlobalLocation().y
+
+        //NorthWest
+        generatedTiles.add(Tile(x - maxOffset, y - maxOffset,ctx=ctx))
+        //NorthEast
+        generatedTiles.add(Tile(x + maxOffset, y - maxOffset,ctx=ctx))
+        //SouthWest
+        generatedTiles.add(Tile(x - maxOffset, y + maxOffset,ctx=ctx))
+        //SouthEast
+        generatedTiles.add(Tile(x + maxOffset, y + maxOffset,ctx=ctx))
+
+        return Area(generatedTiles, ctx)
     }
 }
