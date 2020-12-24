@@ -50,6 +50,16 @@ class Area {
         computeAreaTiles()
     }
 
+    constructor(tiles: ArrayList<Tile> , ctx: Context?= null){
+        this.plane = tiles[0].z
+        this.ctx = ctx
+        tiles.forEach {
+            this.inputTiles.add(Tile(it.x,it.y,it.z,ctx))
+        }
+        computeAreaTiles()
+    }
+
+
     private fun computeAreaTiles() {
         //Create a polygon from the tiles
         for (tile in inputTiles) {
