@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getConvexHull
 import java.awt.Point
@@ -22,8 +22,10 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
-        return ctx?.client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), ctx!!) } } ?: Point(-1,-1)
+        return ctx?.client.let { it?.let { it1 -> Calculations.worldToScreen(region.x, region.y, npc.getHeight(), ctx!!) } }
+                ?: Point(-1, -1)
     }
+
     fun getConvexHull(): Polygon {
         return ctx?.let {
             getConvexHull(
@@ -47,7 +49,7 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
         return getRandomPoint(getConvexHull())
     }
 
-    suspend fun walkTo(){
+    suspend fun walkTo() {
         this.getGlobalLocation().clickOnMiniMap()
     }
 
@@ -63,25 +65,43 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
         return interact("Talk-to")
     }
 
-    fun isTargeted(): Boolean{
+    fun isTargeted(): Boolean {
         return npc.getTargetIndex() - 32768 == (ctx?.players?.getLocal()?.player?.getIndex())
     }
 
-    fun getArea():Area{
+    fun getArea(): Area {
         val generatedTiles = arrayListOf<Tile>()
         val maxOffset = floor(this.npc.getSize() / 2.0).toInt()
         val x = getGlobalLocation().x
         val y = getGlobalLocation().y
 
         //NorthWest
-        generatedTiles.add(Tile(x - maxOffset, y - maxOffset,ctx=ctx))
+        generatedTiles.add(Tile(x - maxOffset, y - maxOffset, ctx = ctx))
         //NorthEast
-        generatedTiles.add(Tile(x + maxOffset, y - maxOffset,ctx=ctx))
+        generatedTiles.add(Tile(x + maxOffset, y - maxOffset, ctx = ctx))
         //SouthWest
-        generatedTiles.add(Tile(x - maxOffset, y + maxOffset,ctx=ctx))
+        generatedTiles.add(Tile(x - maxOffset, y + maxOffset, ctx = ctx))
         //SouthEast
-        generatedTiles.add(Tile(x + maxOffset, y + maxOffset,ctx=ctx))
+        generatedTiles.add(Tile(x + maxOffset, y + maxOffset, ctx = ctx))
 
         return Area(generatedTiles, ctx)
+    }
+
+    // This method will get the tiles around the getArea function.
+    fun getBorderTiles(): ArrayList<Tile> {
+        val generatedTiles = arrayListOf<Tile>()
+        val maxOffset = floor((this.npc.getSize() + 1) / 2.0).toInt()
+        val x = getGlobalLocation().x
+        val y = getGlobalLocation().y
+        //Sides
+        for (offset in -maxOffset..maxOffset) {
+            //sides
+            generatedTiles.add(Tile(x - maxOffset, y + offset, ctx = ctx))
+            generatedTiles.add(Tile(x + maxOffset, y + offset, ctx = ctx))
+            //top and bottom
+            generatedTiles.add(Tile(x + offset, y - maxOffset, ctx = ctx))
+            generatedTiles.add(Tile(x + maxOffset, y + maxOffset, ctx = ctx))
+        }
+        return generatedTiles
     }
 }
