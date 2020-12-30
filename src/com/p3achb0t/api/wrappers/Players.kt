@@ -20,15 +20,29 @@ class Players(val ctx: Context) {
         return ctx.client.getLocalPlayer().getY() / 128 + ctx.client.getBaseY()
     }
 
+    fun getAll(): ArrayList<Player>{
+        val players = ArrayList<Player>()
+        ctx.client.getPlayers().forEachIndexed { index, player ->
+                players.add(Player(player, ctx, index))
+        }
+        return players
+    }
+
     fun findPlayers(listOfPlayers: ArrayList<String>, sortByDist: Boolean = false): ArrayList<Player>{
         val lowerCaseListOfPlayers = listOfPlayers.map { it.toLowerCase() }
         val players = ArrayList<Player>()
+        val currentPlayer = ctx.players.getLocal().player.getUsername().getCleanName()
         try {
             ctx.client.getPlayers().forEachIndexed { index, player ->
-                if (player != null && player.getUsername().toString().toLowerCase() in lowerCaseListOfPlayers) {
+
+                if (player != null
+                        && player.getUsername().toString().toLowerCase() in lowerCaseListOfPlayers
+                        && player.getUsername().toString().toLowerCase() != currentPlayer) {
                     players.add(Player(player, ctx, index))
                 }
-                if (player != null && player.getUsername().getCleanName().replace("_", " ").toLowerCase() in lowerCaseListOfPlayers) {
+                else if (player != null
+                        && player.getUsername().getCleanName().replace("_", " ").toLowerCase() in lowerCaseListOfPlayers
+                        && player.getUsername().getCleanName().replace("_", " ").toLowerCase() != currentPlayer) {
                     players.add(Player(player, ctx, index))
                 }
             }
@@ -42,6 +56,7 @@ class Players(val ctx: Context) {
                     )
                 }
             }
+
             return players
         } catch (e: Exception) {
             return players
