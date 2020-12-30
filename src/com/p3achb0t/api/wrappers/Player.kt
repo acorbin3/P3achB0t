@@ -8,7 +8,20 @@ import java.awt.Point
 
 
 class Player(var player: com.p3achb0t.api.interfaces.Player, ctx: Context, val menuIndex: Int) : Actor(player, ctx) {
+    companion object {
+        val PARENT = 160
+        val CHILD_SPECIAL_ATTACK_BUTTON = 30
+        val CHILD_SPECIAL_ATTACK_NUMBER = 31
+    }
 
+    val isSpecialEnabled: Boolean
+    get(){
+        return ctx?.vars?.getVarp(301) == 1
+    }
+    val specialAttackNumber: Int
+        get() {
+            return ctx?.widgets?.find(PARENT, CHILD_SPECIAL_ATTACK_NUMBER)?.getText()?.toInt() ?: 0
+        }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
@@ -29,6 +42,8 @@ class Player(var player: com.p3achb0t.api.interfaces.Player, ctx: Context, val m
             -1
         }
     }
+
+
 
     fun getCombatStyle(): Int {
         return try {
