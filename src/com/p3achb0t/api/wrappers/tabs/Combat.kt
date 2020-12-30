@@ -19,6 +19,11 @@ class Combat(val ctx: Context) {
             RAPID(593,8,1),
             LONGRANGE(593,12,3),
 
+            SPEAR_LUNGE(594,4,0),
+            SPEAR_SWIPE(594,8,1),
+            SPEAR_POUND(594,12,2),
+            SPEAR_BLOCK(594,16,3),
+
         }
     }
 
