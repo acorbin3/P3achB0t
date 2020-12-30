@@ -6,6 +6,7 @@ import com.p3achb0t.api.wrappers.interfaces.Locatable
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.LOCAL_HALF_TILE_SIZE
 import com.p3achb0t.api.wrappers.utils.Calculations.Companion.getCanvasTileAreaPoly
+import com.p3achb0t.api.wrappers.utils.CollisionFlag.BLOCKED
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
@@ -26,6 +27,17 @@ class Tile(
         // tight corridors
         var randomize: Boolean = false
 ) : Locatable, Interactable(ctx) {
+
+    fun isTileWalkAble(): Boolean{
+        val collisionMap = ctx?.client?.getCollisionMaps()
+        var local = this.getLocalLocation()
+        if(collisionMap != null) {
+            val collisionFlag = collisionMap[ctx?.client?.getPlane()?:0].getFlags()[local.x][local.y]
+            return collisionFlag and BLOCKED == 0
+        }
+
+        return false
+    }
     val plane get() = z
     companion object {
         val NIL = Tile(-1, -1, -1, null)
@@ -35,9 +47,9 @@ class Tile(
         this.ctx = ctx
         this.loc_ctx = ctx
     }
-    fun getPolyBounds(): Polygon {
+    fun getPolyBounds(size: Int = 1): Polygon {
         val region = getRegionalLocation()
-        return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y) } ?: Polygon()
+        return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y, size = size) } ?: Polygon()
     }
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
@@ -76,7 +88,7 @@ class Tile(
     override fun getInteractPoint(): Point {
         if(ctx == null){
             logger.error("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
-            return Point(-1,-1)
+            return Point(-1, -1)
         }
         val regional = getRegionalLocation()
         val poly =  getCanvasTileAreaPoly(ctx!!, regional.x, regional.y)
