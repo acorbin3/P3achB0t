@@ -7,6 +7,7 @@ import java.awt.Color
 import java.awt.Graphics
 
 fun projectilePaint(g: Graphics, ctx: Context) {
+    val savedColor = g.color
     ctx.projectiles.projectiles.forEach {
         val positionInfo =
                 it.position
@@ -30,5 +31,17 @@ fun projectilePaint(g: Graphics, ctx: Context) {
         )
         g.color = Color.CYAN
         g.drawPolygon(hull)
+        val namePoint = it.getNamePoint()
+        g.drawString(
+                "ID:${it.id} P${it.predictedTile}.",
+
+                namePoint.x,
+                namePoint.y
+        )
+        if(it.sourcePosition.distanceTo(it.getPosition) != 0) {
+            g.color = Color.RED
+            g.drawPolygon(it.predictedTile.getPolyBounds())
+        }
     }
+    g.color = savedColor
 }
