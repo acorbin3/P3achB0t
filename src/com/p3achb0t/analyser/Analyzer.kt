@@ -154,9 +154,9 @@ class Analyser {
 
             }
 
-//            if (clazzData.`class` == "GameShell") {
-//                injectGameLoop(classes[clazzData.name]!!)
-//            }
+            if (clazzData.`class` == "Client") {
+                injectGameLoop(runeStar, clazzData)
+            }
 
             if (clazzData.`class` == "TaskHandler") {
                 injectSocket(classes[clazzData.name]!!)
@@ -262,6 +262,8 @@ class Analyser {
                 }
             }
 
+            //Injecting transform for NPC
+
             //Inject client hooks
             if (clazzData.`class` == "Client") {
                 var methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "getVarbit" }
@@ -317,6 +319,7 @@ class Analyser {
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode3)
             }
+
 
 
             // Inject getModel for the Entity
@@ -863,42 +866,20 @@ class Analyser {
         }
     }
 
-    private fun injectGameLoop(classNode: ClassNode) {
-        for (method in classNode.methods) {
-            if (method.name != "run") {
-                continue
+    private fun injectGameLoop(runeStar: RuneStarAnalyzer,clazzData: ClassHook) {
+        val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "updateNpcs" }
+
+
+        val className = methodHook?.owner
+        classes[className]?.methods?.forEach { methodNode ->
+//                    println("Looking at method: ${methodNode.name}")
+            if (methodNode.name == methodHook?.name){
+                val il = InsnList()
+                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
+                methodNode.instructions.insert(il)
+                println("Adding gameLoop")
             }
-
-            val insn = method.instructions.iterator()
-            while (insn.hasNext()) {
-                val i = insn.next()
-                if (i.opcode == GETFIELD) {
-                    val field = i as FieldInsnNode
-                    if (field.desc == "Ljava/awt/Canvas;") {
-                        println("---> ${field.desc}")
-                        while (insn.hasNext()) {
-                            val j = insn.next()
-                            if (j.opcode == GOTO) {
-                                val prev = j.previous
-                                val il = InsnList()
-                                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-                                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
-                                //il.add(FieldInsnNode(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;"))
-                                //il.add(LdcInsnNode("."));
-                                //il.add(MethodInsnNode(INVOKEVIRTUAL, "java/io/PrintStream", "print", "(Ljava/lang/String;)V"))
-                                method.instructions.insert(prev, il)
-                                method.maxStack += 1
-                                println("found")
-                                break
-
-                            }
-
-                        }
-                    }
-
-                }
-            }
-
         }
     }
 

@@ -7,6 +7,7 @@ import com.p3achb0t.api.script.GroupTask
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.script.listeners.ChatListener
+import com.p3achb0t.api.script.listeners.GameTick
 import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.GameState
 import com.p3achb0t.api.wrappers.Tile
@@ -391,6 +392,24 @@ class InstanceManager(val client: Any): Logging() {
                 it.children.forEach { child ->
                     if( child is ChatListener){
                         (child as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
+                    }
+                }
+            }
+        }
+    }
+
+    fun gameLoop(){
+        if (this.actionScript is GameTick) {
+            (this.actionScript as GameTick).onTick()
+        }
+        this.actionScript.tasks.forEach {
+            if( it is GameTick){
+                (it as GameTick).onTick()
+            }
+            if(it is GroupTask){
+                it.children.forEach { child ->
+                    if( child is GameTick){
+                        (child as GameTick).onTick()
                     }
                 }
             }
