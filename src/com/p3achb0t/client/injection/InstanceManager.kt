@@ -32,7 +32,7 @@ enum class ScriptState {
     LoginScreenNotPaused
 }
 
-class InstanceManager(val client: Any): Logging() {
+class InstanceManager(val client: Any) : Logging() {
 
     // Client candy
     lateinit var ctx: Context
@@ -42,10 +42,10 @@ class InstanceManager(val client: Any): Logging() {
     // Action script vars
     var actionScript: ActionScript = NullScript()
     private var actionScriptLoop: Job? = null
+
     //var isActionScriptPaused = false
     var previousScriptState = ScriptState.Stopped
     var scriptState = ScriptState.Stopped
-
 
 
     // Service script
@@ -77,13 +77,16 @@ class InstanceManager(val client: Any): Logging() {
 
         // TODO fail after 1 sec need to be thread
         GlobalScope.launch {
-            while ((client as Applet).componentCount == 0 ) { delay(20) }
+            while ((client as Applet).componentCount == 0) {
+                delay(20)
+            }
             delay(1000)
             ctx = Context(client)
             actionScript::ctx.set(ctx)
             isContextLoaded = true
         }
     }
+
     fun startActionScript(scriptFileName: String) {
         startActionScript(scriptFileName, Account())
     }
@@ -108,11 +111,11 @@ class InstanceManager(val client: Any): Logging() {
         actionScript.start()
 
         //Check to see if we need to login or handle welcome button
-        if(ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
+        if (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
                 || (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGGED_IN
                         && ctx.worldHop.isWelcomeRedButtonAvailable())) {
             scriptState = ScriptState.LoginScreenNotPaused
-        }else{
+        } else {
             scriptState = ScriptState.Running
         }
 
@@ -120,9 +123,9 @@ class InstanceManager(val client: Any): Logging() {
         actionScriptState(true)
         this.account.sessionStartTime = System.currentTimeMillis()
         GlobalStructs.botManager.botNavMenu.updateScriptManagerButtons()
-        if(account.actionScript.isEmpty())  account.actionScript= script.name
-        if(account.username.isEmpty())  account.username=UUID.randomUUID().toString()
-        if(account.sessionToken.isEmpty())  account.sessionToken=UUID.randomUUID().toString()
+        if (account.actionScript.isEmpty()) account.actionScript = script.name
+        if (account.username.isEmpty()) account.username = UUID.randomUUID().toString()
+        if (account.sessionToken.isEmpty()) account.sessionToken = UUID.randomUUID().toString()
 
         GlobalStructs.db.initalScriptLoad(account)
     }
@@ -139,7 +142,7 @@ class InstanceManager(val client: Any): Logging() {
         actionScript = nullScript
     }
 
-    suspend fun stopServiceLoop(){
+    suspend fun stopServiceLoop() {
         serviceLoop?.cancelAndJoin()
     }
 
@@ -149,22 +152,22 @@ class InstanceManager(val client: Any): Logging() {
         previousScriptState = scriptState
         if (scriptState == ScriptState.Running) {
             actionScript.pause()
-            scriptState = if(isFromUI) {
+            scriptState = if (isFromUI) {
                 ScriptState.Paused
-            }else{
+            } else {
                 ScriptState.LoginScreenNotPaused
             }
             actionScriptState(false)
         } else {
-            scriptState = if(previousScriptState == ScriptState.Paused){
-                if(!ctx.worldHop.isLoggedIn){
+            scriptState = if (previousScriptState == ScriptState.Paused) {
+                if (!ctx.worldHop.isLoggedIn) {
                     ScriptState.LoginScreenNotPaused
-                }else{
+                } else {
                     actionScript.resume()
                     actionScriptState(true)
                     ScriptState.Running
                 }
-            }else {
+            } else {
                 actionScript.resume()
                 actionScriptState(true)
                 ScriptState.Running
@@ -175,11 +178,20 @@ class InstanceManager(val client: Any): Logging() {
 
     private fun actionScriptState(loopRunning: Boolean) {
         if (loopRunning) {
+            //Close out all tasks
+            if (!loopRunning) {
+                actionScript.tasks.forEach {
+                    it.jobs.forEach { job ->
+                        GlobalScope.launch { job.cancelAndJoin() }
+
+                    }
+                }
+            }
             if (actionScriptLoop == null) {
                 actionScriptLoop = GlobalScope.launch {
                     while (true) {
 
-                        if(account.banned){
+                        if (account.banned) {
                             stopActionScript()
                         }
                         //TODO - test out maybe restarting script if a player has been idle for 1m or so
@@ -195,11 +207,11 @@ class InstanceManager(val client: Any): Logging() {
 //                        }
                         try {
                             actionScript.loop()
-                        }catch (e: Exception){
-                            if(e.localizedMessage != null) {
+                        } catch (e: Exception) {
+                            if (e.localizedMessage != null) {
                                 logger.error(e.localizedMessage)
                             }
-                            if(e.stackTrace != null) {
+                            if (e.stackTrace != null) {
                                 e.stackTrace.forEach {
                                     logger.error(it.toString())
                                 }
@@ -308,19 +320,19 @@ class InstanceManager(val client: Any): Logging() {
 
     suspend fun loopServiceScripts() {
         for (script in serviceScripts.values) {
-            if(script.isValidToRun(account)) {
+            if (script.isValidToRun(account)) {
 
-                if(script is RestartIdle){
-                    if(script.shouldRestart){
+                if (script is RestartIdle) {
+                    if (script.shouldRestart) {
                         script.shouldRestart = false
                         script.idleStopWatch.reset()
                         this.stopActionScript()
-                        this.startActionScript(this.actionScriptFilename,this.account)
+                        this.startActionScript(this.actionScriptFilename, this.account)
 
                     }
 
                 }
-                if(script.shouldPauseActionScript && !actionScript.currentJobSuspendable && ctx.worldHop.isLoggedIn){
+                if (script.shouldPauseActionScript && !actionScript.currentJobSuspendable && ctx.worldHop.isLoggedIn) {
                     println("We are trying to suspend but current job(${actionScript.currentJob}) is not suspendable. Wait till next execution")
                     continue
                 }
@@ -333,16 +345,15 @@ class InstanceManager(val client: Any): Logging() {
                 }
 
 
-
                 var runServiceScript = true
-                if((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
-                        && !script.runWhenActionScriptIsPausedOrStopped){
+                if ((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
+                        && !script.runWhenActionScriptIsPausedOrStopped) {
                     runServiceScript = false
 
                 }
-                if(runServiceScript && !account.banned) {
+                if (runServiceScript && !account.banned) {
                     script.loop(account)
-                    if(account.banned){
+                    if (account.banned) {
                         Logging.error("Account got banned, we are now stopping all scripts")
                         stopActionScript()
                     }
@@ -356,7 +367,7 @@ class InstanceManager(val client: Any): Logging() {
         }
     }
 
-    suspend fun stoppingScriptAndLoggingOut(){
+    suspend fun stoppingScriptAndLoggingOut() {
         scriptState = ScriptState.Stopped
         actionScriptState(false)
         actionScript.stop()
@@ -371,7 +382,7 @@ class InstanceManager(val client: Any): Logging() {
         }
     }
 
-    private fun setupContext(client: Any) : Context {
+    private fun setupContext(client: Any): Context {
         val ctx = ctx
         ctx.ipc::broker.set(GlobalStructs.communication)
         ctx.ipc::uuid.set(instanceUUID)
@@ -385,12 +396,12 @@ class InstanceManager(val client: Any): Logging() {
             (this.actionScript as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
         }
         this.actionScript.tasks.forEach {
-            if( it is ChatListener){
+            if (it is ChatListener) {
                 (it as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
             }
-            if(it is GroupTask){
+            if (it is GroupTask) {
                 it.children.forEach { child ->
-                    if( child is ChatListener){
+                    if (child is ChatListener) {
                         (child as ChatListener).notifyMessage(flags, name, message, updatedPrefix)
                     }
                 }
@@ -398,17 +409,17 @@ class InstanceManager(val client: Any): Logging() {
         }
     }
 
-    fun gameLoop(){
+    fun gameLoop() {
         if (this.actionScript is GameTick) {
             (this.actionScript as GameTick).onTick()
         }
         this.actionScript.tasks.forEach {
-            if( it is GameTick){
+            if (it is GameTick) {
                 (it as GameTick).onTick()
             }
-            if(it is GroupTask){
+            if (it is GroupTask) {
                 it.children.forEach { child ->
-                    if( child is GameTick){
+                    if (child is GameTick) {
                         (child as GameTick).onTick()
                     }
                 }
