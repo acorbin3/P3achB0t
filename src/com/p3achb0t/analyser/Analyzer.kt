@@ -13,9 +13,7 @@ import org.objectweb.asm.util.Printer
 import org.objectweb.asm.util.Textifier
 import org.objectweb.asm.util.TraceMethodVisitor
 import org.slf4j.LoggerFactory
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
+import java.io.*
 import java.lang.reflect.Modifier
 import java.net.URL
 import java.nio.file.Files
@@ -395,11 +393,12 @@ class Analyser {
             if (clazzData.`class` == "Scene") {
                 println("Adding rendering disabling")
 
-                val renderingDisabling = arrayOf("draw",
+                val renderingDisabling = arrayOf(
+                        "draw",
                         //newScenery", "newWall", "newWallDecoration", "newFloorDecoration", "newObjStack", "drawActor2d", //"drawTile"
                 )
 
-                renderingDisabling.forEach {disabledItem ->
+                renderingDisabling.forEach { disabledItem ->
                     val newSceneryMethodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == disabledItem }
 
                     classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
@@ -437,11 +436,12 @@ class Analyser {
             if(clazzData.`class` == "Client"){
                 println("Adding SUPER rendering disabling")
 
-                val renderingDisabling = arrayOf("draw",
+                val renderingDisabling = arrayOf(
+                        "draw",
                         //newScenery", "newWall", "newWallDecoration", "newFloorDecoration", "newObjStack", "drawActor2d", //"drawTile"
                 )
 
-                renderingDisabling.forEach {disabledItem ->
+                renderingDisabling.forEach { disabledItem ->
                     val newSceneryMethodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == disabledItem }
 
                     classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.forEach { methodNode ->
@@ -866,21 +866,66 @@ class Analyser {
         }
     }
 
-    private fun injectGameLoop(runeStar: RuneStarAnalyzer,clazzData: ClassHook) {
+    fun insnToString(insn: AbstractInsnNode): String? {
+        insn.accept(mp)
+        val sw = StringWriter()
+        printer.print(PrintWriter(sw))
+        printer.getText().clear()
+        return sw.toString()
+    }
+    private fun injectGameLoop(runeStar: RuneStarAnalyzer, clazzData: ClassHook) {
         val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "updateNpcs" }
+        val packetWriterClass = runeStar.analyzers["PacketWriter"]?.name
 
 
-        val className = methodHook?.owner
-        classes[className]?.methods?.forEach { methodNode ->
-//                    println("Looking at method: ${methodNode.name}")
-            if (methodNode.name == methodHook?.name){
+        //Add a call back right after  each updateNPCs had been called.
+        // to do this we will look in the client methods where a parameter will be of type packet writer. Within there
+        // there should be 2 calls
+        println("Looping over client methods")
+        classes["client"]?.methods?.forEach { methodNode ->
+            println("\t ${methodNode.name} - ${methodNode.desc}")
+            if(methodNode.desc.contains("L$packetWriterClass;B")){
+                println("\t\t found correct method")
+                val savedInstructionsToInsert = arrayListOf<MethodInsnNode>()
+                methodNode.instructions.forEach { instruction ->
+                    println("\t\t\t" + insnToString(instruction) + " Type:${instruction.type}. opcode: ${instruction.opcode}")
+
+                    if(instruction.opcode == INVOKESTATIC){
+                        if(instruction is MethodInsnNode){
+
+
+                            println("\t\t\t INVOKESTATIC ${instruction.name}")
+                            if(instruction.name == methodHook?.name){
+                                savedInstructionsToInsert.add(instruction)
+                                println("Found NPC calls^")
+                            }
+                        }
+                    }
+                }
+
                 val il = InsnList()
                 il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                 il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
-                methodNode.instructions.insert(il)
-                println("Adding gameLoop")
+                println("Inserting npcUpdate callbacks")
+                savedInstructionsToInsert.forEach {
+                    methodNode.instructions.insert(it, il)
+                }
             }
         }
+
+//        val className = methodHook?.owner
+//        classes[className]?.methods?.forEach { methodNode ->
+////                    println("Looking at method: ${methodNode.name}")
+//            if (methodNode.name == methodHook?.name){
+//                val il = InsnList()
+//                il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
+//                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
+//
+//                //Insert at the end
+//                methodNode.instructions.insert(methodNode.instructions.last(), il)
+//                println("Adding gameLoop")
+//            }
+//        }
     }
 
     private fun putClasses(name: String): ByteArray {
