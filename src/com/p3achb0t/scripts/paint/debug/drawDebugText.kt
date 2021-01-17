@@ -46,6 +46,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
 
         try {
             if(ctx.client.getGameState() == 30) {
+                debugText.add(DebugText("Roofs: ${ctx.client.getClientPreferences().getRoofsHidden()}"))
                 debugText.add(DebugText("Camera: x:${ctx.camera.x} y:${ctx.camera.y} z:${ctx.camera.z} pitch:${ctx.camera.pitch} yaw: ${ctx.camera.yaw} angle: ${ctx.camera.angle}"))
                 debugText.add(DebugText("World: ${ctx.client.getWorldId()}  Host: ${ctx.client.getWorldHost()}"))
                 debugText.add(DebugText("visible: 301=${ctx.worldHop.isWorldVisible(301)} 413=${ctx.worldHop.isWorldVisible(413)} 505=${ctx.worldHop.isWorldVisible(505)}"))
