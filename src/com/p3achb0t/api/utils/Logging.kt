@@ -18,7 +18,7 @@ open class Logging {
 
         val fileFormatter = SimpleDateFormat("yyyy_MM_dd__HH_mm_ss")
 
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
         val date = formatter.format(Date())
         val fileDate = fileFormatter.format(Date())
         var account = ""
