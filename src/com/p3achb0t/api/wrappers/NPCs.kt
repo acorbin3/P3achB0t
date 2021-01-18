@@ -187,6 +187,7 @@ class NPCs(val ctx: Context) {
                 }
             }
         } catch (e: Exception) {
+            e.printStackTrace()
         }
         return npcs
     }
