@@ -23,6 +23,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
     var isBankPaintDebug = false
     var isClientDebugging = false
 
+    var isGraphicsObjects = false
+
     lateinit var paintEquipment: PaintEquipment
     lateinit var walkHelper: PaintWalkHelper
     lateinit var paintGameObject: PaintGameObject
@@ -86,6 +88,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                         paintNPC.draw(g)
                     if(isProjectileDebug)
                         projectilePaint(g,ctx)
+                    if(isGraphicsObjects)
+                        drawGraphicsObjects(g,ctx)
                     widgetBlocking.draw(g)
                 }
 
@@ -161,7 +165,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 "ctrl-9 inventory: $isInventoryPaintingDebug",
                 "ctrl-0 equipment: $isPaintEquipment",
                 "ctrl-q bank: $isBankPaintDebug",
-                "ctrl-w client debugs:$isClientDebugging"
+                "ctrl-w client debugs:$isClientDebugging",
+                "ctrl-e GraphicsObjects: $isGraphicsObjects"
 
         )
 
@@ -246,6 +251,10 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 'W'.toInt().toString() ->{
                     isClientDebugging = !isClientDebugging
                     println("Swapping Bank: $isClientDebugging")
+                }
+                'E'.toInt().toString()->{
+                    isGraphicsObjects = !isGraphicsObjects
+                    println("Swapping Graphics Objects: $isGraphicsObjects")
                 }
             }
         }
