@@ -7,7 +7,6 @@ import kotlin.math.max
 class Players(val ctx: Context) {
 
 
-
     fun getLocal(): Player {
         return Player(ctx.client.getLocalPlayer(), ctx, 0)
     }
@@ -23,7 +22,9 @@ class Players(val ctx: Context) {
     fun getAll(): ArrayList<Player>{
         val players = ArrayList<Player>()
         ctx.client.getPlayers().forEachIndexed { index, player ->
+            if(player != null) {
                 players.add(Player(player, ctx, index))
+            }
         }
         return players
     }
