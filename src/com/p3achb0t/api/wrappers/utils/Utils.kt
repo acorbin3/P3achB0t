@@ -25,7 +25,7 @@ class Utils {
             return false
         }
 
-        suspend fun sleepUntil(condition: suspend () -> Boolean, time: Int = 5, delayTimeMS: Long = 100): Boolean  {
+        suspend fun sleepUntil(condition: suspend () -> Boolean, time: Int = 5, delayTimeMS: Long = 600): Boolean  {
             var istrue = false
             // Convert to milliseconds, then divide by the sleep time to get number of iterations to meet correct duration
             val iterations = time*1000/delayTimeMS
