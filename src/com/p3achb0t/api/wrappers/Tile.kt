@@ -28,44 +28,52 @@ class Tile(
         var randomize: Boolean = false
 ) : Locatable, Interactable(ctx) {
 
-    fun isTileWalkAble(): Boolean{
+    fun isTileWalkAble(): Boolean {
         val collisionMap = ctx?.client?.getCollisionMaps()
         var local = this.getLocalLocation()
-        if(collisionMap != null) {
-            val collisionFlag = collisionMap[ctx?.client?.getPlane()?:0].getFlags()[local.x][local.y]
-            return collisionFlag and BLOCKED == 0
+        if (collisionMap != null) {
+            if (local.x in 0..103 && local.y in 0..104) {
+                val collisionFlag = collisionMap[ctx?.client?.getPlane() ?: 0].getFlags()[local.x][local.y]
+                return collisionFlag and BLOCKED == 0
+            }
         }
 
         return false
     }
+
     val plane get() = z
+
     companion object {
         val NIL = Tile(-1, -1, -1, null)
     }
 
-    fun updateCTX(ctx: Context){
+    fun updateCTX(ctx: Context) {
         this.ctx = ctx
         this.loc_ctx = ctx
     }
+
     fun getPolyBounds(size: Int = 1): Polygon {
         val region = getRegionalLocation()
         return this.ctx?.let { getCanvasTileAreaPoly(it, region.x, region.y, size = size) } ?: Polygon()
     }
+
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
-        return ctx?.client?.let { getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) } ?: false
+        return ctx?.client?.let { getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) }
+                ?: false
     }
 
     override fun getNamePoint(): Point {
         val region = getRegionalLocation()
         return ctx?.client?.let { Calculations.worldToScreen(region.x, region.y, z, ctx!!) } ?: Point()
     }
+
     override fun toString(): String {
         return "($x,$y,$z)"
     }
 
     override suspend fun clickOnMiniMap(): Boolean {
-        if(ctx == null){
+        if (ctx == null) {
             logger.error("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
             return false
         }
@@ -76,7 +84,7 @@ class Tile(
 
     suspend fun clickOnMiniMap(x: Int, y: Int): Boolean {
         // translation
-        if(ctx == null){
+        if (ctx == null) {
             logger.error("ERROR: ctx is null, click on minimap cant be completed. Please provide the ctx")
             return false
         }
@@ -86,20 +94,20 @@ class Tile(
     }
 
     override fun getInteractPoint(): Point {
-        if(ctx == null){
+        if (ctx == null) {
             logger.error("ERROR: ctx is null, interaction point cant be computed. Please provide the ctx")
             return Point(-1, -1)
         }
         val regional = getRegionalLocation()
-        val poly =  getCanvasTileAreaPoly(ctx!!, regional.x, regional.y)
+        val poly = getCanvasTileAreaPoly(ctx!!, regional.x, regional.y)
         return getRandomPoint(poly)
     }
 
     override fun isOnScreen(): Boolean {
-        return if(ctx == null){
+        return if (ctx == null) {
             logger.error("ERROR: ctx is null, isOnScreen cant be computed. Please provide the ctx")
             false
-        }else{
+        } else {
             val tilePoly = getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y)
             Calculations.isOnscreen(ctx!!, tilePoly.bounds)
         }
@@ -116,9 +124,9 @@ class Tile(
 
     // This is distance to local player
     override fun distanceTo(): Int {
-        if(ctx == null){
+        if (ctx == null) {
             logger.error("ERROR: ctx is null, for tile $this,  distance to player cant be computed. Please provide the ctx")
-            for(stack in Thread.currentThread().stackTrace){
+            for (stack in Thread.currentThread().stackTrace) {
                 println(stack)
             }
         }
