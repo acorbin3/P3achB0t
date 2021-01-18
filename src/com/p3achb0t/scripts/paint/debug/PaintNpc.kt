@@ -14,7 +14,7 @@ import java.awt.Graphics
 @ScriptManifest("Debug", "NPC Helper", "Bot Team", "0.1")
 class PaintNpc : PaintScript() {
 
-    val useHoverOver = true
+    val useHoverOver = false
 
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
@@ -31,7 +31,7 @@ class PaintNpc : PaintScript() {
                         val newNPC = NPC(npci, ctx, index)
 
                         //                                print("Name: ${it.getComposite().getName()}, ID:${it.getType()?.getId()} x:${it.getX()} y:${it.getY()},")
-                        if (newNPC.isOnScreen() && (newNPC.isMouseOverObj() || !useHoverOver)) {
+                        if (newNPC.isOnScreen() && (newNPC.isMouseOverObj() || !useHoverOver) || newNPC.distanceTo() < 4) {
                             count += 1
 
                             val tile =
