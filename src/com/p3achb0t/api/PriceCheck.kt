@@ -70,6 +70,7 @@ object PriceCheck {
         if (!isReloadEnabled && prices.size > 0) {
             return
         }
+        //TODO consider switching to - https://secure.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item=11980
         try {
             val node = Unirest.get("https://rsbuddy.com/exchange/summary.json").asString()
             if (node.status != 200) {
