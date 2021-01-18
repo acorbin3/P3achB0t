@@ -14,6 +14,9 @@ class Player(var player: com.p3achb0t.api.interfaces.Player, ctx: Context, val m
         val CHILD_SPECIAL_ATTACK_NUMBER = 31
     }
 
+    val cleanUsername: String get(){
+        return player.getUsername().getCleanName()
+    }
     val isSpecialEnabled: Boolean
     get(){
         return ctx?.vars?.getVarp(301) == 1
