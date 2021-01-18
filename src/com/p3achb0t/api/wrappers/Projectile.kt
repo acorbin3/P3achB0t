@@ -14,7 +14,8 @@ import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
-import kotlin.math.roundToInt
+import java.lang.Double.min
+import kotlin.math.min
 
 class Projectile(
         ctx: Context,
@@ -47,13 +48,18 @@ class Projectile(
     val x get() = raw.getX()
     val y get() = raw.getY()
     val z get() = raw.getZ()
-    val getPosition = Tile(raw.getX().toInt()/128 + ctx.client.getBaseY(), raw.getY().toInt()/128 + ctx.client.getBaseY())
-    val sourcePosition = Tile(raw.getSourceX()/128 + ctx.client.getBaseY(), raw.getSourceY().toInt()/128 + ctx.client.getBaseY())
-    val remaining =  (raw.getCycleEnd() - ctx.client.getCycle()-6)
+
+    val getPosition = Tile(raw.getX().toInt() / 128 + ctx.client.getBaseY(), raw.getY().toInt() / 128 + ctx.client.getBaseY(), ctx=ctx)
+    val sourcePosition = Tile(raw.getSourceX() / 128 + ctx.client.getBaseY(), raw.getSourceY() / 128 + ctx.client.getBaseY(), ctx=ctx)
+    //  Subtracting 6 cycles seems to make the predicted  more stable, otherwise the tile jumps around and is off by 1 often
+    val remaining = min( (raw.getCycleEnd() - ctx.client.getCycle() - 5), raw.getCycleEnd() - raw.getCycleStart())
     val pX = (raw.getX() + (raw.getSpeedX() * remaining)).toInt()
     val pY = (raw.getY() + (raw.getSpeedY() * remaining)).toInt();
 
-    val predictedTile = Tile(pX / 128 + ctx.client.getBaseX(), pY / 128 + ctx.client.getBaseY(), ctx=ctx)
+    // pX and pY are bit shifted by 7 so we will divide by 128 to get the local position and then add the client base to get back the global position
+    // Note: the predictedTile seems to be not predicted correctly until the projectile leaves its original source. So consider only looking
+    // at this once the sourcePosition is not the same as the getPosition
+    val predictedTile = Tile(pX / 128 + ctx.client.getBaseX(), pY / 128 + ctx.client.getBaseY(), ctx = ctx)
 
 
     override fun getNamePoint(): Point {
