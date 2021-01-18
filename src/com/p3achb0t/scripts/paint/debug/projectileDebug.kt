@@ -38,10 +38,10 @@ fun projectilePaint(g: Graphics, ctx: Context) {
                 namePoint.x,
                 namePoint.y
         )
-        if(it.sourcePosition.distanceTo(it.getPosition) != 0) {
-            g.color = Color.RED
-            g.drawPolygon(it.predictedTile.getPolyBounds())
-        }
+
+        g.color = Color.RED
+        g.drawPolygon(it.predictedTile.getPolyBounds())
+
     }
     g.color = savedColor
 }
