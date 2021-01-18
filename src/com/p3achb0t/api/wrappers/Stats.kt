@@ -60,8 +60,8 @@ class Stats(val ctx: Context) {
         }
     }
 
-    fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]
-    fun currentLevel(skill: Skill): Int = ctx.client.getCurrentLevels()[skill.statID]
+    fun level(skill: Skill): Int =  ctx.client.getLevels()[skill.statID]              // Non-boosted level
+    fun currentLevel(skill: Skill): Int = ctx.client.getCurrentLevels()[skill.statID] // Used to measure hp or prayer when drained
     fun currentXP(skill: Skill): Int = ctx.client.getExperience()[skill.statID]
     fun totalLevel(): Int = ctx.client.getLevels().sum()
 
