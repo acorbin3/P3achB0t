@@ -63,7 +63,7 @@ class Inventory(val ctx: Context? = null) {
                 curTrackedItemCount[it.id] = curCount
             }
             //ingnore any changes if banking or in GE
-            if ((ctx?.bank?.isOpen() != true || !ctx.grandExchange.isOpen()) && diff > 0) {
+            if (!(ctx?.bank?.isOpen() == true ||ctx?.grandExchange?.isOpen() == true) && diff > 0) {
                 totalTrackedItemCount[it.id] = totalTrackedItemCount[it.id]!! + diff
             }
         }
