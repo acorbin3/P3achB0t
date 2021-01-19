@@ -19,6 +19,7 @@ import java.awt.GraphicsEnvironment
 import java.awt.Point
 import java.awt.Rectangle
 import java.awt.event.MouseEvent
+import kotlin.random.Random
 
 
 // This class will be used to specify want will be requested do action params when doing a click from the mouse
@@ -97,10 +98,19 @@ class Mouse(obj: Any) : Logging() {
             this.doActionParams = doActionParams
             if (isLocationInScreenBounds(Point(0, 0))) {
                 val timeDiff = System.currentTimeMillis() - lastDoAction
-                logger.info("Time since last Action: $timeDiff")
-                if (timeDiff < 300) {
-                    logger.info("Warning, fast action!")
+
+                if (timeDiff < 100) {
+                    logger.info("Time since last Action: $timeDiff. Warning, fast action!")
+                    if(timeDiff < 50) {
+                        val delayTime = Random.nextLong(100,150)
+                        logger.info("Delaying due to super fast action. delaytime: $delayTime")
+                        sleep(delayTime)
+                    }
+                }else{
+                    logger.info("Time since last Action: $timeDiff")
                 }
+
+
                 lastDoAction = System.currentTimeMillis()
                 instantclick(Point(-1, -1))
             }
