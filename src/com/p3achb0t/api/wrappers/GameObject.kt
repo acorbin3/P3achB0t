@@ -206,7 +206,7 @@ class GameObject(
             getObjectComposite(var2)
     }
 
-    private fun getObjectComposite(
+    fun getObjectComposite(
             gameObjectId: Int
     ): LocType? {
         this.ctx!!.client.getLocType_cached().getHashTable().getBuckets().iterator().forEach { bucketItem ->
