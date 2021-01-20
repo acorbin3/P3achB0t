@@ -23,6 +23,8 @@ class Dialog(val ctx: Context): Logging() {
         private const val CONTINUE_BACKUP_3 = 0
         private const val PARENT_BACKUP_4 = 11
         private const val CONTINUE_BACKUP_4 = 4
+        private const val PARENT_BACKUP_5 = 633
+        private const val CONTINUE_BACKUP_5 = 0
     }
 
 
@@ -64,6 +66,9 @@ class Dialog(val ctx: Context): Logging() {
                     dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_3, CONTINUE_BACKUP_3), ctx = ctx)
                     if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
                         dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_4, CONTINUE_BACKUP_4), ctx = ctx)
+                        if (dialog.widget == null || (dialog.widget != null && !dialog.containsText("continue"))) {
+                            dialog = WidgetItem(ctx.widgets.find(PARENT_BACKUP_5, CONTINUE_BACKUP_5), ctx = ctx)
+                        }
                     }
                 }
             }
@@ -102,7 +107,11 @@ class Dialog(val ctx: Context): Logging() {
         else if(isContinueAvailable()){
             ctx.keyboard.sendKeys(" ")
             delay(Random.nextLong(200, 350))
+        }else{
+            logger.info("Sending spacebar even though it didnt find anything")
+            ctx.keyboard.sendKeys(" ")
         }
+
         //TODO - add a smart sleep based on the number of words in the continue dialog
         if (sleep)//&& getDialogContinue().containsText("continue"))
             delay(Random.nextLong(650, 750))
