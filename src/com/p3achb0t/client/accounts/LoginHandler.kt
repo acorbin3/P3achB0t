@@ -85,16 +85,26 @@ class LoginHandler(var account: Account = Account()) {
 
             if ((LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) ||
                     (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
-                if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED) {
+                if (LoginResponse.getLoginResponse(ctx) == LoginResponse.BANNED
+                        || (LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID)) {
                     AccountManager.accounts.forEach {
                         if (it.username == account.username) {
                             it.banned = true
                         }
                         AccountManager.updateJSONFile()
                     }
-                    GlobalStructs.db.setBanned(account.username, account.sessionToken)
+                    try {
+                        GlobalStructs.db.setBanned(account.username, account.sessionToken)
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
                 }
-                println("account banned or invalid credentials")
+
+                if(LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID){
+                    //Move mouse to try again 466,279
+                    ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cp_q() - 12, ctx.client.get__cp_q() - 6), Random.nextInt(260, 290)), true, Mouse.ClickType.Left)
+                }
+
                 return false
             }
             println("Game state == ${ctx.client.getGameState()}")
