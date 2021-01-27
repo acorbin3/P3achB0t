@@ -100,7 +100,7 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
 
         }
 
-        if (loginHandler.account.username.isEmpty()) {
+        if (loginHandler.account.username != account.username) {
             loginHandler.account = account
         }
 
