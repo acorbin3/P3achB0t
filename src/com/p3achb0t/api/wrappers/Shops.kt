@@ -18,6 +18,18 @@ class Shops(val ctx: Context) {
         val shop = ctx.widgets.find(PARENT, CHILD)
         return shop != null && abs(shop.getCycle() - ctx.client.getCycle()) <400
     }
+
+    fun getItemCount(id: Int): Int{
+        val shop = ctx.widgets.find(PARENT, CHILD)
+        val childArray = shop?.getChildren()
+        childArray?.forEachIndexed { index, component ->
+            if(component.getItemId() == id){
+                return component.getItemQuantity()
+            }
+        }
+        return -1
+    }
+
     suspend fun buyItem(id: Int){
         val shop = ctx.widgets.find(PARENT, CHILD)
         val childArray = shop?.getChildren()
