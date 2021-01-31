@@ -77,7 +77,7 @@ class Prayer(val ctx: Context) {
     }
 
     fun isPrayerActive(prayerKind: PrayerKind): Boolean{
-        println("${prayerKind.name} varbit: ${ctx.vars.getVarbit(prayerKind.varpNumb)}")
+//        println("${prayerKind.name} varbit: ${ctx.vars.getVarbit(prayerKind.varpNumb)}")
         return ctx.vars.getVarbit(prayerKind.varpNumb) == 1
     }
 
