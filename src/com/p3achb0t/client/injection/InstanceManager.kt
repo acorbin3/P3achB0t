@@ -66,9 +66,9 @@ class InstanceManager(val client: Any) : Logging() {
     // Don't delete this. Its used within the injected functions
     var blockFocus = false
 
-    var isDisableScenery = true
+    var isDisableScenery = false
 
-    var isDisableAll = true
+    var isDisableAll = false
 
     var lastTile = Tile()
     val lastMoved = StopWatch()
@@ -110,10 +110,11 @@ class InstanceManager(val client: Any) : Logging() {
         actionScript = actionScriptLoaded
         actionScript.start()
 
+
         //Check to see if we need to login or handle welcome button
-        if (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
+        if ((ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
                 || (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGGED_IN
-                        && ctx.worldHop.isWelcomeRedButtonAvailable())) {
+                        && ctx.worldHop.isWelcomeRedButtonAvailable())) && account.startActionScriptAutomatically) {
             scriptState = ScriptState.LoginScreenNotPaused
         } else {
             scriptState = ScriptState.Running
@@ -194,17 +195,6 @@ class InstanceManager(val client: Any) : Logging() {
                         if (account.banned) {
                             stopActionScript()
                         }
-                        //TODO - test out maybe restarting script if a player has been idle for 1m or so
-//                        if(ctx.players.getLocal().getGlobalLocation().distanceTo(lastTile) == 0){
-//                            if(lastMoved.elapsedSec > 60){
-//                                lastMoved.reset()
-//                                togglePauseActionScript()
-//                                togglePauseActionScript()
-//                            }
-//
-//                        }else{
-//                            lastTile = ctx.players.getLocal().getGlobalLocation()
-//                        }
                         try {
                             actionScript.loop()
                         } catch (e: Exception) {
