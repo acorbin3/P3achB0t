@@ -9,6 +9,8 @@ import com.p3achb0t.api.Context
 class Vars(val ctx: Context) {
     /**
      * This method will get the varbit within the client.
+     * NOTE: To solve exceptions consider getting the values in the paint thread as this will be synced up with the
+     * client better.
      * @exception:There could be a time that this throws an exception. Return back a -1 in that case.
      */
     fun getVarbit(id: Int): Int {
