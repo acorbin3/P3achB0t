@@ -93,8 +93,8 @@ class Mouse(obj: Any) : Logging() {
     suspend fun doAction(doActionParams: DoActionParams) {
         try {
             this.overrideDoActionParams = true
-            doActionParams.mouseX = -1
-            doActionParams.mouseY = -1
+            doActionParams.mouseX = Random.nextInt(25,200)
+            doActionParams.mouseY = Random.nextInt(25,200)
             this.doActionParams = doActionParams
             if (isLocationInScreenBounds(Point(0, 0))) {
                 val timeDiff = System.currentTimeMillis() - lastDoAction
@@ -112,7 +112,7 @@ class Mouse(obj: Any) : Logging() {
 
 
                 lastDoAction = System.currentTimeMillis()
-                instantclick(Point(-1, -1))
+                instantclick(Point(doActionParams.mouseX, doActionParams.mouseY))
             }
         } catch (e: Exception) {
             logger.error("Error: Doaction threw an error")
