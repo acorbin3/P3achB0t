@@ -25,9 +25,9 @@ class GameObject(
     val id: Int
         get() {
             return when {
-                sceneryObject != null -> sceneryObject.getTag().shr(17).and(0x7fff).toInt()
-                wallObject != null -> wallObject.getTag().shr(17).and(0x7fff).toInt()
-                floorDecoration != null -> floorDecoration.getTag().shr(17).and(0x7fff).toInt()
+                sceneryObject != null -> sceneryObject.getTag().shr(17).and(4294967295L).toInt()
+                wallObject != null -> wallObject.getTag().shr(17).and(4294967295L).toInt()
+                floorDecoration != null -> floorDecoration.getTag().shr(17).and(4294967295L).toInt()
                 else -> 0
             }
         }
