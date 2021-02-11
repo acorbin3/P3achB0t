@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import java.awt.Point
 import java.awt.Rectangle
 
+data class BankItem(var id: Int, var count: Int)
 class Bank(val ctx: Context): Logging() {
     //TODO - deposit all items from a list
     companion object {
@@ -44,6 +45,8 @@ class Bank(val ctx: Context): Logging() {
                 24101 // Falador bank booths
         )
     }
+    var cachedItems = ArrayList<BankItem>()
+
 
     suspend fun open() {
 
@@ -70,11 +73,22 @@ class Bank(val ctx: Context): Logging() {
         }
         //TODO - interact with bank booths is player is not here
 
+        updateBankCache()
+
 
         if(isPinPanelOpen()){
             solveBankPin("1122")//TODO - try to figure out where to get the pin from the account
         }
 
+    }
+
+    fun updateBankCache() {
+        if (isOpen()) {
+            cachedItems.clear()
+            getAll().forEach {
+                cachedItems.add(BankItem(it.id, it.stackSize))
+            }
+        }
     }
 
     suspend fun openAtGe() {
