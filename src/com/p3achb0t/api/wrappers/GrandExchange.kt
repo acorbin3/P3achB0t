@@ -14,19 +14,20 @@ class GrandExchange(val ctx: Context) {
         const val OfferVarpBit = 4439
         enum class Offers(val index: Int, val widgetID: Int, val varpbitValue: Int, val Arg1: Int) {
             OfferSlotOne(0, 7, 1, 30474247),
-            OfferSlotTwo(1,8, 2, 30474248),
-            OfferSlotThree(2,9, 3, 30474249),
-            OfferSlotFour(3,10, 4, 30474250),
-            OfferSlotFive(4,11, 5, 30474251),
-            OfferSlotSix(5,12, 6, 30474252),
-            OfferSlotSeven(6,13, 7, 30474253),
-            OfferSlotEight(7,14, 8, 30474254),
+            OfferSlotTwo(1, 8, 2, 30474248),
+            OfferSlotThree(2, 9, 3, 30474249),
+            OfferSlotFour(3, 10, 4, 30474250),
+            OfferSlotFive(4, 11, 5, 30474251),
+            OfferSlotSix(5, 12, 6, 30474252),
+            OfferSlotSeven(6, 13, 7, 30474253),
+            OfferSlotEight(7, 14, 8, 30474254),
 
         }
     }
 
+
     fun getExchangeWidget(): Component? {
-        return ctx.widgets.find(465,1)
+        return ctx.widgets.find(465, 1)
     }
 
     fun isCollectButtonAvailable(): Boolean{
@@ -37,7 +38,7 @@ class GrandExchange(val ctx: Context) {
             }
         }
 
-        val parentContainer = ctx.widgets.find(465,6)
+        val parentContainer = ctx.widgets.find(465, 6)
 
         return hasAnyOffers
                 && parentContainer?.getChildren() != null
@@ -78,17 +79,20 @@ class GrandExchange(val ctx: Context) {
         return null
     }
 
-    fun getOffers(){
+    fun getOffers(): ArrayList<GrandExchangeOffer>{
+        val offers = ArrayList<GrandExchangeOffer>()
         if(isOpen()){
-            ctx.client.getGrandExchangeOffers().iterator().forEach {
+            ctx.client.getGrandExchangeOffers().forEachIndexed { index, grandExchangeOffer ->
+                offers.add(GrandExchangeOffer(grandExchangeOffer,index))
             }
         }
+        return offers
     }
 
 
     fun getQuantity(): Int? {
         if(isOpen() && offerIsOpen()) {
-            val quantWidget = ctx.widgets.find(465,24)!!.getChildren()[32].getText().filter { it.isDigit() }
+            val quantWidget = ctx.widgets.find(465, 24)!!.getChildren()[32].getText().filter { it.isDigit() }
             if(quantWidget.length > 0) {
                 return quantWidget.toInt()
             }
@@ -152,7 +156,7 @@ class GrandExchange(val ctx: Context) {
 
     fun getPrice(): Int? {
         if(isOpen() && offerIsOpen()) {
-            val priceWidget = ctx.widgets.find(465,24)!!.getChildren()[39].getText()
+            val priceWidget = ctx.widgets.find(465, 24)!!.getChildren()[39].getText()
             if(priceWidget.length < 1){
                 return 0
             }
@@ -166,7 +170,7 @@ class GrandExchange(val ctx: Context) {
 
     fun getItemName(): String? {
         if(isOpen() && offerIsOpen()) {
-            val itemName = ctx.widgets.find(465,24)!!.getChildren()[25].getText()
+            val itemName = ctx.widgets.find(465, 24)!!.getChildren()[25].getText()
             return itemName
         }
         return null
