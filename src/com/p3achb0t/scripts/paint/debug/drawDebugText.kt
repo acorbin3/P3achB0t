@@ -20,7 +20,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("Login response :${LoginResponse.getLoginResponse(ctx) }. Enter point: ${ctx.client.get__cp_q()}"))
+        debugText.add(DebugText("Login response :${LoginResponse.getLoginResponse(ctx) }. Enter point: ${ctx.client.get__cj_t()}"))
 //        debugText.add(DebugText("login center pos = :${ctx.client.get__dv_r()}"))
         //debugText.add(DebugText("fps :${PaintDebug.fps}"))
         val heapSize = Runtime.getRuntime().totalMemory()
@@ -91,11 +91,11 @@ fun drawDebugText(g: Graphics, ctx: Context) {
                 debugText.add(DebugText("Zoom: ${ctx.client.getViewportZoom()}"))
 
                 if(ctx.grandExchange.isOpen()){
-                    ctx.client.getGrandExchangeOffers().iterator().withIndex().forEach {
+                    ctx.grandExchange.getOffers().iterator().withIndex().forEach {
 
-                        debugText.add(DebugText("Slot ${it.index} State:${it.value.getState()} price:${it.value.getCurrentPrice()} " +
-                                "currentQty:${it.value.getCurrentQuantity()} totalQty:${it.value.getTotalQuantity()} unitPrice:${it.value.getUnitPrice()} " +
-                                "ID:${it.value.getId()}"))
+                        debugText.add(DebugText("Slot ${it.index} State:${it.value.getState()} price:${it.value.raw.getCurrentPrice()} " +
+                                "currentQty:${it.value.raw.getCurrentQuantity()} totalQty:${it.value.raw.getTotalQuantity()} unitPrice:${it.value.raw.getUnitPrice()} " +
+                                "ID:${it.value.raw.getId()}"))
                     }
 
 
