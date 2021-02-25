@@ -112,7 +112,7 @@ class LoginAndBreakHandlerHandler : ServiceScript(shouldPauseActionScript = true
             status = "Logging in"
             val failedLogin = !loginHandler.login(ctx)
             if (failedLogin) {
-                logger.error("Failed to login. Login handler will now set account banned")
+                logger.error("Failed to login. Login handler will now set account banned. ${account.username}")
                 account.banned = true
             }
         }
