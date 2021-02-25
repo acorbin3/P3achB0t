@@ -5,11 +5,11 @@ interface BufferedFile {
     fun getCapacity(): Long
     fun getReadBuffer(): ByteArray
     fun getWriteBuffer(): ByteArray
-    fun get__p(): Int
-    fun get__t(): Int
-    fun get__e(): Long
+    fun get__e(): Int
+    fun get__y(): Int
+    fun get__b(): Long
+    fun get__c(): Long
     fun get__l(): Long
-    fun get__n(): Long
-    fun get__w(): Long
+    fun get__q(): Long
     fun get__z(): Long
 }

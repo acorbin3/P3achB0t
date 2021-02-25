@@ -6,5 +6,5 @@ interface VorbisCodebook {
     fun getLengths(): IntArray
     fun getMultiplicands(): Array<Array<Float>>
     fun getMults(): IntArray
-    fun get__j(): IntArray
+    fun get__h(): IntArray
 }

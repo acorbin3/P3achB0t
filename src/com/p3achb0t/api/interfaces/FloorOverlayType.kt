@@ -10,5 +10,5 @@ interface FloorOverlayType : DualNode {
     fun getSaturation(): Int
     fun getSaturation2(): Int
     fun getTexture(): Int
-    fun get__t(): Boolean
+    fun get__y(): Boolean
 }

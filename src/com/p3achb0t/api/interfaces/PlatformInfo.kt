@@ -1,29 +1,29 @@
 package com.p3achb0t.api.interfaces
 
 interface PlatformInfo : Node {
-    fun get__aa(): Boolean
-    fun get__ac(): Boolean
-    fun get__ab(): Int
-    fun get__ad(): Int
-    fun get__ae(): Int
+    fun get__ak(): Boolean
+    fun get__aw(): Boolean
+    fun get__aa(): Int
+    fun get__af(): Int
     fun get__ah(): Int
-    fun get__ak(): Int
-    fun get__am(): Int
+    fun get__aj(): Int
+    fun get__al(): Int
+    fun get__an(): Int
     fun get__ao(): Int
-    fun get__ap(): Int
-    fun get__aq(): Int
     fun get__ar(): Int
+    fun get__as(): Int
     fun get__at(): Int
     fun get__av(): Int
+    fun get__ax(): Int
     fun get__az(): Int
-    fun get__bh(): Int
-    fun get__bl(): Int
-    fun get__br(): IntArray
-    fun get__af(): String
+    fun get__bj(): Int
+    fun get__br(): Int
+    fun get__bp(): IntArray
+    fun get__ab(): String
+    fun get__ad(): String
     fun get__ai(): String
-    fun get__al(): String
-    fun get__ay(): String
-    fun get__bs(): String
-    fun get__bx(): String
-    fun get__by(): String
+    fun get__au(): String
+    fun get__bi(): String
+    fun get__bn(): String
+    fun get__bq(): String
 }

@@ -1,7 +1,7 @@
 package com.p3achb0t.api.interfaces
 
 interface WorldMapLabelSize {
-    fun get__j(): Int
-    fun get__t(): Int
-    fun get__w(): Int
+    fun get__c(): Int
+    fun get__h(): Int
+    fun get__y(): Int
 }

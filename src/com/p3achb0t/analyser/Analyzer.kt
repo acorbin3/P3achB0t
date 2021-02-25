@@ -306,7 +306,8 @@ class Analyser {
                 // along with that they have a field description of a boolean(Z). Usually there is only 2.
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
-                val viewportWalkingFieldName = "__eo_ah"
+                //TODO - This
+                val viewportWalkingFieldName = "__eq_aa"
                 val fieldHook3 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
                 val methodNode3 = MethodNode(ACC_PUBLIC, "setViewportWalking", "()V", null, null)
@@ -569,8 +570,8 @@ class Analyser {
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "q"
-        val garbageCollectMethod = "af"
+        val garbageCollectClass = "g"
+        val garbageCollectMethod = "ah"
         //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@ for (method in classes[garbageCollectClass]!!.methods) {
@@ -593,21 +594,21 @@ class Analyser {
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
         //TODO - To find the random.dat methods go look at script to find "random.dat" in the class files
-        var createRandDatClass = "fu"
-        var createRandDatMethod = "j"
+        var createRandDatClass = "cg"
+        var createRandDatMethod = "c"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
         // Hooks datFile
-        createRandDatClass = "fu"
-        createRandDatMethod = "n"
+        createRandDatClass = "fp"
+        createRandDatMethod = "a"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
         // Hooks datFile
-        createRandDatClass = "k"
-        createRandDatMethod = "x"
-        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
+//        createRandDatClass = "k"
+//        createRandDatMethod = "x"
+//        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
 
         val path = System.getProperty("user.dir")
@@ -869,8 +870,8 @@ class Analyser {
     fun insnToString(insn: AbstractInsnNode): String? {
         insn.accept(mp)
         val sw = StringWriter()
-        printer.print(PrintWriter(sw))
-        printer.getText().clear()
+        //printer.print(PrintWriter(sw))
+        //printer.getText().clear()
         return sw.toString()
     }
     private fun injectGameLoop(runeStar: RuneStarAnalyzer, clazzData: ClassHook) {
@@ -883,18 +884,18 @@ class Analyser {
         // there should be 2 calls
         println("Looping over client methods")
         classes["client"]?.methods?.forEach { methodNode ->
-            println("\t ${methodNode.name} - ${methodNode.desc}")
+           // println("\t ${methodNode.name} - ${methodNode.desc}")
             if(methodNode.desc.contains("L$packetWriterClass;B")){
                 println("\t\t found correct method")
                 val savedInstructionsToInsert = arrayListOf<MethodInsnNode>()
                 methodNode.instructions.forEach { instruction ->
-                    println("\t\t\t" + insnToString(instruction) + " Type:${instruction.type}. opcode: ${instruction.opcode}")
+                    //println("\t\t\t" + insnToString(instruction) + " Type:${instruction.type}. opcode: ${instruction.opcode}")
 
                     if(instruction.opcode == INVOKESTATIC){
                         if(instruction is MethodInsnNode){
 
 
-                            println("\t\t\t INVOKESTATIC ${instruction.name}")
+                            //println("\t\t\t INVOKESTATIC ${instruction.name}")
                             if(instruction.name == methodHook?.name){
                                 savedInstructionsToInsert.add(instruction)
                                 println("Found NPC calls^")
@@ -1280,7 +1281,7 @@ class Analyser {
             } else {
                 methodNode.visitLdcInsn(multiplier.toInt())
                 methodNode.visitInsn(IMUL)
-            }
+        }
         }
 
 //        println(

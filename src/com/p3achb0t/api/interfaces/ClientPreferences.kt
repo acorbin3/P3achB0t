@@ -6,9 +6,9 @@ interface ClientPreferences {
     fun getRememberedUsername(): String
     fun getRoofsHidden(): Boolean
     fun getTitleMusicDisabled(): Boolean
-    fun get__p(): Double
+    fun getWindowMode(): Int
+    fun get__e(): Double
     fun get__l(): Int
-    fun get__t(): Int
-    fun get__u(): Int
-    fun get__z(): Int
+    fun get__q(): Int
+    fun get__s(): Int
 }

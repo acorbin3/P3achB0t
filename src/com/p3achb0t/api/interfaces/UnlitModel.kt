@@ -16,24 +16,24 @@ interface UnlitModel : Entity {
     fun getVerticesX(): IntArray
     fun getVerticesY(): IntArray
     fun getVerticesZ(): IntArray
-    fun get__i(): Byte
-    fun get__a(): ByteArray
-    fun get__e(): ByteArray
+    fun get__k(): Byte
+    fun get__b(): ByteArray
     fun get__l(): ByteArray
-    fun get__z(): ByteArray
-    fun get__an(): Array<VertexNormal>
-    fun get__d(): Array<VertexNormal>
+    fun get__q(): ByteArray
+    fun get__x(): ByteArray
+    fun get__ay(): Array<VertexNormal>
+    fun get__j(): Array<VertexNormal>
     fun get__ac(): Int
-    fun get__ae(): Int
     fun get__ak(): Int
-    fun get__as(): Int
-    fun get__au(): Int
-    fun get__f(): Int
-    fun get__g(): IntArray
-    fun get__q(): IntArray
-    fun get__b(): ShortArray
-    fun get__r(): ShortArray
-    fun get__y(): ShortArray
-    fun get__aj(): Short
-    fun get__ax(): Short
+    fun get__aq(): Int
+    fun get__at(): Int
+    fun get__ax(): Int
+    fun get__i(): Int
+    fun get__p(): IntArray
+    fun get__t(): IntArray
+    fun get__f(): ShortArray
+    fun get__g(): ShortArray
+    fun get__u(): ShortArray
+    fun get__ag(): Short
+    fun get__am(): Short
 }

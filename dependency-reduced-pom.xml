@@ -4,7 +4,7 @@
   <groupId>com.p3achb0t</groupId>
   <artifactId>P3achB0t</artifactId>
   <name>client</name>
-  <version>0.191-SNAPSHOT</version>
+  <version>0.194-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>

@@ -31,7 +31,7 @@ interface NPCType : DualNode {
     fun getWalkbackanim(): Int
     fun getWalkleftanim(): Int
     fun getWalkrightanim(): Int
-    fun get__ak(): Boolean
-    fun get__d(): Boolean
-    fun get__ag(): Int
+    fun get__ax(): Boolean
+    fun get__j(): Boolean
+    fun get__ae(): Int
 }

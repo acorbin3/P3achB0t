@@ -2,6 +2,6 @@ package com.p3achb0t.api.interfaces
 
 interface Huffman {
     fun get__v(): ByteArray
-    fun get__h(): IntArray
-    fun get__x(): IntArray
+    fun get__d(): IntArray
+    fun get__n(): IntArray
 }

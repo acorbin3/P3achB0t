@@ -1,8 +1,8 @@
 package com.p3achb0t.api.interfaces
 
 interface AudioFilter {
-    fun get__h(): IntArray
-    fun get__t(): IntArray
-    fun get__w(): Array<Array<IntArray>>
-    fun get__x(): Array<Array<IntArray>>
+    fun get__n(): IntArray
+    fun get__y(): IntArray
+    fun get__c(): Array<Array<IntArray>>
+    fun get__d(): Array<Array<IntArray>>
 }

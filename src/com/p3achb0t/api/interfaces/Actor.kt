@@ -46,20 +46,20 @@ interface Actor : Entity {
     fun getX(): Int
     fun getY(): Int
     fun get__ai(): Boolean
-    fun get__an(): Boolean
-    fun get__ae(): Int
+    fun get__at(): Boolean
+    fun get__aq(): Int
     fun get__ba(): Int
-    fun get__bb(): Int
-    fun get__be(): Int
-    fun get__bg(): Int
+    fun get__bc(): Int
+    fun get__bd(): Int
+    fun get__bk(): Int
+    fun get__bm(): Int
     fun get__bo(): Int
-    fun get__bp(): Int
-    fun get__bq(): Int
-    fun get__bz(): Int
-    fun get__ch(): Int
-    fun get__ci(): Int
-    fun get__cm(): Int
-    fun get__cr(): Int
-    fun get__cx(): Int
+    fun get__bu(): Int
+    fun get__by(): Int
+    fun get__cd(): Int
+    fun get__ck(): Int
+    fun get__cp(): Int
+    fun get__cs(): Int
+    fun get__cv(): Int
     fun get__cz(): Int
 }
