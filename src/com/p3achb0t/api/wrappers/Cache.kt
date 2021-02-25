@@ -8,6 +8,7 @@ import com.p3achb0t.api.cache.format.Cache
 import com.p3achb0t.api.cache.format.disk.DiskCache
 import com.p3achb0t.api.cache.format.net.NetCache
 import com.p3achb0t.api.cache.tools.MemCache
+import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.client.configs.Constants
 import java.io.File
 import java.io.IOException
@@ -27,12 +28,15 @@ class Cache {
         lateinit var itemCacheInfo: Map<Int,ItemCacheType>
     }
 
-    fun updateCache(forceReload: Boolean = false){
+    suspend fun updateCache(forceReload: Boolean = false){
 
         //Only update cache if folder is not there
         // Update Cache
         val file = File(cachePath)
 
+        val folderExists = file.exists()
+
+        println("Cache path: $cachePath. Exists: $folderExists")
         if((!cacheUpdated || forceReload)) {
 
             try {
@@ -42,7 +46,12 @@ class Cache {
                     DiskCache.open(Path.of(cachePath)).use { disk ->
                         println("Updating Cache")
                         Cache.update(net, disk).join()
+                        if(!folderExists) {
+                            println("Sleeping for 2min")
+                            sleep(2 * 60 * 1000L)
+                        }
                         println("Complete: Cache updated")
+
 
                     }
                 }
