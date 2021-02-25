@@ -12,7 +12,7 @@ import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
 
-class BotInstance(var account: Account = Account(), var tabBarTextInfo: String = "") : JPanel() {
+class BotInstance(var account: Account = Account(), var tabBarTextInfo: String = "", var disableAll: Boolean = false, var disableScene: Boolean = false) : JPanel() {
     // add the canvas to this JPanel
 
     var sessionToken: String = ""
@@ -32,6 +32,8 @@ class BotInstance(var account: Account = Account(), var tabBarTextInfo: String =
 
             val proxy = if(account.proxy == "none") account.proxy else account.proxy.split(";")[1]
             instanceManagerInterface.getManager().account = account
+            instanceManagerInterface.getManager().isDisableAll = disableAll
+            instanceManagerInterface.getManager().isDisableScenery = disableScene
             GlobalStructs.botManager.botTabBar.addBotInstance("$tabBarTextInfo - ${account.username}-${proxy}", sessionToken, this)
         }
     }

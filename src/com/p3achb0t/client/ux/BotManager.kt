@@ -25,7 +25,7 @@ import javax.swing.ImageIcon
 import javax.swing.JFrame
 
 
-class BotManager : JFrame() {
+class BotManager(var disableAll: Boolean = false, var disableScene: Boolean = false) : JFrame() {
 
     val botTabBar = BotTabBar()
     val botNavMenu = BotNavigationMenu()
@@ -88,8 +88,8 @@ class BotManager : JFrame() {
             AccountManager.accounts.forEachIndexed { index, acc ->
                 if(!acc.banned) {
                     count += 1
-                    GlobalScope.launch { BotInstance(acc, index.toString()) }
-                    sleep(1000) // Wait 100ms for tab to open up
+                    GlobalScope.launch { BotInstance(acc, index.toString(), disableAll, disableScene) }
+                    sleep(2000) // Wait 100ms for tab to open up
                 }
             }
         }
@@ -243,7 +243,7 @@ class BotManager : JFrame() {
         while(botInstanceKey.isEmpty()){
             sleep(50)
         }
-        print("Waiting till Cache is updated")
+        println("Waiting till Cache is updated")
         while(!Cache.cacheUpdated){
             sleep(50)
         }

@@ -5,6 +5,8 @@ import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.cache.format.Cache
+import com.p3achb0t.api.utils.EquipmentConfig
+import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
@@ -19,7 +21,6 @@ import java.util.jar.JarFile
 import javax.swing.JFrame
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
-import kotlin.system.exitProcess
 
 
 object Main {
@@ -30,6 +31,9 @@ object Main {
         var getNextKey = false
         var getAccountPath = false
         var minimized = false
+        var disableAll = false
+        var disableScene = false
+
         args.iterator().forEach {
             if(getNextKey){
                 GlobalStructs.db.validationKey = it
@@ -51,6 +55,17 @@ object Main {
             if(it.contains("-m")){
                 minimized = true
             }
+            //-v is to represent logging to a file
+            if(it.contains("-v")){
+                Logging.dumpToAFile = true
+            }
+            //-dAll represents disabling all both scene and full paint
+            if(it.contains("-dAll")){
+                disableAll = true
+            }
+            if(it.contains("-dScene")){
+                disableScene = true
+            }
             println(it)
         }
 
@@ -59,7 +74,7 @@ object Main {
         // Todo: Temp solution
         update()
         lookAndFeel()
-        val botManager = BotManager()
+        val botManager = BotManager(disableAll, disableScene)
         if(minimized) {
             botManager.state = JFrame.ICONIFIED
         }

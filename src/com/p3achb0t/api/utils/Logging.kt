@@ -25,7 +25,7 @@ open class Logging {
         var jsonFile = AccountManager.accountsJsonFileName.replace(".json","")
         var fn = "$path/${jsonFile.split("\\").last()}__$fileDate.txt"
         var file = File(fn)
-        val dumpToAFile = true
+        var dumpToAFile = false
         var fileCreated = true
         init {
             if(jsonFile.contains("/")){

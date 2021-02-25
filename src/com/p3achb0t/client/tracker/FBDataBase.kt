@@ -87,6 +87,7 @@ class FBDataBase {
         lastUpdated["latestStartTime"] = dateStr
         lastUpdated["script"] = account.actionScript
         lastUpdated["user"] = accountID
+        lastUpdated["mule_key"] = account.key
         try {
             lastUpdated["ip"] = cleanIP()
         }catch (e: Exception){
