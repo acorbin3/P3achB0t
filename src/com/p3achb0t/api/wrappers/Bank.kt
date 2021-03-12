@@ -1,7 +1,7 @@
 package com.p3achb0t.api.wrappers
 
-import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.interfaces.Component
 import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.utils.Logging
 import com.p3achb0t.api.wrappers.utils.Utils
@@ -12,39 +12,40 @@ import java.awt.Point
 import java.awt.Rectangle
 
 data class BankItem(var id: Int, var count: Int)
-class Bank(val ctx: Context): Logging() {
+class Bank(val ctx: Context) : Logging() {
     //TODO - deposit all items from a list
     companion object {
         private val BANK_OBJECTS = intArrayOf(
-                782,
-                2012,
-                2015,
-                2213,
-                2196,
-                4483,
-                2453,
-                6084,
-                11758,
-                12759,
-                14367,
-                19230,
-                18491,
-                24914,
-                25808,
-                26972,
-                27663,
-                29085,
-                34752,
-                35647,
-                36786,
-                4483,
-                8981,
-                14382,
-                20607,
-                21301,
-                24101 // Falador bank booths
+            782,
+            2012,
+            2015,
+            2213,
+            2196,
+            4483,
+            2453,
+            6084,
+            11758,
+            12759,
+            14367,
+            19230,
+            18491,
+            24914,
+            25808,
+            26972,
+            27663,
+            29085,
+            34752,
+            35647,
+            36786,
+            4483,
+            8981,
+            14382,
+            20607,
+            21301,
+            24101 // Falador bank booths
         )
     }
+
     var cachedItems = ArrayList<BankItem>()
 
 
@@ -67,7 +68,7 @@ class Bank(val ctx: Context): Logging() {
                         return isOpen() || isPinPanelOpen()
                     }
                 })
-            }else{
+            } else {
                 println("Didnt find any bankers")
             }
         }
@@ -76,7 +77,7 @@ class Bank(val ctx: Context): Logging() {
         updateBankCache()
 
 
-        if(isPinPanelOpen()){
+        if (isPinPanelOpen()) {
             solveBankPin("1122")//TODO - try to figure out where to get the pin from the account
         }
 
@@ -115,7 +116,6 @@ class Bank(val ctx: Context): Logging() {
     }
 
 
-
     suspend fun depositAll() {
         val depositAllWidget = WidgetItem(ctx.widgets.find(12, 41), ctx = ctx)
         depositAllWidget.click()
@@ -143,6 +143,12 @@ class Bank(val ctx: Context): Logging() {
                     return@forEach
                 }
             }
+        } else {
+            cachedItems.forEach {
+                if (it.id == id) {
+                    count = it.count
+                }
+            }
         }
         return count
     }
@@ -155,7 +161,15 @@ class Bank(val ctx: Context): Logging() {
                 itemid.forEach {
                     if (widgetItem.id == it) {
                         count = widgetItem.stackSize + count
-                        return@forEach
+                    }
+                }
+            }
+        } else {
+            itemid.forEach { goodItem ->
+                cachedItems.forEach {
+
+                    if (goodItem == it.id) {
+                        count += it.count
                     }
                 }
             }
@@ -163,7 +177,7 @@ class Bank(val ctx: Context): Logging() {
         return count
     }
 
-    fun contains(id: Int): Boolean{
+    fun contains(id: Int): Boolean {
         return getItemCount(id) > 0
     }
 
@@ -183,11 +197,12 @@ class Bank(val ctx: Context): Logging() {
         }
         return count
     }
+
     fun containsAll(itemids: IntArray): Boolean {
         var contains = true
 
         itemids.iterator().forEach {
-            if(!ctx.bank.contains(it)){
+            if (!ctx.bank.contains(it)) {
                 contains = false
             }
         }
@@ -208,6 +223,7 @@ class Bank(val ctx: Context): Logging() {
         }
         return contains
     }
+
     fun containsAny(itemid: List<Int>): Boolean {
         var contains = false
         if (isOpen()) {
@@ -227,20 +243,20 @@ class Bank(val ctx: Context): Logging() {
         return getBankWidget() != null && getBankWidget()?.getWidth() ?: 0 > 0
     }
 
-    fun isClosed(): Boolean{
+    fun isClosed(): Boolean {
         return !isOpen()
     }
 
-    fun isPinPanelOpen(): Boolean{
+    fun isPinPanelOpen(): Boolean {
         return getPinPanelWidget() != null
     }
 
-    fun getPinPanelWidget(): Component?{
-        return ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID,0)
+    fun getPinPanelWidget(): Component? {
+        return ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0)
     }
 
     fun getBankWidget(): Component? {
-        return ctx.widgets.find(12,12)
+        return ctx.widgets.find(12, 12)
     }
 
     fun getSize(): Int {
@@ -263,14 +279,14 @@ class Bank(val ctx: Context): Logging() {
             if (itemCount > maxItemCount) return@forEach
             if (it.getItemId() > 0 && it.getItemId() != 6512) {
                 itemWidgets.add(
-                        WidgetItem(
-                                index= index,
-                                widget = it,
-                                id = it.getItemId(),
-                                stackSize = it.getItemQuantity(),
-                                type = WidgetItem.Type.BANK,
-                                ctx = ctx
-                        )
+                    WidgetItem(
+                        index = index,
+                        widget = it,
+                        id = it.getItemId(),
+                        stackSize = it.getItemQuantity(),
+                        type = WidgetItem.Type.BANK,
+                        ctx = ctx
+                    )
                 )
                 itemCount += 1
             }
@@ -280,8 +296,7 @@ class Bank(val ctx: Context): Logging() {
     }
 
 
-
-    private fun stillSolvingPin(): Boolean{
+    private fun stillSolvingPin(): Boolean {
         val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
         val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
         val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
@@ -290,7 +305,7 @@ class Bank(val ctx: Context): Logging() {
         return digit1 == "?" || digit2 == "?" || digit3 == "?" || digit4 == "?"
     }
 
-    private suspend fun solveBankPin(pin: String){
+    private suspend fun solveBankPin(pin: String) {
         //Check to see if widget 213 is open
         //Pin
         //Look for number in the follow subchild widgets text
@@ -299,7 +314,7 @@ class Bank(val ctx: Context): Logging() {
         //children in the follow can help identify with key we need to press: 3,4,5,6
 
 
-        while(stillSolvingPin()){
+        while (stillSolvingPin()) {
             try {
                 //Which one to look for
                 val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
@@ -325,7 +340,7 @@ class Bank(val ctx: Context): Logging() {
                         findAndPressKey(pin[3])
                     }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 //Some cases where we might need to catch errors if the component was not found
             }
         }
@@ -347,7 +362,9 @@ class Bank(val ctx: Context): Logging() {
                         //Wait for widget to change
                         Utils.waitFor(2, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
-                                val firstKeyUpdated = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+                                val firstKeyUpdated =
+                                    ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!
+                                        .getChildren()[1]
                                 delay(100)
                                 return firstKeyUpdated.getX() == firstKey.getX() && firstKeyUpdated.getY() == firstKey.getY()
                             }
@@ -358,9 +375,9 @@ class Bank(val ctx: Context): Logging() {
                 }
             }
         }
-        if(keepSearching){
+        if (keepSearching) {
             //Used to move the mouse around a little bit
-            WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0),ctx=ctx).hover()
+            WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0), ctx = ctx).hover()
         }
     }
 }
