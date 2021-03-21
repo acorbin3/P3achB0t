@@ -49,8 +49,8 @@ class Projectile(
     val y get() = raw.getY()
     val z get() = raw.getZ()
 
-    val getPosition = Tile(raw.getX().toInt() / 128 + ctx.client.getBaseY(), raw.getY().toInt() / 128 + ctx.client.getBaseY(), ctx=ctx)
-    val sourcePosition = Tile(raw.getSourceX() / 128 + ctx.client.getBaseY(), raw.getSourceY() / 128 + ctx.client.getBaseY(), ctx=ctx)
+    val getPosition = Tile(raw.getX().toInt() / 128 + ctx.client.getBaseX(), raw.getY().toInt() / 128 + ctx.client.getBaseY(), ctx=ctx)
+    val sourcePosition = Tile(raw.getSourceX() / 128 + ctx.client.getBaseX(), raw.getSourceY() / 128 + ctx.client.getBaseY(), ctx=ctx)
     //  Subtracting 6 cycles seems to make the predicted  more stable, otherwise the tile jumps around and is off by 1 often
     val remaining = min( (raw.getCycleEnd() - ctx.client.getCycle() - 5), raw.getCycleEnd() - raw.getCycleStart())
     val pX = (raw.getX() + (raw.getSpeedX() * remaining)).toInt()
