@@ -25,9 +25,9 @@ class GameObject(
     val id: Int
         get() {
             return when {
-                sceneryObject != null -> sceneryObject.getTag().shr(17).and(4294967295L).toInt()
-                wallObject != null -> wallObject.getTag().shr(17).and(4294967295L).toInt()
-                floorDecoration != null -> floorDecoration.getTag().shr(17).and(4294967295L).toInt()
+                sceneryObject != null -> sceneryObject.getTag().ushr(17).and(4294967295L).toInt()
+                wallObject != null -> wallObject.getTag().ushr(17).and(4294967295L).toInt()
+                floorDecoration != null -> floorDecoration.getTag().ushr(17).and(4294967295L).toInt()
                 else -> 0
             }
         }
@@ -35,6 +35,25 @@ class GameObject(
         get() {
             val objectComposite =  getObjectComposite( id)
             return objectComposite?.getName().toString()
+        }
+
+    val menuX: Int
+    get(){
+        return when {
+            sceneryObject != null -> sceneryObject.getTag().and(0x7f).toInt()
+            wallObject != null -> wallObject.getTag().and(0x7f).toInt()
+            floorDecoration != null -> floorDecoration.getTag().and(0x7f).toInt()
+            else -> 0
+        }
+    }
+    val menuY: Int
+        get(){
+            return when {
+                sceneryObject != null -> sceneryObject.getTag().shr(7).and(0x7f).toInt()
+                wallObject != null -> wallObject.getTag().shr(7).and(0x7f).toInt()
+                floorDecoration != null -> floorDecoration.getTag().shr(7).and(0x7f).toInt()
+                else -> 0
+            }
         }
     private val objectPositionInfo: ObjectPositionInfo
         get() {
