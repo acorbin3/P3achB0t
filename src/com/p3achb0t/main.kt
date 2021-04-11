@@ -13,6 +13,8 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.loader.Loader
 import com.p3achb0t.client.util.Util
 import com.p3achb0t.client.ux.BotManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.Font
 import java.io.File
 import java.lang.Thread.sleep
@@ -21,6 +23,7 @@ import java.util.jar.JarFile
 import javax.swing.JFrame
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
+import javax.xml.bind.JAXBElement
 
 
 object Main {
@@ -37,6 +40,7 @@ object Main {
         args.iterator().forEach {
             if(getNextKey){
                 GlobalStructs.db.validationKey = it
+                GlobalStructs.db.isPrivateScriptsValidated = GlobalStructs.db.validateScript("private", GlobalStructs.db.validationKey)
 
                 getNextKey = false
             }

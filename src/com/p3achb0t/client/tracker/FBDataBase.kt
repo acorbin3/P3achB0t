@@ -25,6 +25,7 @@ class FBDataBase {
     private val userSkillOrItemCount: MutableMap<String, Int> = HashMap()
     private val fileHashRef: CollectionReference
     var validationKey: String = ""
+    var isPrivateScriptsValidated = false
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
 
     init {

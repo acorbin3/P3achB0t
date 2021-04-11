@@ -17,20 +17,22 @@ class LoadScripts {
     val loadedFolders = mutableSetOf<String>()
 
     //If this is empty, load all the scripts. If filled in, limt to only these scripts
-//    val limitedScripts = arrayListOf<String>("Zulrah","ZulrahMain","ZulrahMule","ZulrahGearer", "GEAlcher", "WalkToGEMain","WalkToGE")
+//    val limitedScripts = arrayListOf<String>("Corp", "CorpMain","Zulrah","ZulrahMain","ZulrahMule","ZulrahGearer", "GEAlcher", "WalkToGEMain","WalkToGE", "CrumbleAlch")
     val limitedScripts = arrayListOf<String>()
+    var validated = false
 
     fun refresh() {
+        GlobalStructs.db.validationKey
         scriptsInformation.clear()
         for (x in loadedFolders) {
             loadJars(x)
         }
     }
 
-    fun findLoadedScript(scriptNameOrFileName: String): ScriptInformation?{
+    fun findLoadedScript(scriptNameOrFileName: String): ScriptInformation? {
         var script: ScriptInformation? = null
         scriptsInformation.forEach { t, scriptInformation ->
-            if(t == scriptNameOrFileName || scriptNameOrFileName == scriptInformation.name){
+            if (t == scriptNameOrFileName || scriptNameOrFileName == scriptInformation.name) {
                 script = scriptInformation
             }
         }
@@ -60,15 +62,14 @@ class LoadScripts {
 
             if (file.isDirectory) {
                 loopJarFiles(file.absolutePath)
-            }
-            else {
-                if(file.isFile && file.name.contains(".jar")) {
+            } else {
+                if (file.isFile && file.name.contains(".jar")) {
                     val jar = JarFile(file)
                     //println(file.name)
                     val enumeration = jar.entries()
-                    while(enumeration.hasMoreElements()) {
+                    while (enumeration.hasMoreElements()) {
                         val entry = enumeration.nextElement()
-                        if(entry.name.endsWith(".class")) {
+                        if (entry.name.endsWith(".class")) {
                             val classReader = ClassReader(jar.getInputStream(entry))
                             val classNode = ClassNode()
                             classReader.accept(classNode, 0)
@@ -85,11 +86,11 @@ class LoadScripts {
         val resources = classLoader.getResources(packageName)
         val defaultScripts = arrayListOf("TemplateScript", "NullScript")
         println("Looking at path: $packageName")
-        if(File(packageName).exists()) {
+        if (File(packageName).exists()) {
             File(packageName).listFiles()?.iterator()?.forEachRemaining {
                 println(it)
             }
-        }else{
+        } else {
             GlobalScope.launch {
                 val current = LocalDateTime.now()
 
@@ -97,15 +98,15 @@ class LoadScripts {
                 val formattedCurrentDate = current.format(formatter)
                 val lastChecked = File("lastChecked.txt")
                 var shouldCheck = true
-                if(lastChecked.exists()){
+                if (lastChecked.exists()) {
                     val text = lastChecked.readText()
-                    if(text == formattedCurrentDate){
+                    if (text == formattedCurrentDate) {
                         shouldCheck = false
                     }
-                }else{
+                } else {
                     lastChecked.createNewFile()
                 }
-                if(shouldCheck) {
+                if (shouldCheck) {
                     val curDir = System.getProperty("user.dir")
                     val fullPath = "$curDir/src/$packageName"
                     File(fullPath).walkTopDown().forEach {
@@ -146,11 +147,12 @@ class LoadScripts {
                             classReader.accept(classNode, 0)
 
                             if (classNode.superName != null
-                                    && (classNode.superName.contains("ActionScript")
-                                            || classNode.superName.contains("PaintScript")
-                                            || classNode.superName.contains("ServiceScript"))
-                                    && classNode.name.replace(".class", "")
-                                            .split("/").last() !in defaultScripts) {
+                                && (classNode.superName.contains("ActionScript")
+                                        || classNode.superName.contains("PaintScript")
+                                        || classNode.superName.contains("ServiceScript"))
+                                && classNode.name.replace(".class", "")
+                                    .split("/").last() !in defaultScripts
+                            ) {
                                 //We want to make sure we are looking at the right package. So we compare each director
                                 // structure to make sure it matches given the desired class path
                                 val fullClassSplit = classNode.name.split("/")
@@ -163,11 +165,11 @@ class LoadScripts {
                                 }
 
                                 //Filtering out the non needed scripts
-                                if(limitedScripts.isNotEmpty()
-                                        && classNode.superName.contains("ActionScript")
-                                        && classNode.name.replace(".class", "")
-                                                .split("/").last() !in limitedScripts
-                                ){
+                                if (limitedScripts.isNotEmpty()
+                                    && classNode.superName.contains("ActionScript")
+                                    && classNode.name.replace(".class", "")
+                                        .split("/").last() !in limitedScripts
+                                ) {
                                     goodPackage = false
                                     println("Filtering out the non needed scripts: ${classNode.name}")
                                 }
@@ -222,16 +224,22 @@ class LoadScripts {
                     else -> ScriptType.None
                 }
 
-                if(limitedScripts.isEmpty()
+                val scriptManifestName = x.values[3] as String
+                if ((!scriptManifestName.toLowerCase().contains("private") ||
+                            (scriptManifestName.toLowerCase().contains("private")
+                                    && GlobalStructs.db.isPrivateScriptsValidated))
+                ) {
+                    if (limitedScripts.isEmpty()
                         //Limiting the action scripts
                         || (limitedScripts.isNotEmpty()
-                                && type== ScriptType.ActionScript
+                                && type == ScriptType.ActionScript
                                 && x.values[3] in limitedScripts)
-                        ||(limitedScripts.isNotEmpty()
-                                && type != ScriptType.ActionScript)) {
-                    scriptsInformation[file.name] = if (!file.name.contains(".jar")) {
-                        //Adding the class for internally compiled scripts
-                        ScriptInformation(
+                        || (limitedScripts.isNotEmpty()
+                                && type != ScriptType.ActionScript)
+                    ) {
+                        scriptsInformation[file.name] = if (!file.name.contains(".jar")) {
+                            //Adding the class for internally compiled scripts
+                            ScriptInformation(
                                 file.name,
                                 file.path,
                                 "${x.values[1]}",
@@ -240,9 +248,10 @@ class LoadScripts {
                                 "${x.values[7]}",
                                 type,
                                 classNode.name,
-                                Class.forName(classNode.name.replace("/", ".")))
-                    } else {
-                        ScriptInformation(
+                                Class.forName(classNode.name.replace("/", "."))
+                            )
+                        } else {
+                            ScriptInformation(
                                 file.name,
                                 file.path,
                                 "${x.values[1]}",
@@ -250,9 +259,11 @@ class LoadScripts {
                                 "${x.values[5]}",
                                 "${x.values[7]}",
                                 type,
-                                classNode.name)
+                                classNode.name
+                            )
+                        }
+                        println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
                     }
-                    println("[+] added ${file.name}, ${file.path}, ${classNode.name}")
                 }
             }
         }
