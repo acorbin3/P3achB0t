@@ -38,6 +38,10 @@ open class Actor(
         get() {
             return raw.getOverheadText()
         }
+    val orientation: Orientation?
+    get(){
+        return Orientation.fromInt(raw.getOrientation())
+    }
 
     override fun getInteractPoint(): Point {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
