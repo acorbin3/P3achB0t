@@ -228,17 +228,21 @@ enum class MenuOpcode(val id: Int) {
      * Menu action triggered when the id is not defined in this class.
      */
     UNKNOWN(-1);
+
+    companion object{
+        fun valueOf(value: Int): MenuOpcode? = values().find { it.id == value }
+    }
 //
 //    val MENU_ACTION_DEPRIORITIZE_OFFSET = 2000
 //
 //    private val map: MutableMap<Int, MenuOpcode> = HashMap()
-//
-//
-//        for (MenuOpcode menuOpcode : values())
+
+
+//        for ( menuOpcode : values())
 //        {
 //            map.put(menuOpcode.getId(), menuOpcode)
 //        }
-//
+////
 //    private val id = 0
 //
 //    open fun MenuOpcode(id: Int) {
