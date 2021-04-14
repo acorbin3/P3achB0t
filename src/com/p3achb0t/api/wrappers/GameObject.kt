@@ -55,6 +55,15 @@ class GameObject(
                 else -> 0
             }
         }
+    val menuID: Int
+        get(){
+            return when {
+                sceneryObject != null -> sceneryObject.getTag().shr(17).toInt()
+                wallObject != null -> wallObject.getTag().shr(17).toInt()
+                floorDecoration != null -> floorDecoration.getTag().shr(17).toInt()
+                else -> 0
+            }
+        }
     private val objectPositionInfo: ObjectPositionInfo
         get() {
             return when {
