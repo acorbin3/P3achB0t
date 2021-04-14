@@ -21,7 +21,11 @@ import java.awt.Point
 class PaintGameObject : PaintScript() {
     override fun draw(g: Graphics) {
         if (ctx.client.getGameState() == 30) {
-            gameObjectPaint(g, ctx)
+            try {
+                gameObjectPaint(g, ctx)
+            }catch (e: Exception){
+
+            }
         }
     }
 
@@ -46,52 +50,58 @@ class PaintGameObject : PaintScript() {
                                     val go_fd = GameObject(floorDecoration = floorDecoration, ctx = ctx)
                                     val globalPos_fd = go_fd.getGlobalLocation()
                                     if (localPlayer.distanceTo(globalPos_fd) < 5
-                                            && planeInt == ctx.players.getLocal().player.getPlane()) {
+                                        && planeInt == ctx.players.getLocal().player.getPlane()
+                                    ) {
 
-                                        val floorModel = go_fd.model!!
-                                        val positionInfo =
+                                        try {
+                                            val floorModel = go_fd.model!!
+                                            val positionInfo =
                                                 ObjectPositionInfo(
-                                                        floorDecoration.getX(),
-                                                        floorDecoration.getY(),
-                                                        0
+                                                    floorDecoration.getX(),
+                                                    floorDecoration.getY(),
+                                                    0
                                                 )
 
 
-                                        g.color = Color.pink
-                                        if (go_fd.isMouseOverObj()) {
-                                            val modelTriangles =
+                                            g.color = Color.pink
+                                            if (go_fd.isMouseOverObj()) {
+                                                val modelTriangles =
                                                     getTrianglesFromModel(
-                                                            positionInfo,
-                                                            floorModel,
-                                                            ctx
+                                                        positionInfo,
+                                                        floorModel,
+                                                        ctx
 
                                                     )
 
-                                            modelTriangles.forEach {
-                                                g.drawPolygon(it)
-                                            }
+                                                modelTriangles.forEach {
+                                                    g.drawPolygon(it)
+                                                }
 
-                                            val hull = getConvexHullFromModel(
+                                                val hull = getConvexHullFromModel(
                                                     positionInfo,
                                                     floorModel,
                                                     ctx
 
-                                            )
-                                            g.color = Color.darkGray
-                                            g.drawPolygon(hull)
+                                                )
+                                                g.color = Color.darkGray
+                                                g.drawPolygon(hull)
 
-                                            g.color = Color.YELLOW
-                                            val point2 =
+                                                g.color = Color.YELLOW
+                                                val point2 =
                                                     Calculations.worldToScreen(
-                                                            floorDecoration.getX(),
-                                                            floorDecoration.getY(),
-                                                            floorDecoration.getEntity().getHeight(),
-                                                            ctx
+                                                        floorDecoration.getX(),
+                                                        floorDecoration.getY(),
+                                                        floorDecoration.getEntity().getHeight(),
+                                                        ctx
                                                     )
-                                            g.drawString(
+                                                g.drawString(
                                                     go_fd.name + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})",
                                                     point2.x,
-                                                    point2.y)
+                                                    point2.y
+                                                )
+                                            }
+                                        } catch (e: Exception) {
+
                                         }
                                     }
                                 }
@@ -104,7 +114,7 @@ class PaintGameObject : PaintScript() {
                                         if (it != null && it.getTag() > 0) {
 
                                             val testID = 23145
-                                            val id2 = it.getTag().shr(17).and(0x7fff).toInt()
+                                            val id2 = it.getTag().ushr(17).and(4294967295L).toInt()
                                             if (id2 == testID) {
                                                 println("log found")
                                             }
@@ -112,10 +122,11 @@ class PaintGameObject : PaintScript() {
                                             // Print out the polygons for the models
                                             if (false) {
                                                 val tilePolygon =
-                                                        Calculations.getCanvasTileAreaPoly(ctx,
-                                                                it.getCenterX(),
-                                                                it.getCenterY()
-                                                        )
+                                                    Calculations.getCanvasTileAreaPoly(
+                                                        ctx,
+                                                        it.getCenterX(),
+                                                        it.getCenterY()
+                                                    )
                                                 g.color = Color.ORANGE
                                                 g.drawPolygon(tilePolygon)
                                             }
@@ -124,46 +135,49 @@ class PaintGameObject : PaintScript() {
                                             val globalPos = go.getGlobalLocation()
 
                                             val point =
-                                                    Calculations.worldToScreen(
-                                                            it.getCenterX(),
-                                                            it.getCenterY(),
-                                                            planeInt,
-                                                            ctx
+                                                Calculations.worldToScreen(
+                                                    it.getCenterX(),
+                                                    it.getCenterY(),
+                                                    planeInt,
+                                                    ctx
 
-                                                    )
+                                                )
 
 
                                             //Printing out the model and the hull
                                             if (localPlayer.distanceTo(globalPos) < 10
-                                                    && planeInt == ctx.players.getLocal().player.getPlane()) {
+                                                && planeInt == ctx.players.getLocal().player.getPlane()
+                                            ) {
                                                 var model = it.getEntity()
                                                 if (!(model is Model)) {
                                                     model = model.getModel()
                                                 }
                                                 if (model is Model) {
                                                     val positionInfo =
-                                                            ObjectPositionInfo(
-                                                                    it.getCenterX(),
-                                                                    it.getCenterY(),
-                                                                    it.getOrientation()
-                                                            )
+                                                        ObjectPositionInfo(
+                                                            it.getCenterX(),
+                                                            it.getCenterY(),
+                                                            it.getOrientation()
+                                                        )
 
-                                                    val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY()
-                                                            ?: -1)
+                                                    val mousePoint = Point(
+                                                        ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY()
+                                                            ?: -1
+                                                    )
                                                     val hull = getConvexHullFromModel(
-                                                            positionInfo,
-                                                            model,
-                                                            ctx
+                                                        positionInfo,
+                                                        model,
+                                                        ctx
 
                                                     )
-                                                    if(hull.contains(mousePoint)) {
+                                                    if (hull.contains(mousePoint)) {
                                                         val modelTriangles =
-                                                                getTrianglesFromModel(
-                                                                        positionInfo,
-                                                                        model,
-                                                                        ctx
+                                                            getTrianglesFromModel(
+                                                                positionInfo,
+                                                                model,
+                                                                ctx
 
-                                                                )
+                                                            )
                                                         g.color = Color.CYAN
                                                         g.drawPolygon(hull)
                                                         g.color = Color.RED
@@ -172,29 +186,30 @@ class PaintGameObject : PaintScript() {
                                                         }
                                                         // PAint the name
                                                         if (point.x != -1 && point.y != -1 && Calculations.isOnscreen(
-                                                                        ctx, point
-                                                                )
+                                                                ctx, point
+                                                            )
                                                         ) {
                                                             g.color = Color.GREEN
                                                             val point2 =
-                                                                    Calculations.worldToScreen(
-                                                                            it.getCenterX(),
-                                                                            it.getCenterY(),
-                                                                            it.getEntity().getHeight(),
-                                                                            ctx
+                                                                Calculations.worldToScreen(
+                                                                    it.getCenterX(),
+                                                                    it.getCenterY(),
+                                                                    it.getEntity().getHeight(),
+                                                                    ctx
 
-                                                                    )
+                                                                )
                                                             val localPos = go.getLocalLocation()
 
                                                             //Add offset on the Y so Things on the same tile do not stack
                                                             val offsetY = (count - 1) * 30
                                                             //For now only filter objects near m
                                                             if (localPlayer.distanceTo(globalPos) < 10
-                                                                    && planeInt == ctx.players.getLocal().player.getPlane())
+                                                                && planeInt == ctx.players.getLocal().player.getPlane()
+                                                            )
                                                                 g.drawString(
-                                                                        go.name+ "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
-                                                                        point2.x,
-                                                                        point2.y + offsetY
+                                                                    go.name + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
+                                                                    point2.x,
+                                                                    point2.y + offsetY
                                                                 )
 
                                                             //Filter only near me: if(abs(globalPos.x - localPlayer.getGlobalLocation().x) <5 && abs(globalPos.y - localPlayer.getGlobalLocation().y) < 5)
@@ -207,35 +222,36 @@ class PaintGameObject : PaintScript() {
                                 }
 
                                 val globalPos =
-                                        Tile(
-                                                tile.getX() + ctx.client.getBaseX(),
-                                                tile.getY() + ctx.client.getBaseY(),
-                                                ctx = ctx
-                                        )
+                                    Tile(
+                                        tile.getX() + ctx.client.getBaseX(),
+                                        tile.getY() + ctx.client.getBaseY(),
+                                        ctx = ctx
+                                    )
 
                                 //print out wall decorations
                                 if (tile.getWallDecoration() != null && localPlayer.distanceTo(globalPos) < 5) {
                                     val wallDecoration = tile.getWallDecoration()
-                                    val id = wallDecoration.getTag().shr(17).and(0x7fff).toInt()
+                                    val id = wallDecoration.getTag().ushr(17).and(4294967295L).toInt()
                                     val objectComposite =
-                                            getObjectComposite(sceneData, id)
+                                        getObjectComposite(sceneData, id)
                                     val positionInfo =
-                                            ObjectPositionInfo(
-                                                    wallDecoration.getX(),
-                                                    wallDecoration.getY(),
-                                                    wallDecoration.getOrientation()
-                                            )
+                                        ObjectPositionInfo(
+                                            wallDecoration.getX(),
+                                            wallDecoration.getY(),
+                                            wallDecoration.getOrientation()
+                                        )
                                     if (wallDecoration != null
-                                            && wallDecoration.getEntity1() != null) {
+                                        && wallDecoration.getEntity1() != null
+                                    ) {
                                         if (wallDecoration.getEntity1() is Model) {
                                             val model = wallDecoration.getEntity1() as Model
                                             val modelTriangles =
-                                                    getTrianglesFromModel(
-                                                            positionInfo,
-                                                            model,
-                                                            ctx
+                                                getTrianglesFromModel(
+                                                    positionInfo,
+                                                    model,
+                                                    ctx
 
-                                                    )
+                                                )
                                             g.color = Color.PINK
                                             modelTriangles.forEach {
                                                 g.drawPolygon(it)
@@ -253,7 +269,7 @@ class PaintGameObject : PaintScript() {
 
                                     if (wo.isMouseOverObj()) {
                                         g.color = Color.CYAN
-                                        val id = wall.getTag().shr(17).and(0x7fff).toInt()
+                                        val id = wall.getTag().ushr(17).and(4294967295L).toInt()
 
                                         if (wall.getEntity1() != null) {
                                             val model = wall.getEntity1().getModel()
@@ -268,16 +284,16 @@ class PaintGameObject : PaintScript() {
                                         }
 
                                         val point2 =
-                                                Calculations.worldToScreen(
-                                                        wall.getX(),
-                                                        wall.getY(),
-                                                        wall.getEntity1().getHeight(),
-                                                        ctx
-                                                )
+                                            Calculations.worldToScreen(
+                                                wall.getX(),
+                                                wall.getY(),
+                                                wall.getEntity1().getHeight(),
+                                                ctx
+                                            )
                                         g.drawString(
-                                                wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
-                                                point2.x,
-                                                point2.y
+                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
+                                            point2.x,
+                                            point2.y
                                         )
                                     }
                                 }
@@ -292,29 +308,29 @@ class PaintGameObject : PaintScript() {
 
     private fun paintWallModel(wall: Wall, model: Model, ctx: Context, g: Graphics) {
         val positionInfo =
-                ObjectPositionInfo(
-                        wall.getX(),
-                        wall.getY(),
-                        wall.getOrientationA()
-                )
+            ObjectPositionInfo(
+                wall.getX(),
+                wall.getY(),
+                wall.getOrientationA()
+            )
 
         val modelTriangles =
-                getTrianglesFromModel(
-                        positionInfo,
-                        model,
-                        ctx
-
-                )
-        g.color = Color.RED
-        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
-        val hull = getConvexHullFromModel(
+            getTrianglesFromModel(
                 positionInfo,
                 model,
                 ctx
 
+            )
+        g.color = Color.RED
+        val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
+        val hull = getConvexHullFromModel(
+            positionInfo,
+            model,
+            ctx
+
         )
         g.color = Color.CYAN
-        if(hull.contains(mousePoint)) {
+        if (hull.contains(mousePoint)) {
             modelTriangles.forEach {
                 g.drawPolygon(it)
             }
@@ -324,8 +340,8 @@ class PaintGameObject : PaintScript() {
     }
 
     fun getObjectComposite(
-            objectCache: EvictingDualNodeHashTable,
-            gameObjectId: Int
+        objectCache: EvictingDualNodeHashTable,
+        gameObjectId: Int
     ): LocType? {
         var desiredGameObject1: LocType? = null
         objectCache.getHashTable().getBuckets().iterator().forEach { bucketItem ->
@@ -333,11 +349,11 @@ class PaintGameObject : PaintScript() {
 
                 var objectComposite = bucketItem.getNext()
                 while (objectComposite != null
-                        && objectComposite is LocType
-                        && objectComposite != bucketItem
+                    && objectComposite is LocType
+                    && objectComposite != bucketItem
                 ) {
                     if (objectComposite.getKey() > 0
-                            && objectComposite.getKey().toInt() == gameObjectId
+                        && objectComposite.getKey().toInt() == gameObjectId
                     ) {
                         desiredGameObject1 = objectComposite
                         break
