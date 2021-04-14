@@ -5,6 +5,7 @@ import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.interfaces.Npc
 import com.p3achb0t.api.interfaces.ParamType
 import com.p3achb0t.api.wrappers.NPC
+import com.p3achb0t.api.wrappers.Orientation
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getActorTriangles
 import com.p3achb0t.api.wrappers.utils.getConvexHull
@@ -78,7 +79,7 @@ class PaintNpc : PaintScript() {
                                     }
                                 }
                                 g.drawString(
-                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()} orientation: ${newNPC.npc.getOrientation()} spot: ${newNPC.npc.getSpotAnimation()} menuIndex: ${newNPC.menuIndex} $actions",
+                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()}(${newNPC.npc.getTargetIndex() - 32768}) orientation: ${newNPC.npc.getOrientation()} ${newNPC.orientation?.name} spot: ${newNPC.npc.getSpotAnimation()} menuIndex: ${newNPC.menuIndex} sequence:${newNPC.npc.getSequence()} DsitTo: ${newNPC.distanceTo()}",
                                         namePoint.x,
                                         namePoint.y
                                 )

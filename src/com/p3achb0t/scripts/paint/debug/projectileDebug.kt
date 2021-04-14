@@ -33,7 +33,7 @@ fun projectilePaint(g: Graphics, ctx: Context) {
         g.drawPolygon(hull)
         val namePoint = it.getNamePoint()
         g.drawString(
-                "ID:${it.id} P${it.predictedTile}.",
+                "ID:${it.id} P${it.predictedTile}. S${it.sourcePosition} Cur ${it.getPosition}",
 
                 namePoint.x,
                 namePoint.y

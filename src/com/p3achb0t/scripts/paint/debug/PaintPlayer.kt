@@ -2,6 +2,7 @@ package com.p3achb0t.scripts.paint.debug
 
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ScriptManifest
+import com.p3achb0t.api.wrappers.Orientation
 import com.p3achb0t.api.wrappers.utils.Calculations
 import com.p3achb0t.api.wrappers.utils.getActorTriangles
 import com.p3achb0t.api.wrappers.utils.getConvexHull
@@ -58,8 +59,9 @@ class PaintPlayer : PaintScript() {
                             )
                     ) {
                         g.color = Color.GREEN
+                        val orientation = Orientation.fromInt(_player.getOrientation())
                         g.drawString(
-                                _player.getUsername().getCleanName() + " seq:${_player.getSequence()}  targ:${_player.getTargetIndex()} mov:${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()}  ${_player.getX()} ${_player.getY()} spot: ${_player.getSpotAnimation()}",
+                                _player.getUsername().getCleanName() + " seq:${_player.getSequence()}  targ:${_player.getTargetIndex()} index:${_player.getIndex()} mov:${_player.getMovementSequence()} ${_player.getReadySequence()} ${_player.getOrientation()} ${orientation?.name}  ${_player.getX()} ${_player.getY()} spot: ${_player.getSpotAnimation()} frame:${_player.getSpotAnimationFrame()} cycle:${_player.getSpotAnimationFrameCycle()}",
                                 namePoint.x,
                                 namePoint.y
                         )

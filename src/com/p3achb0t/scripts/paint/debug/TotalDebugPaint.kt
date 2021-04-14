@@ -3,6 +3,7 @@ package com.p3achb0t.scripts.paint.debug
 import com.p3achb0t.api.script.PaintScript
 import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.Bank
+import com.p3achb0t.client.configs.GlobalStructs
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Point
@@ -166,7 +167,8 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                 "ctrl-0 equipment: $isPaintEquipment",
                 "ctrl-q bank: $isBankPaintDebug",
                 "ctrl-w client debugs:$isClientDebugging",
-                "ctrl-e GraphicsObjects: $isGraphicsObjects"
+                "ctrl-e GraphicsObjects: $isGraphicsObjects",
+                "ctrl-d actions: ${GlobalStructs.isMenuOptions}"
 
         )
 
@@ -256,6 +258,11 @@ class TotalDebugPaint: PaintScript(), KeyListener, MouseWheelListener, MouseList
                     isGraphicsObjects = !isGraphicsObjects
                     println("Swapping Graphics Objects: $isGraphicsObjects")
                 }
+                'D'.toInt().toString()->{
+                    GlobalStructs.isMenuOptions = !GlobalStructs.isMenuOptions
+                    println("Swapping menuOptions: ${GlobalStructs.isMenuOptions}")
+                }
+
             }
         }
     }
