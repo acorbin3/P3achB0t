@@ -20,6 +20,7 @@ class GlobalStructs {
         val communication = Broker()
         val peerClient = PeerClient()
         val db : FBDataBase = FBDataBase()
+        var isMenuOptions = false
     }
 
 }

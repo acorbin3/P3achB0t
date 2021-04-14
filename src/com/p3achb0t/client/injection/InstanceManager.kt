@@ -1,6 +1,8 @@
 package com.p3achb0t.client.injection
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.MenuOpcode
+import com.p3achb0t.api.MenuOpcode.CANCEL
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.script.ActionScript
 import com.p3achb0t.api.script.GroupTask
@@ -15,6 +17,7 @@ import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import com.p3achb0t.client.scripts.loading.ScriptInformation
+import com.p3achb0t.scripts.paint.debug.TotalDebugPaint
 import com.p3achb0t.scripts.service.restart_action.RestartIdle
 import kotlinx.coroutines.*
 import java.applet.Applet
@@ -33,6 +36,7 @@ enum class ScriptState {
 }
 
 class InstanceManager(val client: Any) : Logging() {
+
 
     // Client candy
     lateinit var ctx: Context
@@ -113,9 +117,10 @@ class InstanceManager(val client: Any) : Logging() {
 
         //Check to see if we need to login or handle welcome button
         scriptState = if (serviceScripts.contains("Login Handler")
-                && (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
-                        || (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGGED_IN
-                        && ctx.worldHop.isWelcomeRedButtonAvailable())) && account.startActionScriptAutomatically) {
+            && (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGIN_SCREEN
+                    || (ctx.client.getGameState().let { GameState.of(it) } == GameState.LOGGED_IN
+                    && ctx.worldHop.isWelcomeRedButtonAvailable())) && account.startActionScriptAutomatically
+        ) {
             ScriptState.LoginScreenNotPaused
         } else {
             ScriptState.Running
@@ -136,7 +141,10 @@ class InstanceManager(val client: Any) : Logging() {
         scriptState = ScriptState.Stopped
         actionScriptState(false)
         actionScript.stop()
-        GlobalStructs.communication.unsubscribeAllChannels(actionScript.ctx.ipc.channels.keys, actionScript.ctx.ipc.scriptUUID)
+        GlobalStructs.communication.unsubscribeAllChannels(
+            actionScript.ctx.ipc.channels.keys,
+            actionScript.ctx.ipc.scriptUUID
+        )
 
         val nullScript = NullScript()
         waitOnContext()
@@ -239,7 +247,10 @@ class InstanceManager(val client: Any) : Logging() {
         val paintScript = paintScripts[scriptFileName] ?: return
         paintScripts.remove(scriptFileName)
         paintScript.stop()
-        GlobalStructs.communication.unsubscribeAllChannels(paintScript.ctx.ipc.channels.keys, paintScript.ctx.ipc.scriptUUID)
+        GlobalStructs.communication.unsubscribeAllChannels(
+            paintScript.ctx.ipc.channels.keys,
+            paintScript.ctx.ipc.scriptUUID
+        )
     }
 
     fun drawPaintScripts(g: Graphics) {
@@ -293,7 +304,10 @@ class InstanceManager(val client: Any) : Logging() {
         val serviceScript = serviceScripts[scriptFileName] ?: return
         serviceScripts.remove(scriptFileName)
         serviceScript.stop()
-        GlobalStructs.communication.unsubscribeAllChannels(serviceScript.ctx.ipc.channels.keys, serviceScript.ctx.ipc.scriptUUID)
+        GlobalStructs.communication.unsubscribeAllChannels(
+            serviceScript.ctx.ipc.channels.keys,
+            serviceScript.ctx.ipc.scriptUUID
+        )
 
         if (serviceScripts.size == 0 && serviceLoop != null) {
             serviceLoop?.cancel()
@@ -338,7 +352,8 @@ class InstanceManager(val client: Any) : Logging() {
 
                 var runServiceScript = true
                 if ((scriptState == ScriptState.Paused || scriptState == ScriptState.Stopped)
-                        && !script.runWhenActionScriptIsPausedOrStopped) {
+                    && !script.runWhenActionScriptIsPausedOrStopped
+                ) {
                     runServiceScript = false
 
                 }
@@ -349,8 +364,9 @@ class InstanceManager(val client: Any) : Logging() {
                         stopActionScript()
                     }
                     if (script.shouldPauseActionScript
-                            && (scriptState == ScriptState.Paused
-                                    || scriptState == ScriptState.LoginScreenNotPaused)) {
+                        && (scriptState == ScriptState.Paused
+                                || scriptState == ScriptState.LoginScreenNotPaused)
+                    ) {
                         togglePauseActionScript()
                     }
                 }
@@ -419,8 +435,93 @@ class InstanceManager(val client: Any) : Logging() {
     }
 
     //.doActionCallback(int, int, int, int, java.lang.String, java.lang.String, int, int, int)'
-    fun doActionCallback(argument0: Int, argument1: Int, argument2: Int, argument3: Int, action: String, targetName: String, mouseX: Int, mouseY: Int, argument8: Byte) {
+    fun doActionCallback(
+        argument0: Int,
+        argument1: Int,
+        argument2: Int,
+        argument3: Int,
+        action: String,
+        targetName: String,
+        mouseX: Int,
+        mouseY: Int,
+        argument8: Byte
+    ) {
         logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
+        if (GlobalStructs.isMenuOptions) {
+            when (argument2) {
+                //GameObject
+                in 1..6 -> {
+
+                    val localX = argument0 // This can be -1 if not a child
+                    val localY = argument1
+                    val gameObjectID = argument3
+                    val gameObject = ctx.gameObjects.find(gameObjectID).filter { it.menuX == localX && it.menuY ==localY }
+
+                    val menuAction = MenuOpcode.valueOf(argument2)
+                    if(gameObject.isNotEmpty()) {
+                        logger.info("val gameObject = ctx.gameObjects.find($gameObjectID, Tile(${gameObject[0].getGlobalLocation().x},${gameObject[0].getGlobalLocation().y},ctx=ctx))\n" +
+                                "gameObject.doAction()")
+                    }
+
+                }
+                1001->{
+
+                }
+                // NPCs
+                in 7..13 -> {
+
+                }
+
+                //Players
+                in 14..15 -> {
+
+                }
+                //GroundItem
+                in 16..22 -> {
+
+                }
+                //Widgets
+                in 24..30 -> {
+                    widgetDebug(argument0, argument1, argument2)
+                }
+                in 39..43->{
+                    widgetDebug(argument0, argument1, argument2)
+                }
+                57->{
+                    widgetDebug(argument0, argument1, argument2)
+                }
+                //This is inventory
+                in 31..38 -> {
+                    val itemSlotInInvetory = argument0
+                    val rawWidgetID = argument1
+                    val containerID = argument1.shr(16)
+                    val childID = argument1.and(0xFF)
+                    val menuAction = MenuOpcode.valueOf(argument2)
+                    val itemId = argument3
+
+                }
+                CANCEL.id -> {
+
+                }
+            }
+        }
+    }
+
+    private fun widgetDebug(argument0: Int, argument1: Int, argument2: Int) {
+        val childID = argument0 // This can be -1 if not a child
+        val widgetID = argument1
+        val containerID = argument1.shr(16)
+        val containerChildID = argument1.and(0xFF)
+        val menuAction = MenuOpcode.valueOf(argument2)
+
+        if (argument2 == MenuOpcode.WIDGET_DEFAULT.id) {
+
+            if (childID == -1) {
+                logger.info("WidgetItem(ctx.widgets.find(${containerID}, ${containerChildID}), ctx = ctx).doAction()")
+            } else {
+                logger.info("WidgetItem(ctx.widgets.find(${containerID}, ${containerChildID})?.getChildren()?.get($childID), ctx = ctx).doAction()")
+            }
+        }
     }
 
     fun getModelCallback(argument1: Int) {
