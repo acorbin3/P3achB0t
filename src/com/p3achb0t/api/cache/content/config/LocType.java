@@ -92,6 +92,8 @@ public final class LocType extends ConfigType {
 
     public final String[] op = new String[5];
 
+    public boolean randomizeAnimStart = false;
+
     @Override protected void decode0(Input in) {
         while (true) {
             int code = in.g1();
@@ -252,6 +254,9 @@ public final class LocType extends ConfigType {
                     break;
                 case 82:
                     mapIconId = in.g2();
+                    break;
+                case 89:
+                    randomizeAnimStart = true;
                     break;
                 case 77:
                 case 92: {

@@ -19,39 +19,39 @@ interface WorldMap {
     fun getWorldMapManager(): WorldMapManager
     fun getZoom(): Float
     fun getZoomTarget(): Float
-    fun get__g(): WorldMapArea
-    fun get__an(): Boolean
-    fun get__e(): AbstractArchive
-    fun get__q(): AbstractArchive
-    fun get__z(): AbstractArchive
-    fun get__aa(): Int
-    fun get__ac(): Int
-    fun get__ae(): Int
+    fun get__ab(): Boolean
+    fun get__v(): WorldMapArea
+    fun get__a(): Int
+    fun get__ad(): Int
+    fun get__af(): Int
     fun get__ag(): Int
+    fun get__ai(): Int
     fun get__aj(): Int
-    fun get__al(): Int
     fun get__am(): Int
-    fun get__ap(): Int
+    fun get__ao(): Int
     fun get__aq(): Int
-    fun get__ar(): Int
     fun get__as(): Int
     fun get__at(): Int
-    fun get__aw(): Int
+    fun get__au(): Int
+    fun get__ax(): Int
+    fun get__ay(): Int
     fun get__az(): Int
     fun get__bh(): Int
     fun get__bj(): Int
-    fun get__bl(): Int
-    fun get__bt(): Int
-    fun get__bv(): Int
-    fun get__m(): Int
-    fun get__o(): Int
-    fun get__p(): Int
-    fun get__r(): Int
-    fun get__af(): Any
-    fun get__av(): Any
-    fun get__bq(): Any
-    fun get__bp(): Any
-    fun get__ah(): Long
-    fun get__bi(): IntArray
-    fun get__bc(): Boolean
+    fun get__bo(): Int
+    fun get__bp(): Int
+    fun get__bw(): Int
+    fun get__i(): Int
+    fun get__s(): Int
+    fun get__w(): Int
+    fun get__g(): AbstractArchive
+    fun get__h(): AbstractArchive
+    fun get__k(): AbstractArchive
+    fun get__ah(): Any
+    fun get__an(): Any
+    fun get__bk(): Any
+    fun get__bi(): Any
+    fun get__av(): Long
+    fun get__bn(): IntArray
+    fun get__ba(): Boolean
 }

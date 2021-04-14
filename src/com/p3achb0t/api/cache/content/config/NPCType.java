@@ -58,6 +58,8 @@ public final class NPCType extends ConfigType {
 
     public int walkleftanim = -1;
 
+    public int category = -1;
+
     public int walkrightanim = -1;
 
     public int[] multi = null;
@@ -82,7 +84,11 @@ public final class NPCType extends ConfigType {
                     int n = in.g1();
                     models = new int[n];
                     for (int i = 0; i < n; i++) {
-                        models[i] = in.g2();
+                        try {
+                            models[i] = in.g2();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     break;
                 }
@@ -109,6 +115,13 @@ public final class NPCType extends ConfigType {
                     walkbackanim = in.g2();
                     walkleftanim = in.g2();
                     walkrightanim = in.g2();
+                    break;
+                case 18:
+                    category = in.g2();
+                    break;
+                case 47:
+                case 59:
+                case 64:
                     break;
                 case 30:
                 case 31:

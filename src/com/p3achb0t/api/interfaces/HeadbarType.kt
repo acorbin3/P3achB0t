@@ -10,5 +10,5 @@ interface HeadbarType : DualNode {
     fun getSpritefront(): Int
     fun getWidth(): Int
     fun getWidthPadding(): Int
-    fun get__y(): Int
+    fun get__b(): Int
 }

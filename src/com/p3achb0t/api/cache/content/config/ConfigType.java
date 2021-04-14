@@ -17,6 +17,7 @@ public abstract class ConfigType extends CacheType {
     protected void postDecode() {}
 
     protected static void unrecognisedCode(int code) {
-        throw new UnsupportedOperationException(Integer.toString(code));
+        System.out.println("UnrecognozedCode: " + code);
+//        throw new UnsupportedOperationException(Integer.toString(code));
     }
 }

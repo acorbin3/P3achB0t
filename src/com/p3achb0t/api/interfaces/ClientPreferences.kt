@@ -7,8 +7,8 @@ interface ClientPreferences {
     fun getRoofsHidden(): Boolean
     fun getTitleMusicDisabled(): Boolean
     fun getWindowMode(): Int
-    fun get__e(): Double
+    fun get__g(): Double
+    fun get__h(): Int
     fun get__l(): Int
-    fun get__q(): Int
-    fun get__s(): Int
+    fun get__n(): Int
 }

@@ -320,7 +320,7 @@ class Analyser {
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
                 //TODO - This
-                val viewportWalkingFieldName = "__eq_aa"
+                val viewportWalkingFieldName = "__fu_ad"//__fu_ad or //__fu_at
                 val fieldHook3 = runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
                 val methodNode3 = MethodNode(ACC_PUBLIC, "setViewportWalking", "()V", null, null)
@@ -583,8 +583,8 @@ class Analyser {
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "g"
-        val garbageCollectMethod = "ah"
+        val garbageCollectClass = "co"
+        val garbageCollectMethod = "ai"
         //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@ for (method in classes[garbageCollectClass]!!.methods) {
@@ -607,14 +607,14 @@ class Analyser {
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
         //TODO - To find the random.dat methods go look at script to find "random.dat" in the class files
-        var createRandDatClass = "cg"
-        var createRandDatMethod = "c"
+        var createRandDatClass = "dd"
+        var createRandDatMethod = "k"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
         // Hooks datFile
-        createRandDatClass = "fp"
-        createRandDatMethod = "a"
+        createRandDatClass = "el"
+        createRandDatMethod = "f"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat

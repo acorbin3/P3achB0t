@@ -7,6 +7,6 @@ interface WorldMapRegion {
     fun getX(): Int
     fun getY(): Int
     fun get__l(): Int
-    fun get__s(): Int
-    fun get__q(): Any
+    fun get__n(): Int
+    fun get__h(): Any
 }

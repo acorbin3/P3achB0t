@@ -9,4 +9,5 @@ interface ClientScript : DualNode {
     fun getStringArgumentCount(): Int
     fun getStringOperands(): Array<String>
     fun getSwitches(): Array<IterableNodeHashTable>
+    fun get__o(): String
 }

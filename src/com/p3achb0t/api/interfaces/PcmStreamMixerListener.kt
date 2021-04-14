@@ -1,5 +1,5 @@
 package com.p3achb0t.api.interfaces
 
 interface PcmStreamMixerListener : Node {
-    fun get__n(): Int
+    fun get__f(): Int
 }
