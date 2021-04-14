@@ -261,6 +261,19 @@ class Analyser {
             }
 
             //Injecting transform for NPC
+            if(clazzData.`class` == "NPCType"){
+
+//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.name == "transform" }
+//
+//                val methodNode = MethodNode(ACC_PUBLIC, "transform", "(I)V", null, null)
+//                methodNode.visitVarInsn(ILOAD, 1)
+//                methodNode.visitFieldInsn(PUTSTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+//
+//                methodNode.visitInsn(Opcodes.RETURN)
+//                methodNode.visitEnd()
+//
+//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+            }
 
             //Inject client hooks
             if (clazzData.`class` == "Client") {
@@ -885,8 +898,8 @@ class Analyser {
         println("Looping over client methods")
         classes["client"]?.methods?.forEach { methodNode ->
            // println("\t ${methodNode.name} - ${methodNode.desc}")
-            if(methodNode.desc.contains("L$packetWriterClass;B")){
-                println("\t\t found correct method")
+//            if(methodNode.desc.contains("L$packetWriterClass;B")){
+//                println("\t\t found correct method")
                 val savedInstructionsToInsert = arrayListOf<MethodInsnNode>()
                 methodNode.instructions.forEach { instruction ->
                     //println("\t\t\t" + insnToString(instruction) + " Type:${instruction.type}. opcode: ${instruction.opcode}")
@@ -896,7 +909,7 @@ class Analyser {
 
 
                             //println("\t\t\t INVOKESTATIC ${instruction.name}")
-                            if(instruction.name == methodHook?.name){
+                            if(instruction.desc == methodHook?.descriptor){
                                 savedInstructionsToInsert.add(instruction)
                                 println("Found NPC calls^")
                             }
@@ -904,14 +917,24 @@ class Analyser {
                     }
                 }
 
+            if(savedInstructionsToInsert.isNotEmpty()) {
+                println("Found some instructions in ${methodNode.name}")
                 val il = InsnList()
                 il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
-                il.add(MethodInsnNode(INVOKEVIRTUAL, "com/p3achb0t/client/injection/InstanceManager", "gameLoop", "()V"))
+                il.add(
+                    MethodInsnNode(
+                        INVOKEVIRTUAL,
+                        "com/p3achb0t/client/injection/InstanceManager",
+                        "gameLoop",
+                        "()V"
+                    )
+                )
                 println("Inserting npcUpdate callbacks")
                 savedInstructionsToInsert.forEach {
                     methodNode.instructions.insert(it, il)
                 }
             }
+//            }
         }
 
 //        val className = methodHook?.owner
