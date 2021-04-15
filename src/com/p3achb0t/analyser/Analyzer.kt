@@ -262,17 +262,20 @@ class Analyser {
 
             //Injecting transform for NPC
             if(clazzData.`class` == "NPCType"){
+                println("Injecting NPCType transformer")
 
-//                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.name == "transform" }
-//
-//                val methodNode = MethodNode(ACC_PUBLIC, "transform", "(I)V", null, null)
-//                methodNode.visitVarInsn(ILOAD, 1)
-//                methodNode.visitFieldInsn(PUTSTATIC, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
-//
-//                methodNode.visitInsn(Opcodes.RETURN)
-//                methodNode.visitEnd()
-//
-//                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "transform" }
+
+                val methodNode = MethodNode(ACC_PUBLIC, "transform", "()V", null, null)
+                //methodNode.visitVarInsn(ILOAD, 1)
+                methodNode.visitVarInsn(ALOAD, 0)
+                methodNode.visitInsn(ICONST_0)
+                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+
+                methodNode.visitInsn(Opcodes.RETURN)
+                methodNode.visitEnd()
+
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
             }
 
             //Inject client hooks

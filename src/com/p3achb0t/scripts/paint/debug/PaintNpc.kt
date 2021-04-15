@@ -79,7 +79,7 @@ class PaintNpc : PaintScript() {
                                     }
                                 }
                                 g.drawString(
-                                        "${npci.getType().getName()} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()}(${newNPC.npc.getTargetIndex() - 32768}) orientation: ${newNPC.npc.getOrientation()} ${newNPC.orientation?.name} spot: ${newNPC.npc.getSpotAnimation()} menuIndex: ${newNPC.menuIndex} sequence:${newNPC.npc.getSequence()} DsitTo: ${newNPC.distanceTo()}",
+                                        "${newNPC.name} ${npci.getType().getId()} ${npci.getSequence()} targIndex: ${newNPC.npc.getTargetIndex()}(${newNPC.npc.getTargetIndex() - 32768}) orientation: ${newNPC.npc.getOrientation()} ${newNPC.orientation?.name} spot: ${newNPC.npc.getSpotAnimation()} menuIndex: ${newNPC.menuIndex} sequence:${newNPC.npc.getSequence()} DsitTo: ${newNPC.distanceTo()}",
                                         namePoint.x,
                                         namePoint.y
                                 )
