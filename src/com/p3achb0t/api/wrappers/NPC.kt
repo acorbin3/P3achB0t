@@ -10,8 +10,39 @@ import java.awt.Point
 import java.awt.Polygon
 import kotlin.math.floor
 
-class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
 
+
+class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
+    class NpcDefinition(val accessor: NPCType)  {
+
+        val id: Int get() = accessor.getId()
+
+        val name: String? get() = accessor.getName()
+
+        val actions: Array<String> get() = accessor.getOp()
+
+        val headIconPrayer: Int get() = accessor.getHeadIconPrayer()
+
+        val transforms get() = accessor.getTransforms()
+
+
+        private fun transform(): NpcDefinition? = accessor.transform()?.let { NpcDefinition(it) }
+
+//        fun get(): NpcDefinition?{
+//            NpcDefinition(accessor,ctx).let {
+//                return if (it.transforms == null) it
+//                else it.transform()
+//            }
+//        }
+//        fun get(id: Int): NpcDefinition? {
+//            return ctx.npcs.findNpc(id).first().npc?.let { node ->
+//                NpcDefinition(node,ctx).let {
+//                    return if (it.transforms == null) it
+//                    else it.transform()
+//                }
+//            }
+//        }
+    }
     val name: String
         get() {
             val objectComposite = getType(npc.getType().getId())
@@ -131,8 +162,11 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
         }
         return null
     }
+    fun transform(): NPCType? {
+        return transform(type!!)
+    }
 
-    private fun transform(type: NPCType): NPCType? {
+    fun transform(type: NPCType): NPCType? {
         var var1 = -1
         val transforms = type.getTransforms()
 

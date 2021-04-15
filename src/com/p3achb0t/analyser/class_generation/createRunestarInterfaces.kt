@@ -47,6 +47,9 @@ fun createRunestarInterfaces(
             else if(clazz.value.`class` == "Entity"){
                 out.println("    fun getModel(): Model")
             }
+            else if(clazz.value.`class` == "NPCType"){
+                out.println("    fun transform(): NPCType")
+            }
 
 
             for (field in clazz.value.fields) {

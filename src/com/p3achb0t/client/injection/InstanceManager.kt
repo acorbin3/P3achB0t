@@ -444,7 +444,7 @@ class InstanceManager(val client: Any) : Logging() {
         targetName: String,
         mouseX: Int,
         mouseY: Int,
-        argument8: Byte
+        argument8: Int
     ) {
         logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
         if (GlobalStructs.isMenuOptions) {

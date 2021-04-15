@@ -570,7 +570,7 @@ class Analyser {
                                     val il = InsnList()
                                     il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))
                                                                                                                                             "(IIIILjava/lang/String;Ljava/lang/String;IIB)V"
-                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIBLcom/p3achb0t/client/injection/InstanceManager;)V", false))
+                                    il.add(MethodInsnNode(INVOKESTATIC, "com/p3achb0t/detours/Detours", "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/client/injection/InstanceManager;)V", false))
                                     //doAction
                                     methodNode.instructions.insertBefore(mn, il)
                                     methodNode.instructions.remove(mn)
@@ -972,7 +972,7 @@ class Analyser {
 
         val label = LabelNode(Label())
 
-        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIB)V", null, null)
+        val doActionMethodNode = MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
         val il = InsnList()
 
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))

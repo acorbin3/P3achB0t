@@ -1,6 +1,7 @@
 package com.p3achb0t.api.interfaces
 
 interface NPCType : DualNode {
+    fun transform(): NPCType
     fun getAmbient(): Int
     fun getCombatLevel(): Int
     fun getContrast(): Int
@@ -31,7 +32,7 @@ interface NPCType : DualNode {
     fun getWalkbackanim(): Int
     fun getWalkleftanim(): Int
     fun getWalkrightanim(): Int
-    fun get__ax(): Boolean
-    fun get__j(): Boolean
-    fun get__ae(): Int
+    fun get__ap(): Boolean
+    fun get__y(): Boolean
+    fun get__ag(): Int
 }
