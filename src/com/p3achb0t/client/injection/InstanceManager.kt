@@ -519,7 +519,7 @@ class InstanceManager(val client: Any) : Logging() {
             if (childID == -1) {
                 logger.info("WidgetItem(ctx.widgets.find(${containerID}, ${containerChildID}), ctx = ctx).doAction()")
             } else {
-                logger.info("WidgetItem(ctx.widgets.find(${containerID}, ${containerChildID})?.getChildren()?.get($childID), ctx = ctx).doAction()")
+                logger.info("WidgetItem(ctx.widgets.find(${containerID}, ${containerChildID})?.getChildren()?.get($childID), index = $childID, ctx = ctx).doAction()")
             }
         }
     }
