@@ -265,14 +265,50 @@ class Analyser {
                 println("Injecting NPCType transformer")
 
                 val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "transform" }
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
 
-                val methodNode = MethodNode(ACC_PUBLIC, "transform", "()V", null, null)
+                var returnType = "L$classPath/$clazzName;"
+
+                val methodNode = MethodNode(ACC_PUBLIC, "transform", "()" + returnType, null, null)
                 //methodNode.visitVarInsn(ILOAD, 1)
                 methodNode.visitVarInsn(ALOAD, 0)
                 methodNode.visitInsn(ICONST_0)
                 methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+                val cast = "$classPath/$clazzName"
+                methodNode.visitTypeInsn(CHECKCAST, cast)
+                methodNode.visitInsn(Opcodes.ARETURN)
+                methodNode.visitEnd()
 
-                methodNode.visitInsn(Opcodes.RETURN)
+                classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)
+            }
+
+            if(clazzData.`class` == "LocType"){
+
+
+                val methodHook = runeStar.analyzers[clazzData.`class`]?.methods?.find { it.method == "multiLoc" }
+                if(methodHook != null){
+                    logger.info("Injecting LocType transformer")
+                }else{
+                    logger.error("Could not find multLoc")
+                }
+                val list = methodHook?.descriptor?.split(")")!!
+                val argumentDescription = list[0] + ")" // Add back in the )
+                val returnDescriptor = list[1]
+                val clazzName = runeStar.classRefObs[cleanType(returnDescriptor)]?.`class`
+
+                var returnType = "L$classPath/$clazzName;"
+
+                val methodNode = MethodNode(ACC_PUBLIC, "multiLoc", "()" + returnType, null, null)
+                methodNode.visitVarInsn(ALOAD, 0)
+                methodNode.visitInsn(ICONST_1)
+                methodNode.visitMethodInsn(INVOKEVIRTUAL, methodHook?.owner, methodHook?.name, methodHook?.descriptor)
+
+                val cast = "$classPath/$clazzName"
+                methodNode.visitTypeInsn(CHECKCAST, cast)
+                methodNode.visitInsn(Opcodes.ARETURN)
                 methodNode.visitEnd()
 
                 classes[runeStar.analyzers[clazzData.`class`]?.name]?.methods?.add(methodNode)

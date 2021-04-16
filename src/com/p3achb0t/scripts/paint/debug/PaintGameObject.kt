@@ -94,8 +94,8 @@ class PaintGameObject : PaintScript() {
                                                         floorDecoration.getEntity().getHeight(),
                                                         ctx
                                                     )
-                                                g.drawString(
-                                                    go_fd.name + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})",
+                                                g.drawString("FD-" +
+                                                    go_fd.name + "(${go_fd.id})(${globalPos_fd.x},${globalPos_fd.y}) Loc:(${go_fd.getLocalLocation().x},${go_fd.getLocalLocation().y})tag:${go_fd.floorDecoration?.getTag()}",
                                                     point2.x,
                                                     point2.y
                                                 )
@@ -206,8 +206,8 @@ class PaintGameObject : PaintScript() {
                                                             if (localPlayer.distanceTo(globalPos) < 10
                                                                 && planeInt == ctx.players.getLocal().player.getPlane()
                                                             )
-                                                                g.drawString(
-                                                                    go.name + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})",
+                                                                g.drawString("SE-" +
+                                                                    go.name + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})tag:${go.sceneryObject?.getTag()}",
                                                                     point2.x,
                                                                     point2.y + offsetY
                                                                 )
@@ -231,9 +231,10 @@ class PaintGameObject : PaintScript() {
                                 //print out wall decorations
                                 if (tile.getWallDecoration() != null && localPlayer.distanceTo(globalPos) < 5) {
                                     val wallDecoration = tile.getWallDecoration()
+                                    val wd = GameObject(wallDecoration = wallDecoration, ctx = ctx)
                                     val id = wallDecoration.getTag().ushr(17).and(4294967295L).toInt()
-                                    val objectComposite =
-                                        getObjectComposite(sceneData, id)
+//                                    val objectComposite =
+//                                        getObjectComposite(sceneData, id)
                                     val positionInfo =
                                         ObjectPositionInfo(
                                             wallDecoration.getX(),
@@ -258,12 +259,24 @@ class PaintGameObject : PaintScript() {
                                             }
                                         }
                                     }
+                                    val point2 =
+                                        Calculations.worldToScreen(
+                                            wallDecoration.getX(),
+                                            wallDecoration.getY(),
+                                            wallDecoration.getEntity1().getHeight(),
+                                            ctx
+                                        )
+                                    g.drawString("WD-" +
+                                            wd.name + "(${wd.id})(${globalPos.x},${globalPos.y} Loc:(${wd.getLocalLocation().x},${wd.getLocalLocation().y}) tag:${wd.wallDecoration?.getTag()}",
+                                        point2.x,
+                                        point2.y
+                                    )
                                 }
 
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                                 // Display the wall object
-                                if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5) {
+                                if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5 && false) {
                                     val wall = tile.getWall()
                                     val wo = GameObject(wallObject = wall, ctx = ctx)
 
@@ -290,8 +303,8 @@ class PaintGameObject : PaintScript() {
                                                 wall.getEntity1().getHeight(),
                                                 ctx
                                             )
-                                        g.drawString(
-                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y})",
+                                        g.drawString("WO-" +
+                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y}) tag:${wo.wallObject?.getTag()}",
                                             point2.x,
                                             point2.y
                                         )

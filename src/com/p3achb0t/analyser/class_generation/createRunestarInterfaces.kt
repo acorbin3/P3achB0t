@@ -50,6 +50,9 @@ fun createRunestarInterfaces(
             else if(clazz.value.`class` == "NPCType"){
                 out.println("    fun transform(): NPCType")
             }
+            else if(clazz.value.`class` == "LocType"){
+                out.println("    fun transform(): LocType")
+            }
 
 
             for (field in clazz.value.fields) {

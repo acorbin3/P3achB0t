@@ -1,6 +1,7 @@
 package com.p3achb0t.api.interfaces
 
 interface LocType : DualNode {
+    fun multiLoc(): LocType
     fun getAmbient(): Int
     fun getAmbientSoundId(): Int
     fun getAnimationId(): Int
