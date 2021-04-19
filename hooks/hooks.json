@@ -1,42 +1,33 @@
 [
   {
-    "class": "StudioGame",
-    "name": "ij",
+    "class": "GrandExchangeEvents",
+    "name": "is",
     "super": "java.lang.Object",
     "access": 33,
-    "interfaces": [
-      "jk"
-    ],
+    "interfaces": [],
     "fields": [
       {
-        "field": "id",
-        "owner": "ij",
-        "name": "g",
-        "access": 16,
-        "descriptor": "I",
-        "decoder": 136753843
-      },
-      {
-        "field": "name",
-        "owner": "ij",
-        "name": "k",
+        "field": "events",
+        "owner": "is",
+        "name": "f",
         "access": 17,
-        "descriptor": "Ljava/lang/String;"
+        "descriptor": "Ljava/util/List;"
       }
     ],
     "methods": [
       {
-        "method": "ordinal",
-        "owner": "ij",
+        "method": "sort",
+        "owner": "is",
         "name": "f",
         "access": 1,
-        "descriptor": "(I)I"
+        "descriptor": "(Ljava/util/Comparator;ZI)V",
+        "finalArgument": -1364258776
       }
     ],
     "constructors": [
       {
-        "access": 0,
-        "descriptor": "(Ljava/lang/String;Ljava/lang/String;I)V"
+        "access": 1,
+        "descriptor": "(Lnu;Z)V"
       }
     ]
   },
@@ -51,39 +42,263 @@
     "constructors": []
   },
   {
-    "class": "ServerBuild",
-    "name": "im",
+    "class": "ServerProt",
+    "name": "gg",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
     "fields": [
       {
         "field": "id",
-        "owner": "im",
-        "name": "e",
-        "access": 16,
+        "owner": "gg",
+        "name": "cs",
+        "access": 17,
         "descriptor": "I",
-        "decoder": 597489609
+        "decoder": -634167591
       },
       {
-        "field": "name",
-        "owner": "im",
-        "name": "b",
+        "field": "length",
+        "owner": "gg",
+        "name": "cr",
         "access": 17,
-        "descriptor": "Ljava/lang/String;"
+        "descriptor": "I",
+        "decoder": -631403881
       }
     ],
     "methods": [],
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(Ljava/lang/String;I)V"
+        "descriptor": "(II)V"
       }
     ]
   },
   {
-    "class": "Formatting",
-    "name": "dm",
+    "class": "Canvas",
+    "name": "ai",
+    "super": "java.awt.Canvas",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "component",
+        "owner": "ai",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/awt/Component;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "paint",
+        "owner": "ai",
+        "name": "paint",
+        "access": 17,
+        "parameters": [
+          "g"
+        ],
+        "descriptor": "(Ljava/awt/Graphics;)V"
+      },
+      {
+        "method": "update",
+        "owner": "ai",
+        "name": "update",
+        "access": 17,
+        "parameters": [
+          "g"
+        ],
+        "descriptor": "(Ljava/awt/Graphics;)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/awt/Component;)V"
+      }
+    ]
+  },
+  {
+    "class": "Decimator",
+    "name": "by",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "inputRate",
+        "owner": "by",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1135278343
+      },
+      {
+        "field": "outputRate",
+        "owner": "by",
+        "name": "b",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -463713673
+      },
+      {
+        "field": "table",
+        "owner": "by",
+        "name": "e",
+        "access": 0,
+        "descriptor": "[[I"
+      }
+    ],
+    "methods": [
+      {
+        "method": "resample",
+        "owner": "by",
+        "name": "f",
+        "access": 0,
+        "descriptor": "([BI)[B",
+        "finalArgument": 74458893
+      },
+      {
+        "method": "scalePosition",
+        "owner": "by",
+        "name": "u",
+        "access": 0,
+        "parameters": [
+          "position"
+        ],
+        "descriptor": "(II)I",
+        "finalArgument": 800224312
+      },
+      {
+        "method": "scaleRate",
+        "owner": "by",
+        "name": "o",
+        "access": 0,
+        "parameters": [
+          "rate"
+        ],
+        "descriptor": "(II)I",
+        "finalArgument": -1685077202
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(II)V"
+      }
+    ]
+  },
+  {
+    "class": "DevicePcmPlayer",
+    "name": "av",
+    "super": "bh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "byteSamples",
+        "owner": "av",
+        "name": "p",
+        "access": 0,
+        "descriptor": "[B"
+      },
+      {
+        "field": "capacity2",
+        "owner": "av",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1411994739
+      },
+      {
+        "field": "format",
+        "owner": "av",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljavax/sound/sampled/AudioFormat;"
+      },
+      {
+        "field": "line",
+        "owner": "av",
+        "name": "o",
+        "access": 0,
+        "descriptor": "Ljavax/sound/sampled/SourceDataLine;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "close",
+        "owner": "av",
+        "name": "b",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "(B)V"
+      },
+      {
+        "method": "discard",
+        "owner": "av",
+        "name": "e",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "(B)V"
+      },
+      {
+        "method": "init",
+        "owner": "av",
+        "name": "f",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "(I)V",
+        "finalArgument": -427063140
+      },
+      {
+        "method": "open",
+        "owner": "av",
+        "name": "o",
+        "access": 4,
+        "parameters": [
+          "bufferSize"
+        ],
+        "descriptor": "(II)V",
+        "finalArgument": -1868594255
+      },
+      {
+        "method": "position",
+        "owner": "av",
+        "name": "u",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "(I)I",
+        "finalArgument": -1681178021
+      },
+      {
+        "method": "write",
+        "owner": "av",
+        "name": "p",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "()V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "ByteArrayPool",
+    "name": "kp",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "Strings",
+    "name": "ih",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
@@ -224,822 +439,22 @@
     ]
   },
   {
-    "class": "ByteArrayPool",
-    "name": "kp",
+    "class": "PcmPlayerProvider",
+    "name": "be",
     "super": "java.lang.Object",
-    "access": 33,
+    "access": 1537,
     "interfaces": [],
     "fields": [],
-    "methods": [],
+    "methods": [
+      {
+        "method": "player",
+        "owner": "be",
+        "name": "f",
+        "access": 1025,
+        "descriptor": "(B)Lbh;"
+      }
+    ],
     "constructors": []
-  },
-  {
-    "class": "UrlRequest",
-    "name": "da",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "isDone0",
-        "owner": "da",
-        "name": "o",
-        "access": 64,
-        "descriptor": "Z"
-      },
-      {
-        "field": "response0",
-        "owner": "da",
-        "name": "u",
-        "access": 64,
-        "descriptor": "[B"
-      },
-      {
-        "field": "url",
-        "owner": "da",
-        "name": "f",
-        "access": 16,
-        "descriptor": "Ljava/net/URL;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "getResponse",
-        "owner": "da",
-        "name": "o",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(B)[B"
-      },
-      {
-        "method": "isDone",
-        "owner": "da",
-        "name": "f",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(I)Z"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/net/URL;)V"
-      }
-    ]
-  },
-  {
-    "class": "Canvas",
-    "name": "ai",
-    "super": "java.awt.Canvas",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "component",
-        "owner": "ai",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/awt/Component;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "paint",
-        "owner": "ai",
-        "name": "paint",
-        "access": 17,
-        "parameters": [
-          "g"
-        ],
-        "descriptor": "(Ljava/awt/Graphics;)V"
-      },
-      {
-        "method": "update",
-        "owner": "ai",
-        "name": "update",
-        "access": 17,
-        "parameters": [
-          "g"
-        ],
-        "descriptor": "(Ljava/awt/Graphics;)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/awt/Component;)V"
-      }
-    ]
-  },
-  {
-    "class": "Task",
-    "name": "ep",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "intArgument",
-        "owner": "ep",
-        "name": "k",
-        "access": 1,
-        "descriptor": "I"
-      },
-      {
-        "field": "next",
-        "owner": "ep",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Lep;"
-      },
-      {
-        "field": "objectArgument",
-        "owner": "ep",
-        "name": "g",
-        "access": 0,
-        "descriptor": "Ljava/lang/Object;"
-      },
-      {
-        "field": "result",
-        "owner": "ep",
-        "name": "h",
-        "access": 65,
-        "descriptor": "Ljava/lang/Object;"
-      },
-      {
-        "field": "status",
-        "owner": "ep",
-        "name": "b",
-        "access": 65,
-        "descriptor": "I"
-      },
-      {
-        "field": "type",
-        "owner": "ep",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -576884369
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "AbstractByteArrayCopier",
-    "name": "hd",
-    "super": "java.lang.Object",
-    "access": 1057,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "hd",
-        "name": "u",
-        "access": 1024,
-        "parameters": [],
-        "descriptor": "(I)[B"
-      },
-      {
-        "method": "set",
-        "owner": "hd",
-        "name": "p",
-        "access": 1025,
-        "parameters": [
-          "array"
-        ],
-        "descriptor": "([BI)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Decimator",
-    "name": "by",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "inputRate",
-        "owner": "by",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1135278343
-      },
-      {
-        "field": "outputRate",
-        "owner": "by",
-        "name": "b",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -463713673
-      },
-      {
-        "field": "table",
-        "owner": "by",
-        "name": "e",
-        "access": 0,
-        "descriptor": "[[I"
-      }
-    ],
-    "methods": [
-      {
-        "method": "resample",
-        "owner": "by",
-        "name": "f",
-        "access": 0,
-        "descriptor": "([BI)[B",
-        "finalArgument": 74458893
-      },
-      {
-        "method": "scalePosition",
-        "owner": "by",
-        "name": "u",
-        "access": 0,
-        "parameters": [
-          "position"
-        ],
-        "descriptor": "(II)I",
-        "finalArgument": 800224312
-      },
-      {
-        "method": "scaleRate",
-        "owner": "by",
-        "name": "o",
-        "access": 0,
-        "parameters": [
-          "rate"
-        ],
-        "descriptor": "(II)I",
-        "finalArgument": -1685077202
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(II)V"
-      }
-    ]
-  },
-  {
-    "class": "VorbisMapping",
-    "name": "ba",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "mappingMux",
-        "owner": "ba",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I"
-      },
-      {
-        "field": "submapFloor",
-        "owner": "ba",
-        "name": "u",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "submapResidue",
-        "owner": "ba",
-        "name": "p",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "submaps",
-        "owner": "ba",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "WorldMapLabel",
-    "name": "fi",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "height",
-        "owner": "fi",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1846653715
-      },
-      {
-        "field": "size",
-        "owner": "fi",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Ley;"
-      },
-      {
-        "field": "text",
-        "owner": "fi",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "width",
-        "owner": "fi",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -586926431
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/lang/String;IILey;)V"
-      }
-    ]
-  },
-  {
-    "class": "WorldMapArchiveLoader",
-    "name": "ml",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "archive",
-        "owner": "ml",
-        "name": "e",
-        "access": 0,
-        "descriptor": "Lir;"
-      },
-      {
-        "field": "cacheName",
-        "owner": "ml",
-        "name": "b",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "isLoaded0",
-        "owner": "ml",
-        "name": "g",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "percentLoaded0",
-        "owner": "ml",
-        "name": "k",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -19121881
-      }
-    ],
-    "methods": [
-      {
-        "method": "isLoaded",
-        "owner": "ml",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)Z"
-      },
-      {
-        "method": "load",
-        "owner": "ml",
-        "name": "o",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)I",
-        "finalArgument": -670939769
-      },
-      {
-        "method": "percentLoaded",
-        "owner": "ml",
-        "name": "p",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)I"
-      },
-      {
-        "method": "reset",
-        "owner": "ml",
-        "name": "f",
-        "access": 0,
-        "parameters": [
-          "cacheName"
-        ],
-        "descriptor": "(Ljava/lang/String;I)V",
-        "finalArgument": -2104011211
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Lir;)V"
-      }
-    ]
-  },
-  {
-    "class": "TilePaint",
-    "name": "gr",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "isFlat",
-        "owner": "gr",
-        "name": "e",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "neColor",
-        "owner": "gr",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1854602939
-      },
-      {
-        "field": "nwColor",
-        "owner": "gr",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1705653553
-      },
-      {
-        "field": "rgb",
-        "owner": "gr",
-        "name": "k",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 985231477
-      },
-      {
-        "field": "seColor",
-        "owner": "gr",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 748897211
-      },
-      {
-        "field": "swColor",
-        "owner": "gr",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 66075033
-      },
-      {
-        "field": "texture",
-        "owner": "gr",
-        "name": "b",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1737140535
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(IIIIIIZ)V"
-      }
-    ]
-  },
-  {
-    "class": "DirectByteArrayCopier",
-    "name": "hb",
-    "super": "hd",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "directBuffer",
-        "owner": "hb",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/nio/ByteBuffer;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "hb",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)[B"
-      },
-      {
-        "method": "set",
-        "owner": "hb",
-        "name": "p",
-        "access": 1,
-        "parameters": [
-          "array"
-        ],
-        "descriptor": "([BI)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Clock",
-    "name": "et",
-    "super": "java.lang.Object",
-    "access": 1057,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "mark",
-        "owner": "et",
-        "name": "f",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(S)V"
-      },
-      {
-        "method": "wait",
-        "owner": "et",
-        "name": "o",
-        "access": 1025,
-        "parameters": [
-          "cycleMs",
-          "minSleepMs"
-        ],
-        "descriptor": "(III)I"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "MiniMenuEntry",
-    "name": "cx",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "action",
-        "owner": "cx",
-        "name": "b",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "argument0",
-        "owner": "cx",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 668116437
-      },
-      {
-        "field": "argument1",
-        "owner": "cx",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -908888193
-      },
-      {
-        "field": "argument2",
-        "owner": "cx",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 367044629
-      },
-      {
-        "field": "opcode",
-        "owner": "cx",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -384608333
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "AbstractSocket",
-    "name": "li",
-    "super": "java.lang.Object",
-    "access": 1057,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "available",
-        "owner": "li",
-        "name": "u",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(B)I"
-      },
-      {
-        "method": "close",
-        "owner": "li",
-        "name": "f",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "isAvailable",
-        "owner": "li",
-        "name": "p",
-        "access": 1025,
-        "parameters": [
-          "length"
-        ],
-        "descriptor": "(II)Z"
-      },
-      {
-        "method": "read",
-        "owner": "li",
-        "name": "b",
-        "access": 1025,
-        "parameters": [
-          "dst",
-          "dstIndex",
-          "length"
-        ],
-        "descriptor": "([BIIB)I"
-      },
-      {
-        "method": "readUnsignedByte",
-        "owner": "li",
-        "name": "o",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(B)I"
-      },
-      {
-        "method": "write",
-        "owner": "li",
-        "name": "k",
-        "access": 1025,
-        "parameters": [
-          "src",
-          "srcIndex",
-          "length"
-        ],
-        "descriptor": "([BIII)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 4,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "MouseWheelHandler",
-    "name": "ad",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [
-      "dw",
-      "java.awt.event.MouseWheelListener"
-    ],
-    "fields": [
-      {
-        "field": "rotation",
-        "owner": "ad",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1839042189
-      }
-    ],
-    "methods": [
-      {
-        "method": "addTo",
-        "owner": "ad",
-        "name": "f",
-        "access": 0,
-        "parameters": [
-          "component"
-        ],
-        "descriptor": "(Ljava/awt/Component;I)V"
-      },
-      {
-        "method": "mouseWheelMoved",
-        "owner": "ad",
-        "name": "mouseWheelMoved",
-        "access": 33,
-        "parameters": [
-          "mouseWheelEvent"
-        ],
-        "descriptor": "(Ljava/awt/event/MouseWheelEvent;)V"
-      },
-      {
-        "method": "removeFrom",
-        "owner": "ad",
-        "name": "o",
-        "access": 0,
-        "parameters": [
-          "component"
-        ],
-        "descriptor": "(Ljava/awt/Component;B)V"
-      },
-      {
-        "method": "useRotation",
-        "owner": "ad",
-        "name": "u",
-        "access": 33,
-        "parameters": [],
-        "descriptor": "(I)I"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "ServerProt",
-    "name": "gg",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "id",
-        "owner": "gg",
-        "name": "cs",
-        "access": 17,
-        "descriptor": "I",
-        "decoder": -634167591
-      },
-      {
-        "field": "length",
-        "owner": "gg",
-        "name": "cr",
-        "access": 17,
-        "descriptor": "I",
-        "decoder": -631403881
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(II)V"
-      }
-    ]
   },
   {
     "class": "Varcs",
@@ -1208,6 +623,1126 @@
     ]
   },
   {
+    "class": "WorldMapCacheName",
+    "name": "fl",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "name",
+        "owner": "fl",
+        "name": "e",
+        "access": 17,
+        "descriptor": "Ljava/lang/String;"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/String;)V"
+      }
+    ]
+  },
+  {
+    "class": "ClientProt",
+    "name": "gx",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [
+      "gt"
+    ],
+    "fields": [
+      {
+        "field": "id",
+        "owner": "gx",
+        "name": "dc",
+        "access": 16,
+        "descriptor": "I",
+        "decoder": 660062327
+      },
+      {
+        "field": "length",
+        "owner": "gx",
+        "name": "dn",
+        "access": 16,
+        "descriptor": "I",
+        "decoder": -787874333
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(II)V"
+      }
+    ]
+  },
+  {
+    "class": "UrlRequest",
+    "name": "da",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "isDone0",
+        "owner": "da",
+        "name": "o",
+        "access": 64,
+        "descriptor": "Z"
+      },
+      {
+        "field": "response0",
+        "owner": "da",
+        "name": "u",
+        "access": 64,
+        "descriptor": "[B"
+      },
+      {
+        "field": "url",
+        "owner": "da",
+        "name": "f",
+        "access": 16,
+        "descriptor": "Ljava/net/URL;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "getResponse",
+        "owner": "da",
+        "name": "o",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "(B)[B"
+      },
+      {
+        "method": "isDone",
+        "owner": "da",
+        "name": "f",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "(I)Z"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/net/URL;)V"
+      }
+    ]
+  },
+  {
+    "class": "GzipDecompressor",
+    "name": "ok",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "inflater",
+        "owner": "ok",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/util/zip/Inflater;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "decompress",
+        "owner": "ok",
+        "name": "f",
+        "access": 1,
+        "descriptor": "(Lnu;[BB)V",
+        "finalArgument": 1
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      },
+      {
+        "access": 0,
+        "descriptor": "(III)V"
+      }
+    ]
+  },
+  {
+    "class": "StudioGame",
+    "name": "ij",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [
+      "jk"
+    ],
+    "fields": [
+      {
+        "field": "id",
+        "owner": "ij",
+        "name": "g",
+        "access": 16,
+        "descriptor": "I",
+        "decoder": 136753843
+      },
+      {
+        "field": "name",
+        "owner": "ij",
+        "name": "k",
+        "access": 17,
+        "descriptor": "Ljava/lang/String;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "ordinal",
+        "owner": "ij",
+        "name": "f",
+        "access": 1,
+        "descriptor": "(I)I"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/String;Ljava/lang/String;I)V"
+      }
+    ]
+  },
+  {
+    "class": "VorbisMapping",
+    "name": "ba",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "mappingMux",
+        "owner": "ba",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I"
+      },
+      {
+        "field": "submapFloor",
+        "owner": "ba",
+        "name": "u",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "submapResidue",
+        "owner": "ba",
+        "name": "p",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "submaps",
+        "owner": "ba",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "TilePaint",
+    "name": "gr",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "isFlat",
+        "owner": "gr",
+        "name": "e",
+        "access": 0,
+        "descriptor": "Z"
+      },
+      {
+        "field": "neColor",
+        "owner": "gr",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1854602939
+      },
+      {
+        "field": "nwColor",
+        "owner": "gr",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1705653553
+      },
+      {
+        "field": "rgb",
+        "owner": "gr",
+        "name": "k",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 985231477
+      },
+      {
+        "field": "seColor",
+        "owner": "gr",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 748897211
+      },
+      {
+        "field": "swColor",
+        "owner": "gr",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 66075033
+      },
+      {
+        "field": "texture",
+        "owner": "gr",
+        "name": "b",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1737140535
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(IIIIIIZ)V"
+      }
+    ]
+  },
+  {
+    "class": "UnlitModel0",
+    "name": "gk",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Node",
+    "name": "mh",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "key",
+        "owner": "mh",
+        "name": "fk",
+        "access": 1,
+        "descriptor": "J"
+      },
+      {
+        "field": "next",
+        "owner": "mh",
+        "name": "fz",
+        "access": 1,
+        "descriptor": "Lmh;"
+      },
+      {
+        "field": "previous",
+        "owner": "mh",
+        "name": "fs",
+        "access": 1,
+        "descriptor": "Lmh;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "hasNext",
+        "owner": "mh",
+        "name": "ed",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "()Z"
+      },
+      {
+        "method": "remove",
+        "owner": "mh",
+        "name": "ex",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "()V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "DefaultsGroup",
+    "name": "lh",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "group",
+        "owner": "lh",
+        "name": "o",
+        "access": 16,
+        "descriptor": "I",
+        "decoder": 1622336411
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(I)V"
+      }
+    ]
+  },
+  {
+    "class": "HeadbarUpdate",
+    "name": "cl",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "cycle",
+        "owner": "cl",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1723297803
+      },
+      {
+        "field": "cycleOffset",
+        "owner": "cl",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1369623823
+      },
+      {
+        "field": "health",
+        "owner": "cl",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -802786453
+      },
+      {
+        "field": "health2",
+        "owner": "cl",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1934136823
+      }
+    ],
+    "methods": [
+      {
+        "method": "set",
+        "owner": "cl",
+        "name": "f",
+        "access": 0,
+        "descriptor": "(IIIII)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(IIII)V"
+      }
+    ]
+  },
+  {
+    "class": "AnimBase",
+    "name": "fa",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "id",
+        "owner": "fa",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1569878469
+      },
+      {
+        "field": "transformCount",
+        "owner": "fa",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1560016173
+      },
+      {
+        "field": "transformLabels",
+        "owner": "fa",
+        "name": "p",
+        "access": 0,
+        "descriptor": "[[I"
+      },
+      {
+        "field": "transformTypes",
+        "owner": "fa",
+        "name": "u",
+        "access": 0,
+        "descriptor": "[I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(I[B)V"
+      }
+    ]
+  },
+  {
+    "class": "ClientError",
+    "name": "or",
+    "super": "java.lang.RuntimeException",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "cause",
+        "owner": "or",
+        "name": "e",
+        "access": 0,
+        "descriptor": "Ljava/lang/Throwable;"
+      },
+      {
+        "field": "message",
+        "owner": "or",
+        "name": "b",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/Throwable;Ljava/lang/String;)V"
+      }
+    ]
+  },
+  {
+    "class": "IntegerNode",
+    "name": "mp",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "integer",
+        "owner": "mp",
+        "name": "f",
+        "access": 1,
+        "descriptor": "I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(I)V"
+      }
+    ]
+  },
+  {
+    "class": "MiniMenuEntry",
+    "name": "cx",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "action",
+        "owner": "cx",
+        "name": "b",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "argument0",
+        "owner": "cx",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 668116437
+      },
+      {
+        "field": "argument1",
+        "owner": "cx",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -908888193
+      },
+      {
+        "field": "argument2",
+        "owner": "cx",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 367044629
+      },
+      {
+        "field": "opcode",
+        "owner": "cx",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -384608333
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "ReflectionCheck",
+    "name": "bd",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "arguments",
+        "owner": "bd",
+        "name": "g",
+        "access": 0,
+        "descriptor": "[[[B"
+      },
+      {
+        "field": "creationErrors",
+        "owner": "bd",
+        "name": "b",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "fields",
+        "owner": "bd",
+        "name": "e",
+        "access": 0,
+        "descriptor": "[Ljava/lang/reflect/Field;"
+      },
+      {
+        "field": "id",
+        "owner": "bd",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1338843583
+      },
+      {
+        "field": "intReplaceValues",
+        "owner": "bd",
+        "name": "f",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "methods",
+        "owner": "bd",
+        "name": "k",
+        "access": 0,
+        "descriptor": "[Ljava/lang/reflect/Method;"
+      },
+      {
+        "field": "operations",
+        "owner": "bd",
+        "name": "p",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "size",
+        "owner": "bd",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -983973645
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Enumerated",
+    "name": "jk",
+    "super": "java.lang.Object",
+    "access": 1537,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "ordinal",
+        "owner": "jk",
+        "name": "f",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(I)I"
+      }
+    ],
+    "constructors": []
+  },
+  {
+    "class": "DualNode",
+    "name": "mz",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "keyDual",
+        "owner": "mz",
+        "name": "cu",
+        "access": 1,
+        "descriptor": "J"
+      },
+      {
+        "field": "nextDual",
+        "owner": "mz",
+        "name": "cv",
+        "access": 1,
+        "descriptor": "Lmz;"
+      },
+      {
+        "field": "previousDual",
+        "owner": "mz",
+        "name": "cb",
+        "access": 1,
+        "descriptor": "Lmz;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "removeDual",
+        "owner": "mz",
+        "name": "dm",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "()V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Task",
+    "name": "ep",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "intArgument",
+        "owner": "ep",
+        "name": "k",
+        "access": 1,
+        "descriptor": "I"
+      },
+      {
+        "field": "next",
+        "owner": "ep",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lep;"
+      },
+      {
+        "field": "objectArgument",
+        "owner": "ep",
+        "name": "g",
+        "access": 0,
+        "descriptor": "Ljava/lang/Object;"
+      },
+      {
+        "field": "result",
+        "owner": "ep",
+        "name": "h",
+        "access": 65,
+        "descriptor": "Ljava/lang/Object;"
+      },
+      {
+        "field": "status",
+        "owner": "ep",
+        "name": "b",
+        "access": 65,
+        "descriptor": "I"
+      },
+      {
+        "field": "type",
+        "owner": "ep",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -576884369
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "DualNodeDeque",
+    "name": "jo",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "sentinel",
+        "owner": "jo",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lmz;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "addFirst",
+        "owner": "jo",
+        "name": "f",
+        "access": 1,
+        "descriptor": "(Lmz;)V"
+      },
+      {
+        "method": "addLast",
+        "owner": "jo",
+        "name": "o",
+        "access": 1,
+        "descriptor": "(Lmz;)V"
+      },
+      {
+        "method": "last",
+        "owner": "jo",
+        "name": "u",
+        "access": 1,
+        "descriptor": "()Lmz;"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "WorldMapLabel",
+    "name": "fi",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "height",
+        "owner": "fi",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1846653715
+      },
+      {
+        "field": "size",
+        "owner": "fi",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Ley;"
+      },
+      {
+        "field": "text",
+        "owner": "fi",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "width",
+        "owner": "fi",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -586926431
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/String;IILey;)V"
+      }
+    ]
+  },
+  {
+    "class": "ObjectNode",
+    "name": "mm",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "obj",
+        "owner": "mm",
+        "name": "f",
+        "access": 17,
+        "descriptor": "Ljava/lang/Object;"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(Ljava/lang/Object;)V"
+      }
+    ]
+  },
+  {
+    "class": "PlatformInfoProvider",
+    "name": "mi",
+    "super": "java.lang.Object",
+    "access": 1537,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "mi",
+        "name": "f",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(I)Lmo;"
+      }
+    ],
+    "constructors": []
+  },
+  {
+    "class": "AnimFrame",
+    "name": "ft",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "base",
+        "owner": "ft",
+        "name": "b",
+        "access": 0,
+        "descriptor": "Lfa;"
+      },
+      {
+        "field": "transformCount",
+        "owner": "ft",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I"
+      },
+      {
+        "field": "transforms",
+        "owner": "ft",
+        "name": "k",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "transparency",
+        "owner": "ft",
+        "name": "l",
+        "access": 0,
+        "descriptor": "Z"
+      },
+      {
+        "field": "xs",
+        "owner": "ft",
+        "name": "g",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "ys",
+        "owner": "ft",
+        "name": "h",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "zs",
+        "owner": "ft",
+        "name": "n",
+        "access": 0,
+        "descriptor": "[I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "([BLfa;)V"
+      }
+    ]
+  },
+  {
+    "class": "Wrapper",
+    "name": "gm",
+    "super": "mz",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "size",
+        "owner": "gm",
+        "name": "o",
+        "access": 16,
+        "descriptor": "I"
+      }
+    ],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "gm",
+        "name": "f",
+        "access": 1024,
+        "parameters": [],
+        "descriptor": "()Ljava/lang/Object;"
+      },
+      {
+        "method": "isSoft",
+        "owner": "gm",
+        "name": "o",
+        "access": 1024,
+        "parameters": [],
+        "descriptor": "()Z"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(I)V"
+      }
+    ]
+  },
+  {
+    "class": "SoftWrapper",
+    "name": "gz",
+    "super": "gm",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "ref",
+        "owner": "gz",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/lang/ref/SoftReference;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "gz",
+        "name": "f",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "()Ljava/lang/Object;"
+      },
+      {
+        "method": "isSoft",
+        "owner": "gz",
+        "name": "o",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "()Z"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljava/lang/Object;I)V"
+      }
+    ]
+  },
+  {
+    "class": "WorldMapEvent",
+    "name": "fp",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "coord1",
+        "owner": "fp",
+        "name": "o",
+        "access": 1,
+        "descriptor": "Lhk;"
+      },
+      {
+        "field": "coord2",
+        "owner": "fp",
+        "name": "u",
+        "access": 1,
+        "descriptor": "Lhk;"
+      },
+      {
+        "field": "mapElement",
+        "owner": "fp",
+        "name": "f",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 2124516847
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(ILhk;Lhk;)V"
+      }
+    ]
+  },
+  {
     "class": "GraphicsDefaults",
     "name": "lc",
     "super": "java.lang.Object",
@@ -1324,51 +1859,31 @@
     ]
   },
   {
-    "class": "SecureRandomFuture",
-    "name": "cz",
+    "class": "Formatting",
+    "name": "dm",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
-    "fields": [
-      {
-        "field": "executor",
-        "owner": "cz",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/util/concurrent/ExecutorService;"
-      },
-      {
-        "field": "future",
-        "owner": "cz",
-        "name": "o",
-        "access": 0,
-        "descriptor": "Ljava/util/concurrent/Future;"
-      }
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "DevicePcmPlayerProvider",
+    "name": "ao",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [
+      "be"
     ],
+    "fields": [],
     "methods": [
       {
-        "method": "get",
-        "owner": "cz",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(B)Ljava/security/SecureRandom;"
-      },
-      {
-        "method": "isDone",
-        "owner": "cz",
-        "name": "o",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)Z"
-      },
-      {
-        "method": "shutdown",
-        "owner": "cz",
+        "method": "player",
+        "owner": "ao",
         "name": "f",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
+        "access": 1,
+        "descriptor": "(B)Lbh;"
       }
     ],
     "constructors": [
@@ -1379,16 +1894,24 @@
     ]
   },
   {
-    "class": "WorldMapCacheName",
-    "name": "fl",
+    "class": "ServerBuild",
+    "name": "im",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "name",
-        "owner": "fl",
+        "field": "id",
+        "owner": "im",
         "name": "e",
+        "access": 16,
+        "descriptor": "I",
+        "decoder": 597489609
+      },
+      {
+        "field": "name",
+        "owner": "im",
+        "name": "b",
         "access": 17,
         "descriptor": "Ljava/lang/String;"
       }
@@ -1397,416 +1920,35 @@
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(Ljava/lang/String;)V"
+        "descriptor": "(Ljava/lang/String;I)V"
       }
     ]
   },
   {
-    "class": "Strings",
-    "name": "ih",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "WorldMapEvent",
-    "name": "fp",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "coord1",
-        "owner": "fp",
-        "name": "o",
-        "access": 1,
-        "descriptor": "Lhk;"
-      },
-      {
-        "field": "coord2",
-        "owner": "fp",
-        "name": "u",
-        "access": 1,
-        "descriptor": "Lhk;"
-      },
-      {
-        "field": "mapElement",
-        "owner": "fp",
-        "name": "f",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 2124516847
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(ILhk;Lhk;)V"
-      }
-    ]
-  },
-  {
-    "class": "Enumerated",
-    "name": "jk",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "ordinal",
-        "owner": "jk",
-        "name": "f",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(I)I"
-      }
-    ],
-    "constructors": []
-  },
-  {
-    "class": "NanoClock",
-    "name": "dj",
-    "super": "et",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "lastTimeNano",
-        "owner": "dj",
-        "name": "f",
-        "access": 0,
-        "descriptor": "J",
-        "decoder": 898288013005373267
-      }
-    ],
-    "methods": [
-      {
-        "method": "mark",
-        "owner": "dj",
-        "name": "f",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(S)V"
-      },
-      {
-        "method": "wait",
-        "owner": "dj",
-        "name": "o",
-        "access": 1,
-        "parameters": [
-          "cycleMs",
-          "minSleepMs"
-        ],
-        "descriptor": "(III)I",
-        "finalArgument": 930401367
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "DefaultsGroup",
-    "name": "lh",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "group",
-        "owner": "lh",
-        "name": "o",
-        "access": 16,
-        "descriptor": "I",
-        "decoder": 1622336411
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(I)V"
-      }
-    ]
-  },
-  {
-    "class": "AbstractRasterProvider",
-    "name": "oe",
+    "class": "AbstractByteArrayCopier",
+    "name": "hd",
     "super": "java.lang.Object",
     "access": 1057,
     "interfaces": [],
-    "fields": [
-      {
-        "field": "height",
-        "owner": "oe",
-        "name": "b",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 1327457593
-      },
-      {
-        "field": "pixels",
-        "owner": "oe",
-        "name": "u",
-        "access": 1,
-        "descriptor": "[I"
-      },
-      {
-        "field": "width",
-        "owner": "oe",
-        "name": "p",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 256731231
-      }
-    ],
+    "fields": [],
     "methods": [
       {
-        "method": "apply",
-        "owner": "oe",
-        "name": "x",
-        "access": 17,
+        "method": "get",
+        "owner": "hd",
+        "name": "u",
+        "access": 1024,
         "parameters": [],
-        "descriptor": "(I)V"
+        "descriptor": "(I)[B"
       },
       {
-        "method": "draw",
-        "owner": "oe",
-        "name": "u",
+        "method": "set",
+        "owner": "hd",
+        "name": "p",
         "access": 1025,
         "parameters": [
-          "x",
-          "y",
-          "width",
-          "height"
+          "array"
         ],
-        "descriptor": "(IIIIB)V"
-      },
-      {
-        "method": "drawFull",
-        "owner": "oe",
-        "name": "o",
-        "access": 1025,
-        "parameters": [
-          "x",
-          "y"
-        ],
-        "descriptor": "(III)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 4,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "GrandExchangeEvents",
-    "name": "is",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "events",
-        "owner": "is",
-        "name": "f",
-        "access": 17,
-        "descriptor": "Ljava/util/List;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "sort",
-        "owner": "is",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(Ljava/util/Comparator;ZI)V",
-        "finalArgument": -1364258776
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(Lnu;Z)V"
-      }
-    ]
-  },
-  {
-    "class": "GzipDecompressor",
-    "name": "ok",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "inflater",
-        "owner": "ok",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/util/zip/Inflater;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "decompress",
-        "owner": "ok",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(Lnu;[BB)V",
-        "finalArgument": 1
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      },
-      {
-        "access": 0,
-        "descriptor": "(III)V"
-      }
-    ]
-  },
-  {
-    "class": "UnlitModel0",
-    "name": "gk",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "TriBool",
-    "name": "ls",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Skills",
-    "name": "ie",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "DevicePcmPlayer",
-    "name": "av",
-    "super": "bh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "byteSamples",
-        "owner": "av",
-        "name": "p",
-        "access": 0,
-        "descriptor": "[B"
-      },
-      {
-        "field": "capacity2",
-        "owner": "av",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1411994739
-      },
-      {
-        "field": "format",
-        "owner": "av",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljavax/sound/sampled/AudioFormat;"
-      },
-      {
-        "field": "line",
-        "owner": "av",
-        "name": "o",
-        "access": 0,
-        "descriptor": "Ljavax/sound/sampled/SourceDataLine;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "close",
-        "owner": "av",
-        "name": "b",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "(B)V"
-      },
-      {
-        "method": "discard",
-        "owner": "av",
-        "name": "e",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "(B)V"
-      },
-      {
-        "method": "init",
-        "owner": "av",
-        "name": "f",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "(I)V",
-        "finalArgument": -427063140
-      },
-      {
-        "method": "open",
-        "owner": "av",
-        "name": "o",
-        "access": 4,
-        "parameters": [
-          "bufferSize"
-        ],
-        "descriptor": "(II)V",
-        "finalArgument": -1868594255
-      },
-      {
-        "method": "position",
-        "owner": "av",
-        "name": "u",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "(I)I",
-        "finalArgument": -1681178021
-      },
-      {
-        "method": "write",
-        "owner": "av",
-        "name": "p",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "()V"
+        "descriptor": "([BI)V"
       }
     ],
     "constructors": [
@@ -1894,124 +2036,788 @@
     "constructors": []
   },
   {
-    "class": "Node",
-    "name": "mh",
+    "class": "Clock",
+    "name": "et",
+    "super": "java.lang.Object",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "mark",
+        "owner": "et",
+        "name": "f",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(S)V"
+      },
+      {
+        "method": "wait",
+        "owner": "et",
+        "name": "o",
+        "access": 1025,
+        "parameters": [
+          "cycleMs",
+          "minSleepMs"
+        ],
+        "descriptor": "(III)I"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "AbstractRasterProvider",
+    "name": "oe",
+    "super": "java.lang.Object",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "height",
+        "owner": "oe",
+        "name": "b",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 1327457593
+      },
+      {
+        "field": "pixels",
+        "owner": "oe",
+        "name": "u",
+        "access": 1,
+        "descriptor": "[I"
+      },
+      {
+        "field": "width",
+        "owner": "oe",
+        "name": "p",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 256731231
+      }
+    ],
+    "methods": [
+      {
+        "method": "apply",
+        "owner": "oe",
+        "name": "x",
+        "access": 17,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "draw",
+        "owner": "oe",
+        "name": "u",
+        "access": 1025,
+        "parameters": [
+          "x",
+          "y",
+          "width",
+          "height"
+        ],
+        "descriptor": "(IIIIB)V"
+      },
+      {
+        "method": "drawFull",
+        "owner": "oe",
+        "name": "o",
+        "access": 1025,
+        "parameters": [
+          "x",
+          "y"
+        ],
+        "descriptor": "(III)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 4,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "MouseWheelHandler",
+    "name": "ad",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [
+      "dw",
+      "java.awt.event.MouseWheelListener"
+    ],
+    "fields": [
+      {
+        "field": "rotation",
+        "owner": "ad",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1839042189
+      }
+    ],
+    "methods": [
+      {
+        "method": "addTo",
+        "owner": "ad",
+        "name": "f",
+        "access": 0,
+        "parameters": [
+          "component"
+        ],
+        "descriptor": "(Ljava/awt/Component;I)V"
+      },
+      {
+        "method": "mouseWheelMoved",
+        "owner": "ad",
+        "name": "mouseWheelMoved",
+        "access": 33,
+        "parameters": [
+          "mouseWheelEvent"
+        ],
+        "descriptor": "(Ljava/awt/event/MouseWheelEvent;)V"
+      },
+      {
+        "method": "removeFrom",
+        "owner": "ad",
+        "name": "o",
+        "access": 0,
+        "parameters": [
+          "component"
+        ],
+        "descriptor": "(Ljava/awt/Component;B)V"
+      },
+      {
+        "method": "useRotation",
+        "owner": "ad",
+        "name": "u",
+        "access": 33,
+        "parameters": [],
+        "descriptor": "(I)I"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "SecureRandomFuture",
+    "name": "cz",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "key",
-        "owner": "mh",
-        "name": "fk",
-        "access": 1,
-        "descriptor": "J"
-      },
-      {
-        "field": "next",
-        "owner": "mh",
-        "name": "fz",
-        "access": 1,
-        "descriptor": "Lmh;"
-      },
-      {
-        "field": "previous",
-        "owner": "mh",
-        "name": "fs",
-        "access": 1,
-        "descriptor": "Lmh;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "hasNext",
-        "owner": "mh",
-        "name": "ed",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "()Z"
-      },
-      {
-        "method": "remove",
-        "owner": "mh",
-        "name": "ex",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "()V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "HeadbarUpdate",
-    "name": "cl",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "cycle",
-        "owner": "cl",
+        "field": "executor",
+        "owner": "cz",
         "name": "f",
         "access": 0,
-        "descriptor": "I",
-        "decoder": 1723297803
+        "descriptor": "Ljava/util/concurrent/ExecutorService;"
       },
       {
-        "field": "cycleOffset",
-        "owner": "cl",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1369623823
-      },
-      {
-        "field": "health",
-        "owner": "cl",
+        "field": "future",
+        "owner": "cz",
         "name": "o",
         "access": 0,
-        "descriptor": "I",
-        "decoder": -802786453
-      },
-      {
-        "field": "health2",
-        "owner": "cl",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1934136823
+        "descriptor": "Ljava/util/concurrent/Future;"
       }
     ],
     "methods": [
       {
-        "method": "set",
-        "owner": "cl",
+        "method": "get",
+        "owner": "cz",
+        "name": "u",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(B)Ljava/security/SecureRandom;"
+      },
+      {
+        "method": "isDone",
+        "owner": "cz",
+        "name": "o",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)Z"
+      },
+      {
+        "method": "shutdown",
+        "owner": "cz",
         "name": "f",
         "access": 0,
-        "descriptor": "(IIIII)V"
+        "parameters": [],
+        "descriptor": "(I)V"
       }
     ],
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(IIII)V"
+        "descriptor": "()V"
       }
     ]
   },
   {
-    "class": "Interpreter",
-    "name": "cw",
+    "class": "TriBool",
+    "name": "ls",
     "super": "java.lang.Object",
     "access": 33,
     "interfaces": [],
     "fields": [],
     "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "AbstractSocket",
+    "name": "li",
+    "super": "java.lang.Object",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "available",
+        "owner": "li",
+        "name": "u",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(B)I"
+      },
+      {
+        "method": "close",
+        "owner": "li",
+        "name": "f",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "isAvailable",
+        "owner": "li",
+        "name": "p",
+        "access": 1025,
+        "parameters": [
+          "length"
+        ],
+        "descriptor": "(II)Z"
+      },
+      {
+        "method": "read",
+        "owner": "li",
+        "name": "b",
+        "access": 1025,
+        "parameters": [
+          "dst",
+          "dstIndex",
+          "length"
+        ],
+        "descriptor": "([BIIB)I"
+      },
+      {
+        "method": "readUnsignedByte",
+        "owner": "li",
+        "name": "o",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(B)I"
+      },
+      {
+        "method": "write",
+        "owner": "li",
+        "name": "k",
+        "access": 1025,
+        "parameters": [
+          "src",
+          "srcIndex",
+          "length"
+        ],
+        "descriptor": "([BIII)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 4,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Inventory",
+    "name": "cu",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "ids",
+        "owner": "cu",
+        "name": "o",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "quantities",
+        "owner": "cu",
+        "name": "u",
+        "access": 0,
+        "descriptor": "[I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Entity",
+    "name": "fm",
+    "super": "mz",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "height",
+        "owner": "fm",
+        "name": "ck",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 2052938627
+      }
+    ],
+    "methods": [
+      {
+        "method": "draw",
+        "owner": "fm",
+        "name": "bu",
+        "access": 0,
+        "parameters": [
+          "yaw",
+          "cameraPitchSine",
+          "cameraPitchCosine",
+          "cameraYawSine",
+          "cameraYawCosine",
+          "x",
+          "y",
+          "z",
+          "tag"
+        ],
+        "descriptor": "(IIIIIIIIJ)V"
+      },
+      {
+        "method": "getModel",
+        "owner": "fm",
+        "name": "o",
+        "access": 4,
+        "parameters": [],
+        "descriptor": "(I)Lgv;"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 4,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "ClientProt0",
+    "name": "gt",
+    "super": "java.lang.Object",
+    "access": 1537,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
     "constructors": []
+  },
+  {
+    "class": "NodeHashTable",
+    "name": "mg",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "buckets",
+        "owner": "mg",
+        "name": "o",
+        "access": 0,
+        "descriptor": "[Lmh;"
+      },
+      {
+        "field": "current",
+        "owner": "mg",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Lmh;"
+      },
+      {
+        "field": "currentGet",
+        "owner": "mg",
+        "name": "u",
+        "access": 0,
+        "descriptor": "Lmh;"
+      },
+      {
+        "field": "index",
+        "owner": "mg",
+        "name": "b",
+        "access": 0,
+        "descriptor": "I"
+      },
+      {
+        "field": "size",
+        "owner": "mg",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I"
+      }
+    ],
+    "methods": [
+      {
+        "method": "first",
+        "owner": "mg",
+        "name": "u",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "()Lmh;"
+      },
+      {
+        "method": "get",
+        "owner": "mg",
+        "name": "f",
+        "access": 1,
+        "parameters": [
+          "key"
+        ],
+        "descriptor": "(J)Lmh;"
+      },
+      {
+        "method": "next",
+        "owner": "mg",
+        "name": "p",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "()Lmh;"
+      },
+      {
+        "method": "put",
+        "owner": "mg",
+        "name": "o",
+        "access": 1,
+        "parameters": [
+          "node",
+          "key"
+        ],
+        "descriptor": "(Lmh;J)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(I)V"
+      }
+    ]
+  },
+  {
+    "class": "Message",
+    "name": "bs",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "count",
+        "owner": "bs",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -845346373
+      },
+      {
+        "field": "cycle",
+        "owner": "bs",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 31951867
+      },
+      {
+        "field": "isFromFriend0",
+        "owner": "bs",
+        "name": "e",
+        "access": 0,
+        "descriptor": "Lls;"
+      },
+      {
+        "field": "isFromIgnored0",
+        "owner": "bs",
+        "name": "k",
+        "access": 0,
+        "descriptor": "Lls;"
+      },
+      {
+        "field": "prefix",
+        "owner": "bs",
+        "name": "g",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "sender",
+        "owner": "bs",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "senderUsername",
+        "owner": "bs",
+        "name": "b",
+        "access": 0,
+        "descriptor": "Llw;"
+      },
+      {
+        "field": "text",
+        "owner": "bs",
+        "name": "h",
+        "access": 0,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "type",
+        "owner": "bs",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1009586671
+      }
+    ],
+    "methods": [
+      {
+        "method": "clearIsFromFriend",
+        "owner": "bs",
+        "name": "o",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "clearIsFromIgnored",
+        "owner": "bs",
+        "name": "b",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "fillIsFromFriend",
+        "owner": "bs",
+        "name": "p",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(B)V",
+        "finalArgument": 1
+      },
+      {
+        "method": "fillIsFromIgnored",
+        "owner": "bs",
+        "name": "k",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "fillSenderUsername",
+        "owner": "bs",
+        "name": "g",
+        "access": 16,
+        "parameters": [],
+        "descriptor": "(I)V",
+        "finalArgument": -1679854800
+      },
+      {
+        "method": "isFromFriend",
+        "owner": "bs",
+        "name": "u",
+        "access": 16,
+        "parameters": [],
+        "descriptor": "(I)Z",
+        "finalArgument": 527406711
+      },
+      {
+        "method": "isFromIgnored",
+        "owner": "bs",
+        "name": "e",
+        "access": 16,
+        "parameters": [],
+        "descriptor": "(I)Z",
+        "finalArgument": 1024482066
+      },
+      {
+        "method": "set",
+        "owner": "bs",
+        "name": "f",
+        "access": 0,
+        "parameters": [
+          "type",
+          "sender",
+          "prefix",
+          "text"
+        ],
+        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+      }
+    ]
+  },
+  {
+    "class": "InterfaceParent",
+    "name": "cv",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "itf",
+        "owner": "cv",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1429223805
+      },
+      {
+        "field": "keep",
+        "owner": "cv",
+        "name": "u",
+        "access": 0,
+        "descriptor": "Z"
+      },
+      {
+        "field": "type",
+        "owner": "cv",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -196451933
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "FloorUnderlayType",
+    "name": "ky",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "hue",
+        "owner": "ky",
+        "name": "p",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 125421579
+      },
+      {
+        "field": "hueMultiplier",
+        "owner": "ky",
+        "name": "k",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 995550405
+      },
+      {
+        "field": "lightness",
+        "owner": "ky",
+        "name": "e",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": -1607996817
+      },
+      {
+        "field": "rgb",
+        "owner": "ky",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 21649565
+      },
+      {
+        "field": "saturation",
+        "owner": "ky",
+        "name": "b",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 1389342831
+      }
+    ],
+    "methods": [
+      {
+        "method": "decode",
+        "owner": "ky",
+        "name": "p",
+        "access": 1,
+        "descriptor": "(Lnu;II)V",
+        "finalArgument": 1271291801
+      },
+      {
+        "method": "decode0",
+        "owner": "ky",
+        "name": "b",
+        "access": 0,
+        "descriptor": "(Lnu;III)V",
+        "finalArgument": -1899368585
+      },
+      {
+        "method": "postDecode",
+        "owner": "ky",
+        "name": "u",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "setHsl",
+        "owner": "ky",
+        "name": "e",
+        "access": 0,
+        "parameters": [
+          "rgb"
+        ],
+        "descriptor": "(IB)V",
+        "finalArgument": 6
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
   },
   {
     "class": "ArchiveDiskAction",
@@ -2059,135 +2865,188 @@
     ]
   },
   {
-    "class": "ClientProt",
-    "name": "gx",
+    "class": "WorldMapArchiveLoader",
+    "name": "ml",
     "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [
-      "gt"
-    ],
-    "fields": [
-      {
-        "field": "id",
-        "owner": "gx",
-        "name": "dc",
-        "access": 16,
-        "descriptor": "I",
-        "decoder": 660062327
-      },
-      {
-        "field": "length",
-        "owner": "gx",
-        "name": "dn",
-        "access": 16,
-        "descriptor": "I",
-        "decoder": -787874333
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(II)V"
-      }
-    ]
-  },
-  {
-    "class": "ClientError",
-    "name": "or",
-    "super": "java.lang.RuntimeException",
     "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "cause",
-        "owner": "or",
+        "field": "archive",
+        "owner": "ml",
         "name": "e",
         "access": 0,
-        "descriptor": "Ljava/lang/Throwable;"
+        "descriptor": "Lir;"
       },
       {
-        "field": "message",
-        "owner": "or",
+        "field": "cacheName",
+        "owner": "ml",
         "name": "b",
         "access": 0,
         "descriptor": "Ljava/lang/String;"
-      }
-    ],
-    "methods": [],
-    "constructors": [
+      },
       {
+        "field": "isLoaded0",
+        "owner": "ml",
+        "name": "g",
         "access": 0,
-        "descriptor": "(Ljava/lang/Throwable;Ljava/lang/String;)V"
-      }
-    ]
-  },
-  {
-    "class": "DualNode",
-    "name": "mz",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "keyDual",
-        "owner": "mz",
-        "name": "cu",
-        "access": 1,
-        "descriptor": "J"
+        "descriptor": "Z"
       },
       {
-        "field": "nextDual",
-        "owner": "mz",
-        "name": "cv",
-        "access": 1,
-        "descriptor": "Lmz;"
-      },
-      {
-        "field": "previousDual",
-        "owner": "mz",
-        "name": "cb",
-        "access": 1,
-        "descriptor": "Lmz;"
+        "field": "percentLoaded0",
+        "owner": "ml",
+        "name": "k",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -19121881
       }
     ],
     "methods": [
       {
-        "method": "removeDual",
-        "owner": "mz",
-        "name": "dm",
-        "access": 1,
+        "method": "isLoaded",
+        "owner": "ml",
+        "name": "u",
+        "access": 0,
         "parameters": [],
-        "descriptor": "()V"
+        "descriptor": "(I)Z"
+      },
+      {
+        "method": "load",
+        "owner": "ml",
+        "name": "o",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)I",
+        "finalArgument": -670939769
+      },
+      {
+        "method": "percentLoaded",
+        "owner": "ml",
+        "name": "p",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)I"
+      },
+      {
+        "method": "reset",
+        "owner": "ml",
+        "name": "f",
+        "access": 0,
+        "parameters": [
+          "cacheName"
+        ],
+        "descriptor": "(Ljava/lang/String;I)V",
+        "finalArgument": -2104011211
       }
     ],
     "constructors": [
       {
+        "access": 0,
+        "descriptor": "(Lir;)V"
+      }
+    ]
+  },
+  {
+    "class": "NanoClock",
+    "name": "dj",
+    "super": "et",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "lastTimeNano",
+        "owner": "dj",
+        "name": "f",
+        "access": 0,
+        "descriptor": "J",
+        "decoder": 898288013005373267
+      }
+    ],
+    "methods": [
+      {
+        "method": "mark",
+        "owner": "dj",
+        "name": "f",
         "access": 1,
+        "parameters": [],
+        "descriptor": "(S)V"
+      },
+      {
+        "method": "wait",
+        "owner": "dj",
+        "name": "o",
+        "access": 1,
+        "parameters": [
+          "cycleMs",
+          "minSleepMs"
+        ],
+        "descriptor": "(III)I",
+        "finalArgument": 930401367
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
         "descriptor": "()V"
       }
     ]
   },
   {
-    "class": "ByteArrayNode",
-    "name": "mw",
-    "super": "mh",
+    "class": "MouseWheel",
+    "name": "dw",
+    "super": "java.lang.Object",
+    "access": 1537,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "useRotation",
+        "owner": "dw",
+        "name": "u",
+        "access": 1025,
+        "parameters": [],
+        "descriptor": "(I)I"
+      }
+    ],
+    "constructors": []
+  },
+  {
+    "class": "DirectWrapper",
+    "name": "gw",
+    "super": "gm",
     "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "byteArray",
-        "owner": "mw",
+        "field": "obj",
+        "owner": "gw",
         "name": "f",
-        "access": 1,
-        "descriptor": "[B"
+        "access": 0,
+        "descriptor": "Ljava/lang/Object;"
       }
     ],
-    "methods": [],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "gw",
+        "name": "f",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "()Ljava/lang/Object;"
+      },
+      {
+        "method": "isSoft",
+        "owner": "gw",
+        "name": "o",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "()Z"
+      }
+    ],
     "constructors": [
       {
-        "access": 1,
-        "descriptor": "([B)V"
+        "access": 0,
+        "descriptor": "(Ljava/lang/Object;I)V"
       }
     ]
   },
@@ -2251,140 +3110,58 @@
     ]
   },
   {
-    "class": "MouseWheel",
-    "name": "dw",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "useRotation",
-        "owner": "dw",
-        "name": "u",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(I)I"
-      }
-    ],
-    "constructors": []
-  },
-  {
-    "class": "Entity",
-    "name": "fm",
-    "super": "mz",
-    "access": 1057,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "height",
-        "owner": "fm",
-        "name": "ck",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 2052938627
-      }
-    ],
-    "methods": [
-      {
-        "method": "draw",
-        "owner": "fm",
-        "name": "bu",
-        "access": 0,
-        "parameters": [
-          "yaw",
-          "cameraPitchSine",
-          "cameraPitchCosine",
-          "cameraYawSine",
-          "cameraYawCosine",
-          "x",
-          "y",
-          "z",
-          "tag"
-        ],
-        "descriptor": "(IIIIIIIIJ)V"
-      },
-      {
-        "method": "getModel",
-        "owner": "fm",
-        "name": "o",
-        "access": 4,
-        "parameters": [],
-        "descriptor": "(I)Lgv;"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 4,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "DualNodeDeque",
-    "name": "jo",
+    "class": "FloorDecoration",
+    "name": "fz",
     "super": "java.lang.Object",
     "access": 49,
     "interfaces": [],
     "fields": [
       {
-        "field": "sentinel",
-        "owner": "jo",
+        "field": "entity",
+        "owner": "fz",
+        "name": "p",
+        "access": 1,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "flags",
+        "owner": "fz",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1857453107
+      },
+      {
+        "field": "tag",
+        "owner": "fz",
+        "name": "b",
+        "access": 1,
+        "descriptor": "J",
+        "decoder": 1931928399249517797
+      },
+      {
+        "field": "tileHeight",
+        "owner": "fz",
         "name": "f",
         "access": 0,
-        "descriptor": "Lmz;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "addFirst",
-        "owner": "jo",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(Lmz;)V"
+        "descriptor": "I",
+        "decoder": 41501185
       },
       {
-        "method": "addLast",
-        "owner": "jo",
-        "name": "o",
-        "access": 1,
-        "descriptor": "(Lmz;)V"
-      },
-      {
-        "method": "last",
-        "owner": "jo",
-        "name": "u",
-        "access": 1,
-        "descriptor": "()Lmz;"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Inventory",
-    "name": "cu",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "ids",
-        "owner": "cu",
+        "field": "x",
+        "owner": "fz",
         "name": "o",
         "access": 0,
-        "descriptor": "[I"
+        "descriptor": "I",
+        "decoder": 969764679
       },
       {
-        "field": "quantities",
-        "owner": "cu",
+        "field": "y",
+        "owner": "fz",
         "name": "u",
         "access": 0,
-        "descriptor": "[I"
+        "descriptor": "I",
+        "decoder": 1466324567
       }
     ],
     "methods": [],
@@ -2396,111 +3173,262 @@
     ]
   },
   {
-    "class": "Usernamed",
-    "name": "la",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "username",
-        "owner": "la",
-        "name": "kg",
-        "access": 1025,
-        "descriptor": "(I)Llw;"
-      }
-    ],
-    "constructors": []
-  },
-  {
-    "class": "RasterProvider",
-    "name": "aa",
-    "super": "oe",
-    "access": 49,
+    "class": "InvType",
+    "name": "js",
+    "super": "mz",
+    "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "component0",
-        "owner": "aa",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/awt/Component;"
-      },
-      {
-        "field": "image",
-        "owner": "aa",
-        "name": "o",
-        "access": 0,
-        "descriptor": "Ljava/awt/Image;"
+        "field": "size",
+        "owner": "js",
+        "name": "u",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 651568811
       }
     ],
     "methods": [
       {
-        "method": "draw",
-        "owner": "aa",
-        "name": "u",
-        "access": 17,
-        "parameters": [
-          "x",
-          "y",
-          "width",
-          "height"
-        ],
-        "descriptor": "(IIIIB)V"
-      },
-      {
-        "method": "draw0",
-        "owner": "aa",
-        "name": "b",
-        "access": 16,
-        "parameters": [
-          "graphics",
-          "x",
-          "y",
-          "width",
-          "height"
-        ],
-        "descriptor": "(Ljava/awt/Graphics;IIIII)V"
-      },
-      {
-        "method": "drawFull",
-        "owner": "aa",
+        "method": "decode",
+        "owner": "js",
         "name": "o",
-        "access": 17,
-        "parameters": [
-          "x",
-          "y"
-        ],
-        "descriptor": "(III)V"
+        "access": 0,
+        "descriptor": "(Lnu;B)V",
+        "finalArgument": 2
       },
       {
-        "method": "drawFull0",
-        "owner": "aa",
-        "name": "p",
-        "access": 16,
-        "parameters": [
-          "graphics",
-          "x",
-          "y"
-        ],
-        "descriptor": "(Ljava/awt/Graphics;IIB)V"
-      },
-      {
-        "method": "setComponent",
-        "owner": "aa",
-        "name": "f",
-        "access": 16,
-        "parameters": [
-          "c"
-        ],
-        "descriptor": "(Ljava/awt/Component;I)V"
+        "method": "decode0",
+        "owner": "js",
+        "name": "u",
+        "access": 0,
+        "descriptor": "(Lnu;IB)V",
+        "finalArgument": 1
       }
     ],
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(IILjava/awt/Component;)V"
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Interpreter",
+    "name": "cw",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "VarBitType",
+    "name": "kl",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "baseVar",
+        "owner": "kl",
+        "name": "u",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 909782819
+      },
+      {
+        "field": "endBit",
+        "owner": "kl",
+        "name": "b",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 1799765893
+      },
+      {
+        "field": "startBit",
+        "owner": "kl",
+        "name": "p",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": -1000839247
+      }
+    ],
+    "methods": [
+      {
+        "method": "decode",
+        "owner": "kl",
+        "name": "f",
+        "access": 1,
+        "descriptor": "(Lnu;I)V",
+        "finalArgument": -1516234684
+      },
+      {
+        "method": "decode0",
+        "owner": "kl",
+        "name": "o",
+        "access": 0,
+        "descriptor": "(Lnu;II)V",
+        "finalArgument": -1491405636
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "ObjStack",
+    "name": "fk",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "first",
+        "owner": "fk",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "height",
+        "owner": "fk",
+        "name": "g",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 777440775
+      },
+      {
+        "field": "second",
+        "owner": "fk",
+        "name": "b",
+        "access": 0,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "tag",
+        "owner": "fk",
+        "name": "k",
+        "access": 0,
+        "descriptor": "J",
+        "decoder": 9107611929187585679
+      },
+      {
+        "field": "third",
+        "owner": "fk",
+        "name": "e",
+        "access": 0,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "tileHeight",
+        "owner": "fk",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 765081793
+      },
+      {
+        "field": "x",
+        "owner": "fk",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1863896899
+      },
+      {
+        "field": "y",
+        "owner": "fk",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1265231529
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Bzip2Decompressor",
+    "name": "nf",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "ChatChannel",
+    "name": "ca",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "count",
+        "owner": "ca",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 93372497
+      },
+      {
+        "field": "messages",
+        "owner": "ca",
+        "name": "o",
+        "access": 0,
+        "descriptor": "[Lbs;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "addMessage",
+        "owner": "ca",
+        "name": "f",
+        "access": 0,
+        "parameters": [
+          "type",
+          "sender",
+          "text",
+          "prefix"
+        ],
+        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbs;",
+        "finalArgument": 20
+      },
+      {
+        "method": "getMessage",
+        "owner": "ca",
+        "name": "o",
+        "access": 0,
+        "parameters": [
+          "index"
+        ],
+        "descriptor": "(II)Lbs;",
+        "finalArgument": -1761753840
+      },
+      {
+        "method": "size",
+        "owner": "ca",
+        "name": "u",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(S)I"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
       }
     ]
   },
@@ -2543,42 +3471,79 @@
     ]
   },
   {
-    "class": "Wrapper",
-    "name": "gm",
+    "class": "ParamType",
+    "name": "kz",
     "super": "mz",
-    "access": 1057,
+    "access": 33,
     "interfaces": [],
     "fields": [
       {
-        "field": "size",
-        "owner": "gm",
-        "name": "o",
-        "access": 16,
-        "descriptor": "I"
+        "field": "autodisable",
+        "owner": "kz",
+        "name": "e",
+        "access": 0,
+        "descriptor": "Z"
+      },
+      {
+        "field": "defaultint",
+        "owner": "kz",
+        "name": "p",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 1078497239
+      },
+      {
+        "field": "defaultstr",
+        "owner": "kz",
+        "name": "b",
+        "access": 1,
+        "descriptor": "Ljava/lang/String;"
+      },
+      {
+        "field": "type",
+        "owner": "kz",
+        "name": "u",
+        "access": 0,
+        "descriptor": "C"
       }
     ],
     "methods": [
       {
-        "method": "get",
-        "owner": "gm",
-        "name": "f",
-        "access": 1024,
-        "parameters": [],
-        "descriptor": "()Ljava/lang/Object;"
+        "method": "decode",
+        "owner": "kz",
+        "name": "p",
+        "access": 0,
+        "descriptor": "(Lnu;B)V",
+        "finalArgument": 11
       },
       {
-        "method": "isSoft",
-        "owner": "gm",
-        "name": "o",
-        "access": 1024,
+        "method": "decode0",
+        "owner": "kz",
+        "name": "b",
+        "access": 0,
+        "descriptor": "(Lnu;II)V",
+        "finalArgument": 1477627389
+      },
+      {
+        "method": "isString",
+        "owner": "kz",
+        "name": "e",
+        "access": 1,
+        "descriptor": "(I)Z"
+      },
+      {
+        "method": "postDecode",
+        "owner": "kz",
+        "name": "u",
+        "access": 0,
         "parameters": [],
-        "descriptor": "()Z"
+        "descriptor": "(I)V"
       }
     ],
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(I)V"
+        "descriptor": "()V"
       }
     ]
   },
@@ -2723,273 +3688,6 @@
     ]
   },
   {
-    "class": "InterfaceParent",
-    "name": "cv",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "itf",
-        "owner": "cv",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1429223805
-      },
-      {
-        "field": "keep",
-        "owner": "cv",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "type",
-        "owner": "cv",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -196451933
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "AnimBase",
-    "name": "fa",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "id",
-        "owner": "fa",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1569878469
-      },
-      {
-        "field": "transformCount",
-        "owner": "fa",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1560016173
-      },
-      {
-        "field": "transformLabels",
-        "owner": "fa",
-        "name": "p",
-        "access": 0,
-        "descriptor": "[[I"
-      },
-      {
-        "field": "transformTypes",
-        "owner": "fa",
-        "name": "u",
-        "access": 0,
-        "descriptor": "[I"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(I[B)V"
-      }
-    ]
-  },
-  {
-    "class": "WallDecoration",
-    "name": "gh",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "entity1",
-        "owner": "gh",
-        "name": "g",
-        "access": 1,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "entity2",
-        "owner": "gh",
-        "name": "h",
-        "access": 1,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "flags",
-        "owner": "gh",
-        "name": "l",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1583095637
-      },
-      {
-        "field": "int7",
-        "owner": "gh",
-        "name": "b",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -790495867
-      },
-      {
-        "field": "orientation",
-        "owner": "gh",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1106091565
-      },
-      {
-        "field": "tag",
-        "owner": "gh",
-        "name": "n",
-        "access": 1,
-        "descriptor": "J",
-        "decoder": -7920256203386986359
-      },
-      {
-        "field": "tileHeight",
-        "owner": "gh",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1866984259
-      },
-      {
-        "field": "x",
-        "owner": "gh",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1233523215
-      },
-      {
-        "field": "xOffset",
-        "owner": "gh",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1527389689
-      },
-      {
-        "field": "y",
-        "owner": "gh",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1569724115
-      },
-      {
-        "field": "yOffset",
-        "owner": "gh",
-        "name": "k",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 221325297
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "VarBitType",
-    "name": "kl",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "baseVar",
-        "owner": "kl",
-        "name": "u",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 909782819
-      },
-      {
-        "field": "endBit",
-        "owner": "kl",
-        "name": "b",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 1799765893
-      },
-      {
-        "field": "startBit",
-        "owner": "kl",
-        "name": "p",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": -1000839247
-      }
-    ],
-    "methods": [
-      {
-        "method": "decode",
-        "owner": "kl",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(Lnu;I)V",
-        "finalArgument": -1516234684
-      },
-      {
-        "method": "decode0",
-        "owner": "kl",
-        "name": "o",
-        "access": 0,
-        "descriptor": "(Lnu;II)V",
-        "finalArgument": -1491405636
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "IntegerNode",
-    "name": "mp",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "integer",
-        "owner": "mp",
-        "name": "f",
-        "access": 1,
-        "descriptor": "I"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(I)V"
-      }
-    ]
-  },
-  {
     "class": "NodeDeque",
     "name": "ju",
     "super": "java.lang.Object",
@@ -3097,6 +3795,314 @@
     ]
   },
   {
+    "class": "AbstractSound",
+    "name": "bc",
+    "super": "mh",
+    "access": 1057,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "position",
+        "owner": "bc",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "ByteArrayNode",
+    "name": "mw",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "byteArray",
+        "owner": "mw",
+        "name": "f",
+        "access": 1,
+        "descriptor": "[B"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "([B)V"
+      }
+    ]
+  },
+  {
+    "class": "AnimFrameset",
+    "name": "fb",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "frames",
+        "owner": "fb",
+        "name": "f",
+        "access": 0,
+        "descriptor": "[Lft;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "hasAlphaTransform",
+        "owner": "fb",
+        "name": "o",
+        "access": 1,
+        "parameters": [
+          "frame"
+        ],
+        "descriptor": "(II)Z"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Lir;Lir;IZ)V"
+      }
+    ]
+  },
+  {
+    "class": "Headbar",
+    "name": "ct",
+    "super": "mh",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "type",
+        "owner": "ct",
+        "name": "u",
+        "access": 0,
+        "descriptor": "Ljg;"
+      },
+      {
+        "field": "updates",
+        "owner": "ct",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Ljc;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "ct",
+        "name": "o",
+        "access": 0,
+        "parameters": [
+          "cycle"
+        ],
+        "descriptor": "(II)Lcl;",
+        "finalArgument": -950668126
+      },
+      {
+        "method": "isEmpty",
+        "owner": "ct",
+        "name": "u",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(B)Z"
+      },
+      {
+        "method": "put",
+        "owner": "ct",
+        "name": "f",
+        "access": 0,
+        "descriptor": "(IIIIB)V",
+        "finalArgument": 1
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(Ljg;)V"
+      }
+    ]
+  },
+  {
+    "class": "Rasterizer2D",
+    "name": "ou",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 4,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "DirectByteArrayCopier",
+    "name": "hb",
+    "super": "hd",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "directBuffer",
+        "owner": "hb",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/nio/ByteBuffer;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "hb",
+        "name": "u",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)[B"
+      },
+      {
+        "method": "set",
+        "owner": "hb",
+        "name": "p",
+        "access": 1,
+        "parameters": [
+          "array"
+        ],
+        "descriptor": "([BI)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "LoginProt",
+    "name": "gc",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [
+      "gt"
+    ],
+    "fields": [
+      {
+        "field": "id",
+        "owner": "gc",
+        "name": "k",
+        "access": 17,
+        "descriptor": "I",
+        "decoder": 819348427
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(II)V"
+      }
+    ]
+  },
+  {
+    "class": "Skills",
+    "name": "ie",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "SoundCache",
+    "name": "bi",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "rawSounds",
+        "owner": "bi",
+        "name": "p",
+        "access": 0,
+        "descriptor": "Lmg;"
+      },
+      {
+        "field": "soundEffectIndex",
+        "owner": "bi",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lir;"
+      },
+      {
+        "field": "vorbisSampleIndex",
+        "owner": "bi",
+        "name": "o",
+        "access": 0,
+        "descriptor": "Lir;"
+      },
+      {
+        "field": "vorbisSamples",
+        "owner": "bi",
+        "name": "u",
+        "access": 0,
+        "descriptor": "Lmg;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "getSoundEffect",
+        "owner": "bi",
+        "name": "u",
+        "access": 1,
+        "descriptor": "(I[II)Lah;",
+        "finalArgument": -1728363497
+      },
+      {
+        "method": "getSoundEffect0",
+        "owner": "bi",
+        "name": "f",
+        "access": 0,
+        "descriptor": "(II[II)Lah;",
+        "finalArgument": 1896632187
+      },
+      {
+        "method": "getVorbisSample",
+        "owner": "bi",
+        "name": "p",
+        "access": 1,
+        "descriptor": "(I[II)Lah;",
+        "finalArgument": -464178790
+      },
+      {
+        "method": "getVorbisSample0",
+        "owner": "bi",
+        "name": "o",
+        "access": 0,
+        "descriptor": "(II[IB)Lah;",
+        "finalArgument": -1
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(Lir;Lir;)V"
+      }
+    ]
+  },
+  {
     "class": "Wall",
     "name": "gs",
     "super": "java.lang.Object",
@@ -3179,6 +4185,300 @@
       {
         "access": 0,
         "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Usernamed",
+    "name": "la",
+    "super": "java.lang.Object",
+    "access": 1537,
+    "interfaces": [],
+    "fields": [],
+    "methods": [
+      {
+        "method": "username",
+        "owner": "la",
+        "name": "kg",
+        "access": 1025,
+        "descriptor": "(I)Llw;"
+      }
+    ],
+    "constructors": []
+  },
+  {
+    "class": "WallDecoration",
+    "name": "gh",
+    "super": "java.lang.Object",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "entity1",
+        "owner": "gh",
+        "name": "g",
+        "access": 1,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "entity2",
+        "owner": "gh",
+        "name": "h",
+        "access": 1,
+        "descriptor": "Lfm;"
+      },
+      {
+        "field": "flags",
+        "owner": "gh",
+        "name": "l",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1583095637
+      },
+      {
+        "field": "int7",
+        "owner": "gh",
+        "name": "b",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -790495867
+      },
+      {
+        "field": "orientation",
+        "owner": "gh",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1106091565
+      },
+      {
+        "field": "tag",
+        "owner": "gh",
+        "name": "n",
+        "access": 1,
+        "descriptor": "J",
+        "decoder": -7920256203386986359
+      },
+      {
+        "field": "tileHeight",
+        "owner": "gh",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1866984259
+      },
+      {
+        "field": "x",
+        "owner": "gh",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1233523215
+      },
+      {
+        "field": "xOffset",
+        "owner": "gh",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1527389689
+      },
+      {
+        "field": "y",
+        "owner": "gh",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1569724115
+      },
+      {
+        "field": "yOffset",
+        "owner": "gh",
+        "name": "k",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 221325297
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "RasterProvider",
+    "name": "aa",
+    "super": "oe",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "component0",
+        "owner": "aa",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Ljava/awt/Component;"
+      },
+      {
+        "field": "image",
+        "owner": "aa",
+        "name": "o",
+        "access": 0,
+        "descriptor": "Ljava/awt/Image;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "draw",
+        "owner": "aa",
+        "name": "u",
+        "access": 17,
+        "parameters": [
+          "x",
+          "y",
+          "width",
+          "height"
+        ],
+        "descriptor": "(IIIIB)V"
+      },
+      {
+        "method": "draw0",
+        "owner": "aa",
+        "name": "b",
+        "access": 16,
+        "parameters": [
+          "graphics",
+          "x",
+          "y",
+          "width",
+          "height"
+        ],
+        "descriptor": "(Ljava/awt/Graphics;IIIII)V"
+      },
+      {
+        "method": "drawFull",
+        "owner": "aa",
+        "name": "o",
+        "access": 17,
+        "parameters": [
+          "x",
+          "y"
+        ],
+        "descriptor": "(III)V"
+      },
+      {
+        "method": "drawFull0",
+        "owner": "aa",
+        "name": "p",
+        "access": 16,
+        "parameters": [
+          "graphics",
+          "x",
+          "y"
+        ],
+        "descriptor": "(Ljava/awt/Graphics;IIB)V"
+      },
+      {
+        "method": "setComponent",
+        "owner": "aa",
+        "name": "f",
+        "access": 16,
+        "parameters": [
+          "c"
+        ],
+        "descriptor": "(Ljava/awt/Component;I)V"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(IILjava/awt/Component;)V"
+      }
+    ]
+  },
+  {
+    "class": "Messages",
+    "name": "dc",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "Obj",
+    "name": "dg",
+    "super": "fm",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "id",
+        "owner": "dg",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -52258563
+      },
+      {
+        "field": "quantity",
+        "owner": "dg",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -438803775
+      }
+    ],
+    "methods": [
+      {
+        "method": "getModel",
+        "owner": "dg",
+        "name": "o",
+        "access": 20,
+        "parameters": [],
+        "descriptor": "(I)Lgv;"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "IntHashTable",
+    "name": "on",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "array",
+        "owner": "on",
+        "name": "f",
+        "access": 0,
+        "descriptor": "[I"
+      }
+    ],
+    "methods": [
+      {
+        "method": "get",
+        "owner": "on",
+        "name": "f",
+        "access": 1,
+        "descriptor": "(II)I",
+        "finalArgument": -429126945
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "([I)V"
       }
     ]
   },
@@ -3423,6 +4723,131 @@
     ]
   },
   {
+    "class": "GraphicsObject",
+    "name": "cf",
+    "super": "fm",
+    "access": 49,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "cycleStart",
+        "owner": "cf",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -255937363
+      },
+      {
+        "field": "frame",
+        "owner": "cf",
+        "name": "g",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1763592485
+      },
+      {
+        "field": "frameCycle",
+        "owner": "cf",
+        "name": "h",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 1659206025
+      },
+      {
+        "field": "height",
+        "owner": "cf",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": 921468661
+      },
+      {
+        "field": "id",
+        "owner": "cf",
+        "name": "f",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1442514319
+      },
+      {
+        "field": "isFinished",
+        "owner": "cf",
+        "name": "n",
+        "access": 0,
+        "descriptor": "Z"
+      },
+      {
+        "field": "plane",
+        "owner": "cf",
+        "name": "u",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1558185979
+      },
+      {
+        "field": "seqType",
+        "owner": "cf",
+        "name": "k",
+        "access": 0,
+        "descriptor": "Lkw;"
+      },
+      {
+        "field": "x",
+        "owner": "cf",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -799404683
+      },
+      {
+        "field": "y",
+        "owner": "cf",
+        "name": "b",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1197647983
+      }
+    ],
+    "methods": [
+      {
+        "method": "advance",
+        "owner": "cf",
+        "name": "f",
+        "access": 16,
+        "parameters": [
+          "cycles"
+        ],
+        "descriptor": "(II)V",
+        "finalArgument": -1779401122
+      },
+      {
+        "method": "getModel",
+        "owner": "cf",
+        "name": "o",
+        "access": 20,
+        "parameters": [],
+        "descriptor": "(I)Lgv;",
+        "finalArgument": 1807301365
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "(IIIIIII)V"
+      }
+    ]
+  },
+  {
+    "class": "Login",
+    "name": "cg",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
     "class": "StructType",
     "name": "ka",
     "super": "mz",
@@ -3478,132 +4903,6 @@
         "descriptor": "(I)V"
       }
     ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Rasterizer2D",
-    "name": "ou",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 4,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "NetFileRequest",
-    "name": "ic",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "archive",
-        "owner": "ic",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Lig;"
-      },
-      {
-        "field": "crc",
-        "owner": "ic",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -8399381
-      },
-      {
-        "field": "padding",
-        "owner": "ic",
-        "name": "u",
-        "access": 0,
-        "descriptor": "B"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Login",
-    "name": "cg",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "FloorDecoration",
-    "name": "fz",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "entity",
-        "owner": "fz",
-        "name": "p",
-        "access": 1,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "flags",
-        "owner": "fz",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1857453107
-      },
-      {
-        "field": "tag",
-        "owner": "fz",
-        "name": "b",
-        "access": 1,
-        "descriptor": "J",
-        "decoder": 1931928399249517797
-      },
-      {
-        "field": "tileHeight",
-        "owner": "fz",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 41501185
-      },
-      {
-        "field": "x",
-        "owner": "fz",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 969764679
-      },
-      {
-        "field": "y",
-        "owner": "fz",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1466324567
-      }
-    ],
-    "methods": [],
     "constructors": [
       {
         "access": 0,
@@ -3905,1551 +5204,6 @@
         "descriptor": "(I)V"
       }
     ]
-  },
-  {
-    "class": "Headbar",
-    "name": "ct",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "type",
-        "owner": "ct",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Ljg;"
-      },
-      {
-        "field": "updates",
-        "owner": "ct",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Ljc;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "ct",
-        "name": "o",
-        "access": 0,
-        "parameters": [
-          "cycle"
-        ],
-        "descriptor": "(II)Lcl;",
-        "finalArgument": -950668126
-      },
-      {
-        "method": "isEmpty",
-        "owner": "ct",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(B)Z"
-      },
-      {
-        "method": "put",
-        "owner": "ct",
-        "name": "f",
-        "access": 0,
-        "descriptor": "(IIIIB)V",
-        "finalArgument": 1
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljg;)V"
-      }
-    ]
-  },
-  {
-    "class": "ReflectionCheck",
-    "name": "bd",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "arguments",
-        "owner": "bd",
-        "name": "g",
-        "access": 0,
-        "descriptor": "[[[B"
-      },
-      {
-        "field": "creationErrors",
-        "owner": "bd",
-        "name": "b",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "fields",
-        "owner": "bd",
-        "name": "e",
-        "access": 0,
-        "descriptor": "[Ljava/lang/reflect/Field;"
-      },
-      {
-        "field": "id",
-        "owner": "bd",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1338843583
-      },
-      {
-        "field": "intReplaceValues",
-        "owner": "bd",
-        "name": "f",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "methods",
-        "owner": "bd",
-        "name": "k",
-        "access": 0,
-        "descriptor": "[Ljava/lang/reflect/Method;"
-      },
-      {
-        "field": "operations",
-        "owner": "bd",
-        "name": "p",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "size",
-        "owner": "bd",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -983973645
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "IntHashTable",
-    "name": "on",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "array",
-        "owner": "on",
-        "name": "f",
-        "access": 0,
-        "descriptor": "[I"
-      }
-    ],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "on",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(II)I",
-        "finalArgument": -429126945
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "([I)V"
-      }
-    ]
-  },
-  {
-    "class": "FloorUnderlayType",
-    "name": "ky",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "hue",
-        "owner": "ky",
-        "name": "p",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 125421579
-      },
-      {
-        "field": "hueMultiplier",
-        "owner": "ky",
-        "name": "k",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 995550405
-      },
-      {
-        "field": "lightness",
-        "owner": "ky",
-        "name": "e",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": -1607996817
-      },
-      {
-        "field": "rgb",
-        "owner": "ky",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 21649565
-      },
-      {
-        "field": "saturation",
-        "owner": "ky",
-        "name": "b",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 1389342831
-      }
-    ],
-    "methods": [
-      {
-        "method": "decode",
-        "owner": "ky",
-        "name": "p",
-        "access": 1,
-        "descriptor": "(Lnu;II)V",
-        "finalArgument": 1271291801
-      },
-      {
-        "method": "decode0",
-        "owner": "ky",
-        "name": "b",
-        "access": 0,
-        "descriptor": "(Lnu;III)V",
-        "finalArgument": -1899368585
-      },
-      {
-        "method": "postDecode",
-        "owner": "ky",
-        "name": "u",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "setHsl",
-        "owner": "ky",
-        "name": "e",
-        "access": 0,
-        "parameters": [
-          "rgb"
-        ],
-        "descriptor": "(IB)V",
-        "finalArgument": 6
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Bzip2Decompressor",
-    "name": "nf",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "ParamType",
-    "name": "kz",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "autodisable",
-        "owner": "kz",
-        "name": "e",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "defaultint",
-        "owner": "kz",
-        "name": "p",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 1078497239
-      },
-      {
-        "field": "defaultstr",
-        "owner": "kz",
-        "name": "b",
-        "access": 1,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "type",
-        "owner": "kz",
-        "name": "u",
-        "access": 0,
-        "descriptor": "C"
-      }
-    ],
-    "methods": [
-      {
-        "method": "decode",
-        "owner": "kz",
-        "name": "p",
-        "access": 0,
-        "descriptor": "(Lnu;B)V",
-        "finalArgument": 11
-      },
-      {
-        "method": "decode0",
-        "owner": "kz",
-        "name": "b",
-        "access": 0,
-        "descriptor": "(Lnu;II)V",
-        "finalArgument": 1477627389
-      },
-      {
-        "method": "isString",
-        "owner": "kz",
-        "name": "e",
-        "access": 1,
-        "descriptor": "(I)Z"
-      },
-      {
-        "method": "postDecode",
-        "owner": "kz",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "DirectWrapper",
-    "name": "gw",
-    "super": "gm",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "obj",
-        "owner": "gw",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/lang/Object;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "gw",
-        "name": "f",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "()Ljava/lang/Object;"
-      },
-      {
-        "method": "isSoft",
-        "owner": "gw",
-        "name": "o",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "()Z"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/lang/Object;I)V"
-      }
-    ]
-  },
-  {
-    "class": "NodeHashTable",
-    "name": "mg",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "buckets",
-        "owner": "mg",
-        "name": "o",
-        "access": 0,
-        "descriptor": "[Lmh;"
-      },
-      {
-        "field": "current",
-        "owner": "mg",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Lmh;"
-      },
-      {
-        "field": "currentGet",
-        "owner": "mg",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Lmh;"
-      },
-      {
-        "field": "index",
-        "owner": "mg",
-        "name": "b",
-        "access": 0,
-        "descriptor": "I"
-      },
-      {
-        "field": "size",
-        "owner": "mg",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I"
-      }
-    ],
-    "methods": [
-      {
-        "method": "first",
-        "owner": "mg",
-        "name": "u",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "()Lmh;"
-      },
-      {
-        "method": "get",
-        "owner": "mg",
-        "name": "f",
-        "access": 1,
-        "parameters": [
-          "key"
-        ],
-        "descriptor": "(J)Lmh;"
-      },
-      {
-        "method": "next",
-        "owner": "mg",
-        "name": "p",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "()Lmh;"
-      },
-      {
-        "method": "put",
-        "owner": "mg",
-        "name": "o",
-        "access": 1,
-        "parameters": [
-          "node",
-          "key"
-        ],
-        "descriptor": "(Lmh;J)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(I)V"
-      }
-    ]
-  },
-  {
-    "class": "AbstractSound",
-    "name": "bc",
-    "super": "mh",
-    "access": 1057,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "position",
-        "owner": "bc",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "AnimFrame",
-    "name": "ft",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "base",
-        "owner": "ft",
-        "name": "b",
-        "access": 0,
-        "descriptor": "Lfa;"
-      },
-      {
-        "field": "transformCount",
-        "owner": "ft",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I"
-      },
-      {
-        "field": "transforms",
-        "owner": "ft",
-        "name": "k",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "transparency",
-        "owner": "ft",
-        "name": "l",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "xs",
-        "owner": "ft",
-        "name": "g",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "ys",
-        "owner": "ft",
-        "name": "h",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "zs",
-        "owner": "ft",
-        "name": "n",
-        "access": 0,
-        "descriptor": "[I"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "([BLfa;)V"
-      }
-    ]
-  },
-  {
-    "class": "ObjectNode",
-    "name": "mm",
-    "super": "mh",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "obj",
-        "owner": "mm",
-        "name": "f",
-        "access": 17,
-        "descriptor": "Ljava/lang/Object;"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(Ljava/lang/Object;)V"
-      }
-    ]
-  },
-  {
-    "class": "ObjStack",
-    "name": "fk",
-    "super": "java.lang.Object",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "first",
-        "owner": "fk",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "height",
-        "owner": "fk",
-        "name": "g",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 777440775
-      },
-      {
-        "field": "second",
-        "owner": "fk",
-        "name": "b",
-        "access": 0,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "tag",
-        "owner": "fk",
-        "name": "k",
-        "access": 0,
-        "descriptor": "J",
-        "decoder": 9107611929187585679
-      },
-      {
-        "field": "third",
-        "owner": "fk",
-        "name": "e",
-        "access": 0,
-        "descriptor": "Lfm;"
-      },
-      {
-        "field": "tileHeight",
-        "owner": "fk",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 765081793
-      },
-      {
-        "field": "x",
-        "owner": "fk",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1863896899
-      },
-      {
-        "field": "y",
-        "owner": "fk",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1265231529
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "AnimFrameset",
-    "name": "fb",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "frames",
-        "owner": "fb",
-        "name": "f",
-        "access": 0,
-        "descriptor": "[Lft;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "hasAlphaTransform",
-        "owner": "fb",
-        "name": "o",
-        "access": 1,
-        "parameters": [
-          "frame"
-        ],
-        "descriptor": "(II)Z"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Lir;Lir;IZ)V"
-      }
-    ]
-  },
-  {
-    "class": "SoftWrapper",
-    "name": "gz",
-    "super": "gm",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "ref",
-        "owner": "gz",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Ljava/lang/ref/SoftReference;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "gz",
-        "name": "f",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "()Ljava/lang/Object;"
-      },
-      {
-        "method": "isSoft",
-        "owner": "gz",
-        "name": "o",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "()Z"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(Ljava/lang/Object;I)V"
-      }
-    ]
-  },
-  {
-    "class": "Message",
-    "name": "bs",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "count",
-        "owner": "bs",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -845346373
-      },
-      {
-        "field": "cycle",
-        "owner": "bs",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 31951867
-      },
-      {
-        "field": "isFromFriend0",
-        "owner": "bs",
-        "name": "e",
-        "access": 0,
-        "descriptor": "Lls;"
-      },
-      {
-        "field": "isFromIgnored0",
-        "owner": "bs",
-        "name": "k",
-        "access": 0,
-        "descriptor": "Lls;"
-      },
-      {
-        "field": "prefix",
-        "owner": "bs",
-        "name": "g",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "sender",
-        "owner": "bs",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "senderUsername",
-        "owner": "bs",
-        "name": "b",
-        "access": 0,
-        "descriptor": "Llw;"
-      },
-      {
-        "field": "text",
-        "owner": "bs",
-        "name": "h",
-        "access": 0,
-        "descriptor": "Ljava/lang/String;"
-      },
-      {
-        "field": "type",
-        "owner": "bs",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1009586671
-      }
-    ],
-    "methods": [
-      {
-        "method": "clearIsFromFriend",
-        "owner": "bs",
-        "name": "o",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "clearIsFromIgnored",
-        "owner": "bs",
-        "name": "b",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "fillIsFromFriend",
-        "owner": "bs",
-        "name": "p",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(B)V",
-        "finalArgument": 1
-      },
-      {
-        "method": "fillIsFromIgnored",
-        "owner": "bs",
-        "name": "k",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "fillSenderUsername",
-        "owner": "bs",
-        "name": "g",
-        "access": 16,
-        "parameters": [],
-        "descriptor": "(I)V",
-        "finalArgument": -1679854800
-      },
-      {
-        "method": "isFromFriend",
-        "owner": "bs",
-        "name": "u",
-        "access": 16,
-        "parameters": [],
-        "descriptor": "(I)Z",
-        "finalArgument": 527406711
-      },
-      {
-        "method": "isFromIgnored",
-        "owner": "bs",
-        "name": "e",
-        "access": 16,
-        "parameters": [],
-        "descriptor": "(I)Z",
-        "finalArgument": 1024482066
-      },
-      {
-        "method": "set",
-        "owner": "bs",
-        "name": "f",
-        "access": 0,
-        "parameters": [
-          "type",
-          "sender",
-          "prefix",
-          "text"
-        ],
-        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
-      }
-    ]
-  },
-  {
-    "class": "NetCache",
-    "name": "in",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "InvType",
-    "name": "js",
-    "super": "mz",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "size",
-        "owner": "js",
-        "name": "u",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 651568811
-      }
-    ],
-    "methods": [
-      {
-        "method": "decode",
-        "owner": "js",
-        "name": "o",
-        "access": 0,
-        "descriptor": "(Lnu;B)V",
-        "finalArgument": 2
-      },
-      {
-        "method": "decode0",
-        "owner": "js",
-        "name": "u",
-        "access": 0,
-        "descriptor": "(Lnu;IB)V",
-        "finalArgument": 1
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "ClientProt0",
-    "name": "gt",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "ClientScriptFrame",
-    "name": "bg",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "intLocals",
-        "owner": "bg",
-        "name": "u",
-        "access": 0,
-        "descriptor": "[I"
-      },
-      {
-        "field": "pc",
-        "owner": "bg",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 264975789
-      },
-      {
-        "field": "script",
-        "owner": "bg",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Lcc;"
-      },
-      {
-        "field": "stringLocals",
-        "owner": "bg",
-        "name": "p",
-        "access": 0,
-        "descriptor": "[Ljava/lang/String;"
-      }
-    ],
-    "methods": [],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "SoundCache",
-    "name": "bi",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "rawSounds",
-        "owner": "bi",
-        "name": "p",
-        "access": 0,
-        "descriptor": "Lmg;"
-      },
-      {
-        "field": "soundEffectIndex",
-        "owner": "bi",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Lir;"
-      },
-      {
-        "field": "vorbisSampleIndex",
-        "owner": "bi",
-        "name": "o",
-        "access": 0,
-        "descriptor": "Lir;"
-      },
-      {
-        "field": "vorbisSamples",
-        "owner": "bi",
-        "name": "u",
-        "access": 0,
-        "descriptor": "Lmg;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "getSoundEffect",
-        "owner": "bi",
-        "name": "u",
-        "access": 1,
-        "descriptor": "(I[II)Lah;",
-        "finalArgument": -1728363497
-      },
-      {
-        "method": "getSoundEffect0",
-        "owner": "bi",
-        "name": "f",
-        "access": 0,
-        "descriptor": "(II[II)Lah;",
-        "finalArgument": 1896632187
-      },
-      {
-        "method": "getVorbisSample",
-        "owner": "bi",
-        "name": "p",
-        "access": 1,
-        "descriptor": "(I[II)Lah;",
-        "finalArgument": -464178790
-      },
-      {
-        "method": "getVorbisSample0",
-        "owner": "bi",
-        "name": "o",
-        "access": 0,
-        "descriptor": "(II[IB)Lah;",
-        "finalArgument": -1
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(Lir;Lir;)V"
-      }
-    ]
-  },
-  {
-    "class": "ViewportMouse",
-    "name": "gj",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "IgnoreList",
-    "name": "lu",
-    "super": "lf",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "loginType",
-        "owner": "lu",
-        "name": "u",
-        "access": 16,
-        "descriptor": "Lmf;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "newInstance",
-        "owner": "lu",
-        "name": "f",
-        "access": 0,
-        "descriptor": "(I)Llt;"
-      },
-      {
-        "method": "newTypedArray",
-        "owner": "lu",
-        "name": "o",
-        "access": 0,
-        "descriptor": "(II)[Llt;"
-      },
-      {
-        "method": "read",
-        "owner": "lu",
-        "name": "u",
-        "access": 1,
-        "parameters": [
-          "packet",
-          "n"
-        ],
-        "descriptor": "(Lnu;II)V",
-        "finalArgument": -525690322
-      }
-    ],
-    "constructors": [
-      {
-        "access": 1,
-        "descriptor": "(Lmf;)V"
-      }
-    ]
-  },
-  {
-    "class": "PcmPlayerProvider",
-    "name": "be",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "player",
-        "owner": "be",
-        "name": "f",
-        "access": 1025,
-        "descriptor": "(B)Lbh;"
-      }
-    ],
-    "constructors": []
-  },
-  {
-    "class": "Obj",
-    "name": "dg",
-    "super": "fm",
-    "access": 49,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "id",
-        "owner": "dg",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -52258563
-      },
-      {
-        "field": "quantity",
-        "owner": "dg",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -438803775
-      }
-    ],
-    "methods": [
-      {
-        "method": "getModel",
-        "owner": "dg",
-        "name": "o",
-        "access": 20,
-        "parameters": [],
-        "descriptor": "(I)Lgv;"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "Buddy",
-    "name": "lg",
-    "super": "lt",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "int2",
-        "owner": "lg",
-        "name": "e",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 1237996835
-      },
-      {
-        "field": "rank",
-        "owner": "lg",
-        "name": "k",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": 213892793
-      },
-      {
-        "field": "world0",
-        "owner": "lg",
-        "name": "b",
-        "access": 1,
-        "descriptor": "I",
-        "decoder": -410155545
-      }
-    ],
-    "methods": [
-      {
-        "method": "hasWorld",
-        "owner": "lg",
-        "name": "ad",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(I)Z"
-      },
-      {
-        "method": "set",
-        "owner": "lg",
-        "name": "ax",
-        "access": 0,
-        "descriptor": "(III)V"
-      },
-      {
-        "method": "world",
-        "owner": "lg",
-        "name": "as",
-        "access": 1,
-        "parameters": [],
-        "descriptor": "(I)I"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "ClanMate",
-    "name": "ly",
-    "super": "lg",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "isFriend0",
-        "owner": "ly",
-        "name": "f",
-        "access": 0,
-        "descriptor": "Lls;"
-      },
-      {
-        "field": "isIgnored0",
-        "owner": "ly",
-        "name": "o",
-        "access": 0,
-        "descriptor": "Lls;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "clearIsFriend",
-        "owner": "ly",
-        "name": "f",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(S)V"
-      },
-      {
-        "method": "clearIsIgnored",
-        "owner": "ly",
-        "name": "n",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(I)V"
-      },
-      {
-        "method": "fillIsFriend",
-        "owner": "ly",
-        "name": "p",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(B)V",
-        "finalArgument": 24
-      },
-      {
-        "method": "fillIsIgnored",
-        "owner": "ly",
-        "name": "m",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(B)V",
-        "finalArgument": 1
-      },
-      {
-        "method": "isFriend",
-        "owner": "ly",
-        "name": "u",
-        "access": 17,
-        "parameters": [],
-        "descriptor": "(I)Z",
-        "finalArgument": -309124567
-      },
-      {
-        "method": "isIgnored",
-        "owner": "ly",
-        "name": "l",
-        "access": 17,
-        "parameters": [],
-        "descriptor": "(I)Z",
-        "finalArgument": -535232855
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "ChatChannel",
-    "name": "ca",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "count",
-        "owner": "ca",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 93372497
-      },
-      {
-        "field": "messages",
-        "owner": "ca",
-        "name": "o",
-        "access": 0,
-        "descriptor": "[Lbs;"
-      }
-    ],
-    "methods": [
-      {
-        "method": "addMessage",
-        "owner": "ca",
-        "name": "f",
-        "access": 0,
-        "parameters": [
-          "type",
-          "sender",
-          "text",
-          "prefix"
-        ],
-        "descriptor": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lbs;",
-        "finalArgument": 20
-      },
-      {
-        "method": "getMessage",
-        "owner": "ca",
-        "name": "o",
-        "access": 0,
-        "parameters": [
-          "index"
-        ],
-        "descriptor": "(II)Lbs;",
-        "finalArgument": -1761753840
-      },
-      {
-        "method": "size",
-        "owner": "ca",
-        "name": "u",
-        "access": 0,
-        "parameters": [],
-        "descriptor": "(S)I"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "DevicePcmPlayerProvider",
-    "name": "ao",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [
-      "be"
-    ],
-    "fields": [],
-    "methods": [
-      {
-        "method": "player",
-        "owner": "ao",
-        "name": "f",
-        "access": 1,
-        "descriptor": "(B)Lbh;"
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "()V"
-      }
-    ]
-  },
-  {
-    "class": "DynamicObject",
-    "name": "cn",
-    "super": "fm",
-    "access": 33,
-    "interfaces": [],
-    "fields": [
-      {
-        "field": "cycleStart",
-        "owner": "cn",
-        "name": "h",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -642790573
-      },
-      {
-        "field": "frame",
-        "owner": "cn",
-        "name": "g",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -2049566951
-      },
-      {
-        "field": "id",
-        "owner": "cn",
-        "name": "f",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -57600529
-      },
-      {
-        "field": "orientation",
-        "owner": "cn",
-        "name": "u",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1554674349
-      },
-      {
-        "field": "plane",
-        "owner": "cn",
-        "name": "p",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1797083453
-      },
-      {
-        "field": "seqType",
-        "owner": "cn",
-        "name": "k",
-        "access": 0,
-        "descriptor": "Lkw;"
-      },
-      {
-        "field": "type",
-        "owner": "cn",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1163612607
-      },
-      {
-        "field": "x",
-        "owner": "cn",
-        "name": "b",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 544096397
-      },
-      {
-        "field": "y",
-        "owner": "cn",
-        "name": "e",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -252563019
-      }
-    ],
-    "methods": [
-      {
-        "method": "getModel",
-        "owner": "cn",
-        "name": "o",
-        "access": 20,
-        "parameters": [],
-        "descriptor": "(I)Lgv;",
-        "finalArgument": 1807301365
-      }
-    ],
-    "constructors": [
-      {
-        "access": 0,
-        "descriptor": "(IIIIIIIZLfm;)V"
-      }
-    ]
-  },
-  {
-    "class": "PlatformInfoProvider",
-    "name": "mi",
-    "super": "java.lang.Object",
-    "access": 1537,
-    "interfaces": [],
-    "fields": [],
-    "methods": [
-      {
-        "method": "get",
-        "owner": "mi",
-        "name": "f",
-        "access": 1025,
-        "parameters": [],
-        "descriptor": "(I)Lmo;"
-      }
-    ],
-    "constructors": []
   },
   {
     "class": "AbstractFont",
@@ -5833,126 +5587,88 @@
     ]
   },
   {
-    "class": "Rasterizer3D",
-    "name": "fq",
-    "super": "ou",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "Messages",
-    "name": "dc",
-    "super": "java.lang.Object",
-    "access": 33,
-    "interfaces": [],
-    "fields": [],
-    "methods": [],
-    "constructors": []
-  },
-  {
-    "class": "GraphicsObject",
-    "name": "cf",
+    "class": "DynamicObject",
+    "name": "cn",
     "super": "fm",
-    "access": 49,
+    "access": 33,
     "interfaces": [],
     "fields": [
       {
         "field": "cycleStart",
-        "owner": "cf",
-        "name": "o",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -255937363
-      },
-      {
-        "field": "frame",
-        "owner": "cf",
-        "name": "g",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": 1763592485
-      },
-      {
-        "field": "frameCycle",
-        "owner": "cf",
+        "owner": "cn",
         "name": "h",
         "access": 0,
         "descriptor": "I",
-        "decoder": 1659206025
+        "decoder": -642790573
       },
       {
-        "field": "height",
-        "owner": "cf",
-        "name": "e",
+        "field": "frame",
+        "owner": "cn",
+        "name": "g",
         "access": 0,
         "descriptor": "I",
-        "decoder": 921468661
+        "decoder": -2049566951
       },
       {
         "field": "id",
-        "owner": "cf",
+        "owner": "cn",
         "name": "f",
         "access": 0,
         "descriptor": "I",
-        "decoder": -1442514319
+        "decoder": -57600529
       },
       {
-        "field": "isFinished",
-        "owner": "cf",
-        "name": "n",
-        "access": 0,
-        "descriptor": "Z"
-      },
-      {
-        "field": "plane",
-        "owner": "cf",
+        "field": "orientation",
+        "owner": "cn",
         "name": "u",
         "access": 0,
         "descriptor": "I",
-        "decoder": -1558185979
+        "decoder": 1554674349
+      },
+      {
+        "field": "plane",
+        "owner": "cn",
+        "name": "p",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1797083453
       },
       {
         "field": "seqType",
-        "owner": "cf",
+        "owner": "cn",
         "name": "k",
         "access": 0,
         "descriptor": "Lkw;"
       },
       {
-        "field": "x",
-        "owner": "cf",
-        "name": "p",
+        "field": "type",
+        "owner": "cn",
+        "name": "o",
         "access": 0,
         "descriptor": "I",
-        "decoder": -799404683
+        "decoder": 1163612607
       },
       {
-        "field": "y",
-        "owner": "cf",
+        "field": "x",
+        "owner": "cn",
         "name": "b",
         "access": 0,
         "descriptor": "I",
-        "decoder": -1197647983
+        "decoder": 544096397
+      },
+      {
+        "field": "y",
+        "owner": "cn",
+        "name": "e",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -252563019
       }
     ],
     "methods": [
       {
-        "method": "advance",
-        "owner": "cf",
-        "name": "f",
-        "access": 16,
-        "parameters": [
-          "cycles"
-        ],
-        "descriptor": "(II)V",
-        "finalArgument": -1779401122
-      },
-      {
         "method": "getModel",
-        "owner": "cf",
+        "owner": "cn",
         "name": "o",
         "access": 20,
         "parameters": [],
@@ -5963,33 +5679,100 @@
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(IIIIIII)V"
+        "descriptor": "(IIIIIIIZLfm;)V"
       }
     ]
   },
   {
-    "class": "LoginProt",
-    "name": "gc",
+    "class": "ClientScriptFrame",
+    "name": "bg",
     "super": "java.lang.Object",
     "access": 33,
-    "interfaces": [
-      "gt"
-    ],
+    "interfaces": [],
     "fields": [
       {
-        "field": "id",
-        "owner": "gc",
-        "name": "k",
-        "access": 17,
+        "field": "intLocals",
+        "owner": "bg",
+        "name": "u",
+        "access": 0,
+        "descriptor": "[I"
+      },
+      {
+        "field": "pc",
+        "owner": "bg",
+        "name": "o",
+        "access": 0,
         "descriptor": "I",
-        "decoder": 819348427
+        "decoder": 264975789
+      },
+      {
+        "field": "script",
+        "owner": "bg",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lcc;"
+      },
+      {
+        "field": "stringLocals",
+        "owner": "bg",
+        "name": "p",
+        "access": 0,
+        "descriptor": "[Ljava/lang/String;"
       }
     ],
     "methods": [],
     "constructors": [
       {
         "access": 0,
-        "descriptor": "(II)V"
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "Rasterizer3D",
+    "name": "fq",
+    "super": "ou",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "NetFileRequest",
+    "name": "ic",
+    "super": "mz",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "archive",
+        "owner": "ic",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lig;"
+      },
+      {
+        "field": "crc",
+        "owner": "ic",
+        "name": "o",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -8399381
+      },
+      {
+        "field": "padding",
+        "owner": "ic",
+        "name": "u",
+        "access": 0,
+        "descriptor": "B"
+      }
+    ],
+    "methods": [],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
       }
     ]
   },
@@ -6028,6 +5811,70 @@
     ]
   },
   {
+    "class": "Buddy",
+    "name": "lg",
+    "super": "lt",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "int2",
+        "owner": "lg",
+        "name": "e",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 1237996835
+      },
+      {
+        "field": "rank",
+        "owner": "lg",
+        "name": "k",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": 213892793
+      },
+      {
+        "field": "world0",
+        "owner": "lg",
+        "name": "b",
+        "access": 1,
+        "descriptor": "I",
+        "decoder": -410155545
+      }
+    ],
+    "methods": [
+      {
+        "method": "hasWorld",
+        "owner": "lg",
+        "name": "ad",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "(I)Z"
+      },
+      {
+        "method": "set",
+        "owner": "lg",
+        "name": "ax",
+        "access": 0,
+        "descriptor": "(III)V"
+      },
+      {
+        "method": "world",
+        "owner": "lg",
+        "name": "as",
+        "access": 1,
+        "parameters": [],
+        "descriptor": "(I)I"
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
     "class": "Tiles",
     "name": "ch",
     "super": "java.lang.Object",
@@ -6036,6 +5883,159 @@
     "fields": [],
     "methods": [],
     "constructors": []
+  },
+  {
+    "class": "ClanMate",
+    "name": "ly",
+    "super": "lg",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "isFriend0",
+        "owner": "ly",
+        "name": "f",
+        "access": 0,
+        "descriptor": "Lls;"
+      },
+      {
+        "field": "isIgnored0",
+        "owner": "ly",
+        "name": "o",
+        "access": 0,
+        "descriptor": "Lls;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "clearIsFriend",
+        "owner": "ly",
+        "name": "f",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(S)V"
+      },
+      {
+        "method": "clearIsIgnored",
+        "owner": "ly",
+        "name": "n",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(I)V"
+      },
+      {
+        "method": "fillIsFriend",
+        "owner": "ly",
+        "name": "p",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(B)V",
+        "finalArgument": 24
+      },
+      {
+        "method": "fillIsIgnored",
+        "owner": "ly",
+        "name": "m",
+        "access": 0,
+        "parameters": [],
+        "descriptor": "(B)V",
+        "finalArgument": 1
+      },
+      {
+        "method": "isFriend",
+        "owner": "ly",
+        "name": "u",
+        "access": 17,
+        "parameters": [],
+        "descriptor": "(I)Z",
+        "finalArgument": -309124567
+      },
+      {
+        "method": "isIgnored",
+        "owner": "ly",
+        "name": "l",
+        "access": 17,
+        "parameters": [],
+        "descriptor": "(I)Z",
+        "finalArgument": -535232855
+      }
+    ],
+    "constructors": [
+      {
+        "access": 0,
+        "descriptor": "()V"
+      }
+    ]
+  },
+  {
+    "class": "NetCache",
+    "name": "in",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "ViewportMouse",
+    "name": "gj",
+    "super": "java.lang.Object",
+    "access": 33,
+    "interfaces": [],
+    "fields": [],
+    "methods": [],
+    "constructors": []
+  },
+  {
+    "class": "IgnoreList",
+    "name": "lu",
+    "super": "lf",
+    "access": 33,
+    "interfaces": [],
+    "fields": [
+      {
+        "field": "loginType",
+        "owner": "lu",
+        "name": "u",
+        "access": 16,
+        "descriptor": "Lmf;"
+      }
+    ],
+    "methods": [
+      {
+        "method": "newInstance",
+        "owner": "lu",
+        "name": "f",
+        "access": 0,
+        "descriptor": "(I)Llt;"
+      },
+      {
+        "method": "newTypedArray",
+        "owner": "lu",
+        "name": "o",
+        "access": 0,
+        "descriptor": "(II)[Llt;"
+      },
+      {
+        "method": "read",
+        "owner": "lu",
+        "name": "u",
+        "access": 1,
+        "parameters": [
+          "packet",
+          "n"
+        ],
+        "descriptor": "(Lnu;II)V",
+        "finalArgument": -525690322
+      }
+    ],
+    "constructors": [
+      {
+        "access": 1,
+        "descriptor": "(Lmf;)V"
+      }
+    ]
   },
   {
     "class": "Players",
@@ -25080,16 +25080,80 @@
     "interfaces": [],
     "fields": [
       {
-        "field": "__ao",
+        "field": "cpuCores",
         "owner": "mo",
-        "name": "ao",
+        "name": "av",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -623871219
+      },
+      {
+        "field": "javaVendorType",
+        "owner": "mo",
+        "name": "ax",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -257458079
+      },
+      {
+        "field": "javaVersionMajor",
+        "owner": "mo",
+        "name": "as",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1624069527
+      },
+      {
+        "field": "javaVersionMinor",
+        "owner": "mo",
+        "name": "ad",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1468711737
+      },
+      {
+        "field": "javaVersionPatch",
+        "owner": "mo",
+        "name": "af",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -527267229
+      },
+      {
+        "field": "maxMemoryMB",
+        "owner": "mo",
+        "name": "ai",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1760079217
+      },
+      {
+        "field": "os64Bit",
+        "owner": "mo",
+        "name": "aw",
         "access": 0,
         "descriptor": "Z"
       },
       {
-        "field": "__aw",
+        "field": "osType",
         "owner": "mo",
-        "name": "aw",
+        "name": "aj",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1020471777
+      },
+      {
+        "field": "osVersion",
+        "owner": "mo",
+        "name": "ap",
+        "access": 0,
+        "descriptor": "I",
+        "decoder": -1427969131
+      },
+      {
+        "field": "__ao",
+        "owner": "mo",
+        "name": "ao",
         "access": 0,
         "descriptor": "Z"
       },
@@ -25102,28 +25166,12 @@
         "decoder": -1215936229
       },
       {
-        "field": "__ad",
-        "owner": "mo",
-        "name": "ad",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1468711737
-      },
-      {
         "field": "__ae",
         "owner": "mo",
         "name": "ae",
         "access": 0,
         "descriptor": "I",
         "decoder": 1261873211
-      },
-      {
-        "field": "__af",
-        "owner": "mo",
-        "name": "af",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -527267229
       },
       {
         "field": "__ah",
@@ -25134,22 +25182,6 @@
         "decoder": 1455599319
       },
       {
-        "field": "__ai",
-        "owner": "mo",
-        "name": "ai",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1760079217
-      },
-      {
-        "field": "__aj",
-        "owner": "mo",
-        "name": "aj",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1020471777
-      },
-      {
         "field": "__an",
         "owner": "mo",
         "name": "an",
@@ -25158,44 +25190,12 @@
         "decoder": 1699686401
       },
       {
-        "field": "__ap",
-        "owner": "mo",
-        "name": "ap",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1427969131
-      },
-      {
-        "field": "__as",
-        "owner": "mo",
-        "name": "as",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -1624069527
-      },
-      {
         "field": "__au",
         "owner": "mo",
         "name": "au",
         "access": 0,
         "descriptor": "I",
         "decoder": -1977981671
-      },
-      {
-        "field": "__av",
-        "owner": "mo",
-        "name": "av",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -623871219
-      },
-      {
-        "field": "__ax",
-        "owner": "mo",
-        "name": "ax",
-        "access": 0,
-        "descriptor": "I",
-        "decoder": -257458079
       },
       {
         "field": "__bb",

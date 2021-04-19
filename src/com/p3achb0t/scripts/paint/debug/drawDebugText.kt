@@ -14,6 +14,9 @@ fun drawDebugText(g: Graphics, ctx: Context) {
     val debugText = arrayListOf<DebugText>()
     if (true) {
 
+        if(ctx.client.getPlatformInfo().getCpuCores() == 0){
+            ctx.client.getPlatformInfo().setCpuCores(2)
+        }
         g.color = Color.white
         debugText.add(DebugText("hasFocus? x: ${ctx.client.getHasFocus()}"))
         debugText.add(DebugText("Mouse x: ${ctx.mouse.getX()} y:${ctx.mouse.getY()}"))
@@ -21,6 +24,18 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
         debugText.add(DebugText("Login response :${LoginResponse.getLoginResponse(ctx) }. Enter point: ${ctx.client.get__cf_z()}"))
+        debugText.add(DebugText(" Runtime.getRuntime().availableProcessors()${ Runtime.getRuntime().availableProcessors()}"))
+        debugText.add(DebugText("Cores: ${ctx.client.getPlatformInfo().getCpuCores()} " +
+                "64bit:${ctx.client.getPlatformInfo().getOs64Bit()} " +
+                "osType:${ctx.client.getPlatformInfo().getOsType()} " +
+                "osVersion:${ctx.client.getPlatformInfo().getOsVersion()} "))
+        debugText.add(DebugText("Vendor:${ctx.client.getPlatformInfo().getJavaVendorType()} " +
+                "JavaMajor:${ctx.client.getPlatformInfo().getJavaVersionMajor()} " +
+                "JavaMinor:${ctx.client.getPlatformInfo().getJavaVersionMinor()} " +
+                "JavaPatch:${ctx.client.getPlatformInfo().getJavaVersionPatch()} " +
+                "memory:${ctx.client.getPlatformInfo().getMaxMemoryMB()} "))
+
+
 //        debugText.add(DebugText("login center pos = :${ctx.client.get__dv_r()}"))
         //debugText.add(DebugText("fps :${PaintDebug.fps}"))
         val heapSize = Runtime.getRuntime().totalMemory()
