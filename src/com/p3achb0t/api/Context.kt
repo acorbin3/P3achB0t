@@ -8,6 +8,7 @@ import com.p3achb0t.api.userinputs.Camera
 import com.p3achb0t.api.userinputs.Keyboard
 import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.platforminfo.PlatformInfo
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
 import com.p3achb0t.api.wrappers.widgets.Widgets
@@ -51,6 +52,7 @@ class Context(val obj: Any) {
     val coms: Coms
     val combat: Combat
     var shops: Shops
+    var platformInfo: PlatformInfo
 
     init {
         mouse = Mouse(obj)
@@ -86,6 +88,7 @@ class Context(val obj: Any) {
         coms = Coms
         combat = Combat(this)
         shops = Shops(this)
+        platformInfo = PlatformInfo(this)
     }
 }
 
