@@ -73,4 +73,8 @@ class PlatformInfo(val ctx: Context) {
         set(value) {
             ctx.client.getPlatformInfo().setJavaVersionPatch(value)
         }
+
+    override fun toString(): String{
+        return "osType: ${osType.name} osVersion ${osVersion.name} 64Bit:${os64Bit} vendor:${javaVendor.name} javaVersion:$javaVersionMajor.$javaVersionMinor.$javaVersionPatch MB:$memoryMaxMemoryMB cores:$cpuCores"
+    }
 }
