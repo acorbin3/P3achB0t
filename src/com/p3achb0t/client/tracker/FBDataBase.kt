@@ -19,11 +19,11 @@ import java.util.*
 
 
 class FBDataBase {
-    val firestore: Firestore
-    val userRef: CollectionReference
-    private val userSession: MutableMap<String, DocumentReference>
-    private val userSkillOrItemCount: MutableMap<String, Int> = HashMap()
-    private val fileHashRef: CollectionReference
+    var firestore: Firestore? = null
+    var userRef: CollectionReference? = null
+    private var userSession: MutableMap<String, DocumentReference> = mutableMapOf()
+    private var userSkillOrItemCount: MutableMap<String, Int> = HashMap()
+    private var fileHashRef: CollectionReference? = null
     var validationKey: String = ""
     var isPrivateScriptsValidated = false
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
@@ -44,10 +44,16 @@ class FBDataBase {
         FirebaseApp.initializeApp(options)
         temp.delete()
 
-        firestore = FirestoreClient.getFirestore()
-        userRef = firestore.collection("users")
-        userSession = HashMap()
-        fileHashRef = firestore.collection("file_hashes")
+        try {
+            firestore = FirestoreClient.getFirestore()
+            if(firestore != null) {
+                userRef = firestore!!.collection("users")
+                userSession = HashMap()
+                fileHashRef = firestore!!.collection("file_hashes")
+            }
+        }catch (e: Error){
+            e.printStackTrace()
+        }
     }
 
     data class StatInfo(val time: String, val xp: Int)
@@ -66,8 +72,8 @@ class FBDataBase {
     fun initalScriptLoad(account: Account){
         val accountID = account.username
         val sessionID = account.sessionToken
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
 
         val dateStr = LocalDateTime.now().format(formatter)
@@ -80,7 +86,7 @@ class FBDataBase {
 
         }
         userFields["proxy"] = account.proxy
-        userRef.document(accountID).set(userFields as Map<String,Any>)
+        userRef?.document(accountID)?.set(userFields as Map<String,Any>)
 
 
         val lastUpdated = mutableMapOf<String,String>()
@@ -101,8 +107,8 @@ class FBDataBase {
 
     }
     fun setBanned(accountID: String, sessionID: String){
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         val dateStr = LocalDateTime.now().format(formatter)
@@ -112,12 +118,12 @@ class FBDataBase {
 
         val userFields = mutableMapOf<String,String>()
         userFields["bannedTime"] = dateStr
-        userRef.document(accountID).update(userFields as Map<String,Any>)
+        userRef?.document(accountID)?.update(userFields as Map<String,Any>)
     }
 
     fun setLastUpdated(accountID: String, sessionID: String){
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         lastUpdated["lastUpdateTime"] = LocalDateTime.now().format(formatter)
@@ -125,11 +131,11 @@ class FBDataBase {
 
         val userFields = mutableMapOf<String,String>()
         userFields["lastUpdateTime"] = LocalDateTime.now().format(formatter)
-        userRef.document(accountID).update(userFields as Map<String,Any>)
+        userRef?.document(accountID)?.update(userFields as Map<String,Any>)
     }
     fun updateStat(accountID: String, sessionID: String, skill: Stats.Skill, xp: String, xpPerHour: String) {
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
         val lastUpdated = mutableMapOf<String,String>()
         lastUpdated["lastUpdated"] = LocalDateTime.now().format(formatter)
@@ -145,8 +151,8 @@ class FBDataBase {
 
 
     fun updateItemCount(accountID: String, sessionID: String, itemInfo: ArrayList<ItemInfo>) {
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
 
         val fields = mutableMapOf<String,String>()
@@ -164,8 +170,8 @@ class FBDataBase {
     }
 
     fun updateSessionField(accountID: String, sessionID: String, fieldName: String, value: String) {
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
 
         val fields = mutableMapOf<String,String>()
@@ -176,8 +182,8 @@ class FBDataBase {
     }
 
     fun updateSessionFields(accountID: String, sessionID: String,data: Map<String,String>){
-        if (accountID !in userSession) {
-            userSession[accountID] = userRef.document(accountID).collection("Sessions").document(sessionID)
+        if (userRef != null && accountID !in userSession) {
+            userSession[accountID] = userRef!!.document(accountID).collection("Sessions").document(sessionID)
         }
 
         val fields = mutableMapOf<String,String>()
@@ -194,7 +200,7 @@ class FBDataBase {
 
         val fields = mutableMapOf<String,String>()
         fields[fieldName] = fieldValue
-        userRef.document(accountID).update(fields as Map<String,Any>)
+        userRef?.document(accountID)?.update(fields as Map<String,Any>)
         fields.clear()
     }
     fun updateUserFields(accountID: String, data: Map<String,String>){
@@ -203,7 +209,7 @@ class FBDataBase {
         data.forEach { (t, u) ->
             fields[t] = u
         }
-        userRef.document(accountID).update(fields as Map<String,Any>)
+        userRef?.document(accountID)?.update(fields as Map<String,Any>)
         fields.clear()
     }
 
@@ -211,9 +217,9 @@ class FBDataBase {
     fun validateScript(scriptName: String, key: String):Boolean {
         try {
 
-            val validationDoc = firestore.collection("validation").document(scriptName).get().get()
+            val validationDoc = firestore?.collection("validation")?.document(scriptName)?.get()?.get()
 
-            val keys = validationDoc.data?.get("keys") as List<String>
+            val keys = validationDoc?.data?.get("keys") as List<String>
 
             return keys.contains(key)
         }catch (e: Exception){
@@ -226,8 +232,8 @@ class FBDataBase {
     fun getFileHash(filename: String):String{
         var hash = ""
         try {
-            val fileDoc = fileHashRef.document(filename).get().get()
-            hash = fileDoc.get("hash").toString()
+            val fileDoc = fileHashRef?.document(filename)?.get()?.get()
+            hash = fileDoc?.get("hash").toString()
         }catch (e: Exception){
             return hash
         }
@@ -245,8 +251,8 @@ class FBDataBase {
         fields["date"] = LocalDateTime.now().format(formatter)
 
         val name = filePath.toString().substringAfter("src\\")
-        val fileDoc = fileHashRef.document(name)
-        fileDoc.set(fields as Map<String,Any>)
+        val fileDoc = fileHashRef?.document(name)
+        fileDoc?.set(fields as Map<String,Any>)
     }
 
     fun cleanIP():String{
