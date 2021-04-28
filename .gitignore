@@ -17,3 +17,4 @@ gamepacks/
 /app/user/accounts.json
 /app/gamepack-189-injected.jar
 /.logs/
+*.iml
