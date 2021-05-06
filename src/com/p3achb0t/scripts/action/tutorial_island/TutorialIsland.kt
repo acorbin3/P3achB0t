@@ -6,7 +6,7 @@ import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Interact
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.Walking
+import com.p3achb0t.api.wrappers.walking.Walking
 import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.api.wrappers.tabs.Magic
 import com.p3achb0t.api.wrappers.tabs.Tabs

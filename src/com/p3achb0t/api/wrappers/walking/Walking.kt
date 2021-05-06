@@ -1,6 +1,7 @@
-package com.p3achb0t.api.wrappers
+package com.p3achb0t.api.wrappers.walking
 
 import com.p3achb0t.api.Context
+import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.utils.Utils
 import kotlinx.coroutines.delay
 import kotlin.random.Random

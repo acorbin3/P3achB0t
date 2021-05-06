@@ -2,6 +2,7 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.wrappers.walking.Walking
 
 /*
     This class is intended to define a list of tiles and interact to the destination. It will be smart enough to start
