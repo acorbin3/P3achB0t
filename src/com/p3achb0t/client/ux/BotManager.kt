@@ -3,7 +3,6 @@ package com.p3achb0t.client.ux
 import com.p3achb0t.Main
 import com.p3achb0t.api.StopWatch
 import com.p3achb0t.api.utils.Logging
-import com.p3achb0t.api.wrappers.Cache
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
@@ -235,7 +234,7 @@ class BotManager(var disableAll: Boolean = false, var disableScene: Boolean = fa
                         delay(50)
                     }
                     println("About to update cache")
-                    it.value.instanceManagerInterface.getManager().ctx.cache.updateCache()
+//                    it.value.instanceManagerInterface.getManager().ctx.cache.updateCache()
                     cacheLoaded = true
                 }
             }
@@ -244,9 +243,6 @@ class BotManager(var disableAll: Boolean = false, var disableScene: Boolean = fa
             sleep(50)
         }
         println("Waiting till Cache is updated")
-        while(!Cache.cacheUpdated){
-            sleep(50)
-        }
     }
 
     fun stopAllRunningAccounts(){

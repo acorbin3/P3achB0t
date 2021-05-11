@@ -3,10 +3,8 @@ package com.p3achb0t
 import com.formdev.flatlaf.FlatDarkLaf
 import com.p3achb0t.analyser.Analyser
 import com.p3achb0t.analyser.runestar.RuneStarAnalyzer
-import com.p3achb0t.api.StopWatch
-import com.p3achb0t.api.cache.format.Cache
-import com.p3achb0t.api.utils.EquipmentConfig
 import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.wrappers.cache.RSCache
 import com.p3achb0t.client.accounts.AccountManager
 import com.p3achb0t.client.configs.Constants
 import com.p3achb0t.client.configs.GlobalStructs
@@ -82,14 +80,15 @@ object Main {
         if(minimized) {
             botManager.state = JFrame.ICONIFIED
         }
+
+        println("Loading Cache")
+        RSCache.load()
+
         GlobalStructs.botManager = botManager
         botManager.startAccounts()
         botManager.updateCache()
-        val timeout = StopWatch()
-        while(!com.p3achb0t.api.wrappers.Cache.cacheUpdated && timeout.elapsedSec < 30){
-            sleep(50)
-        }
         botManager.startScripts()
+
     }
 
     private fun lookAndFeel() {

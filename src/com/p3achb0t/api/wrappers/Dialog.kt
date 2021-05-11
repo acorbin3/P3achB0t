@@ -2,15 +2,16 @@ package com.p3achb0t.api.wrappers
 
 import com.p3achb0t.api.Context
 import com.p3achb0t.api.utils.Logging
+import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.api.wrappers.utils.Timer
+import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
 import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
-import kotlin.math.abs
 import kotlin.random.Random
 
-class Dialog(val ctx: Context): Logging() {
+class Dialog(val ctx: Context) : Logging() {
     companion object {
         private const val PARENT = WidgetID.DIALOG_NPC_GROUP_ID
         private const val CONTINUE = WidgetID.DialogNPC.CONTINUE
@@ -27,6 +28,57 @@ class Dialog(val ctx: Context): Logging() {
         private const val CONTINUE_BACKUP_5 = 0
     }
 
+    enum class ChatState {
+        CLOSED, PLAYER_CHAT, NPC_CHAT, ITEM_CHAT, OPTIONS_CHAT, SPECIAL, MODEL, SPRITE
+    }
+
+
+    fun chatState(): ChatState {
+        val mainWidget = ctx.widgets.find(162, 562)
+        return when (mainWidget?.getChildren()?.first()?.getParentId()) {
+            11 -> ChatState.ITEM_CHAT
+            217 -> ChatState.PLAYER_CHAT
+            231 -> ChatState.NPC_CHAT
+            219 -> ChatState.OPTIONS_CHAT
+            193 -> ChatState.SPECIAL
+            229 -> ChatState.MODEL
+            633 -> ChatState.SPRITE
+            else -> ChatState.CLOSED
+
+        }
+    }
+
+    suspend fun chat(vararg options: String?) {
+        Utils.sleepUntil({ chatState() != ChatState.CLOSED })
+        for (option in options) {
+            continueChats()
+            selectionOption(option?: "")
+        }
+        continueChats()
+    }
+
+    suspend fun continueChats() {
+        while (chatState() != ChatState.CLOSED && chatState() != ChatState.OPTIONS_CHAT) {
+            sleep(600)
+            if (chatState() != ChatState.CLOSED && chatState() != ChatState.OPTIONS_CHAT) {
+                continueChat()
+            }
+            sleep(400)
+        }
+    }
+    
+        suspend fun continueChat() {
+        when (chatState()) {
+            ChatState.CLOSED -> println("There is not chat")
+            ChatState.OPTIONS_CHAT -> println("can't continue, this is an options chat");
+            ChatState.PLAYER_CHAT -> WidgetItem(ctx.widgets.find(217, 3),ctx=ctx).click()
+            ChatState.NPC_CHAT -> WidgetItem(ctx.widgets.find(231, 3),ctx=ctx).click()
+            ChatState.ITEM_CHAT -> WidgetItem(ctx.widgets.find(11, 4),ctx=ctx).click()
+            ChatState.SPECIAL -> WidgetItem(ctx.widgets.find(193, 0)?.getChildren()?.get(1),ctx=ctx).click()
+            ChatState.MODEL -> WidgetItem(ctx.widgets.find(229, 2),ctx=ctx).click()
+            ChatState.SPRITE -> WidgetItem(ctx.widgets.find(633, 0)?.getChildren()?.get(1),ctx=ctx).click()
+        }
+    }
 
     fun isDialogUp(): Boolean {
 //        val cycleDiff = abs(getDialogContinue().widget?.getCycle()?:0 - ctx.client.getCycle())
@@ -37,13 +89,13 @@ class Dialog(val ctx: Context): Logging() {
 
     }
 
-    fun isContinueAvailable(): Boolean{
-        if(isDialogUp()) {
+    fun isContinueAvailable(): Boolean {
+        if (isDialogUp()) {
             return getDialogContinue().containsText("continue") || getDialogContinue().containsText("Please wait")
         } else return false
     }
 
-    fun isInCutscene(): Boolean{
+    fun isInCutscene(): Boolean {
         return ctx.vars.getVarbit(542) == 1
                 && ctx.vars.getVarbit(4606) == 1
     }
@@ -103,11 +155,10 @@ class Dialog(val ctx: Context): Logging() {
                     delay(Random.nextLong(200, 350))
                 }
             }
-        }
-        else if(isContinueAvailable()){
+        } else if (isContinueAvailable()) {
             ctx.keyboard.sendKeys(" ")
             delay(Random.nextLong(200, 350))
-        }else{
+        } else {
             logger.info("Sending spacebar even though it didnt find anything")
             ctx.keyboard.sendKeys(" ")
         }
@@ -141,7 +192,7 @@ class Dialog(val ctx: Context): Logging() {
 
     fun isDialogOptionsOpen(): Boolean {
         return ctx.widgets.isWidgetAvaliable(219, 1)
-                && ctx.widgets.find(219,1)?.getWidth() ?:0 > 0
+                && ctx.widgets.find(219, 1)?.getWidth() ?: 0 > 0
     }
 
     fun isSpiritDialogOpen(): Boolean {

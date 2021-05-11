@@ -17,7 +17,6 @@ import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.scripts.NullScript
 import com.p3achb0t.client.scripts.loading.ScriptInformation
-import com.p3achb0t.scripts.paint.debug.TotalDebugPaint
 import com.p3achb0t.scripts.service.restart_action.RestartIdle
 import kotlinx.coroutines.*
 import java.applet.Applet

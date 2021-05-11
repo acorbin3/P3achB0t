@@ -18,14 +18,14 @@ import java.awt.Polygon
 
 //Default of -1,-1 means the tile is not valid
 class Tile(
-        var x: Int = -1,
-        var y: Int = -1,
-        val z: Int = 0,
-        ctx: Context? = null,
-        override var loc_ctx: Context? = ctx,
-        // This flag is intended for random path walking. some tiles you dont want to randomize due to
-        // tight corridors
-        var randomize: Boolean = false
+    var x: Int = -1,
+    var y: Int = -1,
+    val z: Int = 0,
+    ctx: Context? = null,
+    override var loc_ctx: Context? = ctx,
+    // This flag is intended for random path walking. some tiles you dont want to randomize due to
+    // tight corridors
+    var randomize: Boolean = false
 ) : Locatable, Interactable(ctx) {
 
     fun isTileWalkAble(): Boolean {
@@ -59,8 +59,14 @@ class Tile(
 
     override fun isMouseOverObj(): Boolean {
         val mousePoint = Point(ctx?.mouse?.getX() ?: -1, ctx?.mouse?.getY() ?: -1)
-        return ctx?.client?.let { getCanvasTileAreaPoly(ctx!!, getRegionalLocation().x, getRegionalLocation().y).contains(mousePoint) }
-                ?: false
+        return ctx?.client?.let {
+            getCanvasTileAreaPoly(
+                ctx!!,
+                getRegionalLocation().x,
+                getRegionalLocation().y
+            ).contains(mousePoint)
+        }
+            ?: false
     }
 
     override fun getNamePoint(): Point {
@@ -78,6 +84,7 @@ class Tile(
             return false
         }
         val regional = getRegionalLocation()
+//        println("Clicking ${regional.x} ${regional.y}")
         val point = Calculations.worldToMiniMap(regional.x, regional.y, ctx!!)
         return ctx!!.mouse.click(point)
     }
@@ -122,6 +129,10 @@ class Tile(
         return Calculations.distanceBetween(getGlobalLocation(), tile)
     }
 
+    fun isSameTile(tile:Tile): Boolean{
+        return x == tile.x && y == tile.y && z == tile.z
+    }
+
     // This is distance to local player
     override fun distanceTo(): Int {
         if (ctx == null) {
@@ -157,4 +168,37 @@ class Tile(
         val tile = other as Tile
         return this.x == tile.x && this.y == tile.y
     }
+
+    fun north(): Tile {
+        return Tile(x, y + 1, z, ctx = ctx)
+    }
+
+    fun south(): Tile {
+        return Tile(x, y - 1, z, ctx = ctx)
+    }
+
+    fun east(): Tile {
+        return Tile(x + 1, y, z, ctx = ctx)
+    }
+
+    fun west(): Tile {
+        return Tile(x - 1, y, z, ctx = ctx)
+    }
+
+    fun southWest(): Tile {
+        return Tile(x - 1, y - 1, z, ctx = ctx)
+    }
+
+    fun northWest(): Tile {
+        return Tile(x - 1, y + 1, z, ctx = ctx)
+    }
+
+    fun southEast(): Tile {
+        return Tile(x + 1, y - 1, z, ctx = ctx)
+    }
+
+    fun northEast(): Tile {
+        return Tile(x + 1, y + 1, z, ctx = ctx)
+    }
+
 }

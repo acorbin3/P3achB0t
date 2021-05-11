@@ -14,7 +14,6 @@ import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.Polygon
-import java.lang.Double.min
 import kotlin.math.min
 
 class Projectile(

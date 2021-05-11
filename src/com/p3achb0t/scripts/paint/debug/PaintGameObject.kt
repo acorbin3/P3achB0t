@@ -207,7 +207,7 @@ class PaintGameObject : PaintScript() {
                                                                 && planeInt == ctx.players.getLocal().player.getPlane()
                                                             )
                                                                 g.drawString("SE-" +
-                                                                    go.name + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})tag:${go.sceneryObject?.getTag()}",
+                                                                    go.name + "(${go.id})(${globalPos.x},${globalPos.y}) l(${localPos.x},${localPos.y})tag:${go.sceneryObject?.getTag()} orient${go.sceneryObject?.getOrientation()}",
                                                                     point2.x,
                                                                     point2.y + offsetY
                                                                 )
@@ -276,7 +276,7 @@ class PaintGameObject : PaintScript() {
 
 //                        println("Tile: ${tile.getCenterX()},${tile.getCenterY()} locGlob: ${localPlayer.getGlobalLocation()} localReg: ${localPlayer.getRegionalLocation()}")
                                 // Display the wall object
-                                if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5 && false) {
+                                if (tile.getWall() != null && localPlayer.distanceTo(globalPos) < 5 && true) {
                                     val wall = tile.getWall()
                                     val wo = GameObject(wallObject = wall, ctx = ctx)
 
@@ -304,7 +304,7 @@ class PaintGameObject : PaintScript() {
                                                 ctx
                                             )
                                         g.drawString("WO-" +
-                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y}) tag:${wo.wallObject?.getTag()}",
+                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y}) tag:${wo.wallObject?.getTag()} orientA${wo.wallObject?.getOrientationA()} orientB${wo.wallObject?.getOrientationB()}",
                                             point2.x,
                                             point2.y
                                         )

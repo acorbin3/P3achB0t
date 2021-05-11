@@ -12,6 +12,6 @@ class RefreshCache: ServiceScript()  {
         val folder = File(".cache")
         folder.deleteRecursively()
         folder.mkdirs()
-        ctx.cache.updateCache(true)
+//        ctx.cache.updateCache(true)
     }
 }

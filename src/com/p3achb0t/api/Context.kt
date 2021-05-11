@@ -8,9 +8,12 @@ import com.p3achb0t.api.userinputs.Camera
 import com.p3achb0t.api.userinputs.Keyboard
 import com.p3achb0t.api.userinputs.Mouse
 import com.p3achb0t.api.wrappers.*
+import com.p3achb0t.api.wrappers.cache.RSCache
 import com.p3achb0t.api.wrappers.platforminfo.PlatformInfo
 import com.p3achb0t.api.wrappers.quests.QuestData
 import com.p3achb0t.api.wrappers.tabs.*
+import com.p3achb0t.api.wrappers.walking.BankLocations
+import com.p3achb0t.api.wrappers.walking.WalkingPathFinding
 import com.p3achb0t.api.wrappers.widgets.Widgets
 
 import java.applet.Applet
@@ -40,7 +43,7 @@ class Context(val obj: Any) {
     val tabs: Tabs
     val widgets: Widgets
     val vars: Vars
-    val cache: Cache
+    val cache: RSCache
     val run: Run
     val stats: Stats
     val questData: QuestData
@@ -53,6 +56,8 @@ class Context(val obj: Any) {
     val combat: Combat
     var shops: Shops
     var platformInfo: PlatformInfo
+//    var bankLocations: BankLocations
+    var walking: WalkingPathFinding
 
     init {
         mouse = Mouse(obj)
@@ -76,7 +81,7 @@ class Context(val obj: Any) {
         tabs = Tabs(this)
         widgets = Widgets(this)
         vars = Vars(this)
-        cache = Cache()
+        cache = RSCache()
         run = Run(this)
         stats = Stats(this)
         questData = QuestData(this)
@@ -89,6 +94,8 @@ class Context(val obj: Any) {
         combat = Combat(this)
         shops = Shops(this)
         platformInfo = PlatformInfo(this)
+        walking = WalkingPathFinding(this)
+//        bankLocations = BankLocations(this)
     }
 }
 

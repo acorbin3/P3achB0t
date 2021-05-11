@@ -127,7 +127,7 @@ object PriceCheck {
             val info = gson.fromJson(s.asJsonObject, ItemInfo::class.java)
 //            println(info)
             val name = info.name.toLowerCase()
-            itemNameMapping.remove(name)
+//            itemNameMapping.remove(name)
             itemNameMapping[name] = info.id
             itemIDToNameMapping[info.id] = name
         }
