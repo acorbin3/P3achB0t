@@ -17,15 +17,16 @@ class Pathfinder(
     private var visited: MutableSet<Tile> = HashSet<Tile>()
     private val predecessors: PositionMap = PositionMap()
     fun find(): List<Tile>? {
+        println("Start: ${starts.first()}. -> $target")
         boundary.addAll(starts)
         var lowestDist = Int.MAX_VALUE
         var count = 0
-        while (!boundary.isEmpty() && count < 100_000) {
+        while (!boundary.isEmpty() && count < 200_000) {
             count++
             var node: Tile = boundary.removeFirst()
             val curDist = target.distanceTo(node)
             if(lowestDist >curDist) {
-//                println("DistToEnd: $curDist")
+                println("DistToEnd: $curDist")
                 lowestDist = curDist
             }
 //            println(count)

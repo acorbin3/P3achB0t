@@ -66,7 +66,7 @@ class WalkingPathFinding(val ctx: Context) {
     }
 
     suspend fun walkTo(tile: Tile){
-        walkTo(Area(tile))
+        walkTo(Area(tile,tile.southEast(),ctx=ctx))
     }
 
     suspend fun walkTo(target: Area) {
