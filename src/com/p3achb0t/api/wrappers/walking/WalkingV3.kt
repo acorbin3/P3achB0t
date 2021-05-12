@@ -65,6 +65,10 @@ class WalkingPathFinding(val ctx: Context) {
 
     }
 
+    suspend fun walkTo(tile: Tile){
+        walkTo(Area(tile))
+    }
+
     suspend fun walkTo(target: Area) {
         if (target.isPlayerInArea(false)) {
             return
