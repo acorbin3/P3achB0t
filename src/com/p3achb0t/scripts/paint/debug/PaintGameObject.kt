@@ -229,7 +229,7 @@ class PaintGameObject : PaintScript() {
                                     )
 
                                 //print out wall decorations
-                                if (tile.getWallDecoration() != null && localPlayer.distanceTo(globalPos) < 5) {
+                                if (tile.getWallDecoration() != null && localPlayer.distanceTo(globalPos) < 5 && false) {
                                     val wallDecoration = tile.getWallDecoration()
                                     val wd = GameObject(wallDecoration = wallDecoration, ctx = ctx)
                                     val id = wallDecoration.getTag().ushr(17).and(4294967295L).toInt()
@@ -267,7 +267,7 @@ class PaintGameObject : PaintScript() {
                                             ctx
                                         )
                                     g.drawString("WD-" +
-                                            wd.name + "(${wd.id})(${globalPos.x},${globalPos.y} Loc:(${wd.getLocalLocation().x},${wd.getLocalLocation().y}) tag:${wd.wallDecoration?.getTag()}",
+                                            wd.name + "(${wd.id})(${wd.getGlobalLocation().x},${wd.getGlobalLocation().y},${wd.getGlobalLocation().z} Loc:(${wd.getLocalLocation().x},${wd.getLocalLocation().y}) tag:${wd.wallDecoration?.getTag()}",
                                         point2.x,
                                         point2.y
                                     )
@@ -304,7 +304,7 @@ class PaintGameObject : PaintScript() {
                                                 ctx
                                             )
                                         g.drawString("WO-" +
-                                            wo.name + "(${wo.id})(${globalPos.x},${globalPos.y} Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y}) tag:${wo.wallObject?.getTag()} orientA${wo.wallObject?.getOrientationA()} orientB${wo.wallObject?.getOrientationB()}",
+                                            wo.name + "(${wo.id})(${wo.getGlobalLocation().x},${wo.getGlobalLocation().y},${wo.getGlobalLocation().z}) Loc:(${wo.getLocalLocation().x},${wo.getLocalLocation().y}) tag:${wo.wallObject?.getTag()} orientA${wo.wallObject?.getOrientationA()} orientB${wo.wallObject?.getOrientationB()}",
                                             point2.x,
                                             point2.y
                                         )
