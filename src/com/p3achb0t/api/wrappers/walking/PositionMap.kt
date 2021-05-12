@@ -13,13 +13,13 @@ class PositionMap {
 
     operator fun get(key: Tile): Tile {
         val code = region(key)!![index(key)]
-        println("Code: $code")
+//        println("Code: $code")
         return when (code) {
             NONE -> Tile();
             CUSTOM -> {
                 var goodTile = Tile()
                 custom.forEach { t, u ->
-                    if(t.distanceTo(key) == 0 && t.z == key.z){
+                    if(t.isSameTile(key)){
                         goodTile = u
                     }
                 }

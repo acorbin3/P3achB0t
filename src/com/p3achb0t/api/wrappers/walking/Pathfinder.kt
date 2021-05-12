@@ -20,20 +20,21 @@ class Pathfinder(
         boundary.addAll(starts)
         var lowestDist = Int.MAX_VALUE
         var count = 0
-        while (!boundary.isEmpty() && count < 1_000_000) {
+        while (!boundary.isEmpty() && count < 100_000) {
             count++
             var node: Tile = boundary.removeFirst()
             val curDist = target.distanceTo(node)
             if(lowestDist >curDist) {
-                println("DistToEnd: $curDist")
+//                println("DistToEnd: $curDist")
                 lowestDist = curDist
             }
-            if (target.distanceTo(node) == 0 && target.z == node.z) {
+//            println(count)
+            if (target.isSameTile(node)) {
                 val result: LinkedList<Tile> = LinkedList<Tile>()
-                while (node != null && node.distanceTo(starts.first()) != 0 ) {
+                while (node != null && !node.isSameTile(starts.first()) ) {
 
                     result.add(0, node)
-                    println("$node distToEnd: ${node.distanceTo(target)}")
+//                    println("$node distToEnd: ${node.distanceTo(target)}")
                     node = predecessors.get(node) as Tile
 //                    println(node)
                 }
@@ -41,25 +42,20 @@ class Pathfinder(
             }
             addNeighbors(node)
         }
+        println("ERROR: failed to get path. Loop count: $count")
         return null
     }
 
     private fun addNeighbors(position: Tile) {
         // Prefer taking transports as early as possible, to avoid causing problems with ladders which can be taken
         // from several source positions.
-        transports.filter { it.key.distanceTo(position) == 0 && it.key.z == position.z }.forEach { t, u ->
+        transports.filter { it.key.isSameTile(position) }.forEach { t, u ->
             if(!predecessors.containsKey(u.first())){
                 predecessors.put(u.first(), position)
                 boundary.addLast(u.first())
             }
         }
-//        for (transport in transports[position] ?: ArrayList()) {
-//            if (predecessors.containsKey(transport)) {
-//                continue
-//            }
-//            predecessors.put(transport, position)
-//            boundary.addLast(transport)
-//        }
+
         if (map.w(position.x, position.y, position.z)) {
             val neighbor = Tile(position.x - 1, position.y, position.z)
             if (!predecessors.containsKey(neighbor)) {

@@ -6,7 +6,6 @@ import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.api.wrappers.Area
 import com.p3achb0t.api.wrappers.Dialog
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.api.wrappers.cache.RSCache
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.walking.TransportLoader.buildTransports
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
@@ -16,7 +15,6 @@ import java.io.IOException
 import java.io.UncheckedIOException
 import java.util.*
 import java.util.concurrent.*
-import java.util.function.Predicate
 
 class WalkingPathFinding(val ctx: Context) {
 
@@ -178,13 +176,13 @@ class WalkingPathFinding(val ctx: Context) {
             print("($index)$tile -> ")
         }
         var fails = 0
-        println("TEleports")
-        transports.forEach { t, u ->
-            t.updateCTX(ctx)
-        }
-        transports.filter { it.key.distanceTo() < 100 }.forEach { (t, u) ->
-            println("$t(d:${t.distanceTo()}) -> ${u.first().source}->${u.first().target}")
-        }
+//        println("TEleports")
+//        transports.forEach { t, u ->
+//            t.updateCTX(ctx)
+//        }
+//        transports.filter { it.key.distanceTo() < 100 }.forEach { (t, u) ->
+//            println("$t(d:${t.distanceTo()}) -> ${u.first().source}->${u.first().target}")
+//        }
         while (target.distanceTo() > 3) {
             val remainingPath: List<Tile> = remainingPath(path)
             val start: Tile = path[0]
@@ -206,44 +204,49 @@ class WalkingPathFinding(val ctx: Context) {
         println("[Walking] Path end reached")
     }
 
-    private suspend fun openDiagonalDoor(tile: Tile): Boolean {
-        val gameObjects = ctx.gameObjects.gameObjects.first { it.distanceTo(tile) == 0 }
-        gameObjects.interact("Open")
-        Utils.sleepUntil({ isStill() })
-        return true
-    }
-
     private suspend fun openDoor(tile: Tile): Boolean {
-        val gameObjects = ctx.gameObjects.gameObjects.first { it.distanceTo(tile) == 0 }
-        gameObjects.interact("Open")
-        Utils.sleepUntil({ isStill() })
+//        println("Opening Door")
+        val door = ctx.gameObjects.gameObjects.firstOrNull { ctx.cache.getActions(it.id)?.contains("Open") ?: false && it.getGlobalLocation().isSameTile(tile) }
+        if(door != null && !door.isOnScreen()){
+            door.turnTo()
+        }
+        door?.interact("Open")
+        sleep(500,700)
+        ctx.players.getLocal().waitTillIdle()
         return true
     }
 
     private fun hasDoor(tile: Tile): Boolean {
-        val walls = ctx.gameObjects.gameObjects.filter { it.distanceTo(tile) == 0 }
-        return walls.isNotEmpty()
-                && walls.first().wallObject != null
+        val gameObjects = ctx.gameObjects.gameObjects.filter { it.getGlobalLocation().isSameTile(tile)  }
+        val hasDoor = gameObjects.isNotEmpty()
                 //Check to see from the cache if we have Open for this item
-                && ctx.cache.getActions(walls.first().id)?.contains("Open") ?: false
+                && gameObjects.any { ctx.cache.getActions(it.id)?.contains("Open") ?: false }
+//        println("Tile: $tile Has door: $hasDoor. ID: ${
+//            gameObjects.firstOrNull {
+//                ctx.cache.getActions(it.id)?.contains("Open") ?: false
+//            }?.id}")
+        return hasDoor
     }
 
     private fun hasDiagonalDoor(tile: Tile): Boolean {
-
-        val gameObjects = ctx.gameObjects.gameObjects.filter { it.distanceTo(tile) == 0 }
-        return gameObjects.isNotEmpty()
-                && gameObjects.first().wallObject != null
+        val gameObjects = ctx.gameObjects.gameObjects.filter { it.getGlobalLocation().isSameTile(tile) }
+        val hasDoor = gameObjects.isNotEmpty()
                 //Check to see from the cache if we have Open for this item
-                && ctx.cache.getActions(gameObjects.first().id)?.contains("Open") ?: false
+                && gameObjects.any { ctx.cache.getActions(it.id)?.contains("Open") ?: false} ?: false
+//        println("Tile: $tile Has diag door: $hasDoor. ID: ${
+//            gameObjects.firstOrNull {
+//                ctx.cache.getActions(it.id)?.contains("Open") ?: false
+//            }?.id}")
+        return hasDoor
     }
 
     private fun isWallBlocking(a: Tile, b: Tile): Boolean {
-        val wallA = ctx.gameObjects.gameObjects.first { it.distanceTo(a) == 0 }
+        val wallA = ctx.gameObjects.gameObjects.first { it.getGlobalLocation().isSameTile(a) }
         return when (wallA.wallObject?.getOrientationA()) {
-            0 -> a.west().distanceTo(b)==0 || a.northWest().distanceTo(b)==0 || a.southWest().distanceTo(b)==0;
-            1 -> a.north().distanceTo(b)==0 || a.northWest().distanceTo(b)==0 || a.northEast().distanceTo(b)==0;
-            2 -> a.east().distanceTo(b)==0 || a.northEast().distanceTo(b)==0 || a.southEast().distanceTo(b)==0;
-            3 -> a.south().distanceTo(b)==0 || a.southWest().distanceTo(b)==0 || a.southEast().distanceTo(b)==0;
+            0 -> a.west().getGlobalLocation().isSameTile(b) || a.northWest().getGlobalLocation().isSameTile(b) || a.southWest().getGlobalLocation().isSameTile(b);
+            1 -> a.north().getGlobalLocation().isSameTile(b) || a.northWest().getGlobalLocation().isSameTile(b) || a.northEast().getGlobalLocation().isSameTile(b);
+            2 -> a.east().getGlobalLocation().isSameTile(b) || a.northEast().getGlobalLocation().isSameTile(b) || a.southEast().getGlobalLocation().isSameTile(b);
+            3 -> a.south().getGlobalLocation().isSameTile(b) || a.southWest().getGlobalLocation().isSameTile(b) || a.southEast().getGlobalLocation().isSameTile(b);
             else -> true
         }
     }
@@ -251,6 +254,9 @@ class WalkingPathFinding(val ctx: Context) {
 
     private suspend fun handleTransport(transport: Transport): Boolean {
         println("[Walking] Handling transport " + transport.source + " -> " + transport.target)
+        if(!transport.source.isOnScreen()){
+            transport.source.turnTo()
+        }
         transport.handler(ctx)
         Utils.sleepUntil({ ctx.players.getLocal().distanceTo(transport.target) < 10 }, 10)
         return ctx.players.getLocal().distanceTo(transport.target) < 10
@@ -284,7 +290,7 @@ class WalkingPathFinding(val ctx: Context) {
 
                 return handleTransport(transport!!)
             }
-            if (hasDiagonalDoor(tileA)) return openDiagonalDoor(a)
+            if (hasDiagonalDoor(tileA)) return openDoor(a)
             if (tileB == null) {
                 return false // scene edge
             }
@@ -302,12 +308,22 @@ class WalkingPathFinding(val ctx: Context) {
             print("$it ")
         }
         println()
-        val closestTile = path.minByOrNull { it.distanceTo() }
-        println("Closest tile: $closestTile")
-        val remainingPath = path.subList(path.indexOf(closestTile), path.size)
+        val closestTile = currentPlaneTiles.minByOrNull { it.distanceTo() }
+//        println("Closest tile: $closestTile")
+        var cloestTileIndex = 0
+        path.forEachIndexed { index, tile ->
+            if(closestTile?.let { tile.isSameTile(it) } == true){
+                cloestTileIndex = index
+            }
+        }
+        val remainingPath = path.subList(cloestTileIndex, path.size)
         check(!remainingPath.isEmpty()) {
             "too far from path " + ctx.players.getLocal().getGlobalLocation().toString() + " -> " + closestTile
         }
+//        println("remaining path: ")
+//        remainingPath.forEach { print("$it ") }
+//        println()
+
         return remainingPath
     }
 

@@ -304,7 +304,7 @@ object TransportLoader {
             target, Int.MAX_VALUE,
             0,
             handler = { ctx: Context ->
-                ctx.gameObjects.find(id).first().interact(action)
+                ctx.gameObjects.find(id).firstOrNull()?.interact(action)
                 Utils.sleepUntil({ target.distanceTo() == 0 || ctx.widgets.find(interfaceId, widgetId) != null })
                 val widget = ctx.widgets.find(interfaceId, widgetId)
                 if (widget != null) {
@@ -319,35 +319,36 @@ object TransportLoader {
 private fun trapdoorTransport(source: Tile, target: Tile, closedId: Int, openId: Int): Transport? {
     return Transport(source, target, Int.MAX_VALUE, 0, handler = { ctx: Context ->
         if (ctx.gameObjects.find(closedId, source).isNotEmpty()) {
-            ctx.gameObjects.find(closedId, source).first().interact("Open")
+            ctx.gameObjects.find(closedId, source).firstOrNull()?.interact("Open")
             Utils.sleepUntil({ ctx.gameObjects.find(closedId, source).isEmpty() })
 
         }
-        ctx.gameObjects.find(openId).first().interact("Climb-down")
+        ctx.gameObjects.find(openId).firstOrNull()?.interact("Climb-down") == true
     })
 }
 
 private suspend fun npcTransport(source: Tile, target: Tile, id: Int, action: String): Transport {
     return Transport(source, target, 1, 15, handler = { ctx: Context ->
-        ctx.npcs.findNpc(id).first().interact(action)
+        ctx.npcs.findNpc(id).firstOrNull()?.interact(action) == true
     })
 }
 
 private fun npcChatTransport(source: Tile, target: Tile, id: Int, vararg chats: String): Transport? {
     return Transport(source, target, 10, 0, handler = { ctx: Context ->
-        ctx.npcs.findNpc(id).first().interact("Talk-to")
+        ctx.npcs.findNpc(id).firstOrNull()?.interact("Talk-to")
         ctx.dialog.chat(*chats)
         true
     })
 }
 
 private fun npcActionTransport(source: Tile, target: Tile, id: Int, action: String): Transport? {
-    return Transport(source, target, 10, 0, handler = { ctx: Context -> ctx.npcs.findNpc(id).first().interact(action) })
+    return Transport(source, target, 10, 0, handler = { ctx: Context -> ctx.npcs.findNpc(id).firstOrNull()?.interact(action) == true })
 }
 
 private fun objectTransport(source: Tile, target: Tile, id: Int, action: String): Transport {
     return Transport(source, target, 1, Int.MAX_VALUE, handler = { ctx: Context ->
-        ctx.gameObjects.find(id).first().interact(action)
+        println("Trying to find: $id")
+        ctx.gameObjects.find(id).firstOrNull()?.interact(action) == true
     })
 }
 
@@ -359,7 +360,7 @@ private fun objectChatTransport(
     vararg options: String
 ): Transport? {
     return Transport(source, target, Int.MAX_VALUE, 0, handler = { ctx: Context ->
-        ctx.gameObjects.find(id).first().interact(action)
+        ctx.gameObjects.find(id).firstOrNull()?.interact(action)
         ctx.dialog.chat(*options)
         true
     })
@@ -368,6 +369,6 @@ private fun objectChatTransport(
 private fun itemObjectTransport(source: Tile, target: Tile, itemID: Int, gameObjectID: Int): Transport {
     return Transport(source, target, 1, Int.MAX_VALUE, handler = { ctx: Context ->
         ctx.inventory.getItem(itemID)?.click()
-        ctx.gameObjects.find(gameObjectID).first().click()
+        ctx.gameObjects.find(gameObjectID).firstOrNull()?.click() == true
     })
 }
