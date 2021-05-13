@@ -52,7 +52,7 @@ class Dialog(val ctx: Context) : Logging() {
         Utils.sleepUntil({ chatState() != ChatState.CLOSED })
         for (option in options) {
             continueChats()
-            selectionOption(option?: "")
+            selectionOption(option ?: "")
         }
         continueChats()
     }
@@ -66,17 +66,17 @@ class Dialog(val ctx: Context) : Logging() {
             sleep(400)
         }
     }
-    
-        suspend fun continueChat() {
+
+    suspend fun continueChat() {
         when (chatState()) {
             ChatState.CLOSED -> println("There is not chat")
             ChatState.OPTIONS_CHAT -> println("can't continue, this is an options chat");
-            ChatState.PLAYER_CHAT -> WidgetItem(ctx.widgets.find(217, 3),ctx=ctx).click()
-            ChatState.NPC_CHAT -> WidgetItem(ctx.widgets.find(231, 3),ctx=ctx).click()
-            ChatState.ITEM_CHAT -> WidgetItem(ctx.widgets.find(11, 4),ctx=ctx).click()
-            ChatState.SPECIAL -> WidgetItem(ctx.widgets.find(193, 0)?.getChildren()?.get(1),ctx=ctx).click()
-            ChatState.MODEL -> WidgetItem(ctx.widgets.find(229, 2),ctx=ctx).click()
-            ChatState.SPRITE -> WidgetItem(ctx.widgets.find(633, 0)?.getChildren()?.get(1),ctx=ctx).click()
+            ChatState.PLAYER_CHAT -> WidgetItem(ctx.widgets.find(217, 3), ctx = ctx).click()
+            ChatState.NPC_CHAT -> WidgetItem(ctx.widgets.find(231, 3), ctx = ctx).click()
+            ChatState.ITEM_CHAT -> WidgetItem(ctx.widgets.find(11, 4), ctx = ctx).click()
+            ChatState.SPECIAL -> WidgetItem(ctx.widgets.find(193, 0)?.getChildren()?.get(1), ctx = ctx).click()
+            ChatState.MODEL -> WidgetItem(ctx.widgets.find(229, 2), ctx = ctx).click()
+            ChatState.SPRITE -> WidgetItem(ctx.widgets.find(633, 0)?.getChildren()?.get(1), ctx = ctx).click()
         }
     }
 

@@ -30,7 +30,7 @@ class Pathfinder(
                 lowestDist = curDist
             }
 //            println(count)
-            if (target.isSameTile(node)) {
+            if (target.isSameTile(node) || target.distanceTo(node) < 5) {
                 val result: LinkedList<Tile> = LinkedList<Tile>()
                 while (node != null && !node.isSameTile(starts.first()) ) {
 

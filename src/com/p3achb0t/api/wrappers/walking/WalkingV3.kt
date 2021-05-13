@@ -18,13 +18,13 @@ import java.util.concurrent.*
 
 class WalkingPathFinding(val ctx: Context) {
 
-    private val MAX_WALK_DISTANCE = 19
-    private val DEATHS_OFFICE = Area(Tile(3167, 5733, 0), Tile(3184, 5720, 0), ctx = ctx)
+    val MAX_WALK_DISTANCE = 19
+    val DEATHS_OFFICE = Area(Tile(3167, 5733, 0), Tile(3184, 5720, 0), ctx = ctx)
 
     companion object {
         private const val MAX_MIN_ENERGY = 50
         private const val MIN_ENERGY = 15
-        private var minEnergy = Random().nextInt(MAX_MIN_ENERGY - MIN_ENERGY + 1) + MIN_ENERGY
+        var minEnergy = Random().nextInt(MAX_MIN_ENERGY - MIN_ENERGY + 1) + MIN_ENERGY
 
         private var map: CollisionMap? = null
         val PATHFINDING_EXECUTOR = Executors.newFixedThreadPool(
@@ -86,21 +86,13 @@ class WalkingPathFinding(val ctx: Context) {
                 "How do I know what will happen to my items when I die?",
                 "I think I'm done here."
             )
-//            ctx.dialog.selectionOption("How do I pay a gravestone fee?")
-//            ctx.dialog.continueDialog()
-//            ctx.dialog.selectionOption("How long do I have to return to my gravestone?")
-//            ctx.dialog.continueDialog()
-//            ctx.dialog.selectionOption("How do I know what will happen to my items when I die?")
-//            ctx.dialog.continueDialog()
-//            ctx.dialog.selectionOption("I think I'm done here.")
-//            ctx.dialog.continueDialog()
 
             ctx.gameObjects.find("Portal").first().interact("Use")
 
             Utils.sleepUntil({ !DEATHS_OFFICE.isPlayerInArea() })
         }
         System.out.println(
-            "[Walking] Pathfinding " + ctx.players.getLocal().getGlobalLocation().toString() + " -> " + target
+            "[Walking] Pathfinding " + ctx.players.getLocal().getGlobalLocation().toString() + " -> " + target.getCentralTile()
         )
         val transports: MutableMap<Tile, MutableList<Transport>> = HashMap()
         val transportTiles: MutableMap<Tile, MutableList<Tile>> = HashMap()
@@ -123,13 +115,6 @@ class WalkingPathFinding(val ctx: Context) {
         val starts = ArrayList(teleports.keys)
         starts.add(ctx.players.getLocal().getGlobalLocation())
 
-//        val path = map?.let {
-//            Pathfinder(it, transportTiles, starts) { locatables: Tile? ->
-//                target.contains(locatables!!)
-//            }.find()
-//        } ?: throw IllegalStateException(
-//            "couldn't pathfind " + ctx.players.getLocal().getGlobalLocation().toString() + " -> " + target
-//        )
         val path: List<Tile?>? = pathfind(starts, target, transportTiles)
         println("[Walking] Done pathfinding. size: ${path?.size}")
         val startTile = path?.firstOrNull()
@@ -146,7 +131,7 @@ class WalkingPathFinding(val ctx: Context) {
         }
     }
 
-    private suspend fun pathfind(
+    suspend fun pathfind(
         start: ArrayList<Tile>,
         target: Area,
         tranports: Map<Tile, List<Tile>>
@@ -173,8 +158,8 @@ class WalkingPathFinding(val ctx: Context) {
 
     private suspend fun walkAlong(path: List<Tile>, transports: Map<Tile, List<Transport>>) {
         var failed = 0
-        val target = path.last()
-        target.updateCTX(ctx)
+        val target = path.lastOrNull()
+        target?.updateCTX(ctx)
         path.forEachIndexed { index, tile ->
             tile.updateCTX(ctx)
             print("($index)$tile -> ")
@@ -187,7 +172,7 @@ class WalkingPathFinding(val ctx: Context) {
 //        transports.filter { it.key.distanceTo() < 100 }.forEach { (t, u) ->
 //            println("$t(d:${t.distanceTo()}) -> ${u.first().source}->${u.first().target}")
 //        }
-        while (target.distanceTo() > 3) {
+        while (target?.distanceTo() ?: 0 > 5) {
             val remainingPath: List<Tile> = remainingPath(path)
             val start: Tile = path[0]
             val current: Tile = ctx.players.getLocal().getGlobalLocation()
@@ -220,7 +205,7 @@ class WalkingPathFinding(val ctx: Context) {
         return true
     }
 
-    private fun hasDoor(tile: Tile): Boolean {
+    fun hasDoor(tile: Tile): Boolean {
         val gameObjects = ctx.gameObjects.gameObjects.filter { it.getGlobalLocation().isSameTile(tile)  }
         val hasDoor = gameObjects.isNotEmpty()
                 //Check to see from the cache if we have Open for this item
@@ -232,7 +217,7 @@ class WalkingPathFinding(val ctx: Context) {
         return hasDoor
     }
 
-    private fun hasDiagonalDoor(tile: Tile): Boolean {
+    fun hasDiagonalDoor(tile: Tile): Boolean {
         val gameObjects = ctx.gameObjects.gameObjects.filter { it.getGlobalLocation().isSameTile(tile) }
         val hasDoor = gameObjects.isNotEmpty()
                 //Check to see from the cache if we have Open for this item
@@ -244,7 +229,7 @@ class WalkingPathFinding(val ctx: Context) {
         return hasDoor
     }
 
-    private fun isWallBlocking(a: Tile, b: Tile): Boolean {
+    fun isWallBlocking(a: Tile, b: Tile): Boolean {
         val wallA = ctx.gameObjects.gameObjects.first { it.getGlobalLocation().isSameTile(a) }
         return when (wallA.wallObject?.getOrientationA()) {
             0 -> a.west().getGlobalLocation().isSameTile(b) || a.northWest().getGlobalLocation().isSameTile(b) || a.southWest().getGlobalLocation().isSameTile(b);
@@ -284,6 +269,10 @@ class WalkingPathFinding(val ctx: Context) {
 //            val transport2 = transportTargets?.firstOrNull { it?.target?.distanceTo(b) == 0 && it.target.z == b.z }
             var transport : Transport? = null
             transportTargets.forEach { t, u ->
+                u.forEach {
+                    it?.target?.updateCTX(ctx)
+                    it?.source?.updateCTX(ctx)
+                }
                 if(u.first()?.target?.isSameTile(b) == true){
                     transport = u.first()
                 }
@@ -305,7 +294,7 @@ class WalkingPathFinding(val ctx: Context) {
     }
 
 
-    private fun remainingPath(path: List<Tile>): List<Tile> {
+    fun remainingPath(path: List<Tile>): List<Tile> {
         val currentPlaneTiles = path.filter { it.z == ctx.players.getLocal().getGlobalLocation().z }
 //        println("Tiles on plane")
         currentPlaneTiles.forEach {
@@ -378,6 +367,7 @@ class WalkingPathFinding(val ctx: Context) {
         }
     }
 
+    //Used to determine if someone can get to a spcific Tile
     fun reachable(target: Area): Boolean {
         if (target.isPlayerInArea()) {
             return true
@@ -388,7 +378,7 @@ class WalkingPathFinding(val ctx: Context) {
                 target = target.getCentralTile()).find()
         } ?: return false
         for (tile in path) {
-            val walls = ctx.gameObjects.gameObjects.filter { it.distanceTo(tile) == 0 }
+            val walls = ctx.gameObjects.gameObjects.filter { it.getGlobalLocation().isSameTile(tile) }
             return walls.isNotEmpty()
                     && walls.first().wallObject != null
                     //Check to see from the cache if we have Open for this item

@@ -17,6 +17,10 @@ class NPC(var npc: Npc, ctx: Context, val menuIndex: Int) : Actor(npc, ctx) {
             val npcDef = getType(npc.getType().getId())?.let { NpcDefinition(it) }
             return npcDef?.name ?: "null"
         }
+    val id: Int
+    get() {
+        return npc.getType().getId()
+    }
 
     override fun isMouseOverObj(): Boolean {
         val mousePoint = ctx?.let { Point(it.mouse.getX(), it.mouse.getY()) }

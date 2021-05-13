@@ -1,9 +1,6 @@
 package com.p3achb0t.api.wrappers.cache
 
 import com.google.gson.GsonBuilder
-import com.p3achb0t.api.cache.content.config.VarBitType
-import com.p3achb0t.api.cache.format.disk.DiskCache
-import com.p3achb0t.api.cache.tools.MemCache
 import com.p3achb0t.api.wrappers.VarbitData
 import com.p3achb0t.client.cache.*
 import com.p3achb0t.client.cache.client.CacheClient
@@ -32,6 +29,7 @@ class RSCache {
         public lateinit var objectManager: ObjectManager
         lateinit var npcManager: NpcManager
         lateinit var itemManager: ItemManager
+        lateinit var widgetManager: InterfaceManager
 
         fun load(){
             val cacheFolder = File(cachePath)
@@ -63,6 +61,9 @@ class RSCache {
                 itemManager = ItemManager(store)
                 itemManager.load()
 
+                widgetManager = InterfaceManager(store)
+                widgetManager.load()
+
             }
         }
 
@@ -75,6 +76,14 @@ class RSCache {
 
     fun getActions(id: Int): Array<String>? {
         return objectManager.getObject(id).actions
+    }
+
+    fun getNPCActions(id: Int): Array<String>? {
+        return npcManager.get(id).actions
+    }
+
+    fun getWidgetActions(parentId: Int, childID:Int) : Array<String>?{
+        return widgetManager.getInterface(parentId,childID).actions
     }
 
     fun getVarbitInfo(): ArrayList<VarbitData> {
