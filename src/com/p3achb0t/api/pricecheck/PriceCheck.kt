@@ -5,8 +5,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.exceptions.UnirestException
-import com.p3achb0t.scripts_private.Zulrah.Constants
-import com.p3achb0t.scripts_private.ZulrahGearer.Gear
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
