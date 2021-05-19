@@ -7,12 +7,12 @@ interface SeqType : DualNode {
     fun getFrameLengths(): IntArray
     fun getLefthand(): Int
     fun getRighthand(): Int
-    fun get__l(): IntArray
-    fun get__m(): Boolean
+    fun get__i(): IntArray
+    fun get__x(): Boolean
+    fun get__a(): Int
     fun get__d(): Int
-    fun get__q(): Int
-    fun get__r(): Int
-    fun get__t(): Int
-    fun get__v(): Int
-    fun get__h(): IntArray
+    fun get__e(): Int
+    fun get__k(): Int
+    fun get__u(): Int
+    fun get__b(): IntArray
 }

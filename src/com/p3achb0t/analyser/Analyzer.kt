@@ -448,7 +448,7 @@ class Analyser {
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
                 //TODO - This
-                val viewportWalkingFieldName = "__fu_ad"//__fu_ad or //__fu_at
+                val viewportWalkingFieldName = "__gz_ak"//__gz_ak or //__gz_at
                 val fieldHook3 =
                     runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
@@ -757,12 +757,13 @@ class Analyser {
                                         )
                                     )
                                     "(IIIILjava/lang/String;Ljava/lang/String;IIB)V"
+                                    //TODO sometimes this changes between byte and int or int to byte
                                     il.add(
                                         MethodInsnNode(
                                             INVOKESTATIC,
                                             "com/p3achb0t/detours/Detours",
                                             "doAction",
-                                            "(IIIILjava/lang/String;Ljava/lang/String;IIILcom/p3achb0t/client/injection/InstanceManager;)V",
+                                            "(IIIILjava/lang/String;Ljava/lang/String;IIBLcom/p3achb0t/client/injection/InstanceManager;)V",
                                             false
                                         )
                                     )
@@ -778,8 +779,8 @@ class Analyser {
         }
 
         // TODO Find a way to auto update - open os? https://raw.githubusercontent.com/open-osrs/runelite/master/runescape-client/src/main/java/RouteStrategy.java
-        val garbageCollectClass = "co"
-        val garbageCollectMethod = "ai"
+        val garbageCollectClass = "ef"
+        val garbageCollectMethod = "az"
         //OpenRS key search: getGcDuration
         var gcInjected = false
         gcRoot@ for (method in classes[garbageCollectClass]!!.methods) {
@@ -803,21 +804,21 @@ class Analyser {
         if (!gcInjected) println("Failed to inject GC duration bypass.")
 
         //TODO - To find the random.dat methods go look at script to find "random.dat" in the class files
-        var createRandDatClass = "dd"
-        var createRandDatMethod = "k"
+        var createRandDatClass = "da"
+        var createRandDatMethod = "h"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
         // Hooks datFile
-        createRandDatClass = "el"
-        createRandDatMethod = "f"
+        createRandDatClass = "dc"
+        createRandDatMethod = "l"
         injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
         //second version of random.dat
         // Hooks datFile
-//        createRandDatClass = "k"
-//        createRandDatMethod = "x"
-//        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
+        createRandDatClass = "dc"
+        createRandDatMethod = "z"
+        injectRandomDat(classes, createRandDatClass, createRandDatMethod)
 
 
         val path = System.getProperty("user.dir")
@@ -1217,7 +1218,7 @@ class Analyser {
         val label = LabelNode(Label())
 
         val doActionMethodNode =
-            MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;III)V", null, null)
+            MethodNode(ACC_PUBLIC, "doAction", "(IIIILjava/lang/String;Ljava/lang/String;IIB)V", null, null)
         val il = InsnList()
 
         il.add(FieldInsnNode(GETSTATIC, "client", "script", "Lcom/p3achb0t/client/injection/InstanceManager;"))

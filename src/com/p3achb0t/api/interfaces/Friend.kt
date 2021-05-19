@@ -1,6 +1,6 @@
 package com.p3achb0t.api.interfaces
 
 interface Friend : Buddy {
-    fun get__f(): Boolean
-    fun get__o(): Boolean
+    fun get__c(): Boolean
+    fun get__h(): Boolean
 }

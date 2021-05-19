@@ -34,18 +34,38 @@ class Dialog(val ctx: Context) : Logging() {
 
 
     fun chatState(): ChatState {
-        val mainWidget = ctx.widgets.find(162, 562)
-        return when (mainWidget?.getChildren()?.first()?.getParentId()) {
-            11 -> ChatState.ITEM_CHAT
-            217 -> ChatState.PLAYER_CHAT
-            231 -> ChatState.NPC_CHAT
-            219 -> ChatState.OPTIONS_CHAT
-            193 -> ChatState.SPECIAL
-            229 -> ChatState.MODEL
-            633 -> ChatState.SPRITE
-            else -> ChatState.CLOSED
 
+        if(ctx.widgets.find(11, 0) != null){
+            return ChatState.ITEM_CHAT
+        }else if(ctx.widgets.find(217, 0) != null){
+            return ChatState.PLAYER_CHAT
+        }else if(ctx.widgets.find(231, 0) != null){
+            return ChatState.NPC_CHAT
+        }else if(ctx.widgets.find(219, 0) != null){
+            return ChatState.OPTIONS_CHAT
+        }else if(ctx.widgets.find(193, 0) != null){
+            return ChatState.SPECIAL
+        }else if(ctx.widgets.find(229, 0) != null){
+            return ChatState.MODEL
+        }else if(ctx.widgets.find(633, 0) != null){
+            return ChatState.SPRITE
+        }else{
+            return ChatState.CLOSED
         }
+
+
+//        val mainWidget = ctx.widgets.find(162, 562)
+//        return when (mainWidget?.getChildren()?.first()?.getParentId()) {
+//            11 -> ChatState.ITEM_CHAT
+//            217 -> ChatState.PLAYER_CHAT
+//            231 -> ChatState.NPC_CHAT
+//            219 -> ChatState.OPTIONS_CHAT
+//            193 -> ChatState.SPECIAL
+//            229 -> ChatState.MODEL
+//            633 -> ChatState.SPRITE
+//            else -> ChatState.CLOSED
+//
+//        }
     }
 
     suspend fun chat(vararg options: String?) {

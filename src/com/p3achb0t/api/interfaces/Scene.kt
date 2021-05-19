@@ -11,5 +11,5 @@ interface Scene {
     fun getYSize(): Int
     fun get__bk(): Array<IntArray>
     fun get__bt(): Array<IntArray>
-    fun get__n(): Array<Array<IntArray>>
+    fun get__q(): Array<Array<IntArray>>
 }

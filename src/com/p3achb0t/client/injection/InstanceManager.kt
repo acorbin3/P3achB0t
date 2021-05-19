@@ -443,7 +443,7 @@ class InstanceManager(val client: Any) : Logging() {
         targetName: String,
         mouseX: Int,
         mouseY: Int,
-        argument8: Int
+        argument8: Byte
     ) {
         logger.info("argument0:$argument0, argument1:$argument1, argument2:$argument2, argument3:$argument3, action:$action, targetName:$targetName, mouseX:$mouseX, mouseY:$mouseY, argument8:$argument8")
         if (GlobalStructs.isMenuOptions) {
@@ -494,7 +494,7 @@ class InstanceManager(val client: Any) : Logging() {
                     val itemSlotInInvetory = argument0
                     val rawWidgetID = argument1
                     val containerID = argument1.shr(16)
-                    val childID = argument1.and(0xFF)
+                    val childID = argument1.and(0xFFFF)
                     val menuAction = MenuOpcode.valueOf(argument2)
                     val itemId = argument3
 
@@ -510,7 +510,7 @@ class InstanceManager(val client: Any) : Logging() {
         val childID = argument0 // This can be -1 if not a child
         val widgetID = argument1
         val containerID = argument1.shr(16)
-        val containerChildID = argument1.and(0xFF)
+        val containerChildID = argument1.and(0xFFFF)
         val menuAction = MenuOpcode.valueOf(argument2)
 
         if (argument2 == MenuOpcode.WIDGET_DEFAULT.id) {

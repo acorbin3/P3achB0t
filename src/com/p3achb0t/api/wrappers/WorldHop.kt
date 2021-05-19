@@ -30,7 +30,7 @@ class WorldHop(val ctx: Context) {
         val listScrollClickableAreaChildID = 0
         val logoutDialog = Widget.WidgetIndex("182", "0")
         val yellowXButton = Widget.WidgetIndex("164", "32")
-        val worldSwitchButtonIndex = Widget.WidgetIndex("182", "7")
+        val worldSwitchButtonIndex = Widget.WidgetIndex("182", "3")
         val selectYesWorldHop = Widget.WidgetIndex("219", "1")
 
         val selectYesWorldHopChild = 1

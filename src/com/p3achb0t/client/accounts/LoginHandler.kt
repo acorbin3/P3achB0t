@@ -37,14 +37,14 @@ class LoginHandler(var account: Account = Account()) {
             println("current user & pass: ${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             ctx.keyboard.sendKeys(" ", sendReturn = true)
             //OPENRS searhc loginBoxCenter
-            ctx.mouse.moveMouse(Point(ctx.client.get__cf_z(), 310), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(ctx.client.get__f_j(), 310), true, Mouse.ClickType.Left)
             delay(500)
-            ctx.mouse.moveMouse(Point(ctx.client.get__cf_z() + 55, 294), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(ctx.client.get__f_j() + 55, 294), true, Mouse.ClickType.Left)
             println("${ctx.client.getLogin_username()}:${ctx.client.getLogin_password()}")
             val timeout = StopWatch()
             if (ctx.client.getLogin_username() != account.username) {
                 //Delete user name and replace
-              ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cf_z() - 50, ctx.client.get__cf_z() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
+              ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__f_j() - 50, ctx.client.get__f_j() + 70), Random.nextInt(240, 249)), true, Mouse.ClickType.Left)
                 while (ctx.client.getLogin_username().isNotEmpty()
                         && timeout.elapsedSec < 5) {
                     ctx.keyboard.pressDownKey(KeyEvent.VK_BACK_SPACE)
@@ -57,7 +57,7 @@ class LoginHandler(var account: Account = Account()) {
 
             timeout.reset()
             //Move to password
-            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cf_z() - 50, ctx.client.get__cf_z() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
+            ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__f_j() - 50, ctx.client.get__f_j() + 70), Random.nextInt(258, 269)), true, Mouse.ClickType.Left)
             if (ctx.client.getLogin_password().isNotEmpty() == true) {
                 //Clear password
                 while (ctx.client.getLogin_password().isNotEmpty()
@@ -102,7 +102,7 @@ class LoginHandler(var account: Account = Account()) {
 
                 if(LoginResponse.getLoginResponse(ctx) == LoginResponse.INVALID){
                     //Move mouse to try again 466,279
-                    ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__cf_z() - 12, ctx.client.get__cf_z() - 6), Random.nextInt(260, 290)), true, Mouse.ClickType.Left)
+                    ctx.mouse.moveMouse(Point(Random.nextInt(ctx.client.get__f_j() - 12, ctx.client.get__f_j() - 6), Random.nextInt(260, 290)), true, Mouse.ClickType.Left)
                 }
 
                 return false

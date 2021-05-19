@@ -15,7 +15,7 @@ public class Detours {
                                 String menuTarget,
                                 int mouseX,
                                 int mouseY,
-                                int dummy,
+                                byte dummy,
                                 InstanceManager scriptManager){
 
         ActionScript script = scriptManager.getActionScript();

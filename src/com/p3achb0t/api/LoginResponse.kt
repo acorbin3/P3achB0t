@@ -46,7 +46,8 @@ enum class LoginResponse(
             return UNKNOWN
         }
         fun getLoginResponse(ctx: Context): LoginResponse{
-            return of(ctx.client.get__cg_as())
+            return of(ctx.client.get__cc_ax())
+//            return LoginResponse.UNKNOWN
         }
     }
 

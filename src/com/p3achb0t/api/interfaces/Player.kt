@@ -9,9 +9,7 @@ interface Player : Actor {
     fun getHeadIconPk(): Int
     fun getHeadIconPrayer(): Int
     fun getIndex(): Int
-    fun getIsFriend(): TriBool
     fun getIsHidden(): Boolean
-    fun getIsInClanChat(): TriBool
     fun getIsUnanimated(): Boolean
     fun getModel0(): Model
     fun getPlane(): Int
@@ -22,11 +20,14 @@ interface Player : Actor {
     fun getTileX(): Int
     fun getTileY(): Int
     fun getUsername(): Username
-    fun get__ac(): Boolean
-    fun get__c(): Int
-    fun get__m(): Int
-    fun get__q(): Int
+    fun get__ae(): Boolean
+    fun get__a(): Int
+    fun get__d(): Int
+    fun get__e(): Int
     fun get__r(): Int
-    fun get__t(): Int
-    fun get__v(): Int
+    fun get__u(): Int
+    fun get__x(): Int
+    fun get__ag(): TriBool
+    fun get__n(): TriBool
+    fun get__w(): TriBool
 }

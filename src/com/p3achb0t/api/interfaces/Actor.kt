@@ -45,21 +45,21 @@ interface Actor : Entity {
     fun getWalkSequence(): Int
     fun getX(): Int
     fun getY(): Int
-    fun get__aa(): Boolean
-    fun get__aj(): Boolean
-    fun get__at(): Int
-    fun get__ba(): Int
-    fun get__bf(): Int
-    fun get__bg(): Int
+    fun get__al(): Boolean
+    fun get__aq(): Boolean
+    fun get__av(): Int
+    fun get__bc(): Int
+    fun get__bj(): Int
     fun get__bl(): Int
-    fun get__bm(): Int
-    fun get__bu(): Int
-    fun get__bx(): Int
+    fun get__bo(): Int
+    fun get__bq(): Int
+    fun get__bv(): Int
     fun get__bz(): Int
-    fun get__ce(): Int
-    fun get__cf(): Int
-    fun get__cg(): Int
+    fun get__cd(): Int
     fun get__ch(): Int
-    fun get__cq(): Int
-    fun get__cw(): Int
+    fun get__ck(): Int
+    fun get__cm(): Int
+    fun get__ct(): Int
+    fun get__cu(): Int
+    fun get__cx(): Int
 }

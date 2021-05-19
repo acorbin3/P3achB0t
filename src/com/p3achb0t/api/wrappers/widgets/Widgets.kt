@@ -96,7 +96,7 @@ class Widgets(val ctx: Context) {
         var result = "--$index--\n"
         try {
             val containerID = widget.getId().shr(16)
-            val childID = widget.getId().and(0xFF)
+            val childID = widget.getId().and(0xFFFF)
             result += "Widget ID:" + widget.getId() + "($containerID,$childID)\n"
             val parentIndex = Widget.getParentIndex(widget, ctx)
             result += "raw parent ID: ${widget.getParentId()}\n"

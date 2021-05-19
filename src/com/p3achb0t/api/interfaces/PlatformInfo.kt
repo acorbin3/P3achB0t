@@ -10,14 +10,14 @@ interface PlatformInfo : Node {
     fun setOs64Bit(value: Boolean)
     fun setOsType(value: Int)
     fun setOsVersion(value: Int)
-    fun set__aw(value: Boolean)
-    fun set__ab(value: Int)
-    fun set__ae(value: Int)
-    fun set__ap(value: Int)
-    fun set__au(value: Int)
-    fun set__av(value: Int)
+    fun set__ai(value: Boolean)
+    fun set__ac(value: Int)
+    fun set__ad(value: Int)
+    fun set__af(value: Int)
+    fun set__ah(value: Int)
+    fun set__an(value: Int)
     fun set__bb(value: Int)
-    fun set__bh(value: Int)
+    fun set__bd(value: Int)
     fun getCpuCores(): Int
     fun getJavaVendorType(): Int
     fun getJavaVersionMajor(): Int
@@ -27,20 +27,20 @@ interface PlatformInfo : Node {
     fun getOs64Bit(): Boolean
     fun getOsType(): Int
     fun getOsVersion(): Int
-    fun get__aw(): Boolean
-    fun get__ab(): Int
-    fun get__ae(): Int
-    fun get__ap(): Int
-    fun get__au(): Int
-    fun get__av(): Int
+    fun get__ai(): Boolean
+    fun get__ac(): Int
+    fun get__ad(): Int
+    fun get__af(): Int
+    fun get__ah(): Int
+    fun get__an(): Int
     fun get__bb(): Int
-    fun get__bh(): Int
-    fun get__bi(): IntArray
-    fun get__aa(): String
-    fun get__ak(): String
-    fun get__al(): String
+    fun get__bd(): Int
+    fun get__bu(): IntArray
+    fun get__ab(): String
+    fun get__aq(): String
     fun get__ar(): String
+    fun get__az(): String
+    fun get__bf(): String
     fun get__bk(): String
-    fun get__bn(): String
-    fun get__br(): String
+    fun get__bw(): String
 }

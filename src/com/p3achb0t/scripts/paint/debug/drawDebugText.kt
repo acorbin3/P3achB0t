@@ -23,7 +23,7 @@ fun drawDebugText(g: Graphics, ctx: Context) {
         debugText.add(DebugText("clientData.gameCycle :${ctx.client.getCycle()}"))
         debugText.add(DebugText("Game State:: ${ctx.client.getGameState()}"))
         debugText.add(DebugText("clientData.loginState :${ctx.client.getLoginState()}"))
-        debugText.add(DebugText("Login response :${LoginResponse.getLoginResponse(ctx) }. Enter point: ${ctx.client.get__cf_z()}"))
+//        debugText.add(DebugText("Login response :${LoginResponse.getLoginResponse(ctx) }. Enter point: ${ctx.client.get__f_j()}"))
         debugText.add(DebugText(" Runtime.getRuntime().availableProcessors()${ Runtime.getRuntime().availableProcessors()}"))
         debugText.add(DebugText("Cores: ${ctx.client.getPlatformInfo().getCpuCores()} " +
                 "64bit:${ctx.client.getPlatformInfo().getOs64Bit()} " +

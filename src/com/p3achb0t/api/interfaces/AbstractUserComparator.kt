@@ -1,5 +1,5 @@
 package com.p3achb0t.api.interfaces
 
 interface AbstractUserComparator {
-    fun get__o(): Any
+    fun get__c(): Any
 }

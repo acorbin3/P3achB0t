@@ -3,8 +3,9 @@ package com.p3achb0t.api.interfaces
 interface PlayerAppearance {
     fun getBodyColors(): IntArray
     fun getEquipment(): IntArray
-    fun getIsFemale(): Boolean
     fun getNpcTransformId(): Int
-    fun get__b(): Long
-    fun get__e(): Long
+    fun get__v(): Boolean
+    fun get__l(): Long
+    fun get__z(): Long
+    fun get__o(): Boolean
 }
