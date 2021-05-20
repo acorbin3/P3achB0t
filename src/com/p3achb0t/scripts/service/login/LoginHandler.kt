@@ -9,7 +9,6 @@ import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.client.accounts.LoginHandler
 import com.p3achb0t.scripts.paint.debug.DebugText
-import kotlinx.coroutines.delay
 import java.awt.Color
 import java.awt.Graphics
 import java.time.ZoneId

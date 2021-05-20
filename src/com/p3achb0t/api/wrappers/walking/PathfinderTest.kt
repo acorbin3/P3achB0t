@@ -2,10 +2,9 @@ package com.p3achb0t.api.wrappers.walking
 
 import com.p3achb0t.Main
 import com.p3achb0t.api.wrappers.Tile
-import com.p3achb0t.client.cache.util.Util.ungzip
+import net.runelite.cache.util.Util.ungzip
 import java.io.IOException
 import java.io.UncheckedIOException
-import java.util.function.Predicate
 
 object PathfinderTest {
     private var map: CollisionMap? = null

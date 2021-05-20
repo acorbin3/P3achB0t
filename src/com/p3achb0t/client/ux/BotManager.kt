@@ -9,7 +9,6 @@ import com.p3achb0t.client.configs.GlobalStructs
 import com.p3achb0t.client.injection.InstanceManager
 import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.injection.ScriptState
-import com.p3achb0t.client.ux.prefs.FrameMonitor
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

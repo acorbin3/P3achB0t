@@ -4,7 +4,6 @@ import com.p3achb0t.api.script.ScriptManifest
 import com.p3achb0t.api.script.ServiceScript
 import com.p3achb0t.api.utils.Script
 import com.p3achb0t.api.wrappers.Stats
-import com.p3achb0t.api.wrappers.tabs.Inventory
 import com.p3achb0t.client.accounts.Account
 import com.p3achb0t.scripts.paint.debug.DebugText
 import java.awt.Color

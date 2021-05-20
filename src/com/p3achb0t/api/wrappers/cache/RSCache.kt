@@ -1,18 +1,14 @@
 package com.p3achb0t.api.wrappers.cache
 
-import com.google.gson.GsonBuilder
 import com.p3achb0t.api.wrappers.VarbitData
-import com.p3achb0t.client.cache.*
-import com.p3achb0t.client.cache.client.CacheClient
-import com.p3achb0t.client.cache.definitions.loaders.VarbitLoader
-import com.p3achb0t.client.cache.fs.*
-import com.p3achb0t.client.cache.protocol.api.login.HandshakeResponseType
-import com.p3achb0t.client.cache.region.Region
+import net.runelite.cache.*
+import net.runelite.cache.client.CacheClient
+import net.runelite.cache.definitions.loaders.VarbitLoader
+import net.runelite.cache.fs.*
+import net.runelite.protocol.api.login.HandshakeResponseType
+import net.runelite.cache.region.Region
 import com.p3achb0t.client.configs.Constants.Companion.REVISION
 import java.io.File
-import java.io.IOException
-import java.nio.charset.Charset
-import java.nio.file.Path
 
 
 class RSCache {

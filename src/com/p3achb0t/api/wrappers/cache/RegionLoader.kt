@@ -1,13 +1,13 @@
 package com.p3achb0t.api.wrappers.cache
 
-import com.p3achb0t.client.cache.IndexType
-import com.p3achb0t.client.cache.definitions.loaders.LocationsLoader
-import com.p3achb0t.client.cache.definitions.loaders.MapLoader
-import com.p3achb0t.client.cache.fs.Archive
-import com.p3achb0t.client.cache.fs.Storage
-import com.p3achb0t.client.cache.fs.Store
-import com.p3achb0t.client.cache.region.Region
-import com.p3achb0t.client.cache.util.XteaKeyManager
+import net.runelite.cache.IndexType
+import net.runelite.cache.definitions.loaders.LocationsLoader
+import net.runelite.cache.definitions.loaders.MapLoader
+import net.runelite.cache.fs.Archive
+import net.runelite.cache.fs.Storage
+import net.runelite.cache.fs.Store
+import net.runelite.cache.region.Region
+import net.runelite.cache.util.XteaKeyManager
 
 class RegionLoader {
     companion object{

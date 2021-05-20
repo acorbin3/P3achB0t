@@ -9,7 +9,7 @@ import com.p3achb0t.api.wrappers.Tile
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.walking.TransportLoader.buildTransports
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
-import com.p3achb0t.client.cache.util.Util
+import net.runelite.cache.util.Util
 import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException

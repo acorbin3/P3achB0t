@@ -7,7 +7,6 @@ import com.p3achb0t.client.injection.InstanceManagerInterface
 import com.p3achb0t.client.loader.JarLoader
 import java.applet.Applet
 import java.awt.BorderLayout
-import java.util.*
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 
