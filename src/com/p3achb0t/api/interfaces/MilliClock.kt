@@ -1,10 +1,10 @@
 package com.p3achb0t.api.interfaces
 
 interface MilliClock : Clock {
-    fun get__c(): Int
-    fun get__l(): Int
-    fun get__o(): Int
-    fun get__z(): Int
-    fun get__g(): Long
-    fun get__h(): Array<Long>
+    fun get__f(): Int
+    fun get__j(): Int
+    fun get__n(): Int
+    fun get__p(): Int
+    fun get__y(): Long
+    fun get__v(): Array<Long>
 }

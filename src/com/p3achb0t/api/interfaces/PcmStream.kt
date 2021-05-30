@@ -4,5 +4,5 @@ interface PcmStream : Node {
     fun getActive(): Boolean
     fun getAfter(): PcmStream
     fun getSound(): AbstractSound
-    fun get__e(): Int
+    fun get__a(): Int
 }

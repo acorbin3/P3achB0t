@@ -22,7 +22,7 @@ class Constants {
 
         // Other constants
         val REVISION = 196
-        val REVISION_WITH_SUBVERSION = REVISION + .1 // Update this if we want to force a new injected jar
+        val REVISION_WITH_SUBVERSION = REVISION + .2 // Update this if we want to force a new injected jar
         var INJECTED_JAR_NAME = "gamepack-$REVISION_WITH_SUBVERSION-injected.jar"
 
         const val MIN_GAME_WIDTH = 765

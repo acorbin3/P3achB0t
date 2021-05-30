@@ -4,8 +4,8 @@ interface PlayerAppearance {
     fun getBodyColors(): IntArray
     fun getEquipment(): IntArray
     fun getNpcTransformId(): Int
-    fun get__v(): Boolean
-    fun get__l(): Long
-    fun get__z(): Long
-    fun get__o(): Boolean
+    fun get__b(): Boolean
+    fun get__j(): Long
+    fun get__p(): Long
+    fun get__f(): Boolean
 }

@@ -7,5 +7,5 @@ interface ClanChat : UserList {
     fun getName(): String
     fun getOwner(): String
     fun getRank(): Int
-    fun get__v(): Int
+    fun get__b(): Int
 }

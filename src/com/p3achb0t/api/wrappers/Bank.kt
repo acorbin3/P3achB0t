@@ -252,7 +252,7 @@ class Bank(val ctx: Context) : Logging() {
     }
 
     fun getPinPanelWidget(): Component? {
-        return ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0)
+        return ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 0)
     }
 
     fun getBankWidget(): Component? {
@@ -297,10 +297,10 @@ class Bank(val ctx: Context) : Logging() {
 
 
     private fun stillSolvingPin(): Boolean {
-        val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
-        val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
-        val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
-        val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+        val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 3)?.getText()
+        val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 4)?.getText()
+        val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 5)?.getText()
+        val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 6)?.getText()
 
         return digit1 == "?" || digit2 == "?" || digit3 == "?" || digit4 == "?"
     }
@@ -317,10 +317,10 @@ class Bank(val ctx: Context) : Logging() {
         while (stillSolvingPin()) {
             try {
                 //Which one to look for
-                val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 3)?.getText()
-                val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 4)?.getText()
-                val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 5)?.getText()
-                val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 6)?.getText()
+                val digit1 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 3)?.getText()
+                val digit2 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 4)?.getText()
+                val digit3 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 5)?.getText()
+                val digit4 = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 6)?.getText()
 
                 when {
                     digit1 == "?" -> {
@@ -349,10 +349,10 @@ class Bank(val ctx: Context) : Logging() {
 
     private suspend fun findAndPressKey(digit: Char) {
         var keepSearching = true
-        val firstKey = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
+        val firstKey = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPinKeys.KEYS[0])!!.getChildren()[1]
 
         for (keyChildID in WidgetID.BankPinKeys.KEYS) {
-            val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, keyChildID)
+            val bankPinKeyWidget = ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, keyChildID)
             if (bankPinKeyWidget != null) {
                 val children = bankPinKeyWidget.getChildren()
                 //Info should be in first index
@@ -363,7 +363,7 @@ class Bank(val ctx: Context) : Logging() {
                         Utils.waitFor(2, object : Utils.Condition {
                             override suspend fun accept(): Boolean {
                                 val firstKeyUpdated =
-                                    ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, WidgetID.BankPinKeys.KEYS[0])!!
+                                    ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPinKeys.KEYS[0])!!
                                         .getChildren()[1]
                                 delay(100)
                                 return firstKeyUpdated.getX() == firstKey.getX() && firstKeyUpdated.getY() == firstKey.getY()
@@ -377,7 +377,7 @@ class Bank(val ctx: Context) : Logging() {
         }
         if (keepSearching) {
             //Used to move the mouse around a little bit
-            WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_PANEL_ID, 0), ctx = ctx).hover()
+            WidgetItem(ctx.widgets.find(WidgetID.BANK_PIN_GROUP_ID, 0), ctx = ctx).hover()
         }
     }
 }

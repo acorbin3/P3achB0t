@@ -10,7 +10,7 @@ interface NetSocket : AbstractSocket {
     fun getTask(): Task
     fun getTaskHandler(): TaskHandler
     fun get__b(): Int
-    fun get__v(): Int
-    fun get__i(): Int
-    fun get__x(): Int
+    fun get__d(): Int
+    fun get__l(): Int
+    fun get__u(): Int
 }

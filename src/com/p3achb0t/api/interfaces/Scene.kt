@@ -9,7 +9,7 @@ interface Scene {
     fun getTiles(): Array<Array<Array<Tile>>>
     fun getXSize(): Int
     fun getYSize(): Int
-    fun get__bk(): Array<IntArray>
-    fun get__bt(): Array<IntArray>
-    fun get__q(): Array<Array<IntArray>>
+    fun get__bm(): Array<IntArray>
+    fun get__bv(): Array<IntArray>
+    fun get__s(): Array<Array<IntArray>>
 }

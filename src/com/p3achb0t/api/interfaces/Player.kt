@@ -20,14 +20,14 @@ interface Player : Actor {
     fun getTileX(): Int
     fun getTileY(): Int
     fun getUsername(): Username
-    fun get__ae(): Boolean
+    fun get__ap(): Boolean
     fun get__a(): Int
-    fun get__d(): Int
-    fun get__e(): Int
-    fun get__r(): Int
-    fun get__u(): Int
-    fun get__x(): Int
-    fun get__ag(): TriBool
-    fun get__n(): TriBool
-    fun get__w(): TriBool
+    fun get__c(): Int
+    fun get__g(): Int
+    fun get__k(): Int
+    fun get__l(): Int
+    fun get__m(): Int
+    fun get__ae(): TriBool
+    fun get__i(): TriBool
+    fun get__q(): TriBool
 }

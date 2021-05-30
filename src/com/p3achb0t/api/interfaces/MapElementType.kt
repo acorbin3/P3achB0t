@@ -9,14 +9,14 @@ interface MapElementType : DualNode {
     fun getOpbase(): String
     fun getSprite1(): Int
     fun getSprite2(): Int
-    fun get__y(): ByteArray
-    fun get__d(): Int
-    fun get__e(): Int
+    fun get__h(): ByteArray
+    fun get__a(): Int
+    fun get__k(): Int
     fun get__m(): Int
-    fun get__u(): Int
-    fun get__a(): IntArray
-    fun get__s(): IntArray
-    fun get__k(): Boolean
-    fun get__x(): Boolean
-    fun get__l(): Int
+    fun get__x(): Int
+    fun get__g(): IntArray
+    fun get__t(): IntArray
+    fun get__l(): Boolean
+    fun get__o(): Boolean
+    fun get__p(): Int
 }

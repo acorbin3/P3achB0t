@@ -180,7 +180,7 @@ class TutorialIsland: ActionScript()  {
 
     class ICantReachThatDialog(val ctx: Context): TutTask(ctx.client){
         override suspend fun isValidToRun(dialogWidget: WidgetItem?): Boolean {
-            return WidgetItem(ctx.widgets.find(162,44),ctx=ctx).containsText("I can't reach that!")
+            return WidgetItem(ctx.widgets.find(162,41),ctx=ctx).containsText("I can't reach that!")
         }
 
         override suspend fun execute() {

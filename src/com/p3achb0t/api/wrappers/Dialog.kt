@@ -6,7 +6,7 @@ import com.p3achb0t.api.utils.Time.sleep
 import com.p3achb0t.api.wrappers.utils.Timer
 import com.p3achb0t.api.wrappers.utils.Utils
 import com.p3achb0t.api.wrappers.widgets.WidgetID
-import com.p3achb0t.api.wrappers.widgets.WidgetID.Companion.DIALOG_PLAYER_GROUP_ID
+import com.p3achb0t.api.wrappers.widgets.WidgetID.DIALOG_PLAYER_GROUP_ID
 import com.p3achb0t.api.wrappers.widgets.WidgetItem
 import kotlinx.coroutines.delay
 import kotlin.random.Random
