@@ -448,7 +448,7 @@ class Analyser {
                 //It was suggested that look at menuAction method and "look for case 23 and explore the methods in there
                 //they don't actually execute properly but they're related to the walking"
                 //TODO - This
-                val viewportWalkingFieldName = "__gt_ai"//__gz_ak or //__gz_at
+                val viewportWalkingFieldName = "__gt_am"//__gz_ak or //__gz_at
                 val fieldHook3 =
                     runeStar.analyzers[clazzData.`class`]?.fields?.find { it.field == "get$viewportWalkingFieldName" }
                 println("fieldHook: $fieldHook3")
